@@ -1349,23 +1349,24 @@ void	kf_ToggleGodMode( void )
 //Let's add a spectator command. -Subsentient
 
 void kf_SpecMe(void) {
- sendTextMessage("<< is now a spectator**.", true);
- addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
- UDWORD i;
- for (i = 0; i < MAX_PLAYERS; i++) {
-  alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
-  alliances[i][selectedPlayer] = ALLIANCE_BROKEN; }
- setPower(selectedPlayer, 0);
- while (apsDroidLists[selectedPlayer]) {
- destroyDroid(apsDroidLists[selectedPlayer], gameTime); }
- while (apsStructLists[selectedPlayer]) {
- destroyStruct(apsStructLists[selectedPlayer], gameTime); }
- godMode = true;
- revealAll(selectedPlayer);
- setRevealStatus(true); 
- radarPermitted = true;
-
-}
+ if (bMultiPlayer) {
+  sendTextMessage("<< is now a spectator**.", true);
+  addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+  UDWORD i;
+  for (i = 0; i < MAX_PLAYERS; i++) {
+   alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
+   alliances[i][selectedPlayer] = ALLIANCE_BROKEN; }
+  setPower(selectedPlayer, 0);
+  while (apsDroidLists[selectedPlayer]) {
+  destroyDroid(apsDroidLists[selectedPlayer], gameTime); }
+  while (apsStructLists[selectedPlayer]) {
+  destroyStruct(apsStructLists[selectedPlayer], gameTime); }
+  godMode = true;
+  revealAll(selectedPlayer);
+  setRevealStatus(true); 
+  radarPermitted = true; } 
+ else {
+  addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 
 // --------------------------------------------------------------------------
 /* Aligns the view to north - some people can't handle the world spinning */
