@@ -1,0 +1,12 @@
+Changes for microwave 08/19/2012:
+Second release, with a windows build, splash screen waits two seconds before quitting now rather than waiting for user input, borgs can walk through tanks
+like they could in 2.3.x (and made grouping far easier), open gates are usable by the enemy now, the default starting height has been raised, several options
+including shaders and screen shake are off by default, the configuration directory has changed again, icon updates, quit backsplash update, vtol heights
+have been increased a bit and their deceleration speed decreased, no bases and high start power are now the default settings, and alas added a couple new maps.
+This changelog may be incomplete. Just search for "Subsentient" in the code to find all/most of my changes.
+
+Changes for microwave 08/18/2012:
+
+First release, updated artwork, changed names and config directories, restored super cannon cyborg from deprecation by HPV borg, 
+restored the PIE for super transport and gave it 10 unit capacity, though it now costs 3500 to produce, updated dates and names in the files, etc.
+Also added a bunch of CC0-licensed maps for multiplayer. Should add lots more fun for the low oil players of the world.
