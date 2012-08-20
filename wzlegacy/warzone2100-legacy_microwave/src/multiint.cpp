@@ -2738,7 +2738,7 @@ static void processMultiopWidgets(UDWORD id)
 			break;
 
 		case MULTIOP_MAP:
-			widgSetString(psWScreen, MULTIOP_MAP,game.map);
+			sstrcpy(game.map,widgGetString(psWScreen, MULTIOP_MAP)); //Let us edit our maps in the boxes. -Subsentient
 			break;
 
 		case MULTIOP_GNAME_ICON:
@@ -2950,8 +2950,8 @@ static void processMultiopWidgets(UDWORD id)
 	case MULTIOP_PNAME:
 		sstrcpy(sPlayer,widgGetString(psWScreen, MULTIOP_PNAME));
 
-		// chop to 15 chars..
-		while(strlen(sPlayer) > 15)	// clip name.
+		// chop to *16* chars.. Changed from 15 by Subsentient.
+		while(strlen(sPlayer) > 16)	// clip name.
 		{
 			sPlayer[strlen(sPlayer)-1]='\0';
 		}
