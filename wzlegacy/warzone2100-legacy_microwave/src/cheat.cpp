@@ -81,10 +81,7 @@ static CHEAT_ENTRY cheatCodes[] =
 	{"damage me", kf_DamageMe},
 	{"autogame on", kf_AutoGame},
 	{"autogame off", kf_AutoGame},
-<<<<<<< HEAD
 	{"spec_me", kf_SpecMe}, // Spectator support, by Subsentient
-=======
->>>>>>> 2525867e4e857d9fb5345605a27fe54a79baa2bf
 
 };
 
@@ -99,14 +96,11 @@ bool attemptCheatCode(const char* cheat_name)
 		kf_ToggleFPS(); 
 		return true; 
 	}
-<<<<<<< HEAD
 	if (!strcasecmp("spec_me", cheat_name)) // Let us spectate ourselves -Subsentient
 	{
 		kf_SpecMe(); 
 		return true; 
 	}
-=======
->>>>>>> 2525867e4e857d9fb5345605a27fe54a79baa2bf
 	else if (!strcasecmp("showlevelname", cheat_name))
 	{
 		kf_ToggleLevelName();
