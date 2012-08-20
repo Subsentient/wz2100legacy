@@ -895,7 +895,7 @@ bool joinGame(const char* host, uint32_t port)
 
 		// Shows the lobby error.
 		addGames();
-		addConsoleBox();
+		//addConsoleBox(); No thank you again on the complex lobby stuff. -Subsentient
 		return false;
 	}
 	ingame.localJoiningInProgress	= true;
@@ -1097,7 +1097,7 @@ void runGameFind(void )
 			}
 		}
 		addGames();									//redraw list
-		addConsoleBox();
+		//addConsoleBox(); No thx once more on the lobby box. -Subsentient
 	}
 
 	id = widgRunScreen(psWScreen);						// Run the current set of widgets
@@ -1115,7 +1115,7 @@ void runGameFind(void )
 			pie_LoadBackDrop(SCREEN_RANDOMBDROP);
 		}
 		addGames();									//redraw list.
-		addConsoleBox();
+		//addConsoleBox(); No thx -Subsentient
 	}
 	if (id == CON_PASSWORD)
 	{
@@ -1218,7 +1218,7 @@ void startGameFind(void)
 	sFormInit.x = MULTIOP_OPTIONSX;
 	sFormInit.y = MULTIOP_OPTIONSY;
 	sFormInit.width = MULTIOP_CHATBOXW;
-	sFormInit.height = 415;	// FIXME: Add box at bottom for server messages
+	sFormInit.height = 470;	// FIXME: Add box at bottom for server messages | Made to 470 from 415 by Subsentient
 	sFormInit.pDisplay = intOpenPlainForm;
 	sFormInit.disableChildren = true;
 
@@ -1243,7 +1243,7 @@ void startGameFind(void)
 		pie_LoadBackDrop(SCREEN_RANDOMBDROP);
 	}
 	addGames();	// now add games.
-	addConsoleBox();
+	//addConsoleBox(); No. -Subsentient.
 	displayConsoleMessages();
 
 	// Password stuff. Hidden by default.
@@ -2621,7 +2621,7 @@ static void addConsoleBox(void)
 	setConsolePermanence(true, true);
 	setConsoleLineInfo(3);											// use x lines on chat window
 
-	addConsoleMessage(_("Connecting to the lobby server..."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+	// This is all going bye-bye. All this complex lobby stuff. -Subsentient | addConsoleMessage(_("Connecting to the lobby server..."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 	displayConsoleMessages();
 	return;
 }

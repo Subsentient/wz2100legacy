@@ -2035,7 +2035,7 @@ static ssize_t readLobbyResponse(Socket* sock, unsigned int timeout)
 	result = readAll(sock, NetPlay.MOTD, MOTDLength, timeout);
 	if (result != MOTDLength)
 		goto error;
-	received += result;
+	received += result; 
 	// NUL terminate string
 	NetPlay.MOTD[MOTDLength] = '\0';
 
@@ -2061,7 +2061,7 @@ error:
 		free(NetPlay.MOTD);
 		if (asprintf(&NetPlay.MOTD, "Disconnected from lobby server. Failed to register game.") == -1)
 			NetPlay.MOTD = NULL;
-		debug(LOG_ERROR, "%s", NetPlay.MOTD);
+		//Please don't flood me with console errors. -Subsentient | debug(LOG_ERROR, "%s", NetPlay.MOTD); 
 	}
 
 	return SOCKET_ERROR;
@@ -2797,13 +2797,13 @@ bool NETfindGame(void)
 	{
 		socketClose(tcp_socket);
 		tcp_socket = NULL;
-		addConsoleMessage(_("Failed to get a lobby response!"), DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
+		//addConsoleMessage(_("Failed to get a lobby response!"), DEFAULT_JUSTIFY, NOTIFY_MESSAGE); No thanks. This error just annoys. -Subsentient
 		return true;		// while there was a problem, this isn't fatal for the function
 	}
 	SocketSet_DelSocket(socket_set, tcp_socket);		// mark it invalid (we are done with it)
 	socketClose(tcp_socket);
 	tcp_socket = NULL;
-	addConsoleMessage(NetPlay.MOTD, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+	//addConsoleMessage(NetPlay.MOTD, DEFAULT_JUSTIFY, SYSTEM_MESSAGE); Again, no thanks. -Subsentient
 	return true;
 }
 
