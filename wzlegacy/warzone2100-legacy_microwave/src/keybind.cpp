@@ -1345,6 +1345,7 @@ void	kf_ToggleGodMode( void )
 		selectedPlayer, godMode ? _("God Mode ON") : _("God Mode OFF"));
 	sendTextMessage(cmsg, true);
 }
+<<<<<<< HEAD
 
 //Let's add a spectator command. -Subsentient
 
@@ -1367,6 +1368,8 @@ void kf_SpecMe(void) {
 
 }
 
+=======
+>>>>>>> 2525867e4e857d9fb5345605a27fe54a79baa2bf
 // --------------------------------------------------------------------------
 /* Aligns the view to north - some people can't handle the world spinning */
 void	kf_SeekNorth( void )
