@@ -1779,11 +1779,11 @@ static void addAiChooser(int player)
 	sButInit.formID = MULTIOP_AI_FORM;
 	sButInit.x = 7;
 	sButInit.width = MULTIOP_PLAYERWIDTH + 1;
-	sButInit.height = MULTIOP_PLAYERHEIGHT;
+	sButInit.height = 21; //Make AI chooser smaller. Gives more room. -Subsentient
 	sButInit.pDisplay = displayAi;
 
 	int y = 4;
-	const int step = (MULTIOP_PLAYERHEIGHT + 5);
+	const int step = (25); //Decrease space used for spacing of boxes. -Subsentient
 
 	// Open button
 	if (NetPlay.bComms)
@@ -4053,7 +4053,7 @@ static void displayAi(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT
 	drawBlueBox(x, y, psWidget->width, psWidget->height);
 	iV_SetFont(font_regular);
 	iV_SetTextColour(WZCOL_FORM_TEXT);
-	iV_DrawText((j >= 0) ? aidata[j].name : gettext(commsText[j + 2]), x + 10, y + 22);
+	iV_DrawText((j >= 0) ? aidata[j].name : gettext(commsText[j + 2]), x + 7, y + 16); // Move text to make AI chooser button a bit better. -Subsentient
 }
 
 static int difficultyIcon(int difficulty)
