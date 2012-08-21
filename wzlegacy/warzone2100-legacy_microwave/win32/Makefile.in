@@ -252,7 +252,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-dist_noinst_DATA = warzone2100.rc
+dist_noinst_DATA = wz2100legacy.rc
 EXTRA_DIST = __BUILD_SCRIPT \
 	     download.pl \
 	     rules.mk \
@@ -277,7 +277,7 @@ EXTRA_DIST = __BUILD_SCRIPT \
 	     libs/zlib/Makefile
 
 @MINGW32_TRUE@nodist_noinst_DATA = \
-@MINGW32_TRUE@		warzone2100.o
+@MINGW32_TRUE@		wz2100legacy.o
 
 @MINGW32_TRUE@CLEANFILES = $(nodist_noinst_DATA)
 all: all-am

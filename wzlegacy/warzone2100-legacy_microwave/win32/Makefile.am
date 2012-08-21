@@ -1,7 +1,7 @@
 .rc.o:
 	$(WINDRES) -DVERSION="\"$(VERSION)\"" -o$@ $<
 
-dist_noinst_DATA = warzone2100.rc
+dist_noinst_DATA = wz2100legacy.rc
 
 EXTRA_DIST = __BUILD_SCRIPT \
 	     download.pl \
@@ -28,6 +28,6 @@ EXTRA_DIST = __BUILD_SCRIPT \
 
 if MINGW32
 nodist_noinst_DATA = \
-		warzone2100.o
+		wz2100legacy.o
 CLEANFILES = $(nodist_noinst_DATA)
 endif
