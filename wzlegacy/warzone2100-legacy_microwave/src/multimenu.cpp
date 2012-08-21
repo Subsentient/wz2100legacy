@@ -291,7 +291,7 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 
 	if (mapData != NULL)
 	{
-		// Display map hash, so we can see the difference between identically named maps.
+		/*No thanks on the irritating map hash. -Subsentient// Display map hash, so we can see the difference between identically named maps.
 		Sha256 hash = mapData->realFileHash;  // levGetFileHash can be slightly expensive.
 		static uint32_t lastHashTime = 0;
 		if (lastHashTime != realTime && hash.isZero())
@@ -312,13 +312,13 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 				butString[strlen(butString) - 1] = '\0';
 			}
 			iV_DrawText(butString, x + 6 + 8 + mapData->players*6, y + 26);
-		}
+		} */
 
-		// if map, then draw no. of players.
+		/*This is mostly useless. -Subsentient.// if map, then draw no. of players.
 		for (int count = 0; count < mapData->players; ++count)
 		{
 			iV_DrawImage(FrontImages, IMAGE_WEE_GUY, x + 6*count + 6, y + 16);
-		}
+		} */
 	}
 }
 
@@ -511,7 +511,7 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 	sButInit.x		= buttonsX;
 	sButInit.y		= 4;
 	sButInit.width		= R_BUT_W;
-	sButInit.height		= R_BUT_H;
+	sButInit.height		= 16; //Decreased size of buttons. -Subsentient
 	sButInit.pUserData	= NULL;
 	sButInit.pDisplay	= displayRequestOption;
 
@@ -566,7 +566,7 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 		if (sButInit.x + R_BUT_W+ 2 > M_REQUEST_W)
 		{
 			sButInit.x = buttonsX;
-			sButInit.y = (SWORD)(sButInit.y +R_BUT_H + 4);
+			sButInit.y = (SWORD)(sButInit.y + 22); //Decrease spacing for nick name selection buttons to match new button sizes.
 		}
 		if (sButInit.y +R_BUT_H + 4 > M_REQUEST_H)
 		{
@@ -602,7 +602,7 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 			if (sButInit.x + R_BUT_W+ 2 > M_REQUEST_W)
 			{
 				sButInit.x = buttonsX;
-				sButInit.y = (SWORD)(sButInit.y +R_BUT_H + 4);
+				sButInit.y = (SWORD)(sButInit.y + 22); //Decrease map selection button spacings to match the new button sizes.
 			}
 			if (sButInit.y +R_BUT_H + 4 > M_REQUEST_H)
 			{
