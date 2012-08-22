@@ -1779,20 +1779,19 @@ static void addAiChooser(int player)
 	sButInit.formID = MULTIOP_AI_FORM;
 	sButInit.x = 7;
 	sButInit.width = MULTIOP_PLAYERWIDTH + 1;
-	sButInit.height = 21; //Make AI chooser smaller. Gives more room. -Subsentient
+	sButInit.height = 20; //Make AI chooser smaller. Gives more room. -Subsentient
 	sButInit.pDisplay = displayAi;
 
-	int y = 4;
-	const int step = (25); //Decrease space used for spacing of boxes. -Subsentient
-
+	const int aibuttoncounter = 25;
+	int aibuttonspace = 4; //Revert the previous method of decreasing text height and use a diff variable for readability. -Subsentient
 	// Open button
 	if (NetPlay.bComms)
 	{
 		sButInit.id = MULTIOP_AI_OPEN;
 		sButInit.pTip = _("Allow human players to join in this slot");
 		sButInit.UserData = (UDWORD)AI_OPEN;
-		sButInit.y = y;
-		y += step;
+		sButInit.y = aibuttonspace;
+		aibuttonspace += aibuttoncounter;
 		widgAddButton(psWScreen, &sButInit);
 	}
 
@@ -1800,14 +1799,14 @@ static void addAiChooser(int player)
 	sButInit.pTip = _("Leave this slot unused");
 	sButInit.id = MULTIOP_AI_CLOSED;
 	sButInit.UserData = (UDWORD)AI_CLOSED;
-	sButInit.y = y;
-	y += step + 8;
+	sButInit.y = aibuttonspace;
+	aibuttonspace += aibuttoncounter + 8;
 	widgAddButton(psWScreen, &sButInit);
 
 	for (int i = 0; i < aidata.size(); i++)
 	{
-		sButInit.y = y;
-		y += step;
+		sButInit.y = aibuttonspace;
+		aibuttonspace += aibuttoncounter;
 		sButInit.pTip = aidata[i].tip;
 		sButInit.id = MULTIOP_AI_START + i;
 		sButInit.UserData = i;
