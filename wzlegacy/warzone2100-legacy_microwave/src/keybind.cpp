@@ -1350,7 +1350,11 @@ void	kf_ToggleGodMode( void )
 
 void kf_SpecMe(void) {
  if (bMultiPlayer) {
-  sendTextMessage("<< is now a spectator**.", true);
+  char specmsg[100]; //Show the true name for the player who has become a spectator. -Subsentient
+  strcpy(specmsg, "*** \"");
+  strcat(specmsg, getPlayerName(selectedPlayer));
+  strcat(specmsg, "\" is now a spectator. ***");
+  sendTextMessage(specmsg, true);
   addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
   UDWORD i;
   for (i = 0; i < MAX_PLAYERS; i++) {
