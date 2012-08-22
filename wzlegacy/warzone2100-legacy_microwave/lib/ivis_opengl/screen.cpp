@@ -179,13 +179,13 @@ bool screenInitialise()
 	}
 	else if (canRunAtAll)
 	{
-		// corner cases: vbo(core 1.5 or ARB ext), texture crossbar (core 1.4 or ARB ext)
-		debug(LOG_POPUP, _("OpenGL GLSL shader version 1.20 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."));
+		// corner cases: vbo(core 1.5 or ARB ext), texture crossbar (core 1.4 or ARB ext) (Subsentient changed it from a popup)
+		debug(LOG_WARNING, _("OpenGL GLSL shader version 1.20 support was not found on this machine. This may cause graphical glitches and bugs."));
 	}
 	else
 	{
 		// Prevent a "sorry, charlie" scenario when we encounter an old PC. -Subsentient
-		debug(LOG_POPUP, _("OpenGL 1.2 + TEC is not supported by your system. The game requires this. There is a strong chance the game will either be unplayable or simply refuse to run. Attempting to continue."));
+		debug(LOG_ERROR, _("OpenGL 1.2 + TEC support was not found on this machine. This could be fatal. Attempting to continue."));
 	}
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
