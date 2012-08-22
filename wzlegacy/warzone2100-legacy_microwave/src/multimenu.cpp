@@ -669,7 +669,7 @@ static void closeMultiRequester(void)
 {
 	widgDelete(psRScreen,M_REQUEST);
 	multiRequestUp = false;
-
+	resetReadyStatus(false); //Give us back our options screen if we close our player box. -Subsentient
 	widgReleaseScreen(psRScreen);		// move this to the frontend shutdown...
 	return;
 }
