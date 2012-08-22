@@ -1480,25 +1480,7 @@ bool checkTransporterSpace(DROID const *psTransporter, DROID const *psAssigned, 
 UDWORD transporterSpaceRequired(DROID const *psDroid)
 {
 	UDWORD	size;
-
-	if (!bMultiPlayer)
-	{
-		size = LIGHT_DROID;		// all droids are the same weight for SP games.
-	}
-	else
-	{
-		switch ((asBodyStats + psDroid->asBits[COMP_BODY].nStat)->size)
-		{
-		// Everything uses 10 droids for transporters now, -Subsentient
-		case (true):
-			size = 1;
-			break;
-		default:
-			ASSERT( false, "transporterSpaceRequired: Unknown Droid size" );
-			size = 0;
-			break;
-		}
-	}
+	size = 1; //Quit being a lazy turd and just set the occupancy size to 1. -Subsentient
 	return size;
 }
 
