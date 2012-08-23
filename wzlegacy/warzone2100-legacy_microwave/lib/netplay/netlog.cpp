@@ -55,8 +55,8 @@ bool NETstartLogging(void)
 
 	time( &aclock );                 /* Get time in seconds */
 	newtime = localtime( &aclock );  /* Convert time to struct */
-
-	snprintf(filename, sizeof(filename), "logs/netplay-%04d%02d%02d_%02d%02d%02d.log", newtime->tm_year + 1900, newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec);
+	//Add spacers for the netlog file name, so we can see what time it is from. -Subsentient
+	snprintf(filename, sizeof(filename), "logs/netplay-%04d-%02d-%02d_%02d-%02d-%02d.log", newtime->tm_year + 1900, newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec);
 	pFileHandle = PHYSFS_openWrite( filename ); // open the file
 	if (!pFileHandle)
 	{
