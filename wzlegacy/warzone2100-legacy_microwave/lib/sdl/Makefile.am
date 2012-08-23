@@ -6,7 +6,7 @@ noinst_LIBRARIES = libsdl.a
 noinst_HEADERS = \
 	cursors_sdl.h \
 	scrap.h \
-	wz2100icon.h
+	wzl_icon.h
 
 libsdl_a_SOURCES = \
 	cursors_sdl.cpp \
