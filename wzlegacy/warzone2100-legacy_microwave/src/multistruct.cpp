@@ -182,11 +182,7 @@ bool recvDestroyStructure(NETQUEUE queue)
 		NETuint32_t(&structID);
 	NETend();
 
-	if (!getDebugMappingStatus() && bMultiPlayer)
-	{
-		debug(LOG_WARNING, "Failed to remove structure for player %u.", NetPlay.players[queue.index].position);
-		return false;
-	}
+	//Make this function not care about debug to make a developer's life easier. -Subsentient
 
 	// Struct to destory
 	psStruct = IdToStruct(structID,ANYPLAYER);

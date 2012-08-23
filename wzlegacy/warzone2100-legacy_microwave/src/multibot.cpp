@@ -733,11 +733,7 @@ bool recvDestroyDroid(NETQUEUE queue)
 	}
 	NETend();
 
-	if (!getDebugMappingStatus() && bMultiPlayer)
-	{
-		debug(LOG_WARNING, "Failed to remove droid for player %u.", NetPlay.players[queue.index].position);
-		return false;
-	}
+	//Enable this function without debug to make a developer's life easier. -Subsentient	
 
 	// If the droid has not died on our machine yet, destroy it
 	if(!psDroid->died)

@@ -1349,22 +1349,26 @@ void	kf_ToggleGodMode( void )
 //Let's add a spectator command. -Subsentient
 
 void kf_SpecMe(void) {
- if (bMultiPlayer) {
+ if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. Still effing desyncs. -Subsentient
+  DROID *psCDroid, *psNDroid;
+  STRUCTURE *psCStruct, *psNStruct;
+  unsigned int i;
   char specmsg[100]; //Show the true name for the player who has become a spectator. -Subsentient
   strcpy(specmsg, "*** \"");
   strcat(specmsg, getPlayerName(selectedPlayer));
-  strcat(specmsg, "\" is now a spectator. ***");
+  strcat(specmsg, "\" is now a spectator. This feature is experimental and causes desync messages/logs. ***"); //Make this desync causing abomination experimental. -Subsentient
   sendTextMessage(specmsg, true);
   addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-  UDWORD i;
   for (i = 0; i < MAX_PLAYERS; i++) {
    alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
    alliances[i][selectedPlayer] = ALLIANCE_BROKEN; }
   setPower(selectedPlayer, 0);
-  while (apsDroidLists[selectedPlayer]) {
-  destroyDroid(apsDroidLists[selectedPlayer], gameTime); }
-  while (apsStructLists[selectedPlayer]) {
-  destroyStruct(apsStructLists[selectedPlayer], gameTime); }
+  for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //Swap out destroy* for SendDestroy* and enabled them without debug.
+   psNDroid = psCDroid->psNext;
+   SendDestroyDroid(psCDroid); }
+  for(psCStruct=apsStructLists[selectedPlayer]; psCStruct; psCStruct=psNStruct) {
+   psNStruct = psCStruct->psNext;
+   SendDestroyStructure(psCStruct); }
   godMode = true;
   revealAll(selectedPlayer);
   setRevealStatus(true); 
