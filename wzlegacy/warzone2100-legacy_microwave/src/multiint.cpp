@@ -2987,7 +2987,6 @@ static void processMultiopWidgets(UDWORD id)
 			changeTitleMode(SINGLE);
 			addChallenges();
 		}
-		widgDelete(psWScreen, MULTIOP_CONSOLEBOX); //Delete the console box on exit. Seems like that detail was missed. -Subsentient
 		break;
 	case MULTIOP_MAP_BUT:
 		loadMapPreview(true);
