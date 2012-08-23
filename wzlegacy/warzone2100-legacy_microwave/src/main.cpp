@@ -1120,9 +1120,9 @@ int realmain(int argc, char *argv[])
 		time( &aclock );					// Get time in seconds
 		newtime = localtime( &aclock );		// Convert time to struct
 		// Note: We are using fopen(), and not physfs routines to open the file
-		// log name is logs/(or \)WZlog-MMDD_HHMMSS.txt
-		snprintf(buf, sizeof(buf), "%slogs%sWZlog-%02d%02d_%02d%02d%02d.txt", PHYSFS_getWriteDir(), PHYSFS_getDirSeparator(),
-			newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec );
+		// log name is logs/(or \)WZlog-MMDD_HHMMSS.txt | Subsentient changed the log file name and added the year.
+		snprintf(buf, sizeof(buf), "%slogs%sgamelog-%02d-%02d-%02d_%02d-%02d-%02d.txt", PHYSFS_getWriteDir(), PHYSFS_getDirSeparator(),
+			newtime->tm_year + 1900, newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec );
 		debug_register_callback( debug_callback_file, debug_callback_file_init, debug_callback_file_exit, buf );
 	}
 
