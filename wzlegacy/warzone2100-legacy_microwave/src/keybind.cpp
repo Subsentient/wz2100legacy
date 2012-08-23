@@ -1353,7 +1353,7 @@ void kf_SpecMe(void) {
   DROID *psCDroid, *psNDroid;
   STRUCTURE *psCStruct, *psNStruct;
   unsigned int i;
-  char specmsg[100]; //Show the true name for the player who has become a spectator. -Subsentient
+  char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
   strcpy(specmsg, "*** \"");
   strcat(specmsg, getPlayerName(selectedPlayer));
   strcat(specmsg, "\" is now a spectator. This feature is experimental and causes desync messages/logs. ***"); //Make this desync causing abomination experimental. -Subsentient
