@@ -214,13 +214,13 @@ static void auxStructureBlocking(STRUCTURE *psStructure)
 }
 
 static void auxStructureOpenGate(STRUCTURE *psStructure)
-{
+{//We want our gates to be seen as unpassable when shut, and we should let them enter when passable. -Subsentient.
 	StructureBounds b = getStructureBounds(psStructure);
 
 	for (int i = 0; i < b.size.x; i++)
 	{
 		for (int j = 0; j < b.size.y; j++)
-		{
+		{	auxClearAll(b.map.x + i, b.map.y + j, AUXBITS_NONPASSABLE); //Me. -Subsentient
 			auxClearAll(b.map.x + i, b.map.y + j, AUXBITS_BLOCKING);
 		}
 	}
@@ -234,7 +234,7 @@ static void auxStructureClosedGate(STRUCTURE *psStructure)
 	{
 		for (int j = 0; j < b.size.y; j++)
 		{
-			//auxSetEnemy(b.map.x + i, b.map.y + j, psStructure->player, AUXBITS_NONPASSABLE); Let's allow enemies to enter open gates. -Subsentient
+			auxSetEnemy(b.map.x + i, b.map.y + j, psStructure->player, AUXBITS_NONPASSABLE);
 			auxSetAll(b.map.x + i, b.map.y + j, AUXBITS_BLOCKING);
 		}
 	}
