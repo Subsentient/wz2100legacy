@@ -190,7 +190,7 @@ static void showPasswordForm(void);
 // Game option functions
 static	void	addGameOptions();
 static	void	addChatBox			(void);
-static void		addConsoleBox(void);
+//static void		addConsoleBox(void); Good-bye. -Subsentient
 static	void	disableMultiButs	(void);
 static	void	processMultiopWidgets(UDWORD);
 static	void	SendFireUp			(void);
@@ -1164,16 +1164,7 @@ void runGameFind(void )
 	}
 
 	// console box handling
-	iV_SetFont(font_small);
-	if(widgGetFromID(psWScreen, MULTIOP_CONSOLEBOX))
-	{
-		while(getNumberConsoleMessages() > getConsoleLineInfo())
-		{
-			removeTopConsoleMessage();
-		}
-		updateConsoleMessages();
-	}
-	displayConsoleMessages();
+	//Removed a big pile of lobby console box handling crap. -Subsentient
 }
 
 // Used to draw the password box for the lobby screen
@@ -1244,7 +1235,7 @@ void startGameFind(void)
 	}
 	addGames();	// now add games.
 	//addConsoleBox(); No. -Subsentient.
-	displayConsoleMessages();
+	//displayConsoleMessages(); Stupid console messages. Tainting my nice bland lobby screen! -Subsentient
 
 	// Password stuff. Hidden by default.
 
@@ -1320,7 +1311,7 @@ static void hidePasswordForm(void)
 		if (widgGetFromID(psWScreen, MULTIOP_REFRESH)) widgReveal(psWScreen, MULTIOP_REFRESH);
 	}
 	addGames();
-	addConsoleBox();
+	//addConsoleBox(); Getting pissed at this lobby stuff. -Subsentient
 }
 
 static void showPasswordForm(void)
@@ -2586,44 +2577,7 @@ static void addChatBox(void)
 	return;
 }
 
-static void addConsoleBox(void)
-{
-	if(widgGetFromID(psWScreen, FRONTEND_TOPFORM))
-	{
-		widgDelete(psWScreen, FRONTEND_TOPFORM);
-	}
-
-	if(widgGetFromID(psWScreen, MULTIOP_CONSOLEBOX))
-	{
-		return;
-	}
-
-	W_FORMINIT sFormInit;
-
-	sFormInit.formID = FRONTEND_BACKDROP;							// add the form
-	sFormInit.id = MULTIOP_CONSOLEBOX;
-	sFormInit.x = MULTIOP_CONSOLEBOXX;
-	sFormInit.y = MULTIOP_CONSOLEBOXY;
-	sFormInit.style = WFORM_PLAIN;
-	sFormInit.width = MULTIOP_CONSOLEBOXW;
-	sFormInit.height = MULTIOP_CONSOLEBOXH;
-	sFormInit.disableChildren = true;								// wait till open!
-	sFormInit.pDisplay = intOpenPlainForm;
-	widgAddForm(psWScreen, &sFormInit);
-
-	flushConsoleMessages();											// add the chatbox.
-	initConsoleMessages();
-	enableConsoleDisplay(true);
-	setConsoleBackdropStatus(false);
-	setDefaultConsoleJust(LEFT_JUSTIFY);
-	setConsoleSizePos(MULTIOP_CONSOLEBOXX + 4 + D_W, MULTIOP_CONSOLEBOXY + 14 + D_H, MULTIOP_CONSOLEBOXW - 4);
-	setConsolePermanence(true, true);
-	setConsoleLineInfo(3);											// use x lines on chat window
-
-	// This is all going bye-bye. All this complex lobby stuff. -Subsentient | addConsoleMessage(_("Connecting to the lobby server..."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-	displayConsoleMessages();
-	return;
-}
+//Removed the addConsoleBox function since it makes me sad. -Subsentient
 
 // ////////////////////////////////////////////////////////////////////////////
 static void disableMultiButs(void)
@@ -3033,6 +2987,7 @@ static void processMultiopWidgets(UDWORD id)
 			changeTitleMode(SINGLE);
 			addChallenges();
 		}
+		widgDelete(psWScreen, MULTIOP_CONSOLEBOX); //Delete the console box on exit. Seems like that detail was missed. -Subsentient
 		break;
 	case MULTIOP_MAP_BUT:
 		loadMapPreview(true);
