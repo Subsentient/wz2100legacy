@@ -1359,20 +1359,22 @@ void kf_SpecMe(void) {
   strcat(specmsg, "\" is now a spectator. This feature is experimental and causes desync messages/logs. ***"); //Make this desync causing abomination experimental. -Subsentient
   sendTextMessage(specmsg, true);
   addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-  for (i = 0; i < MAX_PLAYERS; i++) {
-   alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
-   alliances[i][selectedPlayer] = ALLIANCE_BROKEN; }
-  setPower(selectedPlayer, 0);
   for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //Swap out destroy* for SendDestroy* and enabled them without debug.
    psNDroid = psCDroid->psNext;
    SendDestroyDroid(psCDroid); }
   for(psCStruct=apsStructLists[selectedPlayer]; psCStruct; psCStruct=psNStruct) {
    psNStruct = psCStruct->psNext;
    SendDestroyStructure(psCStruct); }
-  godMode = true;
+  for (i = 0; i < MAX_PLAYERS; i++) {//Breaks alliances with everyone and EVERYTHING. Including yourself. -Subsentient
+   alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
+   alliances[i][selectedPlayer] = ALLIANCE_BROKEN; }
+  setPower(selectedPlayer, 0); //Sets the player's power to zero.
+  widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
+  godMode = true; //Next two after/including this one enable deity cheat. After that we enable the minimap.
   revealAll(selectedPlayer);
-  setRevealStatus(true); 
-  radarPermitted = true; } 
+  setRevealStatus(true);
+  radarPermitted = true;  } /*This doesn't work when we already have an HQ, 
+  I suppose because our HQ's minimap is taken down after we enable the minimap. -Subsentient*/
  else {
   addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 
