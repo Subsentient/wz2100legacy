@@ -16,7 +16,7 @@
 	along with Warzone 2100; if not, write to the Free Software
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
-
+//Edited path names and other such branding for Warzone 2100 Legacy. -Subsentient
 #include "lib/framework/frame.h"
 #include "lib/framework/string_ext.h"
 #include "exceptionhandler.h"
@@ -43,7 +43,7 @@ static LPTOP_LEVEL_EXCEPTION_FILTER prevExceptionHandler = NULL;
  */
 static LONG WINAPI windowsExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 {
-	LPCSTR applicationName = "Warzone 2100";
+	LPCSTR applicationName = "Warzone 2100 Legacy"; //Subsentient did it
 
 	char miniDumpPath[PATH_MAX] = {'\0'}, resultMessage[PATH_MAX] = {'\0'};
 
@@ -54,7 +54,7 @@ static LONG WINAPI windowsExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 	}
 
 	// Append the filename
-	sstrcat(miniDumpPath, "warzone2100.mdmp");
+	sstrcat(miniDumpPath, "wz2100legacy.mdmp");  //Subsentient did it
 
 	/*
 	Alternative:
@@ -64,7 +64,7 @@ static LONG WINAPI windowsExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 	sstrcat(miniDumpPath, ".mdmp");
 	*/
 
-	if ( MessageBoxA( NULL, "Warzone crashed unexpectedly, would you like to save a diagnostic file?", applicationName, MB_YESNO ) == IDYES )
+	if ( MessageBoxA( NULL, "Warzone 2100 Legacy crashed unexpectedly, would you like to save a diagnostic file?", applicationName, MB_YESNO ) == IDYES ) //Subsentient did it
 	{
 		HANDLE miniDumpFile = CreateFileA( miniDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
 
@@ -601,7 +601,7 @@ static bool gdbExtendedBacktrace(int const dumpFile)
 /**
  * Exception (signal) handling on POSIX systems.
  * Dumps info about the system incl. backtrace (when GLibC or GDB is present) to /tmp/warzone2100.gdmp
- *
+ * NOT ANYMORE. wz2100legacy for the filename.-Subsentient
  * \param signum Signal number
  * \param siginfo Signal info
  * \param sigcontext Signal context
@@ -614,7 +614,7 @@ static void posixExceptionHandler(int signum)
 {
 	static sig_atomic_t allreadyRunning = 0;
 	// XXXXXX will be converted into random characters by mkstemp(3)
-	static const char gdmpPath[] = "/tmp/warzone2100.gdmp-XXXXXX";
+	static const char gdmpPath[] = "/tmp/wz2100legacy.gdmp-XXXXXX";
 	char dumpFilename[sizeof(gdmpPath)];
 	int dumpFile;
 	const char *signal;
@@ -804,7 +804,7 @@ bool OverrideRPTDirectory(char *newPath)
 	}
 	PathRemoveFileSpecW(buf);
 	wcscat(buf, L"\\logs\\"); // stuff it in the logs directory
-	wcscat(buf, L"Warzone2100.RPT");
+	wcscat(buf, L"wz2100legacy.RPT"); //Subsentient did it
 	ResetRPTDirectory(buf);
 #endif
 	return true;
