@@ -4006,7 +4006,7 @@ static void displayAi(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT
 	drawBlueBox(x, y, psWidget->width, psWidget->height);
 	iV_SetFont(font_regular);
 	iV_SetTextColour(WZCOL_FORM_TEXT);
-	iV_DrawText((j >= 0) ? aidata[j].name : gettext(commsText[j + 2]), x + 7, y + 12); // Move text to make AI chooser button a bit better. -Subsentient
+	iV_DrawText((j >= 0) ? aidata[j].name : gettext(commsText[j + 2]), x + 7, y + 14); // Move text to make AI chooser button a bit better. -Subsentient
 }
 
 static int difficultyIcon(int difficulty)
