@@ -10,7 +10,7 @@
 #include <QtCore/QSize>
 #include <QtCore/QString>
 #include "scrap.h"
-#include "wz2100icon.h"
+#include "wzl_icon.h" //Subsentient changed it.
 #include "cursors_sdl.h"
 #include <algorithm>
 
@@ -1070,9 +1070,9 @@ bool wzMain2()
 	uint32_t bmask = 0x00ff0000;
 	uint32_t amask = 0xff000000;
 #endif
-
-	SDL_WM_SetIcon(SDL_CreateRGBSurfaceFrom((void*)wz2100icon.pixel_data, wz2100icon.width, wz2100icon.height, wz2100icon.bytes_per_pixel * 8,
-	                                        wz2100icon.width * wz2100icon.bytes_per_pixel, rmask, gmask, bmask, amask), NULL);
+	// Subsentient updated prefix.
+	SDL_WM_SetIcon(SDL_CreateRGBSurfaceFrom((void*)wzl_icon.pixel_data, wzl_icon.width, wzl_icon.height, wzl_icon.bytes_per_pixel * 8,
+	                                        wzl_icon.width * wzl_icon.bytes_per_pixel, rmask, gmask, bmask, amask), NULL);
 #endif
 	SDL_WM_SetCaption(PACKAGE_NAME, NULL);
 
