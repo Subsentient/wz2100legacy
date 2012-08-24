@@ -315,8 +315,16 @@ void intAddInGamePopup(void)
 	audio_StopAll();
 
 	if(!gamePaused())
-	{
-		kf_TogglePauseMode();	// Pause the game.
+	{//Subsentient did this to make the game HALT even in multiplayer when the host quits.
+	 intRemoveReticule(); //Delete the reticule menu (main multiplayer menu) -Subsentient
+	 widgDelete(psWScreen, IDPOW_POWERBAR_T); //Delete power bar. -Subsentient
+	 radarPermitted = false; //No minimap clickies. -Subsentient
+	 setGamePauseStatus(true);
+	 setConsolePause(true);
+	 setScriptPause(true);
+	 setAudioPause(true);
+	 gameTimeStop();
+	 if (war_GetTrapCursor()) { wzReleaseMouse(); }
 	}
 
 	W_FORMINIT sFormInit;
