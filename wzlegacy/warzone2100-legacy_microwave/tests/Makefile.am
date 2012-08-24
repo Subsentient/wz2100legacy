@@ -1,4 +1,4 @@
-AM_CPPFLAGS = $(SDL_CFLAGS) $(PHYSFS_CFLAGS) $(PNG_CFLAGS) $(OPENGL_CFLAGS) $(WZ_CPPFLAGS) -I$(top_srcdir)/tools -I. -I$(top_srcdir)/lib/framework $(QT4_CFLAGS)
+AM_CPPFLAGS = $(PHYSFS_CFLAGS) $(PNG_CFLAGS) $(OPENGL_CFLAGS) $(WZ_CPPFLAGS) -I$(top_srcdir)/tools -I. -I$(top_srcdir)/lib/framework $(QT4_CFLAGS)
 AM_CFLAGS = -g
 
 BUILT_SOURCES = maplist.txt modellist.txt jslist.txt

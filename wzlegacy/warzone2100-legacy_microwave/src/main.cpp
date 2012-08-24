@@ -1049,8 +1049,8 @@ bool getUTF8CmdLine(int* const utfargc, const char*** const utfargv) // explicit
 	return true;
 }
 
-// for backend detection
-extern const char *BACKEND;
+// for backend detection | Deprecated since we are now pure QT. -Subsentient
+//extern const char *BACKEND;
 
 int realmain(int argc, char *argv[])
 {
@@ -1126,11 +1126,10 @@ int realmain(int argc, char *argv[])
 		debug_register_callback( debug_callback_file, debug_callback_file_init, debug_callback_file_exit, buf );
 	}
 
-	// NOTE: it is now safe to use debug() calls to make sure output gets captured. | Changed to WZ Legacy by Subsentient
+	// NOTE: it is now safe to use debug() calls to make sure output gets captured. | Changed to WZ Legacy by Subsentient | Also removed old backend stuff
 	check_Physfs();
 	debug(LOG_WZ, "Warzone 2100 Legacy - %s", version_getFormattedVersionString());
 	debug(LOG_WZ, "Using language: %s", getLanguage());
-	debug(LOG_WZ, "Backend: %s", BACKEND);
 	debug(LOG_MEMORY, "sizeof: SIMPLE_OBJECT=%ld, BASE_OBJECT=%ld, DROID=%ld, STRUCTURE=%ld, FEATURE=%ld, PROJECTILE=%ld",
 	      (long)sizeof(SIMPLE_OBJECT), (long)sizeof(BASE_OBJECT), (long)sizeof(DROID), (long)sizeof(STRUCTURE), (long)sizeof(FEATURE), (long)sizeof(PROJECTILE));
 
@@ -1269,8 +1268,6 @@ int realmain(int argc, char *argv[])
 	setAllPauseStates(false);
 
 	// Copy this info to be used by the crash handler for the dump file
-	ssprintf(buf,"Using Backend: %s", BACKEND);
-	addDumpInfo(buf);
 	ssprintf(buf,"Using language: %s", getLanguageName());
 	addDumpInfo(buf);
 
