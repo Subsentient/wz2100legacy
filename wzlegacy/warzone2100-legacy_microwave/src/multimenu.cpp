@@ -319,6 +319,13 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 		{
 			iV_DrawImage(FrontImages, IMAGE_WEE_GUY, x + 6*count + 6, y + 16);
 		} */
+		//Add our cute little wee guy back at the bottom of the form where he doesn't get in the way. -Subsentient
+		int count = 21;
+		int playercount = mapData->players;
+		while (playercount) {
+		 iV_DrawImage(FrontImages, IMAGE_WEE_GUY, xOffset + count, yOffset + 335);
+		 count += 10;
+		 playercount -= 1;}
 	}
 }
 
