@@ -1349,14 +1349,14 @@ void	kf_ToggleGodMode( void )
 //Let's add a spectator command. -Subsentient
 
 void kf_SpecMe(void) {
- if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. Still effing desyncs. -Subsentient
+ if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. FIXED desyncs! -Subsentient
   DROID *psCDroid, *psNDroid;
   STRUCTURE *psCStruct, *psNStruct;
   unsigned int i;
   char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
   strcpy(specmsg, "*** \"");
   strcat(specmsg, getPlayerName(selectedPlayer));
-  strcat(specmsg, "\" is now a spectator. This feature is experimental and causes desync messages/logs. ***"); //Make this desync causing abomination experimental. -Subsentient
+  strcat(specmsg, "\" is now a spectator. ***"); //No longer experimental, we got it down. -Subsentient
   sendTextMessage(specmsg, true);
   addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
   for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //Swap out destroy* for SendDestroy* and enabled them without debug.
@@ -1366,9 +1366,10 @@ void kf_SpecMe(void) {
    psNStruct = psCStruct->psNext;
    SendDestroyStructure(psCStruct); }
   for (i = 0; i < MAX_PLAYERS; i++) {//Breaks alliances with everyone and EVERYTHING. Including yourself. -Subsentient
-   alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
-   alliances[i][selectedPlayer] = ALLIANCE_BROKEN; }
-  setPower(selectedPlayer, 0); //Sets the player's power to zero.
+   if (!i == selectedPlayer) {
+    sendAlliance(selectedPlayer, i, ALLIANCE_BROKEN, false);
+    alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
+    alliances[i][selectedPlayer] = ALLIANCE_BROKEN; } }
   widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
   godMode = true; //Next two after/including this one enable deity cheat. After that we enable the minimap.
   revealAll(selectedPlayer);
