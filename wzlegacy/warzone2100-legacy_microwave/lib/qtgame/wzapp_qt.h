@@ -21,7 +21,7 @@
 #define WZAPP_H
 
 #include <QtGui/QApplication>
-#include <QtGui/QImageReader>
+#include <QtGui/QImage> //Subsentient did it
 #include <QtOpenGL/QGLWidget>
 #include <QtCore/QBuffer>
 #include <QtCore/QTime>
@@ -44,7 +44,7 @@ class WzMainWindow : public QtGameWidget
 	Q_OBJECT
 
 private:
-	void loadCursor(CURSOR cursor, int x, int y, QImageReader &buffer);
+	void loadCursor(CURSOR cursor, int x, int y, QImage const &buffer); //Subsentient changed it.
 	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);

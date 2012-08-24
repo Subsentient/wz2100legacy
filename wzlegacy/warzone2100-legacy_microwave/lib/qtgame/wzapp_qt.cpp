@@ -21,8 +21,8 @@
 /** @file wzapp.cpp
  *  Qt-related functions.
  */
-
-#include <QtGui/QImageReader>
+//Added a patch from the WZ ressurection community to fix a bug with cursor rendering.
+#include <QtGui/QImage> //Changed by Subsentient.
 #include <QtGui/QBitmap>
 #include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
@@ -112,11 +112,9 @@ unsigned screenHeight = 0;  // Declared in frameint.h.
 static void inputAddBuffer(UDWORD key, utf_32_char unicode);
 static int WZkeyToQtKey(int code);
 
-void WzMainWindow::loadCursor(CURSOR cursor, int x, int y, QImageReader &buffer)
+void WzMainWindow::loadCursor(CURSOR cursor, int x, int y, QImage const &buffer) //Subsentient changed it
 {
-	buffer.device()->reset();
-	buffer.setClipRect(QRect(x, y, 32, 32));
-	cursors[cursor] = new QCursor(QPixmap::fromImage(buffer.read()));
+	cursors[cursor] = new QCursor(QPixmap::fromImage(buffer.copy(x, y, 32, 32)));
 }
 
 WzMainWindow::WzMainWindow(QSize resolution, const QGLFormat &format, QWidget *parent) : QtGameWidget(resolution, format, parent)
@@ -135,10 +133,10 @@ WzMainWindow::WzMainWindow(QSize resolution, const QGLFormat &format, QWidget *p
 #endif
 	setWindowTitle(PACKAGE_NAME);
 
-	QImageReader buffer("wz::images/intfac5.png", "PNG");
-	if (!buffer.canRead())
+	QImage buffer("wz::images/intfac5.png", "PNG");
+	if (buffer.isNull())
 	{
-		debug(LOG_ERROR, "Failed to read cursor image: %s", buffer.errorString().toAscii().constData());
+		debug(LOG_ERROR, "Failed to read cursor image."); //Subsentient did it
 	}
 	loadCursor(CURSOR_EMBARK, 0, 128, buffer);
 	loadCursor(CURSOR_DEST, 32, 128, buffer);
