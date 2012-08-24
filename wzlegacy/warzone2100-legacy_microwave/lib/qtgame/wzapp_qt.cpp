@@ -131,7 +131,7 @@ WzMainWindow::WzMainWindow(QSize resolution, const QGLFormat &format, QWidget *p
 
 	// Mac apps typically don't have window icons unless document-based.
 #if !defined(WZ_OS_MAC)
-	setWindowIcon(QIcon(QPixmap::fromImage(QImage("wz::images/warzone2100.png", "PNG"))));
+	setWindowIcon(QIcon(QPixmap::fromImage(QImage("wz::images/wz2100legacy.png", "PNG")))); //Subsentient changed it.
 #endif
 	setWindowTitle(PACKAGE_NAME);
 

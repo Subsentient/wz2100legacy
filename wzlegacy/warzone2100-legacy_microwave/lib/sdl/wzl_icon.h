@@ -1,5 +1,5 @@
 /* GIMP RGBA C-Source image dump (wzl_icon.c) */
-//This is the Warzone 2100 Legacy icon for SDL. QT uses icons/warzone2100.png. -Subsentient
+//This is the Warzone 2100 Legacy icon for SDL. QT uses icons/wz2100legacy.png. -Subsentient
 static const struct {
   unsigned int    width;
   unsigned int	  height;

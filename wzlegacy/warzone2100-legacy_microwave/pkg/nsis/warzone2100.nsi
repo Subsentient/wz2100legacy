@@ -75,7 +75,7 @@ VIAddVersionKey "ProductVersion"	"${PACKAGE_VERSION}"
   !define MUI_WELCOMEFINISHPAGE_BITMAP "${TOP_SRCDIR}\icons\wz2100welcome.bmp"
   !define MUI_UNWELCOMEFINISHPAGE_BITMAP "${TOP_SRCDIR}\icons\wz2100welcome.bmp"
 
-  !define MUI_ICON "${TOP_SRCDIR}\icons\warzone2100.ico"
+  !define MUI_ICON "${TOP_SRCDIR}\icons\wz2100legacy.ico"
   !define MUI_UNICON "${TOP_SRCDIR}\icons\warzone2100.uninstall.ico"
 
   !define MUI_ABORTWARNING
