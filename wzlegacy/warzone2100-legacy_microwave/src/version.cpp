@@ -154,7 +154,7 @@ const char* version_getFormattedVersionString()
 		// Construct the version string
 		// TRANSLATORS: This string looks as follows when expanded.
 		// "Version <version name/number> <working copy state><BUILD DATE><BUILD TYPE>"
-		snprintf(versionString, MAX_STR_LENGTH, _("Warzone 2100 Legacy Version %s%s%s%s"), version_getVersionString(), wc_state, build_date, build_type);
+		snprintf(versionString, MAX_STR_LENGTH, _("Warzone 2100 Legacy Version: %s%s%s%s"), version_getVersionString(), wc_state, build_date, build_type);
 	}
 
 	return versionString;
