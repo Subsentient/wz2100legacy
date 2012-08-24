@@ -3088,7 +3088,7 @@ static void processMultiopWidgets(UDWORD id)
 			}
 		}
 
-		if (NetPlay.isHost && game.alliance != ALLIANCES_TEAMS)
+		if (NetPlay.isHost) //Let us use the ready button kick without teams. -Subsentient
 		{
 			if(mouseDown(MOUSE_RMB) && player != NetPlay.hostPlayer) // both buttons....
 			{
