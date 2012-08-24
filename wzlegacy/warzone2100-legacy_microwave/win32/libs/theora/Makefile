@@ -19,7 +19,7 @@ $(PKG_SOURCEBASE) extract-stamp: $(DOWNLOADS)/$(PKG_SOURCE)
 	touch extract-stamp
 
 $(PKG_SOURCEBASE)/config.status: extract-stamp
-	cd $(PKG_SOURCEBASE) && ./configure --host=$(HOST_TRIPLET) --enable-static --disable-shared --prefix=`pwd`/../$(TOPDIR)/build/libs CPPFLAGS=-I`pwd`/../$(TOPDIR)/build/libs/include LDFLAGS=-L`pwd`/../$(TOPDIR)/build/libs/lib --disable-oggtest --disable-vorbistest --disable-sdltest --disable-examples --disable-encode --disable-spec HAVE_DOXYGEN=false
+	cd $(PKG_SOURCEBASE) && ./configure --host=$(HOST_TRIPLET) --enable-static --disable-shared --prefix=`pwd`/../$(TOPDIR)/build/libs CPPFLAGS=-I`pwd`/../$(TOPDIR)/build/libs/include LDFLAGS=-L`pwd`/../$(TOPDIR)/build/libs/lib --disable-oggtest --disable-vorbistest --disable-examples --disable-encode --disable-spec HAVE_DOXYGEN=false
 
 $(PKG_SOURCEBASE)/lib/libtheora.la: $(PKG_SOURCEBASE)/config.status
 	$(MAKE) -C $(PKG_SOURCEBASE)/lib libtheora.la

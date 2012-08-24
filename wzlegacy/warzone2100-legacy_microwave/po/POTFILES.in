@@ -135,6 +135,10 @@ data/mp/multiplay/script/camtech.slo
 data/mp/multiplay/script/multilim.slo
 data/mp/multiplay/script/scavfact.js
 data/mp/multiplay/skirmish/nexus.slo
+data/mp/multiplay/skirmish/nullbot-1-35-ge.inc.js
+data/mp/multiplay/skirmish/nullbot-1-35-ge.js
+data/mp/multiplay/skirmish/nullbot-1-35-head.inc.js
+data/mp/multiplay/skirmish/nullbot-1-35-tail.inc.js
 data/mp/multiplay/skirmish/rules.js
 data/mp/multiplay/skirmish/semperfi.js
 data/mp/multiplay/skirmish/semperfi.slo
@@ -193,9 +197,6 @@ lib/script/eventsave.cpp
 lib/script/interpreter.cpp
 lib/script/script.cpp
 lib/script/stack.cpp
-lib/sdl/cursors_sdl.cpp
-lib/sdl/main_sdl.cpp
-lib/sdl/scrap.cpp
 lib/sequence/sequence.cpp
 lib/sequence/timer.cpp
 lib/sound/audio.cpp

@@ -1,9 +1,3 @@
-if BACKEND_QT
-backend_subdir=lib/qtgame
-else
-backend_subdir=lib/sdl
-endif
-
 SUBDIRS = \
 	win32 \
 	3rdparty/miniupnpc \
@@ -17,7 +11,7 @@ SUBDIRS = \
 	lib/sound \
 	lib/netplay \
 	lib/widget \
-	$(backend_subdir) \
+	lib/qtgame \
 	tools/map \
 	src \
 	data \
@@ -43,7 +37,6 @@ EXTRA_DIST= \
 	configure.ac \
 	pkg/dpkg \
 	macosx \
-	3rdparty/SDL/mac \
 	tools/image/image.cpp \
 	tools/image/configs \
 	tools/image/Image.xcodeproj \

@@ -36,9 +36,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = wz2100legacy$(EXEEXT)
-@BACKEND_QT_TRUE@am__append_1 = $(top_builddir)/lib/qtgame/libqtgame.a
-@BACKEND_SDL_TRUE@am__append_2 = $(top_builddir)/lib/sdl/libsdl.a
-@MINGW32_TRUE@am__append_3 = $(top_builddir)/win32/wz2100legacy.o $(WIN32_LIBS)
+@MINGW32_TRUE@am__append_1 = $(top_builddir)/win32/wz2100legacy.o $(WIN32_LIBS)
 subdir = src
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in level_lexer.cpp scriptvals_lexer.cpp \
@@ -113,7 +111,7 @@ wz2100legacy_DEPENDENCIES = $(wz2100legacy_LIBS) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
+	$(am__DEPENDENCIES_2)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -242,8 +240,6 @@ QT4_LIBS = @QT4_LIBS@
 QT4_VERSION = @QT4_VERSION@
 RANLIB = @RANLIB@
 RCC4 = @RCC4@
-SDL_CFLAGS = @SDL_CFLAGS@
-SDL_LIBS = @SDL_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -328,7 +324,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -DYY_NO_INPUT $(SDL_CFLAGS) $(PHYSFS_CFLAGS) $(PNG_CFLAGS) $(VORBISFILE_CFLAGS) $(VORBIS_CFLAGS) $(OPENAL_CFLAGS) $(OPENGLC_CFLAGS) $(OPENGL_CFLAGS) $(WZ_CPPFLAGS) $(GLEW_CFLAGS)
+AM_CPPFLAGS = -DYY_NO_INPUT $(PHYSFS_CFLAGS) $(PNG_CFLAGS) $(VORBISFILE_CFLAGS) $(VORBIS_CFLAGS) $(OPENAL_CFLAGS) $(OPENGLC_CFLAGS) $(OPENGL_CFLAGS) $(WZ_CPPFLAGS) $(GLEW_CFLAGS)
 AM_CFLAGS = $(WZ_CFLAGS)
 AM_CXXFLAGS = $(WZ_CXXFLAGS) $(QT4_CFLAGS)
 AM_LFLAGS = $(FLEX_FLAGS)
@@ -584,7 +580,8 @@ wz2100legacy_SOURCES = \
 	wavecast.cpp \
 	wrappers.cpp
 
-wz2100legacy_LIBS = $(top_builddir)/lib/widget/libwidget.a \
+wz2100legacy_LIBS = \
+	$(top_builddir)/lib/widget/libwidget.a \
 	$(top_builddir)/lib/sequence/libsequence.a \
 	$(top_builddir)/lib/sound/libsound.a \
 	$(top_builddir)/lib/script/libscript.a \
@@ -595,12 +592,13 @@ wz2100legacy_LIBS = $(top_builddir)/lib/widget/libwidget.a \
 	$(top_builddir)/lib/exceptionhandler/libexceptionhandler.a \
 	$(top_builddir)/3rdparty/miniupnpc/libminiupnpc.a \
 	$(top_builddir)/3rdparty/quesoglc/libquesoglc.a \
-	$(am__append_1) $(am__append_2)
-wz2100legacy_LDADD = $(wz2100legacy_LIBS) $(LTLIBINTL) $(SDL_LIBS) \
-	$(PHYSFS_LIBS) $(PNG_LIBS) $(VORBISFILE_LIBS) $(VORBIS_LIBS) \
-	$(THEORA_LIBS) $(OPENAL_LIBS) $(OPENGLC_LIBS) $(OPENGL_LIBS) \
-	$(QT4_LIBS) $(GLEW_LIBS) $(X_LIBS) $(X_EXTRA_LIBS) $(LDFLAGS) \
-	$(am__append_3)
+	$(top_builddir)/lib/qtgame/libqtgame.a
+
+wz2100legacy_LDADD = $(wz2100legacy_LIBS) $(LTLIBINTL) $(PHYSFS_LIBS) \
+	$(PNG_LIBS) $(VORBISFILE_LIBS) $(VORBIS_LIBS) $(THEORA_LIBS) \
+	$(OPENAL_LIBS) $(OPENGLC_LIBS) $(OPENGL_LIBS) $(QT4_LIBS) \
+	$(GLEW_LIBS) $(X_LIBS) $(X_EXTRA_LIBS) $(LDFLAGS) \
+	$(am__append_1)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 

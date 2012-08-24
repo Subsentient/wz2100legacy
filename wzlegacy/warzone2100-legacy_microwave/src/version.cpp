@@ -27,7 +27,7 @@
 
 #include "src/autorevision.h"
 
-extern const char *BACKEND;
+//extern const char *BACKEND; -Subsentient
 
 // Two-step process to put quotes around anything, including preprocessor definitions.
 #define EXPAND(token) #token
@@ -132,10 +132,10 @@ const char* version_getFormattedVersionString()
 #else
 		const char* wc_state = "";
 #endif
-
+		//Subsentient changed the version string layout and such.
 		// Compose the build type string
 #ifdef DEBUG
-		const char* build_type = _(" - DEBUG");
+		const char* build_type = _(" (debug build)");
 #else
 		const char* build_type = "";
 #endif
@@ -144,7 +144,7 @@ const char* version_getFormattedVersionString()
 
 		if (strncmp(vcs_uri_cstr, "tags/", strlen("tags/")) != 0)
 		{
-			sasprintf((char**)&build_date, _(" - Built %s"), version_getBuildDate());
+			sasprintf((char**)&build_date, _(" - Compiled on %s"), version_getBuildDate());
 		}
 		else
 		{
@@ -154,7 +154,7 @@ const char* version_getFormattedVersionString()
 		// Construct the version string
 		// TRANSLATORS: This string looks as follows when expanded.
 		// "Version <version name/number> <working copy state><BUILD DATE><BUILD TYPE>"
-		snprintf(versionString, MAX_STR_LENGTH, _("Version %s-%s%s%s%s"), BACKEND, version_getVersionString(), wc_state, build_date, build_type);
+		snprintf(versionString, MAX_STR_LENGTH, _("Warzone 2100 Legacy Version %s%s%s%s"), version_getVersionString(), wc_state, build_date, build_type);
 	}
 
 	return versionString;

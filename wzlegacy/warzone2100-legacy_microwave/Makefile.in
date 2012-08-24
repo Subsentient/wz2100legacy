@@ -106,11 +106,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = win32 3rdparty/miniupnpc 3rdparty/quesoglc \
-	lib/framework lib/exceptionhandler lib/script lib/sequence \
-	lib/ivis_opengl lib/gamelib lib/sound lib/netplay lib/widget \
-	lib/sdl lib/qtgame tools/map src data po doc icons pkg/nsis \
-	tests
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -257,8 +253,6 @@ QT4_LIBS = @QT4_LIBS@
 QT4_VERSION = @QT4_VERSION@
 RANLIB = @RANLIB@
 RCC4 = @RCC4@
-SDL_CFLAGS = @SDL_CFLAGS@
-SDL_LIBS = @SDL_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -343,8 +337,6 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-@BACKEND_QT_FALSE@backend_subdir = lib/sdl
-@BACKEND_QT_TRUE@backend_subdir = lib/qtgame
 SUBDIRS = \
 	win32 \
 	3rdparty/miniupnpc \
@@ -358,7 +350,7 @@ SUBDIRS = \
 	lib/sound \
 	lib/netplay \
 	lib/widget \
-	$(backend_subdir) \
+	lib/qtgame \
 	tools/map \
 	src \
 	data \
@@ -383,7 +375,6 @@ EXTRA_DIST = \
 	configure.ac \
 	pkg/dpkg \
 	macosx \
-	3rdparty/SDL/mac \
 	tools/image/image.cpp \
 	tools/image/configs \
 	tools/image/Image.xcodeproj \

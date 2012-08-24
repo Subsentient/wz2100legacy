@@ -87,21 +87,9 @@ AM_GNU_GETTEXT_VERSION([0.15])
 PKG_PROG_PKG_CONFIG
 AC_PROG_VERSION_CHECK([pkg-config], [0.9])
 
-AC_MSG_CHECKING([for backend])
-AC_ARG_WITH([backend],
-	AS_HELP_STRING([--with-backend=sdl/qt], [Backend rendering code to use [sdl]]),
-	[ backend=${withval} ], [ backend="qt" ]) #Switch to QT backend by default. -Subsentient
-AM_CONDITIONAL([BACKEND_QT], test "$backend" = "qt")
-AM_CONDITIONAL([BACKEND_SDL], test "$backend" = "sdl")
-
 # Check for Qt
-if test "$backend" = "qt"; then
-	AC_MSG_RESULT([Qt])
-	PKG_CHECK_MODULES(QT4, QtCore QtGui QtOpenGL QtNetwork QtScript,,[:])
-else
-	AC_MSG_RESULT([SDL])
-	PKG_CHECK_MODULES(QT4, QtCore QtNetwork QtScript,,[:])
-fi
+AC_MSG_RESULT([Qt])
+PKG_CHECK_MODULES(QT4, QtCore QtGui QtOpenGL QtNetwork QtScript,,[:])
 if test "$pkg_failed" = "yes" ; then
 	AC_MSG_ERROR([Qt not found - required!])
 fi
@@ -378,10 +366,7 @@ fi
 
 
 # Checks for modules:
-
-if test "$backend" = "sdl"; then
-	PKG_CHECK_MODULES([SDL], [sdl >= 1.2])
-fi
+#Subsentient removed SDL stuff
 PKG_CHECK_MODULES([PNG], [libpng >= 1.2])
 PKG_CHECK_MODULES([THEORA], [theora >= 1.0])
 
@@ -484,7 +469,6 @@ AC_CONFIG_FILES([Makefile
 		lib/ivis_opengl/Makefile
 		lib/netplay/Makefile
 		lib/qtgame/Makefile
-		lib/sdl/Makefile
 		lib/script/Makefile
 		lib/sequence/Makefile
 		lib/sound/Makefile
@@ -514,6 +498,3 @@ AS_IF([test -z "$A2X" -o -z "$WKHTMLTOPDF"],[
 	AC_MSG_WARN([a2x (asciidoc) or wkhtmltopdf not found, can't convert documentation. This doesn't affect building the game,
 		but means that things like "make dist" and building a Windows installer will fail.])
 ])
-
-AC_MSG_NOTICE()
-AC_MSG_NOTICE(Backend used: ${backend})
