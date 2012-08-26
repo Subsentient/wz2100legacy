@@ -1,3 +1,19 @@
+Changes for microwave 08/25/2012:
+The game now uses the QT backend, with SDL being completely removed and no longer required.
+Spectator support now functions properly with the spec_me command in game,
+except for when you have an HQ, you'll need to type spec_me again. 
+The game will now "pause" and remove all player widgets when the host quits the game.
+The map selector has been remade to use smaller buttons, allowing for more maps, and you can enter the
+name of a map in the map box now rather than being forced to choose from the menu. Beware of bug:
+you need to select a map with the same number of players first if your map of choice is made for more
+or less players than the presently selected one, or you will end up with the wrong number of player slots.
+This is useful for spectating however. The AI chooser has also been greatly shrunken to provide more AIs.
+Nullbot has been added as an AI choice.
+OpenGL errors are now console messages, and the game will attempt to continue even if your card seems
+to not support the game. This changelog may be incomplete.
+
+While Mac OS X builds are still quite broken, windows builds work.
+
 Changes for microwave 08/19/2012:
 Second release, with a windows build, splash screen waits two seconds before quitting now rather than waiting for user input, borgs can walk through tanks
 like they could in 2.3.x (and made grouping far easier), open gates are usable by the enemy now, the default starting height has been raised, several options

@@ -270,7 +270,7 @@
 #define PACKAGE_TARNAME "warzone2100-legacy"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "microwave_popping"
+#define PACKAGE_VERSION "microwave_08-25-2012"
 
 /* Define if <inttypes.h> exists and defines unusable PRI* macros. */
 /* #undef PRI_MACROS_BROKEN */
