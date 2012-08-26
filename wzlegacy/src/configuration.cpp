@@ -127,7 +127,7 @@ bool loadConfig()
 	if (ini.contains("shaders")) war_SetShaders(ini.value("shaders").toInt());
 	// Leave this to false, some system will fail and they can't see the system popup dialog!
 	war_setFullscreen(ini.value("fullscreen", false).toBool());
-	war_SetTrapCursor(ini.value("trapCursor", false).toBool());
+	war_SetTrapCursor(false); //We really don't want to start up into trap cursor. It can be irritating. -Subsentient.
 	// this should be enabled on all systems by default
 	war_SetVsync(ini.value("vsync", false).toBool());
 	// 640x480 is minimum that we will support
@@ -189,7 +189,7 @@ bool saveConfig()
 	ini.setValue("subtitles",(SDWORD)(seq_GetSubtitles()));		// subtitles
 	ini.setValue("radarObjectMode",(SDWORD)bEnemyAllyRadarColor);    // enemy/allies radar view
 	ini.setValue("radarTerrainMode",(SDWORD)radarDrawMode);
-	ini.setValue("trapCursor", war_GetTrapCursor());
+	//ini.setValue("trapCursor", war_GetTrapCursor()); We don't want the config file to control trap cursor. -Subsentient
 	ini.setValue("vsync", war_GetVsync());
 	ini.setValue("shaders", war_GetShaders());
 	ini.setValue("textureSize", getTextureSize());
