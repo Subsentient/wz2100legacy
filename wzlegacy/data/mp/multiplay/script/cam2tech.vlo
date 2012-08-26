@@ -125,6 +125,7 @@ camTech	[112]	RESEARCHSTAT	"R-Defense-AASite-QuadMg1"
 camTech	[113]	RESEARCHSTAT	"R-Cyborg-Sys-ComEng"
 camTech	[114]	RESEARCHSTAT	"R-Cyborg-Sys-Mechanic"
 camTech	[115]	RESEARCHSTAT	"R-Comp-CommandTurret02"
+camTech	[116]	RESEARCHSTAT	"R-Defense-HardcreteGate" //We need hardcrete gates at T2-3 for god's sake!
 }
 
 

@@ -267,6 +267,7 @@ camTech	[250]	RESEARCHSTAT	"R-Wpn-Rocket-Damage06"
 camTech	[251]	RESEARCHSTAT	"R-Defense-HvyFlamer"
 camTech	[252]	RESEARCHSTAT	"R-Wpn-RocketSlow-Damage06"
 camTech	[253]	RESEARCHSTAT	"R-Cyborg-Sys-ComEng"
+camTech	[254]	RESEARCHSTAT	"R-Defense-HardcreteGate" //We need hardcrete gates at T2-3 for god's sake!
 
 camTechB	[0]	RESEARCHSTAT	"R-Cyborg-Sys-Mechanic"
 camTechB	[1]	RESEARCHSTAT	"R-Cyborg-Wpn-Grenade"

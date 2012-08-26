@@ -59,6 +59,7 @@ function eventGameInit()
 		"R-Comp-SynapticLink",
 		"R-Wpn-MG1Mk1",
 		"R-Defense-HardcreteWall",
+		"R-Defense-HardcreteGate"
 		"R-Vehicle-Prop-Wheels",
 		"R-Sys-Spade1Mk1",
 		"R-Struc-Factory-Cyborg",
