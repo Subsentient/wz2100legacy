@@ -290,6 +290,7 @@ R-Sys-VTOLCBS-Turret01,R-Sys-VTOLCBS-Tower01,776
 R-Sys-VTOLCBS-Turret01,R-Sys-CBSensor-Turret01,776
 R-Sys-VTOLStrike-Tower01,R-Struc-VTOLPad,788
 R-Sys-VTOLStrike-Tower01,R-Sys-Sensor-Upgrade01,788
+R-Sys-VTOLStrike-Tower01,R-Defense-HardcreteWall,788
 R-Sys-VTOLStrike-Turret01,R-Sys-VTOLStrike-Tower01,785
 R-Sys-VTOLStrike-Turret01,R-Sys-Sensor-Turret01,785
 R-Vehicle-Armor-Heat01,R-Vehicle-Metals03,970
