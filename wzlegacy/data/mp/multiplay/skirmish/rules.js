@@ -59,7 +59,6 @@ function eventGameInit()
 		"R-Comp-SynapticLink",
 		"R-Wpn-MG1Mk1",
 		"R-Defense-HardcreteWall",
-		"R-Defense-HardcreteGate"
 		"R-Vehicle-Prop-Wheels",
 		"R-Sys-Spade1Mk1",
 		"R-Struc-Factory-Cyborg",
@@ -91,7 +90,8 @@ function eventGameInit()
 		"R-Wpn-Rocket05-MiniPod",
 		"R-Wpn-MG-Damage01",
 		"R-Wpn-Rocket-Damage01",
-		"R-Defense-WallTower01");
+		"R-Defense-WallTower01",
+		"R-Defense-HardcreteGate");
 
 	for (var playnum = 0; playnum < maxPlayers; playnum++)
 	{

@@ -3,7 +3,7 @@ run
 {
 
 //ALWAYS MAKE THIS THE SAME AS THE INDEX OF THE LAST ENTRY IN THE camTech[] array
-numCamTech		int 	115
+numCamTech		int 	116
 
 camTech	[0]	RESEARCHSTAT	"R-Comp-CommandTurret01"
 camTech	[1]	RESEARCHSTAT	"R-Comp-SynapticLink"
