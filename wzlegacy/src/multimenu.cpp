@@ -487,7 +487,7 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 	// this will need to change.
 	if (sFormInit.numMajor > MAX_TAB_STD_SHOWN)
 	{
-		ASSERT(sFormInit.numMajor < MAX_TAB_SMALL_SHOWN,"Too many maps! Need scroll tabs here.");
+		//ASSERT(sFormInit.numMajor < MAX_TAB_SMALL_SHOWN,"Too many maps! Need scroll tabs here."); This is effing irritating. -Subsentient
 		sFormInit.pUserData = &SmallTab;
 		sFormInit.majorSize /= 2;
 	}
@@ -629,7 +629,7 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 		sButInit.formID		= M_REQUEST_TAB;
 		sButInit.id		= M_REQUEST_C1;
 		sButInit.x		= 1;
-		sButInit.y		= 252;
+		sButInit.y		= 265; //Make this align with the last possible map row in the selector. -Subsentient
 		sButInit.width		= 17;
 		sButInit.height		= 17;
 		sButInit.UserData	= 1;
@@ -651,11 +651,12 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 		widgAddButton(psRScreen, &sButInit);
 
 		sButInit.id		= M_REQUEST_AP;
-		sButInit.y		= 17;
+		sButInit.y		= -16; //Use a negative value to get rid of this button's space -Subsentient
 		sButInit.UserData	= 0;
 		sButInit.pTip		= _("Any number of players");
 		sButInit.pDisplay	= displayNumPlayersBut;
-		widgAddButton(psRScreen, &sButInit);
+		//widgAddButton(psRScreen, &sButInit); This button is mostly useless. 
+		//I keep it because I am too lazy to fix a bug that occurs with it's complete removal. -Subsentient
 
 		STATIC_ASSERT(MAX_PLAYERS_IN_GUI <= ARRAY_SIZE(M_REQUEST_NP) + 1);
 		for (unsigned numPlayers = 2; numPlayers <= MAX_PLAYERS_IN_GUI; ++numPlayers)
@@ -742,10 +743,10 @@ bool runMultiRequester(UDWORD id, UDWORD *mode, char *chosen, LEVEL_DATASET **ch
 			closeMultiRequester();
 			addMultiRequest(MultiCustomMapsPath, ".wrf", MULTIOP_MAP, 3, current_numplayers);
 			break;
-		case M_REQUEST_AP:
-			closeMultiRequester();
-			addMultiRequest(MultiCustomMapsPath, ".wrf", MULTIOP_MAP, current_tech, 0);
-			break;
+		//case M_REQUEST_AP: We don't need this.
+		//	closeMultiRequester();
+		//	addMultiRequest(MultiCustomMapsPath, ".wrf", MULTIOP_MAP, current_tech, 0);
+		//	break;
 		default:
 			for (unsigned numPlayers = 2; numPlayers <= MAX_PLAYERS_IN_GUI; ++numPlayers)
 			{
