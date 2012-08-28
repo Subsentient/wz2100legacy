@@ -970,6 +970,9 @@ void inputLoseFocus()
 	{
 		aMouseState[i].state = KEY_UP;
 	}
+	WzMainWindow::instance()->freeMouse(); 
+	//Free our mouse cursor if in windowed mode, or we get a strange bug.
+	//This causes the need to hit alt+t twice, but it's worth it for a cheap fix. -Subsentient
 }
 
 /* This returns true if the key is currently depressed */
