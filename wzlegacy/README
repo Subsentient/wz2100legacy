@@ -2,4 +2,7 @@ Hi, this is Warzone 2100 Legacy, a fork of Warzone 2100 Ressurection Project by 
 Some things such as make dist and building docs under windows will fail. It may be buggy too. I'm here to fix that. :^)
 Report bugs to thinkingrodent@gmail.com.
 
+NOTE: My code is puke, I use single indentation, a habit I carried from lazy python coding, and my braces are in an odd place often, and on top of that
+sometimes it'll just be the worst solution ever. Whitespace in my code is only a rumor.
+
 Thank you.
