@@ -295,6 +295,7 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 		//Add our cute little wee guy back at the bottom of the form where he doesn't get in the way. -Subsentient
 		int playercount = mapData->players; /*Why did I add a second while loop around here before, rather than having specing
 		have to point out a humiliatingly easier way that a monkey on a typewriter would have gotten right? -Subsentient*/
+		//335 is the amount of space we are going to want to go down from yOffset, and the +1 just adds a pixel of padding space. -Subsentient
 		drawBlueBox(xOffset + 1, yOffset + 335 , 10 * playercount + 1, 12); //Add a blue box for our wee guy. -Subsentient
 		playercount = mapData->players;
 		int count = 1;
