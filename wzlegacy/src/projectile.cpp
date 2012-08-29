@@ -93,19 +93,7 @@ BASE_OBJECT		*g_pProjLastAttacker;
 
 /***************************************************************************/
 
-struct ObjectShape
-{
-	ObjectShape() {}
-	ObjectShape(int radius) : isRectangular(false), size(radius, radius) {}
-	ObjectShape(int width, int breadth) : isRectangular(true), size(width, breadth) {}
-	ObjectShape(Vector2i widthBreadth) : isRectangular(true), size(widthBreadth) {}
-	int radius() const { return size.x; }
 
-	bool     isRectangular;  ///< True if rectangular, false if circular.
-	Vector2i size;           ///< x == y if circular.
-};
-
-static ObjectShape establishTargetShape(BASE_OBJECT *psTarget);
 static void	proj_ImpactFunc( PROJECTILE *psObj );
 static void	proj_PostImpactFunc( PROJECTILE *psObj );
 static void proj_checkBurnDamage(PROJECTILE *psProj);
@@ -1446,7 +1434,7 @@ SDWORD proj_GetLongRange(const WEAPON_STATS* psStats)
 
 
 /***************************************************************************/
-static ObjectShape establishTargetShape(BASE_OBJECT *psTarget)
+ObjectShape establishTargetShape(BASE_OBJECT *psTarget)
 {
 	CHECK_OBJECT(psTarget);
 
