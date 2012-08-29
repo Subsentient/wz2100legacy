@@ -291,41 +291,27 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 
 	if (mapData != NULL)
 	{
-		/*No thanks on the irritating map hash. -Subsentient// Display map hash, so we can see the difference between identically named maps.
-		Sha256 hash = mapData->realFileHash;  // levGetFileHash can be slightly expensive.
-		static uint32_t lastHashTime = 0;
-		if (lastHashTime != realTime && hash.isZero())
-		{
-			hash = levGetFileHash(mapData);
-			if (!hash.isZero())
-			{
-				lastHashTime = realTime;  // We just calculated a hash. Don't calculate any more hashes this frame.
-			}
-		}
-		if (!hash.isZero())
-		{
-			iV_SetFont(font_small);
-			iV_SetTextColour(WZCOL_TEXT_DARK);
-			sstrcpy(butString, hash.toString().c_str());
-			while (iV_GetTextWidth(butString) > psWidget->width - 10 - (8 + mapData->players*6))
-			{
-				butString[strlen(butString) - 1] = '\0';
-			}
-			iV_DrawText(butString, x + 6 + 8 + mapData->players*6, y + 26);
-		} */
 
-		/*This is mostly useless. -Subsentient.// if map, then draw no. of players.
-		for (int count = 0; count < mapData->players; ++count)
-		{
-			iV_DrawImage(FrontImages, IMAGE_WEE_GUY, x + 6*count + 6, y + 16);
-		} */
 		//Add our cute little wee guy back at the bottom of the form where he doesn't get in the way. -Subsentient
-		int count = 21;
+		int count = 1;
 		int playercount = mapData->players;
+		while (playercount) { //Subsentient added a blue box underneath the wee guys and aligned it under the tech level buttons.
+		 //TURDCODE: Is there any better way to do this? DURRR -Subsentient
+		 count += 10;
+		 playercount -= 1; }
+		drawBlueBox(xOffset + 1, yOffset + 335 , count + 1, 12);
+		count = 1;
+		playercount = mapData->players;
 		while (playercount) {
 		 iV_DrawImage(FrontImages, IMAGE_WEE_GUY, xOffset + count, yOffset + 335);
 		 count += 10;
-		 playercount -= 1;}
+		 playercount -= 1; }
+		char buffer[8];
+		sprintf(buffer, "T%i", current_tech);
+		iV_SetTextColour(WZCOL_TEXT_BRIGHT); //About here we add our tech level in addition to the wee guys.
+		iV_SetFont(font_regular);
+		drawBlueBox(xOffset + count + 7, yOffset + 335 , 16, 12);
+		iV_DrawText(buffer, xOffset + count + 8, yOffset + 345);
 	}
 }
 
