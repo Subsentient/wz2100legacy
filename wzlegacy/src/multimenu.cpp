@@ -293,15 +293,11 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 	{
 
 		//Add our cute little wee guy back at the bottom of the form where he doesn't get in the way. -Subsentient
-		int count = 1;
-		int playercount = mapData->players;
-		while (playercount) { //Subsentient added a blue box underneath the wee guys and aligned it under the tech level buttons.
-		 //TURDCODE: Is there any better way to do this? DURRR -Subsentient
-		 count += 10;
-		 playercount -= 1; }
-		drawBlueBox(xOffset + 1, yOffset + 335 , count + 1, 12);
-		count = 1;
+		int playercount = mapData->players; /*Why did I add a second while loop around here before, rather than having specing
+		have to point out a humiliatingly easier way that a monkey on a typewriter would have gotten right? -Subsentient*/
+		drawBlueBox(xOffset + 1, yOffset + 335 , 10 * playercount, 12); //Add a blue box for our wee guy. -Subsentient
 		playercount = mapData->players;
+		int count = 1;
 		while (playercount) {
 		 iV_DrawImage(FrontImages, IMAGE_WEE_GUY, xOffset + count, yOffset + 335);
 		 count += 10;
