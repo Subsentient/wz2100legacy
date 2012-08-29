@@ -298,11 +298,10 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 		//335 is the amount of space we are going to want to go down from yOffset, and the +1 just adds a pixel of padding space. -Subsentient
 		drawBlueBox(xOffset + 1, yOffset + 335 , 10 * playercount + 1, 12); //Add a blue box for our wee guy. -Subsentient
 		playercount = mapData->players;
-		int count = 1;
-		while (playercount) {
+		int count;
+		for (count = 1; playercount; --playercount) {
 		 iV_DrawImage(FrontImages, IMAGE_WEE_GUY, xOffset + count, yOffset + 335);
-		 count += 10;
-		 playercount -= 1; }
+		 count += 10; } //Another orangutan moment brought to you by Subsentient.
 		char buffer[8];
 		sprintf(buffer, "T%i", current_tech);
 		iV_SetTextColour(WZCOL_TEXT_BRIGHT); //About here we add our tech level in addition to the wee guys.
