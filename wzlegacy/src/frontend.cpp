@@ -63,6 +63,7 @@
 #include "version.h"
 #include "warzoneconfig.h"
 #include "wrappers.h"
+//Subsentient deleted trap cursor stuff.
 
 // ////////////////////////////////////////////////////////////////////////////
 // Global variables
@@ -1005,19 +1006,6 @@ bool runVideoOptionsMenu(void)
 			break;
 		}
 
-		case FRONTEND_TRAP:
-		case FRONTEND_TRAP_R:
-			if (war_GetTrapCursor())
-			{
-				war_SetTrapCursor(false);
-				widgSetString(psWScreen, FRONTEND_TRAP_R, _("Off"));
-			}
-			else
-			{
-				war_SetTrapCursor(true);
-				widgSetString(psWScreen, FRONTEND_TRAP_R, _("On"));
-			}
-			break;
 
 		case FRONTEND_TEXTURESZ:
 		case FRONTEND_TEXTURESZ_R:
@@ -1118,40 +1106,29 @@ static bool startMouseOptionsMenu(void)
 		addTextButton(FRONTEND_MFLIP_R, FRONTEND_POS2M-25,  FRONTEND_POS2Y, _("Off"), 0);
 	}
 
-	// Cursor trapping
-	addTextButton(FRONTEND_TRAP, FRONTEND_POS3X-35, FRONTEND_POS3Y, _("Trap Cursor"), 0);
-
-	if (war_GetTrapCursor())
-	{
-		addTextButton(FRONTEND_TRAP_R, FRONTEND_POS3M-25, FRONTEND_POS3Y, _("On"), 0);
-	}
-	else
-	{
-		addTextButton(FRONTEND_TRAP_R, FRONTEND_POS3M-25, FRONTEND_POS3Y, _("Off"), 0);
-	}
 	
 	////////////
 	// left-click orders
-	addTextButton(FRONTEND_MBUTTONS,	 FRONTEND_POS2X-35,   FRONTEND_POS4Y, _("Switch Mouse Buttons"), 0);
+	addTextButton(FRONTEND_MBUTTONS,	 FRONTEND_POS2X-35,   FRONTEND_POS3Y, _("Switch Mouse Buttons"), 0);
 	if( getRightClickOrders() )
 	{	// right-click orders
-		addTextButton(FRONTEND_MBUTTONS_R, FRONTEND_POS2M-25,  FRONTEND_POS4Y, _("On"), 0);
+		addTextButton(FRONTEND_MBUTTONS_R, FRONTEND_POS2M-25,  FRONTEND_POS3Y, _("On"), 0);
 	}
 	else
 	{	// left-click orders
-		addTextButton(FRONTEND_MBUTTONS_R, FRONTEND_POS2M-25,  FRONTEND_POS4Y, _("Off"), 0);
+		addTextButton(FRONTEND_MBUTTONS_R, FRONTEND_POS2M-25,  FRONTEND_POS3Y, _("Off"), 0);
 	}
 
 	////////////
 	// middle-click rotate
-	addTextButton(FRONTEND_MMROTATE,	 FRONTEND_POS2X-35,   FRONTEND_POS5Y, _("Rotate Screen"), 0);
+	addTextButton(FRONTEND_MMROTATE,	 FRONTEND_POS2X-35,   FRONTEND_POS4Y, _("Rotate Screen"), 0);
 	if( getMiddleClickRotate() )
 	{	// right-click orders
-		addTextButton(FRONTEND_MMROTATE_R, FRONTEND_POS2M-25,  FRONTEND_POS5Y, _("Middle Mouse"), 0);
+		addTextButton(FRONTEND_MMROTATE_R, FRONTEND_POS2M-25,  FRONTEND_POS4Y, _("Middle Mouse"), 0);
 	}
 	else
 	{	// left-click orders
-		addTextButton(FRONTEND_MMROTATE_R, FRONTEND_POS2M-25,  FRONTEND_POS5Y, _("Right Mouse"), 0);
+		addTextButton(FRONTEND_MMROTATE_R, FRONTEND_POS2M-25,  FRONTEND_POS4Y, _("Right Mouse"), 0);
 	}
 
 	// Add some text down the side of the form
@@ -1180,19 +1157,6 @@ bool runMouseOptionsMenu(void)
 			{	// not flipped
 				setInvertMouseStatus(true);
 				widgSetString(psWScreen,FRONTEND_MFLIP_R, _("On"));
-			}
-			break;
-		case FRONTEND_TRAP:
-		case FRONTEND_TRAP_R:
-			if (war_GetTrapCursor())
-			{
-				war_SetTrapCursor(false);
-				widgSetString(psWScreen, FRONTEND_TRAP_R, _("Off"));
-			}
-			else
-			{
-				war_SetTrapCursor(true);
-				widgSetString(psWScreen, FRONTEND_TRAP_R, _("On"));
 			}
 			break;
 
