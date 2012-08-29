@@ -157,7 +157,10 @@ bool multiplayerWinSequence(bool firstCall)
 	// rotate world
 	if (MissionResUp && !getWarCamStatus())
 	{
-		rotAmount = graphicsTimeAdjustedIncrement(MAP_SPIN_RATE / 12);
+		// decreased rotate rate by four times - helps with motion sickness - wei2912
+		// original rotate rate was MAP_SPIN_RATE / 12
+		rotAmount = graphicsTimeAdjustedIncrement(MAP_SPIN_RATE / 48); 
+		
 		player.r.y += rotAmount;
 	}
 
