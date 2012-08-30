@@ -1347,18 +1347,33 @@ void	kf_ToggleGodMode( void )
 }
 
 //Let's add a spectator command. -Subsentient
+int specThread(void *) { 
+  //Tiny function needed for delaying the minimap display for spectators, so if we have an HQ destroyed we still get a minimap. -Subsentient
+  //It needs to be in a thread so that it's actually useful, otherwise it hard freezes the game until it's time is up and the stucts are not destroyed yet.
+  //This also enables uplink-ish-ness and stuff.
+  unsigned int tempgt = wzGetTicks();
+  while (true) {
+  if (wzGetTicks() > tempgt + 2000) { 
+  widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
+  godMode = true;
+  revealAll(selectedPlayer);
+  setRevealStatus(true);
+  radarPermitted = true; 
+  addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+  return 0; } } }
 
+//Main spectator function, that actually turns the one above to a thread.
 void kf_SpecMe(void) {
  if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. FIXED desyncs! -Subsentient
   DROID *psCDroid, *psNDroid;
   STRUCTURE *psCStruct, *psNStruct;
+  WZ_THREAD *minimapThread = NULL;
   unsigned int i;
   char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
   strcpy(specmsg, "*** \"");
   strcat(specmsg, getPlayerName(selectedPlayer));
   strcat(specmsg, "\" is now a spectator. ***"); //No longer experimental, we got it down. -Subsentient
   sendTextMessage(specmsg, true);
-  addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
   for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //Swap out destroy* for SendDestroy* and enabled them without debug.
    psNDroid = psCDroid->psNext;
    SendDestroyDroid(psCDroid); }
@@ -1370,12 +1385,8 @@ void kf_SpecMe(void) {
     sendAlliance(selectedPlayer, i, ALLIANCE_BROKEN, false);
     alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
     alliances[i][selectedPlayer] = ALLIANCE_BROKEN; } }
-  widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
-  godMode = true; //Next two after/including this one enable deity cheat. After that we enable the minimap.
-  revealAll(selectedPlayer);
-  setRevealStatus(true);
-  radarPermitted = true;  } /*This doesn't work when we already have an HQ, 
-  I suppose because our HQ's minimap is taken down after we enable the minimap. -Subsentient*/
+  minimapThread = wzThreadCreate(specThread, NULL);
+  wzThreadStart(minimapThread); } //We use a thread to time when to show our minimap and stuff. -Subsentient
  else {
   addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 
