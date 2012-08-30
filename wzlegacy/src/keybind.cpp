@@ -1353,14 +1353,14 @@ int specThread(void *) {
   //This also enables uplink-ish-ness and stuff.
   unsigned int tempgt = wzGetTicks();
   while (true) {
-  if (wzGetTicks() > tempgt + 2000) { 
-  widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
-  godMode = true;
-  revealAll(selectedPlayer);
-  setRevealStatus(true);
-  radarPermitted = true; 
-  addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-  return 0; } } }
+   if (wzGetTicks() > tempgt + 2000) { 
+    widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
+    godMode = true;
+    revealAll(selectedPlayer);
+    setRevealStatus(true);
+    radarPermitted = true; 
+    addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+    return 0; } } }
 
 //Main spectator function, that actually turns the one above to a thread.
 void kf_SpecMe(void) {
