@@ -1096,4 +1096,48 @@ dataset MULTI_T3_C2
 game    "multiplay/maps/8c-Abandoned.gam"
 data    "wrf/multi/fog2.wrf"
 
+level   Origami-T1
+players 8
+type    14
+dataset MULTI_CAM_3
+game    "multiplay/maps/8c-Origami.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Origami-T2
+players 8
+type    18
+dataset MULTI_T2_C3
+game    "multiplay/maps/8c-Origami.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Origami-T3
+players 8
+type    19
+dataset MULTI_T3_C3
+game    "multiplay/maps/8c-Origami.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Yeti-T1
+players 2
+type    14
+dataset MULTI_CAM_3
+game    "multiplay/maps/2c-Yeti.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Yeti-T2
+players 2
+type    18
+dataset MULTI_T2_C3
+game    "multiplay/maps/2c-Yeti.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Yeti-T3
+players 2
+type    19
+dataset MULTI_T3_C3
+game    "multiplay/maps/2c-Yeti.gam"
+data    "wrf/multi/fog3.wrf"
+
+
+
 
