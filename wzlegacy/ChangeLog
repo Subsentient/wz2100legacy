@@ -1,8 +1,3 @@
-Changes for microwave 08/30/2012:
-Spectator support works properly in (most) all circumstances now, we have removed the trap cursor config option,
-textures are now at 512 by default, accuracy is now similar to Warzone 2100 2.3.9, and added two new maps, 4c-Yeti and 8c-Origami,
-by NoQ and Iluvalar respectively.
-
 Changes for microwave 08/25/2012:
 The game now uses the QT backend, with SDL being completely removed and no longer required.
 Spectator support now functions properly with the spec_me command in game,
