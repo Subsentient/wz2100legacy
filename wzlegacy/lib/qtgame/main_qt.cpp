@@ -41,7 +41,8 @@ bool wzMain2()
 	}
 	mainWindowPtr = new WzMainWindow(QSize(w, h), format);
 	WzMainWindow &mainwindow = *mainWindowPtr;
-	mainwindow.setMinimumResolution(QSize(800, 600));
+	mainwindow.setMinimumResolution(QSize(640, 480));
+	//We had this set to 800x600 for some retarded reason, effectively making 640x480 impossible. How stupid. -Subsentient
 	if (!mainwindow.context()->isValid())
 	{
 		QMessageBox::critical(NULL, "Oops!", "Warzone2100 failed to create an OpenGL context. This probably means that your graphics drivers are out of date. Try updating them!");

@@ -132,7 +132,7 @@ bool loadConfig()
 	war_SetVsync(ini.value("vsync", false).toBool());
 	// 640x480 is minimum that we will support
 	int width = ini.value("width", 800).toInt();
-	int height = ini.value("height", 600).toInt();
+	int height = ini.value("height", 600).toInt(); //Set us at 800x600 by default. -Subsentient
 	if (width < 640 || height < 480)	// sanity check
 	{
 		width = 640;
