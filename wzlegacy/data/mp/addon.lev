@@ -1138,6 +1138,48 @@ dataset MULTI_T3_C3
 game    "multiplay/maps/2c-Yeti.gam"
 data    "wrf/multi/fog3.wrf"
 
+level   DesertRuins-T1
+players 8
+type    14
+dataset MULTI_CAM_1
+game    "multiplay/maps/8c-DesertRuins.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   DesertRuins-T2
+players 8
+type    18
+dataset MULTI_T2_C1
+game    "multiplay/maps/8c-DesertRuins.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   DesertRuins-T3
+players 8
+type    19
+dataset MULTI_T3_C1
+game    "multiplay/maps/8c-DesertRuins.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Freezing-1-01-T1
+players 4
+type    14
+dataset MULTI_CAM_3
+game    "multiplay/maps/4c-Freezing-1-01.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Freezing-1-01-T2
+players 4
+type    18
+dataset MULTI_T2_C3
+game    "multiplay/maps/4c-Freezing-1-01.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Freezing-1-01-T3
+players 4
+type    19
+dataset MULTI_T3_C3
+game    "multiplay/maps/4c-Freezing-1-01.gam"
+data    "wrf/multi/fog3.wrf"
+
 
 
 
