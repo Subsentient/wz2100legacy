@@ -81,7 +81,7 @@ static CHEAT_ENTRY cheatCodes[] =
 	{"damage me", kf_DamageMe},
 	{"autogame on", kf_AutoGame},
 	{"autogame off", kf_AutoGame},
-	{"spec_me", kf_SpecMe}, // Spectator support, by Subsentient
+	{"spec me", kf_SpecMe}, // Spectator support, by Subsentient
 
 };
 
