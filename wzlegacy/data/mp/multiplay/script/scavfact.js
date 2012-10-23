@@ -1,134 +1,253 @@
-// Scavenger control script
 
-// Various constants, declared here for convenience only
-const maxDroids = 25;		// max guys to handle.
+var MIN_ATTACKERS = 12;
+var MAX_SENSORS; // initialized at game start
+var MAX_DEFENDERS = 6;
+var MAX_GLOBAL_DEFENDERS = 15;
 
-// scav group
-var attackGroup;
-var lastAttack = 0;
+// unit limit constant
+function atLimits() {
+	return enumDroid(me).length>=130;
+}
 
-function activateProduction(fac)
-{
-	// Remind factory to produce
-	if (structureIdle(fac))
-	{
-		buildDroid(fac, "Trike", "B4body-sml-trike01", "BaBaProp", "", DROID_WEAPON, "bTrikeMG");
+// random integer between 0 and max-1 (for convenience)
+function random(max) {
+	if (max<=0)
+		return 0;
+	return Math.floor(Math.random() * max);
+}
+
+const factory = "A0BaBaFactory";
+
+const templates = [
+	["B4body-sml-trike01","bTrikeMG"],
+	["B4body-sml-trike01","bTrikeMG"],
+	["B4body-sml-trike01","bTrikeMG"],
+	["B4body-sml-trike01","bTrikeMG"],
+	["B4body-sml-trike01","bTrikeMG"],
+	["B4body-sml-trike01","bTrikeMG"],
+	["B3body-sml-buggy01","BuggyMG"],
+	["B3body-sml-buggy01","BuggyMG"],
+	["B3body-sml-buggy01","BuggyMG"],
+	["B3body-sml-buggy01","BuggyMG"],
+	["B3body-sml-buggy01","BuggyMG"],
+	["B2JeepBody","BJeepMG"],
+	["B2JeepBody","BJeepMG"],
+	["B2JeepBody","BJeepMG"],
+	["B2JeepBody","BJeepMG"],
+	["B3bodyRKbuggy01","BabaRocket"],
+	["B3bodyRKbuggy01","BabaRocket"],
+	["B3bodyRKbuggy01","BabaRocket"],
+	["B2RKJeepBody","BabaRocket"],
+	["B2RKJeepBody","BabaRocket"],
+	["B2RKJeepBody","BabaRocket"],
+	["BusBody","BusCannon"],
+	["BusBody","BusCannon"],
+	["BusBody","BusCannon"],
+	["BusBody","BabaPitRocketAT"],
+	["FireBody","BabaFlame"],
+	["FireBody","BusCannon"],
+	["FireBody","BabaPitRocket"],
+	["FireBody","BabaPitRocketAT"],
+];
+
+// scav groups
+var globalDefendGroup; // tanks that defend all bases
+var needToPickGroup; // a group
+
+var baseInfo=[];
+
+function constructBaseInfo(x,y) {
+	this.x = x;
+	this.y = y;
+	this.defendGroup = newGroup(); // tanks to defend the base
+	this.builderGroup = newGroup(); // trucks to build base structures and defenses
+	this.attackGroup = newGroup(); // tanks to attack nearby things
+}
+
+function findNearestBase(x,y) {
+	var minDist=Infinity, minIdx=0;
+	for (var i=0; i<baseInfo.length; ++i) {
+		var d=distBetweenTwoPoints(baseInfo[i].x,baseInfo[i].y,x,y);
+		if (d<minDist) {
+			minDist=d;
+			minIdx=i;
+		}
+	}
+	return minIdx;
+}
+
+function factoriesOfBase(base) {
+	var list=enumStruct(me,factory);
+	for (var i=0; i<list.length; ++i)
+		if (findNearestBase(list[i].x,list[i].y)!=base)
+			list.splice(i);
+	return list;
+}
+
+function reviseGroups() {
+	var list=enumGroup(needToPickGroup);
+	for (var i=0; i<list.length; ++i) {
+		var droid=list[i];
+		addDroidToSomeGroup(droid);
+		// anti-stuck-at-base algorithm
+		// couldn't have done it eventDroidBuilt, cause it gets overwritten 
+		var x=droid.x+random(15)-7;
+		if (x<0) x=0;
+		if (x>=mapWidth-1) x=mapWidth-2;
+		var y=droid.y+random(15)-7;
+		if (y<0) y=0;
+		if (y>=mapHeight-1) y=mapHeight-2;
+		orderDroidLoc(droid,DORDER_MOVE,x,y); 
 	}
 }
 
-// Regularly check back on our scavs
-function scavtick()
-{
-	// enum functions now return a list of results
-	var factorylist = enumStruct(me, "A0BaBaFactory");
-
-	// one way of dealing with lists is running a function on each member of the list
-	if (factorylist)
-	{
-		factorylist.forEach(activateProduction);
+function addDroidToSomeGroup(droid) {
+	var base=findNearestBase(droid.x,droid.y);
+	switch(droid.droidType) {
+		case DROID_WEAPON:
+			var i = random(5);
+			switch(i) {
+			case 0: 
+				if (groupSize(globalDefendGroup)<MAX_GLOBAL_DEFENDERS) {
+					groupAddDroid(globalDefendGroup, droid); 
+					return;
+				}
+			case 1: 
+				if (groupSize(baseInfo[base].defendGroup)<MAX_DEFENDERS) {
+					groupAddDroid(baseInfo[base].defendGroup, droid); 
+					return;
+				}
+			default: 
+				groupAddDroid(baseInfo[base].attackGroup, droid); break;
+			}
+			return;
+		case DROID_SENSOR: 
+			groupAddDroid(baseInfo[base].attackGroup, droid); 
+			return;
+		case DROID_PERSON:
+			groupAddDroid(baseInfo[base].defendGroup, droid);
+			return;
 	}
+}
 
-	if ((gameTime - lastAttack) > 9000)
-	{
-		lastAttack = gameTime;
+function groupOfTank(droid) {
+	for (var i=0; i<baseInfo.length; ++i) {
+		if (droid.group == baseInfo[i].attackGroup)
+			return baseInfo[i].attackGroup;
+	}
+}
 
-		// Return to nearest factory (ie base)
-		var droidlist = enumGroup(attackGroup);
+function produceDroid(fac) {
+	var i=random(10);
+	switch(i) {
+		case 0: 
+			if (enumDroid(me,DROID_SENSOR).length < MAX_SENSORS) {
+				buildDroid(fac, "Sensor", "BusBody", "BaBaProp", "", DROID_SENSOR, "SensorTurret1Mk1"); 
+				break;
+			}
+		default: 
+			var j=random(templates.length);
+			buildDroid(fac, "Scavenger Tank", templates[j][0], "BaBaProp", "", DROID_WEAPON, templates[j][1]); 
+			break;
+	}
+}
 
-		if (droidlist && factorylist)
-		{
-			// another way of dealing with lists is to iterate over them
-			// note, you must NOT use the for (... in ...) construct to iterate over an array of objects with properties!
-			for (var i = 0; i < droidlist.length; i++)
-			{
-				var droid = droidlist[i];
-				var current = 0;
-				var closest = 9999;
-				var clfac;		// starts undefined
-
-				// Find closest factory; notice that we still have the factory list from earlier, which
-				// saves us a few expensive scripting calls
-				for (var j = 0; j < factorylist.length; j++)
-				{
-					var fact = factorylist[j];
-					current = distBetweenTwoPoints(fact.x, fact.y, droid.x, droid.y);
-					if (current < closest)
-					{
-						closest = current;
-						clfac = fact;
-					}
-				}
-
-				// If we found a factory, return to it. If clfac remains undefined, it evaluates false.
-				if (clfac)
-				{
-					orderDroidLoc(droid, DORDER_MOVE, clfac.x, clfac.y);
-				}
+function findNearestTarget(x,y) {
+	var minDist=Infinity, minTarget;
+	for (var i=0; i<maxPlayers; ++i) {
+		var list;
+		list=enumStruct(i);
+		for (var j=0; j<list.length; ++j) {
+			var d=distBetweenTwoPoints(list[j].x,list[j].y,x,y);
+			if (d<minDist) {
+				minDist=d;
+				minTarget=list[j];
 			}
 		}
 	}
+	return minTarget;
 }
 
-function eventGameInit()
-{
-	makeComponentAvailable("B4body-sml-trike01", me);
-	makeComponentAvailable("B3body-sml-buggy01", me);
-	makeComponentAvailable("B2JeepBody", me);
-	makeComponentAvailable("BusBody", me);
-	makeComponentAvailable("B1BaBaPerson01", me);
+function attackWithDroid(droid,target,force) {
+	if (typeof(DORDER_OBSERVE)=="undefined")
+		var DORDER_OBSERVE = 9; // HACK: waiting until this constant is exported to scripts ...
+	if (droid.droidType == DROID_WEAPON)
+		if (droid.order != DORDER_ATTACK || force)
+			orderDroidLoc(droid,DORDER_SCOUT,target.x+random(5)-2,target.y+random(5)-2);
+	else // sensor
+		if (droid.order != DORDER_OBSERVE || force)
+			orderDroidObj(droid,DORDER_OBSERVE,target);	
+}
+
+function attackStuff() {
+	for (var j=0; j<baseInfo.length; ++j) {
+		var list=enumGroup(baseInfo[j].attackGroup);
+		if (list.length < MIN_ATTACKERS && !atLimits())
+			continue;
+		var target=findNearestTarget(baseInfo[j].x,baseInfo[j].y);
+		if (typeof(target)=="undefined") 
+			return;
+		for (var i=0; i<list.length; ++i)
+			attackWithDroid(list[i],target,false);
+	}
+}
+
+function eventAttacked(victim, attacker) {
+	if (attacker.player==me) // don't quarrel because of friendly splash damage
+		return;
+	if (victim.type==STRUCTURE) {
+		var base=findNearestBase(victim.x,victim.y);
+		var list=enumGroup(baseInfo[base].defendGroup);
+		list = list.concat(enumGroup(globalDefendGroup));
+		for (var i=0; i<list.length; ++i) {
+			var droid=list[i];
+			if (droid.order != DORDER_SCOUT) {
+				orderDroidLoc(droid,DORDER_SCOUT,attacker.x,attacker.y);
+			}
+		}
+	} else if (victim.type==DROID_WEAPON) {
+		var gr=groupOfTank(victim);
+		if (typeof(gr)=="undefined") 
+			return;
+		var list=enumGroup(gr);
+		for (var i=0; i<list.length; ++i)
+			attackWithDroid(list[i],attacker,true);
+	}
+}
+
+function eventDroidBuilt(droid, fac) {
+	groupAddDroid(needToPickGroup,droid);
+	queue("reviseGroups",200);
+	if (fac != null) // unit not transfered but actually built
+		produceDroid(fac);
+}
+
+function eventGameInit() {
+	for (var i=0; i<templates.length; ++i) {
+		makeComponentAvailable(templates[i][0], me);
+		makeComponentAvailable(templates[i][1], me);
+		if (typeof(templates[i][2])!="undefined")
+			makeComponentAvailable(templates[i][2], me);
+		if (typeof(templates[i][3])!="undefined")
+			makeComponentAvailable(templates[i][3], me);
+	}
+	makeComponentAvailable("SensorTurret1Mk1", me);
 	makeComponentAvailable("BaBaProp", me);
-	makeComponentAvailable("BaBaLegs", me);
-	makeComponentAvailable("bTrikeMG", me);
-	makeComponentAvailable("BuggyMG", me);
-	makeComponentAvailable("BJeepMG", me);
-	makeComponentAvailable("BusCannon", me);
-	makeComponentAvailable("BabaFlame", me);
-	makeComponentAvailable("BaBaMG", me);
-	attackGroup = newGroup();	// allocate a new group
-	groupAddArea(attackGroup, 0, 0, mapWidth, mapHeight);
 }
 
-function eventStartLevel()
-{
-	scavtick();
-	setTimer("scavtick", 15000);	// start a constant timer function
-}
-
-// deal with a droid being built by us
-function eventDroidBuilt(droid, fac1)
-{
-	groupAddDroid(attackGroup, droid);
-
-	// Build another
-	if (fac1 && structureIdle(fac1) && groupSize(attackGroup) < maxDroids)
-	{
-		// We now have switch statements! And we can use the built-in Math library
-		switch (Math.floor(Math.random() * 10))
-		{
-		case 0:	buildDroid(fac1, "Trike", "B4body-sml-trike01", "BaBaProp", "", DROID_WEAPON, "bTrikeMG"); break;
-		case 1: buildDroid(fac1, "Buggy", "B3body-sml-buggy01", "BaBaProp", "", DROID_WEAPON, "BuggyMG"); break;
-		case 2: buildDroid(fac1, "Jeep", "B2JeepBody", "BaBaProp", "", DROID_WEAPON, "BJeepMG"); break;
-		case 3: buildDroid(fac1, "Cannonbus", "BusBody", "BaBaProp", "", DROID_WEAPON, "BusCannon"); break;
-		case 4: buildDroid(fac1, "Firebus", "BusBody", "BaBaProp", "", DROID_WEAPON, "BabaFlame"); break;
-		default: buildDroid(fac1, "Bloke", "B1BaBaPerson01", "BaBaLegs", "", DROID_PERSON, "BaBaMG"); break;
-		}
+function eventStartLevel() {
+	var list=enumStruct(me,factory);
+	for (var i=0; i<list.length; ++i) {
+		var fac=list[i];
+		baseInfo[i]=new constructBaseInfo(fac.x,fac.y);
+		produceDroid(fac);
 	}
+	MAX_SENSORS=baseInfo.length;
+	list=enumDroid(me);
+	for (var i=0; i<list.length; ++i)
+		addDroidToSomeGroup(list[i]);
+	globalDefendGroup = newGroup();
+	needToPickGroup = newGroup();
+	setTimer("attackStuff", 3000);
 }
 
-// watch for structures being attacked. Send the cavalry as required.
-function eventAttacked(victim, attacker)
-{
-	if (victim.type == STRUCTURE && (gameTime - lastAttack) > 3000)
-	{
-		lastAttack = gameTime;
-		var droidlist = enumGroup(attackGroup);
-		for (var i = 0; i < droidlist.length; i++)
-		{
-			var droid = droidlist[i];
-			if (distBetweenTwoPoints(victim.x, victim.y, attacker.x, attacker.y) < 24)
-			{
-				orderDroidLoc(droid, DORDER_MOVE, attacker.x, attacker.y);
-			}
-		}
-	}
-}

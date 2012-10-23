@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot v1.38 ~Hover~"
+js = nullbot-1-38-hover.js
+tip = "An AI specially tweaked for sea maps based on NullBot"

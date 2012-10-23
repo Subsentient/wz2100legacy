@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot v1.38 ~MC~"
+js = nullbot-1-38-mc.js
+tip = "Machinegun-Cannon rusher AI - a fixed personality of NullBot"
