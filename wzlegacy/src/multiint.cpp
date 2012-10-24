@@ -1055,7 +1055,7 @@ static void addGames(void)
 		sButInit = W_BUTINIT();
 		sButInit.formID = FRONTEND_BOTFORM;
 		sButInit.id = FRONTEND_NOGAMESAVAILABLE;
-		sButInit.x = 70;
+		sButInit.x = 50;
 		sButInit.y = 50;
 		sButInit.style = WBUT_TXTCENTRE;
 		sButInit.width = FRONTEND_BUTWIDTH;
