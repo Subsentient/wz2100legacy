@@ -96,7 +96,7 @@ bool attemptCheatCode(const char* cheat_name)
 		kf_ToggleFPS(); 
 		return true; 
 	}
-	if (!strcasecmp("spec_me", cheat_name)) // Let us spectate ourselves -Subsentient
+	if (!strcasecmp("spec me", cheat_name)) // Let us spectate ourselves -Subsentient
 	{
 		kf_SpecMe(); 
 		return true; 
