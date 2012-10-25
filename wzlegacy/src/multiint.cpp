@@ -1066,6 +1066,8 @@ static void addGames(void)
 		sButInit.pText = txt;
 
 		widgAddButton(psWScreen, &sButInit);
+
+		NETclose(); //Why wasn't this in here? It's causing segfaults...
 	}
 }
 
