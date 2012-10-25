@@ -237,7 +237,7 @@ void registerSearchPath( const char path[], unsigned int priority )
  * \brief Rebuilds the PHYSFS searchPath with mode specific subdirs
  *
  * Priority:
- * maps > mods > base > base.wz
+ * maps > mods > base > base.wzl
  */
 bool rebuildSearchPath( searchPathMode mode, bool force )
 {
@@ -285,7 +285,7 @@ bool rebuildSearchPath( searchPathMode mode, bool force )
 					sstrcat(tmpstr, "mp");
 					PHYSFS_removeFromSearchPath( tmpstr );
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "mp.wz");
+					sstrcat(tmpstr, "mp.wzl");
 					PHYSFS_removeFromSearchPath( tmpstr );
 
 					// Remove plain dir
@@ -296,12 +296,12 @@ bool rebuildSearchPath( searchPathMode mode, bool force )
 					sstrcat(tmpstr, "base");
 					PHYSFS_removeFromSearchPath( tmpstr );
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "base.wz");
+					sstrcat(tmpstr, "base.wzl");
 					PHYSFS_removeFromSearchPath( tmpstr );
 
 					// remove video search path as well
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "sequences.wz");
+					sstrcat(tmpstr, "sequences.wzl");
 					PHYSFS_removeFromSearchPath( tmpstr );
 					curSearchPath = curSearchPath->higherPriority;
 				}
@@ -314,7 +314,7 @@ bool rebuildSearchPath( searchPathMode mode, bool force )
 				{
 					// make sure videos override included files
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "sequences.wz");
+					sstrcat(tmpstr, "sequences.wzl");
 					PHYSFS_addToSearchPath(tmpstr, PHYSFS_APPEND);
 					curSearchPath = curSearchPath->higherPriority;
 				}
@@ -347,7 +347,7 @@ bool rebuildSearchPath( searchPathMode mode, bool force )
 					sstrcat(tmpstr, "base");
 					PHYSFS_addToSearchPath( tmpstr, PHYSFS_APPEND );
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "base.wz");
+					sstrcat(tmpstr, "base.wzl");
 					PHYSFS_addToSearchPath( tmpstr, PHYSFS_APPEND );
 
 					curSearchPath = curSearchPath->higherPriority;
@@ -361,7 +361,7 @@ bool rebuildSearchPath( searchPathMode mode, bool force )
 				{
 					// make sure videos override included files
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "sequences.wz");
+					sstrcat(tmpstr, "sequences.wzl");
 					PHYSFS_addToSearchPath(tmpstr, PHYSFS_APPEND);
 					curSearchPath = curSearchPath->higherPriority;
 				}
@@ -393,7 +393,7 @@ bool rebuildSearchPath( searchPathMode mode, bool force )
 					sstrcat(tmpstr, "mp");
 					PHYSFS_addToSearchPath( tmpstr, PHYSFS_APPEND );
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "mp.wz");
+					sstrcat(tmpstr, "mp.wzl");
 					PHYSFS_addToSearchPath( tmpstr, PHYSFS_APPEND );
 
 					// Add plain dir
@@ -404,7 +404,7 @@ bool rebuildSearchPath( searchPathMode mode, bool force )
 					sstrcat(tmpstr, "base");
 					PHYSFS_addToSearchPath( tmpstr, PHYSFS_APPEND );
 					sstrcpy(tmpstr, curSearchPath->path);
-					sstrcat(tmpstr, "base.wz");
+					sstrcat(tmpstr, "base.wzl");
 					PHYSFS_addToSearchPath( tmpstr, PHYSFS_APPEND );
 
 					curSearchPath = curSearchPath->higherPriority;

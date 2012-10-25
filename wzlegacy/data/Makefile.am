@@ -3,7 +3,7 @@ SUBDIRS = music
 stamp:
 	touch stamp
 
-%.wz: $(abs_srcdir)/% stamp
+%.wzl: $(abs_srcdir)/% stamp
 	(cd $(srcdir)/$(notdir $<) && $(ZIP) -r0 $(ZIP_UPDATE) $(abs_builddir)/$@ $(filter-out stamp,$(filter-out $<,$(^:$</%=%))) -x '*svn*' -x '*Makefile*' -x '*.svg' || [ $$? -eq 12 ] && true) # zip returns 12 on "nothing to do"
 	$(ZIP) -T $@
 	rm -f stamp
@@ -41,8 +41,8 @@ PATCHLIST = \
 	structs \
 	wrf
 
-BASEARCHIVE = base.wz
-PATCHARCHIVE = mp.wz
+BASEARCHIVE = base.wzl
+PATCHARCHIVE = mp.wzl
 
 CLEANFILES = $(BASEARCHIVE) $(PATCHARCHIVE)
 

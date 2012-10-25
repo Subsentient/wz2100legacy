@@ -175,8 +175,8 @@ Section $(TEXT_SecBase) SecBase
   File "${EXTDIR}\bin\dbghelp.dll"
 
   ; Data files
-  File "${TOP_BUILDDIR}\data\mp.wz"
-  File "${TOP_BUILDDIR}\data\base.wz"
+  File "${TOP_BUILDDIR}\data\mp.wzl"
+  File "${TOP_BUILDDIR}\data\base.wzl"
 
   ; Information/documentation files (convert eols for text files)
   File "${TOP_SRCDIR}\ChangeLog"
@@ -720,8 +720,8 @@ Section "Uninstall"
   Delete "$INSTDIR\dbghelp.dll.license.txt"
   Delete "$INSTDIR\dbghelp.dll"
 
-  Delete "$INSTDIR\base.wz"
-  Delete "$INSTDIR\mp.wz"
+  Delete "$INSTDIR\base.wzl"
+  Delete "$INSTDIR\mp.wzl"
   Delete "$INSTDIR\sequences.wz"
 
   Delete "$INSTDIR\stderr.txt"
