@@ -1,5 +1,5 @@
 # Spanish translation for warzone2100
-# Copyright (c) 2008 Warzone 2100 Legacy Resurrection Project
+# Copyright (c) 2008 Warzone 2100 Resurrection Project
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the warzone2100 package.
 #
@@ -11929,7 +11929,7 @@ msgid ""
 "Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2010 The Warzone 2100 Legacy Project"
+"Copyright © 2005-2010 The Warzone 2100 Project"
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
