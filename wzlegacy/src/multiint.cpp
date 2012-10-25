@@ -2939,7 +2939,7 @@ static void processMultiopWidgets(UDWORD id)
 		sstrcpy(sPlayer, widgGetString(psWScreen, MULTIOP_PNAME));	// pname
 		// Should not set game.map or game.hash here, since MULTIOP_MAP's string came from game.map in the first place, anyway. Wouldn't know what to set the hash to, and clearing it means selecting the first map with the right name.
 		//sstrcpy(game.map, widgGetString(psWScreen, MULTIOP_MAP));  // add the name
-
+	 	NETclose(); //Close the socket before anything funky happens. Kinda overkill, but it's usually worth it. -Subsentient
 		resetReadyStatus(false);
 		resetDataHash();
 		removeWildcards((char*)sPlayer);
@@ -3473,6 +3473,7 @@ void frontendMultiMessages(void)
 			stopJoining();
 			debug(LOG_NET, "The host has quit!");
 			setLobbyError(ERROR_HOSTDROPPED);
+			NETclose(); //Another unclosed socket? -Subsentient
 			break;
 
 		case NET_TEXTMSG:					// Chat message
