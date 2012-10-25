@@ -33,7 +33,7 @@
 
 // Get platform defines before checking for them.
 // Qt headers MUST come before platform specific stuff!
-#include "wzapp_qt.h"
+#include "wzapp_backend.h"
 
 #if defined(WZ_CC_MSVC)
 #include "wzapp.h.moc"		// this is generated on the pre-build event.

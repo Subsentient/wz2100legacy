@@ -139,7 +139,7 @@ esac
 AM_CONDITIONAL([MINGW32], test "x$host_os_mingw32" = "xyes")
 
 
-# Check for X11 (for qtgame and scrap)
+# Check for X11 (for the backend and scrap)
 if test "x$host_os_mingw32" != "xyes" ; then
 	X_LIBS=""
 	AC_PATH_X
@@ -467,7 +467,7 @@ AC_CONFIG_FILES([Makefile
 		lib/gamelib/Makefile
 		lib/ivis_opengl/Makefile
 		lib/netplay/Makefile
-		lib/qtgame/Makefile
+		lib/backend/Makefile
 		lib/script/Makefile
 		lib/sequence/Makefile
 		lib/sound/Makefile

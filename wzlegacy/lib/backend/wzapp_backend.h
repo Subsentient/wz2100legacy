@@ -30,7 +30,7 @@
 #include <QtCore/QSemaphore>
 #include <physfs.h>
 
-#include "qtgame.h"
+#include "backend_game.h"
 
 // Get platform defines before checking for them.
 // Qt headers MUST come before platform specific stuff!

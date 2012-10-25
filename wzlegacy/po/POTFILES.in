@@ -186,11 +186,11 @@ lib/netplay/netplay.cpp
 lib/netplay/netqueue.cpp
 lib/netplay/netsocket.cpp
 lib/netplay/nettypes.cpp
-lib/qtgame/macosx_screen_resolutions.cpp
-lib/qtgame/main_qt.cpp
-lib/qtgame/qtgame.cpp
-lib/qtgame/swapinterval.cpp
-lib/qtgame/wzapp_qt.cpp
+lib/backend/macosx_screen_resolutions.cpp
+lib/backend/backend_main.cpp
+lib/backend/backend_game.cpp
+lib/backend/swapinterval.cpp
+lib/backend/wzapp_backend.cpp
 lib/script/codeprint.cpp
 lib/script/event.cpp
 lib/script/eventsave.cpp

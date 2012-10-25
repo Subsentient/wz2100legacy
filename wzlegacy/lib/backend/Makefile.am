@@ -3,8 +3,8 @@ AM_CFLAGS = $(WZ_CFLAGS)
 AM_CXXFLAGS = $(WZ_CXXFLAGS) $(QT4_CFLAGS)
 
 MOCHEADER = \
-	qtgame.h \
-	wzapp_qt.h
+	backend_game.h \
+	wzapp_backend.h
 MOCEDFILES = $(MOCHEADER:%.h=%_moc.cpp)
 
 %_moc.cpp: %.h
@@ -16,18 +16,18 @@ EXTRA_DIST = \
 	swapinterval.mm \
 	macosx_screen_resolutions.h macosx_screen_resolutions.cpp
 
-noinst_LIBRARIES = libqtgame.a
+noinst_LIBRARIES = libbackend.a
 noinst_HEADERS = \
 	$(MOCHEADER) \
-	qtgame.h \
+	backend_game.h \
 	swapinterval.h
 
-nodist_libqtgame_a_SOURCES = \
-	qtgame_moc.cpp \
-	wzapp_qt_moc.cpp
+nodist_libbackend_a_SOURCES = \
+	backend_game_moc.cpp \
+	wzapp_backend_moc.cpp
 
-libqtgame_a_SOURCES = \
-	main_qt.cpp \
-	qtgame.cpp \
+libbackend_a_SOURCES = \
+	backend_main.cpp \
+	backend_game.cpp \
 	swapinterval.cpp \
-	wzapp_qt.cpp
+	wzapp_backend.cpp

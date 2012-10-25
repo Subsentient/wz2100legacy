@@ -9191,7 +9191,7 @@ fi
 
 
 
-# Check for X11 (for qtgame and scrap)
+# Check for X11 (for the backend and scrap)
 if test "x$host_os_mingw32" != "xyes" ; then
 	X_LIBS=""
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for X" >&5
@@ -11602,7 +11602,7 @@ WZ_C99FLAGS=${WZ_C99FLAGS}
 
 ac_config_headers="$ac_config_headers config.h"
 
-ac_config_files="$ac_config_files Makefile po/Makefile.in doc/Makefile icons/Makefile data/Makefile data/music/Makefile pkg/nsis/Makefile win32/Makefile tests/Makefile 3rdparty/miniupnpc/Makefile 3rdparty/quesoglc/Makefile lib/framework/Makefile lib/exceptionhandler/Makefile lib/gamelib/Makefile lib/ivis_opengl/Makefile lib/netplay/Makefile lib/qtgame/Makefile lib/script/Makefile lib/sequence/Makefile lib/sound/Makefile lib/widget/Makefile tools/map/Makefile src/Makefile"
+ac_config_files="$ac_config_files Makefile po/Makefile.in doc/Makefile icons/Makefile data/Makefile data/music/Makefile pkg/nsis/Makefile win32/Makefile tests/Makefile 3rdparty/miniupnpc/Makefile 3rdparty/quesoglc/Makefile lib/framework/Makefile lib/exceptionhandler/Makefile lib/gamelib/Makefile lib/ivis_opengl/Makefile lib/netplay/Makefile lib/backend/Makefile lib/script/Makefile lib/sequence/Makefile lib/sound/Makefile lib/widget/Makefile tools/map/Makefile src/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -12395,7 +12395,7 @@ do
     "lib/gamelib/Makefile") CONFIG_FILES="$CONFIG_FILES lib/gamelib/Makefile" ;;
     "lib/ivis_opengl/Makefile") CONFIG_FILES="$CONFIG_FILES lib/ivis_opengl/Makefile" ;;
     "lib/netplay/Makefile") CONFIG_FILES="$CONFIG_FILES lib/netplay/Makefile" ;;
-    "lib/qtgame/Makefile") CONFIG_FILES="$CONFIG_FILES lib/qtgame/Makefile" ;;
+    "lib/backend/Makefile") CONFIG_FILES="$CONFIG_FILES lib/backend/Makefile" ;;
     "lib/script/Makefile") CONFIG_FILES="$CONFIG_FILES lib/script/Makefile" ;;
     "lib/sequence/Makefile") CONFIG_FILES="$CONFIG_FILES lib/sequence/Makefile" ;;
     "lib/sound/Makefile") CONFIG_FILES="$CONFIG_FILES lib/sound/Makefile" ;;

@@ -273,7 +273,7 @@ wz2100legacy_LIBS = \
 	$(top_builddir)/lib/exceptionhandler/libexceptionhandler.a \
 	$(top_builddir)/3rdparty/miniupnpc/libminiupnpc.a \
 	$(top_builddir)/3rdparty/quesoglc/libquesoglc.a \
-	$(top_builddir)/lib/qtgame/libqtgame.a
+	$(top_builddir)/lib/backend/libbackend.a
 
 wz2100legacy_LDADD = $(wz2100legacy_LIBS) $(LTLIBINTL) $(PHYSFS_LIBS) $(PNG_LIBS) $(VORBISFILE_LIBS) $(VORBIS_LIBS) \
 	$(THEORA_LIBS) $(OPENAL_LIBS) $(OPENGLC_LIBS) $(OPENGL_LIBS) $(QT4_LIBS) $(GLEW_LIBS) \

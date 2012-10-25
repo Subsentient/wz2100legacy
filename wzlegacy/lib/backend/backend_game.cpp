@@ -1,10 +1,10 @@
-#include "qtgame.h"
+#include "backend_game.h"
 
 #include "lib/framework/wzglobal.h"
 #include "swapinterval.h"
 
 #if defined(WZ_CC_MSVC)
-#include "qtgame.h.moc"		// this is generated on the pre-build event.
+#include "backend_game.h.moc"		// this is generated on the pre-build event.
 #endif
 
 #ifdef WZ_WS_X11

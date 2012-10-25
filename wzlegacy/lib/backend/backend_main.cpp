@@ -4,7 +4,7 @@
 #include "lib/ivis_opengl/pieclip.h"
 #include "src/warzoneconfig.h"
 #include "lib/framework/frameint.h"
-#include "wzapp_qt.h"
+#include "wzapp_backend.h"
 
 // used in crash reports & version info
 

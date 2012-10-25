@@ -11,7 +11,7 @@ SUBDIRS = \
 	lib/sound \
 	lib/netplay \
 	lib/widget \
-	lib/qtgame \
+	lib/backend \
 	tools/map \
 	src \
 	data \

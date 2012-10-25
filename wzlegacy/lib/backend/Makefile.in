@@ -35,7 +35,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = lib/qtgame
+subdir = lib/backend
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -60,14 +60,15 @@ CONFIG_CLEAN_VPATH_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 AR = ar
 ARFLAGS = cru
-libqtgame_a_AR = $(AR) $(ARFLAGS)
-libqtgame_a_LIBADD =
-am_libqtgame_a_OBJECTS = main_qt.$(OBJEXT) qtgame.$(OBJEXT) \
-	swapinterval.$(OBJEXT) wzapp_qt.$(OBJEXT)
-nodist_libqtgame_a_OBJECTS = qtgame_moc.$(OBJEXT) \
-	wzapp_qt_moc.$(OBJEXT)
-libqtgame_a_OBJECTS = $(am_libqtgame_a_OBJECTS) \
-	$(nodist_libqtgame_a_OBJECTS)
+libbackend_a_AR = $(AR) $(ARFLAGS)
+libbackend_a_LIBADD =
+am_libbackend_a_OBJECTS = backend_main.$(OBJEXT) \
+	backend_game.$(OBJEXT) swapinterval.$(OBJEXT) \
+	wzapp_backend.$(OBJEXT)
+nodist_libbackend_a_OBJECTS = backend_game_moc.$(OBJEXT) \
+	wzapp_backend_moc.$(OBJEXT)
+libbackend_a_OBJECTS = $(am_libbackend_a_OBJECTS) \
+	$(nodist_libbackend_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -77,8 +78,8 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-SOURCES = $(libqtgame_a_SOURCES) $(nodist_libqtgame_a_SOURCES)
-DIST_SOURCES = $(libqtgame_a_SOURCES)
+SOURCES = $(libbackend_a_SOURCES) $(nodist_libbackend_a_SOURCES)
+DIST_SOURCES = $(libbackend_a_SOURCES)
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -277,8 +278,8 @@ AM_CPPFLAGS = $(WZ_CPPFLAGS) $(QT4_CFLAGS) $(GLEW_CFLAGS)
 AM_CFLAGS = $(WZ_CFLAGS)
 AM_CXXFLAGS = $(WZ_CXXFLAGS) $(QT4_CFLAGS)
 MOCHEADER = \
-	qtgame.h \
-	wzapp_qt.h
+	backend_game.h \
+	wzapp_backend.h
 
 MOCEDFILES = $(MOCHEADER:%.h=%_moc.cpp)
 CLEANFILES = $(MOCEDFILES)
@@ -286,21 +287,21 @@ EXTRA_DIST = \
 	swapinterval.mm \
 	macosx_screen_resolutions.h macosx_screen_resolutions.cpp
 
-noinst_LIBRARIES = libqtgame.a
+noinst_LIBRARIES = libbackend.a
 noinst_HEADERS = \
 	$(MOCHEADER) \
-	qtgame.h \
+	backend_game.h \
 	swapinterval.h
 
-nodist_libqtgame_a_SOURCES = \
-	qtgame_moc.cpp \
-	wzapp_qt_moc.cpp
+nodist_libbackend_a_SOURCES = \
+	backend_game_moc.cpp \
+	wzapp_backend_moc.cpp
 
-libqtgame_a_SOURCES = \
-	main_qt.cpp \
-	qtgame.cpp \
+libbackend_a_SOURCES = \
+	backend_main.cpp \
+	backend_game.cpp \
 	swapinterval.cpp \
-	wzapp_qt.cpp
+	wzapp_backend.cpp
 
 all: all-am
 
@@ -315,9 +316,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign lib/qtgame/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign lib/backend/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign lib/qtgame/Makefile
+	  $(AUTOMAKE) --foreign lib/backend/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -339,10 +340,10 @@ $(am__aclocal_m4_deps):
 
 clean-noinstLIBRARIES:
 	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-libqtgame.a: $(libqtgame_a_OBJECTS) $(libqtgame_a_DEPENDENCIES) $(EXTRA_libqtgame_a_DEPENDENCIES) 
-	-rm -f libqtgame.a
-	$(libqtgame_a_AR) libqtgame.a $(libqtgame_a_OBJECTS) $(libqtgame_a_LIBADD)
-	$(RANLIB) libqtgame.a
+libbackend.a: $(libbackend_a_OBJECTS) $(libbackend_a_DEPENDENCIES) $(EXTRA_libbackend_a_DEPENDENCIES) 
+	-rm -f libbackend.a
+	$(libbackend_a_AR) libbackend.a $(libbackend_a_OBJECTS) $(libbackend_a_LIBADD)
+	$(RANLIB) libbackend.a
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -350,12 +351,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main_qt.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qtgame.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qtgame_moc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/backend_game.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/backend_game_moc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/backend_main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/swapinterval.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wzapp_qt.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wzapp_qt_moc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wzapp_backend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wzapp_backend_moc.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
