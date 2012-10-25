@@ -632,8 +632,14 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 		sButInit.pTip		= _("Technology level 3");
 		widgAddButton(psRScreen, &sButInit);
 
+		sButInit.id		= M_REQUEST_AP;
+		sButInit.y		= -16; //Use a negative value to get rid of this button's space -Subsentient
+		sButInit.UserData	= 0;
+		sButInit.pTip		= _("Any number of players");
+		sButInit.pDisplay	= displayNumPlayersBut;
+		//widgAddButton(psRScreen, &sButInit); This button is mostly useless. 
+		//I keep it because I am too lazy to fix a bug that occurs with it's complete removal. -Subsentient
 
-		sButInit.y = -16; //Remove an unused button, but keep this snippet to make the map player buttons behave. -Subsentient
 		STATIC_ASSERT(MAX_PLAYERS_IN_GUI <= ARRAY_SIZE(M_REQUEST_NP) + 1);
 		for (unsigned numPlayers = 2; numPlayers <= MAX_PLAYERS_IN_GUI; ++numPlayers)
 		{
@@ -643,7 +649,6 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 			sButInit.UserData	= numPlayers;
 			ssprintf(ttip[numPlayers], ngettext("%d player", "%d players", numPlayers), numPlayers);
 			sButInit.pTip		= (const char *)&ttip[numPlayers];
-			sButInit.pDisplay	= displayNumPlayersBut;
 			widgAddButton(psRScreen, &sButInit);
 		}
 	}
