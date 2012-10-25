@@ -634,6 +634,7 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 
 
 		sButInit.y = -16; //Remove an unused button, but keep this snippet to make the map player buttons behave. -Subsentient
+		sButInit.pDisplay	= displayNumPlayersBut;
 		STATIC_ASSERT(MAX_PLAYERS_IN_GUI <= ARRAY_SIZE(M_REQUEST_NP) + 1);
 		for (unsigned numPlayers = 2; numPlayers <= MAX_PLAYERS_IN_GUI; ++numPlayers)
 		{
@@ -643,7 +644,6 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 			sButInit.UserData	= numPlayers;
 			ssprintf(ttip[numPlayers], ngettext("%d player", "%d players", numPlayers), numPlayers);
 			sButInit.pTip		= (const char *)&ttip[numPlayers];
-			sButInit.pDisplay	= displayNumPlayersBut;
 			widgAddButton(psRScreen, &sButInit);
 		}
 	}
