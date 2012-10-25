@@ -36,7 +36,6 @@ EXTRA_DIST= \
 	config.rpath \
 	configure.ac \
 	pkg/dpkg \
-	macosx \
 	tools/image/image.cpp \
 	tools/image/configs \
 	tools/image/Image.xcodeproj \
