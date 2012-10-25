@@ -1067,8 +1067,8 @@ static void addGames(void)
 
 		widgAddButton(psWScreen, &sButInit);
 
-		NETclose(); //Why wasn't this in here? It's causing segfaults...
 	}
+	NETclose(); //Why wasn't this in here? It's causing segfaults...
 }
 
 static void removeGames(void)
