@@ -1,11 +1,11 @@
-# Copyright (c) 2008 Warzone 2100 Resurrection Project
+# Copyright (c) 2008 Warzone 2100 Legacy Resurrection Project
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the warzone2100 package.
 #
 # Jen Ockwell <jenfraggleubuntu@googlemail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: Warzone 2100\n"
+"Project-Id-Version: Warzone 2100 Legacy\n"
 "Report-Msgid-Bugs-To: warzone2100-project@lists.sourceforge.net\n"
 "POT-Creation-Date: 2012-06-20 01:23+0200\n"
 "PO-Revision-Date: 2012-05-07 15:24+0100\n"
@@ -11922,39 +11922,39 @@ msgstr "Képtelenség, hogy kapjon egy támogatói választ!"
 #: po/custom/mac-infoplist.txt:1
 msgid ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 "Copyright © 1999-2004 Eidos Interaktív.\n"
-"Copyright © 2005-2011 A Warzone 2100 Projekt"
+"Copyright © 2005-2011 A Warzone 2100 Legacy Projekt"
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
-msgid "Warzone 2100"
-msgstr "Warzone 2100"
+msgid "Warzone 2100 Legacy"
+msgstr "Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:3
-msgid "Warzone 2100 Map / Mod File"
-msgstr "Warzone 2100 Térkép / Mód fájl"
+msgid "Warzone 2100 Legacy Map / Mod File"
+msgstr "Warzone 2100 Legacy Térkép / Mód fájl"
 
 #: po/custom/mac-infoplist.txt:4
-msgid "Warzone 2100 Campaign Mod File"
-msgstr "Warzone 2100 Küldetés Mód fájl"
+msgid "Warzone 2100 Legacy Campaign Mod File"
+msgstr "Warzone 2100 Legacy Küldetés Mód fájl"
 
 #: po/custom/mac-infoplist.txt:5
-msgid "Warzone 2100 Multiplayer Mod File"
-msgstr "Warzone 2100 Többjátékos Mód fájl"
+msgid "Warzone 2100 Legacy Multiplayer Mod File"
+msgstr "Warzone 2100 Legacy Többjátékos Mód fájl"
 
 #: po/custom/mac-infoplist.txt:6
-msgid "Warzone 2100 Global Mod File"
-msgstr "Warzone 2100 Globális Mód fájl"
+msgid "Warzone 2100 Legacy Global Mod File"
+msgstr "Warzone 2100 Legacy Globális Mód fájl"
 
 #: po/custom/mac-infoplist.txt:7
 msgid "Warzone"
 msgstr "Warzone"
 
 #: po/custom/mac-infoplist.txt:8
-msgid "Warzone 2100 Music Mod File"
-msgstr "Warzone 2100 Zenei Mód fájl"
+msgid "Warzone 2100 Legacy Music Mod File"
+msgstr "Warzone 2100 Legacy Zenei Mód fájl"
 
 #: po/custom/warzone2100.desktop.txt:1
 msgid "Postnuclear realtime strategy"
@@ -12466,8 +12466,8 @@ msgid "MAIN MENU"
 msgstr "FŐ MENÜ"
 
 #: src/frontend.cpp:117
-msgid "Warzone 2100 is completely free and open source (FLOSS). Official site: http://wz2100.net/"
-msgstr "Warzone 2100 egy teljesen szabad és nyitott forrású játék (FLOSS). Hivatalos oldal: http://wz 2100.net"
+msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
+msgstr "Warzone 2100 Legacy egy teljesen szabad és nyitott forrású játék (FLOSS). Hivatalos oldal: http://wz 2100.net"
 
 #: src/frontend.cpp:188
 msgid "Fast Play"
@@ -12517,7 +12517,7 @@ msgid "SINGLE PLAYER"
 msgstr "EGYJÁTÉKOS"
 
 #: src/frontend.cpp:257
-msgid "Campaign videos are missing! Get them from http://wz2100.net"
+msgid "Campaign videos are missing! Get them from http://universe2.us/wzlegacy"
 msgstr ""
 
 #: src/frontend.cpp:333
@@ -14999,8 +14999,8 @@ msgstr "Verzió %s-%s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "OpenGL 2.0-t nem támogatja a te rendszered. Néhány dolgot rossznak látok. Kérlek frissítsd fel a drivert vagy hardware videokártyád, ha ez lehetséges."
 
-#~ msgid "Visit our official site: http://wz2100.net"
-#~ msgstr "Látogass el a hivatalos oldalra: http://wz2100.net"
+#~ msgid "Visit our official site: http://universe2.us/wzlegacy"
+#~ msgstr "Látogass el a hivatalos oldalra: http://universe2.us/wzlegacy"
 
 #~ msgid "Unit Colour (SP)"
 #~ msgstr "Egység Színek"
@@ -15077,8 +15077,8 @@ msgstr "Verzió %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Jelszó megadása:"
 
-#~ msgid "Use your wz2100.net credentials here."
-#~ msgstr "Használd a wz2100.net igazolást itt."
+#~ msgid "Use your universe2.us/wzlegacy credentials here."
+#~ msgstr "Használd a universe2.us/wzlegacy igazolást itt."
 
 #~ msgid "You cannot change AI in a challenge"
 #~ msgstr "Nem tudsz változtatni az AI-on mozgásnál"

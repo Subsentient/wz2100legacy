@@ -1,4 +1,4 @@
-# Copyright (c) 2008 Warzone 2100 Resurrection Project
+# Copyright (c) 2008 Warzone 2100 Legacy Resurrection Project
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the warzone2100 package.
 #
@@ -11937,39 +11937,39 @@ msgstr "Brak odpowiedzi z serwera lobby!"
 #: po/custom/mac-infoplist.txt:1
 msgid ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
-msgid "Warzone 2100"
-msgstr "Warzone 2100"
+msgid "Warzone 2100 Legacy"
+msgstr "Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:3
-msgid "Warzone 2100 Map / Mod File"
-msgstr "Plik mapy / modyfikacji Warzone 2100"
+msgid "Warzone 2100 Legacy Map / Mod File"
+msgstr "Plik mapy / modyfikacji Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:4
-msgid "Warzone 2100 Campaign Mod File"
-msgstr "Plik modyfikacji kampanii Warzone 2100"
+msgid "Warzone 2100 Legacy Campaign Mod File"
+msgstr "Plik modyfikacji kampanii Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:5
-msgid "Warzone 2100 Multiplayer Mod File"
-msgstr "Plik modyfikacji gry wieloosobowej Warzone 2100"
+msgid "Warzone 2100 Legacy Multiplayer Mod File"
+msgstr "Plik modyfikacji gry wieloosobowej Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:6
-msgid "Warzone 2100 Global Mod File"
-msgstr "Plik globalnej modyfikacji Warzone 2100"
+msgid "Warzone 2100 Legacy Global Mod File"
+msgstr "Plik globalnej modyfikacji Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:7
 msgid "Warzone"
 msgstr "Warzone"
 
 #: po/custom/mac-infoplist.txt:8
-msgid "Warzone 2100 Music Mod File"
-msgstr "Plik modyfikacji muzyki Warzone 2100"
+msgid "Warzone 2100 Legacy Music Mod File"
+msgstr "Plik modyfikacji muzyki Warzone 2100 Legacy"
 
 #: po/custom/warzone2100.desktop.txt:1
 msgid "Postnuclear realtime strategy"
@@ -15006,8 +15006,8 @@ msgstr " - Zbudowana %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Wersja %s-%s%s%s%s"
 
-#~ msgid "Warzone 2100 is completely free and open source (FLOSS). Official site: http://wz2100.net/"
-#~ msgstr "Warzone 2100 jest w pełni darmowym i otwartym oprogramowaniem (FLOSS). Oficjalna strona: http://wz2100.net/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
+#~ msgstr "Warzone 2100 Legacy jest w pełni darmowym i otwartym oprogramowaniem (FLOSS). Oficjalna strona: http://universe2.us/wzlegacy/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Używaj tylko OpenGL 1.5"

@@ -1,5 +1,5 @@
 # Turkish translation of warzone2100
-# Copyright (c) 2007-2008 Warzone 2100 Resurrection Project
+# Copyright (c) 2007-2008 Warzone 2100 Legacy Resurrection Project
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the warzone2100 package.
 #
@@ -11950,39 +11950,39 @@ msgstr "Bekleme odası cevabı alma başarısız!"
 #: po/custom/mac-infoplist.txt:1
 msgid ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 "Telif Hakkı © 1999-2004 Eidos İnteraktif.\n"
-"Telif Hakkı © 2005-2012 Warzone 2100 Projesi"
+"Telif Hakkı © 2012 Warzone 2100 Legacy Projesi"
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
-msgid "Warzone 2100"
-msgstr "Warzone 2100"
+msgid "Warzone 2100 Legacy"
+msgstr "Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:3
-msgid "Warzone 2100 Map / Mod File"
-msgstr "Warzone 2100 Harita / Mod Dosyası"
+msgid "Warzone 2100 Legacy Map / Mod File"
+msgstr "Warzone 2100 Legacy Harita / Mod Dosyası"
 
 #: po/custom/mac-infoplist.txt:4
-msgid "Warzone 2100 Campaign Mod File"
-msgstr "Warzone 2100 Bölüm Mod Dosyası"
+msgid "Warzone 2100 Legacy Campaign Mod File"
+msgstr "Warzone 2100 Legacy Bölüm Mod Dosyası"
 
 #: po/custom/mac-infoplist.txt:5
-msgid "Warzone 2100 Multiplayer Mod File"
-msgstr "Warzone 2100 Çok Oyunculu Mod Dosyası"
+msgid "Warzone 2100 Legacy Multiplayer Mod File"
+msgstr "Warzone 2100 Legacy Çok Oyunculu Mod Dosyası"
 
 #: po/custom/mac-infoplist.txt:6
-msgid "Warzone 2100 Global Mod File"
-msgstr "Warzone 2100 Küresel Mod Dosyası"
+msgid "Warzone 2100 Legacy Global Mod File"
+msgstr "Warzone 2100 Legacy Küresel Mod Dosyası"
 
 #: po/custom/mac-infoplist.txt:7
 msgid "Warzone"
 msgstr "Warzone"
 
 #: po/custom/mac-infoplist.txt:8
-msgid "Warzone 2100 Music Mod File"
-msgstr "Warzone 2100 Müzik Mod Dosyası"
+msgid "Warzone 2100 Legacy Music Mod File"
+msgstr "Warzone 2100 Legacy Müzik Mod Dosyası"
 
 #: po/custom/warzone2100.desktop.txt:1
 msgid "Postnuclear realtime strategy"
@@ -15021,8 +15021,8 @@ msgstr " - %s İnşa"
 msgid "Version %s-%s%s%s%s"
 msgstr "Sürüm %s-%s%s%s%s"
 
-#~ msgid "Warzone 2100 is completely free and open source (FLOSS). Official site: http://wz2100.net/"
-#~ msgstr "Warzone 2100 tamamen ücretsiz ve açık kaynaklıdır. Resmi site: http://wz2100.net/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
+#~ msgstr "Warzone 2100 Legacy tamamen ücretsiz ve açık kaynaklıdır. Resmi site: http://universe2.us/wzlegacy/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Sadece OpenGL 1.5'i kullan"
@@ -15030,8 +15030,8 @@ msgstr "Sürüm %s-%s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "OpenGL 2.0 sisteminiz tarafından desteklenmiyor. Bazı şeyler yanlış görünebilir. Lütfen grafik sürücünüzü/donanımınızı yükseltin, mümkünse."
 
-#~ msgid "Visit our official site: http://wz2100.net"
-#~ msgstr "Resmi internet sitemizi ziyaret edin: http://wz2100.net"
+#~ msgid "Visit our official site: http://universe2.us/wzlegacy"
+#~ msgstr "Resmi internet sitemizi ziyaret edin: http://universe2.us/wzlegacy"
 
 #~ msgid "Unit Colour (SP)"
 #~ msgstr "Birim Rengi (T.O)"
@@ -15114,8 +15114,8 @@ msgstr "Sürüm %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Şifreyi gir:"
 
-#~ msgid "Use your wz2100.net credentials here."
-#~ msgstr "Burada wz2100.net kimlik bilgilerini giriş yapmak için kullan"
+#~ msgid "Use your universe2.us/wzlegacy credentials here."
+#~ msgstr "Burada universe2.us/wzlegacy kimlik bilgilerini giriş yapmak için kullan"
 
 #~ msgid "3 players"
 #~ msgstr "2 Oyuncu"

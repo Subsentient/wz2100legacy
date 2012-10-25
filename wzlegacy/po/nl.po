@@ -11914,39 +11914,39 @@ msgstr "Ontvangen van lobby antwoord mislukt!"
 #: po/custom/mac-infoplist.txt:1
 msgid ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 "Copyright © 1999-2004 Eidos Interactive. \n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
-msgid "Warzone 2100"
-msgstr "Warzone 2100"
+msgid "Warzone 2100 Legacy"
+msgstr "Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:3
-msgid "Warzone 2100 Map / Mod File"
-msgstr "Warzone 2100 Kaart / Mod Bestand"
+msgid "Warzone 2100 Legacy Map / Mod File"
+msgstr "Warzone 2100 Legacy Kaart / Mod Bestand"
 
 #: po/custom/mac-infoplist.txt:4
-msgid "Warzone 2100 Campaign Mod File"
-msgstr "Warzone 2100 Campagne Mod Bestanden"
+msgid "Warzone 2100 Legacy Campaign Mod File"
+msgstr "Warzone 2100 Legacy Campagne Mod Bestanden"
 
 #: po/custom/mac-infoplist.txt:5
-msgid "Warzone 2100 Multiplayer Mod File"
-msgstr "Warzone 2100 Multiplayer Mod Bestand"
+msgid "Warzone 2100 Legacy Multiplayer Mod File"
+msgstr "Warzone 2100 Legacy Multiplayer Mod Bestand"
 
 #: po/custom/mac-infoplist.txt:6
-msgid "Warzone 2100 Global Mod File"
-msgstr "Warzone 2100 Globaal Mod Bestand"
+msgid "Warzone 2100 Legacy Global Mod File"
+msgstr "Warzone 2100 Legacy Globaal Mod Bestand"
 
 #: po/custom/mac-infoplist.txt:7
 msgid "Warzone"
 msgstr "Warzone"
 
 #: po/custom/mac-infoplist.txt:8
-msgid "Warzone 2100 Music Mod File"
-msgstr "Warzone 2100 Muziek Mod Bestand"
+msgid "Warzone 2100 Legacy Music Mod File"
+msgstr "Warzone 2100 Legacy Muziek Mod Bestand"
 
 #: po/custom/warzone2100.desktop.txt:1
 msgid "Postnuclear realtime strategy"
@@ -14974,8 +14974,8 @@ msgstr " - Gebouwd %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Versie %s%s%s%s"
 
-#~ msgid "Warzone 2100 is completely free and open source (FLOSS). Official site: http://wz2100.net/"
-#~ msgstr "Warzone 2100 is helemaal gratis en een open bron (FLOSS). Officiële site: http://wz2100.net/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
+#~ msgstr "Warzone 2100 Legacy is helemaal gratis en een open bron (FLOSS). Officiële site: http://universe2.us/wzlegacy/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Gebruik alleen OpenGL 1.5"

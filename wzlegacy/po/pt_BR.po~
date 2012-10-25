@@ -11919,39 +11919,39 @@ msgstr "Falha ao obter uma resposta do lobby!"
 #: po/custom/mac-infoplist.txt:1
 msgid ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
-msgid "Warzone 2100"
-msgstr "Warzone 2100"
+msgid "Warzone 2100 Legacy"
+msgstr "Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:3
-msgid "Warzone 2100 Map / Mod File"
-msgstr "Arquivo de Mapa/Mod de Warzone 2100"
+msgid "Warzone 2100 Legacy Map / Mod File"
+msgstr "Arquivo de Mapa/Mod de Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:4
-msgid "Warzone 2100 Campaign Mod File"
-msgstr "Arquivo de Mod de Campanha do Warzone 2100"
+msgid "Warzone 2100 Legacy Campaign Mod File"
+msgstr "Arquivo de Mod de Campanha do Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:5
-msgid "Warzone 2100 Multiplayer Mod File"
-msgstr "Arquivo de Mod Multiplayer de Warzone 2100"
+msgid "Warzone 2100 Legacy Multiplayer Mod File"
+msgstr "Arquivo de Mod Multiplayer de Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:6
-msgid "Warzone 2100 Global Mod File"
-msgstr "Arquivo de Mod Global de Warzone 2100"
+msgid "Warzone 2100 Legacy Global Mod File"
+msgstr "Arquivo de Mod Global de Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:7
 msgid "Warzone"
 msgstr "Warzone"
 
 #: po/custom/mac-infoplist.txt:8
-msgid "Warzone 2100 Music Mod File"
-msgstr "Arquivo de Mùsica do Warzone 2100"
+msgid "Warzone 2100 Legacy Music Mod File"
+msgstr "Arquivo de Mùsica do Warzone 2100 Legacy"
 
 #: po/custom/warzone2100.desktop.txt:1
 msgid "Postnuclear realtime strategy"
@@ -12463,8 +12463,8 @@ msgid "MAIN MENU"
 msgstr "MENU PRINCIPAL"
 
 #: src/frontend.cpp:117
-msgid "Warzone 2100 is completely free and open source (FLOSS). Official site: http://wz2100.net/"
-msgstr "Warzone 2100 é completamente gratuito e código-aberto (FLOSS). Site oficial: http://wz2100.net/"
+msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
+msgstr "Warzone 2100 Legacy é completamente gratuito e código-aberto (FLOSS). Site oficial: http://universe2.us/wzlegacy/"
 
 #: src/frontend.cpp:188
 msgid "Fast Play"
@@ -12516,7 +12516,7 @@ msgid "SINGLE PLAYER"
 msgstr "UM JOGADOR"
 
 #: src/frontend.cpp:257
-msgid "Campaign videos are missing! Get them from http://wz2100.net"
+msgid "Campaign videos are missing! Get them from http://universe2.us/wzlegacy"
 msgstr ""
 
 #: src/frontend.cpp:333
@@ -15083,8 +15083,8 @@ msgstr "Versão %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Senha:"
 
-#~ msgid "Use your wz2100.net credentials here."
-#~ msgstr "Use seu login do wz2100.net aqui."
+#~ msgid "Use your universe2.us/wzlegacy credentials here."
+#~ msgstr "Use seu login do universe2.us/wzlegacy aqui."
 
 #~ msgid "3 players"
 #~ msgstr "3 jogadores"

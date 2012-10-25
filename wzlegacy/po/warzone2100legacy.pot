@@ -11914,28 +11914,28 @@ msgstr ""
 #: po/custom/mac-infoplist.txt:1
 msgid ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
-msgid "Warzone 2100"
+msgid "Warzone 2100 Legacy"
 msgstr ""
 
 #: po/custom/mac-infoplist.txt:3
-msgid "Warzone 2100 Map / Mod File"
+msgid "Warzone 2100 Legacy Map / Mod File"
 msgstr ""
 
 #: po/custom/mac-infoplist.txt:4
-msgid "Warzone 2100 Campaign Mod File"
+msgid "Warzone 2100 Legacy Campaign Mod File"
 msgstr ""
 
 #: po/custom/mac-infoplist.txt:5
-msgid "Warzone 2100 Multiplayer Mod File"
+msgid "Warzone 2100 Legacy Multiplayer Mod File"
 msgstr ""
 
 #: po/custom/mac-infoplist.txt:6
-msgid "Warzone 2100 Global Mod File"
+msgid "Warzone 2100 Legacy Global Mod File"
 msgstr ""
 
 #: po/custom/mac-infoplist.txt:7
@@ -11943,7 +11943,7 @@ msgid "Warzone"
 msgstr ""
 
 #: po/custom/mac-infoplist.txt:8
-msgid "Warzone 2100 Music Mod File"
+msgid "Warzone 2100 Legacy Music Mod File"
 msgstr ""
 
 #: po/custom/warzone2100.desktop.txt:1

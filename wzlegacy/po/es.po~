@@ -1,5 +1,5 @@
 # Spanish translation for warzone2100
-# Copyright (c) 2008 Warzone 2100 Resurrection Project
+# Copyright (c) 2008 Warzone 2100 Legacy Resurrection Project
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the warzone2100 package.
 #
@@ -11926,30 +11926,30 @@ msgstr "Fallo al obtener respuesta del vestíbulo!"
 #: po/custom/mac-infoplist.txt:1
 msgid ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2012 The Warzone 2100 Project"
+"Copyright © 2012 The Warzone 2100 Legacy Project"
 msgstr ""
 "Copyright © 1999-2004 Eidos Interactive.\n"
-"Copyright © 2005-2010 The Warzone 2100 Project"
+"Copyright © 2005-2010 The Warzone 2100 Legacy Project"
 
 #: po/custom/mac-infoplist.txt:2
 #: po/custom/warzone2100.desktop.txt:2
-msgid "Warzone 2100"
-msgstr "Warzone 2100"
+msgid "Warzone 2100 Legacy"
+msgstr "Warzone 2100 Legacy"
 
 #: po/custom/mac-infoplist.txt:3
-msgid "Warzone 2100 Map / Mod File"
+msgid "Warzone 2100 Legacy Map / Mod File"
 msgstr "Archivo Mod/Mapa de Warzone2100"
 
 #: po/custom/mac-infoplist.txt:4
-msgid "Warzone 2100 Campaign Mod File"
+msgid "Warzone 2100 Legacy Campaign Mod File"
 msgstr "Archivo Mod de Campaña Warzone2100"
 
 #: po/custom/mac-infoplist.txt:5
-msgid "Warzone 2100 Multiplayer Mod File"
+msgid "Warzone 2100 Legacy Multiplayer Mod File"
 msgstr "Archivo Mod de Multijugador Warzone2100"
 
 #: po/custom/mac-infoplist.txt:6
-msgid "Warzone 2100 Global Mod File"
+msgid "Warzone 2100 Legacy Global Mod File"
 msgstr "Archivo Mod Global Warzone2100"
 
 #: po/custom/mac-infoplist.txt:7
@@ -11957,7 +11957,7 @@ msgid "Warzone"
 msgstr "Warzone"
 
 #: po/custom/mac-infoplist.txt:8
-msgid "Warzone 2100 Music Mod File"
+msgid "Warzone 2100 Legacy Music Mod File"
 msgstr "Archivo Mod de Música para Warzone2100"
 
 #: po/custom/warzone2100.desktop.txt:1
@@ -12470,8 +12470,8 @@ msgid "MAIN MENU"
 msgstr "MENÚ PRINCIPAL"
 
 #: src/frontend.cpp:117
-msgid "Warzone 2100 is completely free and open source (FLOSS). Official site: http://wz2100.net/"
-msgstr "Warzone 2100 es completamente gratuíto y de código abierto (FLOSS). Sitio Oficial: http://wz2100.net/"
+msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
+msgstr "Warzone 2100 Legacy es completamente gratuíto y de código abierto (FLOSS). Sitio Oficial: http://universe2.us/wzlegacy/"
 
 #: src/frontend.cpp:188
 msgid "Fast Play"
@@ -12521,7 +12521,7 @@ msgid "SINGLE PLAYER"
 msgstr "UN JUGADOR"
 
 #: src/frontend.cpp:257
-msgid "Campaign videos are missing! Get them from http://wz2100.net"
+msgid "Campaign videos are missing! Get them from http://universe2.us/wzlegacy"
 msgstr ""
 
 #: src/frontend.cpp:333
@@ -15000,8 +15000,8 @@ msgstr "Versión: %s-%s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "Tu sistema no soporta OpenGL 2.0. Algunas cosas podrían verse de forma inadecuada. Por favor, actualiza tus drivers/hardware gráfico si es posible."
 
-#~ msgid "Visit our official site: http://wz2100.net"
-#~ msgstr "Visita el sitio oficial: http://wz2100.net"
+#~ msgid "Visit our official site: http://universe2.us/wzlegacy"
+#~ msgstr "Visita el sitio oficial: http://universe2.us/wzlegacy"
 
 #, fuzzy
 #~ msgid "Unit Colour (SP)"
@@ -15086,8 +15086,8 @@ msgstr "Versión: %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Contraseña:"
 
-#~ msgid "Use your wz2100.net credentials here."
-#~ msgstr "Usa tus credenciales de wz2100.net aquí."
+#~ msgid "Use your universe2.us/wzlegacy credentials here."
+#~ msgstr "Usa tus credenciales de universe2.us/wzlegacy aquí."
 
 #~ msgid "3 players"
 #~ msgstr "3 jugadores"
