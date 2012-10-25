@@ -266,6 +266,7 @@ _keymapsave keyMapSaveTable[] =
 	kf_SelectAllSensorUnits,
 	kf_SelectAllTrucks,
 	kf_SpecMe, //Subsentient did it.
+	kf_ToggleFPS(void) //He did this too
 	NULL		// last function!
 };
 
@@ -392,7 +393,8 @@ void	keyInitMappings( bool bForceDefaults )
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, (KEY_CODE)KEY_MAXSCAN, KEYMAP_PRESSED, kf_JumpToCommandUnits,      N_("View next Commander"));
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, KEY_TAB,               KEYMAP_PRESSED, kf_ToggleOverlays,          N_("Toggle Overlays"));
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, KEY_BACKQUOTE,         KEYMAP_PRESSED, kf_ToggleConsoleDrop,       N_("Console On/Off"));
-	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_INSERT, KEYMAP_PRESSED, 	    kf_SpecMe,                  N_("Enter spectator mode")); //Subsentient did it.
+	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_INSERT, 	    KEYMAP_PRESSED, kf_SpecMe,                  N_("Enter spectator mode")); //Subsentient did it.
+	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_F12,		    KEYMAP_PRESSED, kf_ToggleFPS,               N_("Show framerate")); //Subsentient did this too.
 	//                                **********************************
 	// IN GAME MAPPINGS - Single key presses - ALL __DEBUG keymappings will be removed for master
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, KEY_B,      KEYMAP_PRESSED, kf_CentreOnBase,          N_("Center View on HQ"));
