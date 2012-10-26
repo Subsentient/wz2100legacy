@@ -1033,6 +1033,8 @@ dataset MULTI_T3_C3
 game    "multiplay/maps/8c-TokenRing.gam"
 data    "wrf/multi/fog3.wrf"
 
+// maps added by wz2100legacy developers
+
 level   Clash-1-01-T1
 players 4
 type    14
@@ -1096,6 +1098,7 @@ dataset MULTI_T3_C2
 game    "multiplay/maps/8c-Abandoned.gam"
 data    "wrf/multi/fog2.wrf"
 
+// by Iluvalar
 level   Origami-T1
 players 8
 type    14
@@ -1117,6 +1120,7 @@ dataset MULTI_T3_C3
 game    "multiplay/maps/8c-Origami.gam"
 data    "wrf/multi/fog3.wrf"
 
+// by NoQ
 level   Yeti-T1
 players 2
 type    14
@@ -1180,6 +1184,7 @@ dataset MULTI_T3_C3
 game    "multiplay/maps/4c-Freezing-1-01.gam"
 data    "wrf/multi/fog3.wrf"
 
+// by Subsentient/bendib
 level   NTWGlory-v2-10p-T1
 players 10
 type    14
@@ -1243,6 +1248,29 @@ dataset MULTI_T3_C1
 game    "multiplay/maps/4c-NTWFor4-v3.gam"
 data    "wrf/multi/fog1.wrf"
 
+// challenges added by wei2912
+
+// by NoQ
+level   OldSeaport-T1
+players 2
+type    14
+dataset MULTI_CAM_2
+game    "multiplay/maps/2c-OldSeaport.gam"
+data    "wrf/multi/fog2.wrf"
+
+level   OldSeaport-T2
+players 2
+type    18
+dataset MULTI_T2_C2
+game    "multiplay/maps/2c-OldSeaport.gam"
+data    "wrf/multi/fog2.wrf"
+
+level   OldSeaport-T3
+players 2
+type    19
+dataset MULTI_T3_C2
+game    "multiplay/maps/2c-OldSeaport.gam"
+data    "wrf/multi/fog2.wrf"
 
 
 
