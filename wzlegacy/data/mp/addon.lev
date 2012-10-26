@@ -1265,29 +1265,6 @@ dataset MULTI_T3_C1
 game    "multiplay/maps/4c-Cataclysm.gam"
 data    "wrf/multi/fog1.wrf"
 
-// TeamUp maps by wei2912
-level   TUBridge-T1
-players 8
-type    14
-dataset MULTI_CAM_3
-game    "multiplay/maps/8c-TUBridge.gam"
-data    "wrf/multi/fog3.wrf"
-
-level   TUBridge-T2
-players 8
-type    18
-dataset MULTI_T2_C3
-game    "multiplay/maps/8c-TUBridge.gam"
-data    "wrf/multi/fog3.wrf"
-
-level   TUBridge-T3
-players 8
-type    19
-dataset MULTI_T3_C3
-game    "multiplay/maps/8c-TUBridge.gam"
-data    "wrf/multi/fog3.wrf"
-
-
 
 
 
