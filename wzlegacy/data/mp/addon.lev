@@ -1266,5 +1266,133 @@ game    "multiplay/maps/4c-Cataclysm.gam"
 data    "wrf/multi/fog1.wrf"
 
 
+level   Progress-T1
+players 5
+type    14
+dataset MULTI_CAM_1
+game    "multiplay/maps/5c-Progress.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Progress-T2
+players 5
+type    18
+dataset MULTI_T2_C1
+game    "multiplay/maps/5c-Progress.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Progress-T3
+players 5
+type    19
+dataset MULTI_T3_C1
+game    "multiplay/maps/5c-Progress.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Rubber-T1
+players 6
+type    14
+dataset MULTI_CAM_3
+game    "multiplay/maps/6c-Rubber.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Rubber-T2
+players 6
+type    18
+dataset MULTI_T2_C3
+game    "multiplay/maps/6c-Rubber.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Rubber-T3
+players 6
+type    19
+dataset MULTI_T3_C3
+game    "multiplay/maps/6c-Rubber.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Disaster-T1
+players 7
+type    14
+dataset MULTI_CAM_1
+game    "multiplay/maps/7c-Disaster.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Disaster-T2
+players 7
+type    18
+dataset MULTI_T2_C1
+game    "multiplay/maps/7c-Disaster.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Disaster-T3
+players 7
+type    19
+dataset MULTI_T3_C1
+game    "multiplay/maps/7c-Disaster.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Gear9-T1
+players 9
+type    14
+dataset MULTI_CAM_1
+game    "multiplay/maps/9c-Gear9.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Gear9-T2
+players 9
+type    18
+dataset MULTI_T2_C1
+game    "multiplay/maps/9c-Gear9.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Gear9-T3
+players 9
+type    19
+dataset MULTI_T3_C1
+game    "multiplay/maps/9c-Gear9.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Emergence-T1
+players 10
+type    14
+dataset MULTI_CAM_3
+game    "multiplay/maps/10c-Emergence.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Emergence-T2
+players 10
+type    18
+dataset MULTI_T2_C3
+game    "multiplay/maps/10c-Emergence.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   Emergence-T3
+players 10
+type    19
+dataset MULTI_T3_C3
+game    "multiplay/maps/10c-Emergence.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   TranquilV2-T1
+players 3
+type    14
+dataset MULTI_CAM_3
+game    "multiplay/maps/3c-TranquilV2.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   TranquilV2-T2
+players 3
+type    18
+dataset MULTI_T2_C3
+game    "multiplay/maps/3c-TranquilV2.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   TranquilV2-T3
+players 3
+type    19
+dataset MULTI_T3_C3
+game    "multiplay/maps/3c-TranquilV2.gam"
+data    "wrf/multi/fog3.wrf"
+
+
+
 
 
