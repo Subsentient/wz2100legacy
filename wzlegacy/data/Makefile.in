@@ -764,7 +764,7 @@ stamp:
 
 $(BASEARCHIVE): $(BASELIST:%=$(abs_srcdir)/$(basename $(BASEARCHIVE))/%)
 $(PATCHARCHIVE): $(PATCHLIST:%=$(abs_srcdir)/$(basename $(PATCHARCHIVE))/%)
-$(SITREPARCHIVE): $(SITREPLIST:%=$(abs_srcdir)/$(basename $(SITREPARCHIVE))/%)
+$(SITREPARCHIVE): $(PATCHLIST:%=$(abs_srcdir)/$(basename $(SITREPARCHIVE))/%)
 
 dist-hook: $(BASEARCHIVE) $(PATCHARCHIVE) $(SITREPARCHIVE)
 	$(UNZIP) -u $(BASEARCHIVE) -d $(DESTDIR)$(distdir)/$(basename $(BASEARCHIVE))

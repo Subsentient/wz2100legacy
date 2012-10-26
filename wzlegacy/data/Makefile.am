@@ -54,7 +54,7 @@ CLEANFILES = $(BASEARCHIVE) $(PATCHARCHIVE) $(SITREPARCHIVE)
 
 $(BASEARCHIVE): $(BASELIST:%=$(abs_srcdir)/$(basename $(BASEARCHIVE))/%)
 $(PATCHARCHIVE): $(PATCHLIST:%=$(abs_srcdir)/$(basename $(PATCHARCHIVE))/%)
-$(SITREPARCHIVE): $(SITREPLIST:%=$(abs_srcdir)/$(basename $(SITREPARCHIVE))/%)
+$(SITREPARCHIVE): $(PATCHLIST:%=$(abs_srcdir)/$(basename $(SITREPARCHIVE))/%)
 
 nodist_pkgdata_DATA =  $(BASEARCHIVE) $(PATCHARCHIVE) $(SITREPARCHIVE)
 
