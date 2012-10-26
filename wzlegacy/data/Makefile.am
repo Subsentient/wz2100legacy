@@ -41,16 +41,24 @@ PATCHLIST = \
 	structs \
 	wrf
 
+SITREPLIST = \
+	audio \
+	multiplayer \
+	wrf
+
 BASEARCHIVE = base.wzl
 PATCHARCHIVE = mp.wzl
+SITREPARCHIVE = EnhancedSitRep.wzl
 
-CLEANFILES = $(BASEARCHIVE) $(PATCHARCHIVE)
+CLEANFILES = $(BASEARCHIVE) $(PATCHARCHIVE) $(SITREPARCHIVE)
 
 $(BASEARCHIVE): $(BASELIST:%=$(abs_srcdir)/$(basename $(BASEARCHIVE))/%)
 $(PATCHARCHIVE): $(PATCHLIST:%=$(abs_srcdir)/$(basename $(PATCHARCHIVE))/%)
+$(SITREPARCHIVE): $(PATCHLIST:%=$(abs_srcdir)/$(basename $(SITREPARCHIVE))/%)
 
-nodist_pkgdata_DATA =  $(BASEARCHIVE) $(PATCHARCHIVE)
+nodist_pkgdata_DATA =  $(BASEARCHIVE) $(PATCHARCHIVE) $(SITREPARCHIVE)
 
-dist-hook: $(BASEARCHIVE) $(PATCHARCHIVE)
+dist-hook: $(BASEARCHIVE) $(PATCHARCHIVE) $(SITREPARCHIVE)
 	$(UNZIP) -u $(BASEARCHIVE) -d $(DESTDIR)$(distdir)/$(basename $(BASEARCHIVE))
 	$(UNZIP) -u $(PATCHARCHIVE) -d $(DESTDIR)$(distdir)/$(basename $(PATCHARCHIVE))
+	$(UNZIP) -u $(SITREPARCHIVE) -d $(DESTDIR)$(distdir)/$(basename $(SITREPARCHIVE))
