@@ -437,7 +437,6 @@ bool multiGameInit(void)
 bool multiGameShutdown(void)
 {
 	PLAYERSTATS	st;
-	uint32_t        time;
 
 	debug(LOG_NET,"%s is shutting down.",getPlayerName(selectedPlayer));
 
@@ -449,13 +448,12 @@ bool multiGameShutdown(void)
 	saveMultiStats(getPlayerName(selectedPlayer), getPlayerName(selectedPlayer), &st);
 
 	// if we terminate the socket too quickly, then, it is possible not to get the leave message
-	time = wzGetTicks();
-	while (wzGetTicks() - time < 1000)
-	{
-		wzYieldCurrentThread();  // TODO Make a wzDelay() function?
-	}
-	// close game
-	NETclose();
+        bool trynetclose = true;
+        int tempgt2 = wzGetTicks();
+        while (trynetclose) {
+        if (wzGetTicks() > tempgt2 + 200) { 
+         NETclose();
+         trynetclose = false; } } //Used for forcing a quit so we don't get players pinging out. Theoretically, it works. -Subsentient
 	NETremRedirects();
 
 	if (ingame.numStructureLimits)
