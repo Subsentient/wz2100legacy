@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 2007  Giel van Schijndel
