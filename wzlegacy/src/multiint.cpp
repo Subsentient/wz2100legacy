@@ -2632,7 +2632,7 @@ static void stopJoining(void)
 			sendLeavingMsg();								// say goodbye
 			  bool dohoststop = true;
 			  while (dohoststop) {
-  			   if (wzGetTicks() > tempgt + 200) { 
+  			   if (wzGetTicks() > dohoststop + 200) { 
 			    NETclose();
 			    dohoststop = false; } }
 			bHosted = false;								// stop host mode.
