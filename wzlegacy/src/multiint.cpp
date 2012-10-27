@@ -2630,7 +2630,11 @@ static void stopJoining(void)
 			NETbeginEncode(NETbroadcastQueue(), NET_HOST_DROPPED);
 			NETend();
 			sendLeavingMsg();								// say goodbye
-			NETclose();										// quit running game.
+			  bool dohoststop = true;
+			  while (dohoststop) {
+  			   if (wzGetTicks() > tempgt + 200) { 
+			    NETclose();
+			    dohoststop = false; } }
 			bHosted = false;								// stop host mode.
 			widgDelete(psWScreen,FRONTEND_BACKDROP);		// refresh options screen.
 			startMultiOptions(false);
