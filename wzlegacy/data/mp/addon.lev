@@ -1392,7 +1392,23 @@ dataset MULTI_T3_C3
 game    "multiplay/maps/3c-TranquilV2.gam"
 data    "wrf/multi/fog3.wrf"
 
+level   TwinArrowHeads-T1
+players 2
+type    14
+dataset MULTI_CAM_1
+game    "multiplay/maps/2c-TwinArrowHeads.gam"
+data    "wrf/multi/fog1.wrf"
 
+level   TwinArrowHeads-T2
+players 2
+type    18
+dataset MULTI_T2_C1
+game    "multiplay/maps/2c-TwinArrowHeads.gam"
+data    "wrf/multi/fog1.wrf"
 
-
-
+level   TwinArrowHeads-T3
+players 2
+type    19
+dataset MULTI_T3_C1
+game    "multiplay/maps/2c-TwinArrowHeads.gam"
+data    "wrf/multi/fog1.wrf"
