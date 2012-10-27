@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -823,16 +824,16 @@ void draw3DScene( void )
 		char buildInfo[255];
 		if (showLevelName)
 		{
-			iV_SetFont(font_small);
-			iV_SetTextColour(WZCOL_TEXT_MEDIUM);
-			iV_DrawText( getLevelName(), RET_X + 134, 410 + E_H );
+			iV_SetFont(font_regular); //Set font to regular size.
+			iV_SetTextColour(WZCOL_TEXT_BRIGHT); //Set font to bright because it's easier to read. -Subsentient
+			iV_DrawText( getLevelName(), RET_X + 134, 420 + E_H );
 		}
 		getAsciiTime(buildInfo, graphicsTime);
-		iV_DrawText( buildInfo, RET_X + 134, 422 + E_H );
+		iV_DrawText( buildInfo, RET_X + 134, 435 + E_H );
 
 		if (getDebugMappingStatus() && !demoGetStatus())
 		{
-			iV_DrawText( "DEBUG ", RET_X + 134, 436 + E_H );
+			iV_DrawText( "DEBUG ", RET_X + 134, 450 + E_H );
 		}
 	}
 
