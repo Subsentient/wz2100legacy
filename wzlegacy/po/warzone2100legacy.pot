@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: warzone2100legacy microwave_popping\n"
+"Project-Id-Version: warzone2100legacy microwave_10-27-2012\n"
 "Report-Msgid-Bugs-To: thinkingrodent@gmail.com\n"
 "POT-Creation-Date: 2012-08-18 13:16-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
