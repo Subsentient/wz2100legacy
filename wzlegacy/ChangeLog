@@ -1,3 +1,10 @@
+Changes for microwave 10/27/2012:
+Add many maps and two challenges, update nullbot to 1.38, change timer at bottom left ingame to be more like in 2.3.x, 
+fix many crashes relating to unclosed network sockets, hopefully reduce the number of games that hang when a player disconnects, 
+fix inability to select 640x480 resolution, change spectator command from spec_me to spec me, add key mapping for FPS display, CTRL + ` (~ without shift),
+rename backend from qtgame to simply backend, align lobby messages to the left a bit so they are more centered, deprecate Mac OS X support until we can fix it,
+update copyrights, and change the default preferred file extension to .wzl for addons and maps. A few under the hood tweaks also took place.
+
 Changes for microwave 08/30/2012:
 Spectator support works properly in (most) all circumstances now, we have removed the trap cursor config option,
 textures are now at 512 by default, accuracy is now similar to Warzone 2100 2.3.9, and added two new maps, 4c-Yeti and 8c-Origami,
