@@ -138,19 +138,29 @@ bool multiplayerWinSequence(bool firstCall)
 		pos  = cameraToHome(selectedPlayer,true);			// pan the camera to home if not already doing so
 		last =0;
 
-		// stop all research
-		CancelAllResearch(selectedPlayer);
-
-		// stop all manufacture.
-		for(psStruct=apsStructLists[selectedPlayer];psStruct;psStruct = psStruct->psNext)
-		{
+		// Pause all researches and factories.
+		/*For too long in Warzone versions, winning in an alliance game you wished to continue was a pain.
+		This was because all your production and research would be cancelled. Now, we just pause it for easy resume.
+		Moreover, if you are in an alliances game, we just don't touch it at all. -Subsentient*/
+		if (game.alliance != ALLIANCES) {
+		  for(psStruct=apsStructLists[selectedPlayer];psStruct;psStruct = psStruct->psNext)
+		  {
 			if (StructIsFactory(psStruct))
 			{
 				if (((FACTORY *)psStruct->pFunctionality)->psSubject)//check if active
 				{
-					cancelProduction(psStruct, ModeQueue);
+					holdProduction(psStruct, ModeQueue);
 				}
+			}			
+			else if (psStruct->pStructureType->type == REF_RESEARCH)
+			{
+
+				holdResearch(psStruct, ModeQueue); 
+				//We don't really need to check if this is researching, because it doesn't bother the labs that aren't. -Subsentient
 			}
+			
+		  }
+
 		}
 	}
 
@@ -188,7 +198,7 @@ bool multiplayerWinSequence(bool firstCall)
 
 		if ((unsigned)pos2.z > world_coord(mapHeight))
 			pos2.z = world_coord(mapHeight);
-
+		
 		addEffect(&pos2,EFFECT_FIREWORK,FIREWORK_TYPE_LAUNCHER,false,NULL,0);	// throw up some fire works.
 	}
 
