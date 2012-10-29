@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -342,13 +343,13 @@ static PIELIGHT appliedRadarColour(RADAR_DRAW_MODE radarDrawMode, MAPTILE *WTile
 	switch(radarDrawMode)
 	{
 		case RADAR_MODE_TERRAIN:
-		{
+		{	//Subsentient changed the illumination to use the old inverse value so the minimap looks correct
 			// draw radar terrain on/off feature
 			PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
 
-			col.byte.r = sqrtf(col.byte.r * WTile->illumination);
-			col.byte.b = sqrtf(col.byte.b * WTile->illumination);
-			col.byte.g = sqrtf(col.byte.g * WTile->illumination);
+			col.byte.r = sqrtf(col.byte.r * WTile->illumination_i);
+			col.byte.b = sqrtf(col.byte.b * WTile->illumination_i);
+			col.byte.g = sqrtf(col.byte.g * WTile->illumination_i);
 			if (terrainType(WTile) == TER_CLIFFFACE)
 			{
 				col.byte.r /= 2;
@@ -375,9 +376,9 @@ static PIELIGHT appliedRadarColour(RADAR_DRAW_MODE radarDrawMode, MAPTILE *WTile
 			// draw radar terrain on/off feature
 			PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
 
-			col.byte.r = sqrtf(col.byte.r * (WTile->illumination + WTile->height / ELEVATION_SCALE) / 2);
-			col.byte.b = sqrtf(col.byte.b * (WTile->illumination + WTile->height / ELEVATION_SCALE) / 2);
-			col.byte.g = sqrtf(col.byte.g * (WTile->illumination + WTile->height / ELEVATION_SCALE) / 2);
+			col.byte.r = sqrtf(col.byte.r * (WTile->illumination_i + WTile->height / ELEVATION_SCALE) / 2);
+			col.byte.b = sqrtf(col.byte.b * (WTile->illumination_i + WTile->height / ELEVATION_SCALE) / 2);
+			col.byte.g = sqrtf(col.byte.g * (WTile->illumination_i + WTile->height / ELEVATION_SCALE) / 2);
 			if (terrainType(WTile) == TER_CLIFFFACE)
 			{
 				col.byte.r /= 2;

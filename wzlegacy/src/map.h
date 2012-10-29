@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -96,6 +97,7 @@ struct MAPTILE
 	PlayerMask              tileExploredBits;
 	PlayerMask              sensorBits;             ///< bit per player, who can see tile with sensor
 	uint8_t			illumination;	// How bright is this tile?
+	uint8_t			illumination_i; //Inverse brightness used for the minimap -Subsentient
 	uint8_t			watchers[MAX_PLAYERS];		// player sees through fog of war here with this many objects
 	uint16_t		texture;		// Which graphics texture is on this tile
 	int32_t                 height;                 ///< The height at the top left of the tile
