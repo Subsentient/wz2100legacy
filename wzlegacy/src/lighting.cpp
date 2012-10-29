@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -181,6 +182,7 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
 	Vector3f finalVector(0.0f, 0.0f, 0.0f);
 	unsigned int i, val;
 	int dotProduct;
+	int dotProduct_inverse;
 
 	unsigned int numNormals = 0; // How many normals have we got?
 	Vector3f normals[8]; // Maximum 8 possible normals
@@ -218,11 +220,17 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
 	}
 	Vector3f sunVector(theSun.x, theSun.y, -theSun.z); //Thanks to Berg for outlining a solution for inverted shadows. -Subsentient
 	dotProduct = normalise(finalVector) * sunVector;
+	dotProduct_inverse = normalise(finalVector) * theSun;
 
 	val = abs(dotProduct) / 16;
 	if (val == 0) val = 1;
 	if (val > 254) val = 254;
 	mapTile(tileX, tileY)->illumination = val;
+
+	val = abs(dotProduct_inverse) / 16; //We needed this. -Subsentient
+	if (val == 0) val = 1;
+	if (val > 254) val = 254;
+	mapTile(tileX, tileY)->illumination_i = val;
 }
 
 
