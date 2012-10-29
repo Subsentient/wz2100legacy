@@ -216,8 +216,8 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
 	{
 		finalVector = finalVector + normals[i];
 	}
-
-	dotProduct = normalise(finalVector) * theSun;
+	Vector3f sunVector(theSun.x, theSun.y, -theSun.z); //Thanks to Berg for outlining a solution for inverted shadows. -Subsentient
+	dotProduct = normalise(finalVector) * sunVector;
 
 	val = abs(dotProduct) / 16;
 	if (val == 0) val = 1;
