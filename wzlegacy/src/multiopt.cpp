@@ -433,29 +433,34 @@ bool multiGameInit(void)
 	return true;
 }
 
+//This thread is so we can exit a multiplayer game without delay.
+int multiExitThread(void *) { //Is there NO BETTER WAY TO DO THIS?!? A THREAD? Seriously??? -Subsentient
+ int tempgt2 = wzGetTicks();
+ sendLeavingMsg();							// say goodbye
+ while (wzGetTicks() - tempgt2 < 1600) { //Bump delay to 3 secs -Subsentient
+ //Use the time tested superior way of handling timers, judging from what was done by the previous devs. -Subsentient
+ wzYieldCurrentThread(); }
+ NETremRedirects();
+ NETclose(); 
+ return 0; } //Used for forcing a quit so we don't get players pinging out. Theoretically, it works. -Subsentient
+
 ////////////////////////////////
 // at the end of every game.
 bool multiGameShutdown(void)
 {
 	PLAYERSTATS	st;
+	WZ_THREAD *mxThread = NULL;
 
 	debug(LOG_NET,"%s is shutting down.",getPlayerName(selectedPlayer));
 
-	sendLeavingMsg();							// say goodbye
 	updateMultiStatsGames();					// update games played.
 
 	st = getMultiStats(selectedPlayer);	// save stats
 
 	saveMultiStats(getPlayerName(selectedPlayer), getPlayerName(selectedPlayer), &st);
 
-	// if we terminate the socket too quickly, then, it is possible not to get the leave message
-        bool trynetclose = true;
-        int tempgt2 = wzGetTicks();
-        while (trynetclose) {
-        if (wzGetTicks() > tempgt2 + 200) { 
-         NETclose();
-         trynetclose = false; } } //Used for forcing a quit so we don't get players pinging out. Theoretically, it works. -Subsentient
-	NETremRedirects();
+	mxThread = wzThreadCreate(multiExitThread, NULL);
+	wzThreadStart(mxThread); 
 
 	if (ingame.numStructureLimits)
 	{
