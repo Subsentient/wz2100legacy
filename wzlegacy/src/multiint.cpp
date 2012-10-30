@@ -2632,8 +2632,9 @@ static void stopJoining(void)
 			NETend();
 			sendLeavingMsg();								// say goodbye
 			  bool dohoststop = true;
+			  int tempclock = wzGetTicks(); //Fix a wacky variable bug. -Subsentient
 			  while (dohoststop) {
-  			   if (wzGetTicks() > dohoststop + 200) { 
+  			   if (wzGetTicks() > tempclock + 200) { 
 			    NETclose();
 			    dohoststop = false; } }
 			bHosted = false;								// stop host mode.
