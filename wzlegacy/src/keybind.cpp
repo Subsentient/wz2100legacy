@@ -115,6 +115,8 @@ bool		bAllowOtherKeyPresses = true;
 char	sTextToSend[MAX_CONSOLE_STRING_LENGTH];
 char	beaconMsg[MAX_PLAYERS][MAX_CONSOLE_STRING_LENGTH];		//beacon msg for each player
 
+bool isSpectating = false;
+
 static STRUCTURE	*psOldRE = NULL;
 static char	sCurrentConsoleText[MAX_CONSOLE_STRING_LENGTH];			//remember what user types in console for beacon msg
 
@@ -1365,31 +1367,35 @@ int specThread(void *) {
 
 //Main spectator function, that actually turns the one above to a thread.
 void kf_SpecMe(void) {
- if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. FIXED desyncs! -Subsentient
-  DROID *psCDroid, *psNDroid;
-  STRUCTURE *psCStruct, *psNStruct;
-  WZ_THREAD *minimapThread = NULL;
-  unsigned int i;
-  char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
-  strcpy(specmsg, "*** \"");
-  strcat(specmsg, getPlayerName(selectedPlayer));
-  strcat(specmsg, "\" is now a spectator. ***"); //No longer experimental, we got it down. -Subsentient
-  sendTextMessage(specmsg, true);
-  for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //Swap out destroy* for SendDestroy* and enabled them without debug.
-   psNDroid = psCDroid->psNext;
-   SendDestroyDroid(psCDroid); }
-  for(psCStruct=apsStructLists[selectedPlayer]; psCStruct; psCStruct=psNStruct) {
-   psNStruct = psCStruct->psNext;
-   SendDestroyStructure(psCStruct); }
-  for (i = 0; i < MAX_PLAYERS; i++) {//Breaks alliances with everyone and EVERYTHING. Including yourself. -Subsentient
-   if (!i == selectedPlayer) {
-    sendAlliance(selectedPlayer, i, ALLIANCE_BROKEN, false);
-    alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
-    alliances[i][selectedPlayer] = ALLIANCE_BROKEN; } }
-  minimapThread = wzThreadCreate(specThread, NULL);
-  wzThreadStart(minimapThread); } //We use a thread to time when to show our minimap and stuff. -Subsentient
+  if (!isSpectating) { //Don't let us spam spectator. -Subsentient
+   if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. FIXED desyncs! -Subsentient
+   isSpectating = true;
+   DROID *psCDroid, *psNDroid;
+   STRUCTURE *psCStruct, *psNStruct;
+   WZ_THREAD *minimapThread = NULL;
+   unsigned int i;
+   char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
+   strcpy(specmsg, "*** \"");
+   strcat(specmsg, getPlayerName(selectedPlayer));
+   strcat(specmsg, "\" is now a spectator. ***"); //No longer experimental, we got it down. -Subsentient
+   sendTextMessage(specmsg, true);
+   for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //Swap out destroy* for SendDestroy* and enabled them without debug.
+    psNDroid = psCDroid->psNext;
+    SendDestroyDroid(psCDroid); }
+   for(psCStruct=apsStructLists[selectedPlayer]; psCStruct; psCStruct=psNStruct) {
+    psNStruct = psCStruct->psNext;
+    SendDestroyStructure(psCStruct); }
+   for (i = 0; i < MAX_PLAYERS; i++) {//Breaks alliances with everyone and EVERYTHING. Including yourself. -Subsentient
+    if (!i == selectedPlayer) {
+     sendAlliance(selectedPlayer, i, ALLIANCE_BROKEN, false);
+     alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
+     alliances[i][selectedPlayer] = ALLIANCE_BROKEN; } }
+   minimapThread = wzThreadCreate(specThread, NULL);
+   wzThreadStart(minimapThread); } //We use a thread to time when to show our minimap and stuff. -Subsentient
+  else {
+   addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
  else {
-  addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
+  addConsoleMessage("You are already a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 
 // --------------------------------------------------------------------------
 /* Aligns the view to north - some people can't handle the world spinning */
