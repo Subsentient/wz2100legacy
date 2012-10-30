@@ -440,8 +440,8 @@ int multiExitThread(void *) { //Is there NO BETTER WAY TO DO THIS?!? A THREAD? S
  while (wzGetTicks() - tempgt2 < 1600) { //Bump delay to 3 secs -Subsentient
  //Use the time tested superior way of handling timers, judging from what was done by the previous devs. -Subsentient
  wzYieldCurrentThread(); }
+ NETclose();
  NETremRedirects();
- NETclose(); 
  return 0; } //Used for forcing a quit so we don't get players pinging out. Theoretically, it works. -Subsentient
 
 ////////////////////////////////
