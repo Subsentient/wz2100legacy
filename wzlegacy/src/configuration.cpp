@@ -106,7 +106,7 @@ bool loadConfig()
 	else
 	{
 		// Set a default map to prevent hosting games without a map.
-		sstrcpy(game.map, "Mist-v1-01-T1");
+		sstrcpy(game.map, "Rush-T1");
 		game.hash.setZero();
 		game.maxPlayers = 4;
 	}
