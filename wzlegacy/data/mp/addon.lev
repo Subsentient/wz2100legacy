@@ -1412,3 +1412,25 @@ type    19
 dataset MULTI_T3_C1
 game    "multiplay/maps/2c-TwinArrowHeads.gam"
 data    "wrf/multi/fog1.wrf"
+
+level   TUBridge-T1
+players 8
+type    14
+dataset MULTI_CAM_3
+game    "multiplay/maps/8c-TUBridge.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   TUBridge-T2
+players 8
+type    18
+dataset MULTI_T2_C3
+game    "multiplay/maps/8c-TUBridge.gam"
+data    "wrf/multi/fog3.wrf"
+
+level   TUBridge-T3
+players 8
+type    19
+dataset MULTI_T3_C3
+game    "multiplay/maps/8c-TUBridge.gam"
+data    "wrf/multi/fog3.wrf"
+
