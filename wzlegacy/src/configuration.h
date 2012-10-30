@@ -30,7 +30,7 @@ bool saveConfig(void);
 bool reloadMPConfig(void);
 void closeConfig( void );
 
-/// Default map for Skirmish, changed to Mist by Subsentient
+/// Default map for Skirmish
 static const char DEFAULTSKIRMISHMAP[] = "Rush-T1";
 
 #endif // __INCLUDED_SRC_CONFIGURATION_H__
