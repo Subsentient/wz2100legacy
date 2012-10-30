@@ -447,11 +447,13 @@ bool multiGameShutdown(void)
 
 	saveMultiStats(getPlayerName(selectedPlayer), getPlayerName(selectedPlayer), &st);
 	int tempgt2 = wzGetTicks();
-	while (wzGetTicks() - tempgt2 < 200) { //Reduce delay to 200ms, since quitting is handled by NETshutdown() in the main menu for now. -Subsentient
+	while (wzGetTicks() - tempgt2 < 700) { //Set delay to 700ms in case we are dealing with the host.
 	//Use the time tested superior way of handling timers, judging from what was done by the previous devs. -Subsentient
 	wzYieldCurrentThread(); }
-	//NETclose(); This actually makes things worse, the call to NETshutdown() fixes our wagon, but this breaks it again,
-	//so therefore we will not use it. -Subsentient
+	if (NetPlay.isHost) { /*Only do this stuff if we are hosting. 
+	This is probably going to result in frozen users when the host quits again. *Sigh* -Subsentient*/
+	NETclose();
+	NETremRedirects(); }
 
 	if (ingame.numStructureLimits)
 	{
