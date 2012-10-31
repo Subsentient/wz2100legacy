@@ -2246,7 +2246,11 @@ void	renderStructure(STRUCTURE *psStructure)
 	if (strImd->numFrames > 0)
 	{
 		// Calculate an animation frame
-		animFrame = getModularScaledGraphicsTime(strImd->animInterval, strImd->numFrames);
+		//Do NOT animate a hologram! -Subsentient
+		if (!isBlueprint(psStructure)) {
+		 animFrame = getModularScaledGraphicsTime(strImd->animInterval, strImd->numFrames); }
+		else {
+		 animFrame = 0; }
 	}
 
 	// -------------------------------------------------------------------------------
