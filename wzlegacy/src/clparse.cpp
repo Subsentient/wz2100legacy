@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -374,7 +375,7 @@ bool ParseCommandLineEarly(int argc, const char** argv)
 				return false;
 
 			case CLI_VERSION:
-				printf("Warzone 2100 - %s\n", version_getFormattedVersionString());
+				printf("Warzone 2100 Legacy - %s\n", version_getFormattedVersionString());
 				return false;
 
 			default:
