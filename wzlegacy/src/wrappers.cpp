@@ -23,11 +23,6 @@
  * Frontend loop & also loading screen & game over screen.
  * AlexL. Pumpkin Studios, EIDOS Interactive, 1997
  */
-#ifdef WZ_OS_WIN //Detects what we should use for our sleep function
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
 
 #include "lib/framework/frame.h"
 #include "lib/framework/frameresource.h"
@@ -368,14 +363,11 @@ void runCreditsScreen( void )
 {
 	/* Check for key presses now. || NO, now we wait two seconds and close the credits screen.
         Who wants to CLICK to quit??? -Subsentient*/
-#ifdef WZ_OS_WIN
-	Sleep(2000);
-#else
-        sleep(2);
-#endif
-	lastChange = gameTime;
+	lastChange = wzGetTicks(); //It's good to recycle. Variables. -Subsentient
+	while (wzGetTicks() < lastChange + 2000) { 
+	 wzYieldCurrentThread(); }
 	changeTitleMode(QUIT);
-	return;
+	return; 
 }
 
 // shut down the loading screen
