@@ -62,12 +62,12 @@ nobase_dist_doc_DATA = \
 
 EXTRA_DIST = \
 	quickstartguide.asciidoc \
-	warzone2100.6.asciidoc
+	wz2100legacy.7.asciidoc
 
 DISTCLEANFILES = \
 	quickstartguide.html \
 	quickstartguide.pdf \
-	warzone2100.6
+	wz2100legacy.7
 
 if A2X_AVAILABLE
 
@@ -76,10 +76,10 @@ nobase_dist_doc_DATA += \
 	$(qsgpdf)
 
 dist_man6_MANS = \
-	warzone2100.6
+	wz2100legacy.7
 
-warzone2100.6: warzone2100.6.asciidoc
-	$(A2X) -f manpage -D $(srcdir) $(srcdir)/warzone2100.6.asciidoc
+wz2100legacy.7: wz2100legacy.7.asciidoc
+	$(A2X) -f manpage -D $(srcdir) $(srcdir)/wz2100legacy.7.asciidoc
 
 quickstartguide.html: quickstartguide.asciidoc
 	$(A2X) -f xhtml -D $(srcdir) $(srcdir)/quickstartguide.asciidoc
@@ -93,7 +93,7 @@ endif
 
 qsg: quickstartguide.html $(qsgpdf)
 
-manpage: warzone2100.6
+manpage: wz2100legacy.7
 
 dist-hook: qsg manpage
 

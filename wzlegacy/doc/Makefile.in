@@ -336,15 +336,15 @@ nobase_dist_doc_DATA = images/artillery-far-away.jpg \
 	Readme.en ScriptingManual.htm docbook-xsl.css $(am__append_1)
 EXTRA_DIST = \
 	quickstartguide.asciidoc \
-	warzone2100.6.asciidoc
+	wz2100legacy.7.asciidoc
 
 DISTCLEANFILES = \
 	quickstartguide.html \
 	quickstartguide.pdf \
-	warzone2100.6
+	wz2100legacy.7
 
 @A2X_AVAILABLE_TRUE@dist_man6_MANS = \
-@A2X_AVAILABLE_TRUE@	warzone2100.6
+@A2X_AVAILABLE_TRUE@	wz2100legacy.7
 
 all: all-am
 
@@ -607,8 +607,8 @@ uninstall-man: uninstall-man6
 	uninstall-man uninstall-man6 uninstall-nobase_dist_docDATA
 
 
-@A2X_AVAILABLE_TRUE@warzone2100.6: warzone2100.6.asciidoc
-@A2X_AVAILABLE_TRUE@	$(A2X) -f manpage -D $(srcdir) $(srcdir)/warzone2100.6.asciidoc
+@A2X_AVAILABLE_TRUE@wz2100legacy.7: wz2100legacy.7.asciidoc
+@A2X_AVAILABLE_TRUE@	$(A2X) -f manpage -D $(srcdir) $(srcdir)/wz2100legacy.7.asciidoc
 
 @A2X_AVAILABLE_TRUE@quickstartguide.html: quickstartguide.asciidoc
 @A2X_AVAILABLE_TRUE@	$(A2X) -f xhtml -D $(srcdir) $(srcdir)/quickstartguide.asciidoc
@@ -618,7 +618,7 @@ uninstall-man: uninstall-man6
 
 @A2X_AVAILABLE_TRUE@qsg: quickstartguide.html $(qsgpdf)
 
-@A2X_AVAILABLE_TRUE@manpage: warzone2100.6
+@A2X_AVAILABLE_TRUE@manpage: wz2100legacy.7
 
 @A2X_AVAILABLE_TRUE@dist-hook: qsg manpage
 
