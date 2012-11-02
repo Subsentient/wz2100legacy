@@ -1008,8 +1008,11 @@ bool structSetManufacture(STRUCTURE *psStruct, DROID_TEMPLATE *psTempl, QUEUE_MO
 	                 || psStruct->pStructureType->type == REF_VTOL_FACTORY, "Invalid structure type %d for factory",
 	                 (int)psStruct->pStructureType->type);
 	/* psTempl might be NULL if the build is being cancelled in the middle */
-
-	ASSERT_OR_RETURN(false, (validTemplateForFactory(psTempl, psStruct) && researchedTemplate(psTempl, psStruct->player)) || psStruct->player == scavengerPlayer() || !bMultiPlayer, "Wrong template for player %d factory, type %d.", psStruct->player, psStruct->pStructureType->type);
+	ASSERT_OR_RETURN(false, (validTemplateForFactory(psTempl, psStruct)) ||
+	 //Subsentient broke down the arguments and removed the research requirement, permitting deprecated tanks to keep producing after their templates are deleted.
+	 psStruct->player == scavengerPlayer() ||
+	 !bMultiPlayer, "Wrong template for player %d factory, type %d.", 
+	 psStruct->player, psStruct->pStructureType->type);
 
 	psFact = &psStruct->pFunctionality->factory;
 
