@@ -1,4 +1,3 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -4581,7 +4580,7 @@ static bool saveTemplate(void)
 		intSetButtonFlash(IDDES_SYSTEMBUTTON, false);
 		intSetButtonFlash(IDDES_BODYBUTTON,   false);
 		intSetButtonFlash(IDDES_PROPBUTTON,   false);
-	} 
+	}
 	else
 	{
 		/* Find the template for the current button */
@@ -4592,7 +4591,10 @@ static bool saveTemplate(void)
 			return false;
 		}
 
-	} //Subsentient removed an annoying piece of code that's absence allows changing templates without halting production.
+		// ANY change to the template affect the production - even if the template is changed and then changed back again!
+		deleteTemplateFromProduction(psTempl, selectedPlayer, ModeQueue);
+		SendDestroyTemplate(psTempl, selectedPlayer);
+	}
 
 	/* Copy the template */
 	*psTempl = sCurrDesign;

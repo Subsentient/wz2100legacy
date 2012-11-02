@@ -1,4 +1,3 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -77,8 +76,20 @@ bool researchedTemplate(DROID_TEMPLATE *psCurr, int player)
 	default:
 		break; // now proceed to normal droids...
 	}
-	//Subsentient removed more code having to do with templates being stopped in production because of a change.
-	
+	// Note the ugly special case for commanders - their weapon is unavailable
+	// NOTE: This is one ugly & hard to debug if statement.
+	if (apCompLists[player][COMP_BODY][psCurr->asParts[COMP_BODY]] != AVAILABLE
+	    || (psCurr->asParts[COMP_BRAIN] > 0 && apCompLists[player][COMP_BRAIN][psCurr->asParts[COMP_BRAIN]] != AVAILABLE)
+	    || apCompLists[player][COMP_PROPULSION][psCurr->asParts[COMP_PROPULSION]] != AVAILABLE
+	    || (psCurr->asParts[COMP_SENSOR] > 0 && apCompLists[player][COMP_SENSOR][psCurr->asParts[COMP_SENSOR]] != AVAILABLE)
+	    || (psCurr->asParts[COMP_ECM] > 0 && apCompLists[player][COMP_ECM][psCurr->asParts[COMP_ECM]] != AVAILABLE)
+	    || (psCurr->asParts[COMP_REPAIRUNIT] > 0 && apCompLists[player][COMP_REPAIRUNIT][psCurr->asParts[COMP_REPAIRUNIT]] != AVAILABLE)
+	    || (psCurr->asParts[COMP_CONSTRUCT] > 0 && apCompLists[player][COMP_CONSTRUCT][psCurr->asParts[COMP_CONSTRUCT]] != AVAILABLE)
+	    || (psCurr->asParts[COMP_BRAIN] == 0 && psCurr->numWeaps > 0 && apCompLists[player][COMP_WEAPON][psCurr->asWeaps[0]] != AVAILABLE)
+	    || (psCurr->numWeaps > 1 && apCompLists[player][COMP_WEAPON][psCurr->asWeaps[1]] != AVAILABLE))
+	{
+		return false;
+	}
 	return true;
 }
 
