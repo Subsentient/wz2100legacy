@@ -308,7 +308,7 @@ top_srcdir = @top_srcdir@
 
 @A2X_AVAILABLE_TRUE@DISTCLEANFILES = \
 @A2X_AVAILABLE_TRUE@	wz2100legacy.7 \
-@A2X_AVAILABLE_TRUE@	wz21100legacy.7.xml
+@A2X_AVAILABLE_TRUE@	wz2100legacy.7.xml
 
 @A2X_AVAILABLE_TRUE@dist_man7_MANS = \
 @A2X_AVAILABLE_TRUE@	wz2100legacy.7

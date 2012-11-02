@@ -8,7 +8,7 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = \
 	wz2100legacy.7 \
-	wz21100legacy.7.xml
+	wz2100legacy.7.xml
 
 dist_man7_MANS = \
 	wz2100legacy.7
