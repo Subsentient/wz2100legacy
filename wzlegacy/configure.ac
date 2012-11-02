@@ -57,13 +57,6 @@ AC_SUBST([ZIP_UPDATE], [${ZIP_UPDATE}])
 AC_CHECK_PROG(A2X, a2x, a2x)
 AM_CONDITIONAL([A2X_AVAILABLE], test -n "$A2X")
 
-AC_CHECK_PROG(PDFLATEX, pdflatex, pdflatex)
-AC_CHECK_PROG(HEVEA, hevea, hevea)
-AC_CHECK_PROG(HACHA, hacha, hacha)
-AM_CONDITIONAL(PDFLATEX, test -n "$PDFLATEX")
-AM_CONDITIONAL(HEVEA, test -n "$HEVEA")
-AM_CONDITIONAL(HACHA, test -n "$HACHA")
-
 # Enable Compiler/LibC GNU extensions
 AC_GNU_SOURCE
 
@@ -490,8 +483,9 @@ AS_IF([test -z "$PERL"],[
 	AC_MSG_WARN([Perl >= 5.10 isn't installed, autogeneration of some sources will not work.])
 ])
 
-AS_IF([test -z "$A2X""],[
+AS_IF([test -z "$A2X"],[
 	AC_MSG_NOTICE()
-	AC_MSG_WARN([a2x (asciidoc) not found, can't convert documentation. This doesn't affect building the game,
-		but means that if you are compiling for a UNIX based system, manpages cannot be installed.])
+	AC_MSG_WARN([a2x (asciidoc) not found, can't convert documentation. 
+This doesn't affect building the game, but means that if you are
+compiling for a UNIX based system, manpages cannot be installed.])
 ])
