@@ -35,7 +35,6 @@ EXTRA_DIST= \
 	autogen.sh \
 	config.rpath \
 	configure.ac \
-	pkg/dpkg \
 	tools/image/image.cpp \
 	tools/image/configs \
 	tools/image/Image.xcodeproj \
