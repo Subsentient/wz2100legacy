@@ -489,3 +489,17 @@ AS_IF([test -z "$A2X"],[
 This doesn't affect building the game, but means that if you are
 compiling for a UNIX based system, manpages cannot be installed.])
 ])
+
+# Print an output for our config summary.
+echo -e "\nConfiguration successful for $PACKAGE_NAME $VERSION."
+echo "---------------------------------------------------------"
+echo "Configuration summary:"
+echo "---------------------------------------------------------"
+echo "Operating system: $host_os"
+echo "Processor architecture: $host_cpu"
+echo "C Compiler used: $CC"
+echo "C++ Compiler used: $CXX"
+echo "CFLAGS: $CFLAGS"
+echo "CXXFLAGS: $CXXFLAGS"
+echo "LDFLAGS: $LDFLAGS"
+echo -e "\nType make to compile $PACKAGE_NAME."
