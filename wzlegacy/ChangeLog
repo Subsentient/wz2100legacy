@@ -1,3 +1,13 @@
+Changes for microwave 11/03/2012:
+A large list here this time folks...
+Fixed terrain shadow direction, prevented factory holograms from spinning, allow obsolete units to keep producing until aborted (like in 2.3.x),
+Fix manpage and create a new installer script for NSIS (Windows), deprecate DPKG support, make a better way of timing our two secs before exiting at
+the credits, make ./configure report some info upon completion for convenience, nuke most old documentation and add a little of our own, 
+site URL added to game splash screen, make ./wz2100legacy --version report that we are in fact Warzone 2100 Legacy, update netcode to be a bit more stable,
+set default map back to Rush-T1 for nostalgia's sake, prevent spamming of CTRL+Insert, pause production/research on win rather than cancel, and don't touch
+it at all if we are in an alliances game. This is a must-have upgrade folks. Really good stuff. ENJOY!!!
+
+
 Changes for microwave 10/27/2012:
 Add many maps and two challenges, update nullbot to 1.38, change timer at bottom left ingame to be more like in 2.3.x, 
 fix many crashes relating to unclosed network sockets, hopefully reduce the number of games that hang when a player disconnects, 
