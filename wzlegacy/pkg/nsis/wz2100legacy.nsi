@@ -8,7 +8,7 @@
   !define APPLICATION_PUBLISHER "Warzone 2100 Legacy Project"
   !define APPLICATION_WEB_SITE "http://universe2.us/wzlegacy"
   !define INSTALL_LICENSE "${TOP_BUILDDIR}\COPYING"
-  !define INSTALL_PATH "$PROGRAMFILES\${APPLICATION_NAME}"
+  !define INSTALL_PATH "$PROGRAMFILES\${APPLICATION_NAME} ${APPLICATION_VERSION}"
   !define INSTALL_GRAPHICS "nsis"
 
   !define APPLICATION_VERSION_MAJOR microwave_popping
@@ -30,7 +30,7 @@
   InstallDir "${INSTALL_PATH}"
 
   ;Get install folder from registry if available
-  InstallDirRegKey HKCU "Software\${APPLICATION_PUBLISHER}\${APPLICATION_NAME}" ""
+  InstallDirRegKey HKCU "Software\${APPLICATION_NAME}" ""
 
   VIProductVersion "0.0.0.0"
   VIAddVersionKey "FileDescription" "${APPLICATION_NAME} Installer"
@@ -56,6 +56,8 @@
   ;Welcome page
   !define MUI_WELCOMEFINISHPAGE_BITMAP "${TOP_BUILDDIR}\icons\wz2100l_welcome.bmp"
   ;!define MUI_WELCOMEPAGE_TITLE_3LINES
+  !define MUI_WELCOMEPAGE_TEXT "Welcome to the installer for ${APPLICATION_NAME} ${APPLICATION_VERSION}. \
+Some aspects of the installation will require a working internet connection. Click Next to proceed."
 
   ;Install pages
   !define MUI_HEADERIMAGE_BITMAP "${TOP_BUILDDIR}\icons\wz2100l_header.bmp"
@@ -64,7 +66,7 @@
 
   ;Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPLICATION_PUBLISHER}\${APPLICATION_NAME}"
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPLICATION_NAME}"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
   !define MUI_STARTMENUPAGE_DEFAULTFOLDER "${APPLICATION_NAME}"
 
@@ -79,7 +81,7 @@
 
   !insertmacro MUI_PAGE_WELCOME
   !insertmacro MUI_PAGE_LICENSE "${INSTALL_LICENSE}"
-  ;!insertmacro MUI_PAGE_COMPONENTS
+  !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_STARTMENU Application $STARTMENU_FOLDER
   !insertmacro MUI_PAGE_INSTFILES
@@ -99,12 +101,12 @@
   UninstallIcon "${TOP_BUILDDIR}\icons\wz2100legacy.ico"
 
 ;--------------------------------
-;Installler Secions
+;Installer Sections
 
-Section "Install"
-
+Section "Base Game"
+  SectionIn RO
   ;Store install folder
-  WriteRegStr HKCU "Software\${APPLICATION_PUBLISHER}\${APPLICATION_NAME}" "" $INSTDIR
+  WriteRegStr HKCU "Software\${APPLICATION_NAME}" "" $INSTDIR
 
   ;Files
   SetOutPath "$INSTDIR"
@@ -152,6 +154,12 @@ Section "Install"
 
 SectionEnd
 
+Section /o "Download Videos"
+  SectionIn 1
+   AddSize 173670
+   NSISdl::download "http://cloud.github.com/downloads/Subsentient/wz2100legacy/sequences.wzl" "$INSTDIR\sequences.wzl"
+SectionEnd
+
 ;--------------------------------
 ;Uninstall Files
 
@@ -160,8 +168,9 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $STARTMENU_FOLDER
   Delete "$INSTDIR\wz2100legacy.exe"
   Delete "$INSTDIR\mp.wzl"
-  Delete "$INSTDIR\AUTHORS"
   Delete "$INSTDIR\base.wzl"
+  Delete "$INSTDIR\sequences.wzl"
+  Delete "$INSTDIR\AUTHORS"
   Delete "$INSTDIR\ChangeLog"
   Delete "$INSTDIR\COPYING"
   Delete "$INSTDIR\COPYING.NONGPL"
@@ -176,8 +185,7 @@ Section "Uninstall"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR\"
 
-  DeleteRegKey /ifempty HKCU "Software\${APPLICATION_PUBLISHER}\${APPLICATION_NAME}"
-  DeleteRegKey /ifempty HKCU "Software\${APPLICATION_PUBLISHER}"
+  DeleteRegKey /ifempty HKCU "Software\${APPLICATION_NAME}"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
 
 SectionEnd
