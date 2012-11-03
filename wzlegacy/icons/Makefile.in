@@ -251,7 +251,6 @@ dist_noinst_DATA = \
 	wz2100legacy.ico \
 	wz2100legacy.png \
 	wz2100legacy.splash.png \
-	warzone2100.uninstall.ico \
 	wz2100l_header.bmp \
 	wz2100l_welcome.bmp
 
