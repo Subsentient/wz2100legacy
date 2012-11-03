@@ -58,8 +58,8 @@
   ;!define MUI_WELCOMEPAGE_TITLE_3LINES
   !define MUI_WELCOMEPAGE_TEXT \
 "Welcome to the installer for ${APPLICATION_NAME} ${APPLICATION_VERSION}. \
-A functional internet connection is required for installation, even if you choose not to install the videos. \
-Click Next to proceed."
+IMPORTANT: A functional internet connection is required for installation, even if you choose not to install the videos. \
+The fonts required for the game are downloaded over the internet. Click Next to proceed."
 
   ;Install pages
   !define MUI_HEADERIMAGE_BITMAP "${TOP_BUILDDIR}\icons\wz2100l_header.bmp"
@@ -77,6 +77,8 @@ Click Next to proceed."
   !define MUI_FINISHPAGE_LINK_LOCATION "${APPLICATION_WEB_SITE}"
   !define MUI_FINISHPAGE_NOREBOOTSUPPORT
   ;!define MUI_FINISHPAGE_TITLE_3LINES
+  !define MUI_FINISHPAGE_RUN_TEXT "Run ${APPLICATION_NAME} when I click Finish"
+  !define MUI_FINISHPAGE_RUN "$INSTDIR\wz2100legacy.exe"
 
 ;--------------------------------
 ;Installer Pages
