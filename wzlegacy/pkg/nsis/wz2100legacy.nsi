@@ -56,8 +56,10 @@
   ;Welcome page
   !define MUI_WELCOMEFINISHPAGE_BITMAP "${TOP_BUILDDIR}\icons\wz2100l_welcome.bmp"
   ;!define MUI_WELCOMEPAGE_TITLE_3LINES
-  !define MUI_WELCOMEPAGE_TEXT "Welcome to the installer for ${APPLICATION_NAME} ${APPLICATION_VERSION}. \
-Some aspects of the installation will require a working internet connection. Click Next to proceed."
+  !define MUI_WELCOMEPAGE_TEXT \
+"Welcome to the installer for ${APPLICATION_NAME} ${APPLICATION_VERSION}. \
+A functional internet connection is required for installation, even if you choose not to install the videos. \
+Click Next to proceed."
 
   ;Install pages
   !define MUI_HEADERIMAGE_BITMAP "${TOP_BUILDDIR}\icons\wz2100l_header.bmp"
