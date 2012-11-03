@@ -4,7 +4,8 @@ dist_noinst_DATA = \
 	wz2100legacy.png \
 	wz2100legacy.splash.png \
 	wz2100l_header.bmp \
-	wz2100l_welcome.bmp
+	wz2100l_welcome.bmp \
+	wz2100l_instalload.bmp
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(icondir)

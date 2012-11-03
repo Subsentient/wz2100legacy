@@ -164,6 +164,13 @@ Section /o "Download Videos"
    NSISdl::download "http://cloud.github.com/downloads/Subsentient/wz2100legacy/sequences.wzl" "$INSTDIR\sequences.wzl"
 SectionEnd
 
+Function .onInit ;Splash display.
+  SetOutPath $TEMP
+  File /oname=wzlsplash.bmp "${TOP_BUILDDIR}\icons\wz2100l_instalload.bmp"
+  splash::show 2000 $TEMP\wzlsplash
+  Delete $TEMP\wzlsplash.bmp
+FunctionEnd
+
 ;--------------------------------
 ;Uninstall Files
 
