@@ -48,7 +48,7 @@ unsigned int version_getRevision()
 
 const char* version_getVersionString()
 {
-	static const char* version_string = "microwave_popping";
+	static const char* version_string = "microwave_11-03-2012";
 
 	if (version_string == NULL)
 	{
