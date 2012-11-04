@@ -23,7 +23,7 @@
 ;Configuration
 
   ;General
-  Name "${APPLICATION_NAME} ${APPLICATION_VERSION}"
+  Name "${APPLICATION_NAME}"
   OutFile "wz2100legacy-${APPLICATION_VERSION}-installer.exe"
 
   ;Folder selection page
