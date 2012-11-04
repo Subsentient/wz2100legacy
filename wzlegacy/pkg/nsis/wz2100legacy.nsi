@@ -24,8 +24,8 @@
 
   ;General
   Name "${APPLICATION_NAME}"
-  OutFile "wz2100legacy-${APPLICATION_VERSION}-installer.exe"
-
+  OutFile "${TOP_BUILDDIR}\wz2100legacy-${APPLICATION_VERSION}-installer.exe"
+  RequestExecutionLevel admin ;We need to be an admin
   ;Folder selection page
   InstallDir "${INSTALL_PATH}"
 
@@ -162,6 +162,25 @@ Section /o "Download Videos"
   SectionIn 1
    AddSize 173670
    NSISdl::download "http://cloud.github.com/downloads/Subsentient/wz2100legacy/sequences.wzl" "$INSTDIR\sequences.wzl"
+SectionEnd
+
+;Make it easy to migrate our stuff.
+Section /o "Migrate maps and ranks from Warzone 2100 2.3"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 2.3\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 2.3\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
+SectionEnd
+
+Section /o "Migrate maps and ranks from Warzone 2100 3.1"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 3.1\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
 SectionEnd
 
 Function .onInit ;Splash display.

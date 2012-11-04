@@ -1,4 +1,4 @@
-INSTALLERFILE=wz2100legacy-$(VERSION)-installer.exe
+INSTALLERFILE=$(top_builddir)/wz2100legacy-$(VERSION)-installer.exe
 
 EXTRA_DIST = wz2100legacy.nsi
 
