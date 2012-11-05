@@ -394,7 +394,7 @@ void	keyInitMappings( bool bForceDefaults )
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, (KEY_CODE)KEY_MAXSCAN, KEYMAP_PRESSED, kf_JumpToCommandUnits,      N_("View next Commander"));
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, KEY_TAB,               KEYMAP_PRESSED, kf_ToggleOverlays,          N_("Toggle Overlays"));
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, KEY_BACKQUOTE,         KEYMAP_PRESSED, kf_ToggleConsoleDrop,       N_("Console On/Off"));
-	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_INSERT, 	    KEYMAP_PRESSED, kf_SpecMe,                  N_("Enter spectator mode")); //Subsentient did it.
+	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_INSERT, 	    KEYMAP_PRESSED, kf_SpecMe,                  N_("Switch to spectator mode")); //Subsentient did it.
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_BACKQUOTE,		    KEYMAP_PRESSED, kf_ToggleFPS,               N_("Show framerate")); //Subsentient did this too.
 	//                                **********************************
 	// IN GAME MAPPINGS - Single key presses - ALL __DEBUG keymappings will be removed for master
