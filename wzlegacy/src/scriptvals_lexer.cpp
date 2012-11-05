@@ -1,3 +1,17 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #line 2 "scriptvals_lexer.cpp"
 
 #line 4 "scriptvals_lexer.cpp"
@@ -586,11 +600,7 @@ char *scrv_text;
 #include "src/scriptvals.h"
 
 /* Get the Yacc definitions */
-#if defined (WZ_CC_MSVC)
 #include "scriptvals_parser.hpp"
-#else
-#include "scriptvals_parser.h"
-#endif
 
 /* Maximum length for any TEXT value */
 #ifndef YYLMAX

@@ -5,7 +5,7 @@ AM_LFLAGS = $(FLEX_FLAGS)
 AM_YFLAGS = -d
 
 BUILT_SOURCES = \
-	audp_parser.h
+	audp_parser.hpp
 
 noinst_LIBRARIES = libgamelib.a
 noinst_HEADERS = \

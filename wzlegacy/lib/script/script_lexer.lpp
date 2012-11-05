@@ -1,3 +1,5 @@
+
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -31,11 +33,8 @@
 #include "lib/script/script.h"
 
 /* Get the Yacc definitions */
-#if defined (WZ_CC_MSVC)
 #include "script_parser.hpp"
-#else
-#include "script_parser.h"
-#endif
+
 // fwrite declared with warn_unused_result, resulting in mysterious errors in "%%" on some distros.
 static inline bool no_warn_unused_result(int ignore) { if (ignore) {} return true; }
 #define fwrite(a, b, c, d) no_warn_unused_result(fwrite(a, b, c, d))

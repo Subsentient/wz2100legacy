@@ -5,8 +5,8 @@ AM_LFLAGS = $(FLEX_FLAGS)
 AM_YFLAGS = -d
 
 BUILT_SOURCES = \
-	chat_parser.h \
-	script_parser.h
+	chat_parser.hpp \
+	script_parser.hpp
 
 noinst_LIBRARIES = libscript.a
 noinst_HEADERS = \

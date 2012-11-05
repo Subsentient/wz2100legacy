@@ -93,11 +93,7 @@
 #include "src/scriptvals.h"
 #include "lib/framework/lexer_input.h"
 
-#if defined (WZ_CC_MSVC)
 #include "scriptvals_parser.hpp"
-#else
-#include "scriptvals_parser.h"
-#endif
 
 #include "src/scripttabs.h"
 #include "src/objects.h"

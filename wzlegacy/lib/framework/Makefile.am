@@ -12,8 +12,8 @@ MOCEDFILES = $(MOCHEADER:%.h=%_moc.cpp)
 	$(MOC4) -o $@ $<
 
 BUILT_SOURCES = \
-	resource_parser.h \
-	strres_parser.h
+	resource_parser.hpp \
+	strres_parser.hpp
 
 CLEANFILES = \
 	$(MOCEDFILES)

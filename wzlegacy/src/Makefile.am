@@ -14,7 +14,7 @@ BUILT_SOURCES = \
 	$(CLEANFILES)
 
 CLEANFILES = \
-	scriptvals_parser.h
+	scriptvals_parser.hpp
 
 EXTRA_DIST = \
 	autorevision.h \

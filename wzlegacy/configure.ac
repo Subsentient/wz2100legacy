@@ -1,7 +1,7 @@
 AC_PREREQ([2.56])
 AC_INIT([Warzone 2100 Legacy],[microwave_popping],[http://universe2.us/wzlegacy],[warzone2100legacy])
 
-AM_INIT_AUTOMAKE([1.10 tar-ustar])
+AM_INIT_AUTOMAKE([1.12 tar-ustar]) #We are going to need automake 1.12 for recent changes.
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([lib/framework/frame.cpp])
