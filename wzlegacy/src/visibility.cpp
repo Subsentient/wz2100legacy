@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -914,33 +915,7 @@ static int checkFireLine(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTar
 			}
 		}
 
-		// check for walls and other structures
-		// TODO: if there is a structure on the same tile as the shooter (and the shooter is not that structure) check if LOF is blocked by it.
-		if (wallsBlock && oldPartSq > 0)
-		{
-			const MAPTILE *psTile;
-			halfway = current + (next - current)/2;
-			psTile = mapTile(map_coord(halfway.x), map_coord(halfway.y));
-			if (TileHasStructure(psTile) && psTile->psObject!=psTarget)
-			{
-				// check whether target was reached before tile's "half way" line
-				part = halfway - start;
-				partSq = part*part;
-
-				if (partSq >= distSq)
-				{
-					break;
-				}
-
-				// allowed to shoot over enemy structures if they are NOT the target
-				if (partSq>0)
-				{
-					angle_check(&angletan, oldPartSq,
-					            psTile->psObject->pos.z + establishTargetHeight(psTile->psObject) - pos.z,
-					            distSq, dest.z - pos.z, direct);
-				}
-			}
-		}
+		//Removed a pile of undesirable code that prevents structures from firing over each other etc. -Subsentient
 
 		// next
 		current=next;
