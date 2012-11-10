@@ -1104,6 +1104,7 @@ bool sendTextMessage(const char *pStr, bool all)
 				sstrcpy(display, _("(allies"));
 			}
 		}
+		 
 		for (; curStr[0] >= '0' && curStr[0] <= '9'; ++curStr)  // for each 0..9 numeric char encountered
 		{
 			i = posTable[curStr[0]-'0'];
@@ -1187,9 +1188,17 @@ bool sendTextMessage(const char *pStr, bool all)
 	}
 
 	//This is for local display
-	sstrcpy(msg, NetPlay.players[selectedPlayer].name);		// name
-	sstrcat(msg, ": ");						// seperator
-	sstrcat(msg, (normal?curStr:display));						// add message
+	if (curStr[0] == '/') { //Allow "/" to be used as an IRC-like /me message. -Subsentient
+	 curStr++;
+	 sstrcpy(msg, " » ");
+	 sstrcat(msg, NetPlay.players[selectedPlayer].name);	
+	 sstrcat(msg, " ");
+	 sstrcat(msg, curStr); 
+	 sstrcat(msg, " « "); }
+	else {
+	 sstrcpy(msg, NetPlay.players[selectedPlayer].name);
+	 sstrcat(msg, ": "); 				// seperator
+	 sstrcat(msg, (normal?curStr:display)); }					// add message
 
 	addConsoleMessage(msg, DEFAULT_JUSTIFY, selectedPlayer);	// display
 
@@ -1337,12 +1346,18 @@ bool recvTextMessage(NETQUEUE queue)
 	{
 		return false;
 	}
-
-	sstrcpy(msg, NetPlay.players[playerIndex].name);
 	// Seperator
-	sstrcat(msg, ": ");
-	// Add message
-	sstrcat(msg, newmsg);
+	//Display "/" (irc /me) messages properly. -Subsentient
+	if (newmsg[0] == '/') {
+	 sstrcpy(msg, " » ");
+	 sstrcat(msg, NetPlay.players[playerIndex].name);
+	 sstrcat(msg, " ");
+	 sstrcat(msg, newmsg+1);
+	 sstrcat(msg, " « "); }
+	else {
+	 sstrcpy(msg, NetPlay.players[playerIndex].name);
+	 sstrcat(msg, ": ");
+	 sstrcat(msg, newmsg); }
 
 	addConsoleMessage(msg, DEFAULT_JUSTIFY, playerIndex);
 
