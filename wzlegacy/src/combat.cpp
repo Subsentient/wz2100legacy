@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -116,7 +117,7 @@ bool combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
 	if (psAttacker->type == OBJ_DROID && !isVtolDroid((DROID *)psAttacker)
 	    && (proj_Direct(psStats) || actionInsideMinRange((DROID *)psAttacker, psTarget, psStats)))
 	{
-		if(!lineOfFire(psAttacker, psTarget, weapon_slot, true))
+		if(!lineOfFire(psAttacker, psTarget, weapon_slot, true, false))
 		{
 			// Can't see the target - can't hit it with direct fire
 			objTrace(psAttacker->id, "combFire(%u[%s]->%u): Droid has no direct line of sight to target",
@@ -129,7 +130,7 @@ bool combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
 			 proj_Direct(psStats))
 	{
 		// a bunker can't shoot through walls
-		if (!lineOfFire(psAttacker, psTarget, weapon_slot, true))
+		if (!lineOfFire(psAttacker, psTarget, weapon_slot, true, true))
 		{
 			// Can't see the target - can't hit it with direct fire
 			objTrace(psAttacker->id, "combFire(%u[%s]->%u): Structure has no direct line of sight to target",
@@ -140,7 +141,7 @@ bool combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
 	else if ( proj_Direct(psStats) )
 	{
 		// VTOL or tall building
-		if (!lineOfFire(psAttacker, psTarget, weapon_slot, false))
+		if (!lineOfFire(psAttacker, psTarget, weapon_slot, false, false))
 		{
 			// Can't see the target - can't hit it with direct fire
 			objTrace(psAttacker->id, "combFire(%u[%s]->%u): Tall object has no direct line of sight to target",
@@ -171,7 +172,7 @@ bool combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
 	// only calculate for indirect shots
 	if (!proj_Direct(psStats) && dist > 0)
 	{
-		min_angle = arcOfFire(psAttacker,psTarget,weapon_slot,true);
+		min_angle = arcOfFire(psAttacker,psTarget,weapon_slot,true,false);
 
 		// prevent extremely steep shots
 		min_angle = std::min(min_angle, DEG(PROJ_ULTIMATE_PITCH));

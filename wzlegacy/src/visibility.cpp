@@ -1,4 +1,3 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -737,13 +736,13 @@ MAPTILE		*psTile;
 }
 
 //forward declaration
-static int checkFireLine(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock, bool direct);
+static int checkFireLine(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock, bool direct, bool docheckstructs);
 
 /**
  * Check whether psViewer can fire directly at psTarget.
  * psTarget can be any type of BASE_OBJECT (e.g. a tree).
  */
-bool lineOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock)
+bool lineOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock, bool docheckstructs)
 {
 	WEAPON_STATS *psStats = NULL;
 
@@ -764,7 +763,7 @@ bool lineOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int 
 	if (proj_Direct(psStats))
 	{
 		/** direct shots could collide with ground **/
-		return range >= distance && LINE_OF_FIRE_MINIMUM <= checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, true);
+		return range >= distance && LINE_OF_FIRE_MINIMUM <= checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, true, docheckstructs);
 	}
 	else
 	{
@@ -772,7 +771,7 @@ bool lineOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int 
 		 * indirect shots always have a line of fire, IF the forced 
 		 * minimum angle doesn't move it out of range
 		 **/
-		int min_angle = checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, false);
+		int min_angle = checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, false, docheckstructs);
 		// NOTE This code seems similar to the code in combFire in combat.cpp.
 		if (min_angle > DEG(PROJ_MAX_PITCH))
 		{
@@ -786,20 +785,20 @@ bool lineOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int 
 }
 
 /* Check how much of psTarget is hitable from psViewer's gun position */
-int areaOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock)
+int areaOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock, bool docheckstructs)
 {
 	if (psViewer == NULL)
 	{
 		return 0;  // Lassat special case, avoid assertion.
 	}
 
-	return checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, true);
+	return checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, true, docheckstructs);
 }
 
 /* Check the minimum angle to hitpsTarget from psViewer via indirect shots */
-int arcOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock)
+int arcOfFire(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock, bool docheckstructs)
 {
-	return checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, false);
+	return checkFireLine(psViewer, psTarget, weapon_slot, wallsBlock, false, docheckstructs);
 }
 
 /* helper function for checkFireLine */
@@ -838,7 +837,7 @@ static inline void angle_check(int64_t* angletan, int positionSq, int height, in
  * Check fire line from psViewer to psTarget
  * psTarget can be any type of BASE_OBJECT (e.g. a tree).
  */
-static int checkFireLine(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock, bool direct)
+static int checkFireLine(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTarget, int weapon_slot, bool wallsBlock, bool direct, bool docheckstructs)
 {
 	Vector3i pos, dest;
 	Vector2i start,diff, current, halfway, next, part;
@@ -915,8 +914,36 @@ static int checkFireLine(const SIMPLE_OBJECT* psViewer, const BASE_OBJECT* psTar
 			}
 		}
 
-		//Removed a pile of undesirable code that prevents structures from firing over each other etc. -Subsentient
+		// check for walls and other structures
+		//Allow a boolean to see if we should care about structures, because usually that answer is no. -Subsentient
+		if (docheckstructs) {
+		 if (wallsBlock && oldPartSq > 0)
+		 {
+			const MAPTILE *psTile;
+			halfway = current + (next - current)/2;
+			psTile = mapTile(map_coord(halfway.x), map_coord(halfway.y));
+			if (TileHasStructure(psTile) && psTile->psObject!=psTarget)
+			{
+				// check whether target was reached before tile's "half way" line
+				part = halfway - start;
+				partSq = part*part;
 
+				if (partSq >= distSq)
+				{
+					break;
+				}
+
+				// allowed to shoot over enemy structures if they are NOT the target
+				if (partSq>0)
+				{
+					angle_check(&angletan, oldPartSq,
+					            psTile->psObject->pos.z + establishTargetHeight(psTile->psObject) - pos.z,
+					            distSq, dest.z - pos.z, direct);
+				}
+			}
+		 }
+
+		}
 		// next
 		current=next;
 		part = current - start;

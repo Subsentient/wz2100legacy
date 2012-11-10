@@ -502,7 +502,7 @@ bool actionVisibleTarget(DROID *psDroid, BASE_OBJECT *psTarget, int weapon_slot)
 	ASSERT_OR_RETURN( false, compIndex < numWeaponStats, "Invalid range referenced for numWeaponStats, %d > %d", compIndex, numWeaponStats);
 	psStats = asWeaponStats + compIndex;
 
-	if (lineOfFire(psDroid, psTarget, weapon_slot, true))
+	if (lineOfFire(psDroid, psTarget, weapon_slot, true, false))
 	{
 		if (proj_Direct(psStats))
 		{
