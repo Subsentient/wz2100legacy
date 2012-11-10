@@ -4,10 +4,21 @@ Warzone 2100 Legacy
 
 Hi, welcome to Warzone 2100 Legacy! This readme file is currently incomplete, but I'm sure you can contact 
 users and/or developers of Legacy to get help. Our site is: http://universe2.us/wzlegacy/
+We have a wiki at "http://universe2.us/wzlegacy/wiki/".
 Our IRC Channel (instant messaging/chat) is ##wz2100legacy on freenode.net, to visit, copy and paste this into
 your web browser: http://webchat.freenode.net/?channels=##wz2100legacy
 
 There are also forums at our site. Feel free to join our community!
+
+In the mean time, here are a few tricks for Legacy that may not be so obvious:
+
+You can type a map's name into the map name box now, but the maximum player count will be set to whatever was previously selected.
+This is helpful for adding slots for spectators, for example, one could set up ten player slots for an eight player map, leaving room for two
+spectators. Another trick is the spectating shortcut itself, CTRL+Insert, OR, spec me. CTRL + ` (~ without shift key on US qwerty) toggles the FPS
+counter without the need to type showfps. If you put a "/" in front of your message, you can have an IRC-style /me message.
+For example, in IRC it might appear "*Subsentient derps and then herps*". For us, it will appear " >> Subsentient derps and then herps << ".
+These are the important shortcuts for now.
+
 
 Warzone 2100 Legacy was created for the purpose of preserving the game of Warzone 2100 while adding new 
 interface features and conveniences, preserving over a decade of nostalgia and making the game more enjoyable.
