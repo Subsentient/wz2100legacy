@@ -85,6 +85,7 @@
 // Empty edit window
 //#define EDIT_OPTIONS
 bool SecondaryWindowUp = false;
+bool debugPauseState = false; //For fixing of the pause button. -Subsentient
 
 static UDWORD		newMapWidth, newMapHeight;
 
@@ -1306,19 +1307,19 @@ static void intProcessOptions(UDWORD id)
 			intRemoveOptions();
 			intMode = INT_NORMAL;
 			break;
-		case IDOPT_PAUSE:
-			if (editMode)
-			{
-				widgSetButtonState(psWScreen, IDOPT_PAUSE, 0);
-				editMode = false;
-				setEditPause(false);
-			}
-			else
-			{
-				widgSetButtonState(psWScreen, IDOPT_PAUSE, WBUT_CLICKLOCK);
-				editMode = true;
-				setEditPause(true);
-			}
+		case IDOPT_PAUSE: /*Fix busted pause button. It seems like it was meant for another purpose,
+			but we don't care. It was best used in normal games.-Subsentient*/
+			debugPauseState = !debugPauseState;
+			//Do teh pausingzz -Subsentient
+			setConsolePause(debugPauseState);
+			setScriptPause(debugPauseState);
+	 		setAudioPause(debugPauseState);
+			if (debugPauseState) {
+			 widgSetButtonState(psWScreen, IDOPT_PAUSE, WBUT_CLICKLOCK);
+			 gameTimeStop(); }
+			else {
+			 widgSetButtonState(psWScreen, IDOPT_PAUSE, 0);
+			 gameTimeStart(); }
 			break;
 		case IDOPT_ZALIGN:
 			kf_MapCheck();
@@ -3653,10 +3654,6 @@ bool intAddOptions(void)
 	if (NetPlay.bComms)
 	{
 		widgSetButtonState(psWScreen, sButInit.id, WBUT_DISABLE);
-	}
-	if (editMode)
-	{
-		widgSetButtonState(psWScreen, IDOPT_PAUSE, WBUT_CLICKLOCK);
 	}
 
 	/* Z-align map objects */

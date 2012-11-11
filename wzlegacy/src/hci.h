@@ -436,4 +436,8 @@ extern bool intIsRefreshing(void);
 
 extern void intDemolishCancel(void);
 
+//Moar variables -Subsentient
+
+extern bool debugPauseState;
+
 #endif // __INCLUDED_SRC_HCI_H__
