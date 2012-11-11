@@ -11,9 +11,9 @@
   !define INSTALL_PATH "$PROGRAMFILES\${APPLICATION_NAME} ${APPLICATION_VERSION}"
   !define INSTALL_GRAPHICS "nsis"
 
-  !define APPLICATION_VERSION_MAJOR microwave_popping
+  !define APPLICATION_VERSION_MAJOR 1
   !define APPLICATION_VERSION_MINOR 0
-  !define APPLICATION_VERSION_REVISION 0
+  !define APPLICATION_VERSION_REVISION a1
 ;--------------------------------
 ;Include Modern UI
 
@@ -229,21 +229,21 @@ SectionEnd
 
 ;Make it easy to migrate our stuff.
 Section /o "Migrate maps and ranks from Warzone 2100 2.3"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
- CopyFiles "$DOCUMENTS\Warzone 2100 2.3\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CopyFiles "$DOCUMENTS\Warzone 2100 2.3\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0\maps\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0\multiplay\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 2.3\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy 1.0\maps\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 2.3\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy 1.0\multiplay\players\"
 SectionEnd
 
 Section /o "Migrate maps and ranks from Warzone 2100 3.1"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
- CopyFiles "$DOCUMENTS\Warzone 2100 3.1\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0\maps\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0\multiplay\"
+ CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy 1.0\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 3.1\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy 1.0\maps\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy 1.0\multiplay\players\"
 SectionEnd
 
 Function .onInit ;Splash display.
