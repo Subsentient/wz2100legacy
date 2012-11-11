@@ -4,7 +4,7 @@
 ;Defines
 
   !define APPLICATION_NAME "Warzone 2100 Legacy"
-  !define APPLICATION_VERSION "microwave_popping"
+  !define APPLICATION_VERSION "1.0a1"
   !define APPLICATION_PUBLISHER "Warzone 2100 Legacy Project"
   !define APPLICATION_WEB_SITE "http://universe2.us/wzlegacy"
   !define INSTALL_LICENSE "${TOP_BUILDDIR}\COPYING"
