@@ -1,3 +1,12 @@
+Changes for 1.0 alpha 1:
+Convert all weapons, bodies, propulsions, structures, and features to PIE 3, removing excess polygons,
+put back the original 2.3.x wheels, fix busted pause button in debug menu, update to automake 1.12, require it.
+Remove configure script and such stuff, requiring ./autogen.sh first, update documentation a little, allow structures to shoot over
+each other again, at the same time fix bunkers shooting through walls by adding boolean to check if we should take structures into 
+account when getting line of sight, fix up Windows installer a bit, add multilingual support for core game back, allow IRC-like 
+/me messages, but just using the "/", and that about covers it. Balance of the game is almost 100% 2.3.9 compliant, excluding the 
+deconstructing oil derricks, which are kinda a bug when disabled, so I left them. We are about ready for showtime folks.
+
 Changes for microwave 11/03/2012:
 A large list here this time folks...
 Fixed terrain shadow direction, prevented factory holograms from spinning, allow obsolete units to keep producing until aborted (like in 2.3.x),
