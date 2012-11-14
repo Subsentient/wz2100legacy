@@ -1456,11 +1456,13 @@ static void addGameOptions()
 		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_LOCK);
 		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
 	}
-	else if (ingame.bHostSetup && !bHosted && NetPlay.bComms)
-	{
-		// only show this when we are not hosting a game
-		addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT, MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE, MULTIOP_PASSWORD_BUT);
-	}
+
+	addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT, MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE, MULTIOP_PASSWORD_BUT);
+		
+	if (!bMultiPlayer) { //Subsentient did it. Handy little thing.
+	 widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_LOCK);
+	 widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE); }
+
 	//Fog of war options.
 	addBlueForm(MULTIOP_OPTIONS,MULTIOP_FOG,_("Fog"),MCOL0,MROW6,MULTIOP_BLUEFORMW,27);
 	addMultiBut(psWScreen,MULTIOP_FOG,MULTIOP_FOG_ON ,MCOL2,2,MULTIOP_BUTW,MULTIOP_BUTH, _("Fog Of War"), IMAGE_FOG_OFF, IMAGE_FOG_OFF_HI,true);
@@ -2720,44 +2722,40 @@ static void processMultiopWidgets(UDWORD id)
 			addMultiRequest(MultiCustomMapsPath, ".wrf", MULTIOP_MAP, current_tech, current_numplayers);
 			break;
 
-		case MULTIOP_PASSWORD_BUT:
-			{
-				char game_password[64];
-				char buf[255];
-				int32_t result = 0;
-
-				result = widgGetButtonState(psWScreen, MULTIOP_PASSWORD_BUT);
-				debug(LOG_NET, "Password button hit, %d", result);
-				if (result == 0)
-				{
-					sstrcpy(game_password, widgGetString(psWScreen, MULTIOP_PASSWORD_EDIT));
-					NETsetGamePassword(game_password);
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_CLICKLOCK);
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
-					// say password is now required to join games?
-					ssprintf(buf, _("*** password [%s] is now required! ***"), NetPlay.gamePassword);
-					addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
-					NETGameLocked(true);
-				}
-				else
-				{
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT , 0);
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, 0);
-					ssprintf(buf, _("*** password is NOT required! ***"));
-					addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
-					NETresetGamePassword();
-					NETGameLocked(false);
-					break;
-				}
-
-			}
-			break;
-
 		case MULTIOP_MAP_BUT:
 			loadMapPreview(true);
 			break;
 		}
 	}
+
+		if (id == MULTIOP_PASSWORD_BUT) { //Moved it out of the "If it's not hosted" category to make better use of it. -Subsentient
+		 char game_password[64];
+		 char buf[255];
+		 int32_t result = 0;
+		 result = widgGetButtonState(psWScreen, MULTIOP_PASSWORD_BUT);
+		 debug(LOG_NET, "Password button hit, %d", result);
+		 if (result == 0) {
+		  sstrcpy(game_password, widgGetString(psWScreen, MULTIOP_PASSWORD_EDIT));
+		  NETsetGamePassword(game_password);
+		  widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_CLICKLOCK);
+		  widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
+		  // say password is now required to join games?
+		  ssprintf(buf, _("*** password [%s] is now required! ***"), NetPlay.gamePassword);
+		  addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
+		  NETGameLocked(true);
+		  if (bHosted) { 
+		  NETrefreshServerConnection(); } } //Call this to update the lobby game. -Subsentient
+
+		  else {
+		   widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT , 0);
+		   widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, 0);
+		   ssprintf(buf, _("*** password is NOT required! ***"));
+		   addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
+		   NETresetGamePassword();
+		   NETGameLocked(false); 
+		   if (bHosted) {
+		    sendOptions();
+		    NETrefreshServerConnection(); } } } //Call this to update the lobby game. -Subsentient
 
 	// host who is setting up or has hosted
 	if(ingame.bHostSetup)// || NetPlay.isHost) // FIXME Was: if(ingame.bHostSetup);{} ??? Note the ; !

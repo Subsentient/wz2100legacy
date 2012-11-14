@@ -2153,6 +2153,12 @@ static void NETregisterServer(int state)
 	}
 }
 
+//Tiny function for refreshing to the lobby. 
+//Some things aren't going to be updated by this, but still kinda useful. -Subsentient
+void NETrefreshServerConnection() {
+ NETregisterServer(3); }
+
+
 // ////////////////////////////////////////////////////////////////////////
 //  Check player "slots" & update player count if needed.
 void NETfixPlayerCount(void)
