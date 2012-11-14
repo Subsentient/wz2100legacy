@@ -121,12 +121,13 @@ void loadMapPreview(bool hideInterface);
 #define GAMES_GAMEWIDTH		540
 #define GAMES_GAMEHEIGHT	28
 // We can have a max of 4 icons for status, current icon size if 36x25.
-#define GAMES_STATUS_START 393
+#define GAMES_STATUS_START 503
 #define GAMES_GAMENAME_START 2
 #define GAMES_VERSION_START 2 + 6		// indent a bit
-#define GAMES_MAPNAME_START 173
-#define GAMES_MODNAME_START 173 + 6		// indent a bit
-#define GAMES_PLAYERS_START 360
+#define GAMES_MAPNAME_START 185
+#define GAMES_MODNAME_START GAMES_MAPNAME_START + 6		// indent a bit
+#define GAMES_PLAYERS_START 465
+#define GAMES_HOSTER_START 340
 
 // ////////////////////////////////////////////////////////////////
 // GAME OPTIONS SCREEN

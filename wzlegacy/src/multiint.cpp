@@ -992,15 +992,13 @@ static void addGames(void)
 					{
 						flags += " "; flags += _("[No VTOLs]");
 					}
-					if (flags.empty())
-					{
-						ssprintf(tooltipbuffer[i], _("Hosted by %s"), NetPlay.games[i].hostname);
-					}
-					else
+					if (!flags.empty())
+					//We don't need a tooltip for the host anymore, so don't give one if we don't have anything interesting to say. -Subsentient
 					{
 						ssprintf(tooltipbuffer[i], _("Hosted by %s —%s"), NetPlay.games[i].hostname, flags.c_str());
+						sButInit.pTip = tooltipbuffer[i];
 					}
-					sButInit.pTip = tooltipbuffer[i];
+					
 				}
 				sButInit.UserData = i;
 
@@ -3889,6 +3887,7 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	drawBlueBox(x, y, psWidget->width, psWidget->height);
 	drawBlueBox(x, y, GAMES_STATUS_START - 4 ,psWidget->height);
 	drawBlueBox(x, y, GAMES_PLAYERS_START - 4 ,psWidget->height);
+	drawBlueBox(x, y, GAMES_HOSTER_START - 4 ,psWidget->height);
 	drawBlueBox(x, y, GAMES_MAPNAME_START - 4, psWidget->height);
 
 	//draw game info
@@ -3927,20 +3926,16 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 			}
 		}
 
-		ssprintf(tmp, "%d/%d", NetPlay.games[gameID].desc.dwCurrentPlayers, NetPlay.games[gameID].desc.dwMaxPlayers);
-		iV_DrawText(tmp, x + GAMES_PLAYERS_START + 4 , y + 18);
-
-		// see what host limits are... then draw them.
-		if (NetPlay.games[gameID].limits)
-		{
-			if(NetPlay.games[gameID].limits & NO_TANKS)
-				iV_DrawImage(FrontImages, IMAGE_NO_TANK, x + GAMES_STATUS_START + 37, y + 2);
-			if(NetPlay.games[gameID].limits & NO_BORGS)
-				iV_DrawImage(FrontImages, IMAGE_NO_CYBORG, x + GAMES_STATUS_START + (37 * 2), y + 2);
-			if(NetPlay.games[gameID].limits & NO_VTOLS)
-				iV_DrawImage(FrontImages, IMAGE_NO_VTOL, x + GAMES_STATUS_START + (37 * 3) , y + 2);
-		}
 	}
+	
+	// Display the name of the host -Subsentient
+	ssprintf(tmp, NetPlay.games[gameID].hostname);
+	iV_DrawText(tmp, x + GAMES_HOSTER_START + 4 , y + 18);
+
+	//Display the number of players. Moved out so we can always see available players even if it's the wrong version. -Subsentient
+	ssprintf(tmp, "%d/%d", NetPlay.games[gameID].desc.dwCurrentPlayers, NetPlay.games[gameID].desc.dwMaxPlayers);
+	iV_DrawText(tmp, x + GAMES_PLAYERS_START + 4 , y + 18);
+
 	// Draw type overlay.
 	iV_DrawImage(FrontImages, statusStart, x + GAMES_STATUS_START, y + 3);
 	iV_DrawImage(FrontImages, lamp, x - 14, y + 8);
@@ -4005,13 +4000,15 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	 // make the 'header' for the table...
 	 drawBlueBox(x , y - 12 , GAMES_GAMEWIDTH, 12);
 	 ssprintf(tmp, "Game Name");
-	 iV_DrawText(tmp, x - 2 + GAMES_GAMENAME_START + 48, y - 3);
+	 iV_DrawText(tmp, x - 2 + GAMES_GAMENAME_START + 52, y - 3);
 	 ssprintf(tmp, "Map Name");
-	 iV_DrawText(tmp, x - 2 + GAMES_MAPNAME_START + 48, y - 3);
+	 iV_DrawText(tmp, x - 2 + GAMES_MAPNAME_START + 46, y - 3);
+	 ssprintf(tmp, "Host");
+	 iV_DrawText(tmp, x - 2 + GAMES_HOSTER_START + 52, y - 3);
 	 ssprintf(tmp, "Players");
-	 iV_DrawText(tmp, x - 2 + GAMES_PLAYERS_START, y - 3);
+	 iV_DrawText(tmp, x - 2 + GAMES_PLAYERS_START - 1, y - 3);
 	 ssprintf(tmp, "Status");
-	 iV_DrawText(tmp, x - 2 + GAMES_STATUS_START + 48, y - 3);
+	 iV_DrawText(tmp, x - 2 + GAMES_STATUS_START + 4, y - 3);
 	}
 }
 
