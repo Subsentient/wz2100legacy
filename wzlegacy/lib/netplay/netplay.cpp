@@ -569,44 +569,6 @@ bool NETchangePlayerName(UDWORD index, char *newName)
 	return true;
 }
 
-void NETfixDuplicatePlayerNames(void)
-{
-	char name[StringSize];
-	unsigned i, j, pass;
-	for (i = 1; i != MAX_PLAYERS; ++i)
-	{
-		sstrcpy(name, NetPlay.players[i].name);
-		if (name[0] == '\0')
-		{
-			continue;  // Ignore empty names.
-		}
-		for (pass = 0; pass != 101; ++pass)
-		{
-			if (pass != 0)
-			{
-				ssprintf(name, "%s_%X", NetPlay.players[i].name, pass + 1);
-			}
-
-			for (j = 0; j != i; ++j)
-			{
-				if (strcmp(name, NetPlay.players[j].name) == 0)
-				{
-					break;  // Duplicate name.
-				}
-			}
-
-			if (i == j)
-			{
-				break;  // Unique name.
-			}
-		}
-		if (pass != 0)
-		{
-			NETchangePlayerName(i, name);
-		}
-	}
-}
-
 // ////////////////////////////////////////////////////////////////////////
 // return one of the four user flags in the current sessiondescription.
 SDWORD NETgetGameFlags(UDWORD flag)
@@ -1573,7 +1535,6 @@ static bool NETprocessSystemMessage(NETQUEUE playerQueue, uint8_t type)
 			if (NetPlay.isHost && !error)
 			{
 				NETBroadcastPlayerInfo(index);
-				NETfixDuplicatePlayerNames();
 			}
 			netPlayersUpdated = true;
 			break;
@@ -2525,7 +2486,6 @@ static void NETallowJoining(void)
 					{
 						NETBroadcastPlayerInfo(j);
 					}
-					NETfixDuplicatePlayerNames();
 
 					// Send the updated GAMESTRUCT to the masterserver
 					NETregisterServer(WZ_SERVER_UPDATE);
