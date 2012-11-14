@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot v1.39 ~Flame~"
+js = nullbot-1-39-flame.js
+tip = "Flamer spam AI based on NullBot"

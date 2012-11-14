@@ -1505,7 +1505,7 @@ function produceAPTank(struct) {
 		prop=standardTankPropulsionsHover;
 	var ip=random(prop.length);
 	var ib=random(body.length);
-	return buildDroid(struct, "AP Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.apWeapons[iap])	
+	return buildDroid(struct, "AP Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.apWeapons[iap], personality.apWeapons[iap], personality.apWeapons[iap]);
 }
 
 // produce a tank with an anti-tank weapon in some factory
@@ -1521,7 +1521,7 @@ function produceATTank(struct) {
 		prop=standardTankPropulsionsHover;
 	var ip=random(prop.length);
 	var ib=random(body.length);
-	return buildDroid(struct, "AT Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.atWeapons[iat])	
+	return buildDroid(struct, "AT Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.atWeapons[iat], personality.atWeapons[iat], personality.atWeapons[iat]);
 }
 
 // produce a tank with an anti-building weapon in some factory
@@ -1544,7 +1544,7 @@ function produceABTank(struct) {
 			prop=standardTankPropulsionsHover;
 		var ip=random(prop.length);
 		var ib=random(body.length);
-		return buildDroid(struct, "AB Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.abWeapons[iab])	
+		return buildDroid(struct, "AB Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.abWeapons[iab], personality.abWeapons[iab], personality.abWeapons[iab]);
 	} else if (sensortanks < MAX_SENSOR_TANKS) {
 		var prop=truckPropulsions;
 		if (RATE_TANK == 0)
@@ -1566,7 +1566,7 @@ function produceAATank(struct) {
 		prop=standardTankPropulsionsHover;
 	var ip=random(prop.length);
 	var ib=random(body.length);
-	return buildDroid(struct, "AA Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.aaWeapons[iaa])	
+	return buildDroid(struct, "AA Tank", body[ib], prop[ip], "", DROID_WEAPON, personality.aaWeapons[iaa], personality.aaWeapons[iaa], personality.aaWeapons[iaa]);
 }
 
 // produce a cyborg with an anti-personnel weapon in some factory
@@ -2036,7 +2036,7 @@ function regroupWarriors(gr) {
 	}
 	groupInfo[gr].lastX=ret.xav[ret.maxIdx];
 	groupInfo[gr].lastY=ret.yav[ret.maxIdx];
-	if (groupInfo[gr].idleTime<5) {
+	if (groupInfo[gr].idleTime<3) {
 		if (
 			(groupInfo[gr].delaystaticregroup == 0) 
 				|| 

@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot v1.39"
+js = nullbot-1-39-generic.js
+tip = "NullBot - an adaptive skirmish AI"

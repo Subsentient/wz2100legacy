@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot v1.39 ~Turtle~"
+js = nullbot-1-39-turtle.js
+tip = "Tower wars AI based on NullBot"

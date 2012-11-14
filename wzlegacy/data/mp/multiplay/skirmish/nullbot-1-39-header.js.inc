@@ -9,7 +9,7 @@ const	MAX_VTOL_GROUPS = 6;		// the maximum number of VTOL groups
 const	ABS_MAX_HOVER_TRUCKS = 13;			// make sure we build at least some hover trucks
 
 const	MAX_DISPERSE = 3; 		// the maximum dispersion of the attack group
-const	RETREAT_AT = 70;		// send the unit for repair if it has this much hit point percent left
+const	RETREAT_AT = 50;		// send the unit for repair if it has this much hit point percent left
 
 const	NUM_VTOL_PADS = 1;		// this many vtols per vtol pad are allowed
 const	BASE_SIZE = 20;		// range of alertness
@@ -399,13 +399,11 @@ const standardResearchPathElectronic = [
 
 const standardTankBodies = [
 	[
-		"Body14SUP", // dragon
-		"Body13SUP", // wyvern
 		"Body10MBT", // vengeance
 		"Body7ABT", // retribution
 		"Body9REC", // tiger
-		"Body6SUPP", // panther
 		"Body12SUP", // mantis
+		"Body6SUPP", // panther
 		"Body8MBT", // scorpion
 		"Body11ABT", // python
 		"Body3MBT", // retaliation
@@ -420,8 +418,8 @@ const standardTankBodies = [
 		"Body10MBT", // vengeance
 		"Body9REC", // tiger
 		"Body7ABT", // retribution
-		"Body12SUP", // mantis
 		"Body6SUPP", // panther
+		"Body12SUP", // mantis
 		"Body11ABT", // python
 		"Body8MBT", // scorpion
 		"Body3MBT", // retaliation
@@ -433,8 +431,6 @@ const standardTankBodies = [
 ];
 
 const standardTankBodiesLight = [
-	"Body14SUP", // dragon
-	"Body13SUP", // wyvern
 	"Body10MBT", // vengeance
 	"Body7ABT", // retribution
 	"Body12SUP", // mantis
