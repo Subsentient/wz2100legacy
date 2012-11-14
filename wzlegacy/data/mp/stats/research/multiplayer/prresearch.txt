@@ -25,9 +25,11 @@ R-Cyborg-Hvywpn-HPV,R-Wpn-Cannon4AMk1,960
 R-Cyborg-Hvywpn-Mcannon,R-Wpn-Cannon2Mk1,1090
 R-Cyborg-Hvywpn-Mcannon,R-Cyborg-Metals04,1090
 R-Cyborg-Hvywpn-PulseLsr,R-Wpn-Laser02,1110
+R-Cyborg-Hvywpn-PulseLsr,R-Cyborg-Metals04,1110
 R-Cyborg-Hvywpn-RailGunner,R-Wpn-RailGun02,1111
-R-Cyborg-Hvywpn-TK,R-Cyborg-Metals04,1094
+R-Cyborg-Hvywpn-RailGunner,R-Cyborg-Metals04,1111
 R-Cyborg-Hvywpn-TK,R-Wpn-Rocket07-Tank-Killer,1094
+R-Cyborg-Hvywpn-TK,R-Cyborg-Metals04,1094
 R-Cyborg-Metals01,R-Struc-Factory-Module,449
 R-Cyborg-Metals01,R-Struc-Research-Module,449
 R-Cyborg-Metals02,R-Cyborg-Metals01,450
