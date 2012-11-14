@@ -182,7 +182,7 @@ bool saveConfig()
 	ini.setValue("showFPS", (SDWORD)showFPS);
 	ini.setValue("scroll",(SDWORD)scroll_speed_accel);		// scroll
 	ini.setValue("shake",(SDWORD)(getShakeStatus()));		// screenshake
-	ini.setValue("fogofwar",(SDWORD)(!bRevealActive));		// screenshake
+	ini.setValue("fogofwar",(SDWORD)(!bRevealActive));		// fog of war
 	ini.setValue("mouseflip",(SDWORD)(getInvertMouseStatus()));	// flipmouse
 	ini.setValue("nomousewarp", (SDWORD)getMouseWarp()); 		// mouse warp
 	ini.setValue("RightClickOrders",(SDWORD)(getRightClickOrders()));
