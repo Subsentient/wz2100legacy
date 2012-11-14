@@ -1249,7 +1249,14 @@ int realmain(int argc, char *argv[])
 	war_SetWidth(pie_GetVideoBufferWidth());
 	war_SetHeight(pie_GetVideoBufferHeight());
 
-	//Removed a section concerning shaders. -Subsentient
+	if (!pie_GetShaderAvailability()) //Re-add this, cuz without it, horrendous shader bugs, like, oh, not working shaders. -Subsentient
+	{
+		war_SetShaders(FALLBACK);
+	}
+	else
+	{
+		pie_SetShaderUsage(war_GetShaders()==SHADERS_ON);
+	}
 
 	pie_SetFogStatus(false);
 	pie_ScreenFlip(CLEAR_BLACK);

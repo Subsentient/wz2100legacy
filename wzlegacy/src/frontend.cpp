@@ -1063,6 +1063,7 @@ bool runVideoOptionsMenu(void)
 					widgSetString(psWScreen, FRONTEND_SHADERS_R, _("On"));
 					break;
 				case FALLBACK:
+					widgSetString(psWScreen, FRONTEND_SHADERS_R, _("---")); //Give a clue they aren't available. -Subsentient
 					break;
 			}
 			break;

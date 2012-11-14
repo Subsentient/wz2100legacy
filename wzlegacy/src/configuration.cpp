@@ -127,6 +127,9 @@ bool loadConfig()
 	NetPlay.isUPNP = ini.value("UPnP", true).toBool();
 	if (ini.contains("FSAA")) war_setFSAA(ini.value("FSAA").toInt());
 	if (ini.contains("shaders")) war_SetShaders(ini.value("shaders").toInt());
+	else war_SetShaders(SHADERS_OFF); /*We set shaders off if we find no value, 
+	because everything else will set these usually hated graphical features to on.*/
+
 	// Leave this to false, some system will fail and they can't see the system popup dialog!
 	war_setFullscreen(ini.value("fullscreen", false).toBool());
 	war_SetTrapCursor(false); //We really don't want to start up into trap cursor. It can be irritating. -Subsentient.

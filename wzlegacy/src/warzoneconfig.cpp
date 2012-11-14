@@ -92,8 +92,6 @@ void war_SetDefaultStates(void)//Sets all states
 	war_SetMusicEnabled(true);
 	war_SetSPcolor(0);		//default color is green
 	war_setMPcolour(-1);            // Default color is random.
-	//Set shaders off by default. -Subsentient
-	war_SetShaders(SHADERS_OFF);
 }
 
 void war_SetSPcolor(int color)
