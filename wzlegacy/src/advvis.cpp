@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -35,7 +36,7 @@
 
 /// Whether unexplored tiles should be shown as just darker fog. Left here as a future option
 /// for scripts, since campaign may still want total darkness on unexplored tiles.
-static bool bRevealActive = true;
+bool bRevealActive = true; //Needed this to work as an external variable. -Subsentient
 
 // ------------------------------------------------------------------------------------
 void	avUpdateTiles( void )

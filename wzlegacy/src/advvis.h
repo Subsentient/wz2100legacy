@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -28,5 +29,8 @@ UDWORD avGetObjLightLevel(BASE_OBJECT *psObj, UDWORD origLevel);
 void setRevealStatus(bool val);
 bool getRevealStatus(void);
 void preProcessVisibility(void);
+
+//Externs go here. -Subsentient
+extern bool bRevealActive;
 
 #endif // __INCLUDED_SRC_ADVVIS_H__

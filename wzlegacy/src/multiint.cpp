@@ -1469,10 +1469,23 @@ static void addGameOptions()
 		// only show this when we are not hosting a game
 		addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT, MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE, MULTIOP_PASSWORD_BUT);
 	}
+	//Fog of war options.
+	addBlueForm(MULTIOP_OPTIONS,MULTIOP_FOG,_("Visibility"),MCOL0,MROW5,MULTIOP_BLUEFORMW,27);
+	addMultiBut(psWScreen,MULTIOP_FOG,MULTIOP_FOG_ON ,MCOL2,2,MULTIOP_BUTW,MULTIOP_BUTH, _("Enable Fog Of War"), IMAGE_FOG_OFF, IMAGE_FOG_OFF_HI,true);
+	addMultiBut(psWScreen,MULTIOP_FOG,MULTIOP_FOG_OFF,MCOL3,2,MULTIOP_BUTW,MULTIOP_BUTH, _("Standard Visibility"),IMAGE_FOG_ON,IMAGE_FOG_ON_HI,true);
+	if(bRevealActive)
+	{
+		widgSetButtonState(psWScreen, MULTIOP_FOG_OFF,WBUT_LOCK);
+	}
+	else
+	{
+		widgSetButtonState(psWScreen, MULTIOP_FOG_ON,WBUT_LOCK);
+	}
+
 
 	// buttons
 	// game type
-	addBlueForm(MULTIOP_OPTIONS,MULTIOP_GAMETYPE,_("Scavengers"),MCOL0,MROW5,MULTIOP_BLUEFORMW,27);
+	addBlueForm(MULTIOP_OPTIONS,MULTIOP_GAMETYPE,_("Scavengers"),MCOL0,MROW6,MULTIOP_BLUEFORMW,27);
 	addMultiBut(psWScreen, MULTIOP_GAMETYPE, MULTIOP_CAMPAIGN, MCOL2, 2, MULTIOP_BUTW, MULTIOP_BUTH, _("Scavengers"),
 	            IMAGE_SCAVENGERS_ON, IMAGE_SCAVENGERS_ON_HI, true);
 	addMultiBut(psWScreen, MULTIOP_GAMETYPE, MULTIOP_SKIRMISH, MCOL3, 2, MULTIOP_BUTW, MULTIOP_BUTH, _("No Scavengers"),
@@ -1508,7 +1521,7 @@ static void addGameOptions()
 	addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PNAME, MCOL0, MROW1, _("Select Player Name"), (char*) sPlayer, IMAGE_EDIT_PLAYER, IMAGE_EDIT_PLAYER_HI, MULTIOP_PNAME_ICON);
 
 		// alliances
-		addBlueForm(MULTIOP_OPTIONS, MULTIOP_ALLIANCES, _("Alliances"), MCOL0, MROW6, MULTIOP_BLUEFORMW, 27);
+		addBlueForm(MULTIOP_OPTIONS, MULTIOP_ALLIANCES, _("Alliances"), MCOL0, MROW7, MULTIOP_BLUEFORMW, 27);
 
 		addMultiBut(psWScreen,MULTIOP_ALLIANCES,MULTIOP_ALLIANCE_N,MCOL1,2,MULTIOP_BUTW,MULTIOP_BUTH,
 				_("No Alliances"),IMAGE_NOALLI,IMAGE_NOALLI_HI,true);
@@ -1541,7 +1554,7 @@ static void addGameOptions()
 			break;
 		}
 
-		addBlueForm(MULTIOP_OPTIONS, MULTIOP_POWER, _("Power"), MCOL0, MROW7, MULTIOP_BLUEFORMW, 27);
+		addBlueForm(MULTIOP_OPTIONS, MULTIOP_POWER, _("Power"), MCOL0, MROW8, MULTIOP_BLUEFORMW, 27);
 		addMultiBut(psWScreen,MULTIOP_POWER,MULTIOP_POWLEV_LOW,MCOL1,2,MULTIOP_BUTW,MULTIOP_BUTH,
 			_("Low Power Levels"),IMAGE_POWLO,IMAGE_POWLO_HI,true);
 		addMultiBut(psWScreen,MULTIOP_POWER,MULTIOP_POWLEV_MED,MCOL2,2,MULTIOP_BUTW,MULTIOP_BUTH,
@@ -1579,7 +1592,7 @@ static void addGameOptions()
 			}
 		}
 
-		addBlueForm(MULTIOP_OPTIONS, MULTIOP_BASETYPE, _("Base"), MCOL0, MROW8, MULTIOP_BLUEFORMW, 27);
+		addBlueForm(MULTIOP_OPTIONS, MULTIOP_BASETYPE, _("Base"), MCOL0, MROW9, MULTIOP_BLUEFORMW, 27);
 		addMultiBut(psWScreen,MULTIOP_BASETYPE,MULTIOP_CLEAN,MCOL1,2,MULTIOP_BUTW,MULTIOP_BUTH,
 				_("Start with No Bases"), IMAGE_NOBASE,IMAGE_NOBASE_HI,true);
 		addMultiBut(psWScreen,MULTIOP_BASETYPE,MULTIOP_BASE,MCOL2,2,MULTIOP_BUTW,MULTIOP_BUTH,
@@ -1617,7 +1630,7 @@ static void addGameOptions()
 			break;
 		}
 
-	addBlueForm(MULTIOP_OPTIONS, MULTIOP_MAP_PREVIEW, _("Map Preview"), MCOL0, MROW9, MULTIOP_BLUEFORMW, 27);
+	addBlueForm(MULTIOP_OPTIONS, MULTIOP_MAP_PREVIEW, _("Map Preview"), MCOL0, MROW10, MULTIOP_BLUEFORMW, 27);
 	addMultiBut(psWScreen,MULTIOP_MAP_PREVIEW, MULTIOP_MAP_BUT, MCOL3, 2, MULTIOP_BUTW, MULTIOP_BUTH,
 	            _("Click to see Map"), IMAGE_FOG_OFF, IMAGE_FOG_OFF_HI, true);
 	widgSetButtonState(psWScreen, MULTIOP_MAP_BUT,0); //1 = OFF  0=ON
@@ -1632,7 +1645,7 @@ static void addGameOptions()
 	// host Games button
 	if(ingame.bHostSetup && !bHosted && !challengeActive)
 	{
-		addBlueForm(MULTIOP_OPTIONS, MULTIOP_HOST, _("Start Hosting Game"), MCOL0, MROW11, MULTIOP_BLUEFORMW, 27);
+		addBlueForm(MULTIOP_OPTIONS, MULTIOP_HOST, _("Start Hosting Game"), MCOL0, MROW12, MULTIOP_BLUEFORMW, 27);
 		addMultiBut(psWScreen, MULTIOP_HOST, MULTIOP_HOST_BUT, MCOL3, 0, MULTIOP_BUTW, MULTIOP_BUTH,
 			_("Start Hosting Game"), IMAGE_HOST, IMAGE_HOST_HI, IMAGE_HOST_HI);
 	}
@@ -1642,7 +1655,7 @@ static void addGameOptions()
 	if (ingame.bHostSetup)
 	{
 		addBlueForm(MULTIOP_OPTIONS, MULTIOP_STRUCTLIMITS, challengeActive ? _("Show Structure Limits") : _("Set Structure Limits"),
-						MCOL0, MROW10, MULTIOP_BLUEFORMW, 27);
+						MCOL0, MROW11, MULTIOP_BLUEFORMW, 27);
 
 		addMultiBut(psWScreen, MULTIOP_STRUCTLIMITS, MULTIOP_LIMITS_BUT, MCOL3, 4, MULTIOP_BUTW, MULTIOP_BUTH,
 					 challengeActive ? _("Show Structure Limits") : _("Set Structure Limits"), IMAGE_SLIM, IMAGE_SLIM_HI, IMAGE_SLIM_HI);
@@ -2602,6 +2615,8 @@ static void disableMultiButs(void)
 
 	if (!NetPlay.isHost)
 	{
+			if(bRevealActive) widgSetButtonState(psWScreen,MULTIOP_FOG_ON ,WBUT_DISABLE); //Re-add fog buttons. -Subsentient
+			if(!bRevealActive) widgSetButtonState(psWScreen,MULTIOP_FOG_OFF ,WBUT_DISABLE);
 			if(game.base != CAMP_CLEAN)	widgSetButtonState(psWScreen,MULTIOP_CLEAN ,WBUT_DISABLE);	// camapign subtype.
 			if(game.base != CAMP_BASE)	widgSetButtonState(psWScreen,MULTIOP_BASE ,WBUT_DISABLE);
 			if(game.base != CAMP_WALLS)	widgSetButtonState(psWScreen,MULTIOP_DEFENCE,WBUT_DISABLE);
@@ -2891,6 +2906,31 @@ static void processMultiopWidgets(UDWORD id)
 			widgSetButtonState(psWScreen, MULTIOP_POWLEV_HI ,WBUT_LOCK);
 			game.power = LEV_HI;
 
+			resetReadyStatus(false);
+
+			if(bHosted)
+			{
+				sendOptions();
+			}
+			break;
+
+		//Re-add Multiplayer fog of war.
+		case MULTIOP_FOG_ON:
+			widgSetButtonState(psWScreen, MULTIOP_FOG_ON,WBUT_LOCK);
+			widgSetButtonState(psWScreen, MULTIOP_FOG_OFF,0);
+			bRevealActive = false;
+			resetReadyStatus(false);
+
+			if(bHosted)
+			{
+				sendOptions();
+			}
+			break;
+
+		case MULTIOP_FOG_OFF:
+			widgSetButtonState(psWScreen, MULTIOP_FOG_ON,0);
+			widgSetButtonState(psWScreen, MULTIOP_FOG_OFF,WBUT_LOCK);
+			bRevealActive = true;
 			resetReadyStatus(false);
 
 			if(bHosted)

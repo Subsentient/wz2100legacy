@@ -72,6 +72,7 @@ bool loadConfig()
 	if (ini.contains("music_enabled")) war_SetMusicEnabled(ini.value("music_enabled").toBool());
 	if (ini.contains("language")) setLanguage(ini.value("language").toString().toUtf8().constData());
 	if (ini.contains("nomousewarp")) setMouseWarp(ini.value("nomousewarp").toBool());
+	if (ini.contains("fogofwar")) bRevealActive = !ini.value("fogofwar").toBool(); //Add back fog of war options.
 	if (ini.contains("notexturecompression")) wz_texture_compression = GL_RGBA;
 	showFPS = ini.value("showFPS", true).toBool();
 	scroll_speed_accel = ini.value("scroll", DEFAULTSCROLL).toInt();
@@ -178,6 +179,7 @@ bool saveConfig()
 	ini.setValue("showFPS", (SDWORD)showFPS);
 	ini.setValue("scroll",(SDWORD)scroll_speed_accel);		// scroll
 	ini.setValue("shake",(SDWORD)(getShakeStatus()));		// screenshake
+	ini.setValue("fogofwar",(SDWORD)(!bRevealActive));		// screenshake
 	ini.setValue("mouseflip",(SDWORD)(getInvertMouseStatus()));	// flipmouse
 	ini.setValue("nomousewarp", (SDWORD)getMouseWarp()); 		// mouse warp
 	ini.setValue("RightClickOrders",(SDWORD)(getRightClickOrders()));

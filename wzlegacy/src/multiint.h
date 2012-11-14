@@ -179,14 +179,14 @@ void loadMapPreview(bool hideInterface);
 #define	MROW2					MROW1+MULTIOP_EDITBOXH
 #define	MROW3					MROW2+MULTIOP_EDITBOXH
 #define	MROW4					MROW3+MULTIOP_EDITBOXH
-#define MROW5					MROW4+38
-#define	MROW6					MROW5+29
-#define	MROW7					MROW6+29
-#define	MROW8					MROW7+29
-#define	MROW9					MROW8+29
-#define	MROW10					MROW9+32
-#define	MROW11					MROW10+36
-#define	MROW12					MROW11+40
+#define MROW5					MROW4+30
+#define	MROW6					MROW5+30
+#define	MROW7					MROW6+30
+#define	MROW8					MROW7+30
+#define	MROW9					MROW8+30
+#define	MROW10					MROW9+30
+#define	MROW11					MROW10+30
+#define	MROW12					MROW11+30
 
 #define MCOL0					50
 #define MCOL1					(MCOL0+26+10)	// rem 10 for 4 lines.
@@ -273,9 +273,14 @@ void loadMapPreview(bool hideInterface);
 #define MULTIOP_BASETYPE		10300
 #define MULTIOP_TECHLEVEL		10302
 #define MULTIOP_COMPUTER		10304
+#define	MULTIOP_FOG			10306  //Re-add fog of war option variables.
 
 #define MULTIOP_COMPUTER_Y		10308
 #define MULTIOP_COMPUTER_N		10309
+
+
+#define	MULTIOP_FOG_ON			10310
+#define	MULTIOP_FOG_OFF			10311
 
 #define MULTIOP_SKSLIDE			102842 //10313
 #define MULTIOP_SKSLIDE_END		102873 //10320

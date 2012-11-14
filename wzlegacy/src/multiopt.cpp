@@ -26,6 +26,7 @@
  * Routines for setting the game options and starting the init process.
  */
 #include "lib/framework/frame.h"			// for everything
+#include "advvis.h" //For fog variable. -Subsentient
 #include "map.h"
 #include "game.h"			// for loading maps
 #include "message.h"		// for clearing messages.
@@ -76,6 +77,7 @@ void sendOptions()
 	NETbin(game.hash.bytes, game.hash.Bytes);
 	NETuint8_t(&game.maxPlayers);
 	NETstring(game.name, 128);
+	NETbool(&bRevealActive);
 	NETuint32_t(&game.power);
 	NETuint8_t(&game.base);
 	NETuint8_t(&game.alliance);
@@ -133,6 +135,7 @@ void recvOptions(NETQUEUE queue)
 	NETbin(game.hash.bytes, game.hash.Bytes);
 	NETuint8_t(&game.maxPlayers);
 	NETstring(game.name, 128);
+	NETbool(&bRevealActive);
 	NETuint32_t(&game.power);
 	NETuint8_t(&game.base);
 	NETuint8_t(&game.alliance);
