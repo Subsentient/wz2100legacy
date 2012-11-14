@@ -1054,18 +1054,17 @@ bool runVideoOptionsMenu(void)
 			{
 				case SHADERS_ON:
 					war_SetShaders(SHADERS_OFF);
-					pie_SetShaderUsage(war_GetShaders()==SHADERS_OFF);
 					widgSetString(psWScreen, FRONTEND_SHADERS_R, _("Off"));
 					break;
 				case SHADERS_OFF:
 					war_SetShaders(SHADERS_ON);
-					pie_SetShaderUsage(war_GetShaders()==SHADERS_ON);
 					widgSetString(psWScreen, FRONTEND_SHADERS_R, _("On"));
 					break;
 				case FALLBACK:
 					widgSetString(psWScreen, FRONTEND_SHADERS_R, _("---")); //Give a clue they aren't available. -Subsentient
 					break;
 			}
+			pie_SetShaderUsage(war_GetShaders()==SHADERS_ON);
 			break;
 		}
 
