@@ -426,10 +426,7 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 	widgSetTipFont(psRScreen,font_regular);
 
 	/* Calculate how many buttons will go on a single form */
-	butPerForm = ((M_REQUEST_W - 0 - 4) /
-						(R_BUT_W +4)) *
-				 ((M_REQUEST_H - 0- 4) /
-						(R_BUT_H+ 4));
+	butPerForm = 30; //It fits 30. I don't want extra tabs showing up. It fits 30. -Subsentient
 
 	/* add a form to place the tabbed form on */
 	W_FORMINIT sFormInit;
