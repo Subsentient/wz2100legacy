@@ -896,7 +896,6 @@ bool joinGame(const char* host, uint32_t port)
 
 		// Shows the lobby error.
 		addGames();
-		//addConsoleBox(); No thank you again on the complex lobby stuff. -Subsentient
 		return false;
 	}
 	ingame.localJoiningInProgress	= true;
@@ -1098,7 +1097,6 @@ void runGameFind(void )
 			}
 		}
 		addGames();									//redraw list
-		//addConsoleBox(); No thx once more on the lobby box. -Subsentient
 	}
 
 	id = widgRunScreen(psWScreen);						// Run the current set of widgets
@@ -1116,7 +1114,6 @@ void runGameFind(void )
 			pie_LoadBackDrop(SCREEN_RANDOMBDROP);
 		}
 		addGames();									//redraw list.
-		//addConsoleBox(); No thx -Subsentient
 	}
 	if (id == CON_PASSWORD)
 	{
@@ -1235,8 +1232,6 @@ void startGameFind(void)
 		pie_LoadBackDrop(SCREEN_RANDOMBDROP);
 	}
 	addGames();	// now add games.
-	//addConsoleBox(); No. -Subsentient.
-	//displayConsoleMessages(); Stupid console messages. Tainting my nice bland lobby screen! -Subsentient
 
 	// Password stuff. Hidden by default.
 
@@ -1312,7 +1307,6 @@ static void hidePasswordForm(void)
 		if (widgGetFromID(psWScreen, MULTIOP_REFRESH)) widgReveal(psWScreen, MULTIOP_REFRESH);
 	}
 	addGames();
-	//addConsoleBox(); Getting pissed at this lobby stuff. -Subsentient
 }
 
 static void showPasswordForm(void)
