@@ -1449,7 +1449,7 @@ static void addGameOptions()
 	}
 	// password box
 
-	if (bMultiPlayer) {
+	if (bMultiPlayer && NetPlay.bComms) {
 	 addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT, MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE, MULTIOP_PASSWORD_BUT); }
 
 	//Fog of war options.
