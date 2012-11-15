@@ -2587,9 +2587,9 @@ static void disableMultiButs(void)
 	widgSetButtonState(psWScreen, MULTIOP_MAP_ICON, WBUT_DISABLE);
 	if (NetPlay.GamePassworded)
 	{
-		// force the state down if a locked game
-		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_LOCK);
-		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_DISABLE);
+		// Let us unlock the game once it's locked. -Subsentient
+		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_CLICKLOCK);
+		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
 	}
 
 	// edit boxes
