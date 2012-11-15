@@ -1449,11 +1449,8 @@ static void addGameOptions()
 	}
 	// password box
 
-	addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT, MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE, MULTIOP_PASSWORD_BUT);
-		
-	if (!bMultiPlayer) { //Subsentient did it. Handy little thing.
-	 widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_LOCK);
-	 widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE); }
+	if (bMultiPlayer) {
+	 addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT, MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE, MULTIOP_PASSWORD_BUT); }
 
 	//Fog of war options.
 	addBlueForm(MULTIOP_OPTIONS,MULTIOP_FOG,_("Fog"),MCOL0,MROW6,MULTIOP_BLUEFORMW,27);
