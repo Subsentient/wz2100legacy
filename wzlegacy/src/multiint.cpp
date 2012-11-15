@@ -2723,7 +2723,13 @@ static void processMultiopWidgets(UDWORD id)
 		}
 	}
 
-		if (id == MULTIOP_PASSWORD_BUT) { //Moved it out of the "If it's not hosted" category to make better use of it. -Subsentient
+	// host who is setting up or has hosted
+	if(ingame.bHostSetup)// || NetPlay.isHost) // FIXME Was: if(ingame.bHostSetup);{} ??? Note the ; !
+	{
+		switch(id)
+		{ //Moved MULTIOP_PASSWORD_BUT out of it's own stupid if statement. Why didn't I put it here to begin with?
+		  //It took me to look at the way wz2100.net did this feature to realize how dumbly I did it.
+		 case MULTIOP_PASSWORD_BUT: { //Moved it out of the "If it's not hosted" category to make better use of it. -Subsentient
 		 char game_password[64];
 		 char buf[255];
 		 int32_t result = 0;
@@ -2742,8 +2748,7 @@ static void processMultiopWidgets(UDWORD id)
 		   addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE); }
 		  NETGameLocked(true);
 		  if (bHosted) { 
-		  NETrefreshServerConnection(); } } //Call this to update the lobby game. -Subsentient
-
+		   NETrefreshServerConnection(); } } //Call this to update the lobby game. -Subsentient
 		  else {
 		   widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT , 0);
 		   widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, 0);
@@ -2752,17 +2757,14 @@ static void processMultiopWidgets(UDWORD id)
 		    sendTextMessage(buf, true); }
 		   else { 
 		    addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE); }
-		   NETresetGamePassword();
-		   NETGameLocked(false); 
-		   if (bHosted) {
+		    NETresetGamePassword();
+		    NETGameLocked(false); 
+		    if (bHosted) {
 		    sendOptions();
-		    NETrefreshServerConnection(); } } } //Call this to update the lobby game. -Subsentient
+		    NETrefreshServerConnection(); }  //Call this to update the lobby game. -Subsentient
+		    break; } }
+		   break;
 
-	// host who is setting up or has hosted
-	if(ingame.bHostSetup)// || NetPlay.isHost) // FIXME Was: if(ingame.bHostSetup);{} ??? Note the ; !
-	{
-		switch(id)
-		{
 		case MULTIOP_CAMPAIGN:									// turn on campaign game
 			widgSetButtonState(psWScreen, MULTIOP_CAMPAIGN, WBUT_LOCK);
 			widgSetButtonState(psWScreen, MULTIOP_SKIRMISH,0);
