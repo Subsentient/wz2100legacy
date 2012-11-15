@@ -2741,7 +2741,10 @@ static void processMultiopWidgets(UDWORD id)
 		  widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
 		  // say password is now required to join games?
 		  ssprintf(buf, _("*** password [%s] is now required! ***"), NetPlay.gamePassword);
-		  addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
+		  if (bHosted) {
+		   sendTextMessage(buf, true); } //Replaced from addConsoleMessage() so all users see our update, when we have already hosted. -Subsentient
+		  else { 
+		   addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE); }
 		  NETGameLocked(true);
 		  if (bHosted) { 
 		  NETrefreshServerConnection(); } } //Call this to update the lobby game. -Subsentient
@@ -2750,7 +2753,10 @@ static void processMultiopWidgets(UDWORD id)
 		   widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT , 0);
 		   widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, 0);
 		   ssprintf(buf, _("*** password is NOT required! ***"));
-		   addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
+		   if (bHosted) {
+		    sendTextMessage(buf, true); }
+		   else { 
+		    addConsoleMessage(buf, DEFAULT_JUSTIFY, NOTIFY_MESSAGE); }
 		   NETresetGamePassword();
 		   NETGameLocked(false); 
 		   if (bHosted) {
