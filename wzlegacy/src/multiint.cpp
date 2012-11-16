@@ -3016,6 +3016,7 @@ static void processMultiopWidgets(UDWORD id)
 		{
 			NETGameLocked(false);		// reset status on a cancel
 			stopJoining();
+			bMultiPlayer = false; //This must be set. It SHOULD have been set. -Subsentient
 		}
 		else
 		{
