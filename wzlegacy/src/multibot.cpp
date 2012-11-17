@@ -701,6 +701,10 @@ bool SendDestroyDroid(const DROID* psDroid)
 		return true;
 	}
 
+	if (!getDebugMappingStatus() && bMultiMessages) {
+	 debug(LOG_NET, "Refusing to send a signal to directly destroy droids, we are not in debug mode!");
+	 return false; } //Subsentient did it
+
 	NETbeginEncode(NETgameQueue(selectedPlayer), GAME_DEBUG_REMOVE_DROID);
 	{
 		uint32_t id = psDroid->id;

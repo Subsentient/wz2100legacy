@@ -1367,35 +1367,55 @@ int specThread(void *) {
 
 //Main spectator function, that actually turns the one above to a thread.
 void kf_SpecMe(void) {
+  WZ_THREAD *minimapThread = NULL; //Put this out here so we don't need to write it twice. -Subsentient
+
   if (!isSpectating) { //Don't let us spam spectator. -Subsentient
    if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. FIXED desyncs! -Subsentient
    isSpectating = true;
    DROID *psCDroid, *psNDroid;
    STRUCTURE *psCStruct, *psNStruct;
-   WZ_THREAD *minimapThread = NULL;
-   unsigned int i;
+   uint32_t id_droid;
+   uint32_t id_struct;
+   int i;
+
    char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
    strcpy(specmsg, "*** \"");
    strcat(specmsg, getPlayerName(selectedPlayer));
    strcat(specmsg, "\" is now a spectator. ***"); //No longer experimental, we got it down. -Subsentient
    sendTextMessage(specmsg, true);
-   for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //Swap out destroy* for SendDestroy* and enabled them without debug.
+
+   for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //We use a bit of a cheaty way to destroy our stuff for everyone. -Subsentient
     psNDroid = psCDroid->psNext;
-    SendDestroyDroid(psCDroid); }
+    NETbeginEncode(NETgameQueue(selectedPlayer), GAME_DEBUG_REMOVE_DROID); {
+     id_droid = psCDroid->id;
+     NETuint32_t(&id_droid); }
+    NETend(); }
+
    for(psCStruct=apsStructLists[selectedPlayer]; psCStruct; psCStruct=psNStruct) {
     psNStruct = psCStruct->psNext;
-    SendDestroyStructure(psCStruct); }
+    NETbeginEncode(NETgameQueue(selectedPlayer), GAME_DEBUG_REMOVE_STRUCTURE); {
+      id_struct = psCStruct->id;
+     NETuint32_t(&id_struct); }
+    NETend(); }
+
    for (i = 0; i < MAX_PLAYERS; i++) {//Breaks alliances with everyone and EVERYTHING. Including yourself. -Subsentient
     if (!i == selectedPlayer) {
      sendAlliance(selectedPlayer, i, ALLIANCE_BROKEN, false);
      alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
      alliances[i][selectedPlayer] = ALLIANCE_BROKEN; } }
+
    minimapThread = wzThreadCreate(specThread, NULL);
    wzThreadStart(minimapThread); } //We use a thread to time when to show our minimap and stuff. -Subsentient
+
   else {
    addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
  else {
-  addConsoleMessage("You are already a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
+  if (!radarPermitted || !godMode) {
+   addConsoleMessage("Resetting you as a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+   minimapThread = wzThreadCreate(specThread, NULL);
+   wzThreadStart(minimapThread); }
+  else {
+   addConsoleMessage("You are already a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } } }
 
 // --------------------------------------------------------------------------
 /* Aligns the view to north - some people can't handle the world spinning */
