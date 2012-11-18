@@ -1355,12 +1355,15 @@ int specThread(void *) {
   //It needs to be in a thread so that it's actually useful, otherwise it hard freezes the game until it's time is up and the stucts are not destroyed yet.
   //This also enables uplink-ish-ness and stuff.
   int tempgt = wzGetTicks();
+
   while (wzGetTicks() < tempgt + 2500) { 
-   widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
-   godMode = true;
-   revealAll(selectedPlayer);
-   setRevealStatus(true);
-   radarPermitted = true; } 
+   wzYieldCurrentThread(); }
+
+  widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
+  godMode = true;
+  revealAll(selectedPlayer);
+  setRevealStatus(true);
+  radarPermitted = true;
   return 0; }
 
 //Little function that makes it all happen for spectators. -Subsentient
