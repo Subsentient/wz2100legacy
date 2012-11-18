@@ -3557,6 +3557,7 @@ const char *messageTypeToString(unsigned messageType_)
 		case GAME_ALLIANCE:                 return "GAME_ALLIANCE";
 		case GAME_GIFT:                     return "GAME_GIFT";
 		case GAME_LASSAT:                   return "GAME_LASSAT";
+		case GAME_SPECMODE:		    return "GAME_SPECMODE";
 		case GAME_GAME_TIME:                return "GAME_GAME_TIME";
 		case GAME_PLAYER_LEFT:              return "GAME_PLAYER_LEFT";
 		case GAME_DROIDDISEMBARK:           return "GAME_DROIDDISEMBARK";

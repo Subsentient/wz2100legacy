@@ -60,6 +60,7 @@
 #include "lib/netplay/netplay.h"
 #include "multiplay.h"
 #include "multimenu.h"
+#include "multirecv.h"
 #include "atmos.h"
 #include "advvis.h"
 #include "difficulty.h"
@@ -1372,11 +1373,6 @@ void kf_SpecMe(void) {
   if (!isSpectating) { //Don't let us spam spectator. -Subsentient
    if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. FIXED desyncs! -Subsentient
    isSpectating = true;
-   DROID *psCDroid, *psNDroid;
-   STRUCTURE *psCStruct, *psNStruct;
-   uint32_t id_droid;
-   uint32_t id_struct;
-   int i;
 
    char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
    strcpy(specmsg, "*** \"");
@@ -1384,25 +1380,9 @@ void kf_SpecMe(void) {
    strcat(specmsg, "\" is now a spectator. ***"); //No longer experimental, we got it down. -Subsentient
    sendTextMessage(specmsg, true);
 
-   for(psCDroid=apsDroidLists[selectedPlayer]; psCDroid; psCDroid=psNDroid) { //We use a bit of a cheaty way to destroy our stuff for everyone. -Subsentient
-    psNDroid = psCDroid->psNext;
-    NETbeginEncode(NETgameQueue(selectedPlayer), GAME_DEBUG_REMOVE_DROID); {
-     id_droid = psCDroid->id;
-     NETuint32_t(&id_droid); }
-    NETend(); }
-
-   for(psCStruct=apsStructLists[selectedPlayer]; psCStruct; psCStruct=psNStruct) {
-    psNStruct = psCStruct->psNext;
-    NETbeginEncode(NETgameQueue(selectedPlayer), GAME_DEBUG_REMOVE_STRUCTURE); {
-      id_struct = psCStruct->id;
-     NETuint32_t(&id_struct); }
-    NETend(); }
-
-   for (i = 0; i < MAX_PLAYERS; i++) {//Breaks alliances with everyone and EVERYTHING. Including yourself. -Subsentient
-    if (!i == selectedPlayer) {
-     sendAlliance(selectedPlayer, i, ALLIANCE_BROKEN, false);
-     alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
-     alliances[i][selectedPlayer] = ALLIANCE_BROKEN; } }
+   NETbeginEncode(NETgameQueue(selectedPlayer), GAME_SPECMODE); {//Send the universal signal, "kill everything I have". -Subsentient
+    NETuint32_t(&selectedPlayer); }
+   NETend();
 
    minimapThread = wzThreadCreate(specThread, NULL);
    wzThreadStart(minimapThread); } //We use a thread to time when to show our minimap and stuff. -Subsentient

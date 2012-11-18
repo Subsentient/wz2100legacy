@@ -39,6 +39,7 @@
 #include "lib/netplay/netplay.h"					// the netplay library.
 #include "multiplay.h"					// warzone net stuff.
 #include "multijoin.h"
+#include "multigifts.h"
 #include "cmddroid.h"					// command droids
 #include "action.h"
 #include "console.h"
@@ -701,10 +702,6 @@ bool SendDestroyDroid(const DROID* psDroid)
 		return true;
 	}
 
-	if (!getDebugMappingStatus() && bMultiMessages) {
-	 debug(LOG_NET, "Refusing to send a signal to directly destroy droids, we are not in debug mode!");
-	 return false; } //Subsentient did it
-
 	NETbeginEncode(NETgameQueue(selectedPlayer), GAME_DEBUG_REMOVE_DROID);
 	{
 		uint32_t id = psDroid->id;
@@ -721,6 +718,10 @@ bool SendDestroyDroid(const DROID* psDroid)
 bool recvDestroyDroid(NETQUEUE queue)
 {
 	DROID* psDroid;
+
+	if (!getDebugMappingStatus() && bMultiMessages) {
+	 debug(LOG_NET, "Refusing to acknowledge a signal to directly destroy droids, we are not in debug mode!");
+	 return false; } //Subsentient did it
 
 	NETbeginDecode(queue, GAME_DEBUG_REMOVE_DROID);
 	{
@@ -755,3 +756,34 @@ bool recvDestroyDroid(NETQUEUE queue)
 
 	return true;
 }
+
+//Subsentient's way of handling the GAME_SPECMODE network signal.
+void doSpecWipeout(NETQUEUE queue) {
+    DROID *psCDroid, *psNDroid;
+    STRUCTURE *psCStruct, *psNStruct;
+    int otherGuy;
+    uint32_t newSpec;
+
+    NETbeginDecode(queue, GAME_SPECMODE); {//Figure out who dun' it. -Subsentient
+     NETuint32_t(&newSpec); }
+    NETend();
+
+   for(psCDroid=apsDroidLists[newSpec]; psCDroid; psCDroid=psNDroid) { //Destroy all droids for the new spectator. -Subsentient
+    psNDroid = psCDroid->psNext;
+    turnOffMultiMsg(true);
+    destroyDroid(psCDroid, gameTime);
+    turnOffMultiMsg(false);  }
+
+   for(psCStruct=apsStructLists[newSpec]; psCStruct; psCStruct=psNStruct) { //Now for structures. -Subsentient
+    psNStruct = psCStruct->psNext;
+    turnOffMultiMsg(true);
+    destroyStruct(psCStruct, gameTime);
+    turnOffMultiMsg(false); }
+
+   for (otherGuy = 0; otherGuy < MAX_PLAYERS; otherGuy++) {//Breaks alliances with everyone. -Subsentient
+    if (!otherGuy == newSpec) {
+     alliances[newSpec][otherGuy] = ALLIANCE_BROKEN;
+     alliances[otherGuy][newSpec] = ALLIANCE_BROKEN; } } }
+
+
+

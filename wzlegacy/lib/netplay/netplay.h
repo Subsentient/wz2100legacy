@@ -101,6 +101,7 @@ enum MESSAGE_TYPES
 	GAME_TEMPLATEDEST,              ///< remove template
 	GAME_ALLIANCE,                  ///< alliance data.
 	GAME_GIFT,                      ///< a luvly gift between players.
+	GAME_SPECMODE,			///< we received a player's message that they switched to spectator mode. -Subsentient
 	GAME_LASSAT,                    ///< lassat firing.
 	GAME_GAME_TIME,                 ///< Game time. Used for synchronising, so that all messages are executed at the same gameTime on all clients.
 	GAME_PLAYER_LEFT,               ///< Player has left or dropped.

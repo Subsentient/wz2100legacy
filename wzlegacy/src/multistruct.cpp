@@ -164,10 +164,6 @@ bool recvBuildFinished(NETQUEUE queue)
 // Inform others that a structure has been destroyed
 bool SendDestroyStructure(STRUCTURE *s)
 {
-	
-	if (!getDebugMappingStatus && bMultiMessages) { //Subsentient did it.
-	 debug(LOG_NET, "Refusing to send a direct signal to destroy a structure, we are not in debug mode."); 
-	 return false; }
 
 	NETbeginEncode(NETgameQueue(selectedPlayer), GAME_DEBUG_REMOVE_STRUCTURE);
 
@@ -183,6 +179,10 @@ bool recvDestroyStructure(NETQUEUE queue)
 {
 	uint32_t structID;
 	STRUCTURE *psStruct;
+
+	if (!getDebugMappingStatus() && bMultiMessages) {
+	 debug(LOG_NET, "Refusing to acknowledge a signal to directly destroy structures, we are not in debug mode!");
+	 return false; } //Subsentient did it
 
 	NETbeginDecode(queue, GAME_DEBUG_REMOVE_STRUCTURE);
 		NETuint32_t(&structID);
