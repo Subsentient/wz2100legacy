@@ -636,7 +636,7 @@ bool recvMessage(void)
 				recvLasSat(queue);
 				break;
 			case GAME_SPECMODE:
-				doSpecWipeout(queue);
+				doSpectatorSetup(queue);
 				break;
 			case GAME_DEBUG_MODE:
 				recvProcessDebugMappings(queue);

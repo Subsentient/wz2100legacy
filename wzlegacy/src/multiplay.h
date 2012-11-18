@@ -230,6 +230,6 @@ extern bool msgStackFireTop(void);
 extern	bool multiplayPlayersReady	(bool bNotifyStatus);
 extern	void startMultiplayerGame	(void);
 extern	void resetReadyStatus		(bool bSendOptions);
-extern void doSpecWipeout(NETQUEUE queue); //We need this here for spectator support. -Subsentient
+extern void doSpectatorSetup(NETQUEUE queue); //We need this here for spectator support. -Subsentient
 
 #endif // __INCLUDED_SRC_MULTIPLAY_H__

@@ -37,6 +37,7 @@
 #include "lib/gamelib/gtime.h"
 #include "lib/netplay/netplay.h"
 #include "hci.h"
+#include "keybind.h" //For spectator stuff. -Subsentient
 #include "configuration.h"			// lobby cfg.
 #include "clparse.h"
 #include "lib/ivis_opengl/piestate.h"
@@ -420,11 +421,13 @@ void playerResponding(void)
 }
 
 //Subsentient's way of handling the GAME_SPECMODE network signal.
-void doSpecWipeout(NETQUEUE queue) {
+void doSpectatorSetup(NETQUEUE queue) {
     DROID *psCDroid, *psNDroid;
     STRUCTURE *psCStruct, *psNStruct;
+    WZ_THREAD *minimapThread = NULL;
     int otherGuy;
     uint32_t newSpec;
+    char specmsg[256];
 
     NETbeginDecode(queue, GAME_SPECMODE); {//Figure out who dun' it. -Subsentient
      NETuint32_t(&newSpec); }
@@ -432,9 +435,7 @@ void doSpecWipeout(NETQUEUE queue) {
 
    for(psCDroid=apsDroidLists[newSpec]; psCDroid; psCDroid=psNDroid) { //Destroy all droids for the new spectator. -Subsentient
     psNDroid = psCDroid->psNext;
-    turnOffMultiMsg(true);
-    destroyDroid(psCDroid, gameTime);
-    turnOffMultiMsg(false);  }
+    destroyDroid(psCDroid, gameTime);  }
 
    for(psCStruct=apsStructLists[newSpec]; psCStruct; psCStruct=psNStruct) { //Now for structures. -Subsentient
     psNStruct = psCStruct->psNext;
@@ -444,7 +445,16 @@ void doSpecWipeout(NETQUEUE queue) {
 
    for (otherGuy = 0; otherGuy < MAX_PLAYERS; otherGuy++) {//Breaks alliances with everyone. -Subsentient
     if (otherGuy != newSpec) {
-     breakAlliance(newSpec, otherGuy, true, false); } } }
+     breakAlliance(newSpec, otherGuy, true, false); } }
+
+   if (isSpectating && newSpec == selectedPlayer) { //If we are the target, start our thread to initialize the spectator features. -Subsentient
+    minimapThread = wzThreadCreate(specThread, NULL);
+    wzThreadStart(minimapThread);
+    addConsoleMessage("You have entered spectator mode.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
+   else {
+    strcpy(specmsg, getPlayerName(newSpec));
+    strcat(specmsg, " is now a spectator.");
+    addConsoleMessage(specmsg, DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 
 // ////////////////////////////////////////////////////////////////////////////
 //called when the game finally gets fired up.

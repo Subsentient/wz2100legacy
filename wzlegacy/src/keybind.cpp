@@ -1349,52 +1349,36 @@ void	kf_ToggleGodMode( void )
 	sendTextMessage(cmsg, true);
 }
 
-//Let's add a spectator command. -Subsentient
+//Thread used by spectator support. -Subsentient
 int specThread(void *) { 
   //Tiny function needed for delaying the minimap display for spectators, so if we have an HQ destroyed we still get a minimap. -Subsentient
   //It needs to be in a thread so that it's actually useful, otherwise it hard freezes the game until it's time is up and the stucts are not destroyed yet.
   //This also enables uplink-ish-ness and stuff.
   unsigned int tempgt = wzGetTicks();
   while (true) {
-   if (wzGetTicks() > tempgt + 2000) { 
+   if (wzGetTicks() > tempgt + 2500) { 
     widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
     godMode = true;
     revealAll(selectedPlayer);
     setRevealStatus(true);
     radarPermitted = true; 
-    addConsoleMessage("You are now a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
     return 0; } } }
 
-//Main spectator function, that actually turns the one above to a thread.
+//Little function that makes it all happen for spectators. -Subsentient
 void kf_SpecMe(void) {
-  WZ_THREAD *minimapThread = NULL; //Put this out here so we don't need to write it twice. -Subsentient
 
-  if (!isSpectating) { //Don't let us spam spectator. -Subsentient
-   if (bMultiPlayer) { //Actually make spectator support WORK and show on another person's screen. FIXED desyncs! -Subsentient
+ if (!isSpectating) { //Don't let us spam spectator. -Subsentient
+  if (bMultiPlayer) {
    isSpectating = true;
 
-   char specmsg[256]; //Show the true name for the player who has become a spectator. -Subsentient
-   strcpy(specmsg, "*** \"");
-   strcat(specmsg, getPlayerName(selectedPlayer));
-   strcat(specmsg, "\" is now a spectator. ***"); //No longer experimental, we got it down. -Subsentient
-   sendTextMessage(specmsg, true);
-
-   NETbeginEncode(NETgameQueue(selectedPlayer), GAME_SPECMODE); {//Send the universal signal, "kill everything I have". -Subsentient
+   NETbeginEncode(NETgameQueue(selectedPlayer), GAME_SPECMODE); {//Send the universal signal, "Make me a spectator, everyone." -Subsentient
     NETuint32_t(&selectedPlayer); }
-   NETend();
-
-   minimapThread = wzThreadCreate(specThread, NULL);
-   wzThreadStart(minimapThread); } //We use a thread to time when to show our minimap and stuff. -Subsentient
+   NETend(); }
 
   else {
    addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
  else {
-  if (!radarPermitted || !godMode) {
-   addConsoleMessage("Resetting you as a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-   minimapThread = wzThreadCreate(specThread, NULL);
-   wzThreadStart(minimapThread); }
-  else {
-   addConsoleMessage("You are already a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } } }
+   addConsoleMessage("You are already a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 
 // --------------------------------------------------------------------------
 /* Aligns the view to north - some people can't handle the world spinning */
