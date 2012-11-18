@@ -60,7 +60,6 @@
 #include "lib/netplay/netplay.h"
 #include "multiplay.h"
 #include "multimenu.h"
-#include "multirecv.h"
 #include "atmos.h"
 #include "advvis.h"
 #include "difficulty.h"

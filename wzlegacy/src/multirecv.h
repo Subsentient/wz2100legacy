@@ -55,6 +55,4 @@ extern bool recvTextMessageAI       (NETQUEUE queue);  //AI multiplayer message
 extern bool recvTeamRequest         (NETQUEUE queue);
 extern bool recvReadyRequest        (NETQUEUE queue);
 
-extern void doSpecWipeout(NETQUEUE queue);
-
 #endif // __INCLUDED_SRC_MULTIRECV_H__
