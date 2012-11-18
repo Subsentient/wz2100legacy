@@ -782,7 +782,7 @@ static void displayExtraGubbins(UDWORD height)
 	iV_DrawText(_("Kills"), MULTIMENU_FORM_X+MULTIMENU_C9, MULTIMENU_FORM_Y+MULTIMENU_FONT_OSET);
 	iV_DrawText(_("Units"), MULTIMENU_FORM_X+MULTIMENU_C10, MULTIMENU_FORM_Y+MULTIMENU_FONT_OSET);
 
-	if (getDebugMappingStatus())
+	if (getDebugMappingStatus() || isSpectating) //Show power to spectators too. -Subsentient
 	{
 		iV_DrawText(_("Power"), MULTIMENU_FORM_X+MULTIMENU_C11, MULTIMENU_FORM_Y+MULTIMENU_FONT_OSET);
 	}
@@ -927,8 +927,8 @@ static void displayMultiPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
 	/* Display player power instead of number of played games
 	  * and number of units instead of ping when in debug mode
 	  */
-	if (getDebugMappingStatus())  //Won't pass this when in both release and multiplayer modes
-	{
+	if (getDebugMappingStatus() || isSpectating)  //Won't pass this when in both release and multiplayer modes
+	{//Show this to spectators too. -Subsentient
 		//c11: Player power
 		sprintf(str, "%u", (int)getPower(player));
 		iV_DrawText(str, MULTIMENU_FORM_X + MULTIMENU_C11, y + MULTIMENU_FONT_OSET);

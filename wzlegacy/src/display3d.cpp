@@ -129,7 +129,7 @@ static void	drawDroidRank(DROID *psDroid);
 static void	drawDroidSensorLock(DROID *psDroid);
 static void	calcAverageTerrainHeight(iView *player);
 bool	doWeDrawProximitys(void);
-static PIELIGHT getBlueprintColour(STRUCT_STATES state);
+static PIELIGHT getBlueprintColour(STRUCTURE *psStructure);
 
 static void NetworkDisplayPlainForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours);
 static void NetworkDisplayImage(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours);
@@ -414,7 +414,7 @@ static PIELIGHT structureBrightness(STRUCTURE *psStructure)
 
 	if (structureIsBlueprint(psStructure))
 	{
-		buildingBrightness = getBlueprintColour(psStructure->status);
+		buildingBrightness = getBlueprintColour(psStructure);
 	}
 	else
 	{
@@ -1743,7 +1743,7 @@ void displayBlueprints(void)
 	// now we draw the blueprints for all ordered buildings
 	for (int player = 0; player < MAX_PLAYERS; ++player)
 	{
-		if (!hasSharedVision(selectedPlayer, player))
+		if (!hasSharedVision(selectedPlayer, player) && !isSpectating)
 		{
 			continue;
 		}
@@ -2177,9 +2177,11 @@ void renderProximityMsg(PROXIMITY_DISPLAY *psProxDisp)
 	pie_MatEnd();
 }
 
-static PIELIGHT getBlueprintColour(STRUCT_STATES state)
+static PIELIGHT getBlueprintColour(STRUCTURE *psStructure) //Set us up to only talk to a real structure. Seems like a good idea for the future. -Subsentient
 {
-	switch (state)
+	if (isSpectating) return WZCOL_TEAM9; //Give us yellow if we are in spectator mode, since blueprint visibility will be shared. -Subsentient
+
+	switch (psStructure->status)
 	{
 		case SS_BLUEPRINT_VALID:
 			return WZCOL_BLUEPRINT_VALID;
