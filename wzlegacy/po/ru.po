@@ -15023,8 +15023,8 @@ msgstr "Версия %s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "OpenGL 2.0 не поддерживается вашей системой. Некоторые вещи могут выглядить неправильно. Пожалуйста, обновите ваши графические драйвера/железо, если возможно"
 
-#~ msgid "Visit our official site: http://universe2.us/wzlegacy"
-#~ msgstr "Посетите наш оффициальный сайт: http://universe2.us/wzlegacy"
+#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
+#~ msgstr "Посетите наш оффициальный сайт: http://wzlegacy.universe2.us"
 
 #, fuzzy
 #~ msgid "Unit Colour (SP)"

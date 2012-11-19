@@ -12463,8 +12463,8 @@ msgid "MAIN MENU"
 msgstr "MENU PRINCIPAL"
 
 #: src/frontend.cpp:117
-msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
-msgstr "Warzone 2100 Legacy é completamente gratuito e código-aberto (FLOSS). Site oficial: http://universe2.us/wzlegacy/"
+msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
+msgstr "Warzone 2100 Legacy é completamente gratuito e código-aberto (FLOSS). Site oficial: http://wzlegacy.universe2.us/"
 
 #: src/frontend.cpp:188
 msgid "Fast Play"
@@ -12516,7 +12516,7 @@ msgid "SINGLE PLAYER"
 msgstr "UM JOGADOR"
 
 #: src/frontend.cpp:257
-msgid "Campaign videos are missing! Get them from http://universe2.us/wzlegacy"
+msgid "Campaign videos are missing! Get them from http://wzlegacy.universe2.us"
 msgstr ""
 
 #: src/frontend.cpp:333
@@ -15083,8 +15083,8 @@ msgstr "Versão %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Senha:"
 
-#~ msgid "Use your universe2.us/wzlegacy credentials here."
-#~ msgstr "Use seu login do universe2.us/wzlegacy aqui."
+#~ msgid "Use your wzlegacy.universe2.us credentials here."
+#~ msgstr "Use seu login do wzlegacy.universe2.us aqui."
 
 #~ msgid "3 players"
 #~ msgstr "3 jogadores"

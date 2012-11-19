@@ -14986,8 +14986,8 @@ msgstr " - Construido %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Versión: %s-%s%s%s%s"
 
-#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
-#~ msgstr "Warzone 2100 Legacy es completamente gratuíto y de código abierto (FLOSS). Sitio Oficial: http://universe2.us/wzlegacy/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
+#~ msgstr "Warzone 2100 Legacy es completamente gratuíto y de código abierto (FLOSS). Sitio Oficial: http://wzlegacy.universe2.us/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Usar sólamente OpenGL 1.5"
@@ -14995,8 +14995,8 @@ msgstr "Versión: %s-%s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "Tu sistema no soporta OpenGL 2.0. Algunas cosas podrían verse de forma inadecuada. Por favor, actualiza tus drivers/hardware gráfico si es posible."
 
-#~ msgid "Visit our official site: http://universe2.us/wzlegacy"
-#~ msgstr "Visita el sitio oficial: http://universe2.us/wzlegacy"
+#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
+#~ msgstr "Visita el sitio oficial: http://wzlegacy.universe2.us"
 
 #, fuzzy
 #~ msgid "Unit Colour (SP)"
@@ -15081,8 +15081,8 @@ msgstr "Versión: %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Contraseña:"
 
-#~ msgid "Use your universe2.us/wzlegacy credentials here."
-#~ msgstr "Usa tus credenciales de universe2.us/wzlegacy aquí."
+#~ msgid "Use your wzlegacy.universe2.us credentials here."
+#~ msgstr "Usa tus credenciales de wzlegacy.universe2.us aquí."
 
 #~ msgid "3 players"
 #~ msgstr "3 jugadores"

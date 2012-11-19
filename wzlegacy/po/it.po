@@ -15012,8 +15012,8 @@ msgstr " - Costruito %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Versione %s%s%s%s"
 
-#~ msgid "Visit our official site: http://universe2.us/wzlegacy"
-#~ msgstr "Visita il nostro sito ufficiale: http//universe2.us/wzlegacy"
+#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
+#~ msgstr "Visita il nostro sito ufficiale: http//wzlegacy.universe2.us"
 
 #, fuzzy
 #~ msgid "Unit Colour (SP)"
@@ -15098,8 +15098,8 @@ msgstr "Versione %s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Password:"
 
-#~ msgid "Use your universe2.us/wzlegacy credentials here."
-#~ msgstr "Usa le tue credenziali di universe2.us/wzlegacy qua"
+#~ msgid "Use your wzlegacy.universe2.us credentials here."
+#~ msgstr "Usa le tue credenziali di wzlegacy.universe2.us qua"
 
 #~ msgid "3 players"
 #~ msgstr "3 giocatori"

@@ -14974,8 +14974,8 @@ msgstr " - Gebouwd %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Versie %s%s%s%s"
 
-#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
-#~ msgstr "Warzone 2100 Legacy is helemaal gratis en een open bron (FLOSS). Officiële site: http://universe2.us/wzlegacy/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
+#~ msgstr "Warzone 2100 Legacy is helemaal gratis en een open bron (FLOSS). Officiële site: http://wzlegacy.universe2.us/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Gebruik alleen OpenGL 1.5"

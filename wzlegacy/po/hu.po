@@ -14985,7 +14985,7 @@ msgstr " - Épített %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Verzió %s-%s%s%s%s"
 
-#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://universe2.us/wzlegacy/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
 #~ msgstr "Warzone 2100 Legacy egy teljesen szabad és nyitott forrású játék (FLOSS). Hivatalos oldal: http://wz 2100.net"
 
 #~ msgid "Only use OpenGL 1.5"
@@ -14994,8 +14994,8 @@ msgstr "Verzió %s-%s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "OpenGL 2.0-t nem támogatja a te rendszered. Néhány dolgot rossznak látok. Kérlek frissítsd fel a drivert vagy hardware videokártyád, ha ez lehetséges."
 
-#~ msgid "Visit our official site: http://universe2.us/wzlegacy"
-#~ msgstr "Látogass el a hivatalos oldalra: http://universe2.us/wzlegacy"
+#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
+#~ msgstr "Látogass el a hivatalos oldalra: http://wzlegacy.universe2.us"
 
 #~ msgid "Unit Colour (SP)"
 #~ msgstr "Egység Színek"
@@ -15072,8 +15072,8 @@ msgstr "Verzió %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Jelszó megadása:"
 
-#~ msgid "Use your universe2.us/wzlegacy credentials here."
-#~ msgstr "Használd a universe2.us/wzlegacy igazolást itt."
+#~ msgid "Use your wzlegacy.universe2.us credentials here."
+#~ msgstr "Használd a wzlegacy.universe2.us igazolást itt."
 
 #~ msgid "You cannot change AI in a challenge"
 #~ msgstr "Nem tudsz változtatni az AI-on mozgásnál"

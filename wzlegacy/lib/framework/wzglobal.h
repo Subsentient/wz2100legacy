@@ -44,7 +44,7 @@
 #  include "config-macosx.h"
 #elif !defined(__MACOSX__) && !defined(HAVE_CONFIG_H)
 #  define PACKAGE "warzone2100"
-#  define PACKAGE_BUGREPORT "http://universe2.us/wzlegacy"
+#  define PACKAGE_BUGREPORT "http://wzlegacy.universe2.us/"
 #  define PACKAGE_NAME "Warzone 2100 Legacy"
 #  define PACKAGE_TARNAME "warzone2100legacy"
 #endif
