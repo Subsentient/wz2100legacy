@@ -6,7 +6,7 @@
 # Dennis Schridde <devurandom@gna.org>, 2007.
 # Martin Koller <koller@etm.at>, 2007.
 # Martin Koller <m.koller@surfeu.at>, 2007.
-# Steven \"Kreuvf\" Koenig <kreuvf@wzlegacy.universe2.us>, 2008-2012.
+# Steven \"Kreuvf\" Koenig <kreuvf@wz2100.net>, 2008-2012.
 # raymond, 2011.
 msgid ""
 msgstr ""
