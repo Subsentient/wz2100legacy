@@ -1417,21 +1417,21 @@ level   TUBridge2-T1
 players 8
 type    14
 dataset MULTI_CAM_3
-game    "multiplay/maps/8c-TUBridge2.gam"
+game    "multiplay/maps/8c-TUBridge.gam"
 data    "wrf/multi/fog3.wrf"
 
-level   TUBridge2-T2
+level   TUBridge-T2
 players 8
 type    18
 dataset MULTI_T2_C3
-game    "multiplay/maps/8c-TUBridge2.gam"
+game    "multiplay/maps/8c-TUBridge2gam"
 data    "wrf/multi/fog3.wrf"
 
-level   TUBridge2-T3
+level   TUBridge-T3
 players 8
 type    19
 dataset MULTI_T3_C3
-game    "multiplay/maps/8c-TUBridge2.gam"
+game    "multiplay/maps/8c-TUBridge.gam"
 data    "wrf/multi/fog3.wrf"
 
 level   Source-v1-02-T1
