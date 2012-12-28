@@ -93,6 +93,8 @@ extern bool					bMultiMessages;				// == bMultiPlayer unless multi messages are 
 extern bool					openchannels[MAX_PLAYERS];
 extern UBYTE				bDisplayMultiJoiningStatus;	// draw load progress?
 
+extern bool blockDebug;
+
 // ////////////////////////////////////////////////////////////////////////////
 // defines
 

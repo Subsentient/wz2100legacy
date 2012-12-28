@@ -116,6 +116,7 @@ char	sTextToSend[MAX_CONSOLE_STRING_LENGTH];
 char	beaconMsg[MAX_PLAYERS][MAX_CONSOLE_STRING_LENGTH];		//beacon msg for each player
 
 bool isSpectating = false;
+bool blockDebug = false;
 
 static STRUCTURE	*psOldRE = NULL;
 static char	sCurrentConsoleText[MAX_CONSOLE_STRING_LENGTH];			//remember what user types in console for beacon msg
@@ -1287,7 +1288,12 @@ void	kf_TogglePowerBar( void )
 /* Toggles whether we process debug key mappings */
 void	kf_ToggleDebugMappings( void )
 {
-	sendProcessDebugMappings(!getWantedDebugMappingStatus(selectedPlayer));
+	if (isSpectating) {
+	 addConsoleMessage("You are a spectator. Not enabling debug mode.", DEFAULT_JUSTIFY,  SYSTEM_MESSAGE); }
+	else if (blockDebug) {
+	 addConsoleMessage("Spectator present in game. Not enabling debug mode.", DEFAULT_JUSTIFY,  SYSTEM_MESSAGE); }
+	else {
+	 sendProcessDebugMappings(!getWantedDebugMappingStatus(selectedPlayer)); }
 }
 // --------------------------------------------------------------------------
 
@@ -1356,14 +1362,17 @@ int specThread(void *) {
   //This also enables uplink-ish-ness and stuff.
   int tempgt = wzGetTicks();
 
-  while (wzGetTicks() < tempgt + 2500) { 
-   wzYieldCurrentThread(); }
+  while(apsStructLists[selectedPlayer] != NULL && apsDroidLists[selectedPlayer] != NULL) {
+   while (wzGetTicks() < tempgt + 1000) { //We just keep waiting until everything is dead so we don't
+    wzYieldCurrentThread(); } }		//spawn our minimap too soon and have turned off when our HQ dies. -Subsentient
 
   widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
   godMode = true;
   revealAll(selectedPlayer);
   setRevealStatus(true);
   radarPermitted = true;
+  if (getDebugMappingStatus()) { //Disable debug mode if we are already in it. -Subsentient
+   sendProcessDebugMappings(false); }
   return 0; }
 
 //Little function that makes it all happen for spectators. -Subsentient

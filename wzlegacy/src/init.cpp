@@ -1237,6 +1237,7 @@ bool stageThreeShutDown(void)
 	setScriptWinLoseVideo(PLAY_NONE);
 
 	isSpectating = false; //Set spectator mode to off once we leave a game. -Subsentient
+	blockDebug = false;
 	return true;
 }
 
