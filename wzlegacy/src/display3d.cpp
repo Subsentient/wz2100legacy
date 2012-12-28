@@ -835,6 +835,8 @@ void draw3DScene( void )
 		{
 			iV_DrawText( "DEBUG ", RET_X + 134, 450 + E_H );
 		}
+		else if (isSpectating && !getDebugMappingStatus() && !demoGetStatus()) {
+		 iV_DrawText("SPEC", RET_X + 134, 450 + E_H ); } //Tell us when we are in spectator mode.
 	}
 
 	while(player.r.y>DEG(360))
