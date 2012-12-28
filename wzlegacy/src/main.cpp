@@ -930,6 +930,7 @@ static void runTitleLoop(void)
 		case TITLECODE_QUITGAME:
 			debug(LOG_MAIN, "TITLECODE_QUITGAME");
 			stopTitleLoop();
+			debug(LOG_INFO, "Legacy is quitting. Calling wzQuit()."); //Give us a tad of printed diagnostics. -Subsentient
 			wzQuit();
 			break;
 		case TITLECODE_SAVEGAMELOAD:
