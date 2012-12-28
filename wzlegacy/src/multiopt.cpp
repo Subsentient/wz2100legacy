@@ -452,6 +452,7 @@ void doSpectatorSetup(NETQUEUE queue) {
     wzThreadStart(minimapThread);
     addConsoleMessage("You have entered spectator mode.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
    else {
+    blockDebug = true;
     strcpy(specmsg, getPlayerName(newSpec));
     strcat(specmsg, " is now a spectator.");
     addConsoleMessage(specmsg, DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
