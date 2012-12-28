@@ -490,10 +490,10 @@ bool multiGameShutdown(void)
 	while (wzGetTicks() - tempgt2 < 700) { //Set delay to 700ms in case we are dealing with the host.
 	//Use the time tested superior way of handling timers, judging from what was done by the previous devs. -Subsentient
 	wzYieldCurrentThread(); }
-	if (NetPlay.isHost) { /*Only do this stuff if we are hosting. 
+
 	This is probably going to result in frozen users when the host quits again. *Sigh* -Subsentient*/
 	NETclose();
-	NETremRedirects(); }
+	NETremRedirects();
 
 	if (ingame.numStructureLimits)
 	{
