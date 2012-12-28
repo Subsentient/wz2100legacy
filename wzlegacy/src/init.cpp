@@ -1,3 +1,4 @@
+/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -66,6 +67,7 @@
 #include "game.h"
 #include "gateway.h"
 #include "hci.h"
+#include "keybind.h" //For isSpectating boolean -Subsentient
 #include "intdisplay.h"
 #include "keymap.h"
 #include "levels.h"
@@ -1234,6 +1236,7 @@ bool stageThreeShutDown(void)
 
 	setScriptWinLoseVideo(PLAY_NONE);
 
+	isSpectating = false; //Set spectator mode to off once we leave a game. -Subsentient
 	return true;
 }
 

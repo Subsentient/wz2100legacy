@@ -408,7 +408,6 @@ void intCloseInGameOptionsNoAnim(bool bResetMissionWidgets)
         //put any widgets back on for the missions
         resetMissionWidgets();
     }
-    isSpectating = false;
 }
 
 
@@ -467,7 +466,6 @@ bool intCloseInGameOptions(bool bPutUpLoadSave, bool bResetMissionWidgets)
         //put any widgets back on for the missions
         resetMissionWidgets();
     }
-    isSpectating = false;
     return true;
 }
 
