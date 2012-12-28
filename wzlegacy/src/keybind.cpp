@@ -1364,7 +1364,8 @@ int specThread(void *) {
 
   while(apsStructLists[selectedPlayer] != NULL && apsDroidLists[selectedPlayer] != NULL) {
    while (wzGetTicks() < tempgt + 1000) { //We just keep waiting until everything is dead so we don't
-    wzYieldCurrentThread(); } }		//spawn our minimap too soon and have turned off when our HQ dies. -Subsentient
+    wzYieldCurrentThread(); } //spawn our minimap too soon and have it turned off when our HQ dies. -Subsentient
+   tempgt = wzGetTicks(); } //Reset the timer on completion so we get more than a second out of it.
 
   widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
   godMode = true;
