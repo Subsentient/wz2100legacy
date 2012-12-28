@@ -251,13 +251,11 @@ void recvPlayerLeft(NETQUEUE queue)
 	clearPlayer(playerIndex, false);  // don't do it quietly
 	turnOffMultiMsg(false);
 	NetPlay.players[playerIndex].allocated = false;
-
-	char buf[256];
-	ssprintf(buf, _("%s has Left the Game"), getPlayerName(playerIndex));
-	addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-	NETsetPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_DROPPED, playerIndex);
-
-	debug(LOG_INFO, "** player %u has dropped, in-game!", playerIndex);
+	if (!NETcheckPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_LEAVING, playerIndex)) {
+	 NETsetPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_DROPPED, playerIndex);
+	 debug(LOG_INFO, "** player %u has dropped, in-game!", playerIndex); }
+	else {
+	 debug(LOG_INFO, "** We have detected a graceful leave by player %u.", playerIndex); }
 }
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -304,6 +302,10 @@ bool MultiPlayerLeave(UDWORD playerIndex)
 	eventFireCallbackTrigger((TRIGGER_TYPE)CALL_PLAYERLEFT);
 
 	netPlayersUpdated = true;
+
+	char buf[256];
+	ssprintf(buf, _("%s has Left the Game"), getPlayerName(playerIndex));
+	addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 	return true;
 }
 

@@ -969,6 +969,36 @@ static void upnp_rem_redirect(int port)
 	UPNP_DeletePortMapping(urls.controlURL, data.first.servicetype, port_str, "TCP", 0);
 }
 
+void playerLeavingNicely(uint32_t index, uint32_t indexmatch)
+{
+			if (indexmatch != NetPlay.hostPlayer && index != indexmatch)
+			{
+				debug(LOG_ERROR, "Player %d left, but accidentally set player %d as leaving.", indexmatch, index);
+				index = indexmatch;
+			}
+
+			if(connected_bsocket[index])
+			{
+				debug(LOG_NET, "Receiving NET_PLAYER_LEAVING for player %u on socket %p", (unsigned int)index, connected_bsocket[index]);
+			}
+			else
+			{	// dropped from join screen most likely
+				debug(LOG_NET, "Receiving NET_PLAYER_LEAVING for player %u (no socket?)", (unsigned int)index);
+			}
+
+			if (NetPlay.isHost)
+			{
+				debug(LOG_NET, "Broadcast leaving message to everyone else");
+				NETbeginEncode(NETbroadcastQueue(), NET_PLAYER_LEAVING);
+					NETuint32_t(&index);
+				NETend();
+			}
+
+			debug(LOG_INFO, "Player %u has left the game.", index);
+			NETplayerLeaving(index);		// need to close socket for the player that left.
+			NETsetPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_LEAVING, index);
+}
+
 void NETaddRedirects(void)
 {
 	debug(LOG_NET, "%s\n", __FUNCTION__);
@@ -1562,33 +1592,7 @@ static bool NETprocessSystemMessage(NETQUEUE playerQueue, uint8_t type)
 			NETbeginDecode(playerQueue, NET_PLAYER_LEAVING);
 				NETuint32_t(&index);
 			NETend();
-
-			if (playerQueue.index != NetPlay.hostPlayer && index != playerQueue.index)
-			{
-				debug(LOG_ERROR, "Player %d left, but accidentally set player %d as leaving.", playerQueue.index, index);
-				index = playerQueue.index;
-			}
-
-			if(connected_bsocket[index])
-			{
-				debug(LOG_NET, "Receiving NET_PLAYER_LEAVING for player %u on socket %p", (unsigned int)index, connected_bsocket[index]);
-			}
-			else
-			{	// dropped from join screen most likely
-				debug(LOG_NET, "Receiving NET_PLAYER_LEAVING for player %u (no socket?)", (unsigned int)index);
-			}
-
-			if (NetPlay.isHost)
-			{
-				debug(LOG_NET, "Broadcast leaving message to everyone else");
-				NETbeginEncode(NETbroadcastQueue(), NET_PLAYER_LEAVING);
-					NETuint32_t(&index);
-				NETend();
-			}
-
-			debug(LOG_INFO, "Player %u has left the game.", index);
-			NETplayerLeaving(index);		// need to close socket for the player that left.
-			NETsetPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_LEAVING, index);
+			playerLeavingNicely(index, playerQueue.index);
 			break;
 		}
 		case NET_GAME_FLAGS:
