@@ -1360,12 +1360,10 @@ int specThread(void *) {
   //Tiny function needed for delaying the minimap display for spectators, so if we have an HQ destroyed we still get a minimap. -Subsentient
   //It needs to be in a thread so that it's actually useful, otherwise it hard freezes the game until it's time is up and the stucts are not destroyed yet.
   //This also enables uplink-ish-ness and stuff.
-  int tempgt = wzGetTicks();
 
-  while(apsStructLists[selectedPlayer] != NULL && apsDroidLists[selectedPlayer] != NULL) {
+  for(int tempgt = wzGetTicks(); apsStructLists[selectedPlayer] != NULL && apsDroidLists[selectedPlayer] != NULL; tempgt = tempgt + 1000) { //Just increment tempgt to be efficient.
    while (wzGetTicks() < tempgt + 1000) { //We just keep waiting until everything is dead so we don't
-    wzYieldCurrentThread(); } //spawn our minimap too soon and have it turned off when our HQ dies. -Subsentient
-   tempgt = wzGetTicks(); } //Reset the timer on completion so we get more than a second out of it.
+    wzYieldCurrentThread(); } } //spawn our minimap too soon and have it turned off when our HQ dies. -Subsentient
 
   widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
   godMode = true;
