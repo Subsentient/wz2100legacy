@@ -1,4 +1,5 @@
 // Scavenger control script
+// Edited to be more advanced for Warzone 2100 Legacy.
 
 // Various constants, declared here for convenience only
 const maxDroids = 25;		// max guys to handle.
@@ -28,7 +29,7 @@ function scavtick()
 		factorylist.forEach(activateProduction);
 	}
 
-	if ((gameTime - lastAttack) > 9000)
+	if ((gameTime - lastAttack) > 30000) //Increase delay from 9 seconds to 30.
 	{
 		lastAttack = gameTime;
 
@@ -115,20 +116,36 @@ function eventDroidBuilt(droid, fac1)
 	}
 }
 
-// watch for structures being attacked. Send the cavalry as required.
+// watch for structures being attacked. Send the cavalry as required. If it's not a structure under attack, obliterate the enemy.
 function eventAttacked(victim, attacker)
 {
-	if (victim.type == STRUCTURE && (gameTime - lastAttack) > 3000)
+	if ((gameTime - lastAttack) > 3000)
+	//Simplify this, if it's a structure, treat it like a structure and attack it like one. If not, chase it till it's dead or we are.
 	{
 		lastAttack = gameTime;
-		var droidlist = enumGroup(attackGroup);
-		for (var i = 0; i < droidlist.length; i++)
+		if (victim.type == STRUCTURE)
 		{
-			var droid = droidlist[i];
-			if (distBetweenTwoPoints(victim.x, victim.y, attacker.x, attacker.y) < 24)
+			var droidlist = enumGroup(attackGroup);
+			for (var i = 0; i < droidlist.length; i++)
 			{
-				orderDroidLoc(droid, DORDER_MOVE, attacker.x, attacker.y);
+				var droid = droidlist[i];
+				if (distBetweenTwoPoints(victim.x, victim.y, attacker.x, attacker.y) < 24)
+				{
+					orderDroidLoc(droid, DORDER_MOVE, attacker.x, attacker.y);
+					
+				}
 			}
 		}
+		else
+		{
+			var factorylist = enumStruct(me, "A0BaBaFactory");
+			var wholearmy = enumGroup(attackGroup);
+			for (var i = 0; i < 11; i++) //Send ten droids to defend another droid.
+			{
+				var unit = wholearmy[i];
+				orderDroidObj(unit, DORDER_ATTACK, attacker); //SPARTA!!!! Kill the enemy!
+			}
+		}
+
 	}
 }
