@@ -138,7 +138,7 @@ function eventAttacked(victim, attacker)
 		for (var i = 0; i < squadsize; i++)
 		{
 			var unit = wholearmy[i];
-			if (unit.order != DORDER_ATTACK && unit.order != DORDER_MOVE) {
+			if (unit.order != DORDER_ATTACK) {
 			 if (attacker.health > 20) { //Don't go after a unit probably about to die. -Subsentient
 			  orderDroidObj(unit, DORDER_ATTACK, attacker); } //SPARTA!!!! Kill the enemy!
 			 else { //Stay on the lookout if our enemy is dying or dead for other enemies.
