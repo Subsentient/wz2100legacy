@@ -1,5 +1,5 @@
-// Scavenger control script
-// Edited to be more advanced for Warzone 2100 Legacy.
+// Subsentient Scavenger AI System (SSAS) v1.0
+// Designed to present a more powerful opposition than the standard scavenger AI, with a wink of superior intelligence.
 
 // Various constants, declared here for convenience only
 const maxDroids = 25;		// max guys to handle.
@@ -61,7 +61,7 @@ function scavtick()
 				}
 
 				// If we found a factory, return to it. If clfac remains undefined, it evaluates false.
-				if (clfac)
+				if (clfac && droid.order != DORDER_ATTACK && droid.order != DORDER_PATROL) //Don't do anything if we already have an order.
 				{
 					orderDroidLoc(droid, DORDER_MOVE, clfac.x, clfac.y);
 				}
@@ -119,33 +119,40 @@ function eventDroidBuilt(droid, fac1)
 // watch for structures being attacked. Send the cavalry as required. If it's not a structure under attack, obliterate the enemy.
 function eventAttacked(victim, attacker)
 {
-	if ((gameTime - lastAttack) > 3000)
-	//Simplify this, if it's a structure, treat it like a structure and attack it like one. If not, chase it till it's dead or we are.
+	if (victim && attacker && (gameTime - lastAttack) > 3000)
+	//Simplify this, if it's a structure under attack, give it priority. If not, treat it as a small threat.
 	{
 		lastAttack = gameTime;
-		if (victim.type == STRUCTURE)
+		var squadsize = 0;
+		var basesiege = false;
+		var factorylist = enumStruct(me, "A0BaBaFactory");
+		var wholearmy = enumGroup(attackGroup);
+
+		if (victim.type == STRUCTURE) { //If it's a structure, send 25 units, otherwise, only 10.
+		basesiege = true;
+		squadsize = 25; }
+
+		else {
+		squadsize = 10; }
+
+		for (var i = 0; i < squadsize; i++)
 		{
-			var droidlist = enumGroup(attackGroup);
-			for (var i = 0; i < droidlist.length; i++)
-			{
-				var droid = droidlist[i];
-				if (distBetweenTwoPoints(victim.x, victim.y, attacker.x, attacker.y) < 24)
-				{
-					orderDroidLoc(droid, DORDER_MOVE, attacker.x, attacker.y);
-					
-				}
-			}
+			var unit = wholearmy[i];
+			if (unit.order != DORDER_ATTACK && unit.order != DORDER_MOVE) {
+			 if (attacker.health > 20) { //Don't go after a unit probably about to die. -Subsentient
+			  orderDroidObj(unit, DORDER_ATTACK, attacker); } //SPARTA!!!! Kill the enemy!
+			 else { //Stay on the lookout if our enemy is dying or dead for other enemies.
+			  orderDroidLoc(unit, DORDER_PATROL, attacker.x, attacker.y); } }
+			else {
+			 squadsize++; }
+			
 		}
-		else
+
+		if (factorylist && basesiege) //Accelerate production since we're under siege at our base.
 		{
-			var factorylist = enumStruct(me, "A0BaBaFactory");
-			var wholearmy = enumGroup(attackGroup);
-			for (var i = 0; i < 11; i++) //Send ten droids to defend another droid.
-			{
-				var unit = wholearmy[i];
-				orderDroidObj(unit, DORDER_ATTACK, attacker); //SPARTA!!!! Kill the enemy!
-			}
+		factorylist.forEach(activateProduction);
 		}
+
 
 	}
 }
