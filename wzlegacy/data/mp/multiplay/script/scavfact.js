@@ -1,4 +1,4 @@
-// Subsentient Scavenger AI System (SSAS) v1.1
+// Subsentient Scavenger AI System (SSAS) v1.2
 // Designed to present a more powerful opposition than the standard scavenger AI, with a wink of superior intelligence.
 
 // Various constants, declared here for convenience only
@@ -127,12 +127,18 @@ function eventAttacked(victim, attacker)
 		var factorylist = enumStruct(me, "A0BaBaFactory");
 		var wholearmy = enumGroup(attackGroup);
 
+		if (attacker.player == me) { //If we are shooting through a wall, don't send more on alert.
+		return; }
+
 		if (victim.type == STRUCTURE) { //If it's a structure, send 25 units, otherwise, only 10.
-		baseUnderSiege = true;
-		squadsize = 25; }
+		 baseUnderSiege = true;
+		 squadsize = 25; }
 
 		else {
-		squadsize = 10; }
+		 squadsize = 10; }
+
+		if (baseUnderSiege && attacker.type == STRUCTURE) { //Oh no you did NOT just build an MG tower next to us!
+		 squadsize = 50; }
 
 		for (var i = 0; i < squadsize; i++)
 		{
