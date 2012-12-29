@@ -1,13 +1,13 @@
-Hi, this is Warzone 2100 Legacy, a fork of Warzone 2100 Ressurection Project.
-The program has support for Windows and Linux, though windows installer building support is not presently implemented.
-Mac OS X support is unavailable because we have no mac developer. If you wuld like to become that developer, email me
-(Subsentient) at thinkingrodent@gmail.com.
+Hi, this is Warzone 2100 Legacy, a fork of the Warzone 2100 (Resurrection) Project.
+Support is present for Windows and Linux. Mac OS X support is unavailable because we have no mac developer. 
+If you would like to become that developer, email me (Subsentient) at thinkingrodent@gmail.com.
 Please report bugs on the Warzone 2100 Legacy forums, here: http://wzlegacy.universe2.us/forums/
 
 For more information see doc/Readme.en.
 
-NOTE: My code is puke, I use single indentation, a habit I carried from lazy python coding, 
-and my braces are in an odd place often, and on top of that
-sometimes it'll just be the worst solution ever. Whitespace in my code is only a rumor.
+NOTE: Functions and additions in code I write may use a non-standard bracketing style that my friends have
+dubbed "Subsentient brackets". This is done to condense code and should be perfectly readable. It's also far easier.
 
 Thank you.
+
+-Subsentient, founder of The Warzone 2100 Legacy Project
