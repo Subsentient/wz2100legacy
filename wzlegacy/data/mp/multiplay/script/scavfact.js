@@ -1,4 +1,4 @@
-// Subsentient Scavenger AI System (SSAS) v1.0
+// Subsentient Scavenger AI System (SSAS) v1.1
 // Designed to present a more powerful opposition than the standard scavenger AI, with a wink of superior intelligence.
 
 // Various constants, declared here for convenience only
@@ -13,7 +13,16 @@ function activateProduction(fac)
 	// Remind factory to produce
 	if (structureIdle(fac))
 	{
-		buildDroid(fac, "Trike", "B4body-sml-trike01", "BaBaProp", "", DROID_WEAPON, "bTrikeMG");
+		switch (Math.floor(Math.random() * 10))
+		{ //Give us variety in our production.
+		case 0:	buildDroid(fac, "Bloke", "B1BaBaPerson01", "BaBaLegs", "", DROID_PERSON, "BaBaMG"); break;
+		case 1: buildDroid(fac, "Buggy", "B3body-sml-buggy01", "BaBaProp", "", DROID_WEAPON, "BuggyMG"); break;
+		case 2: buildDroid(fac, "Jeep", "B2JeepBody", "BaBaProp", "", DROID_WEAPON, "BJeepMG"); break;
+		case 3: buildDroid(fac, "Rocket Jeep", "B2RKJeepBody", "BaBaProp", "", DROID_WEAPON, "BabaRocket"); break;
+		case 4: buildDroid(fac, "Cannonbus", "BusBody", "BaBaProp", "", DROID_WEAPON, "BusCannon"); break;
+		case 5: buildDroid(fac, "Firebus", "BusBody", "BaBaProp", "", DROID_WEAPON, "BabaFlame"); break;
+		default: buildDroid(fac, "Trike", "B4body-sml-trike01", "BaBaProp", "", DROID_WEAPON, "bTrikeMG"); break;
+		}
 	}
 }
 
@@ -75,6 +84,7 @@ function eventGameInit()
 	makeComponentAvailable("B4body-sml-trike01", me);
 	makeComponentAvailable("B3body-sml-buggy01", me);
 	makeComponentAvailable("B2JeepBody", me);
+	makeComponentAvailable("B2RKJeepBody", me);
 	makeComponentAvailable("BusBody", me);
 	makeComponentAvailable("B1BaBaPerson01", me);
 	makeComponentAvailable("BaBaProp", me);
@@ -84,6 +94,7 @@ function eventGameInit()
 	makeComponentAvailable("BJeepMG", me);
 	makeComponentAvailable("BusCannon", me);
 	makeComponentAvailable("BabaFlame", me);
+	makeComponentAvailable("BabaRocket", me);
 	makeComponentAvailable("BaBaMG", me);
 	attackGroup = newGroup();	// allocate a new group
 	groupAddArea(attackGroup, 0, 0, mapWidth, mapHeight);
@@ -101,19 +112,7 @@ function eventDroidBuilt(droid, fac1)
 	groupAddDroid(attackGroup, droid);
 
 	// Build another
-	if (fac1 && structureIdle(fac1) && groupSize(attackGroup) < maxDroids)
-	{
-		// We now have switch statements! And we can use the built-in Math library
-		switch (Math.floor(Math.random() * 10))
-		{
-		case 0:	buildDroid(fac1, "Trike", "B4body-sml-trike01", "BaBaProp", "", DROID_WEAPON, "bTrikeMG"); break;
-		case 1: buildDroid(fac1, "Buggy", "B3body-sml-buggy01", "BaBaProp", "", DROID_WEAPON, "BuggyMG"); break;
-		case 2: buildDroid(fac1, "Jeep", "B2JeepBody", "BaBaProp", "", DROID_WEAPON, "BJeepMG"); break;
-		case 3: buildDroid(fac1, "Cannonbus", "BusBody", "BaBaProp", "", DROID_WEAPON, "BusCannon"); break;
-		case 4: buildDroid(fac1, "Firebus", "BusBody", "BaBaProp", "", DROID_WEAPON, "BabaFlame"); break;
-		default: buildDroid(fac1, "Bloke", "B1BaBaPerson01", "BaBaLegs", "", DROID_PERSON, "BaBaMG"); break;
-		}
-	}
+	activateProduction(fac1);
 }
 
 // watch for structures being attacked. Send the cavalry as required. If it's not a structure under attack, obliterate the enemy.
@@ -124,12 +123,12 @@ function eventAttacked(victim, attacker)
 	{
 		lastAttack = gameTime;
 		var squadsize = 0;
-		var basesiege = false;
+		var baseUnderSiege = false;
 		var factorylist = enumStruct(me, "A0BaBaFactory");
 		var wholearmy = enumGroup(attackGroup);
 
 		if (victim.type == STRUCTURE) { //If it's a structure, send 25 units, otherwise, only 10.
-		basesiege = true;
+		baseUnderSiege = true;
 		squadsize = 25; }
 
 		else {
@@ -148,7 +147,7 @@ function eventAttacked(victim, attacker)
 			
 		}
 
-		if (factorylist && basesiege) //Accelerate production since we're under siege at our base.
+		if (factorylist && baseUnderSiege) //Accelerate production since we're under siege at our base.
 		{
 		factorylist.forEach(activateProduction);
 		}
