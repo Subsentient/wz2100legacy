@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot (Generic)"
+js = nullbot-generic.js
+tip = "NullBot with no weapon preferences."

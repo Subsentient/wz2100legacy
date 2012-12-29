@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot (Water/Hover)"
+js = nullbot-hover.js
+tip = "NullBot that works better on watery maps."

@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot (Flamer)"
+js = nullbot-flame.js
+tip = "NullBot that prefers Flamers."

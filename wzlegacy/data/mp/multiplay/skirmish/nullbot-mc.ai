@@ -1,0 +1,4 @@
+[AI]
+name = "NullBot (MG/Cannons)"
+js = nullbot-mc.js
+tip = "NullBot that prefers MachineGuns and Cannons."
