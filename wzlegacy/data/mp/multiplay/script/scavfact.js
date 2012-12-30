@@ -1,4 +1,4 @@
-// Subsentient Scavenger AI System (SSAS) v1.2
+// Subsentient Scavenger AI System (SSAS) v1.3
 // Designed to present a more powerful opposition than the standard scavenger AI, with a wink of superior intelligence.
 
 // Various constants, declared here for convenience only
@@ -143,6 +143,11 @@ function eventAttacked(victim, attacker)
 		for (var i = 0; i < squadsize; i++)
 		{
 			var unit = wholearmy[i];
+
+			if (typeof unit == 'undefined') { //Prevent nonexistant units from being handled, filling logs with poo.
+			 squadsize++;
+			 return; }
+
 			if (unit.order != DORDER_ATTACK) {
 			 if (attacker.health > 20) { //Don't go after a unit probably about to die. -Subsentient
 			  orderDroidObj(unit, DORDER_ATTACK, attacker); } //SPARTA!!!! Kill the enemy!
