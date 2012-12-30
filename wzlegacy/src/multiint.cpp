@@ -973,30 +973,9 @@ static void addGames(void)
 					sButInit.pTip = badModTip;
 				}
 				else
-				{
-					std::string flags;
-					if (NetPlay.games[i].privateGame)
-					{
-						flags += " "; flags += _("[Password required]");
-					}
-					if (NetPlay.games[i].limits & NO_TANKS)
-					{
-						flags += " "; flags += _("[No Tanks]");
-					}
-					if (NetPlay.games[i].limits & NO_BORGS)
-					{
-						flags += " "; flags += _("[No Cyborgs]");
-					}
-					if (NetPlay.games[i].limits & NO_VTOLS)
-					{
-						flags += " "; flags += _("[No VTOLs]");
-					}
-					if (!flags.empty())
-					//We don't need a tooltip for the host anymore, so don't give one if we don't have anything interesting to say. -Subsentient
-					{
-						ssprintf(tooltipbuffer[i], _("Hosted by %s —%s"), NetPlay.games[i].hostname, flags.c_str());
-						sButInit.pTip = tooltipbuffer[i];
-					}
+				{ //Give us useful tooltips. -Subsentient
+					ssprintf(tooltipbuffer[i], _("Host:\"%s\", Map: \"%s\", IP: \"%s\""), NetPlay.games[i].hostname, NetPlay.games[i].mapname, NetPlay.games[gameNumber].desc.host);
+					sButInit.pTip = tooltipbuffer[i];
 					
 				}
 				sButInit.UserData = i;
