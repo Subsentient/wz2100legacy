@@ -65,11 +65,11 @@ typedef uint16_t PlayerMask;
 #endif
 // Edited for new version system.
 #if defined(WZ_OS_WIN)
-# define WZ_WRITEDIR "Warzone 2100 Legacy 1.0"
+# define WZ_WRITEDIR "Warzone 2100 Legacy Microwave"
 #elif defined(WZ_OS_MAC)
-# define WZ_WRITEDIR "Warzone 2100 Legacy 1.0"
+# define WZ_WRITEDIR "Warzone 2100 Legacy Microwave"
 #else
-# define WZ_WRITEDIR ".wz2100legacy-1.0"
+# define WZ_WRITEDIR ".wz2100legacy-microwave"
 #endif
 
 enum QUEUE_MODE

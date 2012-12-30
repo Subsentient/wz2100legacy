@@ -22,12 +22,12 @@ BEGIN
 		BEGIN
 			VALUE "CompanyName", "Warzone 2100 Legacy, by Subsentient"
 			VALUE "FileDescription", "Warzone 2100 Legacy"
-			VALUE "FileVersion", "1.0_alpha2"
+			VALUE "FileVersion", "microwave_popping"
 			VALUE "InternalName", "Warzone 2100 Legacy"
-			VALUE "LegalCopyright", "Copyright © 2012 The Warzone 2100 Legacy Project"
+			VALUE "LegalCopyright", "Copyright © 2012 Subsentient and contributors"
 			VALUE "OriginalFilename", "wz2100legacy.exe"
 			VALUE "ProductName", "Warzone 2100 Legacy"
-			VALUE "ProductVersion", "1.0_alpha2"
+			VALUE "ProductVersion", "microwave_popping"
 		END
 	END
 	BLOCK "VarFileInfo"

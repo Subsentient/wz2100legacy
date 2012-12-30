@@ -4,14 +4,14 @@
 ;Defines
 
   !define APPLICATION_NAME "Warzone 2100 Legacy"
-  !define APPLICATION_VERSION "1.0_alpha2"
+  !define APPLICATION_VERSION "microwave_popping"
   !define APPLICATION_PUBLISHER "Warzone 2100 Legacy Project"
   !define APPLICATION_WEB_SITE "http://wzlegacy.universe2.us/"
   !define INSTALL_LICENSE "${TOP_BUILDDIR}\COPYING"
   !define INSTALL_PATH "$PROGRAMFILES\${APPLICATION_NAME} ${APPLICATION_VERSION}"
   !define INSTALL_GRAPHICS "nsis"
 
-  !define APPLICATION_VERSION_MAJOR 1.0_alpha2
+  !define APPLICATION_VERSION_MAJOR microwave_popping
   !define APPLICATION_VERSION_MINOR 0
   !define APPLICATION_VERSION_REVISION 0
 ;--------------------------------
@@ -112,7 +112,7 @@ Section "Base Game"
   SectionIn RO
   ;Store install folder
   WriteRegStr HKCU "Software\${APPLICATION_NAME}" "" $INSTDIR
-  StrCpy $LEGACYCONFIGDIR "$DOCUMENTS\Warzone 2100 Legacy 1.0"
+  StrCpy $LEGACYCONFIGDIR "$DOCUMENTS\Warzone 2100 Legacy Microwave"
   ;Files
 SetOutPath "$INSTDIR"
   File "${TOP_BUILDDIR}\src\wz2100legacy.exe"
