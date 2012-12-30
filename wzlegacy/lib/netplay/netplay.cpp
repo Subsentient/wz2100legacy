@@ -2795,7 +2795,8 @@ bool NETjoinGame(const char* host, uint32_t port, const char* playername)
 	debug(LOG_NET, "resetting sockets.");
 	NETclose();	// just to be sure :)
 
-	debug(LOG_NET, "Trying to join [%s]:%d ...", host, port);
+	debug(LOG_INFO, "Trying to join remote game at [%s]:%d ...", host, port);
+	//Make this explicitly an info message, we want to see the IP of the host. Might curb cheating.
 
 	mapDownloadProgress = 100;
 	netPlayersUpdated = true;
@@ -2930,7 +2931,7 @@ bool NETjoinGame(const char* host, uint32_t port, const char* playername)
 			NetPlay.players[index].allocated = true;
 			sstrcpy(NetPlay.players[index].name, playername);
 			NetPlay.players[index].heartbeat = true;
-
+			debug(LOG_INFO, "Successfully joined the remote game."); //A little extra logging/debugging never hurt nobody. -Subsentient
 			return true;
 		}
 		else if (type == NET_REJECTED)
