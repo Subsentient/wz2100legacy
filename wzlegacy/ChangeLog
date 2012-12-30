@@ -1,3 +1,13 @@
+Changes for 1.0 alpha 2:
+Enhanced lobby screen now shows the Host nickname in the main box and shows IPs in the tooltip,
+spectator mode is enhanced, debug mode impossible once someone becomes a spectator, and all holograms for all
+players become visible as yellow when you enter spectator mode. Netcode improvements, although minor, are present.
+Nullbot is now going to be locally modified for Warzone 2100 Legacy from now on and scripts have been adapted fittingly,
+fix some Superborgs not requiring cyborg dense composite alloys, re-added fog of war options, fix broken shader support,
+updated to newer version of TUBridge map by wei2912, passwords can be changed after a game is already hosted in the lobby,
+and add a more sophisticated scavenger AI called SSAS, Subsentient Scavenger AI System, based on the original script.
+I probably missed something, but oh well.
+
 Changes for 1.0 alpha 1:
 Convert all weapons, bodies, propulsions, structures, and features to PIE 3, removing excess polygons,
 put back the original 2.3.x wheels, fix busted pause button in debug menu, update to automake 1.12, require it.
