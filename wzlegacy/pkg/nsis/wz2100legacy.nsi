@@ -46,6 +46,7 @@
 
   ;Var MUI_TEMP
   Var STARTMENU_FOLDER
+  Var LEGACYCONFIGDIR
 
 ;--------------------------------
 ;Interface Settings
@@ -111,7 +112,7 @@ Section "Base Game"
   SectionIn RO
   ;Store install folder
   WriteRegStr HKCU "Software\${APPLICATION_NAME}" "" $INSTDIR
-
+  StrCpy $LEGACYCONFIGDIR "$DOCUMENTS\Warzone 2100 Legacy Microwave"
   ;Files
 SetOutPath "$INSTDIR"
   File "${TOP_BUILDDIR}\src\wz2100legacy.exe"
@@ -130,11 +131,11 @@ SetOutPath "$INSTDIR\music"
   File "${TOP_BUILDDIR}\data\music\track3.ogg"
   File "${TOP_BUILDDIR}\data\music\music.wpl"
 SetOutPath "$INSTDIR\fonts"
-  NSISdl::download "http://wzlegacy.universe2.us/winfonts/fonts.conf" "fonts.conf"
-  NSISdl::download "http://wzlegacy.universe2.us/winfonts/DejaVuSans.ttf" "DejaVuSans.ttf"
-  NSISdl::download "http://wzlegacy.universe2.us/winfonts/DejaVuSans-Bold.ttf" "DejaVuSans-Bold.ttf"
-  NSISdl::download "http://wzlegacy.universe2.us/winfonts/README" "README"
-  NSISdl::download "http://wzlegacy.universe2.us/winfonts/LICENSE" "LICENSE"
+  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/fonts.conf" "fonts.conf"
+  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/DejaVuSans.ttf" "DejaVuSans.ttf"
+  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/DejaVuSans-Bold.ttf" "DejaVuSans-Bold.ttf"
+  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/README" "README"
+  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/LICENSE" "LICENSE"
   
   ;Shortcuts
   CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
@@ -229,21 +230,21 @@ SectionEnd
 
 ;Make it easy to migrate our stuff.
 Section /o "Migrate maps and ranks from Warzone 2100 2.3"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
- CopyFiles "$DOCUMENTS\Warzone 2100 2.3\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CopyFiles "$DOCUMENTS\Warzone 2100 2.3\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
+ CreateDirectory "$LEGACYCONFIGDIR"
+ CreateDirectory "$LEGACYCONFIGDIR\maps\"
+ CreateDirectory "$LEGACYCONFIGDIR\multiplay\"
+ CreateDirectory "$LEGACYCONFIGDIR\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 2.3\maps\*.*" "$LEGACYCONFIGDIR\maps\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 2.3\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
 SectionEnd
 
 Section /o "Migrate maps and ranks from Warzone 2100 3.1"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\"
- CreateDirectory "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
- CopyFiles "$DOCUMENTS\Warzone 2100 3.1\maps\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\maps\"
- CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$DOCUMENTS\Warzone 2100 Legacy Microwave\multiplay\players\"
+ CreateDirectory "$LEGACYCONFIGDIR"
+ CreateDirectory "$LEGACYCONFIGDIR\maps\"
+ CreateDirectory "$LEGACYCONFIGDIR\multiplay\"
+ CreateDirectory "$LEGACYCONFIGDIR\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 3.1\maps\*.*" "$LEGACYCONFIGDIR\maps\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
 SectionEnd
 
 Function .onInit ;Splash display.
