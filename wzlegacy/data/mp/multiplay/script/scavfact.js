@@ -144,17 +144,15 @@ function eventAttacked(victim, attacker)
 		{
 			var unit = wholearmy[i];
 
-			if (typeof unit == 'undefined') { //Prevent nonexistant units from being handled, filling logs with poo.
-			 squadsize++;
-			 return; }
+			if (typeof unit != 'undefined') { //Prevent nonexistant units from being handled, filling logs with poo.
 
-			if (unit.order != DORDER_ATTACK) {
-			 if (attacker.health > 20) { //Don't go after a unit probably about to die. -Subsentient
-			  orderDroidObj(unit, DORDER_ATTACK, attacker); } //SPARTA!!!! Kill the enemy!
-			 else { //Stay on the lookout if our enemy is dying or dead for other enemies.
-			  orderDroidLoc(unit, DORDER_PATROL, attacker.x, attacker.y); } }
-			else {
-			 squadsize++; }
+			 if (unit.order != DORDER_ATTACK) {
+			  if (attacker.health > 20) { //Don't go after a unit probably about to die. -Subsentient
+			   orderDroidObj(unit, DORDER_ATTACK, attacker); } //SPARTA!!!! Kill the enemy!
+			  else { //Stay on the lookout if our enemy is dying or dead for other enemies.
+			   orderDroidLoc(unit, DORDER_PATROL, attacker.x, attacker.y); } }
+			 else {
+			  squadsize++; } }
 			
 		}
 
