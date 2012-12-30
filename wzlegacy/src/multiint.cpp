@@ -3923,7 +3923,7 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	
 	// Display the name of the host -Subsentient
 	ssprintf(tmp, NetPlay.games[gameID].hostname);
-	iV_DrawText(tmp, x + GAMES_HOSTER_START + 4 , y + 18);
+	iV_DrawText(tmp, x + GAMES_HOSTER_START, y + 18);
 
 	//Display the number of players. Moved out so we can always see available players even if it's the wrong version. -Subsentient
 	ssprintf(tmp, "%d/%d", NetPlay.games[gameID].desc.dwCurrentPlayers, NetPlay.games[gameID].desc.dwMaxPlayers);
