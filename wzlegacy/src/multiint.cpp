@@ -974,7 +974,7 @@ static void addGames(void)
 				}
 				else
 				{ //Give us useful tooltips. -Subsentient
-					ssprintf(tooltipbuffer[i], _("Host:\"%s\", Map: \"%s\", IP: \"%s\""), NetPlay.games[i].hostname, NetPlay.games[i].mapname, NetPlay.games[gameNumber].desc.host);
+					ssprintf(tooltipbuffer[i], _("Host: \"%s\", Map: \"%s\", IP: \"%s\""), NetPlay.games[i].hostname, NetPlay.games[i].mapname, NetPlay.games[gameNumber].desc.host);
 					sButInit.pTip = tooltipbuffer[i];
 					
 				}
