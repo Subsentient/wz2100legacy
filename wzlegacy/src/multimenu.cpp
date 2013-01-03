@@ -916,9 +916,9 @@ static void displayMultiPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
 		iV_DrawText(str, x + MULTIMENU_C9, y + MULTIMENU_FONT_OSET);
 	}
 
-	//only show player's and allies' unit counts, and nobody elses.
+	//only show player's and allies' unit counts, and nobody elses, unless you are a spectator.
 	//c10:units
-	if (isAlly || getDebugMappingStatus())
+	if (isAlly || getDebugMappingStatus() || isSpectating)
 	{
 		sprintf(str, "%d", getNumDroids(player) + getNumTransporterDroids(player));
 		iV_DrawText(str, x + MULTIMENU_C10, y + MULTIMENU_FONT_OSET);
