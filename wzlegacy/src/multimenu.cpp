@@ -865,7 +865,7 @@ static void displayMultiPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
 		{
 			if (isAlly && !isSelectedPlayer && !giftsUp[player] )
 			{
-				if (game.alliance != ALLIANCES_TEAMS)
+				if (game.alliance != ALLIANCES_TEAMS && !isSpectating)
 				{
 					widgReveal(psWScreen, MULTIMENU_GIFT_RAD + player);
 					widgReveal(psWScreen, MULTIMENU_GIFT_RES + player);
@@ -1128,7 +1128,7 @@ static void addMultiPlayer(UDWORD player,UDWORD pos)
 		widgAddButton(psWScreen, &sButInit);
 	}
 
-	if(game.alliance!=NO_ALLIANCES && player!=selectedPlayer)
+	if(game.alliance!=NO_ALLIANCES && player!=selectedPlayer && !isSpectating)
 	{
 		//alliance
 		sButInit.x		= MULTIMENU_C3;
