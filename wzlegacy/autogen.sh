@@ -148,7 +148,7 @@ not_version ()
 # Chdir to the srcdir, then run auto* tools.
 cd "$SRCDIR"
 
-version_check 1 "autoconf" "ftp://ftp.gnu.org/pub/gnu/autoconf/" 2 56 || DIE=1
+version_check 1 "autoconf" "ftp://ftp.gnu.org/pub/gnu/autoconf/" 2 69 || DIE=1 # Legacy requires 2.69+ for autoconf 2.12+.
 version_check 1 "automake" "ftp://ftp.gnu.org/pub/gnu/automake/" 1 12 || DIE=1
 if [ "$DIE" -eq 1 ]; then
   exit 1
