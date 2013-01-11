@@ -2341,7 +2341,8 @@ static void checkLocalFeatures(DROID *psDroid)
 					pickedUp = pickupOilDrum(psDroid->player, psObj->player);
 					break;
 				case FEAT_GEN_ARTE:
-					if (isHumanPlayer(psDroid->player)) { //Don't let AIs pick up artifacts. -Subsentient
+					if (isHumanPlayer(psDroid->player) || bMultiPlayer || NetPlay.bComms) {
+					//Don't let AIs pick up artifacts in the campaign. -Subsentient
 					pickedUp = pickupArtefact(psDroid->player, psObj->player); }
 					break;
 				default:
