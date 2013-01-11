@@ -688,4 +688,9 @@ extern VIEWDATA *CreateBeaconViewData(SDWORD sender, UDWORD LocX, UDWORD LocY);
 extern bool scrEnumUnbuilt(void);
 extern bool scrIterateUnbuilt(void);
 
+//For spectating. -Subsentient
+
+extern bool scrEnableSpec(void);
+extern bool scrCheckSpec(void);
+
 #endif // __INCLUDED_SRC_SCRIPTFUNCS_H__

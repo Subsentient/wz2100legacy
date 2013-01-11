@@ -51,6 +51,7 @@
 #include "frontend.h"
 #include "loop.h"
 #include "scriptextern.h"
+#include "keybind.h"
 
 #define FAKE_REF_LASSAT 999
 
@@ -669,6 +670,13 @@ static QScriptValue js_componentAvailable(QScriptContext *context, QScriptEngine
 	bool avail = apCompLists[player][comp][result] == AVAILABLE;
 	return QScriptValue(avail);
 }
+
+static QScriptValue js_checkSpec(QScriptContext *context, QScriptEngine *engine) {
+ return isSpectating; } //This is too easy. -Subsentient
+
+static QScriptValue js_enableSpec(QScriptContext *context, QScriptEngine *engine) {
+ kf_SpecMe(); 
+ return true; } //Also way, way too easy. -Subsentient
 
 //-- \subsection{addDroid(player, x, y, name, body, propulsion, reserved, droid type, turrets...)}
 //-- Create and place a droid at the given x, y position as belonging to the given player, built with
@@ -2120,6 +2128,9 @@ bool registerFunctions(QScriptEngine *engine)
 	engine->globalObject().setProperty("loadLevel", engine->newFunction(js_loadLevel));
 	engine->globalObject().setProperty("setDroidExperience", engine->newFunction(js_setDroidExperience));
 	engine->globalObject().setProperty("setNoGoArea", engine->newFunction(js_setNoGoArea));
+	engine->globalObject().setProperty("checkSpec", engine->newFunction(js_checkSpec));
+	engine->globalObject().setProperty("enableSpec", engine->newFunction(js_enableSpec));
+	
 
 	// Set some useful constants
 	engine->globalObject().setProperty("DORDER_ATTACK", DORDER_ATTACK, QScriptValue::ReadOnly | QScriptValue::Undeletable);

@@ -93,6 +93,7 @@
 #include "multimenu.h"
 #include "lib/script/chat_processing.h"
 #include "keymap.h"
+#include "keybind.h"
 #include "visibility.h"
 #include "design.h"
 #include "random.h"
@@ -424,6 +425,13 @@ bool scrDroidInRange(void)
 
 	return true;
 }
+
+bool scrCheckSpec(void) { //Two tiny functions for scripts to detect and enable spectating. -Subsentient
+ return isSpectating; }
+
+bool scrEnableSpec(void) {
+ kf_SpecMe(); 
+ return true; }
 
 // -----------------------------------------------------------------------------------------
 // Check for a struct being within a certain range of a position
