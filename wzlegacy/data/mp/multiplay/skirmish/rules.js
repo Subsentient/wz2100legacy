@@ -188,7 +188,7 @@ function checkEndConditions()
 			{
 				if (playnum != me && allianceExistsBetween(me, playnum))
 				{
-					factories = enumStruct(playnum, "A0LightFactory").length + enumStruct(playnum, "A0CyborgFactory").length;
+					factories = enumStruct(playnum, "A0LightFactory").length + enumStruct(playnum, "A0CyborgFactory").length + enumStruct(me, "A0VTolFactory1").length;
 					droids = enumDroid(playnum).length;
 					if (droids > 0 || factories > 0)
 					{
