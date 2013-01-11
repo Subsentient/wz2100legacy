@@ -173,8 +173,8 @@ function eventGameInit()
 	var droids = enumDroid(me).length;
 	if (droids == 0 && factories == 0 && gameTime < 2000 && !checkSpec()) {
 	 canLose = false;
-
 	 enableSpec(); }
+
 	//If we can lose, well, let us.
 	if (canLose) {
 	setTimer("checkEndConditions", 100); }
