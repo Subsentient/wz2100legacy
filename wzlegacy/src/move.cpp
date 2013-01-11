@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -2320,8 +2320,8 @@ static bool pickupOilDrum(int toPlayer, int fromPlayer)
 // use to pick up oil, etc..
 static void checkLocalFeatures(DROID *psDroid)
 {
-	// NOTE: Why not do this for AI units also?
-	if ((!isHumanPlayer(psDroid->player) && psDroid->order.type != DORDER_RECOVER) || isVtolDroid(psDroid))  // VTOLs can't pick up features!
+	//This used to prohibit AIs from picking up oil drums. Uhh, fixed. That gives an advantage to the human player. -Subsentient
+	if (isVtolDroid(psDroid))  // VTOLs can't pick up features!
 	{
 		return;
 	}
@@ -2341,7 +2341,8 @@ static void checkLocalFeatures(DROID *psDroid)
 					pickedUp = pickupOilDrum(psDroid->player, psObj->player);
 					break;
 				case FEAT_GEN_ARTE:
-					pickedUp = pickupArtefact(psDroid->player, psObj->player);
+					if (isHumanPlayer(psDroid->player)) { //Don't let AIs pick up artifacts. -Subsentient
+					pickedUp = pickupArtefact(psDroid->player, psObj->player); }
 					break;
 				default:
 					break;
@@ -2350,7 +2351,7 @@ static void checkLocalFeatures(DROID *psDroid)
 
 		if (!pickedUp)
 		{
-			// Object is not a living oil drum or artefact.
+			// Object is not a living oil drum or artefact, or we aren't allowed to pick it up.
 			continue;
 		}
 
