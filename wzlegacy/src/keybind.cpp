@@ -1288,10 +1288,10 @@ void	kf_TogglePowerBar( void )
 /* Toggles whether we process debug key mappings */
 void	kf_ToggleDebugMappings( void )
 {
-	if (isSpectating) {
-	 addConsoleMessage("You are a spectator. Not enabling debug mode.", DEFAULT_JUSTIFY,  SYSTEM_MESSAGE); }
-	else if (blockDebug) {
-	 addConsoleMessage("Spectator present in game. Not enabling debug mode.", DEFAULT_JUSTIFY,  SYSTEM_MESSAGE); }
+	if (isSpectating && NetPlay.bComms) {
+	 addConsoleMessage("You are a spectator. Not enabling debug mode in a multiplayer game.", DEFAULT_JUSTIFY,  SYSTEM_MESSAGE); }
+	else if (blockDebug && NetPlay.bComms) {
+	 addConsoleMessage("Spectator present. Not enabling debug mode in a multiplayer game.", DEFAULT_JUSTIFY,  SYSTEM_MESSAGE); }
 	else {
 	 sendProcessDebugMappings(!getWantedDebugMappingStatus(selectedPlayer)); }
 }
