@@ -173,7 +173,7 @@ function eventGameInit()
 // END CONDITIONS
 function checkEndConditions()
 {
-	var factories = enumStruct(me, "A0LightFactory").length + enumStruct(me, "A0CyborgFactory").length;
+	var factories = enumStruct(me, "A0LightFactory").length + enumStruct(me, "A0CyborgFactory").length + enumStruct(me, "A0VTolFactory1").length;
 	var droids = enumDroid(me).length;
 
 	// Losing Conditions
