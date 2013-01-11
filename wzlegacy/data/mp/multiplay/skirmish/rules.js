@@ -7,6 +7,7 @@
 // /////////////////////////////////////////////////////////////////
 
 var lastHitTime = 0;
+var canLose = true;
 
 function eventGameInit()
 {
@@ -166,7 +167,17 @@ function eventGameInit()
 	}
 
 	hackNetOn();
-	setTimer("checkEndConditions", 100);
+
+	//Check if we need to enable spectator mode, and if the player should be able to lose the game at all. -Subsentient
+	var factories = enumStruct(me, "A0LightFactory").length + enumStruct(me, "A0CyborgFactory").length + enumStruct(me, "A0VTolFactory1").length;
+	var droids = enumDroid(me).length;
+	if (droids == 0 && factories == 0 && gameTime < 2000 && !checkSpec()) {
+	 canLose = false;
+
+	 enableSpec(); }
+	//If we can lose, well, let us.
+	if (canLose) {
+	setTimer("checkEndConditions", 100); }
 }
 
 // /////////////////////////////////////////////////////////////////
