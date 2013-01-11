@@ -3907,7 +3907,7 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 
 	//Display the number of players. Moved out so we can always see available players even if it's the wrong version. -Subsentient
 	ssprintf(tmp, "%d/%d", NetPlay.games[gameID].desc.dwCurrentPlayers, NetPlay.games[gameID].desc.dwMaxPlayers);
-	iV_DrawText(tmp, x + GAMES_PLAYERS_START + 4 , y + 18);
+	iV_DrawText(tmp, x + GAMES_PLAYERS_START - 1, y + 18);
 
 	// Draw type overlay.
 	iV_DrawImage(FrontImages, statusStart, x + GAMES_STATUS_START, y + 3);
