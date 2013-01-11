@@ -2680,6 +2680,7 @@ static void processMultiopWidgets(UDWORD id)
 
 		case MULTIOP_MAP:
 			sstrcpy(game.map,widgGetString(psWScreen, MULTIOP_MAP)); //Let us edit our maps in the boxes. -Subsentient
+			loadMapPreview(false); //And show us a preview so we know it worked.
 			break;
 
 		case MULTIOP_GNAME_ICON:
