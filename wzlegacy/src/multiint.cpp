@@ -2977,19 +2977,22 @@ static void processMultiopWidgets(UDWORD id)
 
 		disableMultiButs();
 
+		// Add blue box form for our slot adding and deleting buttons. -Subsentient		
+		addBlueForm(MULTIOP_OPTIONS, MULTIOP_SLOT_FORM, "", MULTIOP_SLOT_FORMX, MULTIOP_SLOT_FORMY, 30, 50);
+
 		// Add slot button
-		addMultiBut(psWScreen,MULTIOP_OPTIONS,MULTIOP_ADDSLOT,
-			MULTIOP_ADDSLOTX, MULTIOP_ADDSLOTY,
+		addMultiBut(psWScreen,MULTIOP_SLOT_FORM,MULTIOP_ADDSLOT,
+			5, 2,
 			iV_GetImageWidth(FrontImages,IMAGE_PLUS_SYM),
 			iV_GetImageHeight(FrontImages,IMAGE_PLUS_SYM),
-			_("Add player slot to map"), IMAGE_PLUS_SYM, IMAGE_PLUS_SYM, IMAGE_PLUS_SYM);
+			_("Add player slot to map"), IMAGE_PLUS_SYM, IMAGE_PLUS_SYM_HI, IMAGE_PLUS_SYM_HI);
 
 		// Remove slot button
-		addMultiBut(psWScreen,MULTIOP_OPTIONS,MULTIOP_REMSLOT,
-			MULTIOP_REMSLOTX, MULTIOP_REMSLOTY,
+		addMultiBut(psWScreen,MULTIOP_SLOT_FORM,MULTIOP_REMSLOT,
+			5, 25,
 			iV_GetImageWidth(FrontImages,IMAGE_MINUS_SYM),
 			iV_GetImageHeight(FrontImages,IMAGE_MINUS_SYM),
-			_("Remove player slot from map"), IMAGE_MINUS_SYM, IMAGE_MINUS_SYM, IMAGE_MINUS_SYM);
+			_("Remove player slot from map"), IMAGE_MINUS_SYM, IMAGE_MINUS_SYM_HI, IMAGE_MINUS_SYM_HI);
 
 		addPlayerBox(!ingame.bHostSetup || bHosted);	//to make sure host can't skip player selection menu (sets game.skdiff to UBYTE_MAX for humans)
 		break;
