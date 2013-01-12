@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -2977,6 +2977,20 @@ static void processMultiopWidgets(UDWORD id)
 
 		disableMultiButs();
 
+		// Add slot button
+		addMultiBut(psWScreen,MULTIOP_OPTIONS,MULTIOP_ADDSLOT,
+			MULTIOP_ADDSLOTX, MULTIOP_ADDSLOTY,
+			iV_GetImageWidth(FrontImages,IMAGE_PLUS_SYM),
+			iV_GetImageHeight(FrontImages,IMAGE_PLUS_SYM),
+			_("Add player slot to map"), IMAGE_PLUS_SYM, IMAGE_PLUS_SYM, IMAGE_PLUS_SYM);
+
+		// Remove slot button
+		addMultiBut(psWScreen,MULTIOP_OPTIONS,MULTIOP_REMSLOT,
+			MULTIOP_REMSLOTX, MULTIOP_REMSLOTY,
+			iV_GetImageWidth(FrontImages,IMAGE_MINUS_SYM),
+			iV_GetImageHeight(FrontImages,IMAGE_MINUS_SYM),
+			_("Remove player slot from map"), IMAGE_MINUS_SYM, IMAGE_MINUS_SYM, IMAGE_MINUS_SYM);
+
 		addPlayerBox(!ingame.bHostSetup || bHosted);	//to make sure host can't skip player selection menu (sets game.skdiff to UBYTE_MAX for humans)
 		break;
 
@@ -3006,6 +3020,22 @@ static void processMultiopWidgets(UDWORD id)
 			changeTitleMode(SINGLE);
 			addChallenges();
 		}
+		break;
+	case MULTIOP_ADDSLOT:
+		if (game.maxPlayers < 10) {
+		 game.maxPlayers++; 
+		 sendOptions();
+		 addPlayerBox(true); }
+		else {
+		 addConsoleMessage(_("Cannot add player slot."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
+		break;
+	case MULTIOP_REMSLOT:
+		if (game.maxPlayers > 2 && (game.maxPlayers > NetPlay.playercount)) {
+		 game.maxPlayers--; 
+		 sendOptions();
+		 addPlayerBox(true); }
+		else {
+		 addConsoleMessage(_("Cannot remove player slot."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
 		break;
 	case MULTIOP_MAP_BUT:
 		loadMapPreview(true);

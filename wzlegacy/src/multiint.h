@@ -1,3 +1,4 @@
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -173,6 +174,14 @@ void loadMapPreview(bool hideInterface);
 
 #define MULTIOP_EDITBOXW		196
 #define	MULTIOP_EDITBOXH		30
+
+#define MULTIOP_ADDSLOT			11111
+#define MULTIOP_REMSLOT			11112
+
+#define MULTIOP_ADDSLOTX		MULTIOP_CANCELX + 10
+#define MULTIOP_ADDSLOTY		MULTIOP_CANCELY + 275
+#define MULTIOP_REMSLOTX		MULTIOP_ADDSLOTX
+#define MULTIOP_REMSLOTY		MULTIOP_ADDSLOTY + 25
 
 #define	MULTIOP_BLUEFORMW		226
 
