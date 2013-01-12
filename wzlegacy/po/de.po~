@@ -12511,8 +12511,8 @@ msgid "MAIN MENU"
 msgstr "HAUPTMENÜ"
 
 #: src/frontend.cpp:117
-msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
-msgstr "Warzone 2100 Legacy ist vollkommen frei und quelloffen (FLOSS). Offizielle Seite: http://wzlegacy.universe2.us/"
+msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://warzonelegacy.org/"
+msgstr "Warzone 2100 Legacy ist vollkommen frei und quelloffen (FLOSS). Offizielle Seite: http://warzonelegacy.org/"
 
 #: src/frontend.cpp:188
 msgid "Fast Play"
@@ -12564,7 +12564,7 @@ msgid "SINGLE PLAYER"
 msgstr "Einzelspieler"
 
 #: src/frontend.cpp:257
-msgid "Campaign videos are missing! Get them from http://wzlegacy.universe2.us"
+msgid "Campaign videos are missing! Get them from http://warzonelegacy.org"
 msgstr ""
 
 #: src/frontend.cpp:333
@@ -15058,8 +15058,8 @@ msgstr "Version %s-%s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "OpenGL 2.0 wird von Ihrem System nicht unterstützt. Manche Dinge könnten falsch aussehen. Bitte aktualisieren Sie, falls möglich, Grafiktreiber oder -hardware."
 
-#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
-#~ msgstr "Besuchen Sie unsere offizielle Webseite: http://wzlegacy.universe2.us"
+#~ msgid "Visit our official site: http://warzonelegacy.org"
+#~ msgstr "Besuchen Sie unsere offizielle Webseite: http://warzonelegacy.org"
 
 #~ msgid "Unit Colour (SP)"
 #~ msgstr "Einheitenfarbe (SP)"
@@ -15142,8 +15142,8 @@ msgstr "Version %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Passwort:"
 
-#~ msgid "Use your wzlegacy.universe2.us credentials here."
-#~ msgstr "Benutzen Sie hier Ihre wzlegacy.universe2.us-Anmeldeinformationen."
+#~ msgid "Use your warzonelegacy.org credentials here."
+#~ msgstr "Benutzen Sie hier Ihre warzonelegacy.org-Anmeldeinformationen."
 
 #~ msgid "3 players"
 #~ msgstr "3 Spieler"

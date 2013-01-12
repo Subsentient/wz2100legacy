@@ -84,7 +84,7 @@ bool loadConfig()
 	setMiddleClickRotate(ini.value("MiddleClickRotate", false).toBool());
 	rotateRadar = ini.value("rotateRadar", true).toBool();
 	war_SetPauseOnFocusLoss(ini.value("PauseOnFocusLoss", false).toBool());
-	NETsetMasterserverName(ini.value("masterserver_name", "universe2.us").toString().toUtf8().constData()); //Changed server name to universe2.us -Subsentient
+	NETsetMasterserverName(ini.value("masterserver_name", "warzonelegacy.org").toString().toUtf8().constData()); //Changed server name to warzonelegacy.org -Subsentient
 	iV_font(ini.value("fontname", "DejaVu Sans").toString().toUtf8().constData(),
 		ini.value("fontface", "Book").toString().toUtf8().constData(),
 		ini.value("fontfacebold", "Bold").toString().toUtf8().constData());

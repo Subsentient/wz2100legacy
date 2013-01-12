@@ -12703,7 +12703,7 @@ msgid "MAIN MENU"
 msgstr "HOVED MENU"
 
 #: src/frontend.cpp:117
-msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
+msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://warzonelegacy.org/"
 msgstr ""
 
 #: src/frontend.cpp:188
@@ -12757,7 +12757,7 @@ msgid "SINGLE PLAYER"
 msgstr "SOLO SPILLER"
 
 #: src/frontend.cpp:257
-msgid "Campaign videos are missing! Get them from http://wzlegacy.universe2.us"
+msgid "Campaign videos are missing! Get them from http://warzonelegacy.org"
 msgstr ""
 
 #: src/frontend.cpp:333
@@ -15290,8 +15290,8 @@ msgstr " - Bygget %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Version %s%s%s%s"
 
-#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
-#~ msgstr "Besøg vores officielle side: http://wzlegacy.universe2.us"
+#~ msgid "Visit our official site: http://warzonelegacy.org"
+#~ msgstr "Besøg vores officielle side: http://warzonelegacy.org"
 
 #, fuzzy
 #~ msgid "Unit Colour (SP)"

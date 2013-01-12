@@ -15021,8 +15021,8 @@ msgstr " - %s İnşa"
 msgid "Version %s-%s%s%s%s"
 msgstr "Sürüm %s-%s%s%s%s"
 
-#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
-#~ msgstr "Warzone 2100 Legacy tamamen ücretsiz ve açık kaynaklıdır. Resmi site: http://wzlegacy.universe2.us/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://warzonelegacy.org/"
+#~ msgstr "Warzone 2100 Legacy tamamen ücretsiz ve açık kaynaklıdır. Resmi site: http://warzonelegacy.org/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Sadece OpenGL 1.5'i kullan"
@@ -15030,8 +15030,8 @@ msgstr "Sürüm %s-%s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "OpenGL 2.0 sisteminiz tarafından desteklenmiyor. Bazı şeyler yanlış görünebilir. Lütfen grafik sürücünüzü/donanımınızı yükseltin, mümkünse."
 
-#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
-#~ msgstr "Resmi internet sitemizi ziyaret edin: http://wzlegacy.universe2.us"
+#~ msgid "Visit our official site: http://warzonelegacy.org"
+#~ msgstr "Resmi internet sitemizi ziyaret edin: http://warzonelegacy.org"
 
 #~ msgid "Unit Colour (SP)"
 #~ msgstr "Birim Rengi (T.O)"
@@ -15114,8 +15114,8 @@ msgstr "Sürüm %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Şifreyi gir:"
 
-#~ msgid "Use your wzlegacy.universe2.us credentials here."
-#~ msgstr "Burada wzlegacy.universe2.us kimlik bilgilerini giriş yapmak için kullan"
+#~ msgid "Use your warzonelegacy.org credentials here."
+#~ msgstr "Burada warzonelegacy.org kimlik bilgilerini giriş yapmak için kullan"
 
 #~ msgid "3 players"
 #~ msgstr "2 Oyuncu"

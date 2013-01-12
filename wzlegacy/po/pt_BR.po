@@ -14986,8 +14986,8 @@ msgstr " - Finalizado em %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Versão %s-%s%s%s%s"
 
-#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
-#~ msgstr "Warzone 2100 Legacy é completamente gratuito e código-aberto (FLOSS). Site oficial: http://wzlegacy.universe2.us/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://warzonelegacy.org/"
+#~ msgstr "Warzone 2100 Legacy é completamente gratuito e código-aberto (FLOSS). Site oficial: http://warzonelegacy.org/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Usar apenas OpenGL 1.5"
@@ -15078,8 +15078,8 @@ msgstr "Versão %s-%s%s%s%s"
 #~ msgid "Password:"
 #~ msgstr "Senha:"
 
-#~ msgid "Use your wzlegacy.universe2.us credentials here."
-#~ msgstr "Use seu login do wzlegacy.universe2.us aqui."
+#~ msgid "Use your warzonelegacy.org credentials here."
+#~ msgstr "Use seu login do warzonelegacy.org aqui."
 
 #~ msgid "3 players"
 #~ msgstr "3 jogadores"

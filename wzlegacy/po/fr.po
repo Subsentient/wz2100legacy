@@ -14978,8 +14978,8 @@ msgstr " - Compilation %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Version %s - %s%s%s%s"
 
-#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
-#~ msgstr "Warzone 2100 Legacy est un jeu complètement libre et open source (FLOSS). Site officiel : http//wzlegacy.universe2.us/"
+#~ msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://warzonelegacy.org/"
+#~ msgstr "Warzone 2100 Legacy est un jeu complètement libre et open source (FLOSS). Site officiel : http//warzonelegacy.org/"
 
 #~ msgid "Only use OpenGL 1.5"
 #~ msgstr "Utiliser seulement OpenGL 1.5"
@@ -14987,8 +14987,8 @@ msgstr "Version %s - %s%s%s%s"
 #~ msgid "OpenGL 2.0 is not supported by your system. Some things may look wrong. Please upgrade your graphics driver/hardware, if possible."
 #~ msgstr "OpenGL 2.0 n'est pas supporté par votre système. Vous devez mettre à niveau votre carte/driver graphique si vous voulez profiter des performances optimales pour le jeu."
 
-#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
-#~ msgstr "Nous vous invitons à visiter notre site officiel : http://wzlegacy.universe2.us"
+#~ msgid "Visit our official site: http://warzonelegacy.org"
+#~ msgstr "Nous vous invitons à visiter notre site officiel : http://warzonelegacy.org"
 
 #~ msgid "Unit Colour (SP)"
 #~ msgstr "Couleur des unités (un joueur)"

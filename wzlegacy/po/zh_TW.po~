@@ -12660,7 +12660,7 @@ msgid "MAIN MENU"
 msgstr "主選單"
 
 #: src/frontend.cpp:117
-msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://wzlegacy.universe2.us/"
+msgid "Warzone 2100 Legacy is completely free and open source (FLOSS). Official site: http://warzonelegacy.org/"
 msgstr ""
 
 #: src/frontend.cpp:188
@@ -12714,7 +12714,7 @@ msgid "SINGLE PLAYER"
 msgstr "SINGLE PLAYER"
 
 #: src/frontend.cpp:257
-msgid "Campaign videos are missing! Get them from http://wzlegacy.universe2.us"
+msgid "Campaign videos are missing! Get them from http://warzonelegacy.org"
 msgstr ""
 
 #: src/frontend.cpp:333

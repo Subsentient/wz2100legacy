@@ -258,7 +258,7 @@
 #define PACKAGE "warzone2100-legacy"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "http://wzlegacy.universe2.us/"
+#define PACKAGE_BUGREPORT "http://warzonelegacy.org/"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "Warzone 2100 Legacy"

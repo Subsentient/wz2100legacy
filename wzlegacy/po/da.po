@@ -15282,8 +15282,8 @@ msgstr " - Bygget %s"
 msgid "Version %s-%s%s%s%s"
 msgstr "Version %s%s%s%s"
 
-#~ msgid "Visit our official site: http://wzlegacy.universe2.us"
-#~ msgstr "Besøg vores officielle side: http://wzlegacy.universe2.us"
+#~ msgid "Visit our official site: http://warzonelegacy.org"
+#~ msgstr "Besøg vores officielle side: http://warzonelegacy.org"
 
 #, fuzzy
 #~ msgid "Unit Colour (SP)"
