@@ -171,23 +171,27 @@ function eventGameInit()
 	//Check if we need to enable spectator mode, and if the player should be able to lose the game at all. -Subsentient
 	var factories = enumStruct(me, "A0LightFactory").length + enumStruct(me, "A0CyborgFactory").length + enumStruct(me, "A0VTolFactory1").length;
 	var droids = enumDroid(me).length;
-
+	var inaTeam = false; //This gets set to true if we find we are in a team. -Subsentient
 	if (droids == 0 && factories == 0 && gameTime < 2000 && !checkSpec()) {
 
 	 if (alliancesType == ALLIANCES_TEAMS) { //Teams matter. Don't enable spectator mode if we have a living teammate.
 	  for (var playnum = 0; playnum < maxPlayers; playnum++) {
-
 	   if (playnum != me && allianceExistsBetween(me, playnum)) {
-	    allyfactories = enumStruct(playnum, "A0LightFactory").length + enumStruct(playnum, "A0CyborgFactory").length + enumStruct(playnum, "A0VTolFactory1").length;
-	    allydroids = enumDroid(playnum).length;
-	    if (allydroids > 0 || allyfactories > 0) {
-	     canLose = true; //We have a team, so we are probably going to get a truck or something.
-	     break; }
+		if (!inaTeam) {
+		 inaTeam = true; 
+		 break; } } }
 
-	    else { //Our team is just a spectator team or something. It'll get broken when we become a spectator.
-	     canLose = false;
-	     enableSpec();
-	     break; } } } }
+	   if (inaTeam) {
+	     for (var playnum = 0; playnum < maxPlayers; playnum++) {
+	     allyfactories = enumStruct(playnum, "A0LightFactory").length + enumStruct(playnum, "A0CyborgFactory").length + enumStruct(playnum, "A0VTolFactory1").length;
+	     allydroids = enumDroid(playnum).length;
+	     if (allydroids > 0 || allyfactories > 0) {
+	      canLose = true; //We have a team, so we are probably going to get a truck or something.
+	      break; } } }
+
+	     else { //Our team is just a spectator team or something. It'll get broken when we become a spectator.
+	      canLose = false;
+	      enableSpec(); } }
 
 	 else { //No teams, we have nothing, so enable spectator mode.
 	  canLose = false;
