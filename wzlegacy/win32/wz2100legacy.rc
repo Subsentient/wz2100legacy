@@ -20,11 +20,11 @@ BEGIN
 	BEGIN
 		BLOCK "040904b0"
 		BEGIN
-			VALUE "CompanyName", "Warzone 2100 Legacy, by Subsentient"
+			VALUE "CompanyName", "The Warzone 2100 Legacy Project"
 			VALUE "FileDescription", "Warzone 2100 Legacy"
 			VALUE "FileVersion", "microwave_popping"
 			VALUE "InternalName", "Warzone 2100 Legacy"
-			VALUE "LegalCopyright", "Copyright © 2012 Subsentient and contributors"
+			VALUE "LegalCopyright", "Copyright © 2013 The Warzone 2100 Legacy Project"
 			VALUE "OriginalFilename", "wz2100legacy.exe"
 			VALUE "ProductName", "Warzone 2100 Legacy"
 			VALUE "ProductVersion", "microwave_popping"
