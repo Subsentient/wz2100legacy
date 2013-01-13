@@ -1445,18 +1445,18 @@ static void addGameOptions()
 	}
 	if (bHosted) { //Only show these when we host. -Subsentient
 	 // Add blue box form for our slot adding and deleting buttons. -Subsentient		
-	 addBlueForm(MULTIOP_OPTIONS, MULTIOP_SLOT_FORM, "", MULTIOP_SLOT_FORMX, MULTIOP_SLOT_FORMY, 30, 50);
+	 addBlueForm(MULTIOP_OPTIONS, MULTIOP_SLOT_FORM, "", MULTIOP_SLOT_FORMX, MULTIOP_SLOT_FORMY, 30, 56);
 
 	 // Add slot button
 	 addMultiBut(psWScreen,MULTIOP_SLOT_FORM,MULTIOP_ADDSLOT,
-		5, 2,
+		MULTIOP_SLOTOFFSET_X, MULTIOP_SLOTOFFSET_Y,
 		iV_GetImageWidth(FrontImages,IMAGE_PLUS_SYM),
 		iV_GetImageHeight(FrontImages,IMAGE_PLUS_SYM),
 		_("Add player slot to map"), IMAGE_PLUS_SYM, IMAGE_PLUS_SYM_HI, IMAGE_PLUS_SYM_HI);
 
 	 // Remove slot button
 	 addMultiBut(psWScreen,MULTIOP_SLOT_FORM,MULTIOP_REMSLOT,
-		5, 25,
+		MULTIOP_SLOTOFFSET_X, MULTIOP_SLOTOFFSET_Y + 24,
 		iV_GetImageWidth(FrontImages,IMAGE_MINUS_SYM),
 		iV_GetImageHeight(FrontImages,IMAGE_MINUS_SYM),
 		_("Remove player slot from map"), IMAGE_MINUS_SYM, IMAGE_MINUS_SYM_HI, IMAGE_MINUS_SYM_HI); }
