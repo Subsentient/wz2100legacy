@@ -3028,7 +3028,11 @@ static void processMultiopWidgets(UDWORD id)
 		if (game.maxPlayers < 10) {
 		 game.maxPlayers++; 
 		 sendOptions();
-		 addPlayerBox(true); }
+		 addPlayerBox(true);
+
+		 char tmpbuf[256]; //Send a message to everyone so they don't think it's weird. -Subsentient
+		 ssprintf(tmpbuf, _("*** Slot added. Map now has %d slots. ***"), game.maxPlayers);
+		 sendTextMessage(tmpbuf, true); }
 		else {
 		 addConsoleMessage(_("Cannot add player slot."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
 		break;
@@ -3036,7 +3040,11 @@ static void processMultiopWidgets(UDWORD id)
 		if (game.maxPlayers > 2 && (game.maxPlayers > NetPlay.playercount)) {
 		 game.maxPlayers--; 
 		 sendOptions();
-		 addPlayerBox(true); }
+		 addPlayerBox(true);
+
+		 char tmpbuf[256];
+		 ssprintf(tmpbuf, _("*** Slot removed. Map now has %d slots. ***"), game.maxPlayers);
+		 sendTextMessage(tmpbuf, true); }
 		else {
 		 addConsoleMessage(_("Cannot remove player slot."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
 		break;
