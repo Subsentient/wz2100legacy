@@ -146,6 +146,10 @@ bool scrGenExternGet(UDWORD index)
 		type = VAL_INT;
 		scrFunctionResult.v.ival	= game.alliance;
 		break;
+	case EXTID_BLOCKDEBUG:
+		type = VAL_BOOL;
+		scrFunctionResult.v.bval	= blockDebug;
+		break;
 
 		default:
 		ASSERT( false, "scrGenExternGet: unknown variable index" );

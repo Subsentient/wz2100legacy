@@ -409,6 +409,7 @@ bool loadPlayerScript(QString path, int player, int difficulty)
 	engine->globalObject().setProperty("mapWidth", mapWidth, QScriptValue::ReadOnly | QScriptValue::Undeletable);
 	//== \item[mapHeight] Height of map in tiles.
 	engine->globalObject().setProperty("mapHeight", mapHeight, QScriptValue::ReadOnly | QScriptValue::Undeletable);
+	engine->globalObject().setProperty("blockDebug", blockDebug, QScriptValue::ReadOnly | QScriptValue::Undeletable);
 
 	// Regular functions
 	registerFunctions(engine);
