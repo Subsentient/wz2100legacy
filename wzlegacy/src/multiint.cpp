@@ -1443,7 +1443,8 @@ static void addGameOptions()
 	{
 		widgSetButtonState(psWScreen, MULTIOP_FOG_ON,WBUT_LOCK);
 	}
-	if (bHosted) { //Only show these when we host. -Subsentient
+
+	if (bHosted && !challengeActive) { //Only show these when we host. -Subsentient
 	 // Add blue box form for our slot adding and deleting buttons. -Subsentient		
 	 addBlueForm(MULTIOP_OPTIONS, MULTIOP_SLOT_FORM, "", MULTIOP_SLOT_FORMX, MULTIOP_SLOT_FORMY, 30, 56);
 
