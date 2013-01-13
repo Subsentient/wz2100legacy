@@ -341,6 +341,10 @@ void NET_InitPlayer(int i, bool initPosition);
 extern void NET_InitPlayers(void);
 extern void playerLeavingNicely(uint32_t index, uint32_t indexmatch); //Subsentient did it
 
+//Netcode Versioning
+const int NetcodeVersionMajor = 7;
+const int NetcodeVersionMinor = 21;
+
 void NETGameLocked(bool flag);
 void NETresetGamePassword(void);
 

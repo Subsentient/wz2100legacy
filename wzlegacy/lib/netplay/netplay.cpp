@@ -169,19 +169,13 @@ static int nStatsLastUpdateTime = 0;
 
 unsigned NET_PlayerConnectionStatus[CONNECTIONSTATUS_NORMAL][MAX_PLAYERS];
 
-// ////////////////////////////////////////////////////////////////////////////
-/************************************************************************************
- **  NOTE (!)  Change the versionString when net code changes!!
- **            ie ("trunk", "2.1.3", "3.0", ...)
- ************************************************************************************
-**/
+//Used to contain versioning information here. Moved to netplay.h. -Subsentient
+
 static char const *versionString = version_getVersionString();
-static int NETCODE_VERSION_MAJOR = 7;
-static int NETCODE_VERSION_MINOR = 21;
 
 bool NETisCorrectVersion(uint32_t game_version_major, uint32_t game_version_minor)
 {
-	return (NETCODE_VERSION_MAJOR == game_version_major && NETCODE_VERSION_MINOR == game_version_minor);
+	return (NetcodeVersionMajor == game_version_major && NetcodeVersionMinor == game_version_minor);
 }
 //	Sets if the game is password protected or not
 void NETGameLocked( bool flag)
@@ -2266,7 +2260,7 @@ static void NETallowJoining(void)
 			}
 			else
 			{
-				// New clients send NETCODE_VERSION_MAJOR and NETCODE_VERSION_MINOR
+				// New clients send NetcodeVersionMajor and NetcodeVersionMinor
 				// Check these numbers with our own.
 
 				memcpy(&major, p_buffer, sizeof(int32_t));
@@ -2597,8 +2591,8 @@ bool NEThostGame(const char* SessionName, const char* PlayerName,
 	sstrcpy(gamestruct.versionstring, versionString);		// version (string)
 	sstrcpy(gamestruct.modlist, getModList());				// List of mods
 	gamestruct.GAMESTRUCT_VERSION = 3;						// version of this structure
-	gamestruct.game_version_major = NETCODE_VERSION_MAJOR;	// Netcode Major version
-	gamestruct.game_version_minor = NETCODE_VERSION_MINOR;	// NetCode Minor version
+	gamestruct.game_version_major = NetcodeVersionMajor;	// Netcode Major version
+	gamestruct.game_version_minor = NetcodeVersionMinor;	// NetCode Minor version
 //	gamestruct.privateGame = 0;								// if true, it is a private game
 	gamestruct.pureGame = 0;									// NO mods allowed if true
 	gamestruct.Mods = 0;										// number of concatenated mods?
@@ -2834,11 +2828,11 @@ bool NETjoinGame(const char* host, uint32_t port, const char* playername)
 	// tcp_socket is used to talk to host machine
 	SocketSet_AddSocket(socket_set, tcp_socket);
 
-	// Send NETCODE_VERSION_MAJOR and NETCODE_VERSION_MINOR
+	// Send NetcodeVersionMajor and NetcodeVersionMinor
 	p_buffer = buffer;
-	*(int32_t*)p_buffer = htonl(NETCODE_VERSION_MAJOR);
+	*(int32_t*)p_buffer = htonl(NetcodeVersionMajor);
 	p_buffer += sizeof(uint32_t);
-	*(int32_t*)p_buffer = htonl(NETCODE_VERSION_MINOR);
+	*(int32_t*)p_buffer = htonl(NetcodeVersionMinor);
 
 	if (writeAll(tcp_socket, buffer, sizeof(buffer)) == SOCKET_ERROR
 		|| readAll(tcp_socket, &result, sizeof(result), 1500) != sizeof(result))
