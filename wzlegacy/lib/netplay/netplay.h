@@ -286,6 +286,10 @@ extern bool netPlayersUpdated;
 extern int mapDownloadProgress;
 extern char iptoconnect[PATH_MAX]; // holds IP/hostname from command line
 
+//Netcode Versioning
+const int NetcodeVersionMajor = 7;
+const int NetcodeVersionMinor = 21;
+
 // ////////////////////////////////////////////////////////////////////////
 // functions available to you.
 extern int   NETinit(bool bFirstCall);				// init
@@ -340,10 +344,6 @@ extern bool NETisCorrectVersion(uint32_t game_version_major, uint32_t game_versi
 void NET_InitPlayer(int i, bool initPosition);
 extern void NET_InitPlayers(void);
 extern void playerLeavingNicely(uint32_t index, uint32_t indexmatch); //Subsentient did it
-
-//Netcode Versioning
-const int NetcodeVersionMajor = 7;
-const int NetcodeVersionMinor = 21;
 
 void NETGameLocked(bool flag);
 void NETresetGamePassword(void);
