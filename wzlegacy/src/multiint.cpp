@@ -3035,10 +3035,10 @@ static void processMultiopWidgets(UDWORD id)
 		 ssprintf(tmpbuf, _("*** Slot added. Map now has %d slots. ***"), game.maxPlayers);
 		 sendTextMessage(tmpbuf, true); }
 		else {
-		 addConsoleMessage(_("Cannot add player slot."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
+		 addConsoleMessage(_("Cannot add player slot. Too many slots?"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
 		break;
 	case MULTIOP_REMSLOT:
-		if (game.maxPlayers > 2 && (game.maxPlayers > NetPlay.playercount)) {
+		if (game.maxPlayers > 2 && (game.maxPlayers > NetPlay.playercount) && (NetPlay.players[game.maxPlayers -1].ai == AI_OPEN || NetPlay.players[game.maxPlayers -1].ai == AI_CLOSED)) {
 		 game.maxPlayers--; 
 		 sendOptions();
 		 addPlayerBox(true);
@@ -3047,7 +3047,7 @@ static void processMultiopWidgets(UDWORD id)
 		 ssprintf(tmpbuf, _("*** Slot removed. Map now has %d slots. ***"), game.maxPlayers);
 		 sendTextMessage(tmpbuf, true); }
 		else {
-		 addConsoleMessage(_("Cannot remove player slot."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
+		 addConsoleMessage(_("Cannot remove player slot. Too few slots or slot occupied by human or AI?"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
 		break;
 	case MULTIOP_MAP_BUT:
 		loadMapPreview(true);
