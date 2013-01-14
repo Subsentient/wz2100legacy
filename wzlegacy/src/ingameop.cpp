@@ -113,7 +113,7 @@ static bool addQuitOptions(void)
 	addIGTextButton(INTINGAMEOP_RESUME, INTINGAMEOP_1_X, INTINGAMEOP_1_Y, INTINGAMEOP_OP_W, _("Resume Game"), OPALIGN);
 	addIGTextButton(INTINGAMEOP_QUIT_CONFIRM, INTINGAMEOP_1_X, INTINGAMEOP_2_Y, INTINGAMEOP_OP_W, _("Quit"), OPALIGN);
 
-	if (NetPlay.isHost && bMultiPlayer && NetPlay.bComms)		// only show for real MP games
+	if (NetPlay.bComms)		// only show for real MP games
 	{
 		sFormInit.id		= INTINGAMEPOPUP;
 		sFormInit.width		= 600;
@@ -133,7 +133,10 @@ static bool addQuitOptions(void)
 		sButInit.y			= 8;
 		sButInit.pDisplay	= displayTextOption;
 		sButInit.id			= INTINGAMEOP_POPUP_MSG3;
-		sButInit.pText		= _("WARNING: You're the host. If you quit, the game ends for everyone!");
+		if (NetPlay.isHost && bMultiPlayer) { //If we are the host.
+		 sButInit.pText	= _("WARNING: You're the host. If you quit, the game ends for everyone!"); }
+		else if (game.alliance == ALLIANCES_TEAMS) { //Add a message to deter team quitting.
+		 sButInit.pText	= _("WARNING: Teams are enabled! It's considered rude to quit without notice!"); }
 
 		widgAddButton(psWScreen, &sButInit);
 	}
