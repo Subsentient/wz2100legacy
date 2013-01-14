@@ -176,7 +176,11 @@ char		debugMenuEntry[DEBUGMENU_MAX_ENTRIES][MAX_STR_LENGTH];
 static void SetPlayerTextColor( int mode, UDWORD player )
 {
 	// override color if they are dead...
-	if (!apsDroidLists[player] && !apsStructLists[player])
+	if (NetPlay.players[player].spectating)
+	{
+		iV_SetTextColour(WZCOL_TEAM8); //Cyan for spectators. -Subsentient
+	}
+	else if (!apsDroidLists[player] && !apsStructLists[player])
 	{
 		iV_SetTextColour(WZCOL_GREY);			// dead text color
 	}
@@ -188,6 +192,10 @@ static void SetPlayerTextColor( int mode, UDWORD player )
 	else if (isHumanPlayer(player))				// Human player, no alliance
 	{
 		iV_SetTextColour(WZCOL_TEXT_BRIGHT);	// Normal text color
+	}
+	else if (NetPlay.players[player].spectating)
+	{
+		iV_SetTextColour(WZCOL_TEAM8); //Cyan for spectators. -Subsentient
 	}
 	else
 	{
