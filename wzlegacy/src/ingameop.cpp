@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -113,15 +113,16 @@ static bool addQuitOptions(void)
 	addIGTextButton(INTINGAMEOP_RESUME, INTINGAMEOP_1_X, INTINGAMEOP_1_Y, INTINGAMEOP_OP_W, _("Resume Game"), OPALIGN);
 	addIGTextButton(INTINGAMEOP_QUIT_CONFIRM, INTINGAMEOP_1_X, INTINGAMEOP_2_Y, INTINGAMEOP_OP_W, _("Quit"), OPALIGN);
 
-	if (NetPlay.bComms)		// only show for real MP games
+	if (NetPlay.bComms && ((NetPlay.isHost && bMultiPlayer) || game.alliance == ALLIANCES_TEAMS)) // only show for real MP games
 	{
+		const char *tmpbuf = ""; //Seems like a better way. -Subsentient
 		sFormInit.id		= INTINGAMEPOPUP;
 		sFormInit.width		= 600;
 		sFormInit.height	= 26;
 		sFormInit.x			= (SWORD)(20+D_W);	// center it
 		sFormInit.y			= (SWORD) 130;
 
-		if ((NetPlay.isHost && bMultiPlayer) || game.alliance == ALLIANCES_TEAMS) widgAddForm(psWScreen, &sFormInit);
+		widgAddForm(psWScreen, &sFormInit);
 
 		W_BUTINIT sButInit;
 
@@ -133,12 +134,16 @@ static bool addQuitOptions(void)
 		sButInit.y			= 8;
 		sButInit.pDisplay	= displayTextOption;
 		sButInit.id			= INTINGAMEOP_POPUP_MSG3;
-		if (NetPlay.isHost && bMultiPlayer) { //If we are the host.
-		 sButInit.pText	= _("WARNING: You're the host. If you quit, the game ends for everyone!"); }
-		else if (game.alliance == ALLIANCES_TEAMS) { //Add a message to deter team quitting.
-		 sButInit.pText	= _("WARNING: Teams are enabled! It's considered rude to quit without notice!"); }
 
-		if ((NetPlay.isHost && bMultiPlayer) || game.alliance == ALLIANCES_TEAMS) widgAddButton(psWScreen, &sButInit);
+		if (NetPlay.isHost && bMultiPlayer) { //If we are the host.
+		 tmpbuf = "WARNING: You're the host. If you quit, the game ends for everyone!"; }
+
+		else if (game.alliance == ALLIANCES_TEAMS) { //Add a message to deter team quitting.
+		 tmpbuf = "WARNING: Teams are enabled! It's considered rude to quit without notice!"; }
+
+		sButInit.pText = _(tmpbuf);
+
+		widgAddButton(psWScreen, &sButInit);
 	}
 
 	return true;
@@ -396,7 +401,7 @@ static void ProcessOptionFinished(void)
 
 void intCloseInGameOptionsNoAnim(bool bResetMissionWidgets)
 {
-	if (NetPlay.isHost)
+	if (NetPlay.isHost || game.alliance == ALLIANCES_TEAMS)
 	{
 		widgDelete(psWScreen, INTINGAMEPOPUP);
 	}
@@ -421,7 +426,7 @@ bool intCloseInGameOptions(bool bPutUpLoadSave, bool bResetMissionWidgets)
 	W_TABFORM	*Form;
 	WIDGET		*widg;
 
-	if (NetPlay.isHost)
+	if (NetPlay.isHost || game.alliance == ALLIANCES_TEAMS)
 	{
 		widgDelete(psWScreen, INTINGAMEPOPUP);
 	}
