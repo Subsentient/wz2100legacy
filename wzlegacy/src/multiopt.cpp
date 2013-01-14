@@ -435,6 +435,18 @@ void doSpectatorSetup(NETQUEUE queue) {
      NETuint32_t(&newSpec); }
     NETend();
 
+   if (newSpec != queue.index) { //Someone is pulling a funky, sender and new spectator don't match.
+    debug(LOG_ERROR, "Player %d (%s) has attempted to spectate player %d! This is probably cheating.", queue.index, getPlayerName(queue.index), newSpec);
+    if (NetPlay.isHost) {
+     debug(LOG_INFO, "Kicking player %d for attempting to cheat with spectator calls.", queue.index);
+     kickPlayer(queue.index, "Trying to cheat and remove people from the game isn't polite.", ERROR_KICKED); }
+     return; } //Now that we did what we should, we exit the function and don't carry out the order. -Subsentient
+
+   if (NetPlay.isHost && !allowSpectating && NetPlay.bComms) { //Someone is trying to spectate in a game that doesn't permit it.
+     debug(LOG_INFO, "Player %d has sent a request to spectate, but spectating is disabled. That can only mean trying to cheat. Kicking.", queue.index);
+     kickPlayer(queue.index, "You modified the game to send a spectator signal, so you can probably do other nasty things. Bye.", ERROR_KICKED);
+     return; }
+
    for(psCDroid=apsDroidLists[newSpec]; psCDroid; psCDroid=psNDroid) { //Destroy all droids for the new spectator. -Subsentient
     psNDroid = psCDroid->psNext;
     destroyDroid(psCDroid, gameTime);  }
