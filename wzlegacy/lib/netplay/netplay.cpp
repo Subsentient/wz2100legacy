@@ -271,6 +271,7 @@ static size_t NET_fillBuffer(Socket **pSocket, SocketSet* socket_set, uint8_t *b
 void NET_InitPlayer(int i, bool initPosition)
 {
 	NetPlay.players[i].allocated = false;
+	NetPlay.players[i].spectating = false;
 	NetPlay.players[i].autoGame = false;
 	NetPlay.players[i].heartattacktime = 0;
 	NetPlay.players[i].heartbeat = true;		// we always start with a hearbeat
@@ -331,6 +332,7 @@ static void NETSendNPlayerInfoTo(uint32_t *index, uint32_t indexLen, unsigned to
 			NETlogEntry(" sending player's info to all players", SYNC_FLAG, index[n]);
 			NETuint32_t(&index[n]);
 			NETbool(&NetPlay.players[index[n]].allocated);
+			NETbool(&NetPlay.players[index[n]].spectating);
 			NETbool(&NetPlay.players[index[n]].heartbeat);
 			NETbool(&NetPlay.players[index[n]].kick);
 			NETstring(NetPlay.players[index[n]].name, sizeof(NetPlay.players[index[n]].name));
@@ -1520,6 +1522,7 @@ static bool NETprocessSystemMessage(NETQUEUE playerQueue, uint8_t type)
 					// Retrieve the rest of the data
 					wasAllocated = NetPlay.players[index].allocated;
 					NETbool(&NetPlay.players[index].allocated);
+					NETbool(&NetPlay.players[index].spectating);
 					NETbool(&NetPlay.players[index].heartbeat);
 					NETbool(&NetPlay.players[index].kick);
 					strncpy(oldName, NetPlay.players[index].name, sizeof(NetPlay.players[index].name));

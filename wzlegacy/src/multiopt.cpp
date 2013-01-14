@@ -447,6 +447,8 @@ void doSpectatorSetup(NETQUEUE queue) {
      kickPlayer(queue.index, "You modified the game to send a spectator signal, so you can probably do other nasty things. Bye.", ERROR_KICKED);
      return; }
 
+   NetPlay.players[newSpec].spectating = true; //The player is now spectating. Tell the netcode that. -Subsentient
+
    for(psCDroid=apsDroidLists[newSpec]; psCDroid; psCDroid=psNDroid) { //Destroy all droids for the new spectator. -Subsentient
     psNDroid = psCDroid->psNext;
     destroyDroid(psCDroid, gameTime);  }
@@ -527,6 +529,7 @@ bool multiGameShutdown(void)
 	bMultiPlayer					= false;	// Back to single player mode
 	bMultiMessages					= false;
 	selectedPlayer					= 0;		// Back to use player 0 (single player friendly)
+	NetPlay.players[0].spectating = false; //Turn zero into not-a-spectator mode. -Subsentient
 
 	return true;
 }

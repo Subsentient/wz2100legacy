@@ -235,6 +235,7 @@ struct PLAYER
 	int32_t		position;		///< Map starting position
 	int32_t		colour;			///< Which colour slot this player is using
 	bool		allocated;		///< Allocated as a human player
+	bool		spectating;		///< Is he just a spectator?
 	uint32_t	heartattacktime;	///< Time cardiac arrest started
 	bool		heartbeat;		///< If we are still alive or not
 	bool		kick;			///< If we should kick them

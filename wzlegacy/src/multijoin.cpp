@@ -251,6 +251,7 @@ void recvPlayerLeft(NETQUEUE queue)
 	clearPlayer(playerIndex, false);  // don't do it quietly
 	turnOffMultiMsg(false);
 	NetPlay.players[playerIndex].allocated = false;
+	NetPlay.players[playerIndex].spectating = false; //Verbosely make them *not* a spectator.
 	if (!NETcheckPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_LEAVING, playerIndex)) {
 	 NETsetPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_DROPPED, playerIndex);
 	 debug(LOG_INFO, "** player %u has dropped, in-game!", playerIndex); }
