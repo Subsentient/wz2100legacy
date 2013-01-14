@@ -193,10 +193,6 @@ static void SetPlayerTextColor( int mode, UDWORD player )
 	{
 		iV_SetTextColour(WZCOL_TEXT_BRIGHT);	// Normal text color
 	}
-	else if (NetPlay.players[player].spectating)
-	{
-		iV_SetTextColour(WZCOL_TEAM8); //Cyan for spectators. -Subsentient
-	}
 	else
 	{
 		iV_SetTextColour(WZCOL_RED);			// Enemy color
