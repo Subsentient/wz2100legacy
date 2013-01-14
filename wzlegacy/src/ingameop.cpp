@@ -121,7 +121,7 @@ static bool addQuitOptions(void)
 		sFormInit.x			= (SWORD)(20+D_W);	// center it
 		sFormInit.y			= (SWORD) 130;
 
-		widgAddForm(psWScreen, &sFormInit);
+		if ((NetPlay.isHost && bMultiPlayer) || game.alliance == ALLIANCES_TEAMS) widgAddForm(psWScreen, &sFormInit);
 
 		W_BUTINIT sButInit;
 
@@ -138,7 +138,7 @@ static bool addQuitOptions(void)
 		else if (game.alliance == ALLIANCES_TEAMS) { //Add a message to deter team quitting.
 		 sButInit.pText	= _("WARNING: Teams are enabled! It's considered rude to quit without notice!"); }
 
-		widgAddButton(psWScreen, &sButInit);
+		if ((NetPlay.isHost && bMultiPlayer) || game.alliance == ALLIANCES_TEAMS) widgAddButton(psWScreen, &sButInit);
 	}
 
 	return true;
