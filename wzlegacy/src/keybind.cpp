@@ -1377,7 +1377,7 @@ int specThread(void *) {
 //Little function that makes it all happen for spectators. -Subsentient
 void kf_SpecMe(void) {
 
- if (!isSpectating) { //Don't let us spam spectator. -Subsentient
+ if (!isSpectating && (allowSpectating || !NetPlay.bComms)) { //Don't let us spam spectator. -Subsentient
   if (bMultiPlayer) {
    isSpectating = true;
 
@@ -1387,6 +1387,9 @@ void kf_SpecMe(void) {
 
   else {
    addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
+
+ else if (!isSpectating && !allowSpectating) {
+  addConsoleMessage("Spectating is not enabled for this game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
  else {
    addConsoleMessage("You are already a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 

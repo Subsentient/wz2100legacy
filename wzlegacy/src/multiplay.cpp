@@ -77,6 +77,7 @@
 bool						bMultiPlayer				= false;	// true when more than 1 player.
 bool						bMultiMessages				= false;	// == bMultiPlayer unless multimessages are disabled
 bool						openchannels[MAX_PLAYERS]={true};
+bool						allowSpectating = true;
 UBYTE						bDisplayMultiJoiningStatus;
 
 MULTIPLAYERGAME				game;									//info to describe game.

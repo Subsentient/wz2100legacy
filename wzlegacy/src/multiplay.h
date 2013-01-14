@@ -94,6 +94,7 @@ extern bool					openchannels[MAX_PLAYERS];
 extern UBYTE				bDisplayMultiJoiningStatus;	// draw load progress?
 
 extern bool blockDebug;
+extern bool allowSpectating; //This should have it's twin, isSpectating, put in here eventually.
 
 // ////////////////////////////////////////////////////////////////////////////
 // defines

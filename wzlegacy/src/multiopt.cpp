@@ -75,6 +75,7 @@ void sendOptions()
 	// First send information about the game
 	NETuint8_t(&game.type);
 	NETstring(game.map, 128);
+	NETbool(&allowSpectating);
 	NETbin(game.hash.bytes, game.hash.Bytes);
 	NETuint8_t(&game.maxPlayers);
 	NETstring(game.name, 128);
@@ -133,6 +134,7 @@ void recvOptions(NETQUEUE queue)
 	// Get general information about the game
 	NETuint8_t(&game.type);
 	NETstring(game.map, 128);
+	NETbool(&allowSpectating);
 	NETbin(game.hash.bytes, game.hash.Bytes);
 	NETuint8_t(&game.maxPlayers);
 	NETstring(game.name, 128);

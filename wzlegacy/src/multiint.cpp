@@ -1626,6 +1626,7 @@ static void addGameOptions()
 	if(ingame.bHostSetup && !bHosted && !challengeActive)
 	{
 		addBlueForm(MULTIOP_OPTIONS, MULTIOP_HOST, _("Start Hosting Game"), MCOL0, MROW12, MULTIOP_BLUEFORMW, 27);
+
 		addMultiBut(psWScreen, MULTIOP_HOST, MULTIOP_HOST_BUT, MCOL3, 0, MULTIOP_BUTW, MULTIOP_BUTH,
 			_("Start Hosting Game"), IMAGE_HOST, IMAGE_HOST_HI, IMAGE_HOST_HI);
 	}
@@ -1665,6 +1666,26 @@ static void addGameOptions()
 			}
 		}
 	}
+	
+	//Add buttons to enable and disable spectators for the game.
+	if (NetPlay.bComms) {
+	 addBlueForm(MULTIOP_OPTIONS,MULTIOP_SPEC_FORM,"",MULTIOP_SPEC_FORMX,MULTIOP_SPEC_FORMY,40,56);
+	 addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECON,
+		 MULTIOP_SPECOFFSET_X,MULTIOP_SPECOFFSET_Y,
+		 iV_GetImageWidth(FrontImages,IMAGE_RETURN),
+		 iV_GetImageHeight(FrontImages,IMAGE_RETURN),
+		 _("Enable spectators"), IMAGE_SPECON, IMAGE_SPECON_HI, true);
+
+	 addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECOFF,
+		 MULTIOP_SPECOFFSET_X,MULTIOP_SPECOFFSET_Y + 27,
+		 iV_GetImageWidth(FrontImages,IMAGE_RETURN),
+		 iV_GetImageHeight(FrontImages,IMAGE_RETURN),
+		 _("Disable spectators"), IMAGE_SPECOFF, IMAGE_SPECOFF_HI, true);
+
+	 if (allowSpectating) {
+	  widgSetButtonState(psWScreen, MULTIOP_SPECON,WBUT_LOCK); }
+	 else {
+	  widgSetButtonState(psWScreen, MULTIOP_SPECOFF,WBUT_LOCK); } }
 }
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -2594,7 +2615,12 @@ static void disableMultiButs(void)
 	widgSetButtonState(psWScreen,MULTIOP_MAP,WEDBS_DISABLE);
 
 	if (!NetPlay.isHost)
-	{
+	{		
+			if (NetPlay.bComms) { //Only if we are in a multiplayer game. -Subsentient
+
+			 if(allowSpectating) widgSetButtonState(psWScreen,MULTIOP_SPECOFF ,WBUT_DISABLE);
+			 if(!allowSpectating) widgSetButtonState(psWScreen,MULTIOP_SPECON ,WBUT_DISABLE); }
+
 			if(bRevealActive) widgSetButtonState(psWScreen,MULTIOP_FOG_ON ,WBUT_DISABLE); //Re-add fog buttons. -Subsentient
 			if(!bRevealActive) widgSetButtonState(psWScreen,MULTIOP_FOG_OFF ,WBUT_DISABLE);
 			if(game.scavengers) widgSetButtonState(psWScreen,MULTIOP_SKIRMISH ,WBUT_DISABLE);
@@ -2925,6 +2951,20 @@ static void processMultiopWidgets(UDWORD id)
 			{
 				sendOptions();
 			}
+			break;
+		case MULTIOP_SPECON:
+			widgSetButtonState(psWScreen, MULTIOP_SPECON,WBUT_LOCK);
+			widgSetButtonState(psWScreen, MULTIOP_SPECOFF,0);
+			allowSpectating = true;
+			resetReadyStatus(false);
+			if(bHosted) sendOptions();
+			break;
+		case MULTIOP_SPECOFF:
+			widgSetButtonState(psWScreen, MULTIOP_SPECOFF,WBUT_LOCK);
+			widgSetButtonState(psWScreen, MULTIOP_SPECON,0);
+			allowSpectating = false;
+			resetReadyStatus(false);
+			if(bHosted) sendOptions();
 			break;
 		}
 	}
