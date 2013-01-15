@@ -51,7 +51,7 @@ int specThread(void *)
 //This also enables uplink-ish-ness and stuff.
 {
 
-	for(int tempgt = wzGetTicks(); apsStructLists[selectedPlayer] != NULL && apsDroidLists[selectedPlayer] != NULL; tempgt = tempgt + 1000) //Just increment tempgt to be efficient.
+	for(int tempgt = wzGetTicks(); apsStructLists[selectedPlayer] != NULL && apsDroidLists[selectedPlayer] != NULL; tempgt = wzGetTicks())
 	{
 		while (wzGetTicks() < tempgt + 1000) //We just keep waiting until everything is dead so we don't
 		{					//spawn our minimap too soon and have it turned off when our HQ dies. -Subsentient
