@@ -67,7 +67,7 @@
 #include "game.h"
 #include "gateway.h"
 #include "hci.h"
-#include "keybind.h" //For isSpectating boolean -Subsentient
+#include "spectate.h" //For isSpectating boolean -Subsentient
 #include "intdisplay.h"
 #include "keymap.h"
 #include "levels.h"

@@ -44,6 +44,8 @@
 
 #include "qtscriptfuncs.h"
 
+#include "spectate.h"
+
 enum timerType
 {
 	TIMER_REPEAT, TIMER_ONESHOT_READY, TIMER_ONESHOT_DONE

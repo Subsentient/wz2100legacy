@@ -39,6 +39,7 @@
 #include "main.h"
 #include "hci.h"
 #include "lib/gamelib/gtime.h"
+#include "spectate.h"
 
 
 // current game level

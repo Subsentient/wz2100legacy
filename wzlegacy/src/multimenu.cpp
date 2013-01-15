@@ -62,6 +62,7 @@
 #include "loop.h"
 #include "lib/framework/frameint.h"
 #include "frontend.h"
+#include "spectate.h"
 
 // ////////////////////////////////////////////////////////////////////////////
 // defines

@@ -96,6 +96,7 @@
 #include "anim_id.h"
 #include "cmddroid.h"
 #include "terrain.h"
+#include "spectate.h"
 
 /********************  Prototypes  ********************/
 

@@ -312,6 +312,7 @@ src/scripttabs.cpp
 src/scriptvals.cpp
 src/selection.cpp
 src/seqdisp.cpp
+src/spectate.cpp
 src/stats.cpp
 src/structure.cpp
 src/template.cpp

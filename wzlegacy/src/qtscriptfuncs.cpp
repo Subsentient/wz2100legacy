@@ -52,6 +52,7 @@
 #include "loop.h"
 #include "scriptextern.h"
 #include "keybind.h"
+#include "spectate.h"
 
 #define FAKE_REF_LASSAT 999
 

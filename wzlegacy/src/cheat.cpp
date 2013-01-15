@@ -32,6 +32,7 @@
 #include "keybind.h"
 #include "keymap.h"
 #include "multiplay.h"
+#include "spectate.h"
 
 struct CHEAT_ENTRY
 {

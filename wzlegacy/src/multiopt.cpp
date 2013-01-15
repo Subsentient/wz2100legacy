@@ -37,7 +37,7 @@
 #include "lib/gamelib/gtime.h"
 #include "lib/netplay/netplay.h"
 #include "hci.h"
-#include "keybind.h" //For spectator stuff. -Subsentient
+#include "spectate.h" //For spectator stuff. -Subsentient
 #include "configuration.h"			// lobby cfg.
 #include "clparse.h"
 #include "lib/ivis_opengl/piestate.h"
@@ -421,57 +421,6 @@ void playerResponding(void)
 	NETuint32_t(&selectedPlayer);
 	NETend();
 }
-
-//Subsentient's way of handling the GAME_SPECMODE network signal.
-void doSpectatorSetup(NETQUEUE queue) {
-    DROID *psCDroid, *psNDroid;
-    STRUCTURE *psCStruct, *psNStruct;
-    WZ_THREAD *minimapThread = NULL;
-    int otherGuy;
-    uint32_t newSpec;
-    char specmsg[256];
-
-    NETbeginDecode(queue, GAME_SPECMODE); {//Figure out who dun' it. -Subsentient
-     NETuint32_t(&newSpec); }
-    NETend();
-
-   if (newSpec != queue.index) { //Someone is pulling a funky, sender and new spectator don't match.
-    debug(LOG_ERROR, "Player %d (%s) has attempted to spectate player %d! This is probably cheating.", queue.index, getPlayerName(queue.index), newSpec);
-    if (NetPlay.isHost) {
-     debug(LOG_INFO, "Kicking player %d for attempting to cheat with spectator calls.", queue.index);
-     kickPlayer(queue.index, "Trying to cheat and remove people from the game isn't polite.", ERROR_KICKED); }
-     return; } //Now that we did what we should, we exit the function and don't carry out the order. -Subsentient
-
-   if (NetPlay.isHost && !allowSpectating && NetPlay.bComms) { //Someone is trying to spectate in a game that doesn't permit it.
-     debug(LOG_INFO, "Player %d has sent a request to spectate, but spectating is disabled. That can only mean trying to cheat. Kicking.", queue.index);
-     kickPlayer(queue.index, "You modified the game to send a spectator signal, so you can probably do other nasty things. Bye.", ERROR_KICKED);
-     return; }
-
-   NetPlay.players[newSpec].spectating = true; //The player is now spectating. Tell the netcode that. -Subsentient
-
-   for(psCDroid=apsDroidLists[newSpec]; psCDroid; psCDroid=psNDroid) { //Destroy all droids for the new spectator. -Subsentient
-    psNDroid = psCDroid->psNext;
-    destroyDroid(psCDroid, gameTime);  }
-
-   for(psCStruct=apsStructLists[newSpec]; psCStruct; psCStruct=psNStruct) { //Now for structures. -Subsentient
-    psNStruct = psCStruct->psNext;
-    turnOffMultiMsg(true);
-    destroyStruct(psCStruct, gameTime);
-    turnOffMultiMsg(false); }
-
-   for (otherGuy = 0; otherGuy < MAX_PLAYERS; otherGuy++) {//Breaks alliances with everyone. -Subsentient
-    if (otherGuy != newSpec) {
-     breakAlliance(newSpec, otherGuy, true, false); } }
-
-   if (isSpectating && newSpec == selectedPlayer) { //If we are the target, start our thread to initialize the spectator features. -Subsentient
-    minimapThread = wzThreadCreate(specThread, NULL);
-    wzThreadStart(minimapThread);
-    addConsoleMessage("You have entered spectator mode.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
-   else {
-    blockDebug = true;
-    strcpy(specmsg, getPlayerName(newSpec));
-    strcat(specmsg, " is now a spectator.");
-    addConsoleMessage(specmsg, DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
 
 // ////////////////////////////////////////////////////////////////////////////
 //called when the game finally gets fired up.

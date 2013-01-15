@@ -70,6 +70,7 @@
 #include "multiint.h"
 #include "keymap.h"
 #include "cheat.h"
+#include "spectate.h"								// Spectator stuff.
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
@@ -77,7 +78,6 @@
 bool						bMultiPlayer				= false;	// true when more than 1 player.
 bool						bMultiMessages				= false;	// == bMultiPlayer unless multimessages are disabled
 bool						openchannels[MAX_PLAYERS]={true};
-bool						allowSpectating = true;
 UBYTE						bDisplayMultiJoiningStatus;
 
 MULTIPLAYERGAME				game;									//info to describe game.
@@ -637,7 +637,7 @@ bool recvMessage(void)
 				recvLasSat(queue);
 				break;
 			case GAME_SPECMODE:
-				doSpectatorSetup(queue);
+				recvSpecSignal(queue);
 				break;
 			case GAME_DEBUG_MODE:
 				recvProcessDebugMappings(queue);

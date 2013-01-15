@@ -95,6 +95,7 @@
 #include "template.h"
 #include "qtscript.h"
 #include "multigifts.h"
+#include "spectate.h" //Spectator stuff.
 
 /*
 	KeyBind.c
@@ -114,9 +115,6 @@ bool	bMovePause = false;
 bool		bAllowOtherKeyPresses = true;
 char	sTextToSend[MAX_CONSOLE_STRING_LENGTH];
 char	beaconMsg[MAX_PLAYERS][MAX_CONSOLE_STRING_LENGTH];		//beacon msg for each player
-
-bool isSpectating = false;
-bool blockDebug = false;
 
 static STRUCTURE	*psOldRE = NULL;
 static char	sCurrentConsoleText[MAX_CONSOLE_STRING_LENGTH];			//remember what user types in console for beacon msg
@@ -1355,43 +1353,9 @@ void	kf_ToggleGodMode( void )
 	sendTextMessage(cmsg, true);
 }
 
-//Thread used by spectator support. -Subsentient
-int specThread(void *) { 
-  //Tiny function needed for delaying the minimap display for spectators, so if we have an HQ destroyed we still get a minimap. -Subsentient
-  //It needs to be in a thread so that it's actually useful, otherwise it hard freezes the game until it's time is up and the stucts are not destroyed yet.
-  //This also enables uplink-ish-ness and stuff.
-
-  for(int tempgt = wzGetTicks(); apsStructLists[selectedPlayer] != NULL && apsDroidLists[selectedPlayer] != NULL; tempgt = tempgt + 1000) { //Just increment tempgt to be efficient.
-   while (wzGetTicks() < tempgt + 1000) { //We just keep waiting until everything is dead so we don't
-    wzYieldCurrentThread(); } } //spawn our minimap too soon and have it turned off when our HQ dies. -Subsentient
-
-  widgDelete(psWScreen, IDPOW_POWERBAR_T); //Deletes the power bar. -Subsentient
-  godMode = true;
-  revealAll(selectedPlayer);
-  setRevealStatus(true);
-  radarPermitted = true;
-  if (getDebugMappingStatus()) { //Disable debug mode if we are already in it. -Subsentient
-   sendProcessDebugMappings(false); }
-  return 0; }
-
-//Little function that makes it all happen for spectators. -Subsentient
+//Little function that makes it all happen for spectators. Just calls another in spectate.cpp. -Subsentient
 void kf_SpecMe(void) {
-
- if (!isSpectating && (allowSpectating || !NetPlay.bComms)) { //Don't let us spam spectator. -Subsentient
-  if (bMultiPlayer) {
-   isSpectating = true;
-
-   NETbeginEncode(NETgameQueue(selectedPlayer), GAME_SPECMODE); {//Send the universal signal, "Make me a spectator, everyone." -Subsentient
-    NETuint32_t(&selectedPlayer); }
-   NETend(); }
-
-  else {
-   addConsoleMessage("You are not in a multiplayer game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
-
- else if (!isSpectating && !allowSpectating) {
-  addConsoleMessage("Spectating is not enabled for this game.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
- else {
-   addConsoleMessage("You are already a spectator.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE); } }
+ sendSpecSignal(); } 
 
 // --------------------------------------------------------------------------
 /* Aligns the view to north - some people can't handle the world spinning */

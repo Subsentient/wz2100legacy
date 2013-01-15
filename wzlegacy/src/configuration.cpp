@@ -45,6 +45,7 @@
 #include "seqdisp.h"
 #include "texture.h"
 #include "warzoneconfig.h"	// renderMode
+#include "spectate.h"
 
 // ////////////////////////////////////////////////////////////////////////////
 

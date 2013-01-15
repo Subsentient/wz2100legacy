@@ -268,10 +268,4 @@ extern void kf_DamageMe(void);
 extern void kf_AutoGame(void);
 extern void kf_SpecMe(void); //Spectator support by Subsentient
 
-extern int specThread(void *); //Thread used for second half of spectating. -Subsentient
-
-//Variables and whatnot
-
-extern bool isSpectating;
-
 #endif // __INCLUDED_SRC_KEYBIND_H__

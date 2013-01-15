@@ -98,6 +98,7 @@
 #include "design.h"
 #include "random.h"
 #include "template.h"
+#include "spectate.h"
 
 static INTERP_VAL	scrFunctionResult;	//function return value to be pushed to stack
 
