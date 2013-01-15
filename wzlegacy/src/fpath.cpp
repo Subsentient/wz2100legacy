@@ -585,6 +585,8 @@ void fpathTest(int x, int y, int x2, int y2)
 
 	// On non-debug builds prevent warnings about defining but not using fpathJobQueueLength
 	(void)fpathJobQueueLength;
+	//I am sick of hearing about variable "r" being defined but not used, so here! -Subsentient
+	(void)r;
 
 	/* Check initial state */
 	assert(fpathThread != NULL);
