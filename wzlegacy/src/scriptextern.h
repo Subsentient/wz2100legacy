@@ -56,6 +56,7 @@ enum _externids
 	EXTID_MULTIGAMEALLIANCESTYPE,
 	EXTID_BLOCKDEBUG,
 	EXTID_ALLOWSPEC,
+	EXTID_ISMP,
 };
 
 // reset the script externals for a new level

@@ -1541,6 +1541,9 @@ VAR_SYMBOL asExternTable[] =
 	{ "allowSpectating",VAL_BOOL,ST_EXTERN,0,
 		EXTID_ALLOWSPEC,scrGenExternGet,NULL, 0, {0}, NULL },
 
+	{ "isMP",VAL_BOOL,ST_EXTERN,0,
+		EXTID_ISMP,scrGenExternGet,NULL, 0, {0}, NULL },
+
 	/* This entry marks the end of the variable list */
 	{ NULL, VAL_VOID, ST_EXTERN, 0, 0, NULL, NULL, 0, {0}, NULL }
 };

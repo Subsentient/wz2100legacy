@@ -414,6 +414,7 @@ bool loadPlayerScript(QString path, int player, int difficulty)
 	engine->globalObject().setProperty("mapHeight", mapHeight, QScriptValue::ReadOnly | QScriptValue::Undeletable);
 	engine->globalObject().setProperty("blockDebug", blockDebug, QScriptValue::ReadOnly | QScriptValue::Undeletable);
 	engine->globalObject().setProperty("allowSpectating", allowSpectating, QScriptValue::ReadOnly | QScriptValue::Undeletable);
+	engine->globalObject().setProperty("isMP", NetPlay.bComms, QScriptValue::ReadOnly | QScriptValue::Undeletable);
 
 	// Regular functions
 	registerFunctions(engine);

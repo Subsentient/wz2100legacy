@@ -155,6 +155,10 @@ bool scrGenExternGet(UDWORD index)
 		type = VAL_BOOL;
 		scrFunctionResult.v.bval	= allowSpectating;
 		break;
+	case EXTID_ISMP:
+		type = VAL_BOOL;
+		scrFunctionResult.v.bval	= NetPlay.bComms;
+		break;
 
 		default:
 		ASSERT( false, "scrGenExternGet: unknown variable index" );
