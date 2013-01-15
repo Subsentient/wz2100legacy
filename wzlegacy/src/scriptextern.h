@@ -55,6 +55,7 @@ enum _externids
 	EXTID_TRACKTRANSPORTER,
 	EXTID_MULTIGAMEALLIANCESTYPE,
 	EXTID_BLOCKDEBUG,
+	EXTID_ALLOWSPEC,
 };
 
 // reset the script externals for a new level

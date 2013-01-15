@@ -151,6 +151,10 @@ bool scrGenExternGet(UDWORD index)
 		type = VAL_BOOL;
 		scrFunctionResult.v.bval	= blockDebug;
 		break;
+	case EXTID_ALLOWSPEC:
+		type = VAL_BOOL;
+		scrFunctionResult.v.bval	= allowSpectating;
+		break;
 
 		default:
 		ASSERT( false, "scrGenExternGet: unknown variable index" );
