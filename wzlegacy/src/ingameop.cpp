@@ -401,7 +401,7 @@ static void ProcessOptionFinished(void)
 
 void intCloseInGameOptionsNoAnim(bool bResetMissionWidgets)
 {
-	if (NetPlay.isHost || game.alliance == ALLIANCES_TEAMS)
+	if (NetPlay.isHost || (NetPlay.bComms && game.alliance == ALLIANCES_TEAMS))
 	{
 		widgDelete(psWScreen, INTINGAMEPOPUP);
 	}
@@ -426,7 +426,7 @@ bool intCloseInGameOptions(bool bPutUpLoadSave, bool bResetMissionWidgets)
 	W_TABFORM	*Form;
 	WIDGET		*widg;
 
-	if (NetPlay.isHost || game.alliance == ALLIANCES_TEAMS)
+	if (NetPlay.isHost || (NetPlay.bComms && game.alliance == ALLIANCES_TEAMS))
 	{
 		widgDelete(psWScreen, INTINGAMEPOPUP);
 	}
