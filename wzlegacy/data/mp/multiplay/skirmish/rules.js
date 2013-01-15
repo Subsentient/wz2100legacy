@@ -172,26 +172,47 @@ function eventGameInit()
 	//Check if we need to enable spectator mode, and if the player should be able to lose the game at all. -Subsentient
 	var factories = enumStruct(me, "A0LightFactory").length + enumStruct(me, "A0CyborgFactory").length + enumStruct(me, "A0VTolFactory1").length;
 	var droids = enumDroid(me).length;
-	if (droids == 0 && factories == 0 && gameTime < 2000 && !checkSpec()) {
 
-	 if (alliancesType == ALLIANCES_TEAMS) { /*Teams matter. Don't enable spectator mode if we are in a team at all. We might be given a truck!
-											Of course that also necessitates that the player die if he was put on a team with another spectator.*/
-	  for (var playnum = 0; playnum < maxPlayers; playnum++) {
-	   if (playnum != me && allianceExistsBetween(me, playnum)) {
-		if (!inaTeam) {
-		 inaTeam = true; 
-		 break; } } }
+	if (droids == 0 && factories == 0 && gameTime < 2000 && !checkSpec())
+	{
+		if (alliancesType == ALLIANCES_TEAMS) /*Teams matter. Don't enable spectator mode if we are in a team at all. We might be given a truck!*/
+		{				      /*Of course that also necessitates that the player die if he was put on a team with another spectator.*/
+	 		for (var playnum = 0; playnum < maxPlayers; playnum++)
+			{
+	   			if (playnum != me && allianceExistsBetween(me, playnum))
+				{
+					if (!inaTeam)
+					{
+						inaTeam = true; 
+						break;
+					}
+				}
+			}
 
-	   if (inaTeam) {
-		canLose = true; }
+			if (inaTeam)
+			{
+				canLose = true;
+			}
 
-	   else { 
-	    canLose = false;
-	    enableSpec(); } }
+			else
+			{
+				if (allowSpectating || !isMP)
+				{
+					canLose = false;
+					enableSpec();
+				}
+			} 
+		}
 
-	 else { //No teams, we have nothing, so enable spectator mode.
-	  canLose = false;
-	  enableSpec(); } }
+		else //No teams, we have nothing, so enable spectator mode.
+		{
+			if (allowSpectating || !isMP)
+			{
+				canLose = false;
+				enableSpec();
+			}
+		}
+	}
 
 	//If we can lose, well, let us.
 	if (canLose) {
