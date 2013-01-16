@@ -856,13 +856,41 @@ static void displayMultiPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
 
 	if (isHuman || (game.type == SKIRMISH && player<game.maxPlayers) )
 	{
-		ssprintf(str, "%d: %s", NetPlay.players[player].position, getPlayerName(player));
-
-		while (iV_GetTextWidth(str) >= MULTIMENU_C0 - MULTIMENU_C2 - 10)
+		if (NetPlay.players[player].spectating) //If they are a spectator, print it.
 		{
-			str[strlen(str) - 1] = '\0';
+			ssprintf(str, "[S] %s", getPlayerName(player));
 		}
-		iV_DrawText(str, x + MULTIMENU_C2, y + MULTIMENU_FONT_OSET);
+
+		else //If they are not a spectator, just show the standard issue stuff.
+		{
+			ssprintf(str, "%d: %s", NetPlay.players[player].position, getPlayerName(player));
+		}
+
+		if (NetPlay.players[player].spectating) //If they are a spectator, move the nick into the territory of the unused unit preview.
+		{ //I don't plan to disable unit preview on spectator detection, because that would make it easier to cheat in spectator mode.
+			while (iV_GetTextWidth(str) >= MULTIMENU_C0 - 20)
+			{
+				str[strlen(str) - 1] = '\0';
+			}
+		}
+
+		else //If they are not a spectator, display the normal name format.
+		{
+			while (iV_GetTextWidth(str) >= MULTIMENU_C0 - MULTIMENU_C2 - 10)
+			{
+				str[strlen(str) - 1] = '\0';
+			}
+		}
+
+		if (NetPlay.players[player].spectating) //Only move over spectator names by ten.
+		{
+			iV_DrawText(str, x + 10, y + MULTIMENU_FONT_OSET);
+		}
+
+		else
+		{
+			iV_DrawText(str, x + MULTIMENU_C2, y + MULTIMENU_FONT_OSET);
+		}
 
 		//c3-7 alliance
 		//manage buttons by showing or hiding them. gifts only in campaign,
