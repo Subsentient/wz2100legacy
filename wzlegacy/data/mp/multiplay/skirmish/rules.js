@@ -217,7 +217,7 @@ function eventGameInit()
 	//If we can lose, well, let us.
 	if (canLose)
 	{
-		setTimer("checkEndConditions", 100);
+		setTimer("checkEndConditions", 1000);
 	}
 }
 
