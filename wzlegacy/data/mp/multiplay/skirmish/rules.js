@@ -215,8 +215,10 @@ function eventGameInit()
 	}
 
 	//If we can lose, well, let us.
-	if (canLose) {
-	setTimer("checkEndConditions", 100); }
+	if (canLose)
+	{
+		setTimer("checkEndConditions", 100);
+	}
 }
 
 // /////////////////////////////////////////////////////////////////
@@ -265,7 +267,7 @@ function checkEndConditions()
 	{
 		if (playnum != me && !allianceExistsBetween(me, playnum))	// checking enemy player
 		{
-			factories = enumStruct(playnum, "A0LightFactory").length + enumStruct(playnum, "A0CyborgFactory").length; // nope
+			factories = enumStruct(playnum, "A0LightFactory").length + enumStruct(playnum, "A0CyborgFactory").length + enumStruct(playnum, "A0VTolFactory1").length; // nope
 			droids = enumDroid(playnum).length;
 			if (droids > 0 || factories > 0)
 			{
