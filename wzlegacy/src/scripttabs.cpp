@@ -764,7 +764,7 @@ FUNC_SYMBOL asFuncTable[] =
 		0, 0, NULL, 0, 0, NULL, NULL },
 
 	{ "checkSpec",		scrCheckSpec,		VAL_BOOL,
-	    0, { VAL_VOID },
+	    1, { VAL_INT },
 		0, 0, NULL, 0, 0, NULL, NULL },
 
 	{ "enableSpec",		scrEnableSpec,		VAL_BOOL,

@@ -173,7 +173,7 @@ function eventGameInit()
 	var factories = enumStruct(me, "A0LightFactory").length + enumStruct(me, "A0CyborgFactory").length + enumStruct(me, "A0VTolFactory1").length;
 	var droids = enumDroid(me).length;
 
-	if (droids == 0 && factories == 0 && gameTime < 2000 && !checkSpec())
+	if (droids == 0 && factories == 0 && gameTime < 2000 && !checkSpec(selectedPlayer))
 	{
 		if (alliancesType == ALLIANCES_TEAMS) /*Teams matter. Don't enable spectator mode if we are in a team at all. We might be given a truck!*/
 		{				      /*Of course that also necessitates that the player die if he was put on a team with another spectator.*/

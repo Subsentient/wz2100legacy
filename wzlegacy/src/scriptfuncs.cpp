@@ -427,12 +427,22 @@ bool scrDroidInRange(void)
 	return true;
 }
 
-bool scrCheckSpec(void) { //Two tiny functions for scripts to detect and enable spectating. -Subsentient
- return isSpectating; }
+bool scrCheckSpec(void) //Two tiny functions for scripts to detect and enable spectating. -Subsentient
+{
+	int pl = 0;
+	if (!stackPopParams(1, VAL_INT, &pl))
+	{
+		return false;
+	}
+	
+	return NetPlay.players[pl].spectating;
+}
 
-bool scrEnableSpec(void) {
- kf_SpecMe(); 
- return true; }
+bool scrEnableSpec(void)
+{
+	kf_SpecMe(); 
+	return true;
+}
 
 // -----------------------------------------------------------------------------------------
 // Check for a struct being within a certain range of a position

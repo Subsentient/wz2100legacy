@@ -673,7 +673,8 @@ static QScriptValue js_componentAvailable(QScriptContext *context, QScriptEngine
 }
 
 static QScriptValue js_checkSpec(QScriptContext *context, QScriptEngine *engine) {
- return isSpectating; } //This is too easy. -Subsentient
+ int pl = context->argument(0).toInt32();
+ return NetPlay.players[pl].spectating; } //This is too easy. -Subsentient
 
 static QScriptValue js_enableSpec(QScriptContext *context, QScriptEngine *engine) {
  kf_SpecMe(); 
