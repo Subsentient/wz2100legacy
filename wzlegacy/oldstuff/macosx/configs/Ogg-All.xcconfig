@@ -1,6 +1,0 @@
-// Ogg settings for all configurations
-
-#include "Base-Framework.xcconfig"
-
-
-PRODUCT_NAME = Ogg
