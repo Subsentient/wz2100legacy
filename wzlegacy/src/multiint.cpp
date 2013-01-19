@@ -1669,24 +1669,31 @@ static void addGameOptions()
 	}
 	
 	//Add buttons to enable and disable spectators for the game.
-	if (NetPlay.bComms) {
-	 addBlueForm(MULTIOP_OPTIONS,MULTIOP_SPEC_FORM,"",MULTIOP_SPEC_FORMX,MULTIOP_SPEC_FORMY,40,56);
-	 addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECON,
-		 MULTIOP_SPECOFFSET_X,MULTIOP_SPECOFFSET_Y,
-		 iV_GetImageWidth(FrontImages,IMAGE_RETURN),
-		 iV_GetImageHeight(FrontImages,IMAGE_RETURN),
-		 _("Enable spectators"), IMAGE_SPECON, IMAGE_SPECON_HI, true);
+	if (NetPlay.bComms)
+	{
+		addBlueForm(MULTIOP_OPTIONS,MULTIOP_SPEC_FORM,"",MULTIOP_SPEC_FORMX,MULTIOP_SPEC_FORMY,40,56);
+		addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECON,
+			MULTIOP_SPECOFFSET_X,MULTIOP_SPECOFFSET_Y,
+			iV_GetImageWidth(FrontImages,IMAGE_RETURN),
+			iV_GetImageHeight(FrontImages,IMAGE_RETURN),
+			_("Enable spectators"), IMAGE_SPECON, IMAGE_SPECON_HI, true);
 
-	 addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECOFF,
-		 MULTIOP_SPECOFFSET_X,MULTIOP_SPECOFFSET_Y + 27,
-		 iV_GetImageWidth(FrontImages,IMAGE_RETURN),
-		 iV_GetImageHeight(FrontImages,IMAGE_RETURN),
-		 _("Disable spectators"), IMAGE_SPECOFF, IMAGE_SPECOFF_HI, true);
+		addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECOFF,
+			MULTIOP_SPECOFFSET_X,MULTIOP_SPECOFFSET_Y + 27,
+			iV_GetImageWidth(FrontImages,IMAGE_RETURN),
+			iV_GetImageHeight(FrontImages,IMAGE_RETURN),
+			_("Disable spectators"), IMAGE_SPECOFF, IMAGE_SPECOFF_HI, true);	
 
-	 if (allowSpectating) {
-	  widgSetButtonState(psWScreen, MULTIOP_SPECON,WBUT_LOCK); }
-	 else {
-	  widgSetButtonState(psWScreen, MULTIOP_SPECOFF,WBUT_LOCK); } }
+		if (allowSpectating)
+		{
+			widgSetButtonState(psWScreen, MULTIOP_SPECON,WBUT_LOCK);
+		}
+
+		else
+		{
+			widgSetButtonState(psWScreen, MULTIOP_SPECOFF,WBUT_LOCK);
+		}
+	}
 }
 
 // ////////////////////////////////////////////////////////////////////////////
