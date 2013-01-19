@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -587,6 +587,7 @@ static void NetworkDisplayImage(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset
 		width = iV_GetTextWidth(players) + 10;
 		height = iV_GetTextHeight(players) + 10;
 
+		iV_SetTextColour(WZCOL_TEXT_BRIGHT); //Don't inherit the color of other text objects set up, use our own. -Subsentient
 		iV_DrawText(players, x - width, y + height);
 	}
 
