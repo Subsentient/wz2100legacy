@@ -13,6 +13,7 @@ SUBDIRS = \
 	lib/widget \
 	lib/backend \
 	tools/map \
+	tools/image \
 	src \
 	data \
 	po \
@@ -35,9 +36,6 @@ EXTRA_DIST= \
 	autogen.sh \
 	config.rpath \
 	configure.ac \
-	tools/image/image.cpp \
-	tools/image/configs \
-	tools/image/Image.xcodeproj \
 	po/custom/mac-infoplist.txt \
 	po/custom/warzone2100.desktop.txt
 

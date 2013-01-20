@@ -1,0 +1,14 @@
+AM_CXXFLAGS = $(WZ_CXXFLAGS) $(QT4_CFLAGS)
+
+BUILT_SOURCES = 
+CLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST = 
+noinst_PROGRAMS = image
+noinst_HEADERS =
+
+LIBLIST = $(PNG_LIBS) $(QT4_LIBS)
+
+image_SOURCES = image.cpp
+image_LDADD = $(LIBLIST)
+
+
