@@ -6,6 +6,11 @@
 #include <stdint.h>
 #include <QtGui/QImage>
 #include <QtGui/QPainter>
+#ifdef WZ_OS_WIN
+#include <QDir>
+#else
+#include <QtCore/QDir>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -373,7 +378,10 @@ void readSplitFiles(std::string const &fName, ImgFile &img)
 void writeSplitFiles(std::string const &fName, ImgFile const &img)
 {
 	std::string dir = fName + "/";
-	mkdir(dir.c_str(), 0755);
+	if (!QDir(dir.c_str()).exists())
+	{
+		QDir().mkdir(dir.c_str());
+	}
 
 	for (ImgFile::Entries::const_iterator i = img.entries.begin(); i != img.entries.end(); ++i)
 	{
