@@ -23,6 +23,8 @@ SUBDIRS = \
 	tests
 
 dist_doc_DATA = \
+	HowToCompile.txt \
+	README \
 	AUTHORS \
 	ChangeLog \
 	COPYING \
