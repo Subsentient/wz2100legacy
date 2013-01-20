@@ -3074,28 +3074,36 @@ static void processMultiopWidgets(UDWORD id)
 		}
 		break;
 	case MULTIOP_ADDSLOT:
-		if (game.maxPlayers < 10) {
-		 game.maxPlayers++; 
-		 sendOptions();
-		 addPlayerBox(true);
+		if (game.maxPlayers < 10) 
+		{
+			game.maxPlayers++; 
+			sendOptions();
+			addPlayerBox(true);
 
-		 char tmpbuf[256]; //Send a message to everyone so they don't think it's weird. -Subsentient
-		 ssprintf(tmpbuf, _("*** Slot added. Map now has %d slots. ***"), game.maxPlayers);
-		 sendTextMessage(tmpbuf, true); }
-		else {
-		 addConsoleMessage(_("Cannot add player slot. Too many slots?"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
+			char tmpbuf[256]; //Send a message to everyone so they don't think it's weird. -Subsentient
+			ssprintf(tmpbuf, _("*** Slot added. Map now has %d slots. ***"), game.maxPlayers);
+			sendTextMessage(tmpbuf, true);
+		}
+		else
+		{
+			addConsoleMessage(_("Cannot add player slot. Too many slots?"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+		}
 		break;
 	case MULTIOP_REMSLOT:
-		if (game.maxPlayers > 2 && (game.maxPlayers > NetPlay.playercount) && (NetPlay.players[game.maxPlayers -1].ai == AI_OPEN || NetPlay.players[game.maxPlayers -1].ai == AI_CLOSED)) {
-		 game.maxPlayers--; 
-		 sendOptions();
-		 addPlayerBox(true);
+		if (game.maxPlayers > 2 && game.maxPlayers > NetPlay.playercount && (NetPlay.players[game.maxPlayers -1].ai == AI_OPEN || NetPlay.players[game.maxPlayers -1].ai == AI_CLOSED || !NetPlay.bComms))
+		{
+			game.maxPlayers--;
+			sendOptions();
+			addPlayerBox(true);
 
-		 char tmpbuf[256];
-		 ssprintf(tmpbuf, _("*** Slot removed. Map now has %d slots. ***"), game.maxPlayers);
-		 sendTextMessage(tmpbuf, true); }
-		else {
-		 addConsoleMessage(_("Cannot remove player slot. Too few slots or slot occupied by human or AI?"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE); }
+			char tmpbuf[256];
+			ssprintf(tmpbuf, _("*** Slot removed. Map now has %d slots. ***"), game.maxPlayers);
+			sendTextMessage(tmpbuf, true);
+		}
+		else
+		{
+			addConsoleMessage(_("Cannot remove player slot. Too few slots or slot occupied by human or AI?"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+		}
 		break;
 	case MULTIOP_MAP_BUT:
 		loadMapPreview(true);
