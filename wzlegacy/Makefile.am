@@ -1,4 +1,6 @@
 SUBDIRS = \
+	tools/map \
+	tools/image \
 	win32 \
 	3rdparty/miniupnpc \
 	3rdparty/quesoglc \
@@ -12,14 +14,12 @@ SUBDIRS = \
 	lib/netplay \
 	lib/widget \
 	lib/backend \
-	tools/map \
-	tools/image \
 	src \
 	data \
 	po \
 	doc \
 	icons \
-	pkg/nsis \
+	win32/nsis \
 	tests
 
 dist_doc_DATA = \

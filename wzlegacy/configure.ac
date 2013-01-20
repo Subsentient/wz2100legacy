@@ -448,8 +448,8 @@ AC_CONFIG_FILES([Makefile
 		icons/Makefile
 		data/Makefile
 		data/music/Makefile
-		pkg/nsis/Makefile
 		win32/Makefile
+		win32/nsis/Makefile
 		tests/Makefile
 		3rdparty/miniupnpc/Makefile
 		3rdparty/quesoglc/Makefile
