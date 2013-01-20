@@ -11,7 +11,6 @@
 #else
 #include <QtCore/QDir>
 #endif
-#include <sys/stat.h>
 #include <sys/types.h>
 
 
