@@ -2019,13 +2019,6 @@ error:
 			NetPlay.MOTD = NULL;
 		debug(LOG_ERROR, "%s", NetPlay.MOTD);
 	}
-	else
-	{
-		free(NetPlay.MOTD);
-		if (asprintf(&NetPlay.MOTD, "Disconnected from lobby server. Failed to register game.") == -1)
-			NetPlay.MOTD = NULL;
-		//Please don't flood me with console errors. -Subsentient | debug(LOG_ERROR, "%s", NetPlay.MOTD); 
-	}
 
 	return SOCKET_ERROR;
 }
