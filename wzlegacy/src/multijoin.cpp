@@ -252,11 +252,23 @@ void recvPlayerLeft(NETQUEUE queue)
 	turnOffMultiMsg(false);
 	NetPlay.players[playerIndex].allocated = false;
 	NetPlay.players[playerIndex].spectating = false; //Verbosely make them *not* a spectator.
-	if (!NETcheckPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_LEAVING, playerIndex)) {
-	 NETsetPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_DROPPED, playerIndex);
-	 debug(LOG_INFO, "** player %u has dropped, in-game!", playerIndex); }
-	else {
-	 debug(LOG_INFO, "** We have detected a graceful leave by player %u.", playerIndex); }
+	if (!NETcheckPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_LEAVING, playerIndex))
+	{
+		NETsetPlayerConnectionStatus(CONNECTIONSTATUS_PLAYER_DROPPED, playerIndex);
+		debug(LOG_INFO, "** player %u has dropped, in-game!", playerIndex);
+
+		/*This code really needs to be fixed. It's pathetic that after so much time
+		the networking code still is too borked to handle proper leaving and quitting.
+
+		The only reason this if statement exists is because we use a cheap method to
+		simulate a proper quit for clients leaving the host, so we don't get 
+		quit and drop icons at the same time. 3.1 has the same issue at the time of 
+		writing this, but they just hang because they don't even acknowledge the issue.
+
+		...When the host quits, we still get the zzz most of the time...
+		When I fix this, I remove this comment. -Subsentient*/
+
+	}
 }
 
 // ////////////////////////////////////////////////////////////////////////////
