@@ -1977,7 +1977,7 @@ UBYTE NETrecvFile(NETQUEUE queue)
 	return ((currPos + bytesToRead) * 100) / fileSize;
 }
 
-static ssize_t readLobbyResponse(Socket* sock, unsigned int timeout)
+static ssize_t readLobbyResponse(Socket* sock, unsigned int timeout, bool hostMode)
 {
 	uint32_t lobbyStatusCode;
 	uint32_t MOTDLength;
@@ -2018,6 +2018,13 @@ error:
 		if (asprintf(&NetPlay.MOTD, "Error while connecting to the lobby server: %s\nMake sure port %d can receive incoming connections.", strSockError(getSockErr()), gameserver_port) == -1)
 			NetPlay.MOTD = NULL;
 		debug(LOG_ERROR, "%s", NetPlay.MOTD);
+	}
+	else if (hostMode)
+	{
+		free(NetPlay.MOTD);
+		if (asprintf(&NetPlay.MOTD, "Disconnected from lobby server. Failed to register game.") == -1)
+			NetPlay.MOTD = NULL;
+		debug(LOG_ERROR, "%s", NetPlay.MOTD); 
 	}
 
 	return SOCKET_ERROR;
@@ -2116,7 +2123,7 @@ static void NETregisterServer(int state)
 					rs_socket = NULL;
 				}
 
-				if (readLobbyResponse(rs_socket, NET_TIMEOUT_DELAY) == SOCKET_ERROR)
+				if (readLobbyResponse(rs_socket, NET_TIMEOUT_DELAY, true) == SOCKET_ERROR)
 				{
 					socketClose(rs_socket);
 					rs_socket = NULL;
@@ -2754,7 +2761,7 @@ bool NETfindGame(void)
 		++gamecount;
 	}
 
-	if (readLobbyResponse(tcp_socket, NET_TIMEOUT_DELAY) == SOCKET_ERROR)
+	if (readLobbyResponse(tcp_socket, NET_TIMEOUT_DELAY, false) == SOCKET_ERROR)
 	{
 		socketClose(tcp_socket);
 		tcp_socket = NULL;
