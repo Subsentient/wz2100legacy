@@ -287,11 +287,8 @@ bool sendLeavingMsg(void)
 	debug(LOG_NET, "We are leaving 'nicely'");
 	NETbeginEncode(NETnetQueue(NET_HOST_ONLY), NET_PLAYER_LEAVING);
 	{
-		bool host = NetPlay.isHost;
 		uint32_t id = selectedPlayer;
-
 		NETuint32_t(&id);
-		NETbool(&host);
 	}
 	NETend();
 
@@ -446,20 +443,23 @@ bool multiGameShutdown(void)
 	PLAYERSTATS	st;
 
 	debug(LOG_NET,"%s is shutting down.",getPlayerName(selectedPlayer));
-	sendLeavingMsg();
+	sendLeavingMsg();						//Seems pretty useless right now, since it never seems to actually be sent.
 	updateMultiStatsGames();					// update games played.
 
 	st = getMultiStats(selectedPlayer);	// save stats
 
 	saveMultiStats(getPlayerName(selectedPlayer), getPlayerName(selectedPlayer), &st);
 	int tempgt2 = wzGetTicks();
-	while (wzGetTicks() - tempgt2 < 700) { //Set delay to 700ms in case we are dealing with the host.
-	//Use the time tested superior way of handling timers, judging from what was done by the previous devs. -Subsentient
-	wzYieldCurrentThread(); }
-	if (NetPlay.isHost) { /*Only do this stuff if we are hosting. 
-	This is probably going to result in frozen users when the host quits again. *Sigh* -Subsentient*/
-	NETclose();
-	NETremRedirects(); }
+
+	if (NetPlay.isHost) //Only do this stuff if we are hosting. 
+	{ //This will be used for all players when I grow a pair and fix whatever it is that's actually causing the problem with NET_PLAYER_LEAVING.
+
+		while (wzGetTicks() - tempgt2 < 700) wzYieldCurrentThread(); //Wait 700ms before slamming the door, if hosting.
+
+		//If we are a client, NETshutdown() takes care of everything. For hosts, not so much.
+		NETclose();
+		NETremRedirects();
+	}
 
 	if (ingame.numStructureLimits)
 	{
