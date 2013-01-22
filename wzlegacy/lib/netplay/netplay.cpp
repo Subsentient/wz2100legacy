@@ -1878,7 +1878,7 @@ UBYTE NETrecvFile(NETQUEUE queue)
 		{
 			mapName[strlen(mapName) - 3] = '\0';  // Cut off "-T1", "-T2" or "-T3".
 		}
-		snprintf(fileName, sizeof(fileName), "maps/%dc-%s-%s.wz", game.maxPlayers, mapName, fileHash.toString().c_str());  // Wonder whether game.maxPlayers is initialised already?
+		snprintf(fileName, sizeof(fileName), "maps/%s-%s.wzl", mapName, fileHash.toString().c_str());
 
 		debug(LOG_NET, "Creating new file %s hash %s", fileName, fileHash.toString().c_str());
 
