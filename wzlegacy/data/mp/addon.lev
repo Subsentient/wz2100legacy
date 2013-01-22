@@ -1476,4 +1476,25 @@ dataset MULTI_T3_C1
 game    "multiplay/maps/6c-Arid.gam"
 data    "wrf/multi/fog1.wrf"
 
+level   Epoch-T1
+players 7
+type    14
+dataset MULTI_CAM_1
+game    "multiplay/maps/7c-Epoch.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Epoch-T2
+players 7
+type    18
+dataset MULTI_T2_C1
+game    "multiplay/maps/7c-Epoch.gam"
+data    "wrf/multi/fog1.wrf"
+
+level   Epoch-T3
+players 7
+type    19
+dataset MULTI_T3_C1
+game    "multiplay/maps/7c-Epoch.gam"
+data    "wrf/multi/fog1.wrf"
+
 
