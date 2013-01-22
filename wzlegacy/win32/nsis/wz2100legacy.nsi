@@ -251,6 +251,17 @@ Section /o "Migrate maps and ranks from Warzone 2100 3.1"
  CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
 SectionEnd
 
+Section /o "Modding/Map utilities"
+ CreateDirectory "$INSTDIR\util"
+ SetOutPath "$INSTDIR\util"
+ File "${TOP_BUILDDIR}\tools\image\image.exe"
+ File "${TOP_BUILDDIR}\tools\map\map2lnd.exe"
+ File "${TOP_BUILDDIR}\tools\map\map2png.exe"
+ File "${TOP_BUILDDIR}\tools\map\map2preview.exe"
+ File "${TOP_BUILDDIR}\tools\map\mapinfo.exe"
+ File "${TOP_BUILDDIR}\tools\map\mapconv.exe"
+SectionEnd
+
 Function .onInit ;Splash display.
 SetOutPath $TEMP
   File /oname=wzlsplash.bmp "${TOP_BUILDDIR}\icons\wz2100l_instalload.bmp"
@@ -275,6 +286,7 @@ Section "Uninstall"
   Delete "$INSTDIR\COPYING.NONGPL"
   Delete "$INSTDIR\COPYING.README"
   RMDir /r "$INSTDIR\doc"
+  RMDir /r "$INSTDIR\util"
   RMDir	/r "$INSTDIR\music"
   RMDir	/r "$INSTDIR\fonts"
   RMDir /r "$INSTDIR\locale"
