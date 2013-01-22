@@ -5,7 +5,7 @@ DIE=0
 SRCDIR=`dirname $0`
 BUILDDIR=`pwd`
 srcfile=src/action.cpp
-package=Warzone2100
+package=Legacy
 
 debug ()
 # print out a debug message if DEBUG is a defined variable
