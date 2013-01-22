@@ -171,7 +171,7 @@ unsigned NET_PlayerConnectionStatus[CONNECTIONSTATUS_NORMAL][MAX_PLAYERS];
 
 //Used to contain versioning information here. Moved to netplay.h. -Subsentient
 
-static char const *versionString = version_getVersionString();
+static char const *versionString = legacyVersion;
 
 bool NETisCorrectVersion(uint32_t game_version_major, uint32_t game_version_minor)
 {

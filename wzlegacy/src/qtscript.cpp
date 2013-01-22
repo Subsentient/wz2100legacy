@@ -388,7 +388,7 @@ bool loadPlayerScript(QString path, int player, int difficulty)
 
 	// Special global variables
 	//== \item[version] Current version of the game.
-	engine->globalObject().setProperty("version", version_getVersionString(), QScriptValue::ReadOnly | QScriptValue::Undeletable);
+	engine->globalObject().setProperty("version", legacyVersion, QScriptValue::ReadOnly | QScriptValue::Undeletable);
 	//== \item[selectedPlayer] The player ontrolled by the client on which the script runs.
 	engine->globalObject().setProperty("selectedPlayer", selectedPlayer, QScriptValue::ReadOnly | QScriptValue::Undeletable);
 	//== \item[gameTime] The current game time. Updated before every invokation of a script.

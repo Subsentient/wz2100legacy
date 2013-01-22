@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 2007  Giel van Schijndel
@@ -26,65 +26,8 @@
 #include "version.h"
 #include "stringdef.h"
 
-#include "src/autorevision.h"
-
-//extern const char *BACKEND; -Subsentient
-
-// Two-step process to put quotes around anything, including preprocessor definitions.
-#define EXPAND(token) #token
-#define QUOTE(token) EXPAND(token)
-
-#define VCS_SHORT_HASH_QUOTED QUOTE(VCS_SHORT_HASH)
-#define VCS_URI_QUOTED QUOTE(VCS_URI)
-#define VCS_DATE_QUOTED QUOTE(VCS_DATE)
-
-static const char vcs_date_cstr[] = QUOTE(VCS_DATE);
-static const char vcs_uri_cstr[] = QUOTE(VCS_URI);
-
-unsigned int version_getRevision()
-{
-	return VCS_NUM;
-}
-
-const char* version_getVersionString()
-{
-	static const char* version_string = "microwave_popping";
-
-	if (version_string == NULL)
-	{
-		if (strncmp(vcs_uri_cstr, "tags/", strlen("tags/")) == 0)
-		{
-			version_string = vcs_uri_cstr + strlen("tags/");
-		}
-		else if (strcmp(vcs_uri_cstr, "trunk") == 0)
-		{
-			version_string = "TRUNK " VCS_SHORT_HASH_QUOTED;
-		}
-		else if (strncmp(vcs_uri_cstr, "branches/", strlen("branches/")) == 0)
-		{
-			version_string = (VCS_URI_QUOTED " branch " VCS_SHORT_HASH_QUOTED) + strlen("branches/");
-		}
-		else if (strncmp(vcs_uri_cstr, "refs/heads/", strlen("refs/heads/")) == 0)
-		{
-			version_string = (VCS_URI_QUOTED " branch " VCS_SHORT_HASH_QUOTED) + strlen("refs/heads/");
-		}
-		else if (VCS_NUM != 0)
-		{
-			version_string = VCS_URI_QUOTED " " VCS_SHORT_HASH_QUOTED;
-		}
-		else
-		{
-			version_string = VCS_SHORT_HASH_QUOTED;
-		}
-	}
-
-	return version_string;
-}
-
-bool version_modified()
-{
-	return VCS_WC_MODIFIED;
-}
+const char* legacyVersion = "microwave_popping"; //Set the version of the game.
+//We removed all that version control stuff, since Legacy should be able to be comfortably developed with none whatsoever.
 
 const char* version_getBuildDate()
 {
@@ -96,31 +39,6 @@ const char* version_getBuildTime()
 	return __TIME__;
 }
 
-const char* version_getVcsDate()
-{
-#if (VCS_NUM == 0)
-	return "";
-#else
-	static char vcs_date[sizeof(vcs_date_cstr) - 9] = { '\0' };
-
-	if (vcs_date[0] == '\0')
-	{
-		sstrcpy(vcs_date, vcs_date_cstr);
-	}
-
-	return vcs_date;
-#endif
-}
-
-const char* version_getVcsTime()
-{
-#if (VCS_NUM == 0)
-	return "";
-#else
-	return VCS_DATE_QUOTED + sizeof(VCS_DATE_QUOTED) - 8 - 1;
-#endif
-}
-
 const char* version_getFormattedVersionString()
 {
 	static char versionString[MAX_STR_LENGTH] = {'\0'};
@@ -128,11 +46,6 @@ const char* version_getFormattedVersionString()
 	if (versionString[0] == '\0')
 	{
 		// Compose the working copy state string
-#if (VCS_WC_MODIFIED)
-		const char* wc_state = _(" (modified locally)");
-#else
-		const char* wc_state = "";
-#endif
 		//Subsentient changed the version string layout and such.
 		// Compose the build type string
 #ifdef DEBUG
@@ -143,19 +56,10 @@ const char* version_getFormattedVersionString()
 
 		const char* build_date = NULL;
 
-		if (strncmp(vcs_uri_cstr, "tags/", strlen("tags/")) != 0)
-		{
-			sasprintf((char**)&build_date, _(" - Compiled on %s"), version_getBuildDate());
-		}
-		else
-		{
-			build_date = "";
-		}
+		sasprintf((char**)&build_date, _(" - Compiled on %s"), version_getBuildDate());
 
-		// Construct the version string
-		// TRANSLATORS: This string looks as follows when expanded.
-		// "Version <version name/number> <working copy state><BUILD DATE><BUILD TYPE>"
-		snprintf(versionString, MAX_STR_LENGTH, _("Warzone 2100 Legacy Version: %s%s%s%s"), version_getVersionString(), wc_state, build_date, build_type);
+		snprintf(versionString, MAX_STR_LENGTH, _("Warzone 2100 Legacy Version: %s%s%s"), 
+		legacyVersion, build_date, build_type);
 	}
 
 	return versionString;

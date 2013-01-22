@@ -4983,7 +4983,7 @@ bool writeGameInfo(const char *pFileName)
 	ini.setValue("game_time", ourtime);
 	getAsciiTime( ourtime, gameTime - missionData.missionStarted);
 	ini.setValue("playing_time", ourtime);
-	ini.setValue("version", version_getVersionString());
+	ini.setValue("version", legacyVersion);
 	ini.setValue("full_version", version_getFormattedVersionString());
 	ini.setValue("cheated", Cheated);
 	ini.setValue("debug", getDebugMappingStatus());

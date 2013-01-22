@@ -4,20 +4,13 @@ AM_CXXFLAGS = $(WZ_CXXFLAGS) $(QT4_CFLAGS)
 AM_LFLAGS = $(FLEX_FLAGS)
 AM_YFLAGS = -d
 
-.PHONY: autorevision.h
-
-autorevision.h:
-	(cd $(top_srcdir) && ./build_tools/autorevision.sh $(abs_top_builddir)/src/autorevision.h || true)
-
 BUILT_SOURCES = \
-	autorevision.h \
 	$(CLEANFILES)
 
 CLEANFILES = \
 	scriptvals_parser.hpp
 
 EXTRA_DIST = \
-	autorevision.h \
 	cursorselection
 
 bin_PROGRAMS = wz2100legacy
