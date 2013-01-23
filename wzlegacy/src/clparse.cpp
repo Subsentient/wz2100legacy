@@ -630,7 +630,7 @@ bool ParseCommandLine(int argc, const char** argv)
 				token = poptGetOptArg(poptCon);
 				if (token == NULL)
 				{
-					qFatal("Bad lobby server IP or domain provided.");
+					qFatal("Bad port number provided.");
 				}
 				printf("Using %s as masterserver.", token);
 				NETsetMasterserverPort(atoi(token));
