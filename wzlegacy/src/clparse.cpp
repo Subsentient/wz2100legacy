@@ -620,7 +620,7 @@ bool ParseCommandLine(int argc, const char** argv)
 				{
 					qFatal("Bad lobby server IP or domain provided.");
 				}
-				printf("Using %s as masterserver.", token);
+				printf("Using %s as masterserver.\n", token);
 				NETsetMasterserverName(token);
 				break;
 			}
@@ -632,7 +632,7 @@ bool ParseCommandLine(int argc, const char** argv)
 				{
 					qFatal("Bad port number provided.");
 				}
-				printf("Using %s as masterserver.", token);
+				printf("Using %s as masterserver port number.\n", token);
 				NETsetMasterserverPort(atoi(token));
 				break;
 			}
