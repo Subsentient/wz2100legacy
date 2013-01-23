@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([Warzone 2100 Legacy],[1.0_beta1],[http://warzonelegacy.org/],[warzone2100legacy])
+AC_INIT([Warzone 2100 Legacy],[microwave_popping],[http://warzonelegacy.org/],[warzone2100legacy])
 
 AM_INIT_AUTOMAKE([1.12 tar-ustar]) #We are going to need automake 1.12 for recent changes.
 

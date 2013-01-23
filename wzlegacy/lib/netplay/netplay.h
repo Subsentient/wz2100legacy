@@ -289,7 +289,7 @@ extern char iptoconnect[PATH_MAX]; // holds IP/hostname from command line
 
 //Netcode Versioning
 const int NetcodeVersionMajor = 7;
-const int NetcodeVersionMinor = 43;
+const int NetcodeVersionMinor = 29;
 
 // ////////////////////////////////////////////////////////////////////////
 // functions available to you.
