@@ -1,3 +1,40 @@
+Changes for 1.0 beta 1:
+Allow spectators to be designated before the game starts with the new slot add/remove controls, 
+automatically become a spectator if you load up to nothing, and don't lose if this is the case.
+Add a makefile for tools/image and make it cross platform.
+Fix bug with mouse cursor behaving improperly upon a window stealing the focus.
+Allow lobby server address and port number to be set from the command line.
+Use classic Warzone 2100 1.10 logo.
+New seven player map: Epoch.
+Fix map downloading to save in the correct extension, and strip "4c-" and the like since slots are
+able to be removed and added at will.
+Minor netcode improvements.
+Add internal way to check in WZScript and Javascript for spectators, and a way to enable them.
+Add a boolean variable to see if a user is a spectator, "NetPlay.players[whoever].spectating".
+Fix NSIS installer not installing documentation, and add new splash screen for NSIS.
+Add the small programs in tools/ to the NSIS installer as an option, since they may be found useful.
+Apply patch by Cyp (with one change to make it compatible with Legacy) to fix Supertransports auto-reloading vtols
+that are put inside.
+Don't let us lose when we still have VTOL factories.
+AIs can pick up artifacts and oil barrels if they are not in a campaign, so skirmish and MP got slightly more challenging.
+Show spectators as cyan with no image for their tanks in the intelligence display, made possible by the new NetPlay variable.
+Fix "sticky research" bug, a patch by Cyp.
+Allow spectators to be enabled and disabled in true multiplayer games.
+Warn users it's rude to quit a team game, if they are in teams mode.
+Update project URL to http://warzonelegacy.org/
+Show map preview when we manually enter a map name and hit enter.
+Require autoconf 2.69 to avert funkyness with compiling.
+Show unit counts to spectators.
+Permit debug mode to be enabled for spectators if in skirmish.
+
+And a TON, a TON of under-the-hood changes, but I won't bore you with these.
+
+Please report bugs at http://forums.warzonelegacy.org/ as usual.
+We are nearing a 1.0 stable release and need as many testers as possible.
+We hope you enjoy 1.0 beta 1 of Warzone 2100 Legacy!
+
+
+
 Changes for 1.0 alpha 2:
 Enhanced lobby screen now shows the Host nickname in the main box and shows IPs in the tooltip,
 spectator mode is enhanced, debug mode impossible once someone becomes a spectator, and all holograms for all
