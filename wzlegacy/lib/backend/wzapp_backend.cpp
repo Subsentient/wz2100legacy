@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -48,6 +48,8 @@
 #include "lib/framework/wzapp.h"
 #include "src/main.h"
 #include "src/configuration.h"
+#include "src/keybind.h"
+#include "src/warzoneconfig.h"
 #include "lib/gamelib/gtime.h"
 #include <deque>
 
@@ -971,9 +973,10 @@ void inputLoseFocus()
 	{
 		aMouseState[i].state = KEY_UP;
 	}
-	WzMainWindow::instance()->freeMouse(); 
-	//Free our mouse cursor if in windowed mode, or we get a strange bug.
-	//This causes the need to hit alt+t twice, but it's worth it for a cheap fix. -Subsentient
+	if (war_GetTrapCursor()) //Free our mouse cursor if in windowed mode, or we get a strange bug.
+	{
+		kf_toggleTrapCursor();
+	}
 }
 
 /* This returns true if the key is currently depressed */
