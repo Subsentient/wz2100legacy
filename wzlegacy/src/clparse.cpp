@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1999-2004  Eidos Interactive
@@ -222,6 +222,8 @@ typedef enum
 	CLI_SAVEGAME,
 	CLI_WINDOW,
 	CLI_VERSION,
+	CLI_MASTERSERVER,
+	CLI_MASTERSERVER_PORT,
 	CLI_RESOLUTION,
 	CLI_SHADOWS,
 	CLI_NOSHADOWS,
@@ -256,6 +258,8 @@ static const struct poptOption* getOptionsTable(void)
 		{ "crash",		'\0', POPT_ARG_NONE,   NULL, CLI_CRASH,      N_("Causes a crash to test the crash handler"), NULL },
 		{ "savegame",   '\0', POPT_ARG_STRING, NULL, CLI_SAVEGAME,   N_("Load a saved game"),                 N_("savegame") },
 		{ "window",     '\0', POPT_ARG_NONE,   NULL, CLI_WINDOW,     N_("Play in windowed mode"),             NULL },
+		{ "masterserver",'\0', POPT_ARG_STRING, NULL, CLI_MASTERSERVER,  N_("Set IP or domain to use for the lobby server."), N_("masterserver") },
+		{ "masterserver-port",'\0', POPT_ARG_STRING, NULL, CLI_MASTERSERVER_PORT,  N_("Set port number for the lobby server. Default is 9990."), N_("e.g. 4444") },
 		{ "version",    '\0', POPT_ARG_NONE,   NULL, CLI_VERSION,    N_("Show version information and exit"), NULL },
 		{ "resolution", '\0', POPT_ARG_STRING, NULL, CLI_RESOLUTION, N_("Set the resolution to use"),         N_("WIDTHxHEIGHT") },
 		{ "shadows",    '\0', POPT_ARG_NONE,   NULL, CLI_SHADOWS,    N_("Enable shadows"),                    NULL },
@@ -608,6 +612,30 @@ bool ParseCommandLine(int argc, const char** argv)
 			case CLI_NOVBOS:
 				opengl_novbos = true;
 				break;
+			case CLI_MASTERSERVER:
+			{
+				//Allow us to set the lobby server from the CLI.
+				token = poptGetOptArg(poptCon);
+				if (token == NULL)
+				{
+					qFatal("Bad lobby server IP or domain provided.");
+				}
+				printf("Using %s as masterserver.", token);
+				NETsetMasterserverName(token);
+				break;
+			}
+			case CLI_MASTERSERVER_PORT:
+			{
+				//Allow us to set the lobby server port as well.
+				token = poptGetOptArg(poptCon);
+				if (token == NULL)
+				{
+					qFatal("Bad lobby server IP or domain provided.");
+				}
+				printf("Using %s as masterserver.", token);
+				NETsetMasterserverPort(atoi(token));
+				break;
+			}
 		};
 	}
 

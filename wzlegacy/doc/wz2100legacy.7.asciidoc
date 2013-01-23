@@ -58,6 +58,12 @@ work anymore.
 *--window*::
       Play in windowed mode.
 
+*--masterserver*='warzonelegacy.org'::
+      Set IP or domain to use for the lobby server.
+
+*--masterserver-port*='4444'::
+      Set port number for the lobby server. Default is 9990.
+
 *--version*::
       Output version info and exit.
 
