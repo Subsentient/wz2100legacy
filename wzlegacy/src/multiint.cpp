@@ -3101,6 +3101,7 @@ static void processMultiopWidgets(UDWORD id)
 			char tmpbuf[256];
 			ssprintf(tmpbuf, _("*** Slot removed. Map now has %d slots. ***"), game.maxPlayers);
 			sendTextMessage(tmpbuf, true);
+			debug(LOG_INFO, "\nWARNING: Slot removal is currently buggy. Use at the risk of needing to rehost.");
 		}
 		else
 		{
