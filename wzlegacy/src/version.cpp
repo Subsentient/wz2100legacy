@@ -26,7 +26,7 @@
 #include "version.h"
 #include "stringdef.h"
 
-const char* legacyVersion = "microwave_popping"; //Set the version of the game.
+const char* legacyVersion = "1.0_beta1"; //Set the version of the game.
 //We removed all that version control stuff, since Legacy should be able to be comfortably developed with none whatsoever.
 
 const char* version_getBuildDate()
