@@ -40,12 +40,15 @@
 // maximum random pause for firing
 #define RANDOM_PAUSE	500
 
+// Watermelon:real projectile
 /* Fire a weapon at something */
 bool combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, int weapon_slot)
 {
 	WEAPON_STATS	*psStats;
+	UDWORD                  damLevel;
 	UDWORD			firePause;
 	SDWORD			longRange;
+	DROID			*psDroid = NULL;
 	int				compIndex;
 
 	CHECK_OBJECT(psAttacker);
@@ -100,9 +103,30 @@ bool combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
 	firePause = std::max(firePause, 1u);  // Don't shoot infinitely many shots at once.
 	fireTime = std::max(fireTime, psWeap->lastFired + firePause);
 
-	if (gameTime < fireTime)
+
+	// increase the pause if heavily damaged
+	switch (psAttacker->type)
 	{
-		/* Too soon to fire again */
+	case OBJ_DROID:
+		psDroid = (DROID *)psAttacker;
+		damLevel = PERCENT(psDroid->body, psDroid->originalBody);
+		break;
+	case OBJ_STRUCTURE:
+		damLevel = PERCENT(((STRUCTURE *)psAttacker)->body, structureBody((STRUCTURE *)psAttacker));
+		break;
+	default:
+		damLevel = 100;
+		break;
+	}
+
+	if (damLevel < HEAVY_DAMAGE_LEVEL)
+	{
+		firePause += firePause;
+	}
+
+ 	if (gameTime - psWeap->lastFired <= firePause)
+ 	{
+ 		/* Too soon to fire again */
 		return false;
 	}
 
