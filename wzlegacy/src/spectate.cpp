@@ -137,11 +137,14 @@ void recvSpecSignal(NETQUEUE queue) {
 		return; //Now that we did what we should, we exit the function and don't carry out the order. -Subsentient
 	}
 
-	if (NetPlay.isHost && !allowSpectating && NetPlay.bComms) //Someone is trying to spectate in a game that doesn't permit it.
+	if (!allowSpectating && NetPlay.bComms) //Someone is trying to spectate in a game that doesn't permit it.
 	{
-		debug(LOG_INFO, "Player %d has sent a request to spectate, but spectating is disabled. That can only mean trying to cheat. Kicking.", queue.index);
-		kickPlayer(queue.index, "You modified the game to send a spectator signal, so you can probably do other nasty things. Bye.", ERROR_KICKED);
-		return;
+		if (NetPlay.isHost)
+		{ //If we are the host, get rid of them. -Subsentient
+			debug(LOG_INFO, "Player %d has sent a request to spectate, but spectating is disabled. That can only mean trying to cheat. Kicking.", queue.index);
+			kickPlayer(queue.index, "You modified the game to send a spectator signal, so you can probably do other nasty things. Bye.", ERROR_KICKED);
+		}
+		return; //Otherwise, they still don't get to be a spectator even if we are just a regular player. -Subsentient
 	}
 
 	NetPlay.players[newSpec].spectating = true; //The player is now spectating. Tell the netcode that. -Subsentient
