@@ -97,8 +97,6 @@ The fonts required for the game are downloaded over the internet. Click Next to 
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
   ;!insertmacro MUI_UNPAGE_FINISH
-
-;--------------------------------
 ;Languages
 
   !insertmacro MUI_LANGUAGE "English"
@@ -108,7 +106,7 @@ The fonts required for the game are downloaded over the internet. Click Next to 
 ;--------------------------------
 ;Installer Sections
 
-Section "Base Game"
+Section "Base Game" BaseGame
   SectionIn RO
   ;Store install folder
   WriteRegStr HKCU "Software\${APPLICATION_NAME}" "" $INSTDIR
@@ -163,7 +161,7 @@ SetOutPath "$INSTDIR\fonts"
 
 SectionEnd
 
-Section "Non-English Language Support"
+Section "Non-English Language Support" Langs
 SetOutPath "$INSTDIR\locale\ca\LC_MESSAGES"
 File "/oname=${PACKAGE}.mo" "${TOP_SRCDIR}\po\ca_ES.gmo"
 SetOutPath "$INSTDIR\locale\cs\LC_MESSAGES"
@@ -226,14 +224,14 @@ SetOutPath "$INSTDIR\locale\zh_CN\LC_MESSAGES"
 File "${TOP_SRCDIR}\po\zh_CN.gmo"
 SectionEnd
 
-Section /o "Download Videos"
+Section /o "Download Videos" Videos
   SectionIn 1
    AddSize 173670
    NSISdl::download "http://cloud.github.com/downloads/Subsentient/wz2100legacy/sequences.wzl" "$INSTDIR\sequences.wzl"
 SectionEnd
 
 ;Make it easy to migrate our stuff.
-Section /o "Migrate maps and ranks from Warzone 2100 2.3"
+Section /o "Migrate maps and ranks from Warzone 2100 2.3" Migrate23
  CreateDirectory "$LEGACYCONFIGDIR"
  CreateDirectory "$LEGACYCONFIGDIR\maps\"
  CreateDirectory "$LEGACYCONFIGDIR\multiplay\"
@@ -242,7 +240,7 @@ Section /o "Migrate maps and ranks from Warzone 2100 2.3"
  CopyFiles "$DOCUMENTS\Warzone 2100 2.3\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
 SectionEnd
 
-Section /o "Migrate maps and ranks from Warzone 2100 3.1"
+Section /o "Migrate maps and ranks from Warzone 2100 3.1" Migrate31
  CreateDirectory "$LEGACYCONFIGDIR"
  CreateDirectory "$LEGACYCONFIGDIR\maps\"
  CreateDirectory "$LEGACYCONFIGDIR\multiplay\"
@@ -251,7 +249,7 @@ Section /o "Migrate maps and ranks from Warzone 2100 3.1"
  CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
 SectionEnd
 
-Section /o "Modding/Map utilities"
+Section /o "Modding/Map utilities" ModUtils
  CreateDirectory "$INSTDIR\util"
  SetOutPath "$INSTDIR\util"
  File "${TOP_BUILDDIR}\tools\image\image.exe"
@@ -262,12 +260,24 @@ Section /o "Modding/Map utilities"
  File "${TOP_BUILDDIR}\tools\map\mapconv.exe"
 SectionEnd
 
+
 Function .onInit ;Splash display.
 SetOutPath $TEMP
+  ; Display our nice splash screen.
   File /oname=wzlsplash.bmp "${TOP_BUILDDIR}\icons\wz2100l_instalload.bmp"
   splash::show 2000 $TEMP\wzlsplash
   Delete $TEMP\wzlsplash.bmp
 FunctionEnd
+
+; Set our descriptions.
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${ModUtils} "Small utilities that may be useful to game modders and map makers."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate31} "Your player name files and maps from Warzone 2100 3.1 can be transferred during installation."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate23} "Your player name files and maps from Warzone 2100 2.3 can be transferred during installation."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Videos} "Videos for Warzone 2100 Legacy. They are necessary for viewing the intro and make the campaign easier."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Langs} "Support for languages other than English."
+  !insertmacro MUI_DESCRIPTION_TEXT ${BaseGame} "The Base Warzone 2100 Legacy game."
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
 ;Uninstall Files
