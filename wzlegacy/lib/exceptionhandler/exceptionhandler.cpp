@@ -1,4 +1,4 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 2007-2012  Warzone 2100 Project
@@ -22,6 +22,7 @@
 #include "lib/framework/string_ext.h"
 #include "exceptionhandler.h"
 #include "dumpinfo.h"
+#include "lib/framework/physfs_ext.h"
 
 #if defined(WZ_OS_WIN)
 #include <tchar.h>
@@ -44,7 +45,7 @@ static LPTOP_LEVEL_EXCEPTION_FILTER prevExceptionHandler = NULL;
  */
 static LONG WINAPI windowsExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 {
-	LPCSTR applicationName = "Warzone 2100 Legacy"; //Subsentient did it
+	LPCSTR applicationName = "Warzone 2100 Legacy";
 
 	char miniDumpPath[PATH_MAX] = {'\0'}, resultMessage[PATH_MAX] = {'\0'};
 
@@ -55,7 +56,7 @@ static LONG WINAPI windowsExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 	}
 
 	// Append the filename
-	sstrcat(miniDumpPath, "wz2100legacy.mdmp");  //Subsentient did it
+	sstrcat(miniDumpPath, "wz2100legacy.mdmp");
 
 	/*
 	Alternative:
@@ -65,7 +66,7 @@ static LONG WINAPI windowsExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 	sstrcat(miniDumpPath, ".mdmp");
 	*/
 
-	if ( MessageBoxA( NULL, "Warzone 2100 Legacy crashed unexpectedly, would you like to save a diagnostic file?", applicationName, MB_YESNO ) == IDYES ) //Subsentient did it
+	if ( MessageBoxA( NULL, "Warzone 2100 Legacy crashed unexpectedly, would you like to save a diagnostic file?", applicationName, MB_YESNO ) == IDYES )
 	{
 		HANDLE miniDumpFile = CreateFileA( miniDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
 
@@ -601,8 +602,7 @@ static bool gdbExtendedBacktrace(int const dumpFile)
 
 /**
  * Exception (signal) handling on POSIX systems.
- * Dumps info about the system incl. backtrace (when GLibC or GDB is present) to /tmp/warzone2100.gdmp
- * NOT ANYMORE. wz2100legacy for the filename.-Subsentient
+ * Dumps info about the system incl. backtrace (when GLibC or GDB is present) to /tmp/wz2100legacy.gdmp-whatever
  * \param signum Signal number
  * \param siginfo Signal info
  * \param sigcontext Signal context
@@ -615,8 +615,8 @@ static void posixExceptionHandler(int signum)
 {
 	static sig_atomic_t allreadyRunning = 0;
 	// XXXXXX will be converted into random characters by mkstemp(3)
-	static const char gdmpPath[] = "/tmp/wz2100legacy.gdmp-XXXXXX";
-	char dumpFilename[sizeof(gdmpPath)];
+	static const char gdmpPath[] = "wz2100legacy.gdmp-XXXXXX";
+	char dumpFilename[256];
 	int dumpFile;
 	const char *signal;
 # if defined(__GLIBC__)
@@ -628,7 +628,11 @@ static void posixExceptionHandler(int signum)
 		raise(signum);
 	allreadyRunning = 1;
 
-	sstrcpy(dumpFilename, gdmpPath);
+	//Get the configuration directory for the game and write our dump file in the logs folder. Better than digging in /tmp. -Subsentient
+	strcpy(dumpFilename, PHYSFS_getUserDir());
+	strcat(dumpFilename, WZ_WRITEDIR);
+	strcat(dumpFilename, "/logs/dumps/");
+	strcat(dumpFilename, gdmpPath);
 
 	dumpFile = mkstemp(dumpFilename);
 
@@ -804,8 +808,8 @@ bool OverrideRPTDirectory(char *newPath)
 		return false;
 	}
 	PathRemoveFileSpecW(buf);
-	wcscat(buf, L"\\logs\\"); // stuff it in the logs directory
-	wcscat(buf, L"wz2100legacy.RPT"); //Subsentient did it
+	wcscat(buf, L"\\logs\\dumps\\"); // stuff it in the logs\dumps directory
+	wcscat(buf, L"wz2100legacy.RPT");
 	ResetRPTDirectory(buf);
 #endif
 	return true;
