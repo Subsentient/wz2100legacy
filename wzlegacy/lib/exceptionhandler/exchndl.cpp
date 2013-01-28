@@ -1,3 +1,4 @@
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.*/
 /*
 	This file is part of Warzone 2100.
 	Copyright (C) 1997-XXXX  José Fonseca <j_r_fonseca@yahoo.co.uk>
@@ -1206,7 +1207,7 @@ void ExchndlSetup(const char *packageVersion)
 	if ( SUCCEEDED( SHGetFolderPathW( NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, miniDumpPath ) ))
 	{
 		PathAppendW( miniDumpPath, WSTRING(WZ_WRITEDIR));
-		PathAppendW( miniDumpPath, L"\\logs" );
+		PathAppendW( miniDumpPath, L"\\logs\\dumps" );
 
 		if( !PathFileExistsW( miniDumpPath ) )
 		{
@@ -1221,7 +1222,7 @@ void ExchndlSetup(const char *packageVersion)
 		wcscpy(miniDumpPath, L"c:\\temp");
 	}
 
-	wcscat(szLogFileName, L"Warzone2100.RPT");
+	wcscat(szLogFileName, L"wz2100legacy.RPT");
 	wcscat(miniDumpPath, L"\\");
 	wcscat(miniDumpPath,szLogFileName);
 	wcscpy(szLogFileName, miniDumpPath);
