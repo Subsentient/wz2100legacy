@@ -231,20 +231,23 @@ Section /o "Download Videos" Videos
 SectionEnd
 
 ;Make it easy to migrate our stuff.
-Section /o "Migrate maps and ranks from Warzone 2100 2.3" Migrate23
+Section /o "Migrate data from Warzone 2100 2.3" Migrate23
  CreateDirectory "$LEGACYCONFIGDIR"
  CreateDirectory "$LEGACYCONFIGDIR\maps\"
  CreateDirectory "$LEGACYCONFIGDIR\multiplay\"
  CreateDirectory "$LEGACYCONFIGDIR\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 2.3\config" "$LEGACYCONFIGDIR\legacyconfig.txt"
  CopyFiles "$DOCUMENTS\Warzone 2100 2.3\maps\*.*" "$LEGACYCONFIGDIR\maps\"
  CopyFiles "$DOCUMENTS\Warzone 2100 2.3\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
+ 
 SectionEnd
 
-Section /o "Migrate maps and ranks from Warzone 2100 3.1" Migrate31
+Section /o "Migrate data from Warzone 2100 3.1" Migrate31
  CreateDirectory "$LEGACYCONFIGDIR"
  CreateDirectory "$LEGACYCONFIGDIR\maps\"
  CreateDirectory "$LEGACYCONFIGDIR\multiplay\"
  CreateDirectory "$LEGACYCONFIGDIR\multiplay\players\"
+ CopyFiles "$DOCUMENTS\Warzone 2100 3.1\config" "$LEGACYCONFIGDIR\legacyconfig.txt"
  CopyFiles "$DOCUMENTS\Warzone 2100 3.1\maps\*.*" "$LEGACYCONFIGDIR\maps\"
  CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
 SectionEnd
@@ -272,8 +275,8 @@ FunctionEnd
 ; Set our descriptions.
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${ModUtils} "Small utilities that may be useful to game modders and map makers."
-  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate31} "Your player name files and maps from Warzone 2100 3.1 can be transferred during installation."
-  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate23} "Your player name files and maps from Warzone 2100 2.3 can be transferred during installation."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate31} "Your player name files, maps, and configuration from Warzone 2100 3.1 can be transferred during installation."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate23} "Your player name files, maps, and configuration from Warzone 2100 2.3 can be transferred during installation."
   !insertmacro MUI_DESCRIPTION_TEXT ${Videos} "Videos for Warzone 2100 Legacy. They are necessary for viewing the intro and make the campaign easier."
   !insertmacro MUI_DESCRIPTION_TEXT ${Langs} "Support for languages other than English."
   !insertmacro MUI_DESCRIPTION_TEXT ${BaseGame} "The Base Warzone 2100 Legacy game."
