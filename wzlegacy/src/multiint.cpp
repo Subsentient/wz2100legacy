@@ -4003,7 +4003,19 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	}
 	
 	// Display the name of the host -Subsentient
+	int truncateTo = 16; //Contains the value at to which we will truncate the name display.
+
 	ssprintf(tmp, NetPlay.games[gameID].hostname);
+
+	if (truncateTo < strlen(tmp)) //Don't skew game boxes with long nicknames.
+	{
+
+		tmp[20] = '\0'; //Everything after character 20 is irrelevant.
+		tmp[17] = '.'; //Add some periods so we don't think this is the whole nickname.
+		tmp[18] = '.';
+		tmp[19] = '.';
+	}
+
 	iV_DrawText(tmp, x + GAMES_HOSTER_START, y + 18);
 
 	//Display the number of players. Moved out so we can always see available players even if it's the wrong version. -Subsentient
