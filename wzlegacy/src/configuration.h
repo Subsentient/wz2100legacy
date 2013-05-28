@@ -25,6 +25,8 @@ extern "C"
 {
 #endif //__cplusplus
 
+#include "version.h" /*This smells like a bad idea for obvious reasons, but I think it's worth it.*/
+
 /*Configuration paths and whatnot.*/
 #define CONFIG_FILENAME "legacyconfig.txt"
 #if defined(WZ_OS_WIN)
@@ -36,13 +38,13 @@ extern "C"
 #endif
 
 #ifdef WZ_OS_WIN
-# define WZ_WRITEDIR "Warzone 2100 Legacy microwave_rebase"
+# define WZ_WRITEDIR "Warzone 2100 Legacy " VERSIONBIG
 #elif defined(WZ_OS_MAC)
 # include <CoreServices/CoreServices.h>
 # include <unistd.h>
-# define WZ_WRITEDIR "Warzone 2100 Legacy microwave_rebase"
+# define WZ_WRITEDIR "Warzone 2100 Legacy " VERSIONBIG
 #else
-# define WZ_WRITEDIR ".wz2100legacy-microwave_rebase"
+# define WZ_WRITEDIR ".wz2100legacy-" VERSIONBIG
 #endif
 
 /*Functions.*/

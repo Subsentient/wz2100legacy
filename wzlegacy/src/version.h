@@ -21,7 +21,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 extern "C" {
 #endif
 
-#define VERSIONNUM "microwave_rebase"
+#define VERSIONBIG "microwave_rebase"
+#define VERSIONSMALL ""
+#define VERSIONNUM VERSIONBIG VERSIONSMALL
 #define PROJECTNAME "Warzone 2100 Legacy"
 #define PROJECTURL "http://warzonelegacy.org/"
 #define PROJECTURL_BUGS "http://forums.warzonelegacy.org/"
