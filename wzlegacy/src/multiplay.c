@@ -1379,11 +1379,28 @@ BOOL recvTextMessage()
 		return false;
 	}
 
-	sstrcpy(msg, NetPlay.players[playerIndex].name);
-	// Seperator
-	sstrcat(msg, ": ");
-	// Add message
-	sstrcat(msg, newmsg);
+	if (newmsg[0] == '/') /*Is the incoming message a /me?*/
+	{
+		char *tempMsg = newmsg; /*I want my pointer arithmetic!*/
+		
+		if (!strncmp("/me ", tempMsg, 4))
+		{
+			tempMsg += 4;
+		}
+		else
+		{
+			++tempMsg;
+		}
+		
+		snprintf(msg, MAX_CONSOLE_STRING_LENGTH, " » %s %s « ", /*8-bit woes.*/
+		NetPlay.players[playerIndex].name, tempMsg);
+	}
+	else
+	{
+		sstrcpy(msg, NetPlay.players[playerIndex].name);		// name
+		sstrcat(msg, ": ");						// seperator
+		sstrcat(msg, newmsg);						// add message
+	}
 
 	addConsoleMessage(msg, DEFAULT_JUSTIFY, playerIndex);
 
