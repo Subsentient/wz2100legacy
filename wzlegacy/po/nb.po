@@ -1,4 +1,5 @@
-# English translations for warzone2100
+# English translations for Warzone 2100 Legacy
+# Copyright 2013 The Warzone 2100 Legacy Project
 # Copyright (c) 2007-2008 Warzone 2100 Resurrection Project
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the warzone2100 package.

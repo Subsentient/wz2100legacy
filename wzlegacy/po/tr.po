@@ -1,4 +1,5 @@
 # Turkish translation of warzone2100
+# Copyright 2013 The Warzone 2100 Legacy Project
 # Copyright (c) 2007-2008 Warzone 2100 Resurrection Project
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
 # This file is distributed under the same license as the warzone2100 package.
@@ -14951,8 +14952,8 @@ msgstr "Destek kuvvetler iniyor"
 #~ msgid "Postnuclear realtime strategy"
 #~ msgstr "Nükleer sonrası gerçek zamanlı strateji"
 
-#~ msgid "Warzone 2100"
-#~ msgstr "Warzone 2100"
+#~ msgid "Warzone 2100 Legacy"
+#~ msgstr "Warzone 2100 Legacy"
 
 #~ msgid "Strategy Game"
 #~ msgstr "Strateji Oyunu"
@@ -14964,23 +14965,23 @@ msgstr "Destek kuvvetler iniyor"
 #~ "Telif Hakkı © 1999-2004 Eidos İnteraktif.\n"
 #~ "Telif Hakkı © 2005-2010 Warzone 2100 Projesi"
 
-#~ msgid "Warzone 2100 Map / Mod File"
-#~ msgstr "Warzone 2100 Harita / Mod Dosyası"
+#~ msgid "Warzone 2100 Legacy Map / Mod File"
+#~ msgstr "Warzone 2100 Legacy Harita / Mod Dosyası"
 
-#~ msgid "Warzone 2100 Campaign Mod File"
-#~ msgstr "Warzone 2100 Bölüm Mod Dosyası"
+#~ msgid "Warzone 2100 Legacy Campaign Mod File"
+#~ msgstr "Warzone 2100 Legacy Bölüm Mod Dosyası"
 
-#~ msgid "Warzone 2100 Multiplayer Mod File"
-#~ msgstr "Warzone 2100 Çok Oyunculu Mod Dosyası"
+#~ msgid "Warzone 2100 Legacy Multiplayer Mod File"
+#~ msgstr "Warzone 2100 Legacy Çok Oyunculu Mod Dosyası"
 
-#~ msgid "Warzone 2100 Global Mod File"
-#~ msgstr "Warzone 2100 Küresel Mod Dosyası"
+#~ msgid "Warzone 2100 Legacy Global Mod File"
+#~ msgstr "Warzone 2100 Legacy Küresel Mod Dosyası"
 
 #~ msgid "Warzone"
 #~ msgstr "Warzone"
 
-#~ msgid "Warzone 2100 Music Mod File"
-#~ msgstr "Warzone 2100 Müzik Mod Dosyası"
+#~ msgid "Warzone 2100 Legacy Music Mod File"
+#~ msgstr "Warzone 2100 Legacy Müzik Mod Dosyası"
 
 #~ msgid "Congratulations your successful evacuation of Beta Base."
 #~ msgstr "Başarılı bir şekilde Beta üssünü boşaltınız için tebrikler."

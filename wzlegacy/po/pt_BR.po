@@ -14982,8 +14982,8 @@ msgstr "Reforços pousando"
 #~ msgid "Latin"
 #~ msgstr "Latim"
 
-#~ msgid "Warzone 2100"
-#~ msgstr "Warzone 2100"
+#~ msgid "Warzone 2100 Legacy"
+#~ msgstr "Warzone 2100 Legacy"
 
 #~ msgid "Strategy Game"
 #~ msgstr "Jogo de Estratégia"

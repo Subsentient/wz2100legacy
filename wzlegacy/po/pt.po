@@ -1,6 +1,6 @@
-# Portuguese translations for Warzone 2100 package.
+# Portuguese translations for Warzone 2100 Legacy package.
 # Copyright (C) 2008 Warzone Resurrection Project
-# This file is distributed under the same license as the Warzone 2100 package.
+# This file is distributed under the same license as the Warzone 2100 Legacy package.
 # Automatically generated, 2008.
 # Tradução feita por António Castelo <dragoonier@sapo.pt>
 # e Pedro Caetano <pedro.m.caetano@netcabo.pt>
