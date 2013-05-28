@@ -337,6 +337,7 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
 {
 	/* The number or normals that we got is in numNormals*/
 	Vector3f finalVector = {0.0f, 0.0f, 0.0f};
+	Vector3f tileSun = { theSun.x, theSun.y, -theSun.z }; /*For matching tile and object shadowing.*/
 	unsigned int i, val;
 	int dotProduct;
 
@@ -374,8 +375,8 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
 	{
 		finalVector = Vector3f_Add(finalVector, normals[i]);
 	}
-
-	dotProduct = Vector3f_ScalarP(Vector3f_Normalise(finalVector), theSun);
+	
+	dotProduct = Vector3f_ScalarP(Vector3f_Normalise(finalVector), tileSun);
 
 	val = abs(dotProduct) / 16;
 	if (val == 0) val = 1;
