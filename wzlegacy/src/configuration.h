@@ -25,6 +25,8 @@ extern "C"
 {
 #endif //__cplusplus
 
+#define CONFIG_FILENAME "legacyconfig.txt"
+
 BOOL loadConfig(void);
 BOOL loadRenderMode(void);
 BOOL saveConfig(void);
