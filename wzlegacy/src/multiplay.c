@@ -1211,9 +1211,26 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
 	}
 
 	//This is for local display
-	sstrcpy(msg, NetPlay.players[selectedPlayer].name);		// name
-	sstrcat(msg, ": ");						// seperator
-	sstrcat(msg, (normal?curStr:display));						// add message
+	if (curStr[0] == '/') /*Allow for true /me messages.*/
+	{
+		if (!strncmp("/me ", curStr, 4))
+		{
+			curStr += 4;
+		}
+		else /*Give choice of / or /me.*/
+		{
+			++curStr;
+		}
+		
+		snprintf(msg, MAX_CONSOLE_STRING_LENGTH, " » %s %s « ", /*8-bit woes.*/
+		NetPlay.players[selectedPlayer].name, (normal?curStr:display));
+	}
+	else
+	{
+		sstrcpy(msg, NetPlay.players[selectedPlayer].name);		// name
+		sstrcat(msg, ": ");						// seperator
+		sstrcat(msg, (normal?curStr:display));						// add message
+	}
 
 	addConsoleMessage(msg, DEFAULT_JUSTIFY, selectedPlayer);	// display
 
