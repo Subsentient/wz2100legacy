@@ -57,6 +57,8 @@ typedef enum
 	CLI_SAVEGAME,
 	CLI_USAGE,
 	CLI_WINDOW,
+	CLI_MASTERSERVER,
+	CLI_MASTERSERVER_PORT,
 	CLI_VERSION,
 	CLI_RESOLUTION,
 	CLI_SHADOWS,
@@ -92,6 +94,9 @@ static const struct poptOption* getOptionsTable(void)
 		{ "usage",      '\0', POPT_ARG_NONE
 		          | POPT_ARGFLAG_DOC_HIDDEN,   NULL, CLI_USAGE,      NULL,                                    NULL, },
 		{ "window",     '\0', POPT_ARG_NONE,   NULL, CLI_WINDOW,     N_("Play in windowed mode"),             NULL },
+		{ "masterserver",'\0', POPT_ARG_STRING, NULL, CLI_MASTERSERVER, N_("Set IP or domain to use for the lobby server."), N_("masterserver") },
+		{ "masterserver-port",'\0', POPT_ARG_STRING, NULL, CLI_MASTERSERVER_PORT, N_("Set port number for the lobby server. Default is 9990."), N_("e.g. 4444") },
+
 		{ "version",    '\0', POPT_ARG_NONE,   NULL, CLI_VERSION,    N_("Show version information and exit"), NULL },
 		{ "resolution", '\0', POPT_ARG_STRING, NULL, CLI_RESOLUTION, N_("Set the resolution to use"),         N_("WIDTHxHEIGHT") },
 		{ "shadows",    '\0', POPT_ARG_NONE,   NULL, CLI_SHADOWS,    N_("Enable shadows"),                    NULL },
@@ -478,6 +483,48 @@ bool ParseCommandLine(int argc, const char** argv)
 			case CLI_SELFTEST:
 				selfTest = true;
 				break;
+			case CLI_MASTERSERVER:
+			{
+				//Allow us to set the lobby server from the CLI.
+				const char *ServerVictory = "Using %s as masterserver.\n";
+				char OutMsg[512];
+				
+				token = poptGetOptArg(poptCon);
+				
+				if (token == NULL)
+				{
+					puts("Bad lobby server IP or domain provided.");
+					return false;
+				}
+				
+				snprintf(OutMsg, 512, ServerVictory, token);
+				debug(LOG_INFO, OutMsg);
+				
+				NETsetMasterserverName(token);
+				break;
+			}
+			case CLI_MASTERSERVER_PORT:
+			{
+				const char *PortVictory = "Using %s as masterserver port number.\n";
+				char OutMsg[512];
+				/* ^ This is OK since it's at the beginning of a block. ^ 
+				 * -Subsentient*/
+				
+				//Allow us to set the lobby server port as well.
+				token = poptGetOptArg(poptCon);
+				
+				if (token == NULL)
+				{
+					puts("Bad lobby server port provided.");
+					return false;
+				}
+				
+				snprintf(OutMsg, 512, PortVictory, token);
+				debug(LOG_INFO, OutMsg);
+				
+				NETsetMasterserverPort(atoi(token));
+				break;
+			}
 		};
 	}
 
