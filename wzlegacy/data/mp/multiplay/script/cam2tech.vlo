@@ -3,7 +3,11 @@ run
 {
 
 //ALWAYS MAKE THIS THE SAME AS THE INDEX OF THE LAST ENTRY IN THE camTech[] array
-numCamTech		int 	116
+numCamTech		int 	115
+
+initialPowerCl	int     1000
+initialPowerBa	int     2000
+initialPowerDe	int     3000
 
 camTech	[0]	RESEARCHSTAT	"R-Comp-CommandTurret01"
 camTech	[1]	RESEARCHSTAT	"R-Comp-SynapticLink"
@@ -125,7 +129,6 @@ camTech	[112]	RESEARCHSTAT	"R-Defense-AASite-QuadMg1"
 camTech	[113]	RESEARCHSTAT	"R-Cyborg-Sys-ComEng"
 camTech	[114]	RESEARCHSTAT	"R-Cyborg-Sys-Mechanic"
 camTech	[115]	RESEARCHSTAT	"R-Comp-CommandTurret02"
-camTech	[116]	RESEARCHSTAT	"R-Defense-HardcreteGate" //We need hardcrete gates at T2-3 for god's sake!
 }
 
 

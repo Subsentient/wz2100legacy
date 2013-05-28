@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Interface for the unit movement system
  */
@@ -25,17 +21,40 @@
 #define __INCLUDED_SRC_MOVE_H__
 
 #include "objectdef.h"
-#include "fpath.h"
+
+#define MOVEINACTIVE		0
+#define MOVENAVIGATE		1
+#define MOVETURN			2
+#define MOVEPAUSE			3
+#define MOVEPOINTTOPOINT	4
+#define MOVETURNSTOP		5
+#define MOVETURNTOTARGET	6
+#define MOVEROUTE			7
+#define MOVEHOVER			8
+#define MOVEDRIVE			9
+#define MOVEWAITROUTE		11
+#define MOVESHUFFLE			12
+#define MOVEROUTESHUFFLE	13
+
+/* The base movement speed */
+extern float	baseSpeed;
+
+// The next object that should get the router when a lot of units are
+// in a MOVEROUTE state
+extern DROID	*psNextRouteDroid;
 
 /* Initialise the movement system */
-extern bool moveInitialise(void);
+extern BOOL moveInitialise(void);
 
-/* Set a target location for a droid to move to  - returns a bool based on if there is a path to the destination (true if there is a path)*/
-extern bool moveDroidTo(DROID *psDroid, UDWORD x, UDWORD y, FPATH_MOVETYPE moveType = FMT_MOVE);
+/* Update the base speed for all movement */
+extern void moveUpdateBaseSpeed(void);
 
-/* Set a target location for a droid to move to  - returns a bool based on if there is a path to the destination (true if there is a path)*/
+/* Set a target location for a droid to move to  - returns a BOOL based on if there is a path to the destination (true if there is a path)*/
+extern BOOL moveDroidTo(DROID *psDroid, UDWORD x, UDWORD y);
+
+/* Set a target location for a droid to move to  - returns a BOOL based on if there is a path to the destination (true if there is a path)*/
 // the droid will not join a formation when it gets to the location
-extern bool moveDroidToNoFormation(DROID *psDroid, UDWORD x, UDWORD y, FPATH_MOVETYPE moveType = FMT_MOVE);
+extern BOOL moveDroidToNoFormation(DROID *psDroid, UDWORD x, UDWORD y);
 
 // move a droid directly to a location (used by vtols only)
 extern void moveDroidToDirect(DROID *psDroid, UDWORD x, UDWORD y);
@@ -61,11 +80,9 @@ extern void moveUpdateTracked(DROID *psDroid);
 extern void updateDroidOrientation(DROID *psDroid);
 
 /* audio callback used to kill movement sounds */
-extern bool moveCheckDroidMovingAndVisible( void *psObj );
+extern BOOL moveCheckDroidMovingAndVisible( void *psObj );
 
 // set a vtol to be hovering in the air
 void moveMakeVtolHover( DROID *psDroid );
-
-const char *moveDescription(MOVE_STATUS status);
 
 #endif // __INCLUDED_SRC_MOVE_H__

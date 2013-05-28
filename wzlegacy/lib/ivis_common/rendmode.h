@@ -1,0 +1,56 @@
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
+
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
+// vid.c 0.1 10-01-96.22-11-96
+#ifndef _rendmode_h_
+#define _rendmode_h_
+
+#include "ivisdef.h"
+#include "pieblitfunc.h"
+#include "bitimage.h"
+#include "textdraw.h"
+
+//*************************************************************************
+//patch
+
+#define iV_Line				pie_Line
+#define iV_Box				pie_Box
+#define iV_TransBoxFill			pie_TransBoxFill
+#define iV_DrawImage			pie_ImageFileID
+#define iV_DrawImageRect		pie_ImageFileIDTile
+
+//*************************************************************************
+// polygon flags	b0..b7: col, b24..b31: anim index
+
+#define PIE_NO_CULL			0x00002000
+
+//*************************************************************************
+
+#define REND_SURFACE_UNDEFINED		0
+#define REND_SURFACE_SCREEN		1
+#define REND_SURFACE_USR		2
+
+//*************************************************************************
+
+extern iSurface rendSurface;
+extern iSurface *psRendSurface;
+
+//*************************************************************************
+
+extern void iV_RenderAssign(iSurface *s);
+extern void iV_SurfaceDestroy(iSurface *s);
+extern iSurface *iV_SurfaceCreate(Uint32 flags, int width, int height, int xp, int yp, Uint8 *buffer);
+
+#endif

@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Functions for the display of the Intelligence Map
  */
@@ -42,12 +38,12 @@
 extern MESSAGE			*psCurrentMsg;
 
 /* Add the Intelligence Map widgets to the widget screen */
-//extern bool intAddIntelMap(bool playCurrent);
-extern bool intAddIntelMap(void);
+//extern BOOL intAddIntelMap(BOOL playCurrent);
+extern BOOL intAddIntelMap(void);
 /*Add the 3D world view for the current message */
-extern bool intAddMessageView(MESSAGE *psMessage);
+extern BOOL intAddMessageView(MESSAGE *psMessage);
 /* Remove the Message View from the Intelligence screen */
-extern void intRemoveMessageView(bool animated);
+extern void intRemoveMessageView(BOOL animated);
 
 /* Process return codes from the Intelligence Map */
 extern void intProcessIntelMap(UDWORD id);
@@ -56,7 +52,7 @@ extern void intProcessIntelMap(UDWORD id);
 
 /* rotate the view so looking directly down if forward = true or
  back to previous view if forward = false */
-//extern void intelMapView(bool forward);
+//extern void intelMapView(BOOL forward);
 
 /* Remove the Intelligence Map widgets from the screen */
 extern void intRemoveIntelMap(void);
@@ -82,8 +78,8 @@ extern void resetIntelligencePauseState(void);
 extern void displayImmediateMessage(MESSAGE *psMessage);
 
 // return whether a message is immediate
-extern bool messageIsImmediate(void);
+extern BOOL messageIsImmediate(void);
 /*sets the flag*/
-extern void setMessageImmediate(bool state);
+extern void setMessageImmediate(BOOL state);
 
 #endif	// __INCLUDED_SRC_INTELMAP_H__

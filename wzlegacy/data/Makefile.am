@@ -4,35 +4,35 @@ stamp:
 	touch stamp
 
 %.wzl: $(abs_srcdir)/% stamp
-	(cd $(srcdir)/$(notdir $<) && $(ZIP) -r0 $(ZIP_UPDATE) $(abs_builddir)/$@ $(filter-out stamp,$(filter-out $<,$(^:$</%=%))) -x '*svn*' -x '*Makefile*' -x '*.svg' || [ $$? -eq 12 ] && true) # zip returns 12 on "nothing to do"
+	(cd $< && $(ZIP) -r0 $(ZIP_UPDATE) $(abs_builddir)/$@ $(filter-out stamp,$(filter-out $<,$(^:$</%=%))) -x '*svn*' -x '*Makefile*' || [ $$? -eq 12 ] && true) # zip returns 12 on "nothing to do"
 	$(ZIP) -T $@
 	rm -f stamp
 
 BASELIST = \
-	palette.txt \
 	anims \
 	audio \
+	challenges \
 	components \
 	effects \
 	features \
 	gamedesc.lev \
+	novideo.ogg \
 	images \
 	messages \
 	misc \
+	multiplay \
 	script \
 	sequenceaudio \
 	sequences \
-	shaders\
 	stats \
 	structs \
+	tagdefinitions \
 	texpages \
-	tileset \
 	wrf
 
 PATCHLIST = \
 	addon.lev \
 	anims \
-	challenges \
 	components \
 	effects \
 	messages \
@@ -51,6 +51,6 @@ $(PATCHARCHIVE): $(PATCHLIST:%=$(abs_srcdir)/$(basename $(PATCHARCHIVE))/%)
 
 nodist_pkgdata_DATA =  $(BASEARCHIVE) $(PATCHARCHIVE)
 
-dist-hook: $(BASEARCHIVE) $(PATCHARCHIVE)
+dist-hook:
 	$(UNZIP) -u $(BASEARCHIVE) -d $(DESTDIR)$(distdir)/$(basename $(BASEARCHIVE))
 	$(UNZIP) -u $(PATCHARCHIVE) -d $(DESTDIR)$(distdir)/$(basename $(PATCHARCHIVE))

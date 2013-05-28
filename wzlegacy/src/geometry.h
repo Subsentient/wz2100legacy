@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_GEOMETRY_H__
 #define __INCLUDED_SRC_GEOMETRY_H__
@@ -24,16 +20,19 @@
 #include "map.h"
 #include "hci.h"
 
-struct QUAD
+typedef struct _t_quad
 {
 	Vector2i coords[4];
-};
+} QUAD;
 
-extern uint16_t calcDirection(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
-bool inQuad(const Vector2i *pt, const QUAD *quad);
-Vector2i positionInQuad(Vector2i const &pt, QUAD const &quad);
-extern DROID *getNearestDroid( UDWORD x, UDWORD y, bool bSelected );
-extern bool droidOnScreen( DROID *psDroid, SDWORD tolerance );
+extern UDWORD adjustDirection( SDWORD present, SDWORD difference );
+extern SDWORD calcDirection( UDWORD x0, UDWORD y0, UDWORD x1, UDWORD y1 );
+extern void initBulletTable( void );
+extern int inQuad( const Vector2i *pt, const QUAD *quad );
+extern DROID *getNearestDroid( UDWORD x, UDWORD y, BOOL bSelected );
+extern BOOL droidOnScreen( DROID *psDroid, SDWORD tolerance );
+
+extern unsigned int WZ_DECL_CONST dirtyHypot(int deltaX, int deltaY);
 
 static inline STRUCTURE *getTileStructure(UDWORD x, UDWORD y)
 {
@@ -55,7 +54,6 @@ static inline FEATURE *getTileFeature(UDWORD x, UDWORD y)
 	return NULL;
 }
 
-/// WARNING: Returns NULL if tile not visible to selectedPlayer.
 static inline BASE_OBJECT *getTileOccupier(UDWORD x, UDWORD y)
 {
 	MAPTILE *psTile = mapTile(x,y);

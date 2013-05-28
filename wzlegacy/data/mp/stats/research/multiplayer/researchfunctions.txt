@@ -1,4 +1,3 @@
-Research ID,Function ID,unused
 R-Struc-PowerModuleMk1,Struc-PowerModuleMk1,225
 R-Vehicle-Engine01,Vehicle-Engine01,381
 R-Vehicle-Engine02,Vehicle-Engine02,382

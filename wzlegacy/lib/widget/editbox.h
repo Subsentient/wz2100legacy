@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Definitions for the edit box functions.
  */
@@ -26,7 +22,7 @@
 
 #include "widget.h"
 #include "widgbase.h"
-#include "lib/ivis_opengl/textdraw.h"
+#include "lib/ivis_common/textdraw.h"
 #include "lib/framework/utf.h"
 
 /* Edit Box states */
@@ -37,42 +33,50 @@
 #define WEDBS_HILITE	0x0010		//
 #define WEDBS_DISABLE   0x0020		// disable button from selection
 
-struct W_EDITBOX : public WIDGET
+typedef struct _w_editbox
 {
-	W_EDITBOX(W_EDBINIT const *init);
-
-	void run(W_CONTEXT *psContext);
-	void initialise();  // Moves the cursor to the end.
-	void setString(char const *utf8);
-	void clicked(W_CONTEXT *psContext, WIDGET_KEY);
-	void focusLost(W_SCREEN *psScreen);
+	/* The common widget data */
+	WIDGET_BASE;
 
 	UDWORD		state;						// The current edit box state
-	QString         aText;                  // The text in the edit box
-	iV_fonts        FontID;
+	utf_32_char	*aText;			// The text in the edit box
+	size_t		aTextAllocated;		// Allocated bytes.
+	enum iV_fonts FontID;
 	int 		blinkOffset;		// Cursor should be visible at time blinkOffset.
-	int             insPos;                 // The insertion point in the buffer
-	int             printStart;					// Where in the string appears at the far left of the box
-	int             printChars;					// The number of characters appearing in the box
-	int             printWidth;					// The pixel width of the characters in the box
+	UWORD		insPos;						// The insertion point in the buffer
+	UWORD		printStart;					// Where in the string appears at the far left of the box
+	UWORD		printChars;					// The number of characters appearing in the box
+	UWORD		printWidth;					// The pixel width of the characters in the box
 	WIDGET_DISPLAY	pBoxDisplay;			// Optional callback to display the edit box background.
 	FONT_DISPLAY pFontDisplay;				// Optional callback to display a string.
 	SWORD HilightAudioID;					// Audio ID for form clicked sound
 	SWORD ClickedAudioID;					// Audio ID for form hilighted sound
 	WIDGET_AUDIOCALLBACK AudioCallback;		// Pointer to audio callback function
-
-private:
-	void delCharRight();
-	void delCharLeft();
-	void insertChar(QChar ch);
-	void overwriteChar(QChar ch);
-	void fitStringStart();  // Calculate how much of the start of a string can fit into the edit box
-	void fitStringEnd();
-	void setCursorPosPixels(int xPos);
-};
+} W_EDITBOX;
 
 /* Create an edit box widget data structure */
 extern W_EDITBOX* editBoxCreate(const W_EDBINIT* psInit);
+
+/* Free the memory used by an edit box */
+extern void editBoxFree(W_EDITBOX *psWidget);
+
+/* Initialise an edit box widget */
+extern void editBoxInitialise(W_EDITBOX *psWidget);
+
+/* Set the current string for the edit box */
+extern void editBoxSetString(W_EDITBOX *psWidget, const char *pText);
+
+/* Respond to loss of focus */
+extern void editBoxFocusLost(W_SCREEN* psScreen, W_EDITBOX *psWidget);
+
+/* Run an edit box widget */
+extern void editBoxRun(W_EDITBOX *psWidget, W_CONTEXT *psContext);
+
+/* Respond to a mouse click */
+extern void editBoxClicked(W_EDITBOX *psWidget, W_CONTEXT *psContext);
+
+/* Respond to a mouse button up */
+extern void editBoxReleased(W_EDITBOX *psWidget);
 
 /* Respond to a mouse moving over an edit box */
 extern void editBoxHiLite(W_EDITBOX *psWidget);

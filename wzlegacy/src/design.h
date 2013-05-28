@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_DESIGN_H__
 #define __INCLUDED_SRC_DESIGN_H__
@@ -55,12 +51,9 @@
 #define IDDES_COMMAND		5026		// The command button for the Component form
 
 #define	IDDES_PARTFORM		5027		// Part buttons form
+/* Watermelon:added define for TURRET_A,TURRET_B */
 #define IDDES_WEAPONS_A		5028		// The weapon TURRET_A button for the Component form (right)
 #define IDDES_WEAPONS_B		5029		// The weapon TURRET_B button for the Component form (right)
-#define IDDES_TABSCRL_LEFT	5030		// left scroll button
-#define IDDES_TABSCRL_RIGHT	5031		// right scroll button
-
-#define IDDES_STOREBUTTON	5905		// Stored template button
 
 /* Design screen bar graph IDs */
 #define IDDES_BODYARMOUR_K	5100		// The body armour bar graph for kinetic weapons
@@ -131,16 +124,34 @@
 #define	IDDES_SYSTEMBUTTON		5900		// System button
 #define	IDDES_BODYBUTTON		5901		// Body button
 #define	IDDES_PROPBUTTON		5902		// Propulsion button
+//Watermelon:added 'uid' for weaponA,weaponB
 #define IDDES_WPABUTTON			5903		// WeaponA button
 #define IDDES_WPBBUTTON			5904		// WeaponB button
 
-extern bool intAddDesign( bool bShowCentreScreen );
+extern BOOL intAddDesign( BOOL bShowCentreScreen );
+/* Add the droid template buttons to a form */
+BOOL intAddTemplateButtons(UDWORD formID, UDWORD formWidth, UDWORD formHeight, UDWORD butWidth,
+                           UDWORD butHeight, UDWORD gap, DROID_TEMPLATE *psSelected);
+void intDisplayTemplateButton(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+
 extern void intRemoveDesign(void);
 extern void intProcessDesign(UDWORD id);
 extern void intRunDesign(void);
 
+extern void intDisplayDesignForm(struct _widget *psWidget, UDWORD xOffset,
+									UDWORD yOffset, PIELIGHT *pColours);
+
+extern void SetDesignWidgetName(char *Name);
+
+/*sets which states need to be paused when the design screen is up*/
+extern void setDesignPauseState(void);
+/*resets the pause states */
+extern void resetDesignPauseState(void);
+
+extern void reverseTemplateList(DROID_TEMPLATE **ppsList);
+
 extern const char *GetDefaultTemplateName(DROID_TEMPLATE *psTemplate);
 
-bool intValidTemplate(DROID_TEMPLATE *psTempl, const char *newName, bool complain = false);
+extern BOOL intValidTemplate(DROID_TEMPLATE *psTempl, const char *newName);
 
 #endif // __INCLUDED_SRC_DESIGN_H__

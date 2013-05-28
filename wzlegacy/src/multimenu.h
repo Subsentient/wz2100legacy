@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Definition for in game,multiplayer, interface.
  */
@@ -29,26 +25,26 @@
 
 // requester
 extern void		addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD id,UBYTE mapCam, UBYTE numPlayers);
-extern bool		multiRequestUp;
+extern BOOL		multiRequestUp;
 extern W_SCREEN *psRScreen;			// requester stuff.
-bool runMultiRequester(UDWORD id, UDWORD *mode, char *chosen, LEVEL_DATASET **chosenValue, bool *isHoverPreview);
+extern BOOL		runMultiRequester(UDWORD id,UDWORD *contextmode, char *chosen,UDWORD *chosenValue);
 extern void		displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
 
 // multimenu
 extern void		intProcessMultiMenu		(UDWORD id);
-extern bool		intRunMultiMenu			(void);
-extern bool		intCloseMultiMenu		(void);
+extern BOOL		intRunMultiMenu			(void);
+extern BOOL		intCloseMultiMenu		(void);
 extern void		intCloseMultiMenuNoAnim	(void);
-extern bool		intAddMultiMenu			(void);
+extern BOOL		intAddMultiMenu			(void);
 
-extern bool		addDebugMenu			(bool bAdd);
+extern BOOL		addDebugMenu			(BOOL bAdd);
 extern void		intCloseDebugMenuNoAnim	(void);
 extern void		setDebugMenuEntry(char *entry, SDWORD index);
 
-extern bool		MultiMenuUp;
-extern bool		ClosingMultiMenu;
+extern BOOL		MultiMenuUp;
+extern BOOL		ClosingMultiMenu;
 
-extern bool		DebugMenuUp;
+extern BOOL		DebugMenuUp;
 
 extern UDWORD		current_numplayers;
 extern UDWORD		current_tech;

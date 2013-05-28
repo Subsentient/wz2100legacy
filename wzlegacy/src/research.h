@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  structures required for research stats
  */
@@ -67,10 +63,11 @@ RID_MAXRID
 
 
 /* The store for the research stats */
-extern std::vector<RESEARCH> asResearch;
+extern		RESEARCH				*asResearch;
+extern		UDWORD					numResearch;
 
 //List of pointers to arrays of PLAYER_RESEARCH[numResearch] for each player
-extern std::vector<PLAYER_RESEARCH> asPlayerResList[MAX_PLAYERS];
+extern PLAYER_RESEARCH*		asPlayerResList[MAX_PLAYERS];
 
 //used for Callbacks to say which topic was last researched
 extern RESEARCH				*psCBLastResearch;
@@ -82,16 +79,16 @@ extern UDWORD	aDefaultSensor[MAX_PLAYERS];
 extern UDWORD	aDefaultECM[MAX_PLAYERS];
 extern UDWORD	aDefaultRepair[MAX_PLAYERS];
 
-//extern bool loadResearch(void);
-extern bool loadResearch(const char *pResearchData, UDWORD bufferSize);
+//extern BOOL loadResearch(void);
+extern BOOL loadResearch(const char *pResearchData, UDWORD bufferSize);
 //Load the pre-requisites for a research list
-extern bool loadResearchPR(const char *pPRData, UDWORD bufferSize);
+extern BOOL loadResearchPR(const char *pPRData, UDWORD bufferSize);
 //Load the artefacts for a research list
-extern bool loadResearchArtefacts(const char *pArteData, UDWORD bufferSize, UDWORD listNumber);
+extern BOOL loadResearchArtefacts(const char *pArteData, UDWORD bufferSize, UDWORD listNumber);
 //Load the pre-requisites for a research list
-extern bool loadResearchFunctions(const char *pFunctionData, UDWORD bufferSize);
+extern BOOL loadResearchFunctions(const char *pFunctionData, UDWORD bufferSize);
 //Load the Structures for a research list
-extern bool loadResearchStructures(const char *pStructData, UDWORD bufferSize, UDWORD listNumber);
+extern BOOL loadResearchStructures(const char *pStructData, UDWORD bufferSize, UDWORD listNumber);
 
 /*function to check what can be researched for a particular player at any one
   instant. Returns the number to research*/
@@ -102,53 +99,50 @@ extern UWORD fillResearchList(UWORD *plist, UDWORD playerID, UWORD topic,
                               UWORD limit);
 
 /* process the results of a completed research topic */
-extern void researchResult(UDWORD researchIndex, UBYTE player, bool bDisplay, STRUCTURE *psResearchFacility, bool bTrigger);
+extern void researchResult(UDWORD researchIndex, UBYTE player, BOOL bDisplay, STRUCTURE *psResearchFacility);
 
 //this just inits all the research arrays
-extern bool ResearchShutDown(void);
+extern BOOL ResearchShutDown(void);
 //this free the memory used for the research
 extern void ResearchRelease(void);
 
 /* For a given view data get the research this is related to */
-extern RESEARCH * getResearch(const char *pName);
+extern RESEARCH * getResearch(const char *pName, BOOL resName);
 
 /* sets the status of the topic to cancelled and stores the current research
    points accquired */
-extern void cancelResearch(STRUCTURE *psBuilding, QUEUE_MODE mode);
+extern void cancelResearch(STRUCTURE *psBuilding);
 
 /* For a given view data get the research this is related to */
-struct VIEWDATA;
-RESEARCH *getResearchForMsg(VIEWDATA *pViewData);
+extern RESEARCH * getResearchForMsg(struct _viewdata *pViewData);
 
 /* Sets the 'possible' flag for a player's research so the topic will appear in
 the research list next time the Research Facilty is selected */
-extern bool enableResearch(RESEARCH *psResearch, UDWORD player);
+extern BOOL enableResearch(RESEARCH *psResearch, UDWORD player);
 
 /*find the last research topic of importance that the losing player did and
 'give' the results to the reward player*/
 extern void researchReward(UBYTE losingPlayer, UBYTE rewardPlayer);
 
 /*check to see if any research has been completed that enables self repair*/
-extern bool selfRepairEnabled(UBYTE player);
+extern BOOL selfRepairEnabled(UBYTE player);
 
 extern SDWORD	mapRIDToIcon( UDWORD rid );
 extern SDWORD	mapIconToRID(UDWORD iconID);
-extern bool checkResearchStats(void);
+extern BOOL checkResearchStats(void);
 
 /*puts research facility on hold*/
-extern void holdResearch(STRUCTURE *psBuilding, QUEUE_MODE mode);
+extern void holdResearch(STRUCTURE *psBuilding);
 /*release a research facility from hold*/
-extern void releaseResearch(STRUCTURE *psBuilding, QUEUE_MODE mode);
+extern void releaseResearch(STRUCTURE *psBuilding);
 
 /*checks the stat to see if its of type wall or defence*/
-extern bool wallDefenceStruct(STRUCTURE_STATS *psStats);
+extern BOOL wallDefenceStruct(STRUCTURE_STATS *psStats);
 
 extern void enableSelfRepair(UBYTE player);
 
 void CancelAllResearch(UDWORD pl);
 
-extern bool researchInitVars(void);
-
-bool researchAvailable(int inc, int playerID);
+extern BOOL researchInitVars(void);
 
 #endif // __INCLUDED_SRC_RESEARCH_H__

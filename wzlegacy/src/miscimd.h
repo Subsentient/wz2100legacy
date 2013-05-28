@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_MISCIMD_H__
 #define __INCLUDED_SRC_MISCIMD_H__
@@ -25,8 +21,9 @@
 #include "structuredef.h"
 #include "messagedef.h"
 
-extern bool initMiscImds( void );
+extern BOOL initMiscImds( void );
 extern iIMDShape	*getImdFromIndex(UDWORD	index);
+extern iIMDShape	*getRandomWreckageImd( void );
 extern iIMDShape	*getRandomDebrisImd( void );
 
 #define	MAX_DEBRIS		5
@@ -48,8 +45,8 @@ extern iIMDShape	*waterImd;
 extern iIMDShape	*droidDamageImd;
 extern iIMDShape	*smallSteamImd;
 extern iIMDShape	*plasmaImd;
-#define MAX_FACTORY_FLAG_IMDS 32
-extern iIMDShape	*pAssemblyPointIMDs[NUM_FLAG_TYPES][MAX_FACTORY_FLAG_IMDS];
+//extern iIMDShape	*pAssemblyPointIMDs[NUM_FACTORY_TYPES][MAX_FACTORY];
+extern iIMDShape	*pAssemblyPointIMDs[NUM_FLAG_TYPES][MAX_FACTORY];
 extern iIMDShape	*blipImd;
 extern iIMDShape	*shadowImd;
 extern iIMDShape	*transporterShadowImd;
@@ -70,11 +67,11 @@ extern iIMDShape	*landingImd;
 extern iIMDShape	*shockImd;
 
 /* An imd entry */
-struct MISC_IMD
+typedef struct	_misc_imd
 {
 iIMDShape	*pImd;
 const char	*pName;
-};
+} MISC_IMD;
 
 
 enum {

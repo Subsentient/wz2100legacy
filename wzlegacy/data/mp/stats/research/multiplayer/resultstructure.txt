@@ -1,4 +1,3 @@
-Research ID,Structure ID,unused,unused
 R-Defense-AA-Laser,P0-AASite-Laser,0,340
 R-Defense-AASite-QuadBof,AASite-QuadBof,0,188
 R-Defense-AASite-QuadMg1,AASite-QuadMg1,0,189
@@ -11,7 +10,6 @@ R-Defense-GuardTower-ATMiss,GuardTower-ATMiss,0,219
 R-Defense-GuardTower-Rail1,GuardTower-Rail1,0,220
 R-Defense-HardcreteWall,A0HardcreteMk1CWall,0,97
 R-Defense-HardcreteWall,A0HardcreteMk1Wall,0,93
-R-Defense-HardcreteGate,A0HardcreteMk1Gate,0,666
 R-Defense-HeavyLas,Emplacement-HeavyLaser,Emplacement-PrisLas,327
 R-Defense-Howitzer,Emplacement-Howitzer105,0,134
 R-Defense-Howitzer-Incenediary,Emplacement-Howitzer-Incenediary,0,323
@@ -26,6 +24,7 @@ R-Defense-MdArtMissile,Emplacement-MdART-pit,0,270
 R-Defense-MortarPit,Emplacement-MortarPit01,0,142
 R-Defense-MortarPit-Incenediary,Emplacement-MortarPit-Incenediary,0,325
 R-Defense-MRL,Emplacement-MRL-pit,0,263
+R-Defense-Pillbox-RotMG,Pillbox-RotMG,0,290
 R-Defense-Pillbox01,PillBox1,0,126
 R-Defense-Pillbox04,PillBox4,0,130
 R-Defense-Pillbox05,PillBox5,0,158
@@ -36,6 +35,7 @@ R-Defense-PrisLas,Emplacement-PrisLas,0,214
 R-Defense-PulseLas,GuardTower-BeamLas,0,268
 R-Defense-Rail2,Emplacement-Rail2,0,269
 R-Defense-Rail3,Emplacement-Rail3,0,221
+R-Defense-RotCannon,Wall-VulcanCan,0,198
 R-Defense-RotHow,Emplacement-RotHow,0,186
 R-Defense-RotMG,Pillbox-RotMG,PillBox1,290
 R-Defense-RotMor,Emplacement-RotMor,0,185

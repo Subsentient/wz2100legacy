@@ -1,4 +1,3 @@
-Research ID,Structure ID,unused
 R-Defense-Tower01,A0CommandCentre,0
 R-Defense-Tower06,A0CommandCentre,0
 R-Defense-Pillbox01,A0CommandCentre,0
@@ -25,6 +24,7 @@ R-Defense-Howitzer,A0CommandCentre,0
 R-Defense-MortarPit,A0CommandCentre,0
 R-Defense-Wall-RotMg,A0CommandCentre,0
 R-Defense-Wall-VulcanCan,A0CommandCentre,0
+R-Defense-WallTower-HvyFlamer,A0CommandCentre,0
 R-Defense-WallTower-PulseLas,A0CommandCentre,0
 R-Defense-WallTower-Rail2,A0CommandCentre,0
 R-Defense-HvyFlamer,A0CommandCentre,0
@@ -33,6 +33,7 @@ R-Defense-SamSite2,A0CommandCentre,0
 R-Defense-HvyHowitzer,A0CommandCentre,0
 R-Defense-MRL,A0CommandCentre,0
 R-Defense-RotMG,A0CommandCentre,0
+R-Defense-RotCannon,A0CommandCentre,0
 R-Defense-HvyMor,A0CommandCentre,0
 R-Defense-IDFRocket,A0CommandCentre,0
 R-Defense-HvyA-Trocket,A0CommandCentre,0
@@ -48,6 +49,7 @@ R-Defense-WallTower-A-Tmiss,A0CommandCentre,0
 R-Defense-WallTower-Rail3,A0CommandCentre,0
 R-Defense-MassDriver,A0CommandCentre,0
 R-Defense-Super-Cannon,A0CommandCentre,0
+R-Defense-Pillbox-RotMG,A0CommandCentre,0
 R-Defense-Cannon6,A0CommandCentre,0
 R-Defense-HeavyLas,A0CommandCentre,0
 R-Wpn-LasSat,A0CommandCentre,0

@@ -1,31 +1,31 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_FRONTEND_H__
 #define __INCLUDED_SRC_FRONTEND_H__
 
 #include "lib/widget/widgbase.h"
 
-// determines which option screen to use. when in GS_TITLE_SCREEN mode.
-enum tMode
+#ifdef __cplusplus
+extern "C"
 {
+#endif //__cplusplus
+
+// determines which option screen to use. when in GS_TITLE_SCREEN mode.
+typedef enum _title_mode {
 	TITLE,			// 0 intro mode
 	SINGLE,			// 1 single player menu
 	MULTI,			// 2 multiplayer menu
@@ -47,7 +47,7 @@ enum tMode
 	AUDIO_OPTIONS,          // 18 audio options menu
 	VIDEO_OPTIONS,          // 19 video options menu
 	MOUSE_OPTIONS,          // 20 mouse options menu
-};
+} tMode;
 
 extern tMode titleMode;					// the global case
 extern tMode lastTitleMode;
@@ -56,20 +56,20 @@ extern tMode lastTitleMode;
 
 extern char	aLevelName[MAX_LEVEL_NAME_SIZE+1];	//256];			// vital! the wrf file to use.
 
-extern bool	bLimiterLoaded;
+extern BOOL	bLimiterLoaded;
 
 
 void changeTitleMode(tMode mode);
-bool runTitleMenu(void);
-bool runSinglePlayerMenu(void);
-bool runMultiPlayerMenu(void);
-bool runGameOptionsMenu(void);
-bool runOptionsMenu(void);
-bool runGraphicsOptionsMenu(void);
-bool runAudioOptionsMenu(void);
-bool runVideoOptionsMenu(void);
-bool runMouseOptionsMenu(void);
-bool runTutorialMenu(void);
+BOOL runTitleMenu(void);
+BOOL runSinglePlayerMenu(void);
+BOOL runMultiPlayerMenu(void);
+BOOL runGameOptionsMenu(void);
+BOOL runOptionsMenu(void);
+BOOL runGraphicsOptionsMenu(void);
+BOOL runAudioOptionsMenu(void);
+BOOL runVideoOptionsMenu(void);
+BOOL runMouseOptionsMenu(void);
+BOOL runTutorialMenu(void);
 
 void addTopForm(void);
 void addBottomForm(void);
@@ -84,15 +84,15 @@ void addFEAISlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, U
 
 void displayTextOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
 
-bool CancelPressed(void);
+BOOL CancelPressed(void);
 
 
 // ////////////////////////////////////////////////////////////////////////////
 // defines.
 
-#define FRONTEND_TOPFORMX		50
+#define FRONTEND_TOPFORMX		80
 #define FRONTEND_TOPFORMY		10
-#define FRONTEND_TOPFORMW		540
+#define FRONTEND_TOPFORMW		480
 #define FRONTEND_TOPFORMH		150
 
 
@@ -102,9 +102,9 @@ bool CancelPressed(void);
 #define FRONTEND_TOPFORM_WIDEH	150
 
 
-#define FRONTEND_BOTFORMX		FRONTEND_TOPFORMX
+#define FRONTEND_BOTFORMX		80
 #define FRONTEND_BOTFORMY		170
-#define FRONTEND_BOTFORMW		FRONTEND_TOPFORMW
+#define FRONTEND_BOTFORMW		480
 #define FRONTEND_BOTFORMH		300
 
 
@@ -113,37 +113,36 @@ bool CancelPressed(void);
 
 #define FRONTEND_POS1X			20				// button positions
 #define FRONTEND_POS1Y			10
-#define FRONTEND_POS1M			340
+#define FRONTEND_POS1M			290
 
 #define FRONTEND_POS2X			20
 #define FRONTEND_POS2Y			50
-#define FRONTEND_POS2M			340
+#define FRONTEND_POS2M			290
 
 #define FRONTEND_POS3X			20
 #define FRONTEND_POS3Y			90
-#define FRONTEND_POS3M			340
+#define FRONTEND_POS3M			290
 
 #define FRONTEND_POS4X			20
 #define FRONTEND_POS4Y			130
-#define FRONTEND_POS4M			340
+#define FRONTEND_POS4M			290
 
 #define FRONTEND_POS5X			20
 #define FRONTEND_POS5Y			170
-#define FRONTEND_POS5M			340
+#define FRONTEND_POS5M			290
 
 #define FRONTEND_POS6X			20
 #define FRONTEND_POS6Y			210
-#define FRONTEND_POS6M			340
+#define FRONTEND_POS6M			290
 
 #define FRONTEND_POS7X			20
 #define FRONTEND_POS7Y			250
-#define FRONTEND_POS7M			340
+#define FRONTEND_POS7M			290
 
 #define FRONTEND_POS8X			-30				// special case for our hyperlink
 #define FRONTEND_POS8Y			278
 
-
-#define FRONTEND_SIDEX			24
+#define FRONTEND_SIDEX			44
 #define FRONTEND_SIDEY			FRONTEND_BOTFORMY
 #define FRONTEND_LOGOW			248
 #define FRONTEND_LOGOH			118
@@ -172,8 +171,7 @@ enum
 	FRONTEND_QUIT,
 	FRONTEND_FASTPLAY,					//tutorial menu option
 	FRONTEND_NEWGAME		= 20200,	// single player (menu)
-	FRONTEND_LOADGAME_MISSION,
-	FRONTEND_LOADGAME_SKIRMISH,
+	FRONTEND_LOADGAME,
 	FRONTEND_SKIRMISH,
 	FRONTEND_CHALLENGES,
 	FRONTEND_HOST			= 20300,	//multiplayer menu options
@@ -186,8 +184,6 @@ enum
 	FE_P5,								// player 5 buton
 	FE_P6,								// player 6 buton
 	FE_P7,								// player 7 buton
-	FE_MP_PR,  // Multiplayer player random button
-	FE_MP_PMAX = FE_MP_PR + MAX_PLAYERS_IN_GUI,  // Multiplayer player blah button
 
 	FRONTEND_GAMEOPTIONS = 21000,           // Game Options menu
 	FRONTEND_LANGUAGE,
@@ -195,8 +191,6 @@ enum
 	FRONTEND_RADAR,
 	FRONTEND_RADAR_R,
 	FRONTEND_COLOUR,
-	FRONTEND_COLOUR_CAM,
-	FRONTEND_COLOUR_MP,
 	FRONTEND_DIFFICULTY,
 	FRONTEND_DIFFICULTY_R,
 	FRONTEND_SCROLLSPEED_SL,
@@ -213,6 +207,8 @@ enum
 	FRONTEND_SUBTITLES_R,
 	FRONTEND_SHADOWS,
 	FRONTEND_SHADOWS_R,
+	FRONTEND_FOGTYPE,
+	FRONTEND_FOGTYPE_R,
 
 	FRONTEND_AUDIOOPTIONS = 23000,          // Audio Options Menu
 	FRONTEND_3D_FX,						// 3d sound volume
@@ -232,12 +228,10 @@ enum
 	FRONTEND_TAKESEFFECT,
 	FRONTEND_VSYNC,
 	FRONTEND_VSYNC_R,
-	FRONTEND_FSAA,
-	FRONTEND_FSAA_R,
-	FRONTEND_SHADERS,
-	FRONTEND_SHADERS_R,
 
 	FRONTEND_MOUSEOPTIONS = 25000,          // Mouse Options Menu
+	FRONTEND_CURSORMODE,
+	FRONTEND_CURSORMODE_R,
 	FRONTEND_TRAP,
 	FRONTEND_TRAP_R,
 	FRONTEND_MFLIP,
@@ -251,5 +245,9 @@ enum
 	FRONTEND_NOGAMESAVAILABLE = 31666	// Used when no games are available in lobby
 
 };
+
+#ifdef __cplusplus
+}
+#endif //__cplusplus
 
 #endif // __INCLUDED_SRC_FRONTEND_H__

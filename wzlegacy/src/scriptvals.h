@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Common functions for the scriptvals loader
  */
@@ -30,58 +26,58 @@
 #include <physfs.h>
 
 // The possible types of initialisation values
-enum INIT_TYPE
+typedef enum _init_type
 {
 	IT_BOOL,
 	IT_INDEX,
 	IT_STRING,
-};
+} INIT_TYPE;
 
 
 // All the possible values that may be used to initialise a variable
-struct VAR_INIT
+typedef struct _var_init
 {
 	INIT_TYPE	type;
 	SDWORD		index;
 	char		*pString;
-};
+} VAR_INIT;
 
 
 // store array access data
-struct ARRAY_INDEXES
+typedef struct _array_indexes
 {
 	SDWORD		dimensions;
 	SDWORD		elements[VAR_MAX_DIMENSIONS];
-};
+} ARRAY_INDEXES;
 
 /* A simple error reporting routine */
 
-extern void scrv_error(const char* fmt, ...);
+extern void scrv_error(const char* fmt, ...) WZ_DECL_FORMAT(printf, 1, 2);
 
 // Lookup a type
-extern bool scrvLookUpType(const char *pIdent, INTERP_TYPE *pType);
+extern BOOL scrvLookUpType(const char *pIdent, INTERP_TYPE *pType);
 
 // Lookup a variable identifier
-extern bool scrvLookUpVar(const char *pIdent, UDWORD *pIndex);
+extern BOOL scrvLookUpVar(const char *pIdent, UDWORD *pIndex);
 
 // Lookup an array identifier
-extern bool scrvLookUpArray(const char *pIdent, UDWORD *pIndex);
+extern BOOL scrvLookUpArray(const char *pIdent, UDWORD *pIndex);
 
 // Whether the script is run immediately or stored for later use
-enum SCRV_TYPE
+typedef enum _scrv_type
 {
 	SCRV_EXEC,
 	SCRV_NOEXEC,
-};
+} SCRV_TYPE;
 
 // Add a new context to the list
-extern bool scrvAddContext(char *pID, SCRIPT_CONTEXT *psContext, SCRV_TYPE type);
+extern BOOL scrvAddContext(char *pID, SCRIPT_CONTEXT *psContext, SCRV_TYPE type);
 
 // Get a context from the list
-extern bool scrvGetContext(char *pID, SCRIPT_CONTEXT **ppsContext);
+extern BOOL scrvGetContext(char *pID, SCRIPT_CONTEXT **ppsContext);
 
 // Add a new base pointer variable
-extern bool scrvAddBasePointer(INTERP_VAL *psVal);
+extern BOOL scrvAddBasePointer(INTERP_VAL *psVal);
 
 // Check all the base pointers to see if they have died
 extern void scrvUpdateBasePointers(void);
@@ -90,13 +86,13 @@ extern void scrvUpdateBasePointers(void);
 extern void scrvReleaseBasePointer(INTERP_VAL *psVal);
 
 // create a group structure for a ST_GROUP variable
-extern bool scrvNewGroup(INTERP_VAL *psVal);
+extern BOOL scrvNewGroup(INTERP_VAL *psVal);
 
 // release a ST_GROUP variable
 extern void scrvReleaseGroup(INTERP_VAL *psVal);
 
 // Initialise the script value module
-extern bool scrvInitialise(void);
+extern BOOL scrvInitialise(void);
 
 // Shut down the script value module
 extern void scrvShutDown(void);
@@ -105,9 +101,9 @@ extern void scrvShutDown(void);
 extern void scrvReset(void);
 
 // Load a script value file
-extern bool scrvLoad(PHYSFS_file* fileHandle);
+extern BOOL scrvLoad(PHYSFS_file* fileHandle);
 
 // Link any object types to the actual pointer values
-//extern bool scrvLinkValues(void);
+//extern BOOL scrvLinkValues(void);
 
 #endif // __INCLUDED_SRC_SCRIPTVALS_H__

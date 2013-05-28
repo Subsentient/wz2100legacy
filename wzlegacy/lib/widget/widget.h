@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** 
  *	@file lib/widget/widget.h
  *	Definitions for the Widget library
@@ -31,8 +27,8 @@
 #define __INCLUDED_LIB_WIDGET_WIDGET_H__
 
 #include "lib/framework/frame.h"
-#include "lib/ivis_opengl/piepalette.h"
-#include "lib/ivis_opengl/textdraw.h"
+#include "lib/ivis_common/piepalette.h"
+#include "lib/ivis_common/textdraw.h"
 #include "widgbase.h"
 
 /***********************************************************************************
@@ -84,6 +80,7 @@
 /*********** Edit Box styles *************/
 
 #define WEDB_PLAIN		0	///< Plain edit box (text with a box around it)
+#define WEDB_DISABLED		1	///< Disabled. Displayed but never gets focus.
 
 /*********** Bar Graph styles ************/
 
@@ -97,22 +94,26 @@
 
 /***********************************************************************************/
 
-/** The basic initialisation structure */
-struct W_INIT
-{
-	W_INIT();
+/* Basic initialisation entries common to all widgets */
+#define WINIT_BASE \
+	UDWORD				formID;			/* ID number of form to put widget on */ \
+										/* ID == 0 specifies the default form for the screen */ \
+	UWORD				majorID,minorID;	/* Which major and minor tab to put the widget */ \
+										/* on for a tabbed form */ \
+	UDWORD				id;				/* Unique id number (chosen by user) */ \
+	UDWORD				style;			/* widget style */ \
+	SWORD				x,y;			/* screen location */ \
+	UWORD				width,height;	/* widget size */\
+	WIDGET_DISPLAY		pDisplay;		/* Optional display function */\
+	WIDGET_CALLBACK		pCallback;		/* Optional callback function */\
+	void				*pUserData;		/* Optional user data pointer */\
+	UDWORD				UserData		/* User data (if any) */
 
-	UDWORD                  formID;                 ///< ID number of form to put widget on. ID == 0 specifies the default form for the screen
-	UWORD                   majorID, minorID;       ///< Which major and minor tab to put the widget on for a tabbed form
-	UDWORD                  id;                     ///< Unique id number (chosen by user)
-	UDWORD                  style;                  ///< widget style
-	SWORD                   x, y;                   ///< screen location
-	UWORD                   width, height;          ///< widget size
-	WIDGET_DISPLAY          pDisplay;               ///< Optional display function
-	WIDGET_CALLBACK         pCallback;              ///< Optional callback function
-	void *                  pUserData;              ///< Optional user data pointer
-	UDWORD                  UserData;               ///< User data (if any)
-};
+/** The basic initialisation structure */
+typedef struct
+{
+	WINIT_BASE;
+} W_INIT;
 
 /*
  * Flags for controlling where the tabs appear on a form -
@@ -143,16 +144,17 @@ struct W_INIT
 #define TAB_MINOR 0	// Tab types passed into tab display callbacks.
 #define TAB_MAJOR 1
 
-typedef void (*TAB_DISPLAY)(WIDGET *psWidget, UDWORD TabType, UDWORD Position, UDWORD Number, bool Selected, bool Hilight, UDWORD x, UDWORD y, UDWORD Width, UDWORD Height);
+typedef void (*TAB_DISPLAY)(WIDGET *psWidget, UDWORD TabType, UDWORD Position, UDWORD Number, BOOL Selected, BOOL Hilight, UDWORD x, UDWORD y, UDWORD Width, UDWORD Height);
 typedef void (*FONT_DISPLAY)(UDWORD x, UDWORD y, char *String);
 
 /** Form initialisation structure */
-struct W_FORMINIT : public W_INIT
+typedef struct
 {
-	W_FORMINIT();
+	/* The basic init entries */
+	WINIT_BASE;
 
 	/* Data for a tabbed form */
-	bool                    disableChildren;
+	BOOL			disableChildren;
 	UWORD			majorPos, minorPos;		// Position of the tabs on the form
 	UWORD			majorSize, minorSize;		// Size of the tabs (in pixels)
 	SWORD			majorOffset, minorOffset;	// Tab start offset.
@@ -167,60 +169,60 @@ struct W_FORMINIT : public W_INIT
 	UWORD			numMajor;			///< Number of major tabs
 	UWORD			aNumMinors[WFORM_MAXMAJOR];	///< Number of minor tabs for each major
 	SWORD			TabMultiplier;			///< Used to tell system we got lots of (virtual) tabs to display
-	unsigned                maxTabsShown;                   ///< Maximum number of tabs shown at once.
 	const char		*pTip;				///< Tool tip for the form itself
 	char			*apMajorTips[WFORM_MAXMAJOR];	///< Tool tips for the major tabs
 	char			*apMinorTips[WFORM_MAXMAJOR][WFORM_MAXMINOR];	///< Tool tips for the minor tabs
 	TAB_DISPLAY		pTabDisplay;			///< Optional callback for displaying a tab.
 	WIDGET_DISPLAY		pFormDisplay;			///< Optional callback to display the form.
-};
+} W_FORMINIT;
 
 /** Label initialisation structure */
-struct W_LABINIT : public W_INIT
+typedef struct
 {
-	W_LABINIT();
+	/* The basic init entries */
+	WINIT_BASE;
 
 	const char		*pText;			///< label text
 	const char		*pTip;			///< Tool tip for the label.
 	enum iV_fonts           FontID;			///< ID of the IVIS font to use for this widget.
-};
+} W_LABINIT;
 
 /** Button initialisation structure */
-struct W_BUTINIT : public W_INIT
+typedef struct
 {
-	W_BUTINIT();
+	/* The basic init entries */
+	WINIT_BASE;
 
 	const char *pText;	///< Button text
 	const char *pTip;	///< Tool tip text
 	enum iV_fonts FontID;	//< ID of the IVIS font to use for this widget.
-};
+} W_BUTINIT;
 
 /** Edit box initialisation structure */
-struct W_EDBINIT : public W_INIT
+typedef struct
 {
-	W_EDBINIT();
+	/* The basic init entries */
+	WINIT_BASE;
 
 	const char *pText;		///< initial contents of the edit box
 	enum iV_fonts FontID;		///< ID of the IVIS font to use for this widget.
 	WIDGET_DISPLAY pBoxDisplay;	///< Optional callback to display the form.
 	FONT_DISPLAY pFontDisplay;	///< Optional callback to display a string.
-};
+} W_EDBINIT;
 
 /* Orientation flags for the bar graph */
-enum WBAR_ORIENTATION
-{
-	WBAR_LEFT = 1,                  ///< Bar graph fills from left to right
-	WBAR_RIGHT,                     ///< Bar graph fills from right to left
-	WBAR_TOP,                       ///< Bar graph fills from top to bottom
-	WBAR_BOTTOM,                    ///< Bar graph fills from bottom to top
-};
+#define WBAR_LEFT		0x0001		///< Bar graph fills from left to right
+#define WBAR_RIGHT		0x0002		///< Bar graph fills from right to left
+#define WBAR_TOP		0x0003		///< Bar graph fills from top to bottom
+#define WBAR_BOTTOM		0x0004		///< Bar graph fills from bottom to top
 
 /** Bar Graph initialisation structure */
-struct W_BARINIT : public W_INIT
+typedef struct
 {
-	W_BARINIT();
+	/* The basic init entries */
+	WINIT_BASE;
 
-	WBAR_ORIENTATION orientation;           ///< Orientation of the bar on the widget
+	UWORD		orientation;		///< Orientation of the bar on the widget
 	UWORD		size;			///< Initial percentage of the graph that is filled
 	UWORD		minorSize;		///< Percentage of second bar graph if there is one
 	UWORD		iRange;			///< Maximum range
@@ -229,29 +231,27 @@ struct W_BARINIT : public W_INIT
 	PIELIGHT	sCol;			///< Bar colour
 	PIELIGHT	sMinorCol;		///< Minor bar colour
 	const char	*pTip;			///< Tool tip text
-};
+} W_BARINIT;
 
 
 /* Orientation of the slider */
-enum WSLD_ORIENTATION
-{
-	WSLD_LEFT = 1,                  ///< Slider is horizontal and starts at left
-	WSLD_RIGHT,                     ///< Slider is horizontal and starts at the right
-	WSLD_TOP,                       ///< Slider is vertical and starts at the top
-	WSLD_BOTTOM,                    ///< Slider is vertical and starts at the bottom
-};
+#define WSLD_LEFT		0x0001		///< Slider is horizontal and starts at left
+#define WSLD_RIGHT		0x0002		///< Slider is horizontal and starts at the right
+#define WSLD_TOP		0x0003		///< Slider is vertical and starts at the top
+#define WSLD_BOTTOM		0x0004		///< Slider is vertical and starts at the bottom
 
 /** Slider initialisation structure */
-struct W_SLDINIT : public W_INIT
+typedef struct
 {
-	W_SLDINIT();
+	/* The basic init entries */
+	WINIT_BASE;
 
-	WSLD_ORIENTATION orientation;           ///< Orientation of the slider
+	UWORD		orientation;		///< Orientation of the slider
 	UWORD		numStops;		///< Number of stops on the slider
 	UWORD		barSize;		///< Size of the bar
 	UWORD		pos;			///< Initial position of the slider bar
 	const char	*pTip;			///< Tip string
-};
+} W_SLDINIT;
 
 /***********************************************************************************/
 
@@ -280,22 +280,22 @@ extern void widgReleaseScreen(W_SCREEN *psScreen);
 extern void widgSetTipFont(W_SCREEN *psScreen, enum iV_fonts FontID);
 
 /** Add a form to the widget screen */
-extern bool widgAddForm(W_SCREEN *psScreen, const W_FORMINIT* psInit);
+extern BOOL widgAddForm(W_SCREEN *psScreen, const W_FORMINIT* psInit);
 
 /** Add a label to the widget screen */
-extern bool widgAddLabel(W_SCREEN *psScreen, const W_LABINIT* psInit);
+extern BOOL widgAddLabel(W_SCREEN *psScreen, const W_LABINIT* psInit);
 
 /** Add a button to a form */
-extern bool widgAddButton(W_SCREEN *psScreen, const W_BUTINIT* psInit);
+extern BOOL widgAddButton(W_SCREEN *psScreen, const W_BUTINIT* psInit);
 
 /** Add an edit box to a form */
-extern bool widgAddEditBox(W_SCREEN *psScreen, const W_EDBINIT* psInit);
+extern BOOL widgAddEditBox(W_SCREEN *psScreen, const W_EDBINIT* psInit);
 
 /** Add a bar graph to a form */
-extern bool widgAddBarGraph(W_SCREEN *psScreen, const W_BARINIT* psInit);
+extern BOOL widgAddBarGraph(W_SCREEN *psScreen, const W_BARINIT* psInit);
 
 /** Add a slider to a form */
-extern bool widgAddSlider(W_SCREEN *psScreen, const W_SLDINIT* psInit);
+extern BOOL widgAddSlider(W_SCREEN *psScreen, const W_SLDINIT* psInit);
 
 /** Delete a widget from the screen */
 extern void widgDelete(W_SCREEN *psScreen, UDWORD id);
@@ -383,7 +383,8 @@ enum _w_colour
 };
 
 /** Set a colour on a form */
-extern void widgSetColour(W_SCREEN *psScreen, UDWORD id, UDWORD index, PIELIGHT colour);
+extern void widgSetColour(W_SCREEN *psScreen, UDWORD id, UDWORD colour,
+						  UBYTE red, UBYTE green, UBYTE blue);
 
 /** Set the global toop tip text colour. */
 extern void widgSetTipColour(PIELIGHT colour);
@@ -403,6 +404,11 @@ extern UDWORD widgGetButtonState(W_SCREEN *psScreen, UDWORD id);
 /** Set a button or clickable form's state */
 extern void widgSetButtonState(W_SCREEN *psScreen, UDWORD id, UDWORD state);
 
+
+/* The keys that can be used to press a button */
+#define WKEY_NONE		0
+#define WKEY_PRIMARY		1
+#define WKEY_SECONDARY		2
 
 /** Return which key was used to press the last returned widget */
 extern UDWORD widgGetButtonKey(W_SCREEN *psScreen);
@@ -444,10 +450,10 @@ extern SWORD WidgGetHilightAudioID(void);
 extern SWORD WidgGetClickedAudioID(void);
 
 /** Enable or disable all sliders. */
-extern void sliderEnableDrag(bool Enable);
+extern void sliderEnableDrag(BOOL Enable);
 
-extern void setWidgetsStatus( bool var );
-extern bool getWidgetsStatus( void );
+extern void setWidgetsStatus( BOOL var );
+extern BOOL getWidgetsStatus( void );
 
 extern void CheckpsMouseOverWidget( void *psWidget );
 /** @} */

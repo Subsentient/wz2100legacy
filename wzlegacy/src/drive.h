@@ -1,32 +1,28 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_DRIVE_H__
 #define __INCLUDED_SRC_DRIVE_H__
 
 #include "droid.h"
 
-extern bool DirectControl;
+extern BOOL DirectControl;
 extern DROID *psDrivenDroid;
 
-static inline bool driveHasDriven(void)
+static inline BOOL driveHasDriven(void)
 {
 	return (DirectControl) && (psDrivenDroid != NULL) ? true : false;
 }
@@ -34,7 +30,7 @@ static inline bool driveHasDriven(void)
 
 // Returns true if drive mode is active.
 //
-static inline bool driveModeActive(void)
+static inline BOOL driveModeActive(void)
 {
 	return DirectControl;
 }
@@ -42,13 +38,13 @@ static inline bool driveModeActive(void)
 
 // Return true if the specified droid is the driven droid.
 //
-static inline bool driveIsDriven(DROID *psDroid)
+static inline BOOL driveIsDriven(DROID *psDroid)
 {
 	return (DirectControl) && (psDrivenDroid != NULL) && (psDroid == psDrivenDroid) ? true : false;
 }
 
 
-static inline bool driveIsFollower(DROID *psDroid)
+static inline BOOL driveIsFollower(DROID *psDroid)
 {
 	return (DirectControl) && (psDrivenDroid != NULL) && (psDroid != psDrivenDroid) && psDroid->selected ? true : false;
 }
@@ -60,38 +56,38 @@ static inline DROID *driveGetDriven(void)
 }
 
 
-void driveInitVars(bool Restart);
-bool StartDriverMode(DROID *psOldDroid);
+void driveInitVars(BOOL Restart);
+BOOL StartDriverMode(DROID *psOldDroid);
 void StopDriverMode(void);
-bool driveDroidKilled(DROID *psDroid);
+BOOL driveDroidKilled(DROID *psDroid);
 void driveSelectionChanged(void);
 void driveUpdate(void);
 void driveSetDroidMove(DROID *psDroid);
-void setDrivingStatus( bool val );
-bool getDrivingStatus( void );
+void setDrivingStatus( BOOL val );
+BOOL getDrivingStatus( void );
 void driveDisableControl(void);
 void driveEnableControl(void);
-void driveEnableInterface(bool AddReticule);
+void driveEnableInterface(BOOL AddReticule);
 void driveDisableInterface(void);
-bool driveInterfaceEnabled(void);
-bool driveControlEnabled(void);
+BOOL driveInterfaceEnabled(void);
+BOOL driveControlEnabled(void);
 void driveProcessInterfaceButtons(void);
 void driveAutoToggle(void);
 void driveProcessAquireButton(void);
 void driveProcessAquireTarget(void);
 void driveMarkTarget(void);
 void driveStartBuild(void);
-bool driveAllowControl(void);
+BOOL driveAllowControl(void);
 void driveDisableTactical(void);
-bool driveTacticalActive(void);
+BOOL driveTacticalActive(void);
 void driveTacticalSelectionChanged(void);
 void driveProcessRadarInput(int x,int y);
-bool driveWasDriving(void);
+BOOL driveWasDriving(void);
 void driveDisableDriving(void);
 void driveRestoreDriving(void);
 SDWORD driveGetMoveSpeed(void);
 SDWORD driveGetMoveDir(void);
-bool driveSetDirectControl(bool Control);
-bool driveSetWasDriving(bool Driving);
+BOOL driveSetDirectControl(BOOL Control);
+BOOL driveSetWasDriving(BOOL Driving);
 
 #endif // __INCLUDED_SRC_DRIVE_H__

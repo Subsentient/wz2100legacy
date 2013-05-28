@@ -4,8 +4,8 @@
 DIE=0
 SRCDIR=`dirname $0`
 BUILDDIR=`pwd`
-srcfile=src/action.cpp
-package=Legacy
+srcfile=src/action.c
+package=Warzone2100
 
 debug ()
 # print out a debug message if DEBUG is a defined variable
@@ -145,14 +145,15 @@ not_version ()
   fi
 }
 
-# Chdir to the srcdir, then run auto* tools.
-cd "$SRCDIR"
-
-version_check 1 "autoconf" "ftp://ftp.gnu.org/pub/gnu/autoconf/" 2 69 || DIE=1 # Legacy requires 2.69+ for autoconf 2.12+.
-version_check 1 "automake" "ftp://ftp.gnu.org/pub/gnu/automake/" 1 12 || DIE=1
+version_check 1 "autoconf" "ftp://ftp.gnu.org/pub/gnu/autoconf/" 2 56 || DIE=1
+version_check 1 "automake" "ftp://ftp.gnu.org/pub/gnu/automake/" 1 10 || DIE=1
 if [ "$DIE" -eq 1 ]; then
   exit 1
 fi
+
+
+# Chdir to the srcdir, then run auto* tools.
+cd "$SRCDIR"
 
 [ -f "$srcfile" ] || {
   echo "Are you sure $SRCDIR is a valid source directory?"
@@ -193,6 +194,6 @@ echo "+ removing config.cache ... "
 rm -f config.cache
 
 echo
-echo "Now type '$SRCDIR/configure && make' to compile."
+echo "Now type './configure && make' to compile."
 
 exit 0

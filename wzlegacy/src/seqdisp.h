@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Functions for the display of the Escape Sequences
  */
@@ -38,7 +34,7 @@
 #define  SEQUENCE_KILL 3//stop
 #define  SEQUENCE_HOLD 4//play once and hold last frame
 
-enum SEQ_TEXT_POSITIONING
+typedef enum
 {
 	/**
 	 * Position text.
@@ -54,7 +50,7 @@ enum SEQ_TEXT_POSITIONING
 	 * Justify if less than 520/600 length.
 	 */
 	SEQ_TEXT_JUSTIFY,
-};
+} SEQ_TEXT_POSITIONING;
 
 /***************************************************************************/
 /*
@@ -70,23 +66,23 @@ enum SEQ_TEXT_POSITIONING
 //buffer render
 extern bool seq_RenderVideoToBuffer(const char* sequenceName, int seqCommand);
 
-extern bool seq_UpdateFullScreenVideo(int *bClear);
+extern BOOL seq_UpdateFullScreenVideo(int *bClear);
 
-extern bool seq_StopFullScreenVideo(void);
+extern BOOL seq_StopFullScreenVideo(void);
 //control
-extern bool seq_GetVideoSize(SDWORD* pWidth, SDWORD* pHeight);
+extern BOOL seq_GetVideoSize(SDWORD* pWidth, SDWORD* pHeight);
 //text
-extern bool seq_AddTextForVideo(const char* pText, SDWORD xOffset, SDWORD yOffset, double startTime, double endTime, SEQ_TEXT_POSITIONING textJustification);
+extern BOOL seq_AddTextForVideo(const char* pText, SDWORD xOffset, SDWORD yOffset, SDWORD startTime, SDWORD endTime, SEQ_TEXT_POSITIONING textJustification);
 //clear the sequence list
 extern void seq_ClearSeqList(void);
 //add a sequence to the list to be played
-extern void seq_AddSeqToList(const char *pSeqName, const char *pAudioName, const char *pTextName, bool bLoop);
+extern void seq_AddSeqToList(const char *pSeqName, const char *pAudioName, const char *pTextName, BOOL bLoop);
 /*checks to see if there are any sequences left in the list to play*/
-extern bool seq_AnySeqLeft(void);
+extern BOOL seq_AnySeqLeft(void);
 
 //set and check subtitle mode, true subtitles on
-extern void seq_SetSubtitles(bool bNewState);
-extern bool seq_GetSubtitles(void);
+extern void seq_SetSubtitles(BOOL bNewState);
+extern BOOL seq_GetSubtitles(void);
 
 /*returns the next sequence in the list to play*/
 extern void seq_StartNextFullScreenVideo(void);

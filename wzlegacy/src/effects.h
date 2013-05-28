@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_EFFECTS_H__
 #define __INCLUDED_SRC_EFFECTS_H__
@@ -28,33 +24,29 @@
 	temporary world 'effects
 	Alex McLean, Pumpkin Studios, EIDOS Interactive, 1998.
 */
-#include "lib/ivis_opengl/piedef.h"
+#include "lib/ivis_common/piedef.h"
 #include "lib/framework/fixedpoint.h"
-#include "lib/ivis_opengl/pietypes.h"
-
-#define SHOCK_WAVE_HEIGHT	(64)
-
+#include "lib/ivis_common/pietypes.h"
 
 /* All the effect groups */
-enum EFFECT_GROUP
+typedef enum
 {
 	EFFECT_EXPLOSION,
 	EFFECT_CONSTRUCTION,
 	EFFECT_SMOKE,
+	EFFECT_STRUCTURE,
 	EFFECT_GRAVITON,
 	EFFECT_WAYPOINT,
 	EFFECT_BLOOD,
 	EFFECT_DESTRUCTION,
 	EFFECT_SAT_LASER,
+	EFFECT_DUST_BALL,
 	EFFECT_FIRE,
-	EFFECT_FIREWORK,
-
-	EFFECT_FREED,
-};
-
+	EFFECT_FIREWORK
+} EFFECT_GROUP;
 
 /* Might not even need this */
-enum EFFECT_TYPE
+typedef enum
 {
 	EXPLOSION_TYPE_SMALL,
 	EXPLOSION_TYPE_VERY_SMALL,
@@ -108,61 +100,70 @@ enum EFFECT_TYPE
 
 	FIREWORK_TYPE_STARBURST,
 	FIREWORK_TYPE_LAUNCHER,
-};
 
+} EFFECT_TYPE;
 
-enum LAND_LIGHT_SPEC
+/* Is the slot currently being used and is it active? */
+typedef enum
+{
+	ES_INACTIVE,
+	ES_ACTIVE
+}EFFECT_STATUS;
+
+typedef enum
 {
 	LL_MIDDLE,
 	LL_INNER,
 	LL_OUTER
-};
+}LAND_LIGHT_SPEC;
 
+#define SHOCK_WAVE_HEIGHT	(64)
 
-struct EFFECT
+typedef struct	_effect_def
 {
-	uint8_t           player;      //	when the effect in question needs a player's color
-	uint8_t           control;     // Controls the bits above - essential,flips etc
-	EFFECT_GROUP      group;       // what group is it - explosion, building effect etc....
-	EFFECT_TYPE       type;        // what type is it within the group?
-	uint8_t           frameNumber; // what frame number is the imd on?
-	uint16_t          size;        // Size in terms of percent of original imd.
-	uint8_t           baseScale;   // if scaled, what's bottom line?
-	uint8_t           specific;    // how many times has it bounced?
-	Vector3f          position;    // world coordinates of the effect - floats on the PC.
-	Vector3f          velocity;    // movement values per update
-	Vector3i          rotation;    // current rotation - only for gravitons
-	Vector3i          spin;        // rotation info for spinning things.
-	uint32_t          birthTime;   // what time was it introduced into the world?
-	uint32_t          lastFrame;   // when did we last update the frame?
-	uint16_t          frameDelay;  // how many game ticks between each frame?
-	uint16_t          lifeSpan;    // what is it's life expectancy?
-	uint16_t          radius;      // Used for area effects
-	iIMDShape         *imd;        // pointer to the imd the effect uses.
-	EFFECT *prev, *next; // Previous and next element in linked list
-};
+	uint8_t           control;		// Controls the bits above - essential,flips etc
+	uint8_t           group;			// what	group is it - explosion, building effect etc....
+	uint8_t           type;			// what type is it within the group?
+	uint8_t           frameNumber;	// what frame number is the imd on?
+	uint16_t          size;			// Size in terms of percent of original imd.
+	uint8_t           baseScale;		// if scaled, what's bottom line?
+	uint8_t           specific;		// how many times has it bounced?
+	Vector3f          position;		// world coordinates of the effect - floats on the PC.
+	Vector3f          velocity;		// movement values per update
+	Vector3i          rotation;		// current rotation - only for gravitons
+	Vector3i          spin;			// rotation info for spinning things.
+	uint32_t          birthTime;		// what time was it introduced into the world?
+	uint32_t          lastFrame;		// when did we last update the frame?
+	uint16_t          frameDelay;		// how many game ticks between each frame?
+	uint16_t          lifeSpan;		// what is it's life expectancy?
+	uint16_t          radius;			// Used for area effects
+	iIMDShape  *imd;			// pointer to the imd the effect uses.
+} EFFECT;
 
 /* Maximum number of effects in the world - need to investigate what this should be */
 /* EXTERNAL REFERENCES */
-void	effectGiveAuxVar(UDWORD var);		// naughty
-void	effectGiveAuxVarSec(UDWORD var);	// and so's this
+extern void	effectGiveAuxVar		( UDWORD var); // naughty
+extern void	effectGiveAuxVarSec		( UDWORD var); // and so's this
 
-void	initEffectsSystem(void);
-void	shutdownEffectsSystem(void);
-void	processEffects(void);
-void 	addEffect(const Vector3i *pos, EFFECT_GROUP group, EFFECT_TYPE type, bool specified, iIMDShape *imd, int lit);
-void    addEffect(const Vector3i *pos, EFFECT_GROUP group, EFFECT_TYPE type, bool specified, iIMDShape *imd, int lit, unsigned effectTime);
-void    addMultiEffect(const Vector3i *basePos, Vector3i *scatter, EFFECT_GROUP group, EFFECT_TYPE type, bool specified, iIMDShape *imd, unsigned int number, bool lit, unsigned int size, unsigned effectTime);
+extern void	initEffectsSystem		( void );
+extern void	processEffects			( void );
+extern void	addEffect				( Vector3i *pos, EFFECT_GROUP group,
+										EFFECT_TYPE type, BOOL specified, iIMDShape *imd, int lit );
+extern void	addMultiEffect			( Vector3i *basePos, Vector3i *scatter,EFFECT_GROUP group,
+									EFFECT_TYPE type,BOOL specified, iIMDShape *imd, UDWORD number, BOOL lit, UDWORD size );
 
-void	renderEffect(const EFFECT *psEffect);
-void	effectResetUpdates(void);
+extern void	renderEffect			( EFFECT *psEffect );
+extern void	effectResetUpdates		( void );
+extern UDWORD	getNumActiveEffects		( void );
+extern UDWORD	getMissCount( void );
+extern	UDWORD	getNumSkippedEffects(void);
+extern	UDWORD	getNumEvenEffects(void);
 
-void	initPerimeterSmoke(iIMDShape *pImd, Vector3i base);
+extern void	initPerimeterSmoke			( iIMDShape *pImd, UDWORD x, UDWORD y, UDWORD z);
 
-bool	readFXData(const char* fileName);
-bool	writeFXData(const char* fileName);
-void	effectSetSize(UDWORD size);
-void	effectSetLandLightSpec(LAND_LIGHT_SPEC spec);
-void	SetEffectForPlayer(uint8_t player);
+extern bool readFXData(const char* fileName);
+extern bool	writeFXData(const char* fileName);
+extern	void	effectSetSize(UDWORD size);
+extern void	effectSetLandLightSpec(LAND_LIGHT_SPEC spec);
 
 #endif // __INCLUDED_SRC_EFFECTS_H__

@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /***************************************************************************/
 /*! \file animobj.h
  * \brief Animation object types and function headers
@@ -28,43 +24,69 @@
 #ifndef _ANIMOBJ_H_
 #define _ANIMOBJ_H_
 
+/***************************************************************************/
+
 #include "anim.h"
 
+/***************************************************************************/
 
 #define	ANIM_MAX_COMPONENTS		10
 
+/***************************************************************************/
+/* forward struct declarations */
+
+struct ANIM_OBJECT;
+struct COMPONENT_OBJECT;
+
+/***************************************************************************/
+/* typedefs */
 
 typedef void (* ANIMOBJDONEFUNC) ( struct ANIM_OBJECT *psObj );
-typedef bool (* ANIMOBJDIEDTESTFUNC) ( void *psParent );
+typedef BOOL (* ANIMOBJDIEDTESTFUNC) ( void *psParent );
 
-struct COMPONENT_OBJECT
+/***************************************************************************/
+/* struct member macros */
+
+#define	COMPONENT_ELEMENTS(pointerType)		\
+	Vector3i	position;					\
+	Vector3i	orientation;				\
+	void		*psParent;					\
+	iIMDShape	*psShape;
+
+#define	ANIM_OBJECT_ELEMENTS(pointerType)					\
+	UWORD				uwID;								\
+	ANIM3D				*psAnim;							\
+	void				*psParent;							\
+	UDWORD				udwStartTime;						\
+	UDWORD				udwStartDelay;						\
+	UWORD				uwCycles;							\
+	BOOL				bVisible;							\
+	ANIMOBJDONEFUNC		pDoneFunc;							\
+	/* this must be the last entry in this structure */		\
+	COMPONENT_OBJECT	apComponents[ANIM_MAX_COMPONENTS];
+
+/***************************************************************************/
+
+typedef struct COMPONENT_OBJECT
 {
-	Vector3i                position;
-	Vector3i                orientation;
-	void *                  psParent;
-	iIMDShape *             psShape;
-};
+	COMPONENT_ELEMENTS( struct COMPONENT_OBJECT )
+}
+COMPONENT_OBJECT;
 
-struct ANIM_OBJECT
+typedef struct ANIM_OBJECT
 {
-	ANIM_OBJECT *           psNext;
+	struct ANIM_OBJECT	*psNext;
 
-	UWORD                   uwID;
-	ANIM3D *                psAnim;
-	void *                  psParent;
-	UDWORD                  udwStartTime;
-	UDWORD                  udwStartDelay;
-	UWORD                   uwCycles;
-	bool                    bVisible;
-	ANIMOBJDONEFUNC         pDoneFunc;
 	/* this must be the last entry in this structure */
-	COMPONENT_OBJECT        apComponents[ANIM_MAX_COMPONENTS];
-};
+	ANIM_OBJECT_ELEMENTS( struct ANIM_OBJECT )
+}
+ANIM_OBJECT;
 
+/***************************************************************************/
 
-bool			animObj_Init( ANIMOBJDIEDTESTFUNC pDiedFunc );
+BOOL			animObj_Init( ANIMOBJDIEDTESTFUNC pDiedFunc );
 void			animObj_Update( void );
-bool			animObj_Shutdown( void );
+BOOL			animObj_Shutdown( void );
 void			animObj_SetDoneFunc( ANIM_OBJECT *psObj,
 										ANIMOBJDONEFUNC pDoneFunc );
 
@@ -77,4 +99,8 @@ ANIM_OBJECT *	animObj_GetFirst( void );
 ANIM_OBJECT *	animObj_GetNext( void );
 ANIM_OBJECT *	animObj_Find( void *pParentObj, int iAnimID );
 
+/***************************************************************************/
+
 #endif	/* _ANIMOBJ_H_ */
+
+/***************************************************************************/

@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /*
  * Interp.h
  *
@@ -26,13 +22,13 @@
 #define _interp_h
 
 /* The type of function called by an OP_CALL */
-typedef bool (*SCRIPT_FUNC)(void);
+typedef BOOL (*SCRIPT_FUNC)(void);
 
 /* The type of function called to access an object or in-game variable */
-typedef bool (*SCRIPT_VARFUNC)(UDWORD index);
+typedef BOOL (*SCRIPT_VARFUNC)(UDWORD index);
 
 /* The possible value types for scripts */
-enum INTERP_TYPE
+typedef enum _interp_type
 {
 	// Basic types
 	VAL_BOOL,
@@ -55,39 +51,39 @@ enum INTERP_TYPE
 
 	VAL_USERTYPESTART, //!< user defined types should start with this id
 	VAL_REF = 0x00100000 //!< flag to specify a variable reference rather than simple value
-};
+} INTERP_TYPE;
 
 
 /* A value consists of its type and value */
-struct INTERP_VAL
+typedef struct _interp_val
 {
 	INTERP_TYPE		type;					//Value type for interpreter; opcode or value type for compiler
 	union
 	{
-		char					*sval;		//String value - VAL_STRING
+		char					*sval;			//String value - VAL_STRING
 		SCRIPT_VARFUNC		pObjGetSet;		//Set/Get method for objects - VAL_OBJ_GETSET
-		SCRIPT_FUNC			pFuncExtern;	//External (C) function - VAL_FUNC_EXTERN
-		void					*oval;		//Object value - any in-game object
-		float					fval;		//Float value - VAL_FLOAT
-		int						ival;		// Integer value - VAL_INT
-		int32_t					bval;		//Boolean value - VAL_BOOL [NOTE: Even though this is a bool, we must make it this size to prevent issues]
+		SCRIPT_FUNC			pFuncExtern;		//External (C) function - VAL_FUNC_EXTERN
+		void					*oval;			//Object value - any in-game object
+		float					fval;				//Float value - VAL_FLOAT
+		int						ival;				// Integer value - VAL_INT
+		BOOL					bval;			//Boolean value - VAL_BOOL
 	} v;
-};
+} INTERP_VAL;
 
 
 // maximum number of equivalent types for a type
 #define INTERP_MAXEQUIV		10
 
 // type equivalences
-struct TYPE_EQUIV
+typedef struct _interp_typeequiv
 {
 	INTERP_TYPE		base;		// the type that the others are equivalent to
 	unsigned int		numEquiv;	// number of equivalent types
 	INTERP_TYPE		aEquivTypes[INTERP_MAXEQUIV]; // the equivalent types
-};
+} TYPE_EQUIV;
 
 /* Opcodes for the script interpreter */
-enum OPCODE
+typedef enum _op_code
 {
 	OP_PUSH,		// Push value onto stack
 	OP_PUSHREF,		// Push a pointer to a variable onto the stack
@@ -146,7 +142,7 @@ enum OPCODE
 	OP_PUSHLOCALREF,	//variable of object type (pointer)
 	OP_TO_FLOAT,			//float cast
 	OP_TO_INT,				//int cast
-};
+} OPCODE;
 
 /* How far the opcode is shifted up a UDWORD to allow other data to be
  * stored in the same UDWORD
@@ -164,50 +160,50 @@ enum OPCODE
 #define ARRAY_DIMENSION_MASK	0x00f00000
 
 /* The possible storage types for a variable */
-enum enum_STORAGE_TYPE
+typedef enum _storage_type
 {
 	ST_PUBLIC,		// Public variable
 	ST_PRIVATE,		// Private variable
 	ST_OBJECT,		// A value stored in an objects data space.
 	ST_EXTERN,		// An external value accessed by function call
 	ST_LOCAL,		// A local variable
-};
+} enum_STORAGE_TYPE;
 
 typedef UBYTE STORAGE_TYPE;
 
 /* Variable debugging info for a script */
-struct VAR_DEBUG
+typedef struct _var_debug
 {
 	char			*pIdent;
 	STORAGE_TYPE	storage;
-};
+} VAR_DEBUG;
 
 /* Array info for a script */
-struct ARRAY_DATA
+typedef struct _array_data
 {
 	UDWORD			base;			// the base index of the array values
 	INTERP_TYPE		type;			// the array data type
 	UBYTE			dimensions;
 	UBYTE			elements[VAR_MAX_DIMENSIONS];
-};
+} ARRAY_DATA;
 
 /* Array debug info for a script */
-struct ARRAY_DEBUG
+typedef struct _array_debug
 {
 	char			*pIdent;
 	UBYTE			storage;
-};
+} ARRAY_DEBUG;
 
 /* Line debugging information for a script */
-struct SCRIPT_DEBUG
+typedef struct _script_debug
 {
 	UDWORD	offset;		// Offset in the compiled script that corresponds to
 	UDWORD	line;		// this line in the original script.
 	char	*pLabel;	// the trigger/event that starts at this line
-};
+} SCRIPT_DEBUG;
 
 /* Different types of triggers */
-enum TRIGGER_TYPE
+typedef enum _trigger_type
 {
 	TR_INIT,		// Trigger fires when the script is first run
 	TR_CODE,		// Trigger uses script code
@@ -216,18 +212,18 @@ enum TRIGGER_TYPE
 	TR_PAUSE,		// Event has paused for an interval and will restart in the middle of it's code
 
 	TR_CALLBACKSTART,	// The user defined callback triggers should start with this id
-};
+} TRIGGER_TYPE;
 
 /* Description of a trigger for the SCRIPT_CODE */
-struct TRIGGER_DATA
+typedef struct _trigger_data
 {
 	TRIGGER_TYPE		type;		// Type of trigger
-	UWORD			code;		// bool - is there code with this trigger
+	UWORD			code;		// BOOL - is there code with this trigger
 	UDWORD			time;		// How often to check the trigger
-};
+} TRIGGER_DATA;
 
 /* A compiled script and its associated data */
-struct SCRIPT_CODE
+typedef struct _script_code
 {
 	UDWORD			size;			// The size (in bytes) of the compiled code
 	INTERP_VAL		*pCode;			// Pointer to the compiled code
@@ -258,30 +254,32 @@ struct SCRIPT_CODE
 
 	UWORD			debugEntries;	// Number of entries in psDebug
 	SCRIPT_DEBUG	*psDebug;		// Debugging info for the script
-};
+} SCRIPT_CODE;
 
 
 /* What type of code should be run by the interpreter */
-enum INTERP_RUNTYPE
+typedef enum _interp_runtype
 {
 	IRT_TRIGGER,					// Run trigger code
 	IRT_EVENT,						// Run event code
-};
+} INTERP_RUNTYPE;
 
 
 /* The size of each opcode */
 extern SDWORD aOpSize[];
 
 /* Check if two types are equivalent */
-extern bool interpCheckEquiv(INTERP_TYPE to, INTERP_TYPE from);
+extern BOOL interpCheckEquiv(INTERP_TYPE to, INTERP_TYPE from) WZ_DECL_PURE;
 
 // Initialise the interpreter
-extern bool interpInitialise(void);
+extern BOOL interpInitialise(void);
 
 // true if the interpreter is currently running
-extern bool interpProcessorActive(void);
+extern BOOL interpProcessorActive(void);
 
 /* Output script call stack trace */
 extern void scrOutputCallTrace(code_part part);
 
 #endif
+
+

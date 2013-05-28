@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Functions for the display/functionality of the Transporter
  */
@@ -35,9 +31,9 @@
 //initialises Transporter variables
 extern void initTransporters(void);
 // Refresh the transporter screen.
-extern bool intRefreshTransporter(void);
+extern BOOL intRefreshTransporter(void);
 /*Add the Transporter Interface*/
-extern bool intAddTransporter(DROID *psSelected, bool offWorld);
+extern BOOL intAddTransporter(DROID *psSelected, BOOL offWorld);
 /* Remove the Transporter widgets from the screen */
 extern void intRemoveTrans(void);
 extern void intRemoveTransNoAnim(void);
@@ -46,9 +42,8 @@ extern void intProcessTransporter(UDWORD id);
 
 /*Adds a droid to the transporter, removing it from the world*/
 extern void transporterAddDroid(DROID *psTransporter, DROID *psDroidToAdd);
-void transporterRemoveDroid(DROID *psTransport, DROID *psDroid, QUEUE_MODE mode);
 /*check to see if the droid can fit on the Transporter - return true if fits*/
-bool checkTransporterSpace(DROID const *psTransporter, DROID const *psAssigned, bool mayFlash = true);
+extern BOOL checkTransporterSpace(DROID *psTransporter, DROID *psAssigned);
 /*calculates how much space is remaining on the transporter - allows droids to take
 up different amount depending on their body size - currently all are set to one!*/
 extern UDWORD calcRemainingCapacity(DROID *psTransporter);
@@ -56,11 +51,16 @@ extern UDWORD calcRemainingCapacity(DROID *psTransporter);
 extern bool transporterIsEmpty(const DROID* psTransporter);
 
 /*launches the defined transporter to the offworld map*/
-extern bool launchTransporter(DROID *psTransporter);
+extern BOOL launchTransporter(DROID *psTransporter);
 
 /*checks how long the transporter has been travelling to see if it should
 have arrived - returns true when there*/
-extern bool updateTransporter(DROID *psTransporter);
+extern BOOL updateTransporter(DROID *psTransporter);
+
+// Order all selected droids to embark all avaialable transporters.
+extern BOOL OrderDroidsToEmbark(void);
+// Order a single droid to embark any available transporters.
+extern BOOL OrderDroidToEmbark(DROID *psDroid);
 
 extern void intUpdateTransCapacity(WIDGET *psWidget, W_CONTEXT *psContext);
 
@@ -73,7 +73,7 @@ extern void processLaunchTransporter(void);
 extern SDWORD	bobTransporterHeight( void );
 
 /*This is used to display the transporter button and capacity when at the home base ONLY*/
-extern bool intAddTransporterLaunch(DROID *psDroid);
+extern BOOL intAddTransporterLaunch(DROID *psDroid);
 
 /* set current transporter (for script callbacks) */
 extern void transporterSetScriptCurrent( DROID *psTransporter );
@@ -82,7 +82,7 @@ extern void transporterSetScriptCurrent( DROID *psTransporter );
 extern DROID * transporterGetScriptCurrent( void );
 
 /* check whether transporter on mission */
-//extern bool transporterOnMission( void );
+//extern BOOL transporterOnMission( void );
 
 /*called when a Transporter has arrived back at the LZ when sending droids to safety*/
 extern void resetTransporter(void);
@@ -96,7 +96,7 @@ extern void transporterSetLaunchTime(UDWORD time);
 extern void flashMissionButton(UDWORD buttonID);
 extern void stopMissionButtonFlash(UDWORD buttonID);
 /*checks the order of the droid to see if its currenly flying*/
-extern bool transporterFlying(DROID *psTransporter);
+extern BOOL transporterFlying(DROID *psTransporter);
 //initialise the flag to indicate the first transporter has arrived - set in startMission()
 extern void initFirstTransporterFlag(void);
 

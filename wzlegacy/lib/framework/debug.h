@@ -1,23 +1,18 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /*! \file debug.h
  *  \brief Debugging functions
  */
@@ -32,14 +27,17 @@
 # error Framework header files MUST be included from Frame.h ONLY.
 #endif
 
-#include "wzglobal.h"
-
+#if defined(WZ_OS_WIN)
 #include <assert.h>
-#if !defined(WZ_OS_WIN)
+#else
 #include <signal.h>
 #endif
 #include "macros.h"
-#include "types.h"
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
 
 /****************************************************************************************
  *
@@ -67,8 +65,8 @@ extern bool assertEnabled;
 /** Deals with failure in an assert. Expression is (re-)evaluated for output in the assert() call. */
 #define ASSERT_FAILURE(expr, expr_string, location_description, function, ...) \
 	( \
-		(void)_debug(__LINE__, LOG_INFO, function, __VA_ARGS__), \
-		(void)_debug(__LINE__, LOG_INFO, function, "Assert in Legacy: %s (%s), last script event: '%s'", \
+		(void)_debug(LOG_ERROR, function, __VA_ARGS__), \
+		(void)_debug(LOG_ERROR, function, "Assert in Warzone: %s (%s), last script event: '%s'", \
 	                                  location_description, expr_string, last_called_script_event), \
 		( assertEnabled ? (void)wz_assert(expr) : (void)0 )\
 	)
@@ -109,7 +107,7 @@ extern bool assertEnabled;
 
 /**
  *
- * Assert-or-return macro that returns given return value (can also be a mere comma if function has no return value) on failure,
+ * Assert-or-return-zero, macro that returns zero (can also be interpreted as false or NULL) on failure,
  * and also provides asserts and debug output for debugging.
  */
 #define ASSERT_OR_RETURN(retval, expr, ...) \
@@ -127,10 +125,18 @@ extern bool assertEnabled;
  *
  * \note BUILD_BUG_ON_ZERO from <linux/kernel.h>
  */
+#ifndef __cplusplus
+#define STATIC_ASSERT_EXPR( expr ) \
+	(sizeof(struct { int:-!(expr); }))
+#else //cplusplus
+}
 template<bool> class StaticAssert;
 template<> class StaticAssert<true>{};
 #define STATIC_ASSERT_EXPR(expr) \
-	(0*sizeof(StaticAssert<(expr)>))
+	(sizeof(StaticAssert<(expr)>))
+extern "C"
+{
+#endif //cplusplus
 /**
  * Compile time assert
  * Not to be used in global context!
@@ -148,8 +154,7 @@ template<> class StaticAssert<true>{};
  ***/
 
 /** Debug enums. Must match code_part_names in debug.c */
-enum code_part
-{
+typedef enum {
   LOG_ALL, /* special: sets all to on */
   LOG_MAIN,
   LOG_SOUND,
@@ -175,7 +180,7 @@ enum code_part
   LOG_LIFE,
   LOG_GATEWAY,
   LOG_MSG,
-  LOG_INFO, /**< special; on by default, for both debug & release builds */
+  LOG_INFO,	/**< special; on by default, for both debug & release builds  */
   LOG_TERRAIN,
   LOG_FEATURE,
   LOG_FATAL,	/**< special; on by default, for both debug & release builds  */
@@ -183,7 +188,7 @@ enum code_part
   LOG_POPUP,	// special, on by default, for both debug & release builds (used for OS dependent popup code)
   LOG_CONSOLE,	// send console messages to file
   LOG_LAST /**< _must_ be last! */
-};
+} code_part;
 
 extern bool enabled_debug[LOG_LAST];
 
@@ -191,14 +196,13 @@ typedef void (*debug_callback_fn)(void**, const char*);
 typedef bool (*debug_callback_init)(void**);
 typedef void (*debug_callback_exit)(void**);
 
-struct debug_callback
-{
-	debug_callback * next;
+typedef struct _debug_callback {
+	struct _debug_callback * next;
 	debug_callback_fn callback; /// Function which does the output
 	debug_callback_init init; /// Setup function
 	debug_callback_exit exit; /// Cleaning function
 	void * data; /// Used to pass data to the above functions. Eg a filename or handle.
-};
+} debug_callback;
 
 /**
  * Call once to initialize the debug logging system.
@@ -246,17 +250,15 @@ void debug_callback_win32debug(void** data, const char* outputBuffer);
  */
 bool debug_enable_switch(const char *str);
 // macro for always outputting informational responses on both debug & release builds
-#define info(...) do { _debug(__LINE__, LOG_INFO, __FUNCTION__, __VA_ARGS__); } while(0)
+#define info(...) do { _debug(LOG_INFO, __FUNCTION__, __VA_ARGS__); } while(0)
 /**
  * Output printf style format str with additional arguments.
  *
  * Only outputs if debugging of part was formerly enabled with debug_enable_switch.
  */
-#define debug(part, ...) do { if (enabled_debug[part]) _debug(__LINE__, part, __FUNCTION__, __VA_ARGS__); } while(0)
-void _debug( int line, code_part part, const char *function, const char *str, ...) WZ_DECL_FORMAT(printf, 4, 5);
-
-#define debugBacktrace(part, ...) do { if (enabled_debug[part]) { _debug(__LINE__, part, __FUNCTION__, __VA_ARGS__); _debugBacktrace(part); }} while(0)
-void _debugBacktrace(code_part part);
+#define debug(part, ...) do { if (enabled_debug[part]) _debug(part, __FUNCTION__, __VA_ARGS__); } while(0)
+void _debug( code_part part, const char *function, const char *str, ...)
+		WZ_DECL_FORMAT(printf, 3, 4);
 
 /** Global to keep track of which game object to trace. */
 extern UDWORD traceID;
@@ -279,8 +281,15 @@ void debug_MEMSTATS(void);
 #endif
 
 /** Checks if a particular debub flag was enabled */
-extern bool debugPartEnabled(code_part codePart);
+bool debugPartEnabled(code_part codePart);
 
 void debugDisableAssert(void);
+
+// will throw up a notifier on error
+void NotifyUserOfError(char *);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif // __INCLUDED_LIB_FRAMEWORK_DEBUG_H__

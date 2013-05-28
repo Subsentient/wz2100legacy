@@ -1,27 +1,25 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_BUCKET3D_H__
 #define __INCLUDED_SRC_BUCKET3D_H__
 
-enum RENDER_TYPE
+#define		BUCKET
+
+typedef enum _render_type
 {
 	RENDER_DROID,
 	RENDER_STRUCTURE,
@@ -33,14 +31,17 @@ enum RENDER_TYPE
 	RENDER_EFFECT,
 	RENDER_DELIVPOINT,
 	RENDER_PARTICLE
-};
+} RENDER_TYPE;
 
 //function prototypes
 
+/* reset object list */
+extern BOOL bucketSetupList(void);
+
 /* add an object to the current render list */
-void bucketAddTypeToList(RENDER_TYPE objectType, void *object);
+extern BOOL bucketAddTypeToList(RENDER_TYPE objectType, void* object);
 
 /* render Objects in list */
-void bucketRenderCurrentList(void);
+extern BOOL bucketRenderCurrentList(void);
 
 #endif // __INCLUDED_SRC_BUCKET3D_H__

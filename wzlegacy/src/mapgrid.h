@@ -1,77 +1,77 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
- *  Allows querying which objects are within a given radius of a given location.
+ *  Definitions for storing objects in a grid over the map.
+ *  The objects are stored in every grid over which they might have some influence.
  */
 
 #ifndef __INCLUDED_SRC_MAPGRID_H__
 #define __INCLUDED_SRC_MAPGRID_H__
 
-extern void **gridIterator;  ///< The iterator.
+/** Number of objects in each chunk of the grid array. */
+#define MAX_GRID_ARRAY_CHUNK 32
 
+// Objects are stored in an extensible array for each grid
+typedef struct _grid_array
+{
+	BASE_OBJECT *apsObjects[MAX_GRID_ARRAY_CHUNK];
+
+	struct _grid_array *psNext;
+} GRID_ARRAY;
+
+
+/** The number of tiles per grid. */
+#define GRID_SIZE	8
+
+#define GRID_MAXAREA (MAP_MAXAREA/(GRID_SIZE*GRID_SIZE))
 
 // initialise the grid system
-extern bool gridInitialise(void);
+extern BOOL gridInitialise(void);
 
 // shutdown the grid system
 extern void gridShutDown(void);
 
-// Reset the grid system. Called once per update.
-// Resets seenThisTick[] to false.
+//clear the grid of everything on it
+extern void gridClear(void);
+
+// reset the grid system
 extern void gridReset(void);
 
-#define PREVIOUS_DEFAULT_GRID_SEARCH_RADIUS (20*TILE_UNITS)
-/// Find all objects within radius. Call gridIterate() to get the search results.
-extern void gridStartIterate(int32_t x, int32_t y, uint32_t radius);
+// add an object to the grid system
+extern void gridAddObject(BASE_OBJECT *psObj);
 
-// Isn't, but could be used by some cluster system. Don't really understand what cluster.c is for.
-/// Find all objects within radius where object->type == OBJ_DROID && object->player == player. Call gridIterate() to get the search results.
-extern void gridStartIterateDroidsByPlayer(int32_t x, int32_t y, uint32_t radius, int player);
+// move a DROID within the grid
+// oldX,oldY are the old position of the object in world coords
+extern void gridMoveDroid(DROID* psDroid, SDWORD oldX, SDWORD oldY);
 
-// Used for visibility.
-/// Find all objects within radius where object->seenThisTick[player] != 255. Call gridIterate() to get the search results.
-extern void gridStartIterateUnseen(int32_t x, int32_t y, uint32_t radius, int player);
+// remove an object from the grid system
+extern void gridRemoveObject(BASE_OBJECT *psObj);
 
-/// Get the next search result from gridStartIterate, or NULL if finished.
-static inline BASE_OBJECT *gridIterate()
-{
-	BASE_OBJECT *ret = (BASE_OBJECT *)*gridIterator++;
-	if (ret == NULL)
-	{
-		gridIterator = NULL;  // Detect (by crashing in a reproducible way) if calling gridIterate() again before gridStartIterate().
-	}
-	return ret;
-}
+// compact some of the grid arrays
+extern void gridGarbageCollect(void);
 
-/// Saves the list returned by gridIterate(), so that future gridStartIterate() calls will not overwrite the list.
-static inline void gridGetIterateList(std::vector<BASE_OBJECT *> *list)
-{
-	list->clear();
-	for (BASE_OBJECT *psObj = gridIterate(); psObj != NULL; psObj = gridIterate())
-	{
-		list->push_back(psObj);
-	}
-}
+// Display all the grid's an object is a member of
+extern void gridDisplayCoverage(BASE_OBJECT *psObj);
 
-// Isn't, but could be used by some weird recursive calls in cluster.c.
-/// Make a copy of the list. Free with free().
-BASE_OBJECT **gridIterateDup(void);
+// initialise the grid system to start iterating through units that
+// could affect a location (x,y in world coords)
+extern void gridStartIterate(SDWORD x, SDWORD y);
+
+// get the next object that could affect a location,
+// should only be called after gridStartIterate
+extern BASE_OBJECT *gridIterate(void);
 
 #endif // __INCLUDED_SRC_MAPGRID_H__

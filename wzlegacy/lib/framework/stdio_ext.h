@@ -1,29 +1,26 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 2007  Giel van Schijndel
-	Copyright (C) 2007-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #ifndef STDIO_EXT_H
 #define STDIO_EXT_H
 
-#include "wzglobal.h"
-
-#include <stdio.h>
 #include <stdarg.h>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 /** A variant on snprintf which appends its output string to the given string
  *  buffer, rather than to replace it.
@@ -111,9 +108,8 @@ do { \
 	sprintf(*var, fmt,  __VA_ARGS__); \
 } while(0)
 
-/// Equivalent to vasprintf, except that strp is NULL instead of undefined, if the function returns -1. Does not give compiler warnings/-Werrors if not checking the return value.
-int vasprintfNull(char** strp, const char* format, va_list ap);
-/// Equivalent to asprintf, except that strp is NULL instead of undefined, if the function returns -1. Does not give compiler warnings/-Werrors if not checking the return value.
-int asprintfNull(char** strp, const char* format, ...);
+#if defined(__cplusplus)
+}
+#endif
 
 #endif // STDIO_EXT_H

@@ -1,27 +1,20 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
-/**
- *
- * @file
- * Definitions for command droids.
- *
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
+/** \file
+ *  Definitions for command droids.
  */
 
 #ifndef __INCLUDED_CMDDROIDDEF_H__
@@ -30,22 +23,20 @@
 #include "statsdef.h"
 #include "droiddef.h"
 
-/** This defines the maximum number of command droids allowed per player.*/
+// the maximum number of command droids per side
 #define MAX_CMDDROIDS	5
 
-/** This struct defines a command droid. 
- * Notice that this struct is not a droid: it is just responsible for the command's logic.
- * This struct uses the psDroid member to point to the actual droid where it lives in.
- * @todo died and psDroid are the only members that are being used somewhere in the code. Consider removing all the others.
- */
-struct COMMAND_DROID : public COMPONENT_STATS
+typedef struct _command_droid
 {
-	UDWORD  died;		/**< Defines if the command has died or not.*/
-	SWORD   aggression;
-	SWORD   survival;
-	SWORD   nWeapStat;
-	UWORD   kills;
-	DROID*  psDroid;	/**< The droid where the command droid is living in.*/
-};
+	// define the command droid as a COMPONENT so it fits into the design screen
+	STATS_COMPONENT;
+
+	UDWORD          died;
+	SWORD           aggression;
+	SWORD           survival;
+	SWORD           nWeapStat;
+	UWORD           kills;
+	DROID*          psDroid;
+} COMMAND_DROID;
 
 #endif // __INCLUDED_CMDDROIDDEF_H__

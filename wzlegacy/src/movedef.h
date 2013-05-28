@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** \file
  *  Definitions for movement tracking.
  */
@@ -24,35 +20,25 @@
 #ifndef __INCLUDED_MOVEDEF_H__
 #define __INCLUDED_MOVEDEF_H__
 
-#include "lib/framework/vector.h"
+//Watermelon:num of VTOL weapons should be same as DROID_MAXWEAPS
+#define VTOL_MAXWEAPS		3
 
-enum MOVE_STATUS
+typedef struct _move_control
 {
-	MOVEINACTIVE,
-	MOVENAVIGATE,
-	MOVETURN,
-	MOVEPAUSE,
-	MOVEPOINTTOPOINT,
-	MOVETURNTOTARGET,
-	MOVEHOVER,
-	MOVEDRIVE,
-	MOVEWAITROUTE,
-	MOVESHUFFLE,
-};
+	UBYTE	Status;						// Inactive, Navigating or moving point to point status
+	UBYTE	Position;	   				// Position in asPath
+	UBYTE	numPoints;					// number of points in asPath
+	Vector2i *asPath;					// Pointer to list of block X,Y map coordinates.
+	SDWORD	DestinationX, DestinationY;			// World coordinates of movement destination
+	SDWORD	srcX,srcY,targetX,targetY;
 
-struct MOVE_CONTROL
-{
-	MOVE_STATUS	Status;					// Inactive, Navigating or moving point to point status
-	int             pathIndex;                              // Position in asPath
-	int             numPoints;                              // number of points in asPath
-	Vector2i	 *asPath;				// Pointer to list of block X,Y map coordinates.
+	/* Stuff for John's movement update */
+	float	fx,fy;						// droid location as a fract
+	float	speed;						// Speed of motion
+	SWORD	boundX,boundY;				// Vector for the end of path boundary
 
-	Vector2i destination;                                   // World coordinates of movement destination
-	Vector2i src, target;
-	int	speed;						// Speed of motion
-
-	uint16_t moveDir;					// direction of motion (not the direction the droid is facing)
-	uint16_t bumpDir;					// direction at last bump
+	float	moveDir;						// direction of motion (not the direction the droid is facing)
+	SWORD	bumpDir;					// direction at last bump
 	UDWORD	bumpTime;					// time of first bump with something
 	UWORD	lastBump;					// time of last bump with a droid - relative to bumpTime
 	UWORD	pauseTime;					// when MOVEPAUSE started - relative to bumpTime
@@ -60,8 +46,16 @@ struct MOVE_CONTROL
 
 	UDWORD	shuffleStart;				// when a shuffle started
 
+	struct _formation	*psFormation;			// formation the droid is currently a member of
+
 	/* vtol movement - GJ */
 	SWORD	iVertSpeed;
-};
+
+	// iAttackRuns tracks the amount of ammunition a VTOL has remaining for each weapon
+	UDWORD	iAttackRuns[VTOL_MAXWEAPS];
+
+	// added for vtol movement
+	float	fz;
+} MOVE_CONTROL;
 
 #endif // __INCLUDED_MOVEDEF_H__

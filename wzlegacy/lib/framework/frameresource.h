@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /*! \file
  *  \brief Resource file processing functions
  */
@@ -24,13 +20,13 @@
 #ifndef _frameresource_h
 #define _frameresource_h
 
-#include "lib/framework/frame.h"
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
 
 /** Maximum number of characters in a resource type. */
 #define RESTYPE_MAXCHAR		20
-
-/** Maximum number of characters in a resource ID. */
-#define RESID_MAXCHAR		40
 
 /** Function pointer for a function that loads from a memory buffer. */
 typedef bool (*RES_BUFFERLOAD)(const char *pBuffer, UDWORD size, void **pData);
@@ -44,23 +40,23 @@ typedef void (*RES_FREE)(void *pData);
 /** callback type for resload display callback. */
 typedef void (*RESLOAD_CALLBACK)(void);
 
-struct RES_DATA
+typedef struct res_data
 {
 	void		*pData;				// pointer to the acutal data
 	SDWORD		blockID;			// which of the blocks is it in (so we can clear some of them...)
 
 	UDWORD	HashedID;				// hashed version of the name of the id
-	RES_DATA *      psNext;                         // next entry - most likely to be following on!
+	struct	res_data *psNext;		// next entry - most likely to be following on!
 	UDWORD		usage; // Reference count
 
 	// ID of the resource - filename from the .wrf - e.g. "TRON.PIE"
 	const char* aID;
-};
+} RES_DATA;
 
 
 // New reduced resource type ... specially for PSX
 // These types  are statically defined in data.c
-struct RES_TYPE
+typedef struct _res_type
 {
 	// type is still needed on psx ... strings are defined in source - data.c (yak!)
 	char			aType[RESTYPE_MAXCHAR];		// type string (e.g. "PIE"	 - just for debug use only, only aplicable when loading from wrf (not wdg)
@@ -73,8 +69,8 @@ struct RES_TYPE
 	UDWORD	HashedType;				// hashed version of the name of the id - // a null hashedtype indicates end of list
 
 	RES_FILELOAD	fileLoad;		// This isn't really used any more ?
-	RES_TYPE *      psNext;
-};
+	struct _res_type	*psNext;
+} RES_TYPE;
 
 
 /** Set the function to call when loading files with resloadfile. */
@@ -85,10 +81,6 @@ extern bool resInitialise(void);
 
 /** Shutdown the resource module. */
 extern void resShutDown(void);
-
-/** Set the base resource directory. */
-extern void resSetBaseDir(const char* pResDir);
-extern void resForceBaseDir(const char* pResDir);
 
 /** Parse the res file. */
 bool resLoad(const char *pResFile, SDWORD blockID);
@@ -135,5 +127,9 @@ const char *GetLastResourceFilename(void) WZ_DECL_PURE;
 
 /** Set the resource name of the last resource file loaded. */
 void SetLastResourceFilename(const char *pName);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif // _frameresource_h

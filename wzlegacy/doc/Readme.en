@@ -10,6 +10,21 @@ your web browser: http://webchat.freenode.net/?channels=#wz2100legacy
 
 There are also forums at our site. Feel free to join our community!
 
+Warzone 2100 Legacy is a fork of the Warzone 2100 Project, intended to enhance the codebase and add
+UI features while maintaining most of the gameplay of Warzone 2100 2.3.x series.
+
+
+~~~A word from Subsentient, project director:~~~
+
+I feel a strong need to thank the developers of the Warzone 2100 Project for their work on this series of
+the game, and a need to state that all code in this game untouched since
+November 2011 is entirely their work. Although they have decided to go in a different direction,
+their work on the game is deeply appreciated. They are responsible for the revival of Warzone 2100.
+Though I possess strong feelings about their new direction on the game, I am indeed grateful for their work.
+
+
+****BEYOND THIS POINT: Reimplementation for new codebase in progress.****
+
 In the mean time, here are a few tricks for Legacy that may not be so obvious:
 
 You can type a map's name into the map name box now, but the maximum player count will be set to whatever was previously selected.

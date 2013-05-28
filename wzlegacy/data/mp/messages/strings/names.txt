@@ -332,6 +332,8 @@ HalfTrack02				_("Half-tracks II")
 HalfTrack03				_("Half-tracks III")
 CyborgLegs02				_("Cyborg Propulsion II")
 CyborgLegs03				_("Cyborg Propulsion III")
+//CyborgJets02				_("Cyborg Jump Pack II")
+//CyborgJets03				_("Cyborg Jump Pack III")
 Naval					_("Naval")
 
 /*BABARIAN PROPULSIONS*/
@@ -348,9 +350,16 @@ LightRepair1				_("Repair Turret")
 
 /* ECM */
 ZNULLECM				"Z NULL ECM"
-ECM1PylonMk1				_("Jammer Tower")
-ECM1TurretMk1				_("Jammer Turret")
-R-Sys-ECM-Upgrade01			_("Electronic Countermeasures")
+//ECM1PylonMk1				_("Jammer Tower")
+//ECM1TurretMk1				_("Jammer Turret")
+//ECM1DefaultMk1				"*TEST - ECM1 Default Mk1*"
+ECM1Default				"*TEST - Baba ECM Default*"
+//ECM2PylonMk1				_("Jammer Tower II")
+//ECM2TurretMk1				_("Jammer Turret III")
+//ECM2DefaultMk1				"*Improved ECM Default Mk1*"
+//ECM3PylonMk1				_("Jammer Tower III")
+//ECM3TurretMk1				_("Jammer Turret III")
+//ECM3DefaultMk1				"*ECM3DefaultMk1*"
 
 /* SENSORS */
 ZNULLSENSOR				"Z NULL SENSOR"
@@ -671,10 +680,6 @@ R-Cyborg-Metals09				_("Cyborg Superdense Composite Alloys Mk3")
 //R-Cyborg-Metals10				_("Cyborg Bonded Laminates")
 
 R-Cyborg-Transport			_("Cyborg Transport")
-
-SuperTransport			_("Super Transport")
-R-SuperTransport		_("Super Transport")
-SuperTransportBody	_("Super Transport Body")
 
 R-Cyborg-Wpn-BB				_("Bunker Blaster Cyborg")
 R-Cyborg-Wpn-Cannon			_("Heavy Gunner Cyborg")
@@ -1707,8 +1712,8 @@ R-Sys-RadarDetector01			_("Radar Detector")
 
 SK-Veng-Track-C6TwinAslt	"*SK-Veng-Track-C6TwinAslt*"
 SK-Veng-Track-HvyLaser		"*SK-Veng-Track-HvyLaser*"
-SK-Veng-Hover-Seraph		"*SK-Veng-Hover-Seraph*"
-Dragon-Hover-SeraphGauss	"*SK-Dragon-Hover-SeraphGauss*"
+SK-Veng-Hover-Seraph           "*SK-Veng-Hover-Seraph*"
+Dragon-Hover-SeraphGauss       "*SK-Dragon-Hover-SeraphGauss*"
 
 AutoRepair					"Auto Repair"
 
@@ -1962,54 +1967,3 @@ SK-Mantis-VTOL-HBB    _("Heap Bomb Bay Mantis VTOL")
 SK-Retre-VTOL-HBB     _("Heap Bomb Bay Retribution VTOL")
 SK-Retal-VTOL-Scourge _("Scourge Retaliation VTOL")
 SK-Retre-VTOL-Plasmite	_("Plasmite Retribution VTOL")
-
-
-// new features by Mysteryem
-
-arizonabush1				"*ArizonaBush1*"
-arizonabush2				"*ArizonaBush2*"
-arizonabush3				"*ArizonaBush3*"
-arizonabush4				"*ArizonaBush4*"
-arizonatree1        "*ArizonaTree1*"
-arizonatree2        "*ArizonaTree2*"
-arizonatree3        "*ArizonaTree3*"
-arizonatree4        "*ArizonaTree4*"
-arizonatree5        "*ArizonaTree5*"
-arizonatree6        "*ArizonaTree6*"
-trapstraight        "*TrapStraight*"
-trapcorner          "*TrapCorner*"
-hoverwreck          "*WreckedHoverProp*"
-barrier             "*Barrier*"
-bridgeend           "*BridgeEnd*"
-bridgemiddle        "*BridgeMiddle*"
-bridgefull         "*FullBridge*"
-bigcooltowr         "*LargeCoolingTower*"
-nukepowstat         "*NuclearPowerStation*"
-Pipe1A              "*PipeFull*"
-Pipe2A              "*PipeEnd*"
-Pipe3A              "*PipeCollapsed*"
-Ruin6               "*Ruin6*"
-Ruin7               "*Ruin7*"
-Ruin8               "*Ruin8*"
-Ruin9               "*Ruin9*"
-Ruin10              "*Ruin10*"
-Wreck0              "*Wreck0*"
-Wreck1              "*Wreck1*"
-Wreck2              "*Wreck2*"
-Wreck3              "*Wreck3*"
-Wreck4              "*Wreck4*"
-Wreck5              "*Wreck5*"
-BaBaHorizontalWall  "*Babahrzwall*"
-BabaCornerWall      "*Babacrnwall*"
-Powlab              "Powerlab"
-Indirectlab         "Indirectweaponslab"
-Nanolab             "Nanolab"
-Aerodynamicslab     "Aerodynamicslab"
-Advmaterialslab     "Advancedmaterialslab"
-Heavywepslab        "Heavyweaponslab"
-Rotarywepslab       "Rotaryweaponslab"
-Laseropticslab      "Laseropticslab"
-Wall                "Wall"
-WallCorner          "Wallcorner"
-WallSmashed         "Smashedwall"
-WallCornerSmashed   "Smashedcornerwall"

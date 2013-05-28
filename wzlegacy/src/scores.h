@@ -1,27 +1,23 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_SCORES_H__
 #define __INCLUDED_SRC_SCORES_H__
 
-enum DATA_INDEX
+typedef enum data_index
 {
 WD_UNITS_BUILT,
 WD_UNITS_KILLED,
@@ -34,11 +30,11 @@ WD_MISSION_STARTED,
 WD_SHOTS_ON_TARGET,
 WD_SHOTS_OFF_TARGET,
 WD_BARBARIANS_MOWED_DOWN
-};
+} DATA_INDEX;
 
 // --------------------------------------------------------------------
 /* The mission results data */
-struct MISSION_DATA
+typedef	struct mission_data
 {
 	uint32_t    unitsBuilt;		// How many units were built
 	uint32_t    unitsKilled;	// How many enemy units you blew up
@@ -51,20 +47,20 @@ struct MISSION_DATA
 	uint32_t    shotsOnTarget;	// How many hits
 	uint32_t    shotsOffTarget;	// How many misses
 	uint32_t    babasMowedDown; // How many barbarians did we mow down?
-};
-extern MISSION_DATA	missionData;
+} MISSION_DATA;
+
 // Could use widgets, but hey.....
-struct STAT_BAR
+typedef	struct	_stat_bar
 {
 UDWORD	topX,topY;		// Obvious
 UDWORD	width,height;	// Height down screen and width _unfilled_
 UDWORD	percent;		// What percentage full is it?
 UDWORD	stringID;		// String resource name to stick next to it.
 UDWORD	queTime;		// How many game ticks before it's active?
-bool	bQueued;		// Already fired off?
-bool	bActive;		// Is this one active?
+BOOL	bQueued;		// Already fired off?
+BOOL	bActive;		// Is this one active?
 UDWORD	number;			// %d string for the associated text string.
-};
+}STAT_BAR;
 
 enum
 {
@@ -89,11 +85,12 @@ STAT_ACE
 
 
 
-extern bool	scoreInitSystem			( void );
+extern BOOL	scoreInitSystem			( void );
 extern void	scoreUpdateVar			( DATA_INDEX var );
 extern void	scoreDataToConsole		( void );
 extern void	scoreDataToScreen		( void );
-void getAsciiTime(char *psText, unsigned time);
+extern void constructTime			( char *psText, UDWORD hours, UDWORD minutes, UDWORD seconds );
+extern void	getAsciiTime			( char *psText, UDWORD time );
 extern bool readScoreData			( const char* fileName );
 extern bool writeScoreData			( const char* fileName );
 

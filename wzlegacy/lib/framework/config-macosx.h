@@ -255,22 +255,22 @@
 #define LOCALEDIR ""
 
 /* Name of package */
-#define PACKAGE "warzone2100-legacy"
+#define PACKAGE "wz2100legacy"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "http://warzonelegacy.org/"
+#define PACKAGE_BUGREPORT "http://forums.warzonelegacy.org/"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "Warzone 2100 Legacy"
+#define PACKAGE_NAME PROJECTNAME
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Warzone 2100 Microwave Popping"
+#define PACKAGE_STRING PROJECTNAME " microwave_rebase" /*This is helpful.*/
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "warzone2100-legacy"
+#define PACKAGE_TARNAME "wz2100legacy"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "microwave_popping"
+#define PACKAGE_VERSION "microwave_rebase"
 
 /* Define if <inttypes.h> exists and defines unusable PRI* macros. */
 /* #undef PRI_MACROS_BROKEN */

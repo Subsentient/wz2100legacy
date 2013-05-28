@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /***************************************************************************/
 
 /*! \file hashtabl.h
@@ -60,15 +56,16 @@ typedef void	(* HASHFREEFUNC)	( void *psElement );
 /* structs
  */
 
-struct HASHNODE
+typedef struct HASHNODE
 {
 	intptr_t			iKey1;
 	intptr_t			iKey2;
 	void			*psElement;
-	HASHNODE *              psNext;
-};
+	struct HASHNODE		*psNext;
+}
+HASHNODE;
 
-struct HASHTABLE
+typedef struct HASHTABLE
 {
 	HASHNODE		**ppsNode;
 	HASHNODE		*psNextNode;
@@ -79,7 +76,8 @@ struct HASHTABLE
 	UDWORD			udwExtElements;
 	UDWORD			udwElementSize;
 	UDWORD			sdwCurIndex;
-};
+}
+HASHTABLE;
 
 /***************************************************************************/
 /* functions
@@ -94,7 +92,7 @@ struct HASHTABLE
  * \param	udwExtElements	number of elements when extending the heap
  * \param	udwElementSize	size of elements to be stored in the hashtable
  */
-bool	hashTable_Create( HASHTABLE **ppsTable, UDWORD udwTableSize,
+BOOL	hashTable_Create( HASHTABLE **ppsTable, UDWORD udwTableSize,
 							UDWORD udwInitElements, UDWORD udwExtElements,
 							UDWORD udwElementSize );
 
@@ -139,7 +137,7 @@ void hashTable_InsertElement(HASHTABLE *psTable, void *psElement, intptr_t iKey1
  * \param	iKey2		second key
  * \return	true, if the element was contained in the hashtable
  */
-bool hashTable_RemoveElement(HASHTABLE *psTable, void *psElement, intptr_t iKey1, intptr_t iKey2);
+BOOL hashTable_RemoveElement(HASHTABLE *psTable, void *psElement, intptr_t iKey1, intptr_t iKey2);
 
 /**
  * Calculates hash index from keys and returns element in hash table

@@ -1,71 +1,88 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
-/**
- * @file
- *  Endianness functions
- */
-
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #ifndef ENDIAN_HACK_H
 #define ENDIAN_HACK_H
 
-#include <string.h>
+/* Endianness hacks */
+// TODO Use SDL_SwapXXXX instead
 
-static inline void endian_uword(UWORD* p)
+static inline void endian_uword(UWORD* uword)
 {
-	STATIC_ASSERT(sizeof(*p) == 2);
-	uint8_t bytes[sizeof(*p)];
-	memcpy(bytes, p, sizeof(*p));
-	*p = bytes[1]<<8 | bytes[0];
+#ifdef __BIG_ENDIAN__
+  UBYTE tmp, *ptr;
+
+  ptr = (UBYTE *) uword;
+  tmp = ptr[0];
+  ptr[0] = ptr[1];
+  ptr[1] = tmp;
+#else
+  // Prevent warnings
+  (void)uword;
+#endif
 }
 
-static inline void endian_sword(SWORD* p)
+static inline void endian_sword(SWORD* sword)
 {
-	STATIC_ASSERT(sizeof(*p) == 2);
-	uint8_t bytes[sizeof(*p)];
-	memcpy(bytes, p, sizeof(*p));
-	*p = bytes[1]<<8 | bytes[0];
+#ifdef __BIG_ENDIAN__
+  UBYTE tmp, *ptr;
+
+  ptr = (UBYTE *) sword;
+  tmp = ptr[0];
+  ptr[0] = ptr[1];
+  ptr[1] = tmp;
+#else
+  // Prevent warnings
+  (void)sword;
+#endif
 }
 
-static inline void endian_udword(UDWORD* p)
+static inline void endian_udword(UDWORD* udword)
 {
-	STATIC_ASSERT(sizeof(*p) == 4);
-	uint8_t bytes[sizeof(*p)];
-	memcpy(bytes, p, sizeof(*p));
-	*p = bytes[3]<<24 | bytes[2]<<16 | bytes[1]<<8 | bytes[0];
+#ifdef __BIG_ENDIAN__
+  UBYTE tmp, *ptr;
+
+  ptr = (UBYTE *) udword;
+  tmp = ptr[0];
+  ptr[0] = ptr[3];
+  ptr[3] = tmp;
+  tmp = ptr[1];
+  ptr[1] = ptr[2];
+  ptr[2] = tmp;
+#else
+  // Prevent warnings
+  (void)udword;
+#endif
 }
 
-static inline void endian_sdword(SDWORD* p)
+static inline void endian_sdword(SDWORD* sdword)
 {
-	STATIC_ASSERT(sizeof(*p) == 4);
-	uint8_t bytes[sizeof(*p)];
-	memcpy(bytes, p, sizeof(*p));
-	*p = bytes[3]<<24 | bytes[2]<<16 | bytes[1]<<8 | bytes[0];
-}
+#ifdef __BIG_ENDIAN__
+  UBYTE tmp, *ptr;
 
-template <typename ENUM>
-static inline void endian_enum(ENUM *p)
-{
-	STATIC_ASSERT(sizeof(*p) == 4);
-	uint8_t bytes[sizeof(*p)];
-	memcpy(bytes, p, sizeof(*p));
-	*p = ENUM(bytes[3]<<24 | bytes[2]<<16 | bytes[1]<<8 | bytes[0]);
+  ptr = (UBYTE *) sdword;
+  tmp = ptr[0];
+  ptr[0] = ptr[3];
+  ptr[3] = tmp;
+  tmp = ptr[1];
+  ptr[1] = ptr[2];
+  ptr[2] = tmp;
+#else
+  // Prevent warnings
+  (void)sdword;
+#endif
 }
 
 #endif // ENDIAN_HACK_H

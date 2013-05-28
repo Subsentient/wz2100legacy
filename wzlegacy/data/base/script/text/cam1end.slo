@@ -59,6 +59,7 @@ event briefings;
 /* Initialisation */
 event	start(CALL_GAMEINIT)
 {
+	randomiseSeed();
 //centre view
 	centreViewPos(centreX, centreY);
 

@@ -1,18 +1,17 @@
-AC_PREREQ([2.69])
-AC_INIT([Warzone 2100 Legacy],[microwave_popping],[http://warzonelegacy.org/],[warzone2100legacy])
+AC_PREREQ([2.56])
+AC_INIT([Warzone 2100 Legacy],[microwave_rebase],[http://warzonelegacy.org/],[wz2100legacy])
 
-AM_INIT_AUTOMAKE([1.12 tar-ustar]) #We are going to need automake 1.12 for recent changes.
+AM_INIT_AUTOMAKE([1.10 tar-ustar])
 
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_SRCDIR([lib/framework/frame.cpp])
+AC_CONFIG_SRCDIR([lib/framework/frame.c])
 
 
 # HACK
 # Workaround stupid autoconf CFLAGS default
 # (Bash considers set but empty variables different from null for the ${VAR:+alt} operator)
 CFLAGS="${CFLAGS}"
-CXXFLAGS="${CXXFLAGS}"
-
+CXXFLAGS="${CFLAGS}"
 
 # Make cross compilation options available in --help
 AC_CANONICAL_HOST
@@ -23,6 +22,7 @@ AC_CHECK_PROG(CCOMPILER, ${CC}, ccompiler)
 test -z "${CCOMPILER}" && AC_MSG_ERROR(No C compiler found!)
 AC_PROG_RANLIB
 
+# We need a C++ compiler for build_tools/autorevision
 AC_PROG_CXX
 AC_CHECK_PROG(CXXCOMPILER, ${CXX}, cxxcompiler)
 test -z "${CXXCOMPILER}" && AC_MSG_ERROR(No C++ compiler found!)
@@ -35,9 +35,6 @@ AC_PROG_VERSION_CHECK([bison], [1.31])
 
 AC_PROG_LEX
 AC_PROG_VERSION_CHECK([${LEX}], [2.5.33], [2.5.34])
-# Hack to make sure flex produces files with names ylwrap expects.
-FLEX_FLAGS="-o lex.yy.c"
-AC_SUBST([FLEX_FLAGS])
 
 AX_WITH_PROG([PERL], [perl])
 AX_PROG_PERL_VERSION([5.10], [], [ PERL="" ])
@@ -55,7 +52,9 @@ rm -f filesynctest.zip
 AC_SUBST([ZIP_UPDATE], [${ZIP_UPDATE}])
 
 AC_CHECK_PROG(A2X, a2x, a2x)
+AC_CHECK_PROG(WKHTMLTOPDF, wkhtmltopdf, wkhtmltopdf)
 AM_CONDITIONAL([A2X_AVAILABLE], test -n "$A2X")
+AM_CONDITIONAL([WKHTMLTOPDF_AVAILABLE], test -n "$WKHTMLTOPDF")
 
 # Enable Compiler/LibC GNU extensions
 AC_GNU_SOURCE
@@ -78,19 +77,6 @@ AM_GNU_GETTEXT_VERSION([0.15])
 PKG_PROG_PKG_CONFIG
 AC_PROG_VERSION_CHECK([pkg-config], [0.9])
 
-# Check for Qt
-PKG_CHECK_MODULES(QT4, QtCore QtGui QtOpenGL QtNetwork QtScript,,[:])
-if test "$pkg_failed" = "yes" ; then
-	AC_MSG_ERROR([Qt not found - required!])
-fi
-QT4_INCLUDES=$QT4_FRONTEND_CFLAGS
-QT4_LDFLAGS=$QT4_FRONTEND_LIBS
-QT4_LIB=$QT4_FRONTEND_LIBS
-QT4_VERSION=`$PKG_CONFIG --modversion QtCore`
-AC_SUBST(QT4_VERSION)
-AC_PATH_PROGS(MOC4, [moc-qt4 moc])
-AC_PATH_PROGS(UIC4, [uic-qt4 uic])
-AC_PATH_PROGS(RCC4, [rcc-qt4 rcc])
 
 # Check for compiler
 case ${CC} in
@@ -105,14 +91,18 @@ case ${host_os} in
 	*mingw32*)
 		host_os_mingw32=yes
 		AC_CHECK_TOOL([WINDRES], [windres], AC_MSG_ERROR([windres not found]))
-		WIN32_LIBS='-ldbghelp -lshfolder -lshlwapi -lpsapi -lshell32 -lwinmm -lws2_32 -liphlpapi'
+		WIN32_LIBS='-ldbghelp -lshfolder -lshlwapi -lpsapi -lshell32 -lwinmm -lws2_32'
 		AC_SUBST([WIN32_LIBS], [${WIN32_LIBS}])
-		LDFLAGS="-Wl,-subsystem,windows ${LDFLAGS}"
+		;;
+	*openbsd*)
+		AC_DEFINE([_XOPEN_SOURCE], 600, [Enable POSIX extensions if present])
+		# Make sure that backtrace_symbols_fd (GNU raw back trace extension) has some symbols to work with
+		LDFLAGS="-Wl,-export-dynamic ${LDFLAGS}"
 		;;
 	*)
 		# Some platforms don't need _XOPEN_SOURCE
 		case ${host_os} in
-			*bsd* | dragonfly* | bitrig*) ;;
+			*freebsd*) ;;
 			*)
 				AC_DEFINE([_XOPEN_SOURCE], 600, [Enable POSIX extensions if present])
 				;;
@@ -124,16 +114,6 @@ case ${host_os} in
 esac
 AM_CONDITIONAL([MINGW32], test "x$host_os_mingw32" = "xyes")
 
-
-# Check for X11 (for the backend and scrap)
-if test "x$host_os_mingw32" != "xyes" ; then
-	X_LIBS=""
-	AC_PATH_X
-	if test x$no_x != "xyes"; then
-		X_LIBS="-lX11 -lXrandr ${X_LIBS}"
-	fi
-	AC_SUBST(X_LIBS)
-fi
 
 # Set compilers to use when building for the build system in a cross compile build
 # Fallback to the system compilers
@@ -230,6 +210,10 @@ AS_IF([test "x$enable_sound" != "xyes"],[
 	AC_DEFINE([WZ_NOSOUND], [], [Causes sound to be disabled])
 ])
 
+AC_ARG_ENABLE([motif],
+	AS_HELP_STRING([--disable-motif],[Use Motif widgets to provide message dialog boxes]),
+	[ enable_motif=${enableval} ], [ enable_motif=try ])
+
 # -O0 turns off all optimizations; this is necessary for accurate debugging
 # -Wno-unused-label is necessary because flex produces unused labels that we cannot fix
 # Add later for stricter checking: -Wextra -Wmissing-declarations -Wstrict-prototypes
@@ -245,11 +229,6 @@ AC_MSG_RESULT([${enable_debug}])
 # also important, it doesn't work if -Werror comes last.
 AX_C_CHECK_FLAG([-Werror -Wno-switch], , , CFLAGS_IGNORE_WARNINGS="${CFLAGS_IGNORE_WARNINGS} -Wno-switch")
 AX_C_CHECK_FLAG([-Werror -Wno-enum-compare], , , CFLAGS_IGNORE_WARNINGS="${CFLAGS_IGNORE_WARNINGS} -Wno-enum-compare")
-# Only needed for CXX, actually.
-WZ_CPPFLAGS="${WZ_CPPFLAGS} -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS"
-
-# zlib
-LDFLAGS="-lz ${LDFLAGS}"
 
 if test "x$enable_warnings" = "xyes" ; then
 	# Only disable -Werror for the warning.
@@ -260,8 +239,8 @@ else
 fi
 
 WZ_WARNINGS_GCC="-Wall -Wextra ${WZ_Wno_}unused-parameter ${WZ_Wno_}sign-compare -Wcast-align -Wwrite-strings -Wpointer-arith ${WZ_Wno_}format-security"
-WZ_WARNINGS_GCC_C="${WZ_WARNINGS_GCC} -Wstrict-prototypes -Wdeclaration-after-statement ${CFLAGS_IGNORE_WARNINGS}"
-WZ_WARNINGS_GCC_CXX="${WZ_Wno_}enum-compare ${WZ_WARNINGS_GCC}"
+WZ_WARNINGS_GCC_C="${WZ_WARNINGS_GCC} ${WZ_Wno_}pointer-to-int-cast ${WZ_Wno_}strict-aliasing -Wstrict-prototypes -Wdeclaration-after-statement -Wc++-compat ${WZ_Wno_}c++-compat ${CFLAGS_IGNORE_WARNINGS}"
+WZ_WARNINGS_GCC_CXX="${WZ_WARNINGS_GCC}"
 if test "x$enable_debug" = "xyes" ; then
 	if test "x$cc_icc" = "xyes" ; then
 		WZ_CFLAGS="${WZ_CFLAGS} -O0 -g -Wcheck -Werror"
@@ -292,6 +271,11 @@ elif test "x$enable_debug" = "xprofile" ; then
 	WZ_CXXFLAGS="${WZ_CXXFLAGS} -g -Os -pg ${WZ_WARNINGS_GCC_CXX}"
 	WZ_CPPFLAGS="${WZ_CPPFLAGS} -DNDEBUG"
 	LDFLAGS="-pg ${LDFLAGS}"
+elif test "x$enable_debug" = "xg++" ; then
+	WZ_CFLAGS="${WZ_CFLAGS} -g -O2 ${WZ_WARNINGS_GCC_C} -fpermissive"
+	WZ_CXXFLAGS="${WZ_CXXFLAGS} -g -O2 ${WZ_WARNINGS_GCC_CXX}"
+	WZ_CPPFLAGS="${WZ_CPPFLAGS} -DDEBUG"
+	CC="g++"
 else
 	WZ_CFLAGS="${WZ_CFLAGS} -g ${WZ_WARNINGS_GCC_C}"
 	WZ_CXXFLAGS="${WZ_CXXFLAGS} -g ${WZ_WARNINGS_GCC_CXX}"
@@ -351,40 +335,101 @@ fi
 
 
 # Checks for modules:
-#Subsentient removed SDL stuff
+
+PKG_CHECK_MODULES([SDL], [sdl >= 1.2])
 PKG_CHECK_MODULES([PNG], [libpng >= 1.2])
 PKG_CHECK_MODULES([THEORA], [theora >= 1.0])
 
 AS_IF([test "x$enable_sound" = "xyes"],[
 	PKG_CHECK_MODULES([OPENAL], [openal >= 0.0.8])
-	PKG_CHECK_MODULES([VORBIS], [vorbis >= 1.1])
-	PKG_CHECK_MODULES([VORBISFILE], [vorbisfile >= 1.1])
+	PKG_CHECK_MODULES([OGGVORBIS], [vorbisfile >= 1.1])
 ])
 
-PKG_CHECK_MODULES([GLEW], [glew >= 1.5.2])
+if test "x$enable_static" = "xyes" ; then
+	# If linking statically, make sure to include the direct dependencies of
+	# QuesoGLC as well, because it does not have a pkg-config file.
+	# FIXME Remove this whenever QuesoGLC has a pkg-config file
+	PKG_CHECK_MODULES([FONTCONFIG], [fontconfig])
+	PKG_CHECK_MODULES([FREETYPE], [freetype2])
+fi
+
+system_glee=false
+if test "x$host_os_mingw32" != "xyes" ; then
+	PKG_CHECK_MODULES([GLee], [glee >= 5.4.0], [system_glee=true], [system_glee=false])
+	if test "x$system_glee" = "xfalse" ; then
+		AX_EXT_HAVE_HEADER([GLee.h], [/usr/local/include/GL /usr/include/GL])
+		save_cppflags="${CPPFLAGS}"
+		CPPFLAGS="${CPPFLAGS} ${GLEE_H_CPPFLAGS}"
+		AC_CHECK_HEADER([GLee.h], [system_glee=true], [system_glee=false])
+		CPPFLAGS=${save_cppflags}
+		if test "x$system_glee" = "xtrue" ; then
+			AC_CHECK_LIB([GLee], [GLeeInit], [system_glee=true], [system_glee=false])
+			if test "x$system_glee" = "xtrue" ; then
+				AC_SUBST([GLee_CFLAGS], [${GLEE_H_CPPFLAGS}])
+				AC_SUBST([GLee_LIBS], [-lGLee])
+			fi
+		fi
+	fi
+fi
+AM_CONDITIONAL([SYSTEM_GLEE], [test "x$system_glee" = "xtrue"])
+if test "x$system_glee" = "xfalse" ; then
+	AC_MSG_NOTICE([Using integrated GLee])
+	AC_SUBST([GLee_CFLAGS], ['-I$(top_srcdir)/lib/ivis_opengl'])
+fi
 
 # Checks for libraries:
 
 # check for nearbyint()
 AC_CHECK_LIB(m, nearbyint, [MATH_LIB=""], AC_MSG_ERROR([nearbyint not found.]))
 
-# When (cross-)compiling for Windows (MinGW) we need to link in iberty for the Dr. MinGW derived exception handler.
+# When (cross-)compiling for Windows (MinGW) we need to link in iberty for Popt
+# and the Dr. MinGW derived exception handler.
 if test "x$host_os_mingw32" = "xyes" ; then
     AC_CHECK_LIB(iberty, main, AC_SUBST([IBERTY_LIBS], [-liberty]), AC_MSG_ERROR([libiberty not found.]))
 
     WIN32_LIBS="${WIN32_LIBS} ${IBERTY_LIBS}"
 fi
 
+# Look for X11 if required
+AC_TRY_COMPILE(, [
+#if   (defined(__OS2__) && !defined(__EMX__))
+# error Running OS2, not a Unix system.
+#elif (!defined(SAG_COM) && (defined(WIN32) || defined(WIN64) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__WIN64__) || defined(__NT__))) || (defined(__MWERKS__) && defined(__INTEL__))
+# error Running on Windows, not a Unix system.
+#endif
+],[
+	AC_CHECK_LIB(X11, XSetSelectionOwner, AC_SUBST([X11_LIBS], [-lX11]),
+		AC_MSG_ERROR([X11 library not found]))
+])
+
+# Look for Motif
+AS_IF([test "$enable_motif" != "no"],[
+	AC_CHECK_HEADER(Xm/Xm.h, , AS_IF([test "$enable_motif" = "yes"],
+		[AC_MSG_ERROR([Motif headers not found])]))
+	AC_CHECK_LIB(Xm, XmCreateErrorDialog, [
+		AC_SUBST([MOTIF_LIBS], ["-lXt -lXm"])
+		AC_DEFINE([WZ_HAVE_MOTIF], 1, [Enable use of Motif when available])
+		AM_CONDITIONAL([MOTIF_AVAILABLE], true)
+		], AS_IF([test "$enable_motif" = "yes"],
+			[AC_MSG_ERROR([Motif library not found])]))
+])
+AM_CONDITIONAL([MOTIF_AVAILABLE], test -n "$MOTIF_LIBS")
+
+# Look for Popt
+AC_CHECK_HEADER(popt.h, , AC_MSG_ERROR([Popt header not found.]))
+AC_CHECK_LIB(popt, poptGetContext, AC_SUBST([POPT_LIBS], [-lpopt]), AC_MSG_ERROR([Popt not found.]), [${WIN32_LIBS}])
+
 # Look for PhysicsFS
 AC_CHECK_HEADER(physfs.h, , AC_MSG_ERROR([PhysicsFS header not found.]))
-AC_CHECK_LIB(physfs, PHYSFS_mount, AC_SUBST([PHYSFS_LIBS], [-lphysfs]), AC_MSG_ERROR([PhysicsFS 2 not found.]), [${WIN32_LIBS}])
-
-if test "x$host_os_mingw32" != "xyes" ; then
-	AC_CHECK_HEADER(X11/extensions/Xrandr.h, , AC_MSG_ERROR([Xrandr header not found.]))
-fi
-
+AC_CHECK_LIB(physfs, PHYSFS_init, AC_SUBST([PHYSFS_LIBS], [-lphysfs]), AC_MSG_ERROR([PhysicsFS not found.]), [${WIN32_LIBS}])
 
 # Look for OpenGL
+CPPFLAGS_SAVE="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $SDL_CFLAGS"
+AC_CHECK_HEADER([SDL_opengl.h], [],
+	AC_MSG_ERROR([SDL OpenGL header not found. Please install SDL with OpenGL support.]))
+CPPFLAGS="$CPPFLAGS_SAVE"
+
 AC_CHECK_LIB(GL, main,
 	OPENGL_LIBS="-lGL",
 	AC_CHECK_LIB(opengl32, main,
@@ -398,36 +443,33 @@ AC_CHECK_LIB(GLU, main,
 		[${OPENGL_LIBS} -lm]), [${OPENGL_LIBS} -lm])
 AC_SUBST([OPENGL_LIBS], [${OPENGL_LIBS}])
 
-# OpenGLC stuff
-ACX_PTHREAD
-CC="$PTHREAD_CC"
-AX_TLS
-
-PKG_CHECK_MODULES([FRIBIDI], [fribidi])
-PKG_CHECK_MODULES([FREETYPE], [freetype2])
-AC_CHECK_LIB(freetype, FTC_Manager_New,
-             AC_DEFINE([HAVE_FT_CACHE], [1],
-                       [Define if FreeType supports the caching routines]))
-PKG_CHECK_MODULES([FONTCONFIG], [fontconfig])
-
-OPENGLC_LIBS="${FRIBIDI_LIBS} ${FREETYPE_LIBS} ${FONTCONFIG_LIBS} ${PTHREAD_LIBS} ${OPENGL_LIBS} ${GLEW_LIBS}"
+# Look for OpenGLC
+AC_CHECK_HEADER(GL/glc.h, ,
+	AC_MSG_ERROR([OpenGLC header not found. Please install QuesoGLC: http://quesoglc.sourceforge.net/]))
+AC_CHECK_LIB(GLC, main,
+	OPENGLC_LIBS="-lGLC",
+	AC_CHECK_LIB(glc32, main,
+		OPENGLC_LIBS="-lglc32",
+		AC_MSG_ERROR([OpenGLC library not found. Please install QuesoGLC: http://quesoglc.sourceforge.net/])))
+if test "x$enable_static" = "xyes" ; then
+	# If linking statically, make sure to link against the direct dependencies, too.
+	# FIXME Remove this whenever QuesoGLC has a pkg-config file
+	OPENGLC_LIBS="${OPENGLC_LIBS} ${FONTCONFIG_LIBS} ${FREETYPE_LIBS}"
+fi
 AC_SUBST([OPENGLC_LIBS], [${OPENGLC_LIBS}])
 
 # When (cross-)compiling for Windows (MinGW) we need to link in BFD for the Dr.
 # MinGW derived exception handler.
 if test "x$host_os_mingw32" = "xyes" ; then
     AC_CHECK_HEADER(bfd.h, , AC_MSG_ERROR([BFD header not found.]))
-    AC_CHECK_LIB(bfd, bfd_openr, AC_SUBST([BFD_LIBS], [-lbfd]), AC_MSG_ERROR([BFD not found.]), [${WIN32_LIBS}])
+    AC_CHECK_LIB(bfd, bfd_openr, AC_SUBST([BFD_LIBS], [-lbfd]), AC_MSG_ERROR([BFD not found.]), [${IBERTY_LIBS}])
 
-    WIN32_LIBS="${BFD_LIBS} ${WIN32_LIBS} -lstdc++"
+    WIN32_LIBS="${WIN32_LIBS} ${BFD_LIBS} ${IBERTY_LIBS} -lstdc++"
 fi
 
 WZ_CPPFLAGS="${WZ_CPPFLAGS} -DWZ_DATADIR=\"\\\"\${datadir}/\${PACKAGE}\\\"\""
 WZ_CPPFLAGS="${WZ_CPPFLAGS} -DLOCALEDIR=\"\\\"\${localedir}\\\"\""
 WZ_CPPFLAGS="${WZ_CPPFLAGS} -I\$(top_srcdir)"
-
-# 3rdparty libs
-WZ_CPPFLAGS="${WZ_CPPFLAGS} -I\$(top_srcdir)/3rdparty -I\$(top_srcdir)/3rdparty/quesoglc"
 
 
 AC_SUBST([WZ_CPPFLAGS], [${WZ_CPPFLAGS}])
@@ -445,21 +487,19 @@ AC_CONFIG_FILES([Makefile
 		data/music/Makefile
 		win32/Makefile
 		win32/nsis/Makefile
-		tests/Makefile
-		3rdparty/miniupnpc/Makefile
-		3rdparty/quesoglc/Makefile
+		lib/Makefile
 		lib/framework/Makefile
 		lib/exceptionhandler/Makefile
 		lib/gamelib/Makefile
+		lib/iniparser/Makefile
 		lib/ivis_opengl/Makefile
+		lib/ivis_common/Makefile
 		lib/netplay/Makefile
-		lib/backend/Makefile
+		lib/netplay/miniupnpc/Makefile
 		lib/script/Makefile
 		lib/sequence/Makefile
 		lib/sound/Makefile
 		lib/widget/Makefile
-		tools/map/Makefile
-		tools/image/Makefile
 		src/Makefile])
 AC_OUTPUT
 
@@ -471,7 +511,7 @@ AS_IF([test "x$enable_debug" = "xyes"],[
 AS_IF([test "x$with_distributor" = "xUNKNOWN"],[
 	AC_MSG_NOTICE()
 	AC_MSG_WARN([Distributor unknown!])
-	AC_MSG_NOTICE([Use --with-distributor when compiling package if you plan to share it with others.])
+	AC_MSG_NOTICE([Use --with-distributor when compiling package for distribution])
 ])
 
 AS_IF([test -z "$PERL"],[
@@ -479,11 +519,10 @@ AS_IF([test -z "$PERL"],[
 	AC_MSG_WARN([Perl >= 5.10 isn't installed, autogeneration of some sources will not work.])
 ])
 
-AS_IF([test -z "$A2X"],[
+AS_IF([test -z "$A2X" -o -z "$WKHTMLTOPDF"],[
 	AC_MSG_NOTICE()
-	AC_MSG_WARN([a2x (asciidoc) not found, can't convert documentation. 
-This doesn't affect building the game, but means that if you are
-compiling for a UNIX based system, manpages cannot be installed.])
+	AC_MSG_WARN([a2x (asciidoc) or wkhtmltopdf not found, can't convert documentation. This doesn't affect building the game,
+		but means that things like "make dist" and building a Windows installer will fail.])
 ])
 
 # Print an output for our config summary.
@@ -496,6 +535,5 @@ echo "Processor architecture: $host_cpu"
 echo "C Compiler used: $CC"
 echo "C++ Compiler used: $CXX"
 echo "CFLAGS: $CFLAGS"
-echo "CXXFLAGS: $CXXFLAGS"
 echo "LDFLAGS: $LDFLAGS"
 echo -e "\nType make to compile $PACKAGE_NAME."

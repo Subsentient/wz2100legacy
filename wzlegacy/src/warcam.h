@@ -1,27 +1,23 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_WARCAM_H__
 #define __INCLUDED_SRC_WARCAM_H__
 
-#include "lib/ivis_opengl/pietypes.h"
+#include "lib/ivis_common/pietypes.h"
 #include "objectdef.h"
 
 #define X_UPDATE 0x1
@@ -37,6 +33,9 @@
 #define ROT_ACCEL_CONSTANT 4.0f
 #define ROT_VELOCITY_CONSTANT 2.5f
 
+#define CAM_X_SHIFT	((VISIBLE_XTILES/2)*128)
+#define CAM_Z_SHIFT	((VISIBLE_YTILES/2)*128)
+
 /* The different tracking states */
 enum
 {
@@ -49,7 +48,7 @@ CAM_TRACK_LOCATION
 };
 
 /* Storage for old viewnagles etc */
-struct WARCAM
+typedef struct _warcam
 {
 UDWORD	status;
 UDWORD	trackClass;
@@ -66,17 +65,17 @@ Vector3f	rotAccel;
 
 UDWORD	oldDistance;
 BASE_OBJECT *target;
-};
+}WARCAM;
 
 /* Externally referenced functions */
 extern void	initWarCam			( void );
-extern void	setWarCamActive		( bool status );
-extern bool	getWarCamStatus		( void );
+extern void	setWarCamActive		( BOOL status );
+extern BOOL	getWarCamStatus		( void );
 extern void camToggleStatus		( void );
-extern bool processWarCam		( void );
+extern BOOL processWarCam		( void );
 extern void	camToggleInfo		( void );
 extern void	requestRadarTrack	( SDWORD x, SDWORD y );
-extern bool	getRadarTrackingStatus( void );
+extern BOOL	getRadarTrackingStatus( void );
 extern void	toggleRadarAllignment( void );
 extern void	camInformOfRotation ( Vector3i *rotation );
 extern BASE_OBJECT *camFindDroidTarget(void);

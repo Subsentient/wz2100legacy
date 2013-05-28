@@ -1,23 +1,18 @@
-/*This code copyrighted (2012) for the Warzone 2100 Legacy Project under the GPLv2.*/
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Definitions for the display system structures and routines.
  */
@@ -29,12 +24,12 @@
 #include "structure.h"
 
 /* Initialise the display system */
-extern bool dispInitialise(void);
+extern BOOL dispInitialise(void);
 
-extern void shakeStart(unsigned int length);
+extern void shakeStart(void);
 extern void shakeStop(void);
 
-void ProcessRadarInput();
+extern void ProcessRadarInput(void);
 
 extern void processInput(void);
 /*don't want to do any of these whilst in the Intelligence Screen*/
@@ -44,31 +39,29 @@ extern void	scroll(void);
 extern void resetScroll(void);
 extern void setMouseScroll(bool);
 
-extern bool DrawnInLastFrame(SDWORD Frame);
+extern BOOL DrawnInLastFrame(SDWORD Frame);
 
 // Clear all selections.
 extern void clearSel(void);
 // Clear all selections and stop driver mode.
 extern void clearSelection(void);
 // deal with selecting a droid
-extern void dealWithDroidSelect(DROID *psDroid, bool bDragBox);
+extern void dealWithDroidSelect(DROID *psDroid, BOOL bDragBox);
 
-bool isMouseOverRadar();
+extern	void	setInvertMouseStatus( BOOL val );
+extern BOOL	getInvertMouseStatus( void );
 
-extern	void	setInvertMouseStatus( bool val );
-extern bool	getInvertMouseStatus( void );
+extern	void	setRightClickOrders( BOOL val );
+extern BOOL	getRightClickOrders( void );
 
-extern	void	setRightClickOrders( bool val );
-extern bool	getRightClickOrders( void );
+extern	void	setMiddleClickRotate( BOOL val );
+extern BOOL	getMiddleClickRotate( void );
 
-extern	void	setMiddleClickRotate( bool val );
-extern bool	getMiddleClickRotate( void );
+extern	void	setDrawShadows( BOOL val );
+extern BOOL	getDrawShadows( void );
 
-extern	void	setDrawShadows( bool val );
-extern bool	getDrawShadows( void );
-
-extern	bool	getRadarJumpStatus( void );
-extern	void	setRadarJump(bool	val);
+extern	BOOL	getRadarJumpStatus( void );
+extern	void	setRadarJump(BOOL	val);
 
 
 /* Do the 3D display */
@@ -90,10 +83,10 @@ extern UDWORD scroll_speed_accel;			// now user modifyable.
 
 struct	_dragBox
 {
-	int x1;
-	int y1;
-	int x2;
-	int y2;
+UDWORD	x1;
+UDWORD	y1;
+UDWORD	x2;
+UDWORD	y2;
 UDWORD	status;
 UDWORD	lastTime;
 UDWORD	pulse;
@@ -101,7 +94,7 @@ UDWORD	pulse;
 
 extern struct	_dragBox dragBox3D,wallDrag;
 
-enum MOUSE_POINTER
+typedef enum _pointer
 {
 MP_ATTACH = 99,
 MP_ATTACK,
@@ -118,9 +111,9 @@ MP_SELECT,
 MP_LOCKON,
 MP_MENSELECT,
 MP_BOMB
-};
+} MOUSE_POINTER;
 
-enum SELECTION_TYPE
+typedef enum _selectionTypes
 {
 SC_DROID_CONSTRUCT,
 SC_DROID_DIRECT,
@@ -133,14 +126,13 @@ SC_DROID_RECOVERY,
 SC_DROID_COMMAND,
 SC_DROID_BOMBER,
 SC_DROID_TRANSPORTER,
-SC_DROID_SUPERTRANSPORTER,
 SC_DROID_DEMOLISH,
 SC_DROID_REPAIR,
 SC_INVALID,
 
-};
+} SELECTION_TYPE;
 
-enum MOUSE_TARGET
+typedef enum _targets
 {
 MT_TERRAIN,
 MT_RESOURCE,
@@ -161,48 +153,48 @@ MT_COMMAND,
 MT_ARTIFACT,
 MT_DAMFEATURE,
 MT_SENSOR,
-MT_UNUSED,
+MT_WRECKFEATURE,
 MT_CONSTRUCT,
 MT_SENSORSTRUCT,
 MT_SENSORSTRUCTDAM,
 
 MT_NOTARGET		//leave as last one
-};
+} MOUSE_TARGET;
 
-extern bool		gameStats;
-extern bool		godMode;
+extern BOOL		gameStats;
+extern BOOL		godMode;
 
 // reset the input state
 void resetInput(void);
 
-bool CheckInScrollLimits(SDWORD *xPos,SDWORD *zPos);
-extern bool CheckScrollLimits(void);
-extern bool	rotActive;
+BOOL CheckInScrollLimits(SDWORD *xPos,SDWORD *zPos);
+extern BOOL CheckScrollLimits(void);
+extern BOOL	rotActive;
 
 BASE_OBJECT	*mouseTarget( void );
 
-bool StartObjectOrbit(BASE_OBJECT *psObj);
+BOOL StartObjectOrbit(BASE_OBJECT *psObj);
 void CancelObjectOrbit(void);
 
 extern void FinishDeliveryPosition(UDWORD xPos,UDWORD yPos,void *UserData);
 extern void CancelDeliveryRepos(void);
 extern void StartDeliveryPosition( OBJECT_POSITION *psLocation );
-extern bool DeliveryReposValid(void);
+extern BOOL DeliveryReposValid(void);
 extern FLAG_POSITION *deliveryPointToMove;
 
-extern void StartTacticalScrollObj(bool driveActive,BASE_OBJECT *psObj);
+extern void StartTacticalScrollObj(BOOL driveActive,BASE_OBJECT *psObj);
 extern void CancelTacticalScroll(void);
 extern void MoveTacticalScroll(SDWORD xVel,SDWORD yVel);
-extern bool	getRotActive( void );
+extern BOOL	getRotActive( void );
 extern SDWORD	getDesiredPitch( void );
 extern void	setDesiredPitch(SDWORD pitch);
 
 #define MAX_PLAYER_X_ANGLE	(-1)
 #define MIN_PLAYER_X_ANGLE	(-60)
 
-#define MAXDISTANCE	(5000)
+#define MAXDISTANCE	(3500)
 #define MINDISTANCE	(500)
-#define START_DISTANCE	(3400) //Increased from 2000 by Subsentient
+#define START_DISTANCE	(2000)
 #define START_HEIGHT (1500)
 
 #define CAMERA_PIVOT_HEIGHT (500)
@@ -216,15 +208,15 @@ extern void	setDesiredPitch(SDWORD pitch);
 
 //access function for bSensorAssigned variable
 extern void setSensorAssigned(void);
-extern void	setShakeStatus( bool val );
-extern bool	getShakeStatus( void );
+extern void	setShakeStatus( BOOL val );
+extern BOOL	getShakeStatus( void );
 
 extern void	displayInitVars(void);
 
 void AddDerrickBurningMessage(void);
 
 // check whether the queue order keys are pressed
-extern bool ctrlShiftDown(void);
+extern BOOL ctrlShiftDown(void);
 
 extern UDWORD getTargetType(void);
 

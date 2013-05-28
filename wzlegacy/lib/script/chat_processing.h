@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 2006       Roman
-	Copyright (C) 2006-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /*
  * chat_processing.h
  *
@@ -41,25 +37,25 @@
 
 /* Holds information for each recognized
 * command in a chat message */
-struct CHAT_CMD_DATA
+typedef struct _chat_command_data
 {
 	const char	*pCmdDescription;				/* String representing a certain command */
-	int32_t		bPlayerAddressed[MAX_PLAYERS];	/* Flag to indicate whether a command was addressed to a certain player */
+	BOOL		bPlayerAddressed[MAX_PLAYERS];	/* Flag to indicate whether a command was addressed to a certain player */
 	SDWORD		numCmdParams;					/* Number of extracted parameters associated with each command */
 	INTERP_VAL	parameter[MAX_CHAT_CMD_PARAMS];	/* Parameters extracted from text - to be used with scripts */
-};
+}CHAT_CMD_DATA;
 
-struct CHAT_MSG
+typedef struct _chat_command
 {
 	char			lastMessage[MAXSTRLEN];			/* Parse the same mesage only once - in case more than one player is trying to parse */
 	SDWORD			numCommands;					/* Total number of commands in chat message */
 	CHAT_CMD_DATA	cmdData[MAX_CHAT_COMMANDS];		/* Holds information for each recognized command */
-};
+}CHAT_MSG;
 
 extern CHAT_MSG chat_msg;
 
 /* Store parameter extracted from the message - for scripts */
-//extern bool chat_store_parameter(INTERP_VAL *parameter);
+//extern BOOL chat_store_parameter(INTERP_VAL *parameter);
 
 extern void chatGetErrorData(int *pLine, char **ppText);
 
@@ -67,6 +63,6 @@ extern void chatGetErrorData(int *pLine, char **ppText);
 extern void chatSetInputBuffer(char *pBuffer, UDWORD size);
 
 // Load message
-extern bool chatLoad(char *pData, UDWORD size);
+extern BOOL chatLoad(char *pData, UDWORD size);
 
 #endif

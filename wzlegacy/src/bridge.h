@@ -1,47 +1,50 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #ifndef __INCLUDED_SRC_BRIDGE_H__
 #define __INCLUDED_SRC_BRIDGE_H__
 
 #include "structuredef.h"
 
-struct BRIDGE_INFO
+/* Shift these out into a header file */
+#define MINIMUM_BRIDGE_SPAN 2
+
+#define MAXIMUM_BRIDGE_SPAN	12
+#define BRIDGE_END_HORIZ 1
+#define BRIDGE_END_VERT  2
+#define BRIDGE_MID_HORIZ 3
+#define BRIDGE_MID_VERT  4
+
+typedef struct _bridge_info
 {
-	int	startX, startY, endX, endY;			// Copy of coordinates of bridge.
-	int	heightChange;					// How much to raise lowest end by.
-	int	bridgeHeight;					// How high are the sections?
-	int	bridgeLength;					// How many tiles long?
-	bool	bConstantX, startHighest;			// Which axis is it on and which end is highest?
-};
+UDWORD	startX,startY,endX,endY;			// Copy of coordinates of bridge.
+UDWORD	heightChange;						// How much to raise lowest end by.
+UDWORD	bridgeHeight;						// How high are the sections?
+UDWORD	bridgeLength;						// How many tiles long?
+BOOL	bConstantX,startHighest;			// Which axis is it on and which end is highest?
+} BRIDGE_INFO;
 
 /* Establishes whether a bridge could be built along the coordinates given */
-bool bridgeValid(int startX, int startY, int endX, int endY);
-
-/* Draws a wall section - got to be in world matrix context though! */
-bool renderBridgeSection(STRUCTURE *psStructure);
-
+extern BOOL	bridgeValid(UDWORD startX,UDWORD startY, UDWORD endX, UDWORD endY);
+/* Draws a wall section - got to be in world matrix context thogh! */
+extern BOOL	renderBridgeSection(STRUCTURE *psStructure);
 /* Will provide you with everything you ever wanted to know about your bridge but were afraid to ask */
-void getBridgeInfo(int startX, int startY, int endX, int endY, BRIDGE_INFO *info);
+extern void	getBridgeInfo(UDWORD startX,UDWORD startY,UDWORD endX, UDWORD endY, BRIDGE_INFO *info);
 
 /* FIX ME - this is used in debug to test the bridge build code */
-void testBuildBridge(UDWORD startX, UDWORD startY, UDWORD endX, UDWORD endY);
+extern void	testBuildBridge(UDWORD startX,UDWORD startY,UDWORD endX,UDWORD endY);
 
 #endif // __INCLUDED_SRC_BRIDGE_H__

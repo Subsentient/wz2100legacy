@@ -1,4 +1,0 @@
-[AI]
-name = "NullBot (MG/Rockets)"
-js = nullbot-mr.js
-tip = "NullBot that prefers MachineGuns and Rockets."

@@ -1,28 +1,23 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 2008  Giel van Schijndel
-	Copyright (C) 2008-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "dumpinfo.h"
 #include <cerrno>
 #include <climits>
 #include <ctime>
-#include <cstdlib>
 #include <string>
 #include <vector>
 #include <deque>
@@ -30,6 +25,8 @@
 #include <physfs.h>
 #include "lib/framework/stdio_ext.h"
 #include "lib/framework/wzglobal.h" // required for config.h
+// FIXME: #include from src/
+#include "src/version.h"
 
 #if defined(WZ_OS_UNIX)
 # include <sys/utsname.h>
@@ -202,11 +199,11 @@ static std::string getProgramPath(const char* programCommand)
 		// `which' adds a \n which confuses exec()
 		std::string::size_type eol = programPath.find('\n');
 		if (eol != std::string::npos)
-			programPath.erase(eol);
+			programPath.erase(eol); 
 		// Strip any NUL chars
 		std::string::size_type nul = programPath.find('\0');
 		if (nul != std::string::npos)
-			programPath.erase(nul);
+			programPath.erase(nul); 
 		debug(LOG_WZ, "Found us at %s", programPath.c_str());
 	}
 	else
@@ -275,7 +272,7 @@ std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&
 	   << "." << static_cast<unsigned int>(ver.patch);
 }
 
-static void createHeader(int const argc, const char** argv, const char *packageVersion)
+static void createHeader(int const argc, char* argv[])
 {
 	std::ostringstream os;
 
@@ -290,7 +287,7 @@ static void createHeader(int const argc, const char** argv, const char *packageV
 
 	os << endl;
 
-	os << "Version: "     << packageVersion << endl
+	os << "Version: "     << GetVersionInfo() << endl
 	   << "Distributor: " PACKAGE_DISTRIBUTOR << endl
 	   << "Compiled on: " __DATE__ " " __TIME__ << endl
 	   << "Compiled by: "
@@ -351,8 +348,8 @@ void addDumpInfo(const char *inbuffer)
 	miscData.insert(miscData.end(), msg.begin(), msg.end());
 }
 
-void dbgDumpInit(int argc, const char** argv, const char *packageVersion)
+void dbgDumpInit(int argc, char* argv[])
 {
 	debug_register_callback(&debug_exceptionhandler_data, NULL, NULL, NULL );
-	createHeader(argc, argv, packageVersion);
+	createHeader(argc, argv);
 }

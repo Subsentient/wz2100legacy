@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Definitions for Bar Graph functions.
  */
@@ -26,11 +22,12 @@
 
 #include "widget.h"
 
-struct W_BARGRAPH : public WIDGET
+typedef struct _w_bargraph
 {
-	W_BARGRAPH(W_BARINIT const *init);
+	/* The common widget data */
+	WIDGET_BASE;
 
-	WBAR_ORIENTATION barPos;                        // Orientation of the bar on the widget
+	UWORD		barPos;				// Orientation of the bar on the widget
 	UWORD		majorSize;			// Percentage of the main bar that is filled
 	UWORD		minorSize;			// Percentage of the minor bar if there is one
 	UWORD		iRange;				// Maximum range
@@ -40,16 +37,28 @@ struct W_BARGRAPH : public WIDGET
 	int             precision;                      // Number of places after the decimal point to display, 0 by default.
 	PIELIGHT	majorCol;			// Colour for the major bar
 	PIELIGHT	minorCol;			// Colour for the minor bar
-	PIELIGHT        textCol;                        // Colour for the text on the bar.
 	const char	*pTip;				// The tool tip for the graph
-	QString         text;                           // Text on the bar.
-};
+} W_BARGRAPH;
 
 /* Create a barGraph widget data structure */
 extern W_BARGRAPH* barGraphCreate(const W_BARINIT* psInit);
 
 /* Free the memory used by a barGraph */
 extern void barGraphFree(W_BARGRAPH *psWidget);
+
+/* Initialise a barGraph widget before running it */
+extern void barGraphInitialise(W_BARGRAPH *psWidget);
+
+#if 0
+/* Run a barGraph widget */
+extern void barGraphRun(W_BARGRAPH *psWidget);
+
+/* Respond to a mouse click */
+extern void barGraphClicked(W_BARGRAPH *psWidget);
+
+/* Respond to a mouse up */
+extern void barGraphReleased(W_BARGRAPH *psWidget);
+#endif
 
 /* Respond to a mouse moving over a barGraph */
 extern void barGraphHiLite(W_BARGRAPH *psWidget, W_CONTEXT *psContext);

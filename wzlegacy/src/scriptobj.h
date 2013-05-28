@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** @file
  *  Object access functions for the script library
  */
@@ -75,30 +71,30 @@ enum _groupids
 };
 
 // Get values from a base object
-extern bool scrBaseObjGet(UDWORD index);
+extern BOOL scrBaseObjGet(UDWORD index);
 
 // Set values from a base object
-extern bool scrBaseObjSet(UDWORD index);
+extern BOOL scrBaseObjSet(UDWORD index);
 
 // convert a base object to a droid if it is the right type
-extern bool scrObjToDroid(void);
+extern BOOL scrObjToDroid(void);
 
 // convert a base object to a structure if it is the right type
-extern bool scrObjToStructure(void);
+extern BOOL scrObjToStructure(void);
 
 // convert a base object to a feature if it is the right type
-extern bool scrObjToFeature(void);
+extern BOOL scrObjToFeature(void);
 
 // Get values from a group
-extern bool scrGroupObjGet(UDWORD index);
+extern BOOL scrGroupObjGet(UDWORD index);
 
 // Get values from a weapon
-extern bool scrWeaponObjGet(UDWORD index);
+extern BOOL scrWeaponObjGet(UDWORD index);
 
 // default value save routine
-extern bool scrValDefSave(INTERP_VAL *psVal, WzConfig &ini);
+extern BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize);
 
 // default value load routine
-extern bool scrValDefLoad(INTERP_VAL *psVal, WzConfig &ini);
+extern BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size);
 
 #endif // __INCLUDED_SRC_SCRIPTOBJ_H__

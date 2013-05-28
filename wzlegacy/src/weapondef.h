@@ -1,22 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1999-2004  Eidos Interactive
-	Copyright (C) 2005-2012  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** \file
  *  Definitions for the weapons.
  */
@@ -24,18 +20,23 @@
 #ifndef __INCLUDED_WEAPONDEF_H__
 #define __INCLUDED_WEAPONDEF_H__
 
-struct WEAPON
+typedef struct _weapon
 {
-	unsigned int    nStat;		///< Index into the asWeaponStats global array
-	uint32_t        ammo;
-	uint32_t        lastFired;	///< The gametime when this weapon last fired
-	uint32_t        shotsFired;
-	Rotation	rot;
-	Rotation	prevRot;
-	unsigned        usedAmmo;    ///< Amount of ammunition used up by a VTOL
-};
+	/**
+	 * Index into the global @c asWeaponStats array; thus a "reference" of
+	 * some kind to the associated stats.
+	 */
+	unsigned int    nStat;
 
-// Defined in droid.cpp.
-int getRecoil(WEAPON const &weapon);  ///< Returns how much the weapon assembly should currently be rocked back due to firing.
+	UDWORD          ammo;
+
+	/**
+	 * @c gameTime when this weapon was last fired.
+	 */
+	UDWORD          lastFired;
+	UDWORD          recoilValue;
+	UWORD		pitch;
+	UWORD		rotation;
+} WEAPON;
 
 #endif // __INCLUDED_WEAPONDEF_H__
