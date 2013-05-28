@@ -192,7 +192,7 @@ extern void	setDesiredPitch(SDWORD pitch);
 #define MAX_PLAYER_X_ANGLE	(-1)
 #define MIN_PLAYER_X_ANGLE	(-60)
 
-#define MAXDISTANCE	(7500)
+#define MAXDISTANCE	(6400)
 #define MINDISTANCE	(250)
 #define START_DISTANCE	(3400)
 #define START_HEIGHT (1500)
