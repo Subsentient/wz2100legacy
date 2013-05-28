@@ -73,26 +73,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "keybind.h"
 #include <time.h>
 
-/* Always use fallbacks on Windows */
-#if defined(WZ_OS_WIN)
-#  undef WZ_DATADIR
-#endif
-
-#if !defined(WZ_DATADIR)
-#  define WZ_DATADIR "data"
-#endif
-
-
-#if defined(WZ_OS_WIN)
-# define WZ_WRITEDIR "Warzone 2100 Legacy microwave_rebase"
-#elif defined(WZ_OS_MAC)
-# include <CoreServices/CoreServices.h>
-# include <unistd.h>
-# define WZ_WRITEDIR "Warzone 2100 Legacy microwave_rebase"
-#else
-# define WZ_WRITEDIR ".wz2100legacy-microwave_rebase"
-#endif
-
 char datadir[PATH_MAX] = "\0"; // Global that src/clparse.c:ParseCommandLine can write to, so it can override the default datadir on runtime. Needs to be \0 on startup for ParseCommandLine to work!
 char configdir[PATH_MAX] = "\0"; // specifies custom USER directory.  Same rules apply as datadir above.
 
@@ -1070,6 +1050,7 @@ int main(int argc, char *argv[])
 	PHYSFS_mkdir("maps");		// MUST have this to prevent crashes when getting map
 	PHYSFS_mkdir("music");
 	PHYSFS_mkdir("logs");		// a place to hold our netplay, mingw crash reports & WZ logs
+	PHYSFS_mkdir("logs/dumps"); /*Dedicated place for crashdumps in Legacy.*/
 	make_dir(MultiPlayersPath, "multiplay", NULL);
 	make_dir(MultiPlayersPath, "multiplay", "players");
 	sstrcpy(MultiCustomMapsPath, "maps");

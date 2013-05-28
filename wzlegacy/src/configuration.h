@@ -25,7 +25,27 @@ extern "C"
 {
 #endif //__cplusplus
 
+/*Configuration paths and whatnot.*/
 #define CONFIG_FILENAME "legacyconfig.txt"
+#if defined(WZ_OS_WIN)
+#  undef WZ_DATADIR
+#endif
+
+#ifndef WZ_DATADIR
+#define WZ_DATADIR "data"
+#endif
+
+#ifdef WZ_OS_WIN
+# define WZ_WRITEDIR "Warzone 2100 Legacy microwave_rebase"
+#elif defined(WZ_OS_MAC)
+# include <CoreServices/CoreServices.h>
+# include <unistd.h>
+# define WZ_WRITEDIR "Warzone 2100 Legacy microwave_rebase"
+#else
+# define WZ_WRITEDIR ".wz2100legacy-microwave_rebase"
+#endif
+
+/*Functions.*/
 
 BOOL loadConfig(void);
 BOOL loadRenderMode(void);

@@ -22,8 +22,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "lib/framework/frame.h"
 #include "lib/framework/string_ext.h"
+#include "lib/framework/physfs_ext.h" 
 #include "exceptionhandler.h"
 #include "dumpinfo.h"
+#include "src/configuration.h" /*Necessary for WZ_WRITEDIR.*/
 
 #if defined(WZ_OS_WIN)
 #include <tchar.h>
@@ -639,10 +641,14 @@ static void posixExceptionHandler(int signum)
 # endif
 
 	// XXXXXX will be converted into random characters by mkstemp(3)
-	static const char gdmpPath[] = "/tmp/wz2100legacy.gdmp-XXXXXX";
+	static const char gdmpPath[] = "wz2100legacy.gdmp-XXXXXX";
 
-	char dumpFilename[sizeof(gdmpPath)];
-	sstrcpy(dumpFilename, gdmpPath);
+	char dumpFilename[256]; /*Every time someone declares a variable in the middle of a block in C,
+							a noob is born. Just because it's C99 doesn't mean you should
+							carpet bomb the entire area with terrible code. -Subsentient*/
+							
+	snprintf(dumpFilename, 256, "%s%s%s%s", PHYSFS_getUserDir(), WZ_WRITEDIR, "/logs/dumps/", gdmpPath);
+	
 
 	const int dumpFile = mkstemp(dumpFilename);
 
@@ -813,7 +819,7 @@ bool OverrideRPTDirectory(char *newPath)
 	}
 	_tcscpy(buf, newPath);
 	PathRemoveFileSpec(buf);
-	_tcscat(buf, _T("\\logs\\")); // stuff it in the logs directory
+	_tcscat(buf, _T("\\logs\\dumps\\")); // stuff it in the dumps directory
 	_tcscat(buf, _T("wz2100legacy.RPT"));
 	ResetRPTDirectory(buf);
 #endif
