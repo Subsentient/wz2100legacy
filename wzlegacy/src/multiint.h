@@ -100,8 +100,10 @@ void loadMapPreview(bool hideInterface);
 
 #define GAMES_GAMESTART		10201
 #define GAMES_GAMEEND		GAMES_GAMESTART+20
-#define GAMES_GAMEWIDTH		225
-#define GAMES_GAMEHEIGHT	40
+#define GAMES_GAMEWIDTH		490
+#define GAMES_GAMEHEIGHT	25
+#define GAMES_GAME_X		70
+#define GAMES_GAME_Y		40
 
 // ////////////////////////////////////////////////////////////////
 // GAME OPTIONS SCREEN

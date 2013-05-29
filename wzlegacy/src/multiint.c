@@ -161,7 +161,7 @@ static bool EnablePasswordPrompt = false;	// if we need the password prompt
 extern int NET_PlayerConnectionStatus;		// from src/display3d.c
 LOBBY_ERROR_TYPES LobbyError = ERROR_NOERROR;
 static BOOL allowChangePosition = true;
-static char tooltipbuffer[MaxGames][256];
+static char tooltipbuffer[MaxGames][512];
 /// end of globals.
 // ////////////////////////////////////////////////////////////////////////////
 // Function protos
@@ -657,29 +657,14 @@ static void addGames(void)
 		for (i=0; i<MaxGames; i++)							// draw games
 		{
 			widgDelete(psWScreen, GAMES_GAMESTART+i);	// remove old icon.
+			
 			if (NetPlay.games[i].desc.dwSize !=0)
 			{
 
 				sButInit.id = GAMES_GAMESTART+i;
-
-				if (gcount < 9)							// only center column needed.
-				{
-					sButInit.x = 165;
-					sButInit.y = (UWORD)(30+((5+GAMES_GAMEHEIGHT)*i) );
-				}
-				else
-				{
-					if (i<9)		//column 1
-					{
-						sButInit.x = 50;
-						sButInit.y = (UWORD)(30+((5+GAMES_GAMEHEIGHT)*i) );
-					}
-					else		//column 2
-					{
-						sButInit.x = 60+GAMES_GAMEWIDTH;
-						sButInit.y = (UWORD)(30+((5+GAMES_GAMEHEIGHT)*(i-9) ) );
-					}
-				}
+				sButInit.x = 45;
+				sButInit.y = (UWORD)(40+((5+GAMES_GAMEHEIGHT)*i) );
+				
 				// display the correct tooltip message.
 				if (!NETgameIsCorrectVersion(&NetPlay.games[i]))
 				{
@@ -691,7 +676,9 @@ static void addGames(void)
 				}
 				else
 				{
-					ssprintf(tooltipbuffer[i], "Map:%s, Game:%s, Hosted by %s ", NetPlay.games[i].mapname, NetPlay.games[i].name, NetPlay.games[i].hostname);
+					ssprintf(tooltipbuffer[i], "Map: %s - Game: %s - Host: %s - IP: %s - Version: %s ", 
+							NetPlay.games[i].mapname, NetPlay.games[i].name, NetPlay.games[i].hostname, 
+							NetPlay.games[gameNumber].desc.host, NetPlay.games[i].versionstring);
 					sButInit.pTip = tooltipbuffer[i];
 				}
 				sButInit.UserData = i;
@@ -746,8 +733,8 @@ static void addGames(void)
 		memset(&sButInit, 0, sizeof(W_BUTINIT));
 		sButInit.formID = FRONTEND_BOTFORM;
 		sButInit.id = FRONTEND_NOGAMESAVAILABLE;
-		sButInit.x = 70;
-		sButInit.y = 50;
+		sButInit.x = GAMES_GAME_X;
+		sButInit.y = GAMES_GAME_Y;
 		sButInit.style = WBUT_PLAIN | WBUT_TXTCENTRE;
 		sButInit.width = FRONTEND_BUTWIDTH;
 		sButInit.UserData = 0; // store disable state
@@ -3430,7 +3417,7 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	UDWORD x = xOffset+psWidget->x;
 	UDWORD y = yOffset+psWidget->y;
 	UDWORD	i = psWidget->UserData;
-	char	tmp[8], gamename[StringSize];
+	char	tmp[8], gamename[StringSize], infoBuffer[3][512];
 	unsigned int ping;
 
 	if (LobbyError != ERROR_NOERROR)
@@ -3440,20 +3427,33 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 
 	// Draw blue boxes.
 	drawBlueBox(x,y,psWidget->width,psWidget->height);
+	drawBlueBox(x,y,370,psWidget->height);
+	drawBlueBox(x,y,245,psWidget->height);
 	drawBlueBox(x,y,94,psWidget->height);
 	drawBlueBox(x,y,55,psWidget->height);
-
+	drawBlueBox(x,y,22,psWidget->height);
+	
+	/*Here we draw the status bar at the top of the lobby page.*/
+	drawBlueBox(x, y - 20, GAMES_GAMEWIDTH, 14);
+	iV_SetFont(font_small);
+	iV_SetTextColour(WZCOL_YELLOW);
+	iV_DrawText("Ping", x + 2, y - 10);
+	iV_DrawText("Players.", x + 25, y - 10);
+	iV_DrawText("Status", x + 60, y - 10);
+	iV_DrawText("Game Name", x + 101, y - 10);
+	iV_DrawText("Map Name", x + 250, y - 10);
+	iV_DrawText("Hosted by", x + 375, y - 10);
+	
 	//draw game info
 	iV_SetFont(font_regular);													// font
 
 	// get game info.
 	// TODO: Check whether this code is used at all in skirmish games, if not, remove it.
-	if ((NetPlay.games[i].desc.dwFlags & SESSION_JOINDISABLED)
-		|| strcmp(NetPlay.games[i].modlist,getModList()) != 0
-		|| (bMultiPlayer
-			&& !NetPlay.bComms
-			&& NETgetGameFlagsUnjoined(gameNumber,1) == SKIRMISH                                  // the LAST bug...
-			&& NetPlay.games[gameNumber].desc.dwCurrentPlayers >= NetPlay.games[gameNumber].desc.dwMaxPlayers - 1))
+	if ((NetPlay.games[i].desc.dwFlags & SESSION_JOINDISABLED) ||
+		strcmp(NetPlay.games[i].modlist,getModList()) != 0 || 
+		(bMultiPlayer && !NetPlay.bComms &&
+		NETgetGameFlagsUnjoined(gameNumber,1) == SKIRMISH &&                                 // the LAST bug...
+		NetPlay.games[gameNumber].desc.dwCurrentPlayers >= NetPlay.games[gameNumber].desc.dwMaxPlayers - 1) )
 	{
 		iV_SetTextColour(WZCOL_TEXT_MEDIUM);
 		// FIXME: We should really use another way to indicate that the game is full than our current big fat cross.
@@ -3470,9 +3470,9 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 		{
 			iV_SetTextColour(WZCOL_TEXT_BRIGHT);
 		}
-		iV_DrawText(_("Players"), x + 5, y + 18);
+
 		ssprintf(tmp, "%d/%d", NetPlay.games[i].desc.dwCurrentPlayers, NetPlay.games[i].desc.dwMaxPlayers);
-		iV_DrawText(tmp, x + 17, y + 33);
+		iV_DrawText(tmp, x + 25, y + 17);
 	}
 	else
 	{	//don't allow people to join games frome a different version of the game.
@@ -3499,27 +3499,33 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	ping = NETgetGameFlagsUnjoined(i, 2);
 	if (ping < PING_MED)
 	{
-		iV_DrawImage(FrontImages,IMAGE_LAMP_GREEN,x+70,y+26);
+		iV_DrawImage(FrontImages,IMAGE_LAMP_GREEN, x + 5, y + 7);
 	}
 	else if (ping >= PING_MED && ping < PING_HI)
 	{
-		iV_DrawImage(FrontImages,IMAGE_LAMP_AMBER,x+70,y+26);
+		iV_DrawImage(FrontImages,IMAGE_LAMP_AMBER, x + 5, y + 7);
 	}
 	else
 	{
-		iV_DrawImage(FrontImages,IMAGE_LAMP_RED,x+70,y+26);
+		iV_DrawImage(FrontImages,IMAGE_LAMP_RED, x + 5, y + 7);
 	}
 
-	//draw game name
 	sstrcpy(gamename, NetPlay.games[i].name);
+	
 	while(iV_GetTextWidth(gamename) > (psWidget->width-110) )
 	{
 		gamename[strlen(gamename)-1]='\0';
 	}
-	iV_DrawText(gamename, x + 100, y + 18);	// name
-
-	iV_SetFont(font_small);											// font
-	iV_DrawText(NetPlay.games[i].versionstring, x + 100, y + 32);	// version
+	
+	/*Chop off any characters we can't account for.*/
+	strncpy(infoBuffer[0], gamename, 18);
+	strncpy(infoBuffer[1], NetPlay.games[i].mapname, 16);
+	strncpy(infoBuffer[2], NetPlay.games[i].hostname, 18);
+	
+	/*Now draw these text objects.*/
+	iV_DrawText(infoBuffer[0], x + 100, y + 17);	// name
+	iV_DrawText(infoBuffer[1], x + 250, y + 17);	// map
+	iV_DrawText(infoBuffer[2], x + 375, y + 17);	// hoster
 }
 
 
