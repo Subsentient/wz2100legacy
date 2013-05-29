@@ -3455,10 +3455,10 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 		NETgetGameFlagsUnjoined(gameNumber,1) == SKIRMISH &&                                 // the LAST bug...
 		NetPlay.games[gameNumber].desc.dwCurrentPlayers >= NetPlay.games[gameNumber].desc.dwMaxPlayers - 1) )
 	{
-		iV_SetTextColour(WZCOL_TEXT_MEDIUM);
+		iV_SetTextColour(WZCOL_RED);
 		// FIXME: We should really use another way to indicate that the game is full than our current big fat cross.
 		// need some sort of closed thing here!
-		iV_DrawImage(FrontImages,IMAGE_NOJOIN,x+18,y+11);
+		iV_DrawImage(FrontImages,IMAGE_NOJOIN, x + 59, y + 3);
 	}
 	else if (NETgameIsCorrectVersion(&NetPlay.games[i]))
 	{
@@ -3476,9 +3476,9 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	}
 	else
 	{	//don't allow people to join games frome a different version of the game.
-		iV_SetTextColour(WZCOL_TEXT_MEDIUM);
+		iV_SetTextColour(WZCOL_RED);
 		// FIXME: Need a Wrong version icon!
-		iV_DrawImage(FrontImages,IMAGE_NOJOIN,x+18,y+11);
+		iV_DrawImage(FrontImages,IMAGE_NOJOIN, x + 30, y + 5);
 	}
 
 	//draw type overlay.
@@ -3488,11 +3488,11 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	}
 	else if (NetPlay.games[i].privateGame)	// check to see if it is a private game
 	{
-		iV_DrawImage(FrontImages, IMAGE_LOCKED_NOBG, x+62, y+3);	// lock icon
+		iV_DrawImage(FrontImages, IMAGE_LOCKED_NOBG, x + 62, y + 3);	// lock icon
 	}
 	else
 	{
-		iV_DrawImage(FrontImages, IMAGE_SKIRMISH_OVER, x+62, y+3);	// SKIRMISH
+		iV_DrawImage(FrontImages, IMAGE_SKIRMISH_OVER, x + 62, y + 3);	// SKIRMISH
 	}
 
 	// ping rating
@@ -3518,7 +3518,7 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	}
 	
 	/*Chop off any characters we can't account for.*/
-	strncpy(infoBuffer[0], gamename, 18);
+	strncpy(infoBuffer[0], gamename, 20);
 	strncpy(infoBuffer[1], NetPlay.games[i].mapname, 16);
 	strncpy(infoBuffer[2], NetPlay.games[i].hostname, 18);
 	
