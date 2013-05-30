@@ -65,6 +65,7 @@ extern void	displayMultiBut(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PI
 BOOL	MultiMenuUp			= false;
 BOOL	ClosingMultiMenu	= false;
 BOOL	DebugMenuUp		= false;
+static unsigned int hoverPreviewId;
 static UDWORD	context = 0;
 UDWORD	current_tech = 1;
 UDWORD	current_numplayers = 4;
@@ -135,6 +136,7 @@ UDWORD	current_numplayers = 4;
 
 #define	R_BUT_W			105//112
 #define R_BUT_H			30
+#define HOVER_PREVIEW_TIME 250
 
 BOOL			multiRequestUp = false;				//multimenu is up.
 static BOOL		giftsUp[MAX_PLAYERS] = {true};		//gift buttons for player are up.
@@ -657,20 +659,54 @@ static void closeMultiRequester(void)
 	return;
 }
 
-BOOL runMultiRequester(UDWORD id,UDWORD *mode, char *chosen,UDWORD *chosenValue)
+BOOL runMultiRequester(UDWORD id,UDWORD *mode, char *chosen, UDWORD *chosenValue, short *isHoverPreview)
 {
-	if( id==M_REQUEST_CLOSE)							// close
+	
+	static unsigned int hoverId = 0;
+	static unsigned int hoverStartTime = 0;
+	BOOL hoverPreview = false;
+
+	if((id == M_REQUEST_CLOSE))
 	{
 		closeMultiRequester();
 		return true;
 	}
+	
+	if (isHoverPreview)
+	{
+		if (id == 0 && context == MULTIOP_MAP)
+		{
+			id = widgGetMouseOver(psRScreen);
+			if (id != hoverId)
+			{
+				hoverId = id;
+				hoverStartTime = SDL_GetTicks() + HOVER_PREVIEW_TIME;
+			}
+			if (id == hoverPreviewId || hoverStartTime > SDL_GetTicks())
+			{
+				id = 0;  // Don't re-render preview nor render preview before HOVER_PREVIEW_TIME.
+			}
+			hoverPreview = true;
+		}
+		
+	}
+
 
 	if( id>=M_REQUEST_BUT && id<=M_REQUEST_BUTM)		// chose a file.
 	{
 		strcpy(chosen,((W_BUTTON *)widgGetFromID(psRScreen,id))->pText );
 
 		*chosenValue = ((W_BUTTON *)widgGetFromID(psRScreen,id))->UserData ;
-		closeMultiRequester();
+		if (isHoverPreview)
+		{
+			*isHoverPreview = hoverPreview;
+			hoverPreviewId = id;
+		}
+		
+		if (!isHoverPreview || !hoverPreview)
+		{
+			closeMultiRequester();
+		}
 		*mode = context;
 
 		return true;
