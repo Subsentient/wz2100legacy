@@ -15,10 +15,10 @@ along with Warzone 2100 Legacy; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 
-/*Subsentient's note here: This file is so standards incompliant, I'm surprised that I don't have
- * my optical drive producing bagels whenever it's compiled. Variables are declared everywhere and code
- * is intertwined like a thousand pairs of earbuds. I will not waste the time trying to fix this abomination.
- * Perhaps if I have a day where I would enjoy punishment, I'll fix this.*/
+/*Subsentient's note here: I fixed this file's horrible placement of variable declarations.
+ * Even the C99 compiler was whining. They declared them	 local to make use of a lot of constants for
+ * efficiency, but what good is that if it's so unreadable it makes you cry blood?
+ * It's still pretty terrible, but I can at least understand it better, and it's maintainable.*/
 
 #include "lib/framework/frame.h"
 #include "lib/framework/string_ext.h"
@@ -448,6 +448,15 @@ static pid_t execGdb(int const dumpFile, int* gdbWritePipe)
 	/* Check if the "bare minimum" is available: GDB and an absolute path
 	 * to our program's binary.
 	 */
+	 
+	 /*I AM PUTTING THE VARIABLE DECLARATIONS AT THE BEGINNING OF THE BLOCK AS THEY SHOULD BE!!!
+	  * -Subsentient*/
+	  
+	pid_t pid;
+	int gdbPipe[2];
+	char *gdbEnv[] = { NULL };
+	const char *gdbArgv[4];
+	
 	if (!programIsAvailable
 	 || !gdbIsAvailable)
 	{
@@ -469,7 +478,6 @@ static pid_t execGdb(int const dumpFile, int* gdbWritePipe)
 	}
 
 	// Create a pipe to use for communication with 'gdb'
-	int gdbPipe[2];
 	if (pipe(gdbPipe) == -1)
 	{
 		write(dumpFile, "Pipe failed\n",
@@ -481,7 +489,7 @@ static pid_t execGdb(int const dumpFile, int* gdbWritePipe)
 	}
 
 	// Fork a new child process
-	const pid_t pid = fork();
+	pid = fork();
 	if (pid == -1)
 	{
 		write(dumpFile, "Fork failed\n",
@@ -510,8 +518,11 @@ static pid_t execGdb(int const dumpFile, int* gdbWritePipe)
 		return pid;
 	}
 
-	char *gdbArgv[] = { gdbPath, programPath, programPID, NULL };
-	char *gdbEnv[] = { NULL };
+	/*Yes I know this is ugly, but it's better than declared variables beyond the block's beginning.*/
+	gdbArgv[0] = gdbPath; 
+	gdbArgv[1] = programPath;
+	gdbArgv[2] = programPID;
+	gdbArgv[3] = NULL;
 
 	close(gdbPipe[1]); // No output to pipe
 
@@ -545,25 +556,27 @@ static pid_t execGdb(int const dumpFile, int* gdbWritePipe)
 static bool gdbExtendedBacktrace(int const dumpFile)
 {
 	// Spawn a GDB instance and retrieve a pipe to its stdin
-	int gdbPipe;
+	int gdbPipe, status;
 	const pid_t pid = execGdb(dumpFile, &gdbPipe);
+	pid_t wpid;
+
+	                                  // Retrieve a full stack backtrace
+	static const char gdbCommands[] =
+		"backtrace full\n"
+		// Move to the stack frame where we triggered the crash
+		"frame 4\n"
+		
+		// Show the assembly code associated with that stack frame
+		"disassemble\n"
+		
+		// Show the content of all registers
+		"info registers\n"
+		"quit\n";
+	                                  
 	if (pid == 0)
 	{
 		return false;
 	}
-
-	                                  // Retrieve a full stack backtrace
-	static const char gdbCommands[] = "backtrace full\n"
-
-	                                  // Move to the stack frame where we triggered the crash
-	                                  "frame 4\n"
-
-	                                  // Show the assembly code associated with that stack frame
-	                                  "disassemble\n"
-
-	                                  // Show the content of all registers
-	                                  "info registers\n"
-	                                  "quit\n";
 
 	write(gdbPipe, gdbCommands, sizeof(gdbCommands));
 
@@ -573,8 +586,7 @@ static bool gdbExtendedBacktrace(int const dumpFile)
 	fsync(gdbPipe);
 
 	// Wait for our child to terminate
-	int status;
-	const pid_t wpid = waitpid(pid, &status, 0);
+	wpid = waitpid(pid, &status, 0);
 
 	// Clean up our end of the pipe
 	close(gdbPipe);
@@ -631,26 +643,27 @@ static void posixExceptionHandler(int signum)
 {
 	static sig_atomic_t allreadyRunning = 0;
 
-	if (allreadyRunning)
-		raise(signum);
-	allreadyRunning = 1;
-
 # if defined(__GLIBC__)
-	void * btBuffer[MAX_BACKTRACE] = {NULL};
-	uint32_t btSize = backtrace(btBuffer, MAX_BACKTRACE);
+	void *btBuffer[MAX_BACKTRACE] = {NULL};
+	unsigned long btSize = backtrace(btBuffer, MAX_BACKTRACE);
 # endif
 
 	// XXXXXX will be converted into random characters by mkstemp(3)
 	static const char gdmpPath[] = "wz2100legacy.gdmp-XXXXXX";
+	int dumpFile;
+	const char *signal = NULL;
+	char dumpFilename[256]; 
+	
+	if (allreadyRunning)
+	{
+		raise(signum);
+	}
+	allreadyRunning = 1;						
 
-	char dumpFilename[256]; /*Every time someone declares a variable in the middle of a block in C,
-							a noob is born. Just because it's C99 doesn't mean you should
-							carpet bomb the entire area with terrible code. -Subsentient*/
-							
 	snprintf(dumpFilename, 256, "%s%s%s%s", PHYSFS_getUserDir(), WZ_WRITEDIR, "/logs/dumps/", gdmpPath);
 	
 
-	const int dumpFile = mkstemp(dumpFilename);
+	dumpFile = mkstemp(dumpFilename);
 
 
 	if (dumpFile == -1)
@@ -659,7 +672,6 @@ static void posixExceptionHandler(int signum)
 		return;
 	}
 
-
 	// Dump a generic info header
 	dbgDumpHeader(dumpFile);
 
@@ -667,7 +679,8 @@ static void posixExceptionHandler(int signum)
 #ifdef SA_SIGINFO
 	write(dumpFile, "Dump caused by signal: ", strlen("Dump caused by signal: "));
 
-	const char * signal = wz_strsignal(siginfo->si_signo, siginfo->si_code);
+	signal = wz_strsignal(siginfo->si_signo, siginfo->si_code);
+	
 	write(dumpFile, signal, strlen(signal));
 	write(dumpFile, "\n\n", 2);
 #endif
@@ -707,7 +720,10 @@ static void posixExceptionHandler(int signum)
 static bool fetchProgramPath(char * const programPath, size_t const bufSize, const char * const programCommand)
 {
 	// Construct the "which $(programCommand)" string
-	char whichProgramCommand[PATH_MAX];
+	char whichProgramCommand[PATH_MAX], *linefeed;
+	FILE *whichProgramStream;
+	size_t bytesRead;
+	
 	snprintf(whichProgramCommand, sizeof(whichProgramCommand), "which %s", programCommand);
 
 	/* Fill the output buffer with zeroes so that we can rely on the output
@@ -718,8 +734,8 @@ static bool fetchProgramPath(char * const programPath, size_t const bufSize, con
 	/* Execute the "which" command (constructed above) and collect its
 	 * output in programPath.
 	 */
-	FILE * const whichProgramStream = popen(whichProgramCommand, "r");
-	size_t const bytesRead = fread(programPath, 1, bufSize, whichProgramStream);
+	whichProgramStream = popen(whichProgramCommand, "r");
+	bytesRead = fread(programPath, 1, bufSize, whichProgramStream);
 	pclose(whichProgramStream);
 
 	// Check whether our buffer is too small, indicate failure if it is
@@ -730,7 +746,7 @@ static bool fetchProgramPath(char * const programPath, size_t const bufSize, con
 	}
 
 	// Cut of the linefeed (and everything following it) if it's present.
-	char * const linefeed = strchr(programPath, '\n');
+	linefeed = strchr(programPath, '\n');
 	if (linefeed)
 	{
 		*linefeed = '\0';
@@ -755,6 +771,9 @@ static bool fetchProgramPath(char * const programPath, size_t const bufSize, con
  */
 void setupExceptionHandler(int argc, char * argv[])
 {
+		const char *programCommand; /*This was supposed to begin at the last UNIX && !MAC elif there, */
+		time_t currentTime;			/* but it made the compiler cranky.*/
+		
 #if !defined(WZ_OS_MAC)
 	// Initialize info required for the debug dumper
 	dbgDumpInit(argc, argv);
@@ -767,8 +786,7 @@ void setupExceptionHandler(int argc, char * argv[])
 	prevExceptionHandler = SetUnhandledExceptionFilter(windowsExceptionHandler);
 # endif // !defined(WZ_CC_MINGW)
 #elif defined(WZ_OS_UNIX) && !defined(WZ_OS_MAC)
-	const char * const programCommand = argv[0];
-
+	programCommand = argv[0];
 	// Get full path to this program. Needed for gdb to find the binary.
 	programIsAvailable = fetchProgramPath(programPath, sizeof(programPath), programCommand);
 
@@ -777,7 +795,7 @@ void setupExceptionHandler(int argc, char * argv[])
 
 	sysInfoValid = (uname(&sysInfo) == 0);
 
-	time_t currentTime = time(NULL);
+	currentTime = time(NULL);
 	sstrcpy(executionDate, ctime(&currentTime));
 
 	snprintf(programPID, sizeof(programPID), "%i", getpid());
