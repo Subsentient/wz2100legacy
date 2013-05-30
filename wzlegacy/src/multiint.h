@@ -102,8 +102,22 @@ void loadMapPreview(bool hideInterface);
 #define GAMES_GAMEEND		GAMES_GAMESTART+20
 #define GAMES_GAMEWIDTH		490
 #define GAMES_GAMEHEIGHT	25
-#define GAMES_GAME_X		70
-#define GAMES_GAME_Y		40
+#define GAMES_GAME_X 45
+#define GAMES_GAME_Y (40+((5+GAMES_GAMEHEIGHT)*i)) /*Not to be used elsewhere than the one place in multiint.c.*/
+#define GAMES_NOGAME_X		70
+#define GAMES_NOGAME_Y		40
+
+#define GAMES_GAMELEGEND_X GAMES_GAME_X + xOffset /* << Warning: Don't use these elsewhere.*/
+#define GAMES_GAMELEGEND_Y 30 + GAMES_GAMEHEIGHT + psWidget->y /* << */
+#define GAMES_GAMELEGEND_WIDTH GAMES_GAMEWIDTH
+#define GAMES_GAMELEGEND_HEIGHT 14
+
+#define GAMES_GAME_PINGTXT_OFFSET 2
+#define GAMES_GAME_PLAYERSTXT_OFFSET 25
+#define GAMES_GAME_STATUSTXT_OFFSET 60
+#define GAMES_GAME_GAMENAMETXT_OFFSET 100
+#define GAMES_GAME_MAPNAMETXT_OFFSET 250
+#define GAMES_GAME_HOSTEDBYTXT_OFFSET 375
 
 // ////////////////////////////////////////////////////////////////
 // GAME OPTIONS SCREEN

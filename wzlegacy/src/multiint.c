@@ -161,7 +161,7 @@ static bool EnablePasswordPrompt = false;	// if we need the password prompt
 extern int NET_PlayerConnectionStatus;		// from src/display3d.c
 LOBBY_ERROR_TYPES LobbyError = ERROR_NOERROR;
 static BOOL allowChangePosition = true;
-static char tooltipbuffer[MaxGames][512];
+static char tooltipbuffer[MaxGames][1024]; /*Too big, but it prevents crashes.*/
 /// end of globals.
 // ////////////////////////////////////////////////////////////////////////////
 // Function protos
@@ -616,15 +616,15 @@ void setLobbyError (LOBBY_ERROR_TYPES error_type)
 
 static void addGames(void)
 {
-	UDWORD i,gcount=0;
+	UDWORD i, gcount=0;
 	W_BUTINIT	sButInit;
-	static const char *wrongVersionTip = "Your version of Warzone is incompatible with this game.";
-	static const char *badModTip = "Your loaded mods are incompatible with this game. (Check mods/autoload/?)";
+	static const char *wrongVersionTip = " (Incompatible Version)";
+	static const char *badModTip = " (Incompatible mods)";
 
 	memset(tooltipbuffer, 0, sizeof(tooltipbuffer));
 
 	//count games to see if need two columns.
-	for(i=0;i<MaxGames;i++)							// draw games
+	for(i = 0; i < MaxGames; ++i)							// draw games
 	{
 		if( NetPlay.games[i].desc.dwSize !=0)
 		{
@@ -654,33 +654,55 @@ static void addGames(void)
 	// only have to do this if we have any games available.
 	if (!getLobbyError() && gcount)
 	{
-		for (i=0; i<MaxGames; i++)							// draw games
+		for (i = 0; i < MaxGames; ++i)							// draw games
 		{
 			widgDelete(psWScreen, GAMES_GAMESTART+i);	// remove old icon.
 			
-			if (NetPlay.games[i].desc.dwSize !=0)
+			if (NetPlay.games[i].desc.dwSize != 0)
 			{
 
 				sButInit.id = GAMES_GAMESTART+i;
-				sButInit.x = 45;
-				sButInit.y = (UWORD)(40+((5+GAMES_GAMEHEIGHT)*i) );
+				sButInit.x = GAMES_GAME_X;
+				sButInit.y = GAMES_GAME_Y;
 				
-				// display the correct tooltip message.
+				/*Set up our tooltip.*/
+				ssprintf(tooltipbuffer[i], "Map: %s - Game: %s - Host: %s - IP: %s - Version: %s", 
+						NetPlay.games[i].mapname, NetPlay.games[i].name, NetPlay.games[i].hostname, 
+						NetPlay.games[gameNumber].desc.host, NetPlay.games[i].versionstring);
+						
 				if (!NETgameIsCorrectVersion(&NetPlay.games[i]))
 				{
-					sButInit.pTip = wrongVersionTip;
+					strcat(tooltipbuffer[i], wrongVersionTip);
 				}
-				else if (strcmp(NetPlay.games[i].modlist,getModList()) != 0)
-				{
-					sButInit.pTip = badModTip;
+				else if (NetPlay.games[i].modlist[0] != '\0')
+				{ /*If there are mods to deal with.*/
+					char tmpBuf[256];
+					char modList[128];
+					
+					if (NetPlay.games[i].modlist[0] == '\0')
+					{
+						strcat(modList, "None");
+					}
+					else
+					{
+						strcat(modList, NetPlay.games[i].modlist);
+					}
+					
+					if (strcmp(NetPlay.games[i].modlist, getModList()) != 0)
+					{ /*If mods are not matching, we can't join.*/
+						
+						ssprintf(tmpBuf, " - Mods: %s %s", modList, badModTip);
+					}
+					else
+					{
+						ssprintf(tmpBuf, " - Mods: %s", modList);
+					}
+					
+					strcat(tooltipbuffer[i], tmpBuf);
 				}
-				else
-				{
-					ssprintf(tooltipbuffer[i], "Map: %s - Game: %s - Host: %s - IP: %s - Version: %s ", 
-							NetPlay.games[i].mapname, NetPlay.games[i].name, NetPlay.games[i].hostname, 
-							NetPlay.games[gameNumber].desc.host, NetPlay.games[i].versionstring);
-					sButInit.pTip = tooltipbuffer[i];
-				}
+				
+				sButInit.pTip = tooltipbuffer[i];
+
 				sButInit.UserData = i;
 
 				widgAddButton(psWScreen, &sButInit);
@@ -733,8 +755,8 @@ static void addGames(void)
 		memset(&sButInit, 0, sizeof(W_BUTINIT));
 		sButInit.formID = FRONTEND_BOTFORM;
 		sButInit.id = FRONTEND_NOGAMESAVAILABLE;
-		sButInit.x = GAMES_GAME_X;
-		sButInit.y = GAMES_GAME_Y;
+		sButInit.x = GAMES_NOGAME_X;
+		sButInit.y = GAMES_NOGAME_Y;
 		sButInit.style = WBUT_PLAIN | WBUT_TXTCENTRE;
 		sButInit.width = FRONTEND_BUTWIDTH;
 		sButInit.UserData = 0; // store disable state
@@ -3426,23 +3448,25 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	}
 
 	// Draw blue boxes.
-	drawBlueBox(x,y,psWidget->width,psWidget->height);
-	drawBlueBox(x,y,370,psWidget->height);
-	drawBlueBox(x,y,245,psWidget->height);
-	drawBlueBox(x,y,94,psWidget->height);
-	drawBlueBox(x,y,55,psWidget->height);
-	drawBlueBox(x,y,22,psWidget->height);
+	drawBlueBox(x, y, psWidget->width, psWidget->height);
+	drawBlueBox(x, y, (GAMES_GAME_HOSTEDBYTXT_OFFSET - 5), psWidget->height);
+	drawBlueBox(x, y, (GAMES_GAME_MAPNAMETXT_OFFSET - 5), psWidget->height);
+	drawBlueBox(x, y, (GAMES_GAME_GAMENAMETXT_OFFSET - 6), psWidget->height);
+	drawBlueBox(x, y, (GAMES_GAME_STATUSTXT_OFFSET - 5), psWidget->height);
+	drawBlueBox(x, y, (GAMES_GAME_PLAYERSTXT_OFFSET - 3), psWidget->height);
 	
-	/*Here we draw the status bar at the top of the lobby page.*/
-	drawBlueBox(x, y - 20, GAMES_GAMEWIDTH, 14);
+	/*Here we draw the status bar at the top of the lobby page.
+	 * Don't use GAMES_GAMELEGEND_X or Y elsewhere. They aren't just literals.*/
+	drawBlueBox(GAMES_GAMELEGEND_X, GAMES_GAMELEGEND_Y, GAMES_GAMELEGEND_WIDTH, GAMES_GAMELEGEND_HEIGHT);
+
 	iV_SetFont(font_small);
 	iV_SetTextColour(WZCOL_YELLOW);
-	iV_DrawText("Ping", x + 2, y - 10);
-	iV_DrawText("Players.", x + 25, y - 10);
-	iV_DrawText("Status", x + 60, y - 10);
-	iV_DrawText("Game Name", x + 101, y - 10);
-	iV_DrawText("Map Name", x + 250, y - 10);
-	iV_DrawText("Hosted by", x + 375, y - 10);
+	iV_DrawText("Ping", x + GAMES_GAME_PINGTXT_OFFSET, y - 10);
+	iV_DrawText("Players.", x + GAMES_GAME_PLAYERSTXT_OFFSET, y - 10);
+	iV_DrawText("Status", x + GAMES_GAME_STATUSTXT_OFFSET, y - 10);
+	iV_DrawText("Game Name", x + GAMES_GAME_GAMENAMETXT_OFFSET, y - 10);
+	iV_DrawText("Map Name", x + GAMES_GAME_MAPNAMETXT_OFFSET, y - 10);
+	iV_DrawText("Hosted by", x + GAMES_GAME_HOSTEDBYTXT_OFFSET, y - 10);
 	
 	//draw game info
 	iV_SetFont(font_regular);													// font
@@ -3458,7 +3482,7 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 		iV_SetTextColour(WZCOL_RED);
 		// FIXME: We should really use another way to indicate that the game is full than our current big fat cross.
 		// need some sort of closed thing here!
-		iV_DrawImage(FrontImages,IMAGE_NOJOIN, x + 59, y + 3);
+		iV_DrawImage(FrontImages,IMAGE_NOJOIN, x + 30, y + 5);
 	}
 	else if (NETgameIsCorrectVersion(&NetPlay.games[i]))
 	{
@@ -3523,9 +3547,9 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 	strncpy(infoBuffer[2], NetPlay.games[i].hostname, 18);
 	
 	/*Now draw these text objects.*/
-	iV_DrawText(infoBuffer[0], x + 100, y + 17);	// name
-	iV_DrawText(infoBuffer[1], x + 250, y + 17);	// map
-	iV_DrawText(infoBuffer[2], x + 375, y + 17);	// hoster
+	iV_DrawText(infoBuffer[0], x + GAMES_GAME_GAMENAMETXT_OFFSET, y + 17);	// name
+	iV_DrawText(infoBuffer[1], x + GAMES_GAME_MAPNAMETXT_OFFSET, y + 17);	// map
+	iV_DrawText(infoBuffer[2], x + GAMES_GAME_HOSTEDBYTXT_OFFSET, y + 17);	// hoster
 }
 
 
