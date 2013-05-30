@@ -619,7 +619,7 @@ static void addGames(void)
 	UDWORD i, gcount=0;
 	W_BUTINIT	sButInit;
 	static const char *wrongVersionTip = " (Incompatible Version)";
-	static const char *badModTip = " (Incompatible mods)";
+	static const char *badModTip = "(Incompatible mods)";
 
 	memset(tooltipbuffer, 0, sizeof(tooltipbuffer));
 
@@ -678,15 +678,8 @@ static void addGames(void)
 				{ /*If there are mods to deal with.*/
 					char tmpBuf[256];
 					char modList[128];
-					
-					if (NetPlay.games[i].modlist[0] == '\0')
-					{
-						strcat(modList, "None");
-					}
-					else
-					{
-						strcat(modList, NetPlay.games[i].modlist);
-					}
+
+					strcpy(modList, NetPlay.games[i].modlist);
 					
 					if (strcmp(NetPlay.games[i].modlist, getModList()) != 0)
 					{ /*If mods are not matching, we can't join.*/
@@ -700,6 +693,14 @@ static void addGames(void)
 					
 					strcat(tooltipbuffer[i], tmpBuf);
 				}
+				else if (strcmp(NetPlay.games[i].modlist, getModList()) && NetPlay.games[i].modlist[0] == '\0')
+				{ /*I am not rewriting everything above when this works fine.*/
+					char tmpBuf[256];
+					
+					ssprintf(tmpBuf, " - Mods: None %s", badModTip);
+					strcat(tooltipbuffer[i], tmpBuf);
+				}
+					
 				
 				sButInit.pTip = tooltipbuffer[i];
 
