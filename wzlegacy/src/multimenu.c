@@ -135,7 +135,7 @@ UDWORD	current_numplayers = 4;
 #define M_REQUEST_H		MULTIOP_PLAYERSH
 
 #define	R_BUT_W			105//112
-#define R_BUT_H			30
+#define R_BUT_H			16
 #define HOVER_PREVIEW_TIME 250
 
 BOOL			multiRequestUp = false;				//multimenu is up.
@@ -266,7 +266,6 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 
 	UDWORD	x = xOffset+psWidget->x;
 	UDWORD	y = yOffset+psWidget->y;
-	UDWORD	count;
 	char  butString[255];
 
 	strcpy(butString,((W_BUTTON *)psWidget)->pTip);
@@ -282,12 +281,6 @@ void displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 	}
 
 	iV_DrawText(butString, x + 6, y + 12);	//draw text
-
-	// if map, then draw no. of players.
-	for(count=0;count<psWidget->UserData;count++)
-	{
-		iV_DrawImage(FrontImages,IMAGE_WEE_GUY,(x+(6*count)+6),y+16);
-	}
 }
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -306,7 +299,7 @@ static void displayCamTypeBut(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, 
 	} else {
 		iV_SetTextColour(WZCOL_TEXT_MEDIUM);
 	}
-	iV_DrawText(buffer, x+2, y+12);
+	iV_DrawText(buffer, x + 1, y + 12);
 }
 
 static void displayNumPlayersBut(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
@@ -326,7 +319,7 @@ static void displayNumPlayersBut(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffse
 	} else {
 		sprintf(buffer, "%iP", (int)(psWidget->UserData));
 	}
-	iV_DrawText(buffer, x+2, y+12);
+	iV_DrawText(buffer, x + 1, y + 12);
 
 }
 
@@ -411,10 +404,10 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 	widgSetTipFont(psRScreen,font_regular);
 
 	/* Calculate how many buttons will go on a single form */
-	butPerForm = ((M_REQUEST_W - 0 - 4) /
-						(R_BUT_W +4)) *
-				 ((M_REQUEST_H - 0- 4) /
-						(R_BUT_H+ 4));
+	butPerForm = ((M_REQUEST_W - 4) /
+						(R_BUT_W + 4)) *
+				 ((M_REQUEST_H - 4) /
+						(R_BUT_H + 4));
 
 	/* add a form to place the tabbed form on */
 	memset(&sFormInit, 0, sizeof(W_FORMINIT));
@@ -600,9 +593,9 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 		sButInit.id		= M_REQUEST_C1;
 		sButInit.style		= WBUT_PLAIN;
 		sButInit.x		= 4;
-		sButInit.y		= 258;
-		sButInit.width		= 17;
-		sButInit.height		= 17;
+		sButInit.y		= 297;
+		sButInit.width		= 16;
+		sButInit.height		= 16;
 		sButInit.UserData	= 1;
 		sButInit.FontID		= font_regular;
 		sButInit.pTip		= _("Technology level 1");
@@ -611,38 +604,33 @@ void addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD mo
 		widgAddButton(psRScreen, &sButInit);
 
 		sButInit.id		= M_REQUEST_C2;
-		sButInit.y		+= 22;
+		sButInit.y		+= 20;
 		sButInit.UserData	= 2;
 		sButInit.pTip		= _("Technology level 2");
 		widgAddButton(psRScreen, &sButInit);
 
 		sButInit.id		= M_REQUEST_C3;
-		sButInit.y		+= 22;
+		sButInit.y		+= 20;
 		sButInit.UserData	= 3;
 		sButInit.pTip		= _("Technology level 3");
 		widgAddButton(psRScreen, &sButInit);
 
-		sButInit.id		= M_REQUEST_AP;
+
+		sButInit.id		= M_REQUEST_2P;
 		sButInit.y		= 17;
-		sButInit.UserData	= 0;
-		sButInit.pTip		= _("Any number of players");
+		sButInit.UserData	= 2;
+		sButInit.pTip		= _("2 players");
 		sButInit.pDisplay	= displayNumPlayersBut;
 		widgAddButton(psRScreen, &sButInit);
 
-		sButInit.id		= M_REQUEST_2P;
-		sButInit.y		+= 22;
-		sButInit.UserData	= 2;
-		sButInit.pTip		= _("2 players");
-		widgAddButton(psRScreen, &sButInit);
-
 		sButInit.id		= M_REQUEST_4P;
-		sButInit.y		+= 22;
+		sButInit.y		+= 20;
 		sButInit.UserData	= 4;
 		sButInit.pTip		= _("4 players");
 		widgAddButton(psRScreen, &sButInit);
 
 		sButInit.id		= M_REQUEST_8P;
-		sButInit.y		+= 22;
+		sButInit.y		+= 20;
 		sButInit.UserData	= 8;
 		sButInit.pTip		= _("8 players");
 		widgAddButton(psRScreen, &sButInit);
