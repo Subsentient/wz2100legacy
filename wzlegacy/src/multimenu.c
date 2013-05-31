@@ -642,7 +642,7 @@ static void closeMultiRequester(void)
 {
 	widgDelete(psRScreen,M_REQUEST);
 	multiRequestUp = false;
-
+	resetReadyStatus(false);
 	widgReleaseScreen(psRScreen);		// move this to the frontend shutdown...
 	return;
 }
