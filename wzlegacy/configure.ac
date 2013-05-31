@@ -519,10 +519,11 @@ AS_IF([test -z "$PERL"],[
 	AC_MSG_WARN([Perl >= 5.10 isn't installed, autogeneration of some sources will not work.])
 ])
 
-AS_IF([test -z "$A2X" -o -z "$WKHTMLTOPDF"],[
+AS_IF([test -z "$A2X"],[
 	AC_MSG_NOTICE()
-	AC_MSG_WARN([a2x (asciidoc) or wkhtmltopdf not found, can't convert documentation. This doesn't affect building the game,
-		but means that things like "make dist" and building a Windows installer will fail.])
+	AC_MSG_WARN([a2x (asciidoc) mot found, this means that manpages cannot be generated.
+	If you want the manpage for Legacy, best install asciidoc first,
+	otherwise just continue and the game should still build fine.])
 ])
 
 # Print an output for our config summary.
