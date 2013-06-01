@@ -630,6 +630,7 @@ void fpathTest(int x, int y, int x2, int y2)
 
 	// On non-debug builds prevent warnings about defining but not using fpathJobQueueLength
 	(void)fpathJobQueueLength;
+	(void/*I hate casting to void.*/)r;
 
 	/* Check initial state */
 	assert(fpathThread != NULL);
@@ -638,7 +639,8 @@ void fpathTest(int x, int y, int x2, int y2)
 	assert(firstResult == NULL);
 	assert(fpathJobQueueLength() == 0);
 	assert(fpathResultQueueLength() == 0);
-	fpathRemoveDroidData(0);	// should not crash
+	fpathRemoveDroidData(0);	// should not crash 
+								// ^	You don't say?
 
 	/* This should not leak memory */
 	sMove.asPath = NULL;
