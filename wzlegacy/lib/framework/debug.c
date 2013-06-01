@@ -432,9 +432,9 @@ void _debug( code_part part, const char *function, const char *str, ... )
 #if defined(WZ_OS_WIN)
 			char* popupBuf;
 			sasprintf(&popupBuf, "%s\n\nPlease check your WZlog file in your <config dir>/logs directory for more details. \
-				\nDo not forget to upload both the WZlog<date><time>.txt file and the warzone2100.rpt file in your bug reports!", useInputBuffer1 ? inputBuffer[1] : inputBuffer[0]);
+				\nDo not forget to upload both the WZlog<date><time>.txt file and the wz2100legacy.RPT file in your bug reports!", useInputBuffer1 ? inputBuffer[1] : inputBuffer[0]);
 
-			MessageBoxA(NULL, popupBuf, "Warzone has terminated unexpectedly", MB_OK|MB_ICONERROR);
+			MessageBoxA(NULL, popupBuf, "Warzone 2100 Legacy has terminated unexpectedly", MB_OK|MB_ICONERROR);
 #elif defined(WZ_HAVE_MOTIF)
 			const char* popupBuf = useInputBuffer1 ? inputBuffer[1] : inputBuffer[0];
 			XmMessageBox(part, code_part_names[part], popupBuf);
@@ -455,9 +455,9 @@ void _debug( code_part part, const char *function, const char *str, ... )
 					  \n\nFor the Crash report on 10.4/10.5 check\
 					  \n~/Library/Logs/CrashReporter,\
 					  \non 10.6 check ~/Library/Logs/DiagnosticReports\
-					  \nDo not forget to upload and attach those to a bug report at http://developer.wz2100.net/newticket\
+					  \nDo not forget to start a bug report topic at http://forums.warzonelegacy.org/.\
 					  \nThanks!" ), &param, &dialog );
-			SetWindowTitleWithCFString( GetDialogWindow( dialog ), CFSTR( "Warzone has terminated unexpectedly" ) );
+			SetWindowTitleWithCFString( GetDialogWindow( dialog ), CFSTR( "Warzone 2100 Legacy has terminated unexpectedly" ) );
 			
 			RunStandardAlert( dialog, NULL, &itemHit );
 #endif
@@ -490,7 +490,7 @@ void _debug( code_part part, const char *function, const char *str, ... )
 			ssprintf(aBuffer, "A non fatal error has occurred.\n\n%s\n\nCheck your <config dir>/logs/WZlog file for more details.", useInputBuffer1 ? inputBuffer[1] : inputBuffer[0] );
 			
 			err = CreateStandardAlert( kAlertNoteAlert, CFStringCreateWithCString( nil, aBuffer, kCFStringEncodingMacRoman), NULL, &param, &dialog );
-			SetWindowTitleWithCFString( GetDialogWindow( dialog ), CFSTR( "Warzone has detected a problem" ) );
+			SetWindowTitleWithCFString( GetDialogWindow( dialog ), CFSTR( "Warzone 2100 Legacy has detected a problem" ) );
 			
 			RunStandardAlert( dialog, NULL, &itemHit );
 #endif

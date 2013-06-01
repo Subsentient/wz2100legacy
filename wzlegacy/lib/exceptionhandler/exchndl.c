@@ -1,24 +1,18 @@
-/*
-	This file is part of Warzone 2100.
-	Copyright (C) 1997-XXXX  José Fonseca <j_r_fonseca@yahoo.co.uk>
-	 * Originally based on Matt Pietrek's MSJEXHND.CPP in Microsoft Systems Journal, April 1997.
-	Copyright (C) 2008  Giel van Schijndel
-	Copyright (C) 2008-2011  Warzone 2100 Project
+/*This code copyrighted (2013) for the Warzone 2100 Legacy Project under the GPLv2.
 
-	Warzone 2100 is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+Warzone 2100 Legacy is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	Warzone 2100 is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+Warzone 2100 Legacy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with Warzone 2100; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+You should have received a copy of the GNU General Public License
+along with Warzone 2100 Legacy; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #if (_WIN32_WINNT < 0x0500)			// must force win 2k or higher
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0500
@@ -1152,7 +1146,7 @@ LONG WINAPI TopLevelExceptionFilter(PEXCEPTION_POINTERS pExceptionInfo)
 			GenerateExceptionReport(pExceptionInfo);
 			CloseHandle(hReportFile);
 
-			wsprintf(szBuffer, _T("Warzone has crashed.\r\nSee %s for more details\r\n"), szLogFileName);
+			wsprintf(szBuffer, _T("Warzone 2100 Legacy has crashed.\r\nSee %s for more details\r\n"), szLogFileName);
 			err = MessageBox(MB_ICONERROR, szBuffer, _T("Warzone Crashed!"), MB_OK | MB_ICONERROR);
 			if (err == 0)
 			{
@@ -1203,7 +1197,7 @@ void ExchndlSetup()
 	// NOTE: CSIDL_PERSONAL =  C:\Users\user name\Documents
 	if ( SUCCEEDED( SHGetFolderPathA( NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, miniDumpPath ) ))
 	{
-		PathAppend( miniDumpPath, TEXT( PROJECTNAME " " VERSIONNUM "\\logs" ) );
+		PathAppend( miniDumpPath, TEXT( PROJECTNAME " " VERSIONBIG "\\logs\\dumps" ) );
 
 		if( !PathFileExists( miniDumpPath ) )
 		{
@@ -1218,7 +1212,7 @@ void ExchndlSetup()
 		_tcscpy(miniDumpPath, _T("c:\\temp"));
 	}
 
-	_tcscat(szLogFileName, _T("Warzone2100.RPT"));
+	_tcscat(szLogFileName, _T("wz2100legacy.RPT"));
 	_tcscat(miniDumpPath, _T("\\"));
 	_tcscat(miniDumpPath,szLogFileName);
 	_tcscpy(szLogFileName, miniDumpPath);
