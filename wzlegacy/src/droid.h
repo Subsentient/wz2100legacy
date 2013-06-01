@@ -72,7 +72,7 @@ extern bool runningMultiplayer(void);
 #define	INVISIBLE_ACCURACY_PENALTY		50	// accuracy penalty for the unit firing at a target it can't see, in %
 
 /* Minumum number of droids a commander can control in its group */
-#define	MIN_CMD_GROUP_DROIDS	6
+#define	MIN_CMD_GROUP_DROIDS	10
 
 /* Info stored for each droid neighbour */
 typedef struct _naybor_info
