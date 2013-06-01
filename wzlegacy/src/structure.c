@@ -1083,7 +1083,6 @@ void handleAbandonedStructures()
 			 * structures which can have modules (factory, research, power).
 			 */
 			if (psCurr->status == SS_BEING_BUILT
-			 && psCurr->currentPowerAccrued < structPowerToBuild(psCurr)
 			 && psCurr->pStructureType->type != REF_FACTORY
 			 && psCurr->pStructureType->type != REF_VTOL_FACTORY
 			 && psCurr->pStructureType->type != REF_RESEARCH
@@ -1113,19 +1112,35 @@ void handleAbandonedStructures()
 				// Abandoned
 				else
 				{
-					int reductionAmount = 8;
-
-					// Work out how much power to deduct
-					CLIP(reductionAmount, 0, psCurr->currentPowerAccrued);
-
-					// Do the reduction
-					psCurr->currentPowerAccrued -= reductionAmount;
-					addPower(player, reductionAmount);
-
-					// Remove the structure if no power is accrued
-					if (!psCurr->currentPowerAccrued)
+					if (psCurr->currentPowerAccrued < structPowerToBuild(psCurr))
 					{
-						removeStruct(psCurr, true);
+						short reductionAmount = 8;
+						
+						// Work out how much power to deduct
+						CLIP(reductionAmount, 0, psCurr->currentPowerAccrued);
+	
+						// Do the reduction
+						psCurr->currentPowerAccrued -= reductionAmount;
+						addPower(player, reductionAmount);
+	
+						// Remove the structure if no power is accrued
+						if (!psCurr->currentPowerAccrued)
+						{
+							removeStruct(psCurr, true);
+						}
+					}
+					else if (psCurr->pStructureType->type == REF_RESOURCE_EXTRACTOR)
+					{ /*Deconstruct abandoned oil derricks to prevent xxtreme oil rushes.*/
+						const short pointRemoveAmount = 10; /*I should probably do calculations, but I am lazy.*/
+						
+						if (psCurr->currentBuildPts >= pointRemoveAmount)
+						{
+							psCurr->currentBuildPts -= pointRemoveAmount;
+						}
+						else
+						{
+							removeStruct(psCurr, true);
+						}
 					}
 				}
 			}
