@@ -337,9 +337,9 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
 {
 	/* The number or normals that we got is in numNormals*/
 	Vector3f finalVector = {0.0f, 0.0f, 0.0f};
-	Vector3f tileSun = { theSun.x, theSun.y, -theSun.z }; /*For matching tile and object shadowing.*/
+	const Vector3f tileSun = { theSun.x, theSun.y, -theSun.z }; /*For matching tile and object shadowing.*/
 	unsigned int i, val;
-	int dotProduct;
+	int dotProduct[2];
 
 	unsigned int numNormals = 0; // How many normals have we got?
 	Vector3f normals[8]; // Maximum 8 possible normals
@@ -376,12 +376,18 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
 		finalVector = Vector3f_Add(finalVector, normals[i]);
 	}
 	
-	dotProduct = Vector3f_ScalarP(Vector3f_Normalise(finalVector), tileSun);
+	dotProduct[0] = Vector3f_ScalarP(Vector3f_Normalise(finalVector), tileSun);
+	dotProduct[1] = Vector3f_ScalarP(Vector3f_Normalise(finalVector), theSun);
 
-	val = abs(dotProduct) / 16;
+	val = abs(dotProduct[0]) / 16;
 	if (val == 0) val = 1;
 	if (val > 254) val = 254;
 	mapTile(tileX, tileY)->illumination = val;
+	
+	val = abs(dotProduct[1]) / 16;
+	if (val == 0) val = 1;
+	if (val > 254) val = 254;
+	mapTile(tileX, tileY)->radarIllumination = val;
 }
 
 

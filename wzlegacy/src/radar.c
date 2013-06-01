@@ -327,9 +327,9 @@ static PIELIGHT appliedRadarColour(RADAR_DRAW_MODE radarDrawMode, MAPTILE *WTile
 			// draw radar terrain on/off feature
 			PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
 
-			col.byte.r = sqrtf(col.byte.r * WTile->illumination);
-			col.byte.b = sqrtf(col.byte.b * WTile->illumination);
-			col.byte.g = sqrtf(col.byte.g * WTile->illumination);
+			col.byte.r = sqrtf(col.byte.r * WTile->radarIllumination);
+			col.byte.b = sqrtf(col.byte.b * WTile->radarIllumination);
+			col.byte.g = sqrtf(col.byte.g * WTile->radarIllumination);
 			if (terrainType(WTile) == TER_CLIFFFACE)
 			{
 				col.byte.r /= 2;
@@ -350,9 +350,9 @@ static PIELIGHT appliedRadarColour(RADAR_DRAW_MODE radarDrawMode, MAPTILE *WTile
 			// draw radar terrain on/off feature
 			PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
 
-			col.byte.r = sqrtf(col.byte.r * (WTile->illumination + WTile->height) / 2);
-			col.byte.b = sqrtf(col.byte.b * (WTile->illumination + WTile->height) / 2);
-			col.byte.g = sqrtf(col.byte.g * (WTile->illumination + WTile->height) / 2);
+			col.byte.r = sqrtf(col.byte.r * (WTile->radarIllumination + WTile->height) / 2);
+			col.byte.b = sqrtf(col.byte.b * (WTile->radarIllumination + WTile->height) / 2);
+			col.byte.g = sqrtf(col.byte.g * (WTile->radarIllumination + WTile->height) / 2);
 			if (terrainType(WTile) == TER_CLIFFFACE)
 			{
 				col.byte.r /= 2;

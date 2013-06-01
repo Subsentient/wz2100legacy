@@ -88,6 +88,7 @@ typedef struct _maptile
 	uint8_t			tileVisBits;	// COMPRESSED - bit per player
 	UBYTE			height;			// The height at the top left of the tile
 	UBYTE			illumination;	// How bright is this tile?
+	UBYTE			radarIllumination; // Tile Illumination inverted to show proper heights on minimap.
 	UWORD			texture;		// Which graphics texture is on this tile
 	UBYTE			watchers[MAX_PLAYERS];		// player sees through fog of war here with this many objects
 	float			level;
