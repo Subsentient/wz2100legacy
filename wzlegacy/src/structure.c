@@ -1082,11 +1082,7 @@ void handleAbandonedStructures()
 			 * We are only interested in structures accruing that are not
 			 * structures which can have modules (factory, research, power).
 			 */
-			if (psCurr->status == SS_BEING_BUILT
-			 && psCurr->pStructureType->type != REF_FACTORY
-			 && psCurr->pStructureType->type != REF_VTOL_FACTORY
-			 && psCurr->pStructureType->type != REF_RESEARCH
-			 && psCurr->pStructureType->type != REF_POWER_GEN)
+			if (psCurr->status == SS_BEING_BUILT)
 			{
 				DROID *psDroid;
 				bool beingBuilt = false;
@@ -1112,7 +1108,11 @@ void handleAbandonedStructures()
 				// Abandoned
 				else
 				{
-					if (psCurr->currentPowerAccrued < structPowerToBuild(psCurr))
+					if (psCurr->currentPowerAccrued < structPowerToBuild(psCurr)
+						&& psCurr->pStructureType->type != REF_FACTORY
+						&& psCurr->pStructureType->type != REF_VTOL_FACTORY
+						&& psCurr->pStructureType->type != REF_RESEARCH
+						&& psCurr->pStructureType->type != REF_POWER_GEN)
 					{
 						short reductionAmount = 8;
 						
@@ -1130,7 +1130,8 @@ void handleAbandonedStructures()
 						}
 					}
 					else if (psCurr->pStructureType->type == REF_RESOURCE_EXTRACTOR)
-					{ /*Deconstruct abandoned oil derricks to prevent xxtreme oil rushes.*/
+					/*Deconstruct abandoned oil derricks to prevent xxtreme oil rushes.*/
+					{
 						const short pointRemoveAmount = 10; /*I should probably do calculations, but I am lazy.*/
 						
 						if (psCurr->currentBuildPts >= pointRemoveAmount)
@@ -1141,6 +1142,11 @@ void handleAbandonedStructures()
 						{
 							removeStruct(psCurr, true);
 						}
+					}
+					else if ((psCurr->pStructureType->buildPoints / 8) >= psCurr->currentBuildPts)
+					{ /*Deconstruct abandoned structures with one eighth of their total body points or less
+						to help prevent spamming gens and other unbuilt structures as walls.*/
+						removeStruct(psCurr, true);
 					}
 				}
 			}
