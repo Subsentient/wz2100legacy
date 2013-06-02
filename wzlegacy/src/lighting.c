@@ -412,7 +412,7 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
     {
         val = 1;
     }
-    if (val > 254)
+    else if (val > 254)
     {
         val = 254;
     }
@@ -423,7 +423,7 @@ static void calcTileIllum(UDWORD tileX, UDWORD tileY)
     {
         val = 1;
     }
-    if (val > 254)
+    else if (val > 254)
     {
         val = 254;
     }
