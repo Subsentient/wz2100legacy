@@ -1,7 +1,7 @@
 /* Defs for interface to demanglers.
    Copyright 1992, 1993, 1994, 1995, 1996, 1997, 1998, 2000, 2001, 2002
    Free Software Foundation, Inc.
-   
+
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2, or (at your option)
@@ -37,8 +37,8 @@
 #define DMGL_LUCID	 (1 << 10)
 #define DMGL_ARM	 (1 << 11)
 #define DMGL_HP 	 (1 << 12)       /* For the HP aCC compiler;
-                                            same as ARM except for
-                                            template arguments, etc. */
+same as ARM except for
+template arguments, etc. */
 #define DMGL_EDG	 (1 << 13)
 #define DMGL_GNU_V3	 (1 << 14)
 #define DMGL_GNAT	 (1 << 15)
@@ -56,18 +56,19 @@
 
 extern enum demangling_styles
 {
-  no_demangling = -1,
-  unknown_demangling = 0,
-  auto_demangling = DMGL_AUTO,
-  gnu_demangling = DMGL_GNU,
-  lucid_demangling = DMGL_LUCID,
-  arm_demangling = DMGL_ARM,
-  hp_demangling = DMGL_HP,
-  edg_demangling = DMGL_EDG,
-  gnu_v3_demangling = DMGL_GNU_V3,
-  java_demangling = DMGL_JAVA,
-  gnat_demangling = DMGL_GNAT
-} current_demangling_style;
+no_demangling = -1,
+              unknown_demangling = 0,
+              auto_demangling = DMGL_AUTO,
+              gnu_demangling = DMGL_GNU,
+              lucid_demangling = DMGL_LUCID,
+              arm_demangling = DMGL_ARM,
+              hp_demangling = DMGL_HP,
+              edg_demangling = DMGL_EDG,
+              gnu_v3_demangling = DMGL_GNU_V3,
+              java_demangling = DMGL_JAVA,
+              gnat_demangling = DMGL_GNAT
+}
+              current_demangling_style;
 
 /* Define string names for the various demangling styles. */
 
@@ -100,9 +101,9 @@ extern enum demangling_styles
 
 extern const struct demangler_engine
 {
-  const char *const demangling_style_name;
-  const enum demangling_styles demangling_style;
-  const char *const demangling_style_doc;
+const char *const demangling_style_name;
+const enum demangling_styles demangling_style;
+const char *const demangling_style_doc;
 } libiberty_demanglers[];
 
 extern char *
@@ -119,24 +120,25 @@ cplus_mangle_opname PARAMS ((const char *opname, int options));
 extern void
 set_cplus_marker_for_demangling PARAMS ((int ch));
 
-extern enum demangling_styles 
+extern enum demangling_styles
 cplus_demangle_set_style PARAMS ((enum demangling_styles style));
 
-extern enum demangling_styles 
+extern enum demangling_styles
 cplus_demangle_name_to_style PARAMS ((const char *name));
 
 /* V3 ABI demangling entry points, defined in cp-demangle.c.  */
-extern char*
-cplus_demangle_v3 PARAMS ((const char* mangled, int options));
+extern char *
+cplus_demangle_v3 PARAMS ((const char *mangled, int options));
 
-extern char*
-java_demangle_v3 PARAMS ((const char* mangled));
+extern char *
+java_demangle_v3 PARAMS ((const char *mangled));
 
 
-enum gnu_v3_ctor_kinds {
-  gnu_v3_complete_object_ctor = 1,
-  gnu_v3_base_object_ctor,
-  gnu_v3_complete_object_allocating_ctor
+enum gnu_v3_ctor_kinds
+{
+    gnu_v3_complete_object_ctor = 1,
+    gnu_v3_base_object_ctor,
+    gnu_v3_complete_object_allocating_ctor
 };
 
 /* Return non-zero iff NAME is the mangled form of a constructor name
@@ -144,13 +146,14 @@ enum gnu_v3_ctor_kinds {
    gnu_v3_ctor_kinds' value indicating what kind of constructor
    it is.  */
 extern enum gnu_v3_ctor_kinds
-	is_gnu_v3_mangled_ctor PARAMS ((const char *name));
+is_gnu_v3_mangled_ctor PARAMS ((const char *name));
 
 
-enum gnu_v3_dtor_kinds {
-  gnu_v3_deleting_dtor = 1,
-  gnu_v3_complete_object_dtor,
-  gnu_v3_base_object_dtor
+enum gnu_v3_dtor_kinds
+{
+    gnu_v3_deleting_dtor = 1,
+    gnu_v3_complete_object_dtor,
+    gnu_v3_base_object_dtor
 };
 
 /* Return non-zero iff NAME is the mangled form of a destructor name
@@ -158,6 +161,6 @@ enum gnu_v3_dtor_kinds {
    gnu_v3_dtor_kinds' value, indicating what kind of destructor
    it is.  */
 extern enum gnu_v3_dtor_kinds
-	is_gnu_v3_mangled_dtor PARAMS ((const char *name));
+is_gnu_v3_mangled_dtor PARAMS ((const char *name));
 
 #endif	/* DEMANGLE_H */

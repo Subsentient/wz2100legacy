@@ -48,7 +48,7 @@ extern BOOL checkTransporterSpace(DROID *psTransporter, DROID *psAssigned);
 up different amount depending on their body size - currently all are set to one!*/
 extern UDWORD calcRemainingCapacity(DROID *psTransporter);
 
-extern bool transporterIsEmpty(const DROID* psTransporter);
+extern bool transporterIsEmpty(const DROID *psTransporter);
 
 /*launches the defined transporter to the offworld map*/
 extern BOOL launchTransporter(DROID *psTransporter);
@@ -79,7 +79,7 @@ extern BOOL intAddTransporterLaunch(DROID *psDroid);
 extern void transporterSetScriptCurrent( DROID *psTransporter );
 
 /* get current transporter (for script callbacks) */
-extern DROID * transporterGetScriptCurrent( void );
+extern DROID *transporterGetScriptCurrent( void );
 
 /* check whether transporter on mission */
 //extern BOOL transporterOnMission( void );

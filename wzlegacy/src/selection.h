@@ -19,26 +19,26 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _selection_class
 {
-DS_ALL_UNITS,
-DS_BY_TYPE
+    DS_ALL_UNITS,
+    DS_BY_TYPE
 } SELECTION_CLASS;
 
 typedef enum _selectiontype
 {
-DST_UNUSED,
-DST_VTOL,
-DST_HOVER,
-DST_WHEELED,
-DST_TRACKED,
-DST_HALF_TRACKED,
-DST_ALL_COMBAT,
-DST_ALL_DAMAGED,
-DST_ALL_SAME
+    DST_UNUSED,
+    DST_VTOL,
+    DST_HOVER,
+    DST_WHEELED,
+    DST_TRACKED,
+    DST_HALF_TRACKED,
+    DST_ALL_COMBAT,
+    DST_ALL_DAMAGED,
+    DST_ALL_SAME
 } SELECTIONTYPE;
 
 // EXTERNALLY REFERENCED FUNCTIONS
 extern UDWORD	selDroidSelection( UDWORD	player, SELECTION_CLASS droidClass,
-						  SELECTIONTYPE droidType, BOOL bOnScreen );
+                                   SELECTIONTYPE droidType, BOOL bOnScreen );
 extern UDWORD	selDroidDeselect		( UDWORD player );
 extern UDWORD	selNumSelected			( UDWORD player );
 extern void	selNextRepairUnit			( void );

@@ -38,8 +38,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct
 {
-	char name[iV_TEXNAME_MAX];
-	GLuint id;
+    char name[iV_TEXNAME_MAX];
+    GLuint id;
 } iTexPage;
 
 //*************************************************************************
@@ -59,7 +59,7 @@ extern void pie_TexInit(void);
 
 extern void pie_InitSkybox(SDWORD pageNum);
 
-extern void pie_MakeTexPageName(char * filename);
+extern void pie_MakeTexPageName(char *filename);
 
 //*************************************************************************
 

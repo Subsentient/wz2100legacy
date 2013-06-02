@@ -21,13 +21,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // pass in true to reset the palette too.
 void iV_Reset()
 {
-	_TEX_INDEX = 0;
+    _TEX_INDEX = 0;
 }
 
 void iV_ShutDown(void)
 {
-	pie_ShutDown();
-	pie_TexShutDown();
-	iV_TextShutdown();
-	debug(LOG_3D, "iVi[ShutDown] = successful");
+    pie_ShutDown();
+    pie_TexShutDown();
+    iV_TextShutdown();
+    debug(LOG_3D, "iVi[ShutDown] = successful");
 }

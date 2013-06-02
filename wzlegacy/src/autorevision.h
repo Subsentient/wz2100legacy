@@ -23,10 +23,10 @@
 #define SVN_WC_MODIFIED 0
 #define SVN_WC_SWITCHED 0
 
-	SVN_AUTOREVISION_STATIC const char svn_low_revision_cstr[] = "3b3a7b995690b4f201279e29f0018662761f5f2b";
-	SVN_AUTOREVISION_STATIC const char svn_revision_cstr[] = "3b3a7b995690b4f201279e29f0018662761f5f2b";
-	SVN_AUTOREVISION_STATIC const char svn_date_cstr[] = "2011-10-24 01:21:42 -0400";
-	SVN_AUTOREVISION_STATIC const char svn_uri_cstr[] = "tags/2.3.9";
+SVN_AUTOREVISION_STATIC const char svn_low_revision_cstr[] = "3b3a7b995690b4f201279e29f0018662761f5f2b";
+SVN_AUTOREVISION_STATIC const char svn_revision_cstr[] = "3b3a7b995690b4f201279e29f0018662761f5f2b";
+SVN_AUTOREVISION_STATIC const char svn_date_cstr[] = "2011-10-24 01:21:42 -0400";
+SVN_AUTOREVISION_STATIC const char svn_uri_cstr[] = "tags/2.3.9";
 
 
 #endif

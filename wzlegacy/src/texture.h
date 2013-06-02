@@ -23,9 +23,9 @@ bool texLoad(const char *fileName);
 
 typedef struct _tileTexInfo
 {
-	float uOffset; // Offset into texture page to left hand edge
-	float vOffset; // Offset into texture page to top hand edge
-	unsigned int texPage; // Which textpage is the tile in? TileNumber/16 basically;
+    float uOffset; // Offset into texture page to left hand edge
+    float vOffset; // Offset into texture page to top hand edge
+    unsigned int texPage; // Which textpage is the tile in? TileNumber/16 basically;
 } TILE_TEX_INFO;
 
 // these constants are adapted for fitting 256 textures of size 128x128 into a 2048x2048

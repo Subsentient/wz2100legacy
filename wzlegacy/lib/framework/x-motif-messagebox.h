@@ -21,10 +21,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #if defined(WZ_HAVE_MOTIF)
 # define FRAME_LIB_INCLUDE
-# include "types.h" 
-# include "debug.h" 
+# include "types.h"
+# include "debug.h"
 
-extern void XmMessageBox(code_part part, const char* part_name, const char* msg);
+extern void XmMessageBox(code_part part, const char *part_name, const char *msg);
 #endif
 
 #endif // __INCLUDED_X_MOTIF_MESSAGEBOX_H__

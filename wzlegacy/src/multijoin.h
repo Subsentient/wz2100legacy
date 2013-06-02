@@ -30,9 +30,10 @@ extern void clearPlayer					(UDWORD player, BOOL quietly);// wipe a player off t
 //extern BOOL ProcessDroidOrders			(void);
 //extern UDWORD							arenaPlayersReceived;
 
-typedef struct {
-	DROID *psDroid;
-	void  *psNext;
+typedef struct
+{
+    DROID *psDroid;
+    void  *psNext;
 } DROIDSTORE, *LPDROIDSTORE;
 
 extern DROIDSTORE *tempDroidList;

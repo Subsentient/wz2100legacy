@@ -139,7 +139,7 @@ extern void intProcessDesign(UDWORD id);
 extern void intRunDesign(void);
 
 extern void intDisplayDesignForm(struct _widget *psWidget, UDWORD xOffset,
-									UDWORD yOffset, PIELIGHT *pColours);
+                                 UDWORD yOffset, PIELIGHT *pColours);
 
 extern void SetDesignWidgetName(char *Name);
 

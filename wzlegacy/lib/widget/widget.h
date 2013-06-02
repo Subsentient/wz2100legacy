@@ -13,7 +13,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Warzone 2100 Legacy; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
-/** 
+/**
  *	@file lib/widget/widget.h
  *	Definitions for the Widget library
  *	@defgroup Widget Widget system
@@ -49,7 +49,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define WFORM_CLICKABLE		4	///< Clickable form - return form id when the form is clicked
 #define	WFORM_NOCLICKMOVE	8	///< Disable movement on a clickable form
 
-/** 
+/**
  * Control whether the primary or secondary buttons work on a clickable form.
  * Primary works by default - this turns it off.
  */
@@ -70,7 +70,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 
 /**
- * Control whether the primary or secondary buttons work on a button. Primary works by default - 
+ * Control whether the primary or secondary buttons work on a button. Primary works by default -
  * this turns it off.
  */
 #define WBUT_NOPRIMARY		0x10
@@ -112,7 +112,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** The basic initialisation structure */
 typedef struct
 {
-	WINIT_BASE;
+    WINIT_BASE;
 } W_INIT;
 
 /*
@@ -150,64 +150,64 @@ typedef void (*FONT_DISPLAY)(UDWORD x, UDWORD y, char *String);
 /** Form initialisation structure */
 typedef struct
 {
-	/* The basic init entries */
-	WINIT_BASE;
+    /* The basic init entries */
+    WINIT_BASE;
 
-	/* Data for a tabbed form */
-	BOOL			disableChildren;
-	UWORD			majorPos, minorPos;		// Position of the tabs on the form
-	UWORD			majorSize, minorSize;		// Size of the tabs (in pixels)
-	SWORD			majorOffset, minorOffset;	// Tab start offset.
-	SWORD			tabVertOffset;			///< Tab form overlap offset.
-	SWORD			tabHorzOffset;			///< Tab form overlap offset.
-	UWORD			tabMajorThickness;		///< The thickness of the tabs
-	UWORD			tabMinorThickness;		///< The thickness of the tabs
-	UWORD			tabMajorGap;			///< The space between tabs
-	UWORD			tabMinorGap;			///< The space between tabs
-	UWORD			numStats;			///< Number of "stats" (items) in list
-	UWORD			numButtons;			///< Number of buttons per form
-	UWORD			numMajor;			///< Number of major tabs
-	UWORD			aNumMinors[WFORM_MAXMAJOR];	///< Number of minor tabs for each major
-	SWORD			TabMultiplier;			///< Used to tell system we got lots of (virtual) tabs to display
-	const char		*pTip;				///< Tool tip for the form itself
-	char			*apMajorTips[WFORM_MAXMAJOR];	///< Tool tips for the major tabs
-	char			*apMinorTips[WFORM_MAXMAJOR][WFORM_MAXMINOR];	///< Tool tips for the minor tabs
-	TAB_DISPLAY		pTabDisplay;			///< Optional callback for displaying a tab.
-	WIDGET_DISPLAY		pFormDisplay;			///< Optional callback to display the form.
+    /* Data for a tabbed form */
+    BOOL			disableChildren;
+    UWORD			majorPos, minorPos;		// Position of the tabs on the form
+    UWORD			majorSize, minorSize;		// Size of the tabs (in pixels)
+    SWORD			majorOffset, minorOffset;	// Tab start offset.
+    SWORD			tabVertOffset;			///< Tab form overlap offset.
+    SWORD			tabHorzOffset;			///< Tab form overlap offset.
+    UWORD			tabMajorThickness;		///< The thickness of the tabs
+    UWORD			tabMinorThickness;		///< The thickness of the tabs
+    UWORD			tabMajorGap;			///< The space between tabs
+    UWORD			tabMinorGap;			///< The space between tabs
+    UWORD			numStats;			///< Number of "stats" (items) in list
+    UWORD			numButtons;			///< Number of buttons per form
+    UWORD			numMajor;			///< Number of major tabs
+    UWORD			aNumMinors[WFORM_MAXMAJOR];	///< Number of minor tabs for each major
+    SWORD			TabMultiplier;			///< Used to tell system we got lots of (virtual) tabs to display
+    const char		*pTip;				///< Tool tip for the form itself
+    char			*apMajorTips[WFORM_MAXMAJOR];	///< Tool tips for the major tabs
+    char			*apMinorTips[WFORM_MAXMAJOR][WFORM_MAXMINOR];	///< Tool tips for the minor tabs
+    TAB_DISPLAY		pTabDisplay;			///< Optional callback for displaying a tab.
+    WIDGET_DISPLAY		pFormDisplay;			///< Optional callback to display the form.
 } W_FORMINIT;
 
 /** Label initialisation structure */
 typedef struct
 {
-	/* The basic init entries */
-	WINIT_BASE;
+    /* The basic init entries */
+    WINIT_BASE;
 
-	const char		*pText;			///< label text
-	const char		*pTip;			///< Tool tip for the label.
-	enum iV_fonts           FontID;			///< ID of the IVIS font to use for this widget.
+    const char		*pText;			///< label text
+    const char		*pTip;			///< Tool tip for the label.
+    enum iV_fonts           FontID;			///< ID of the IVIS font to use for this widget.
 } W_LABINIT;
 
 /** Button initialisation structure */
 typedef struct
 {
-	/* The basic init entries */
-	WINIT_BASE;
+    /* The basic init entries */
+    WINIT_BASE;
 
-	const char *pText;	///< Button text
-	const char *pTip;	///< Tool tip text
-	enum iV_fonts FontID;	//< ID of the IVIS font to use for this widget.
+    const char *pText;	///< Button text
+    const char *pTip;	///< Tool tip text
+    enum iV_fonts FontID;	//< ID of the IVIS font to use for this widget.
 } W_BUTINIT;
 
 /** Edit box initialisation structure */
 typedef struct
 {
-	/* The basic init entries */
-	WINIT_BASE;
+    /* The basic init entries */
+    WINIT_BASE;
 
-	const char *pText;		///< initial contents of the edit box
-	enum iV_fonts FontID;		///< ID of the IVIS font to use for this widget.
-	WIDGET_DISPLAY pBoxDisplay;	///< Optional callback to display the form.
-	FONT_DISPLAY pFontDisplay;	///< Optional callback to display a string.
+    const char *pText;		///< initial contents of the edit box
+    enum iV_fonts FontID;		///< ID of the IVIS font to use for this widget.
+    WIDGET_DISPLAY pBoxDisplay;	///< Optional callback to display the form.
+    FONT_DISPLAY pFontDisplay;	///< Optional callback to display a string.
 } W_EDBINIT;
 
 /* Orientation flags for the bar graph */
@@ -219,18 +219,18 @@ typedef struct
 /** Bar Graph initialisation structure */
 typedef struct
 {
-	/* The basic init entries */
-	WINIT_BASE;
+    /* The basic init entries */
+    WINIT_BASE;
 
-	UWORD		orientation;		///< Orientation of the bar on the widget
-	UWORD		size;			///< Initial percentage of the graph that is filled
-	UWORD		minorSize;		///< Percentage of second bar graph if there is one
-	UWORD		iRange;			///< Maximum range
-	int             denominator;            ///< Denominator, 1 by default.
-	int             precision;              ///< Number of places after the decimal point to display, 0 by default.
-	PIELIGHT	sCol;			///< Bar colour
-	PIELIGHT	sMinorCol;		///< Minor bar colour
-	const char	*pTip;			///< Tool tip text
+    UWORD		orientation;		///< Orientation of the bar on the widget
+    UWORD		size;			///< Initial percentage of the graph that is filled
+    UWORD		minorSize;		///< Percentage of second bar graph if there is one
+    UWORD		iRange;			///< Maximum range
+    int             denominator;            ///< Denominator, 1 by default.
+    int             precision;              ///< Number of places after the decimal point to display, 0 by default.
+    PIELIGHT	sCol;			///< Bar colour
+    PIELIGHT	sMinorCol;		///< Minor bar colour
+    const char	*pTip;			///< Tool tip text
 } W_BARINIT;
 
 
@@ -243,14 +243,14 @@ typedef struct
 /** Slider initialisation structure */
 typedef struct
 {
-	/* The basic init entries */
-	WINIT_BASE;
+    /* The basic init entries */
+    WINIT_BASE;
 
-	UWORD		orientation;		///< Orientation of the slider
-	UWORD		numStops;		///< Number of stops on the slider
-	UWORD		barSize;		///< Size of the bar
-	UWORD		pos;			///< Initial position of the slider bar
-	const char	*pTip;			///< Tip string
+    UWORD		orientation;		///< Orientation of the slider
+    UWORD		numStops;		///< Number of stops on the slider
+    UWORD		barSize;		///< Size of the bar
+    UWORD		pos;			///< Initial position of the slider bar
+    const char	*pTip;			///< Tip string
 } W_SLDINIT;
 
 /***********************************************************************************/
@@ -271,7 +271,7 @@ extern void widgReset(void);
 extern void widgShutDown(void);
 
 /** Create an empty widget screen */
-extern W_SCREEN* widgCreateScreen(void);
+extern W_SCREEN *widgCreateScreen(void);
 
 /** Release a screen and all its associated data */
 extern void widgReleaseScreen(W_SCREEN *psScreen);
@@ -280,22 +280,22 @@ extern void widgReleaseScreen(W_SCREEN *psScreen);
 extern void widgSetTipFont(W_SCREEN *psScreen, enum iV_fonts FontID);
 
 /** Add a form to the widget screen */
-extern BOOL widgAddForm(W_SCREEN *psScreen, const W_FORMINIT* psInit);
+extern BOOL widgAddForm(W_SCREEN *psScreen, const W_FORMINIT *psInit);
 
 /** Add a label to the widget screen */
-extern BOOL widgAddLabel(W_SCREEN *psScreen, const W_LABINIT* psInit);
+extern BOOL widgAddLabel(W_SCREEN *psScreen, const W_LABINIT *psInit);
 
 /** Add a button to a form */
-extern BOOL widgAddButton(W_SCREEN *psScreen, const W_BUTINIT* psInit);
+extern BOOL widgAddButton(W_SCREEN *psScreen, const W_BUTINIT *psInit);
 
 /** Add an edit box to a form */
-extern BOOL widgAddEditBox(W_SCREEN *psScreen, const W_EDBINIT* psInit);
+extern BOOL widgAddEditBox(W_SCREEN *psScreen, const W_EDBINIT *psInit);
 
 /** Add a bar graph to a form */
-extern BOOL widgAddBarGraph(W_SCREEN *psScreen, const W_BARINIT* psInit);
+extern BOOL widgAddBarGraph(W_SCREEN *psScreen, const W_BARINIT *psInit);
 
 /** Add a slider to a form */
-extern BOOL widgAddSlider(W_SCREEN *psScreen, const W_SLDINIT* psInit);
+extern BOOL widgAddSlider(W_SCREEN *psScreen, const W_SLDINIT *psInit);
 
 /** Delete a widget from the screen */
 extern void widgDelete(W_SCREEN *psScreen, UDWORD id);
@@ -365,26 +365,26 @@ extern WIDGET *widgGetFromID(W_SCREEN *psScreen, UDWORD id);
 
 /** Set tip string for a widget */
 extern void widgSetTip(W_SCREEN *psScreen, UDWORD id, const char *pTip);
-extern void widgSetTipText(WIDGET* psWidget, const char* pTip);
+extern void widgSetTipText(WIDGET *psWidget, const char *pTip);
 
 /** Colour numbers */
 enum _w_colour
 {
-	WCOL_BKGRND,	///< Background colours
-	WCOL_TEXT,	///< Text colour
-	WCOL_LIGHT,	///< Light colour for 3D effects
-	WCOL_DARK,	///< Dark colour for 3D effects
-	WCOL_HILITE,	///< Hilite colour
-	WCOL_CURSOR,	///< Edit Box cursor colour
-	WCOL_TIPBKGRND,	///< Background for the tool tip window
-	WCOL_DISABLE,	///< Text colour on a disabled button
+    WCOL_BKGRND,	///< Background colours
+    WCOL_TEXT,	///< Text colour
+    WCOL_LIGHT,	///< Light colour for 3D effects
+    WCOL_DARK,	///< Dark colour for 3D effects
+    WCOL_HILITE,	///< Hilite colour
+    WCOL_CURSOR,	///< Edit Box cursor colour
+    WCOL_TIPBKGRND,	///< Background for the tool tip window
+    WCOL_DISABLE,	///< Text colour on a disabled button
 
-	WCOL_MAX,	///< All colour numbers are less than this
+    WCOL_MAX,	///< All colour numbers are less than this
 };
 
 /** Set a colour on a form */
 extern void widgSetColour(W_SCREEN *psScreen, UDWORD id, UDWORD colour,
-						  UBYTE red, UBYTE green, UBYTE blue);
+                          UBYTE red, UBYTE green, UBYTE blue);
 
 /** Set the global toop tip text colour. */
 extern void widgSetTipColour(PIELIGHT colour);

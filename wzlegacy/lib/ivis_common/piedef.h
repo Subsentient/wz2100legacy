@@ -68,22 +68,37 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  */
 /***************************************************************************/
 
-typedef struct { UBYTE r, g, b, a; } PIELIGHTBYTES;
+typedef struct
+{
+    UBYTE r, g, b, a;
+} PIELIGHTBYTES;
 
 /** Our basic colour type. Use whenever you want to define a colour.
  *  Set bytes separetely, and do not assume a byte order between the components. */
-typedef union  { PIELIGHTBYTES byte; UDWORD rgba; UBYTE vector[4]; } PIELIGHT;
+typedef union
+{
+    PIELIGHTBYTES byte;
+    UDWORD rgba;
+    UBYTE vector[4];
+} PIELIGHT;
 
 typedef struct
 {
-	Vector3i pos;
-	float u, v;
-	PIELIGHT light;
-	Vector3i screen; //! Screenspace tile coordinates
+    Vector3i pos;
+    float u, v;
+    PIELIGHT light;
+    Vector3i screen; //! Screenspace tile coordinates
 } TERRAIN_VERTEX;
 
-typedef struct {SWORD x, y, w, h;} PIERECT;				/**< Screen rectangle. */
-typedef struct {SDWORD texPage; SWORD tu, tv, tw, th;} PIEIMAGE;	/**< An area of texture. */
+typedef struct
+{
+    SWORD x, y, w, h;
+} PIERECT;				/**< Screen rectangle. */
+typedef struct
+{
+    SDWORD texPage;
+    SWORD tu, tv, tw, th;
+} PIEIMAGE;	/**< An area of texture. */
 
 /***************************************************************************/
 /*
@@ -99,10 +114,10 @@ void pie_DrawTerrain(int x1, int y1, int x2, int y2);
 void pie_DrawTerrainTriangle(int x, int y, int triangle, const TERRAIN_VERTEX *aVrts);
 void pie_DrawWaterTriangle(const TERRAIN_VERTEX *aVrts);
 
-extern void pie_GetResetCounts(unsigned int* pPieCount, unsigned int* pTileCount, unsigned int* pPolyCount, unsigned int* pStateCount);
+extern void pie_GetResetCounts(unsigned int *pPieCount, unsigned int *pTileCount, unsigned int *pPolyCount, unsigned int *pStateCount);
 
 /** Setup stencil shadows and OpenGL lighting. */
-void pie_BeginLighting(const Vector3f * light);
+void pie_BeginLighting(const Vector3f *light);
 
 /* Stop using stencil shadows and OpenGL lighting (if enabled). */
 void pie_EndLighting(void);

@@ -22,18 +22,19 @@ extern "C"
 {
 #endif //__cplusplus
 
-typedef enum _difficulty_level
-{
-	DL_EASY,
-	DL_NORMAL,
-	DL_HARD,
-	DL_TOUGH,
-	DL_KILLER
-} DIFFICULTY_LEVEL;
+    typedef enum _difficulty_level
+    {
+        DL_EASY,
+        DL_NORMAL,
+        DL_HARD,
+        DL_TOUGH,
+        DL_KILLER
+    }
+    DIFFICULTY_LEVEL;
 
-void setDifficultyLevel(DIFFICULTY_LEVEL lev);
-DIFFICULTY_LEVEL getDifficultyLevel(void);
-int modifyForDifficultyLevel(int basicVal, bool IsPlayer);
+    void setDifficultyLevel(DIFFICULTY_LEVEL lev);
+    DIFFICULTY_LEVEL getDifficultyLevel(void);
+    int modifyForDifficultyLevel(int basicVal, bool IsPlayer);
 
 #ifdef __cplusplus
 }

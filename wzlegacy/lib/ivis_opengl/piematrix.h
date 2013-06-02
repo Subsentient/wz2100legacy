@@ -60,33 +60,37 @@ void pie_RotateTranslate3f(const Vector3f *v, Vector3f *s);
  * \return Normal vector
  */
 static inline WZ_DECL_CONST WZ_DECL_WARN_UNUSED_RESULT
-		Vector3f pie_SurfaceNormal3fv(const Vector3f p1, const Vector3f p2, const Vector3f p3)
+Vector3f pie_SurfaceNormal3fv(const Vector3f p1, const Vector3f p2, const Vector3f p3)
 {
-	Vector3f
-		a = {
-			p3.x - p1.x,
-			p3.y - p1.y,
-			p3.z - p1.z
-		},
- 		b = {
-			p2.x - p1.x,
-			p2.y - p1.y,
-			p2.z - p1.z
-		};
+    Vector3f
+    a =
+    {
+        p3.x - p1.x,
+        p3.y - p1.y,
+        p3.z - p1.z
+    },
+    b =
+    {
+        p2.x - p1.x,
+        p2.y - p1.y,
+        p2.z - p1.z
+    };
 
-	a = Vector3f_Normalise(a);
-	b = Vector3f_Normalise(b);
+    a = Vector3f_Normalise(a);
+    b = Vector3f_Normalise(b);
 
-	{ // MSVC HACK
-		Vector3f
-			v = {
-				(a.y * b.z) - (a.z * b.y),
-				(a.z * b.x) - (a.x * b.z),
-				(a.x * b.y) - (a.y * b.x)
-			};
+    {
+        // MSVC HACK
+        Vector3f
+        v =
+        {
+            (a.y * b.z) - (a.z * b.y),
+            (a.z * b.x) - (a.x * b.z),
+            (a.x * b.y) - (a.y * b.x)
+        };
 
-		return Vector3f_Normalise(v);
-	}
+        return Vector3f_Normalise(v);
+    }
 }
 
 //*************************************************************************

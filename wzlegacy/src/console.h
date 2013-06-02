@@ -30,19 +30,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-	LEFT_JUSTIFY,
-	RIGHT_JUSTIFY,
-	CENTRE_JUSTIFY,
-	DEFAULT_JUSTIFY
+    LEFT_JUSTIFY,
+    RIGHT_JUSTIFY,
+    CENTRE_JUSTIFY,
+    DEFAULT_JUSTIFY
 } CONSOLE_TEXT_JUSTIFICATION;
 
 typedef struct _console
 {
-	UDWORD	topX;
-	UDWORD	topY;
-	UDWORD	width;
-	UDWORD	textDepth;
-	BOOL	permanent;
+    UDWORD	topX;
+    UDWORD	topY;
+    UDWORD	width;
+    UDWORD	textDepth;
+    BOOL	permanent;
 } CONSOLE;
 
 /* ID to use for addConsoleMessage() in case of a system message */
@@ -52,13 +52,13 @@ typedef struct _console
 /* Definition of a message */
 typedef struct	_console_message
 {
-	char				text[MAX_CONSOLE_STRING_LENGTH];		// Text of the message
-	UDWORD				timeAdded;								// When was it added to our list?
-	//UDWORD			screenIndex;							// Info for justification
-	UDWORD				JustifyType;
-	UDWORD				id;
-	SDWORD				player;						// Player who sent this message or SYSTEM_MESSAGE
-	struct _console_message *psNext;
+    char				text[MAX_CONSOLE_STRING_LENGTH];		// Text of the message
+    UDWORD				timeAdded;								// When was it added to our list?
+    //UDWORD			screenIndex;							// Info for justification
+    UDWORD				JustifyType;
+    UDWORD				id;
+    SDWORD				player;						// Player who sent this message or SYSTEM_MESSAGE
+    struct _console_message *psNext;
 } CONSOLE_MESSAGE;
 
 extern char ConsoleString[MAX_CONSOLE_TMP_STRING_LENGTH];

@@ -30,27 +30,27 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _fpath_movetype
 {
-	FMT_MOVE,		///< Move around all obstacles
-	FMT_ATTACK,		///< Assume that we will destroy enemy obstacles
+    FMT_MOVE,		///< Move around all obstacles
+    FMT_ATTACK,		///< Assume that we will destroy enemy obstacles
 } FPATH_MOVETYPE;
 
 typedef struct _jobNode
 {
-	PROPULSION_TYPE	propulsion;
-	DROID_TYPE	droidType;
-	int		destX, destY;
-	int		origX, origY;
-	UDWORD		droidID;
-	struct _jobNode	*next;
-	FPATH_MOVETYPE	moveType;
-	int		owner;		///< Player owner
+    PROPULSION_TYPE	propulsion;
+    DROID_TYPE	droidType;
+    int		destX, destY;
+    int		origX, origY;
+    UDWORD		droidID;
+    struct _jobNode	*next;
+    FPATH_MOVETYPE	moveType;
+    int		owner;		///< Player owner
 } PATHJOB;
 
 typedef enum _fpath_retval
 {
-	FPR_OK,         ///< found a route
-	FPR_FAILED,     ///< failed to find a route
-	FPR_WAIT,       ///< route is being calculated by the path-finding thread
+    FPR_OK,         ///< found a route
+    FPR_FAILED,     ///< failed to find a route
+    FPR_WAIT,       ///< route is being calculated by the path-finding thread
 } FPATH_RETVAL;
 
 /** Initialise the path-finding module.
@@ -65,10 +65,10 @@ extern void fpathUpdate(void);
 
 /** Find a route for a droid to a location.
  */
-extern FPATH_RETVAL fpathDroidRoute(DROID* psDroid, SDWORD targetX, SDWORD targetY);
+extern FPATH_RETVAL fpathDroidRoute(DROID *psDroid, SDWORD targetX, SDWORD targetY);
 
 /** Function pointer to the currently in-use blocking tile check function.
- *  
+ *
  *  This function will check if the map tile at the given location blocks droids
  *  with the currently selected propulsion type.
  *
@@ -84,7 +84,7 @@ BOOL fpathBaseBlockingTile(SDWORD x, SDWORD y, PROPULSION_TYPE propulsion, int p
  *
  *  Used for instance by VTOLs. Function is thread-safe.
  */
-extern void fpathSetDirectRoute(DROID* psDroid, SDWORD targetX, SDWORD targetY);
+extern void fpathSetDirectRoute(DROID *psDroid, SDWORD targetX, SDWORD targetY);
 
 /** Clean up path jobs and results for a droid. Function is thread-safe. */
 extern void fpathRemoveDroidData(int id);

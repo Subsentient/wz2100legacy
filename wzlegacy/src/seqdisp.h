@@ -36,20 +36,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-	/**
-	 * Position text.
-	 */
-	SEQ_TEXT_POSITION,
+    /**
+     * Position text.
+     */
+    SEQ_TEXT_POSITION,
 
-	/**
-	 * Justify if less than 3/4 length.
-	 */
-	SEQ_TEXT_FOLLOW_ON,
+    /**
+     * Justify if less than 3/4 length.
+     */
+    SEQ_TEXT_FOLLOW_ON,
 
-	/**
-	 * Justify if less than 520/600 length.
-	 */
-	SEQ_TEXT_JUSTIFY,
+    /**
+     * Justify if less than 520/600 length.
+     */
+    SEQ_TEXT_JUSTIFY,
 } SEQ_TEXT_POSITIONING;
 
 /***************************************************************************/
@@ -64,15 +64,15 @@ typedef enum
  */
 /***************************************************************************/
 //buffer render
-extern bool seq_RenderVideoToBuffer(const char* sequenceName, int seqCommand);
+extern bool seq_RenderVideoToBuffer(const char *sequenceName, int seqCommand);
 
 extern BOOL seq_UpdateFullScreenVideo(int *bClear);
 
 extern BOOL seq_StopFullScreenVideo(void);
 //control
-extern BOOL seq_GetVideoSize(SDWORD* pWidth, SDWORD* pHeight);
+extern BOOL seq_GetVideoSize(SDWORD *pWidth, SDWORD *pHeight);
 //text
-extern BOOL seq_AddTextForVideo(const char* pText, SDWORD xOffset, SDWORD yOffset, SDWORD startTime, SDWORD endTime, SEQ_TEXT_POSITIONING textJustification);
+extern BOOL seq_AddTextForVideo(const char *pText, SDWORD xOffset, SDWORD yOffset, SDWORD startTime, SDWORD endTime, SEQ_TEXT_POSITIONING textJustification);
 //clear the sequence list
 extern void seq_ClearSeqList(void);
 //add a sequence to the list to be played

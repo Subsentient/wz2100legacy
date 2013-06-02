@@ -24,10 +24,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum POSITION_TYPE
 {
-	POS_DELIVERY,		//Delivery Points NOT wayPoints
-	POS_PROXDATA,	//proximity messages that are data generated
-	POS_PROXOBJ,	//proximity messages that are in game generated
-	POS_TEMPDELIVERY //SAVE ONLY delivery point for factory currently assigned to commander
+    POS_DELIVERY,		//Delivery Points NOT wayPoints
+    POS_PROXDATA,	//proximity messages that are data generated
+    POS_PROXOBJ,	//proximity messages that are in game generated
+    POS_TEMPDELIVERY //SAVE ONLY delivery point for factory currently assigned to commander
 } POSITION_TYPE;
 
 #define POSITION_OBJ \
@@ -41,7 +41,7 @@ typedef enum POSITION_TYPE
 
 typedef struct _object_position
 {
-	POSITION_OBJ;
+    POSITION_OBJ;
 } OBJECT_POSITION;
 
 #endif // __INCLUDED_POSITIONDEF_H__

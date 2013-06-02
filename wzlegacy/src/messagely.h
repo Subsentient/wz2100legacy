@@ -23,14 +23,14 @@
 
 #include "lib/framework/lexer_input.h"
 
-extern int message_parse(void* ppsViewData);
+extern int message_parse(void *ppsViewData);
 extern void message_set_extra(YY_EXTRA_TYPE user_defined);
 extern int message_lex_destroy(void);
 
 extern int message_lex(void);
 extern int message_get_lineno(void);
-extern char* message_get_text(void);
+extern char *message_get_text(void);
 
-extern void message_error(const char* msg);
+extern void message_error(const char *msg);
 
 #endif // __INCLUDED_SRC_MESSAGELY_H__

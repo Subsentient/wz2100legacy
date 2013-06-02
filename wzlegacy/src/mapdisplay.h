@@ -22,7 +22,7 @@ extern "C"
 {
 #endif //__cplusplus
 
-void renderResearchToBuffer(RESEARCH *psResearch, UDWORD OriginX, UDWORD OriginY);
+    void renderResearchToBuffer(RESEARCH *psResearch, UDWORD OriginX, UDWORD OriginY);
 
 #ifdef __cplusplus
 }

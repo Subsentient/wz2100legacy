@@ -23,17 +23,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct
 {
-	uint32_t played;						/// propogated stats.
-	uint32_t wins;
-	uint32_t losses;
-	uint32_t totalKills;
-	uint32_t totalScore;
+    uint32_t played;						/// propogated stats.
+    uint32_t wins;
+    uint32_t losses;
+    uint32_t totalKills;
+    uint32_t totalScore;
 
-	uint32_t recentKills;				// score/kills in last game.
-	uint32_t recentScore;
+    uint32_t recentKills;				// score/kills in last game.
+    uint32_t recentScore;
 
-	uint32_t killsToAdd;					// things to add next time score is updated.
-	uint32_t scoreToAdd;
+    uint32_t killsToAdd;					// things to add next time score is updated.
+    uint32_t scoreToAdd;
 } PLAYERSTATS;
 
 BOOL saveMultiStats(const char *sFName, const char *sPlayerName, const PLAYERSTATS *playerStats);	// to disk

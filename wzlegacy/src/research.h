@@ -30,35 +30,35 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 //used for loading in the research stats into the appropriate list
 enum
 {
-	REQ_LIST,
-	RED_LIST,
-	RES_LIST
+    REQ_LIST,
+    RED_LIST,
+    RES_LIST
 };
 
 
 enum
 {
-RID_ROCKET,
-RID_CANNON,
-RID_HOVERCRAFT,
-RID_ECM,
-RID_PLASCRETE,
-RID_TRACKS,
-RID_DROIDTECH,
-RID_WEAPONTECH,
-RID_COMPUTERTECH,
-RID_POWERTECH,
-RID_SYSTEMTECH,
-RID_STRUCTURETECH,
-RID_CYBORGTECH,
-RID_DEFENCE,
-RID_QUESTIONMARK,
-RID_GRPACC,
-RID_GRPUPG,
-RID_GRPREP,
-RID_GRPROF,
-RID_GRPDAM,
-RID_MAXRID
+    RID_ROCKET,
+    RID_CANNON,
+    RID_HOVERCRAFT,
+    RID_ECM,
+    RID_PLASCRETE,
+    RID_TRACKS,
+    RID_DROIDTECH,
+    RID_WEAPONTECH,
+    RID_COMPUTERTECH,
+    RID_POWERTECH,
+    RID_SYSTEMTECH,
+    RID_STRUCTURETECH,
+    RID_CYBORGTECH,
+    RID_DEFENCE,
+    RID_QUESTIONMARK,
+    RID_GRPACC,
+    RID_GRPUPG,
+    RID_GRPREP,
+    RID_GRPROF,
+    RID_GRPDAM,
+    RID_MAXRID
 };
 
 
@@ -67,7 +67,7 @@ extern		RESEARCH				*asResearch;
 extern		UDWORD					numResearch;
 
 //List of pointers to arrays of PLAYER_RESEARCH[numResearch] for each player
-extern PLAYER_RESEARCH*		asPlayerResList[MAX_PLAYERS];
+extern PLAYER_RESEARCH		*asPlayerResList[MAX_PLAYERS];
 
 //used for Callbacks to say which topic was last researched
 extern RESEARCH				*psCBLastResearch;
@@ -107,14 +107,14 @@ extern BOOL ResearchShutDown(void);
 extern void ResearchRelease(void);
 
 /* For a given view data get the research this is related to */
-extern RESEARCH * getResearch(const char *pName, BOOL resName);
+extern RESEARCH *getResearch(const char *pName, BOOL resName);
 
 /* sets the status of the topic to cancelled and stores the current research
    points accquired */
 extern void cancelResearch(STRUCTURE *psBuilding);
 
 /* For a given view data get the research this is related to */
-extern RESEARCH * getResearchForMsg(struct _viewdata *pViewData);
+extern RESEARCH *getResearchForMsg(struct _viewdata *pViewData);
 
 /* Sets the 'possible' flag for a player's research so the topic will appear in
 the research list next time the Research Facilty is selected */

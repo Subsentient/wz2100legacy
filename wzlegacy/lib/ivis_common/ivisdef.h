@@ -33,21 +33,25 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // screen surface structure
 //
 //*************************************************************************
-typedef struct { Sint32 left, top, right, bottom; } iClip;
+typedef struct
+{
+    Sint32 left, top, right, bottom;
+} iClip;
 
-typedef struct _iSurface {
-	Uint32 flags;
-	int xcentre;
-	int ycentre;
-	int xpshift;
-	int ypshift;
-	iClip clip;
+typedef struct _iSurface
+{
+    Uint32 flags;
+    int xcentre;
+    int ycentre;
+    int xpshift;
+    int ypshift;
+    iClip clip;
 
-	UBYTE *buffer;
+    UBYTE *buffer;
 
-	int width;
-	int height;
-	Sint32 size;
+    int width;
+    int height;
+    Sint32 size;
 } iSurface;
 
 //*************************************************************************
@@ -56,53 +60,56 @@ typedef struct _iSurface {
 //
 //*************************************************************************
 
-typedef struct {
-	int nFrames;
-	int playbackRate;
-	int textureWidth;
-	int textureHeight;
+typedef struct
+{
+    int nFrames;
+    int playbackRate;
+    int textureWidth;
+    int textureHeight;
 } iTexAnim;
 
 /// Stores the from and to verticles from an edge
 typedef struct edge_
 {
-	int from, to;
+    int from, to;
 } EDGE;
 
 typedef int VERTEXID;	// Size of the entry for vertex id in the imd polygon structure
 
-typedef struct {
-	Uint32 flags;
-	Sint32 zcentre;
-	unsigned int npnts;
-	Vector3f normal;
-	VERTEXID *pindex;
-	Vector2f *texCoord;
-	iTexAnim texAnim;
+typedef struct
+{
+    Uint32 flags;
+    Sint32 zcentre;
+    unsigned int npnts;
+    Vector3f normal;
+    VERTEXID *pindex;
+    Vector2f *texCoord;
+    iTexAnim texAnim;
 } iIMDPoly;
 
-typedef struct _iIMDShape {
-	int texpage;
-	int sradius, radius;
-	Vector3f min, max;
+typedef struct _iIMDShape
+{
+    int texpage;
+    int sradius, radius;
+    Vector3f min, max;
 
-	Vector3f ocen;
-	unsigned short numFrames;
-	unsigned short animInterval;
+    Vector3f ocen;
+    unsigned short numFrames;
+    unsigned short animInterval;
 
-	unsigned int npoints;
-	Vector3f *points;
+    unsigned int npoints;
+    Vector3f *points;
 
-	unsigned int npolys;
-	iIMDPoly *polys;
+    unsigned int npolys;
+    iIMDPoly *polys;
 
-	unsigned int nconnectors;
-	Vector3f *connectors;
+    unsigned int nconnectors;
+    Vector3f *connectors;
 
-	unsigned int nShadowEdges;
-	EDGE *shadowEdgeList;
+    unsigned int nShadowEdges;
+    EDGE *shadowEdgeList;
 
-	struct _iIMDShape *next; // next pie in multilevel pies (NULL for non multilevel !)
+    struct _iIMDShape *next; // next pie in multilevel pies (NULL for non multilevel !)
 } iIMDShape;
 
 
@@ -112,21 +119,23 @@ typedef struct _iIMDShape {
 //
 //*************************************************************************
 
-typedef struct {
-	unsigned int TPageID;   /**< Which associated file to read our info from */
-	unsigned int Tu;        /**< First vertex coordinate */
-	unsigned int Tv;        /**< Second vertex coordinate */
-	unsigned int Width;     /**< Width of image */
-	unsigned int Height;    /**< Height of image */
-	int XOffset;            /**< X offset into source position */
-	int YOffset;            /**< Y offset into source position */
+typedef struct
+{
+    unsigned int TPageID;   /**< Which associated file to read our info from */
+    unsigned int Tu;        /**< First vertex coordinate */
+    unsigned int Tv;        /**< Second vertex coordinate */
+    unsigned int Width;     /**< Width of image */
+    unsigned int Height;    /**< Height of image */
+    int XOffset;            /**< X offset into source position */
+    int YOffset;            /**< Y offset into source position */
 } IMAGEDEF;
 
 #define MAX_NUM_TPAGEIDS 16
-typedef struct {
-	int NumImages;          /**< Number of images contained here */
-	uint32_t TPageIDs[MAX_NUM_TPAGEIDS];  /**< OpenGL Texture IDs */
-	IMAGEDEF *ImageDefs;    /**< Stored images */
+typedef struct
+{
+    int NumImages;          /**< Number of images contained here */
+    uint32_t TPageIDs[MAX_NUM_TPAGEIDS];  /**< OpenGL Texture IDs */
+    IMAGEDEF *ImageDefs;    /**< Stored images */
 } IMAGEFILE;
 
 #endif // _ivisdef_h

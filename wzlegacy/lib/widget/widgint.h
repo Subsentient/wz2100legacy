@@ -13,7 +13,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Warzone 2100 Legacy; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
-/** @file 
+/** @file
  *  Internal widget library definitions
  */
 
@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "widgbase.h"
 
 /* Set the id number for widgRunScreen to return */
-extern void widgSetReturn(W_SCREEN* psScreen, WIDGET *psWidget);
+extern void widgSetReturn(W_SCREEN *psScreen, WIDGET *psWidget);
 
 /* Find a widget in a screen from its ID number */
 extern WIDGET *widgGetFromID(W_SCREEN *psScreen, UDWORD id);

@@ -75,9 +75,9 @@ extern void pie_UploadDisplayBuffer(void);
 
 typedef enum _screenType
 {
-	SCREEN_RANDOMBDROP,
-	SCREEN_CREDITS,
-	SCREEN_MISSIONEND,
+    SCREEN_RANDOMBDROP,
+    SCREEN_CREDITS,
+    SCREEN_MISSIONEND,
 } SCREENTYPE;
 
 extern void pie_LoadBackDrop(SCREENTYPE screenType);

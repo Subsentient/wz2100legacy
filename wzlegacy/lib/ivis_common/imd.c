@@ -28,34 +28,41 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 //******
 void iV_IMDRelease(iIMDShape *s)
 {
-   unsigned int i;
-   iIMDShape *d;
+    unsigned int i;
+    iIMDShape *d;
 
-   if (s) {
-		if (s->points) {
-			free(s->points);
-		}
-		if (s->connectors) {
-			free(s->connectors);
-		}
-		if (s->polys) {
-			for (i = 0; i < s->npolys; i++) {
-				if (s->polys[i].pindex) {
-					free(s->polys[i].pindex);
-				}
-				if (s->polys[i].texCoord) {
-					free(s->polys[i].texCoord);
-				}
-			}
-			free(s->polys);
-		}
-		if (s->shadowEdgeList)
-		{
-			free(s->shadowEdgeList);
-			s->shadowEdgeList = NULL;
-		}
-		d = s->next;
-		free(s);
-		iV_IMDRelease(d);
-	}
+    if (s)
+    {
+        if (s->points)
+        {
+            free(s->points);
+        }
+        if (s->connectors)
+        {
+            free(s->connectors);
+        }
+        if (s->polys)
+        {
+            for (i = 0; i < s->npolys; i++)
+            {
+                if (s->polys[i].pindex)
+                {
+                    free(s->polys[i].pindex);
+                }
+                if (s->polys[i].texCoord)
+                {
+                    free(s->polys[i].texCoord);
+                }
+            }
+            free(s->polys);
+        }
+        if (s->shadowEdgeList)
+        {
+            free(s->shadowEdgeList);
+            s->shadowEdgeList = NULL;
+        }
+        d = s->next;
+        free(s);
+        iV_IMDRelease(d);
+    }
 }

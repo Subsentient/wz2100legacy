@@ -40,8 +40,8 @@ BOOL	inHighlight				( UDWORD realX, UDWORD realY );
 
 typedef struct _highlight
 {
-UWORD	xTL,yTL;		// Top left of box to highlight
-UWORD	xBR,yBR;		// Bottom right of box to highlight
+    UWORD	xTL,yTL;		// Top left of box to highlight
+    UWORD	xBR,yBR;		// Bottom right of box to highlight
 } HIGHLIGHT;
 
 extern HIGHLIGHT	buildSite;
@@ -55,11 +55,11 @@ extern HIGHLIGHT	buildSite;
 
 typedef struct _build_details
 {
-	BUILDCALLBACK	CallBack;
-	void 			*UserData;  //this holds the OBJECT_POSITION pointer for a Deliv Point
-	UDWORD			x,y;
-	UDWORD			width,height;
-	BASE_STATS		*psStats;
+    BUILDCALLBACK	CallBack;
+    void 			*UserData;  //this holds the OBJECT_POSITION pointer for a Deliv Point
+    UDWORD			x,y;
+    UDWORD			width,height;
+    BASE_STATS		*psStats;
 } BUILDDETAILS;
 
 extern BUILDDETAILS	sBuildDetails;

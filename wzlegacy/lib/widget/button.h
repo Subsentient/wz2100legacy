@@ -36,23 +36,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _w_button
 {
-	/* The common widget data */
-	WIDGET_BASE;
+    /* The common widget data */
+    WIDGET_BASE;
 
-	UDWORD		state;				// The current button state
-	const char *pText;				// The text for the button
-	const char *pTip;				// The tool tip for the button
-	SWORD HilightAudioID;				// Audio ID for form clicked sound
-	SWORD ClickedAudioID;				// Audio ID for form hilighted sound
-	WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
-	enum iV_fonts FontID;
+    UDWORD		state;				// The current button state
+    const char *pText;				// The text for the button
+    const char *pTip;				// The tool tip for the button
+    SWORD HilightAudioID;				// Audio ID for form clicked sound
+    SWORD ClickedAudioID;				// Audio ID for form hilighted sound
+    WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
+    enum iV_fonts FontID;
 } W_BUTTON;
 
 /* Initialise the button module */
 extern BOOL buttonStartUp(void);
 
 /* Create a button widget data structure */
-extern W_BUTTON* buttonCreate(const W_BUTINIT* psInit);
+extern W_BUTTON *buttonCreate(const W_BUTINIT *psInit);
 
 /* Free the memory used by a button */
 extern void buttonFree(W_BUTTON *psWidget);
@@ -67,7 +67,7 @@ extern void buttonRun(W_BUTTON *psWidget);
 extern void buttonClicked(W_BUTTON *psWidget, UDWORD key);
 
 /* Respond to a mouse button up */
-extern void buttonReleased(W_SCREEN* psScreen, W_BUTTON *psWidget, UDWORD key);
+extern void buttonReleased(W_SCREEN *psScreen, W_BUTTON *psWidget, UDWORD key);
 
 /* Respond to a mouse moving over a button */
 extern void buttonHiLite(W_BUTTON *psWidget, W_CONTEXT *psContext);

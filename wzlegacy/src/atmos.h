@@ -22,29 +22,29 @@ extern "C"
 {
 #endif //__cplusplus
 
-typedef struct _atmosParticle
-{
-	UBYTE		status;
-	UBYTE		type;
-	UDWORD		size;
-	Vector3f	position;
-	Vector3f	velocity;
-	iIMDShape	*imd;
-} ATPART;
+    typedef struct _atmosParticle
+    {
+        UBYTE		status;
+        UBYTE		type;
+        UDWORD		size;
+        Vector3f	position;
+        Vector3f	velocity;
+        iIMDShape	*imd;
+    } ATPART;
 
-typedef	enum
-{
-	WT_RAINING,
-	WT_SNOWING,
-	WT_NONE
-} WT_CLASS;
+    typedef	enum
+    {
+        WT_RAINING,
+        WT_SNOWING,
+        WT_NONE
+    } WT_CLASS;
 
-void atmosInitSystem(void);
-void atmosUpdateSystem(void);
-void renderParticle(ATPART *psPart);
-void atmosDrawParticles(void);
-void atmosSetWeatherType(WT_CLASS type);
-WT_CLASS atmosGetWeatherType(void);
+    void atmosInitSystem(void);
+    void atmosUpdateSystem(void);
+    void renderParticle(ATPART *psPart);
+    void atmosDrawParticles(void);
+    void atmosSetWeatherType(WT_CLASS type);
+    WT_CLASS atmosGetWeatherType(void);
 
 #ifdef __cplusplus
 }

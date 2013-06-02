@@ -105,7 +105,7 @@ extern void intProcessMissionResult			(UDWORD id);
 extern void intRunMissionResult				(void);
 
 extern void unloadTransporter(DROID *psTransporter, UDWORD x, UDWORD y,
-							  BOOL goingHome);
+                              BOOL goingHome);
 /*sets the appropriate pause states for when the interface is up but the
 game needs to be paused*/
 extern void setMissionPauseState(void);
@@ -137,7 +137,7 @@ extern BOOL getPlayCountDown(void);
 extern BOOL withinLandingZone(UDWORD x, UDWORD y);
 //sets the coords for the Transporter to land
 extern void setLandingZone(UBYTE x1, UBYTE y1, UBYTE x2, UBYTE y2);
-extern LANDING_ZONE* getLandingZone(SDWORD i);
+extern LANDING_ZONE *getLandingZone(SDWORD i);
 
 /*Initialises all the nogo areas to 0*/
 extern void initNoGoAreas(void);
@@ -149,14 +149,14 @@ extern void missionFlyTransportersIn( SDWORD iPlayer, BOOL bTrackTransporter );
 extern void missionMoveTransporterOffWorld( DROID *psTransporter );
 /* pick nearest map edge to point */
 extern void missionGetNearestCorner( UWORD iX, UWORD iY,
-								UWORD *piOffX, UWORD *piOffY );
+                                     UWORD *piOffX, UWORD *piOffY );
 extern void missionSetReinforcementTime( UDWORD iTime );
 extern UDWORD  missionGetReinforcementTime(void);
 
 /*builds a droid back at the home base whilst on a mission - stored in a list made
 available to the transporter interface*/
-extern DROID * buildMissionDroid(DROID_TEMPLATE *psTempl, UDWORD x, UDWORD y,
-							  UDWORD player);
+extern DROID *buildMissionDroid(DROID_TEMPLATE *psTempl, UDWORD x, UDWORD y,
+                                UDWORD player);
 
 //This is just a very big number - bigger than a map width/height could ever be!
 #define		INVALID_XY				(512 * 127)
@@ -195,10 +195,10 @@ extern void setMissionCheatTime(BOOL bCheating);
 
 
 
- #define		MISSIONRES_X			20	// pos & size of box.
- #define		MISSIONRES_Y			380
- #define		MISSIONRES_W			600
- #define		MISSIONRES_H			80
+#define		MISSIONRES_X			20	// pos & size of box.
+#define		MISSIONRES_Y			380
+#define		MISSIONRES_W			600
+#define		MISSIONRES_H			80
 
 
 

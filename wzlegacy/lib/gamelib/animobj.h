@@ -69,16 +69,16 @@ typedef BOOL (* ANIMOBJDIEDTESTFUNC) ( void *psParent );
 
 typedef struct COMPONENT_OBJECT
 {
-	COMPONENT_ELEMENTS( struct COMPONENT_OBJECT )
+    COMPONENT_ELEMENTS( struct COMPONENT_OBJECT )
 }
 COMPONENT_OBJECT;
 
 typedef struct ANIM_OBJECT
 {
-	struct ANIM_OBJECT	*psNext;
+    struct ANIM_OBJECT	*psNext;
 
-	/* this must be the last entry in this structure */
-	ANIM_OBJECT_ELEMENTS( struct ANIM_OBJECT )
+    /* this must be the last entry in this structure */
+    ANIM_OBJECT_ELEMENTS( struct ANIM_OBJECT )
 }
 ANIM_OBJECT;
 
@@ -88,16 +88,16 @@ BOOL			animObj_Init( ANIMOBJDIEDTESTFUNC pDiedFunc );
 void			animObj_Update( void );
 BOOL			animObj_Shutdown( void );
 void			animObj_SetDoneFunc( ANIM_OBJECT *psObj,
-										ANIMOBJDONEFUNC pDoneFunc );
+                                     ANIMOBJDONEFUNC pDoneFunc );
 
 /* uwCycles=0 for infinite looping */
-ANIM_OBJECT *	animObj_Add( void *pParentObj, int iAnimID,
-								UDWORD udwStartDelay, UWORD uwCycles );
-bool animObj_Remove(ANIM_OBJECT* psObj, int iAnimID);
+ANIM_OBJECT 	*animObj_Add( void *pParentObj, int iAnimID,
+                              UDWORD udwStartDelay, UWORD uwCycles );
+bool animObj_Remove(ANIM_OBJECT *psObj, int iAnimID);
 
-ANIM_OBJECT *	animObj_GetFirst( void );
-ANIM_OBJECT *	animObj_GetNext( void );
-ANIM_OBJECT *	animObj_Find( void *pParentObj, int iAnimID );
+ANIM_OBJECT 	*animObj_GetFirst( void );
+ANIM_OBJECT 	*animObj_GetNext( void );
+ANIM_OBJECT 	*animObj_Find( void *pParentObj, int iAnimID );
 
 /***************************************************************************/
 

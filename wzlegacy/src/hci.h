@@ -242,26 +242,27 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define	MAXCOMPONENT	80
 #define	MAXEXTRASYS		80
 
-typedef enum {
-	INT_NORMAL,		// Standard mode (just the reticule)
+typedef enum
+{
+    INT_NORMAL,		// Standard mode (just the reticule)
 
-	INT_OPTION,		// Option screen
-	INT_EDIT,		// Edit mode
+    INT_OPTION,		// Option screen
+    INT_EDIT,		// Edit mode
 
-	INT_EDITSTAT,	// Stat screen up for placing objects
-	INT_OBJECT,		// Object screen
-	INT_STAT,		// Object screen with stat screen
-	INT_CMDORDER,	// Object screen with command droids and orders screen
-	INT_DESIGN,		// Design screen
-	INT_INTELMAP,	// Intelligence Map
-	INT_ORDER,
-	INT_INGAMEOP,	// in game options.
-	//INT_TUTORIAL,	// Tutorial mode - message display
-	INT_TRANSPORTER, //Loading/unloading a Transporter
-	INT_MISSIONRES,	// Results of a mission display.
-	INT_MULTIMENU,	// multiplayer only, player stats etc...
-	INT_CDCHANGE,	// CD Change message box
-	INT_POPUPMSG,	// Adds a popup message to user
+    INT_EDITSTAT,	// Stat screen up for placing objects
+    INT_OBJECT,		// Object screen
+    INT_STAT,		// Object screen with stat screen
+    INT_CMDORDER,	// Object screen with command droids and orders screen
+    INT_DESIGN,		// Design screen
+    INT_INTELMAP,	// Intelligence Map
+    INT_ORDER,
+    INT_INGAMEOP,	// in game options.
+    //INT_TUTORIAL,	// Tutorial mode - message display
+    INT_TRANSPORTER, //Loading/unloading a Transporter
+    INT_MISSIONRES,	// Results of a mission display.
+    INT_MULTIMENU,	// multiplayer only, player stats etc...
+    INT_CDCHANGE,	// CD Change message box
+    INT_POPUPMSG,	// Adds a popup message to user
 
     INT_MAXMODE,   //leave as last so we can start the objMode at this value
 } INTMODE;
@@ -320,15 +321,15 @@ extern void interfaceShutDown(void);
 /* Return codes for the widget interface */
 typedef enum _int_retval
 {
-	INT_NONE,		// no key clicks have been intercepted
-	INT_INTERCEPT,	// key clicks have been intercepted
-	//INT_FULLSCREENPAUSE,	// The widget interface is full screen and
-							// the rest of the game should pause
-	//INT_INTELPAUSE,			// The Intelligence Map is up and all update
-							// routines should pause - hopefully!
-	INT_INTELNOSCROLL,		//The 3DView of the intelligence screen is up
-							// and we don't want scroll (or update!)
-	INT_QUIT,		// The game should quit
+    INT_NONE,		// no key clicks have been intercepted
+    INT_INTERCEPT,	// key clicks have been intercepted
+    //INT_FULLSCREENPAUSE,	// The widget interface is full screen and
+    // the rest of the game should pause
+    //INT_INTELPAUSE,			// The Intelligence Map is up and all update
+    // routines should pause - hopefully!
+    INT_INTELNOSCROLL,		//The 3DView of the intelligence screen is up
+    // and we don't want scroll (or update!)
+    INT_QUIT,		// The game should quit
 } INT_RETVAL;
 
 /* Run the widgets for the in game interface */
@@ -398,7 +399,7 @@ extern void intRemoveStats(void);
 extern void intRemoveStatsNoAnim(void);
 
 /*sets which list of structures to use for the interface*/
-extern STRUCTURE* interfaceStructList(void);
+extern STRUCTURE *interfaceStructList(void);
 
 //sets up the Transporter Screen as far as the interface is concerned
 extern void addTransporterInterface(DROID *psSelected, BOOL onMission);
@@ -433,7 +434,7 @@ void	setKeyButtonMapping( UDWORD	val );
 
 
 STRUCTURE *intFindAStructure(void);
-STRUCTURE* intGotoNextStructureType(UDWORD structType,BOOL JumpTo,BOOL CancelDrive);
+STRUCTURE *intGotoNextStructureType(UDWORD structType,BOOL JumpTo,BOOL CancelDrive);
 DROID *intGotoNextDroidType(DROID *CurrDroid,UDWORD droidType,BOOL AllowGroup);
 
 /*Checks to see if there are any research topics to do and flashes the button*/
@@ -443,7 +444,7 @@ extern void intCheckResearchButton(void);
 extern BOOL intCheckReticuleButEnabled(UDWORD id);
 
 //access function for selected object in the interface
-extern BASE_OBJECT * getCurrentSelected(void);
+extern BASE_OBJECT *getCurrentSelected(void);
 
 //initialise all the previous obj - particularly useful for when go Off world!
 extern void intResetPreviousObj(void);

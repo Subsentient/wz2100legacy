@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  * \param data Payload (store intermediate results here)
  * \return true if ore points are required, false otherwise
  */
-typedef bool (*RAY_CALLBACK)(Vector3i pos, int distSq, void* data);
+typedef bool (*RAY_CALLBACK)(Vector3i pos, int distSq, void *data);
 
 
 /*!
@@ -46,17 +46,18 @@ typedef bool (*RAY_CALLBACK)(Vector3i pos, int distSq, void* data);
  * \param callback Callback to call for each passed tile
  * \param data Data to pass through to the callback
  */
-extern void rayCast(Vector3i pos, Vector3i dir, int length, RAY_CALLBACK callback, void * data);
+extern void rayCast(Vector3i pos, Vector3i dir, int length, RAY_CALLBACK callback, void *data);
 
 
 static inline Vector3i rayAngleToVector3i(float angle)
 {
-	Vector3i dest = {
-		cosf(deg2radf(angle)) * INT_MAX,
-		sinf(deg2radf(angle)) * INT_MAX,
-		0
-	};
-	return dest;
+    Vector3i dest =
+    {
+        cosf(deg2radf(angle)) *INT_MAX,
+        sinf(deg2radf(angle)) *INT_MAX,
+        0
+    };
+    return dest;
 }
 
 
@@ -65,6 +66,6 @@ static inline Vector3i rayAngleToVector3i(float angle)
 extern void	getBestPitchToEdgeOfGrid(UDWORD x, UDWORD y, UDWORD direction, SDWORD *pitch);
 
 extern void	getPitchToHighestPoint( UDWORD x, UDWORD y, UDWORD direction,
-								   UDWORD thresholdDistance, SDWORD *pitch );
+                                    UDWORD thresholdDistance, SDWORD *pitch );
 
 #endif // __INCLUDED_SRC_RAYCAST_H__

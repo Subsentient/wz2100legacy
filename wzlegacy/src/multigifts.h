@@ -30,7 +30,7 @@ extern void	createTeamAlliances	(void);
 extern BOOL sendGift			(uint8_t type, uint8_t to);
 extern BOOL recvGift			(void);
 
-extern void technologyGiveAway				(const STRUCTURE* pS);
+extern void technologyGiveAway				(const STRUCTURE *pS);
 extern void recvMultiPlayerRandomArtifacts	(void);
 extern void addMultiPlayerRandomArtifacts	(uint8_t quantity, FEATURE_TYPE type);
 extern void processMultiPlayerArtifacts		(void);

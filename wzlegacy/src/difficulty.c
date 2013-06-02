@@ -41,52 +41,56 @@ static float		fDifEnemyModifier;
 void	setDifficultyLevel(DIFFICULTY_LEVEL lev)
 {
 
-	switch(lev)
-	{
-	case	DL_EASY:
-		fDifPlayerModifier = 120.f / 100.f;
-		fDifEnemyModifier = 100.f / 100.f;
-		break;
-	case	DL_NORMAL:
-		fDifPlayerModifier = 100.f / 100.f;
-		fDifEnemyModifier = 100.f / 100.f;
-		break;
-	case	DL_HARD:
-		fDifPlayerModifier = 80.f / 100.f;
-		fDifEnemyModifier = 100.f / 100.f;
-		break;
-	case	DL_KILLER:
-		fDifPlayerModifier = 999.f / 100.f;	// 10 times
-		fDifEnemyModifier = 1.f / 100.f;		// almost nothing
-		break;
-	case	DL_TOUGH:
-		fDifPlayerModifier = 100.f / 100.f;
-		fDifEnemyModifier = 50.f / 100.f;	// they do less damage!
-		break;
-	default:
-		debug( LOG_ERROR, "Invalid difficulty level selected - forcing NORMAL" );
-		fDifPlayerModifier = 100.f / 100.f;
-		fDifEnemyModifier = 100.f / 100.f;
-		lev = DL_NORMAL;
-		break;
-	}
+    switch(lev)
+    {
+        case	DL_EASY:
+            fDifPlayerModifier = 120.f / 100.f;
+            fDifEnemyModifier = 100.f / 100.f;
+            break;
+        case	DL_NORMAL:
+            fDifPlayerModifier = 100.f / 100.f;
+            fDifEnemyModifier = 100.f / 100.f;
+            break;
+        case	DL_HARD:
+            fDifPlayerModifier = 80.f / 100.f;
+            fDifEnemyModifier = 100.f / 100.f;
+            break;
+        case	DL_KILLER:
+            fDifPlayerModifier = 999.f / 100.f;	// 10 times
+            fDifEnemyModifier = 1.f / 100.f;		// almost nothing
+            break;
+        case	DL_TOUGH:
+            fDifPlayerModifier = 100.f / 100.f;
+            fDifEnemyModifier = 50.f / 100.f;	// they do less damage!
+            break;
+        default:
+            debug( LOG_ERROR, "Invalid difficulty level selected - forcing NORMAL" );
+            fDifPlayerModifier = 100.f / 100.f;
+            fDifEnemyModifier = 100.f / 100.f;
+            lev = DL_NORMAL;
+            break;
+    }
 
-	presDifLevel = lev;
+    presDifLevel = lev;
 }
 
 // ------------------------------------------------------------------------------------
 /* Returns the difficulty level */
 DIFFICULTY_LEVEL	getDifficultyLevel( void )
 {
-	return(presDifLevel);
+    return(presDifLevel);
 }
 
 // ------------------------------------------------------------------------------------
 int modifyForDifficultyLevel(int basicVal, bool IsPlayer)
 {
-	if (IsPlayer)
-		return roundf(basicVal * fDifPlayerModifier);
-	else
-		return roundf(basicVal * fDifEnemyModifier);
+    if (IsPlayer)
+    {
+        return roundf(basicVal * fDifPlayerModifier);
+    }
+    else
+    {
+        return roundf(basicVal * fDifEnemyModifier);
+    }
 }
 // ------------------------------------------------------------------------------------

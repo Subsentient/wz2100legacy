@@ -41,9 +41,9 @@ static BOOL bMultiExpBoost = false;
 // Initialise the command droids
 BOOL cmdDroidInit(void)
 {
-	memset(apsCmdDesignator, 0, sizeof(DROID *)*MAX_PLAYERS);
+    memset(apsCmdDesignator, 0, sizeof(DROID *)*MAX_PLAYERS);
 
-	return true;
+    return true;
 }
 
 
@@ -62,183 +62,183 @@ void cmdDroidAvailable(WZ_DECL_UNUSED BRAIN_STATS *psBrainStats, WZ_DECL_UNUSED 
 // update the command droids
 void cmdDroidUpdate(void)
 {
-	SDWORD	i;
+    SDWORD	i;
 
-	for(i=0; i<MAX_PLAYERS; i++)
-	{
-		if (apsCmdDesignator[i] && apsCmdDesignator[i]->died)
-		{
-			apsCmdDesignator[i] = NULL;
-		}
-	}
+    for(i=0; i<MAX_PLAYERS; i++)
+    {
+        if (apsCmdDesignator[i] && apsCmdDesignator[i]->died)
+        {
+            apsCmdDesignator[i] = NULL;
+        }
+    }
 }
 
 
 // add a droid to a command group
 void cmdDroidAddDroid(DROID *psCommander, DROID *psDroid)
 {
-	DROID_GROUP	*psGroup;
+    DROID_GROUP	*psGroup;
 
-	if (psCommander->psGroup == NULL)
-	{
-		if (!grpCreate(&psGroup))
-		{
-			return;
-		}
-		grpJoin(psGroup, psCommander);
-		psDroid->group = UBYTE_MAX;
-	}
+    if (psCommander->psGroup == NULL)
+    {
+        if (!grpCreate(&psGroup))
+        {
+            return;
+        }
+        grpJoin(psGroup, psCommander);
+        psDroid->group = UBYTE_MAX;
+    }
 
-	if (grpNumMembers(psCommander->psGroup) < cmdDroidMaxGroup(psCommander))
-	{
-		grpJoin(psCommander->psGroup, psDroid);
-		psDroid->group = UBYTE_MAX;
+    if (grpNumMembers(psCommander->psGroup) < cmdDroidMaxGroup(psCommander))
+    {
+        grpJoin(psCommander->psGroup, psDroid);
+        psDroid->group = UBYTE_MAX;
 
-		// set the secondary states for the unit
-		secondarySetState(psDroid, DSO_ATTACK_RANGE, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_ARANGE_MASK));
-		secondarySetState(psDroid, DSO_REPAIR_LEVEL, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_REPLEV_MASK));
-		secondarySetState(psDroid, DSO_ATTACK_LEVEL, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_ALEV_MASK));
-		secondarySetState(psDroid, DSO_HALTTYPE, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_HALT_MASK));
+        // set the secondary states for the unit
+        secondarySetState(psDroid, DSO_ATTACK_RANGE, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_ARANGE_MASK));
+        secondarySetState(psDroid, DSO_REPAIR_LEVEL, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_REPLEV_MASK));
+        secondarySetState(psDroid, DSO_ATTACK_LEVEL, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_ALEV_MASK));
+        secondarySetState(psDroid, DSO_HALTTYPE, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_HALT_MASK));
 
-		orderDroidObj(psDroid, DORDER_GUARD, (BASE_OBJECT *)psCommander);
-	}
+        orderDroidObj(psDroid, DORDER_GUARD, (BASE_OBJECT *)psCommander);
+    }
 }
 
 // return the current target designator for a player
 DROID *cmdDroidGetDesignator(UDWORD player)
 {
-	return apsCmdDesignator[player];
+    return apsCmdDesignator[player];
 }
 
 // set the current target designator for a player
 void cmdDroidSetDesignator(DROID *psDroid)
 {
-	if (psDroid->droidType != DROID_COMMAND)
-	{
-		return;
-	}
+    if (psDroid->droidType != DROID_COMMAND)
+    {
+        return;
+    }
 
-	apsCmdDesignator[psDroid->player] = psDroid;
+    apsCmdDesignator[psDroid->player] = psDroid;
 }
 
 // set the current target designator for a player
 void cmdDroidClearDesignator(UDWORD player)
 {
-	apsCmdDesignator[player] = NULL;
+    apsCmdDesignator[player] = NULL;
 }
 
 // get the index of the command droid
 SDWORD cmdDroidGetIndex(DROID *psCommander)
 {
-	SDWORD	index = 1;
-	DROID	*psCurr;
+    SDWORD	index = 1;
+    DROID	*psCurr;
 
-	if (psCommander->droidType != DROID_COMMAND)
-	{
-		return 0;
-	}
+    if (psCommander->droidType != DROID_COMMAND)
+    {
+        return 0;
+    }
 
-	for(psCurr=apsDroidLists[psCommander->player]; psCurr; psCurr=psCurr->psNext)
-	{
-		if (psCurr->droidType == DROID_COMMAND &&
-			psCurr->id < psCommander->id)
-		{
-			index += 1;
-		}
-	}
+    for(psCurr=apsDroidLists[psCommander->player]; psCurr; psCurr=psCurr->psNext)
+    {
+        if (psCurr->droidType == DROID_COMMAND &&
+                psCurr->id < psCommander->id)
+        {
+            index += 1;
+        }
+    }
 
-	return index;
+    return index;
 }
 
 
 // note that commander experience should be increased
 void cmdDroidMultiExpBoost(BOOL bDoit)
 {
-	bMultiExpBoost = bDoit;
+    bMultiExpBoost = bDoit;
 }
 
 BOOL cmdGetDroidMultiExpBoost()
 {
-	return bMultiExpBoost;
+    return bMultiExpBoost;
 }
 
 // get the maximum group size for a command droid
-unsigned int cmdDroidMaxGroup(const DROID* psCommander)
+unsigned int cmdDroidMaxGroup(const DROID *psCommander)
 {
-	return getDroidLevel(psCommander) * 2 + MIN_CMD_GROUP_DROIDS;
+    return getDroidLevel(psCommander) * 2 + MIN_CMD_GROUP_DROIDS;
 }
 
 // update the kills of a command droid if psKiller is in a command group
 void cmdDroidUpdateKills(DROID *psKiller, float experienceInc)
 {
-	DROID	*psCommander;
+    DROID	*psCommander;
 
-	ASSERT_OR_RETURN( , psKiller != NULL, "invalid Unit pointer" );
+    ASSERT_OR_RETURN( , psKiller != NULL, "invalid Unit pointer" );
 
-	if (hasCommander(psKiller))
-	{
-		psCommander = psKiller->psGroup->psCommander;
-		if (psCommander->experience + experienceInc > FLT_MAX)
-		{
-			psCommander->experience = FLT_MAX;
-		}
-		else
-		{
-			psCommander->experience += experienceInc;
-		}
-	}
+    if (hasCommander(psKiller))
+    {
+        psCommander = psKiller->psGroup->psCommander;
+        if (psCommander->experience + experienceInc > FLT_MAX)
+        {
+            psCommander->experience = FLT_MAX;
+        }
+        else
+        {
+            psCommander->experience += experienceInc;
+        }
+    }
 }
 
 // returns true if a droid in question is assigned to a commander
-bool hasCommander(const DROID* psDroid)
+bool hasCommander(const DROID *psDroid)
 {
-	ASSERT_OR_RETURN(false, psDroid != NULL, "invalid droid pointer");
+    ASSERT_OR_RETURN(false, psDroid != NULL, "invalid droid pointer");
 
-	if (psDroid->droidType != DROID_COMMAND &&
-		psDroid->psGroup != NULL &&
-	    psDroid->psGroup->type == GT_COMMAND)
-	{
-		return true;
-	}
+    if (psDroid->droidType != DROID_COMMAND &&
+            psDroid->psGroup != NULL &&
+            psDroid->psGroup->type == GT_COMMAND)
+    {
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 // get the level of a droids commander, if any
-unsigned int cmdGetCommanderLevel(const DROID* psDroid)
+unsigned int cmdGetCommanderLevel(const DROID *psDroid)
 {
-	const DROID* psCommander;
+    const DROID *psCommander;
 
-	ASSERT(psDroid != NULL, "invalid droid pointer");
+    ASSERT(psDroid != NULL, "invalid droid pointer");
 
-	// If this droid is not the member of a Commander's group
-	// Return an experience level of 0
-	if (!hasCommander(psDroid))
-	{
-		return 0;
-	}
+    // If this droid is not the member of a Commander's group
+    // Return an experience level of 0
+    if (!hasCommander(psDroid))
+    {
+        return 0;
+    }
 
-	// Retrieve this group's commander
-	psCommander = psDroid->psGroup->psCommander;
+    // Retrieve this group's commander
+    psCommander = psDroid->psGroup->psCommander;
 
-	// Return the experience level of this commander
-	return getDroidLevel(psCommander);
+    // Return the experience level of this commander
+    return getDroidLevel(psCommander);
 }
 
 // Selects all droids for a given commander
 void	cmdSelectSubDroids(DROID *psDroid)
 {
-DROID	*psCurr;
+    DROID	*psCurr;
 
-	for (psCurr = apsDroidLists[selectedPlayer]; psCurr; psCurr = psCurr->psNext)
-	{
-		if( hasCommander(psCurr) )
-		{
-			if(psCurr->psGroup->psCommander == psDroid)
-			{
+    for (psCurr = apsDroidLists[selectedPlayer]; psCurr; psCurr = psCurr->psNext)
+    {
+        if( hasCommander(psCurr) )
+        {
+            if(psCurr->psGroup->psCommander == psDroid)
+            {
 //				psCurr->selected = true;
-				SelectDroid(psCurr);
-			}
-		}
-	}
+                SelectDroid(psCurr);
+            }
+        }
+    }
 }

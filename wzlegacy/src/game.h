@@ -87,33 +87,33 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-	GTYPE_SCENARIO_START,	///< Initial scenario state.
-	GTYPE_SCENARIO_EXPAND,	///< Scenario scroll area expansion.
-	GTYPE_MISSION,		///< Stand alone mission.
-	GTYPE_SAVE_START,	///< User saved game - at the start of a level.
-	GTYPE_SAVE_MIDMISSION,	///< User saved game - in the middle of a level
+    GTYPE_SCENARIO_START,	///< Initial scenario state.
+    GTYPE_SCENARIO_EXPAND,	///< Scenario scroll area expansion.
+    GTYPE_MISSION,		///< Stand alone mission.
+    GTYPE_SAVE_START,	///< User saved game - at the start of a level.
+    GTYPE_SAVE_MIDMISSION,	///< User saved game - in the middle of a level
 } GAME_TYPE;
 
 
 typedef struct _vis_save_header
 {
-	char        aFileType[4];
-	uint32_t    version;
+    char        aFileType[4];
+    uint32_t    version;
 } VIS_SAVEHEADER;
 
 typedef struct _fx_save_header
 {
-	char		aFileType[4];
-	UDWORD		version;
-	UDWORD		entries;
+    char		aFileType[4];
+    UDWORD		version;
+    UDWORD		entries;
 
-}FX_SAVEHEADER;
+} FX_SAVEHEADER;
 
 typedef struct _score_save_header
 {
-	char		aFileType[4];
-	uint32_t    version;
-	uint32_t    entries;	// should always be one for this?
+    char		aFileType[4];
+    uint32_t    version;
+    uint32_t    entries;	// should always be one for this?
 
 } SCORE_SAVEHEADER;
 
@@ -127,7 +127,7 @@ extern BOOL loadGame(const char *pGameToLoad, BOOL keepObjects, BOOL freeMem, BO
 
 /*This just loads up the .gam file to determine which level data to set up - split up
 so can be called in levLoadData when starting a game from a load save game*/
-extern bool loadGameInit(const char* fileName);
+extern bool loadGameInit(const char *fileName);
 
 extern BOOL loadMissionExtras(const char *pGameToLoad, SWORD levelType);
 
@@ -140,7 +140,7 @@ extern BOOL loadTerrainTypeMap(const char *pFileData, UDWORD filesize);
 extern BOOL saveGame(char *aFileName, SDWORD saveType);
 
 // Get the campaign number for loadGameInit game
-extern UDWORD getCampaign(const char* fileName);
+extern UDWORD getCampaign(const char *fileName);
 
 /*calls windows find file tree*/
 extern BOOL getSaveGameName(char *pName);

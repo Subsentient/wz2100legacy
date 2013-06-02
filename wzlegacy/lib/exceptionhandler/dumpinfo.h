@@ -25,23 +25,23 @@ extern "C"
 #endif
 
 #if defined(WZ_OS_WIN)
-typedef HANDLE DumpFileHandle;
+    typedef HANDLE DumpFileHandle;
 #else
-typedef int DumpFileHandle;
+    typedef int DumpFileHandle;
 #endif
 
-extern void dbgDumpHeader(DumpFileHandle file);
+    extern void dbgDumpHeader(DumpFileHandle file);
 
-/** Dump last several debug log calls into given file descriptor.
- *  For exception handler.
- *
- *  @param file file descriptor to write to.
- */
-extern void dbgDumpLog(DumpFileHandle file);
+    /** Dump last several debug log calls into given file descriptor.
+     *  For exception handler.
+     *
+     *  @param file file descriptor to write to.
+     */
+    extern void dbgDumpLog(DumpFileHandle file);
 
-extern void dbgDumpInit(int argc, char* argv[]);
+    extern void dbgDumpInit(int argc, char *argv[]);
 
-extern void addDumpInfo(const char *inbuffer);
+    extern void addDumpInfo(const char *inbuffer);
 
 #if defined(__cplusplus)
 }

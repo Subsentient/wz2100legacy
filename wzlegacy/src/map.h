@@ -29,20 +29,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* The different types of terrain as far as the game is concerned */
 typedef enum _terrain_type
 {
-	TER_SAND,
-	TER_SANDYBRUSH,
-	TER_BAKEDEARTH,
-	TER_GREENMUD,
-	TER_REDBRUSH,
-	TER_PINKROCK,
-	TER_ROAD,
-	TER_WATER,
-	TER_CLIFFFACE,
-	TER_RUBBLE,
-	TER_SHEETICE,
-	TER_SLUSH,
+    TER_SAND,
+    TER_SANDYBRUSH,
+    TER_BAKEDEARTH,
+    TER_GREENMUD,
+    TER_REDBRUSH,
+    TER_PINKROCK,
+    TER_ROAD,
+    TER_WATER,
+    TER_CLIFFFACE,
+    TER_RUBBLE,
+    TER_SHEETICE,
+    TER_SLUSH,
 
-	TER_MAX,
+    TER_MAX,
 } TYPE_OF_TERRAIN;
 
 #define TILESET_ARIZONA 0
@@ -65,13 +65,13 @@ typedef enum _terrain_type
 
 static inline unsigned short TileNumber_tile(unsigned short tilenumber)
 {
-	return tilenumber & TILE_NUMMASK;
+    return tilenumber & TILE_NUMMASK;
 }
 
 
 static inline unsigned short TileNumber_texture(unsigned short tilenumber)
 {
-	return tilenumber & ~TILE_NUMMASK;
+    return tilenumber & ~TILE_NUMMASK;
 }
 
 #define BITS_NOTBLOCKING	0x01	///< Units can drive on this even if there is a structure or feature on it
@@ -84,19 +84,19 @@ static inline unsigned short TileNumber_texture(unsigned short tilenumber)
 /* Information stored with each tile */
 typedef struct _maptile
 {
-	uint8_t			tileInfoBits;
-	uint8_t			tileVisBits;	// COMPRESSED - bit per player
-	UBYTE			height;			// The height at the top left of the tile
-	UBYTE			illumination;	// How bright is this tile?
-	UBYTE			radarIllumination; // Tile Illumination inverted to show proper heights on minimap.
-	UWORD			texture;		// Which graphics texture is on this tile
-	UBYTE			watchers[MAX_PLAYERS];		// player sees through fog of war here with this many objects
-	float			level;
-	BASE_OBJECT		*psObject;		// Any object sitting on the location (e.g. building)
-	PIELIGHT		colour;
-	short			limitedContinent;	/** For land or sea limited propulsion types */
-	short			hoverContinent;		/** For hover type propulsions */
-	uint16_t firecount; // how many fire effects are on this tile?
+    uint8_t			tileInfoBits;
+    uint8_t			tileVisBits;	// COMPRESSED - bit per player
+    UBYTE			height;			// The height at the top left of the tile
+    UBYTE			illumination;	// How bright is this tile?
+    UBYTE			radarIllumination; // Tile Illumination inverted to show proper heights on minimap.
+    UWORD			texture;		// Which graphics texture is on this tile
+    UBYTE			watchers[MAX_PLAYERS];		// player sees through fog of war here with this many objects
+    float			level;
+    BASE_OBJECT		*psObject;		// Any object sitting on the location (e.g. building)
+    PIELIGHT		colour;
+    short			limitedContinent;	/** For land or sea limited propulsion types */
+    short			hoverContinent;		/** For hover type propulsions */
+    uint16_t firecount; // how many fire effects are on this tile?
 
 //	TYPE_OF_TERRAIN	type;			// The terrain type for the tile
 } MAPTILE;
@@ -106,68 +106,68 @@ typedef struct _maptile
  * Check if tile contains a structure or feature. Function is thread-safe,
  * but do not rely on the result if you mean to alter the object pointer.
  */
-static inline bool TileIsOccupied(const MAPTILE* tile)
+static inline bool TileIsOccupied(const MAPTILE *tile)
 {
-	return tile->psObject != NULL;
+    return tile->psObject != NULL;
 }
 
 /** Check if tile contains a structure. Function is NOT thread-safe. */
-static inline bool TileHasStructure(const MAPTILE* tile)
+static inline bool TileHasStructure(const MAPTILE *tile)
 {
-	return TileIsOccupied(tile)
-	    && tile->psObject->type == OBJ_STRUCTURE;
+    return TileIsOccupied(tile)
+           && tile->psObject->type == OBJ_STRUCTURE;
 }
 
 /** Check if tile contains a feature. Function is NOT thread-safe. */
-static inline bool TileHasFeature(const MAPTILE* tile)
+static inline bool TileHasFeature(const MAPTILE *tile)
 {
-	return TileIsOccupied(tile)
-	    && tile->psObject->type == OBJ_FEATURE;
+    return TileIsOccupied(tile)
+           && tile->psObject->type == OBJ_FEATURE;
 }
 
 /** Check if tile contains a wall structure. Function is NOT thread-safe. */
-static inline bool TileHasWall(const MAPTILE* tile)
+static inline bool TileHasWall(const MAPTILE *tile)
 {
-	return TileHasStructure(tile)
-	    && (((STRUCTURE*)tile->psObject)->pStructureType->type == REF_WALL
-	     || ((STRUCTURE*)tile->psObject)->pStructureType->type == REF_WALLCORNER);
+    return TileHasStructure(tile)
+           && (((STRUCTURE *)tile->psObject)->pStructureType->type == REF_WALL
+               || ((STRUCTURE *)tile->psObject)->pStructureType->type == REF_WALLCORNER);
 }
 
 /** Check if tile is burning. */
 static inline bool TileIsBurning(const MAPTILE *tile)
 {
-	return tile->tileInfoBits & BITS_ON_FIRE;
+    return tile->tileInfoBits & BITS_ON_FIRE;
 }
 
 /** Check if tile has been explored. */
 static inline bool tileIsExplored(const MAPTILE *psTile)
 {
-	return psTile->tileInfoBits & BITS_EXPLORED;
+    return psTile->tileInfoBits & BITS_EXPLORED;
 }
 
 /** Check if tile is highlighted by the user. Function is thread-safe. */
-static inline bool TileIsHighlighted(const MAPTILE* tile)
+static inline bool TileIsHighlighted(const MAPTILE *tile)
 {
-	return tile->texture & TILE_HILIGHT;
+    return tile->texture & TILE_HILIGHT;
 }
 
 /** Check if tile is not blocking, even if structure or feature on it */
 static inline bool TileIsNotBlocking(const MAPTILE *tile)
 {
-	return tile->tileInfoBits & BITS_NOTBLOCKING;
+    return tile->tileInfoBits & BITS_NOTBLOCKING;
 }
 
 /** Check if tile contains a tall structure. Function is thread-safe. */
-static inline WZ_DECL_PURE bool TileHasTallStructure(const MAPTILE* tile)
+static inline WZ_DECL_PURE bool TileHasTallStructure(const MAPTILE *tile)
 {
-	return tile->tileInfoBits & BITS_TALLSTRUCTURE;
+    return tile->tileInfoBits & BITS_TALLSTRUCTURE;
 }
 
 /** Check if tile contains a small structure. Function is NOT thread-safe. */
-static inline bool TileHasSmallStructure(const MAPTILE* tile)
+static inline bool TileHasSmallStructure(const MAPTILE *tile)
 {
-	return TileHasStructure(tile)
-	    && ((STRUCTURE*)tile->psObject)->pStructureType->height == 1;
+    return TileHasStructure(tile)
+           && ((STRUCTURE *)tile->psObject)->pStructureType->height == 1;
 }
 
 #define SET_TILE_EXPLORED(x) ((x)->tileInfoBits |= BITS_EXPLORED)
@@ -201,9 +201,9 @@ static inline bool TileHasSmallStructure(const MAPTILE* tile)
 
 extern UBYTE terrainTypes[MAX_TILE_TEXTURES];
 
-static inline unsigned char terrainType(const MAPTILE * tile)
+static inline unsigned char terrainType(const MAPTILE *tile)
 {
-	return terrainTypes[TileNumber_tile(tile->texture)];
+    return terrainTypes[TileNumber_tile(tile->texture)];
 }
 
 
@@ -237,12 +237,12 @@ extern MAPTILE *psMapTiles;
 
 static inline int32_t world_coord(int32_t mapCoord)
 {
-	return mapCoord << TILE_SHIFT;
+    return mapCoord << TILE_SHIFT;
 }
 
 static inline int32_t map_coord(int32_t worldCoord)
 {
-	return worldCoord >> TILE_SHIFT;
+    return worldCoord >> TILE_SHIFT;
 }
 
 /* Make sure world coordinates are inside the map */
@@ -252,13 +252,13 @@ static inline int32_t map_coord(int32_t worldCoord)
  *  \post 1 <= *worldX <= world_coord(mapWidth)-1 and
  *        1 <= *worldy <= world_coord(mapHeight)-1
  */
-static inline void clip_world_offmap(int* worldX, int* worldY)
+static inline void clip_world_offmap(int *worldX, int *worldY)
 {
-	// x,y must be > 0
-	*worldX = MAX(1, *worldX);
-	*worldY = MAX(1, *worldY);
-	*worldX = MIN(world_coord(mapWidth) - 1, *worldX);
-	*worldY = MIN(world_coord(mapHeight) - 1, *worldY);
+    // x,y must be > 0
+    *worldX = MAX(1, *worldX);
+    *worldY = MAX(1, *worldY);
+    *worldX = MIN(world_coord(mapWidth) - 1, *worldX);
+    *worldY = MIN(world_coord(mapHeight) - 1, *worldY);
 }
 
 /* maps a position down to the corner of a tile */
@@ -279,86 +279,86 @@ extern BOOL mapSave(char **ppFileData, UDWORD *pFileSize);
 /* Return a pointer to the tile structure at x,y */
 static inline WZ_DECL_PURE MAPTILE *mapTile(SDWORD x, SDWORD y)
 {
-	// Clamp x and y values to actual ones
-	// Give one tile worth of leeway before asserting, for units/transporters coming in from off-map.
-	ASSERT(x >= -1, "mapTile: x value is too small (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
-	ASSERT(y >= -1, "mapTile: y value is too small (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
-	x = (x < 0 ? 0 : x);
-	y = (y < 0 ? 0 : y);
-	ASSERT(x < mapWidth + 1, "mapTile: x value is too big (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
-	ASSERT(y < mapHeight + 1, "mapTile: y value is too big (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
-	x = (x >= mapWidth ? mapWidth - 1 : x);
-	y = (y >= mapHeight ? mapHeight - 1 : y);
+    // Clamp x and y values to actual ones
+    // Give one tile worth of leeway before asserting, for units/transporters coming in from off-map.
+    ASSERT(x >= -1, "mapTile: x value is too small (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
+    ASSERT(y >= -1, "mapTile: y value is too small (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
+    x = (x < 0 ? 0 : x);
+    y = (y < 0 ? 0 : y);
+    ASSERT(x < mapWidth + 1, "mapTile: x value is too big (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
+    ASSERT(y < mapHeight + 1, "mapTile: y value is too big (%d,%d) in %dx%d",x,y,mapWidth,mapHeight);
+    x = (x >= mapWidth ? mapWidth - 1 : x);
+    y = (y >= mapHeight ? mapHeight - 1 : y);
 
-	return &psMapTiles[x + (y * mapWidth)];
+    return &psMapTiles[x + (y * mapWidth)];
 }
 
 /* Return height of tile at x,y */
 static inline WZ_DECL_PURE SWORD map_TileHeight(UDWORD x, UDWORD y)
 {
-	if ( x >= mapWidth || y >= mapHeight )
-	{
-		return 0;
-	}
-	return (SWORD)(psMapTiles[x + (y * mapWidth)].height * ELEVATION_SCALE);
+    if ( x >= mapWidth || y >= mapHeight )
+    {
+        return 0;
+    }
+    return (SWORD)(psMapTiles[x + (y * mapWidth)].height * ELEVATION_SCALE);
 }
 
 /*sets the tile height */
 static inline void setTileHeight(UDWORD x, UDWORD y, UDWORD height)
 {
-	ASSERT_OR_RETURN( , x < mapWidth, "x coordinate %u bigger than map width %u", x, mapWidth);
-	ASSERT_OR_RETURN( , y < mapHeight, "y coordinate %u bigger than map height %u", y, mapHeight);
+    ASSERT_OR_RETURN( , x < mapWidth, "x coordinate %u bigger than map width %u", x, mapWidth);
+    ASSERT_OR_RETURN( , y < mapHeight, "y coordinate %u bigger than map height %u", y, mapHeight);
 
-	psMapTiles[x + (y * mapWidth)].height = (UBYTE) (height / ELEVATION_SCALE);
+    psMapTiles[x + (y * mapWidth)].height = (UBYTE) (height / ELEVATION_SCALE);
 }
 
 /* Return whether a tile coordinate is on the map */
 static inline BOOL tileOnMap(SDWORD x, SDWORD y)
 {
-	return (x >= 0) && (x < (SDWORD)mapWidth) && (y >= 0) && (y < (SDWORD)mapHeight);
+    return (x >= 0) && (x < (SDWORD)mapWidth) && (y >= 0) && (y < (SDWORD)mapHeight);
 }
 
 /* Return true if a tile is not too near the map edge and not outside of the map */
 static inline BOOL tileInsideBuildRange(SDWORD x, SDWORD y)
 {
-	return (x >= TOO_NEAR_EDGE) && (x < ((SDWORD)mapWidth - TOO_NEAR_EDGE)) &&
-		(y >= TOO_NEAR_EDGE) && (y < ((SDWORD)mapHeight - TOO_NEAR_EDGE));
+    return (x >= TOO_NEAR_EDGE) && (x < ((SDWORD)mapWidth - TOO_NEAR_EDGE)) &&
+           (y >= TOO_NEAR_EDGE) && (y < ((SDWORD)mapHeight - TOO_NEAR_EDGE));
 }
 
 /* Return whether a world coordinate is on the map */
 static inline BOOL worldOnMap(int x, int y)
 {
-	return (x >= 0) && (x < ((SDWORD)mapWidth << TILE_SHIFT)) &&
-		   (y >= 0) && (y < ((SDWORD)mapHeight << TILE_SHIFT));
+    return (x >= 0) && (x < ((SDWORD)mapWidth << TILE_SHIFT)) &&
+           (y >= 0) && (y < ((SDWORD)mapHeight << TILE_SHIFT));
 }
 
 
 /* Return whether a world coordinate is on the map */
 static inline bool worldOnMap2i(Vector2i pos)
 {
-	return worldOnMap(pos.x, pos.y);
+    return worldOnMap(pos.x, pos.y);
 }
 
 
 /* Return whether a world coordinate is on the map */
 static inline bool worldOnMap3i(Vector3i pos)
 {
-	return worldOnMap(pos.x, pos.y);
+    return worldOnMap(pos.x, pos.y);
 }
 
 
 /* Return whether a world coordinate is on the map */
 static inline bool worldOnMap3f(Vector3f pos)
 {
-	return worldOnMap(pos.x, pos.y);
+    return worldOnMap(pos.x, pos.y);
 }
 
 
 /* Store a map coordinate and it's associated tile */
 typedef struct _tile_coord
 {
-	UDWORD	x,y;
-	MAPTILE	*psTile;
+    UDWORD	x,y;
+    MAPTILE	*psTile;
 } TILE_COORD;
 
 /* Return height of x,y */
@@ -373,8 +373,8 @@ extern void getTileMaxMin(UDWORD x, UDWORD y, UDWORD *pMax, UDWORD *pMin);
 
 UDWORD GetHeightOfMap(void);
 UDWORD GetWidthOfMap(void);
-extern bool readVisibilityData(const char* fileName);
-extern bool	writeVisibilityData(const char* fileName);
+extern bool readVisibilityData(const char *fileName);
+extern bool	writeVisibilityData(const char *fileName);
 
 //scroll min and max values
 extern SDWORD		scrollMinX, scrollMaxX, scrollMinY, scrollMaxY;
@@ -387,35 +387,35 @@ extern bool fireOnLocation(unsigned int x, unsigned int y);
 
 /**
  * Transitive sensor check for tile. Has to be here rather than
- * visibility.h due to header include order issues. 
+ * visibility.h due to header include order issues.
  */
 static inline bool hasSensorOnTile(MAPTILE *psTile, int player)
 {
-	int k;
+    int k;
 
-	// if a player has a SAT_UPLINK structure, or has godMode enabled,
-	// they can see everything!
-	if (getSatUplinkExists(player) || (player == selectedPlayer && godMode))
-	{
-		return true;
-	}
+    // if a player has a SAT_UPLINK structure, or has godMode enabled,
+    // they can see everything!
+    if (getSatUplinkExists(player) || (player == selectedPlayer && godMode))
+    {
+        return true;
+    }
 
-	if (psTile->watchers[selectedPlayer] == 0)
-	{
-		if (game.type != CAMPAIGN && game.alliance == ALLIANCES_TEAMS)
-		{
-			// Check if an ally can provide us with vision on this tile
-			for (k = 0;  k < MAX_PLAYERS; k++)
-			{
-				if (aiCheckAlliances(k, selectedPlayer) && (getSatUplinkExists(k) || psTile->watchers[k] > 0))
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	return true;
+    if (psTile->watchers[selectedPlayer] == 0)
+    {
+        if (game.type != CAMPAIGN && game.alliance == ALLIANCES_TEAMS)
+        {
+            // Check if an ally can provide us with vision on this tile
+            for (k = 0;  k < MAX_PLAYERS; k++)
+            {
+                if (aiCheckAlliances(k, selectedPlayer) && (getSatUplinkExists(k) || psTile->watchers[k] > 0))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    return true;
 }
 
 #endif // __INCLUDED_SRC_MAP_H__

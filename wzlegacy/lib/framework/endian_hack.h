@@ -19,69 +19,69 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* Endianness hacks */
 // TODO Use SDL_SwapXXXX instead
 
-static inline void endian_uword(UWORD* uword)
+static inline void endian_uword(UWORD *uword)
 {
 #ifdef __BIG_ENDIAN__
-  UBYTE tmp, *ptr;
+    UBYTE tmp, *ptr;
 
-  ptr = (UBYTE *) uword;
-  tmp = ptr[0];
-  ptr[0] = ptr[1];
-  ptr[1] = tmp;
+    ptr = (UBYTE *) uword;
+    tmp = ptr[0];
+    ptr[0] = ptr[1];
+    ptr[1] = tmp;
 #else
-  // Prevent warnings
-  (void)uword;
+    // Prevent warnings
+    (void)uword;
 #endif
 }
 
-static inline void endian_sword(SWORD* sword)
+static inline void endian_sword(SWORD *sword)
 {
 #ifdef __BIG_ENDIAN__
-  UBYTE tmp, *ptr;
+    UBYTE tmp, *ptr;
 
-  ptr = (UBYTE *) sword;
-  tmp = ptr[0];
-  ptr[0] = ptr[1];
-  ptr[1] = tmp;
+    ptr = (UBYTE *) sword;
+    tmp = ptr[0];
+    ptr[0] = ptr[1];
+    ptr[1] = tmp;
 #else
-  // Prevent warnings
-  (void)sword;
+    // Prevent warnings
+    (void)sword;
 #endif
 }
 
-static inline void endian_udword(UDWORD* udword)
+static inline void endian_udword(UDWORD *udword)
 {
 #ifdef __BIG_ENDIAN__
-  UBYTE tmp, *ptr;
+    UBYTE tmp, *ptr;
 
-  ptr = (UBYTE *) udword;
-  tmp = ptr[0];
-  ptr[0] = ptr[3];
-  ptr[3] = tmp;
-  tmp = ptr[1];
-  ptr[1] = ptr[2];
-  ptr[2] = tmp;
+    ptr = (UBYTE *) udword;
+    tmp = ptr[0];
+    ptr[0] = ptr[3];
+    ptr[3] = tmp;
+    tmp = ptr[1];
+    ptr[1] = ptr[2];
+    ptr[2] = tmp;
 #else
-  // Prevent warnings
-  (void)udword;
+    // Prevent warnings
+    (void)udword;
 #endif
 }
 
-static inline void endian_sdword(SDWORD* sdword)
+static inline void endian_sdword(SDWORD *sdword)
 {
 #ifdef __BIG_ENDIAN__
-  UBYTE tmp, *ptr;
+    UBYTE tmp, *ptr;
 
-  ptr = (UBYTE *) sdword;
-  tmp = ptr[0];
-  ptr[0] = ptr[3];
-  ptr[3] = tmp;
-  tmp = ptr[1];
-  ptr[1] = ptr[2];
-  ptr[2] = tmp;
+    ptr = (UBYTE *) sdword;
+    tmp = ptr[0];
+    ptr[0] = ptr[3];
+    ptr[3] = tmp;
+    tmp = ptr[1];
+    ptr[1] = ptr[2];
+    ptr[2] = tmp;
 #else
-  // Prevent warnings
-  (void)sdword;
+    // Prevent warnings
+    (void)sdword;
 #endif
 }
 

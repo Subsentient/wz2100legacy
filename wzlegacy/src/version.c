@@ -19,18 +19,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 char *GetVersionInfo(void)
 {
-	static char VersionStringOut[2048] = { 0 };
-	const char *FormatSpec = "%s - Version: %s - Compiled on %s";
-	
-	if (!VersionStringOut[0]) /*Don't waste effort doing this twice.*/
-	{
-		snprintf(VersionStringOut, 2000, FormatSpec, PROJECTNAME, VERSIONNUM, __DATE__);
-		#ifdef DEBUG
-		strcat(VersionStringOut, " - DEBUG");
-		#endif
-	}
-	
-	return VersionStringOut;
+    static char VersionStringOut[2048] = { 0 };
+    const char *FormatSpec = "%s - Version: %s - Compiled on %s";
+
+    if (!VersionStringOut[0]) /*Don't waste effort doing this twice.*/
+    {
+        snprintf(VersionStringOut, 2000, FormatSpec, PROJECTNAME, VERSIONNUM, __DATE__);
+#ifdef DEBUG
+        strcat(VersionStringOut, " - DEBUG");
+#endif
+    }
+
+    return VersionStringOut;
 }
-	
+
 

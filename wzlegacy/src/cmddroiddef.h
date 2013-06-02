@@ -28,15 +28,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _command_droid
 {
-	// define the command droid as a COMPONENT so it fits into the design screen
-	STATS_COMPONENT;
+    // define the command droid as a COMPONENT so it fits into the design screen
+    STATS_COMPONENT;
 
-	UDWORD          died;
-	SWORD           aggression;
-	SWORD           survival;
-	SWORD           nWeapStat;
-	UWORD           kills;
-	DROID*          psDroid;
+    UDWORD          died;
+    SWORD           aggression;
+    SWORD           survival;
+    SWORD           nWeapStat;
+    UWORD           kills;
+    DROID          *psDroid;
 } COMMAND_DROID;
 
 #endif // __INCLUDED_CMDDROIDDEF_H__

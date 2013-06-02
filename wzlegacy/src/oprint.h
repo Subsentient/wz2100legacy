@@ -21,6 +21,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define __INCLUDED_SRC_OPRINT_H__
 
 // print out information about a droid and it's components
-extern void printDroidInfo(const DROID* psDroid);
+extern void printDroidInfo(const DROID *psDroid);
 
 #endif // __INCLUDED_SRC_OPRINT_H__

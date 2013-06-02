@@ -17,10 +17,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #ifndef __INCLUDED_SRC_MAIN_H__
 #define __INCLUDED_SRC_MAIN_H__
 
-typedef enum {
-	GS_TITLE_SCREEN,
-	GS_NORMAL,
-	GS_SAVEGAMELOAD
+typedef enum
+{
+    GS_TITLE_SCREEN,
+    GS_NORMAL,
+    GS_SAVEGAMELOAD
 } GS_GAMEMODE;
 
 //flag to indicate when initialisation is complete
@@ -38,15 +39,15 @@ extern char MultiPlayersPath[PATH_MAX];
 
 #define MAX_MODS 100
 
-extern char * global_mods[MAX_MODS];
-extern char * campaign_mods[MAX_MODS];
-extern char * multiplay_mods[MAX_MODS];
+extern char *global_mods[MAX_MODS];
+extern char *campaign_mods[MAX_MODS];
+extern char *multiplay_mods[MAX_MODS];
 
-extern char * override_mods[MAX_MODS];
-extern char * override_mod_list;
+extern char *override_mods[MAX_MODS];
+extern char *override_mod_list;
 extern bool use_override_mods;
 
-void setCurrentMap(char* map, int maxPlayers);
+void setCurrentMap(char *map, int maxPlayers);
 extern char *current_map[3];
 
 #endif // __INCLUDED_SRC_MAIN_H__

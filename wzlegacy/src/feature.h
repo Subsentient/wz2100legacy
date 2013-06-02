@@ -36,7 +36,7 @@ extern BOOL loadFeatureStats(const char *pFeatureData, UDWORD bufferSize);
 extern void featureStatsShutDown(void);
 
 /* Create a feature on the map */
-extern FEATURE * buildFeature(FEATURE_STATS *psStats, UDWORD x, UDWORD y,BOOL FromSave);
+extern FEATURE *buildFeature(FEATURE_STATS *psStats, UDWORD x, UDWORD y,BOOL FromSave);
 
 /* Release the resources associated with a feature */
 extern void featureRelease(FEATURE *psFeature);
@@ -55,7 +55,7 @@ extern SDWORD getFeatureStatFromName(const char *pName);
 
 /*looks around the given droid to see if there is any building
 wreckage to clear*/
-extern FEATURE	* checkForWreckage(DROID *psDroid);
+extern FEATURE	 *checkForWreckage(DROID *psDroid);
 
 extern float featureDamage(FEATURE *psFeature, UDWORD damage, UDWORD weaponClass, UDWORD weaponSubClass, HIT_SIDE impactSide);
 

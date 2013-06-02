@@ -25,14 +25,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _loadsave_mode
 {
-LOAD_FRONTEND,
-LOAD_MISSIONEND,
-SAVE_MISSIONEND,
-LOAD_INGAME,
-SAVE_INGAME,
-LOAD_FORCE,
-SAVE_FORCE
-}LOADSAVE_MODE;
+    LOAD_FRONTEND,
+    LOAD_MISSIONEND,
+    SAVE_MISSIONEND,
+    LOAD_INGAME,
+    SAVE_INGAME,
+    LOAD_FORCE,
+    SAVE_FORCE
+} LOADSAVE_MODE;
 
 /***************************************************************************/
 /*
@@ -68,6 +68,6 @@ BOOL saveInMissionRes(void);
 BOOL saveMidMission(void);
 
 
-extern void deleteSaveGame(char* saveGameName);
+extern void deleteSaveGame(char *saveGameName);
 
 #endif // __INCLUDED_SRC_LOADSAVE_H__

@@ -455,9 +455,9 @@ extern BOOL scrGetGameStatus(void);
 
 typedef enum gamestatus
 {
-	STATUS_ReticuleIsOpen,
-	STATUS_BattleMapViewEnabled,
-	STATUS_DeliveryReposInProgress
+    STATUS_ReticuleIsOpen,
+    STATUS_BattleMapViewEnabled,
+    STATUS_DeliveryReposInProgress
 } GAMESTATUS;
 
 //get the colour number used by a player
@@ -668,9 +668,9 @@ extern UDWORD numPlayerWeapStructsInRange(SDWORD player, SDWORD lookingPlayer, S
 extern UDWORD playerWeapDroidsCostInRange(SDWORD player, SDWORD lookingPlayer, SDWORD range, SDWORD rangeX, SDWORD rangeY, BOOL bVTOLs);
 extern UDWORD playerWeapStructsCostInRange(SDWORD player, SDWORD lookingPlayer, SDWORD range, SDWORD rangeX, SDWORD rangeY, BOOL bFinished);
 extern UDWORD numEnemyObjInRange(SDWORD player, SDWORD range, SDWORD rangeX, SDWORD rangeY, BOOL bVTOLs, BOOL bFinished);
-extern BOOL addBeaconBlip(SDWORD x, SDWORD y, SDWORD forPlayer, SDWORD sender, char * textMsg);
-extern BOOL sendBeaconToPlayer(SDWORD locX, SDWORD locY, SDWORD forPlayer, SDWORD sender, char * beaconMsg);
-extern MESSAGE * findBeaconMsg(UDWORD player, SDWORD sender);
+extern BOOL addBeaconBlip(SDWORD x, SDWORD y, SDWORD forPlayer, SDWORD sender, char *textMsg);
+extern BOOL sendBeaconToPlayer(SDWORD locX, SDWORD locY, SDWORD forPlayer, SDWORD sender, char *beaconMsg);
+extern MESSAGE *findBeaconMsg(UDWORD player, SDWORD sender);
 extern SDWORD getNumRepairedBy(struct DROID *psDroidToCheck, SDWORD player);
 extern BOOL objectInRangeVis(struct BASE_OBJECT *psList, SDWORD x, SDWORD y, SDWORD range, SDWORD lookingPlayer);
 extern SDWORD getPlayerFromString(char *playerName);
@@ -678,7 +678,7 @@ extern BOOL scrExp(void);
 extern BOOL scrSqrt(void);
 extern BOOL scrLog(void);
 
-extern BOOL addBeaconBlip(SDWORD locX, SDWORD locY, SDWORD forPlayer, SDWORD sender, char * textMsg);
+extern BOOL addBeaconBlip(SDWORD locX, SDWORD locY, SDWORD forPlayer, SDWORD sender, char *textMsg);
 extern VIEWDATA *CreateBeaconViewData(SDWORD sender, UDWORD LocX, UDWORD LocY);
 
 extern BOOL scrScavengersActive(void);

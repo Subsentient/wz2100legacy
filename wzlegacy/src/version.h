@@ -28,7 +28,7 @@ extern "C" {
 #define PROJECTURL "http://warzonelegacy.org/"
 #define PROJECTURL_BUGS "http://forums.warzonelegacy.org/"
 
-extern char *GetVersionInfo(void);
+    extern char *GetVersionInfo(void);
 
 #if defined(__cplusplus)
 }

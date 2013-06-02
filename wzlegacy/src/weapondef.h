@@ -22,21 +22,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _weapon
 {
-	/**
-	 * Index into the global @c asWeaponStats array; thus a "reference" of
-	 * some kind to the associated stats.
-	 */
-	unsigned int    nStat;
+    /**
+     * Index into the global @c asWeaponStats array; thus a "reference" of
+     * some kind to the associated stats.
+     */
+    unsigned int    nStat;
 
-	UDWORD          ammo;
+    UDWORD          ammo;
 
-	/**
-	 * @c gameTime when this weapon was last fired.
-	 */
-	UDWORD          lastFired;
-	UDWORD          recoilValue;
-	UWORD		pitch;
-	UWORD		rotation;
+    /**
+     * @c gameTime when this weapon was last fired.
+     */
+    UDWORD          lastFired;
+    UDWORD          recoilValue;
+    UWORD		pitch;
+    UWORD		rotation;
 } WEAPON;
 
 #endif // __INCLUDED_WEAPONDEF_H__

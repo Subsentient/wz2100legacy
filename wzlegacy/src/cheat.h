@@ -17,6 +17,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #ifndef __INCLUDED_SRC_CHEAT_H__
 #define __INCLUDED_SRC_CHEAT_H__
 
-BOOL attemptCheatCode(const char* cheat_name);
+BOOL attemptCheatCode(const char *cheat_name);
 
 #endif // __INCLUDED_SRC_CHEAT_H__

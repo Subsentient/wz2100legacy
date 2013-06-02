@@ -26,7 +26,7 @@ extern BOOL visInitialise(void);
 extern BOOL visTilesPending(BASE_OBJECT *psObj);
 
 /* The terrain revealing ray callback */
-extern bool rayTerrainCallback(Vector3i pos, int dist, void* data);
+extern bool rayTerrainCallback(Vector3i pos, int dist, void *data);
 
 /* Ray callback for scripts */
 extern bool scrRayTerrainCallback(Vector3i pos, int dist, void *data);
@@ -39,13 +39,13 @@ extern void visTilesUpdate(BASE_OBJECT *psObj, RAY_CALLBACK callback);
  * currently droids and structures.
  * psTarget can be any type of BASE_OBJECT (e.g. a tree).
  */
-extern bool visibleObject(const BASE_OBJECT* psViewer, const BASE_OBJECT* psTarget, bool wallsBlock);
+extern bool visibleObject(const BASE_OBJECT *psViewer, const BASE_OBJECT *psTarget, bool wallsBlock);
 
 /** Can shooter hit target with direct fire weapon? */
-bool lineOfFire(const BASE_OBJECT* psViewer, const BASE_OBJECT* psTarget, bool wallsBlock);
+bool lineOfFire(const BASE_OBJECT *psViewer, const BASE_OBJECT *psTarget, bool wallsBlock);
 
 // Find the wall that is blocking LOS to a target (if any)
-extern STRUCTURE* visGetBlockingWall(const BASE_OBJECT* psViewer, const BASE_OBJECT* psTarget);
+extern STRUCTURE *visGetBlockingWall(const BASE_OBJECT *psViewer, const BASE_OBJECT *psTarget);
 
 extern void processVisibility(BASE_OBJECT *psCurr);
 
@@ -63,64 +63,64 @@ extern void scrResetPlayerTileVisibility(SDWORD player);
 // fast test for whether obj2 is in range of obj1
 static inline BOOL visObjInRange(BASE_OBJECT *psObj1, BASE_OBJECT *psObj2, SDWORD range)
 {
-	SDWORD	xdiff,ydiff, distSq, rangeSq;
+    SDWORD	xdiff,ydiff, distSq, rangeSq;
 
-	xdiff = (SDWORD)psObj1->pos.x - (SDWORD)psObj2->pos.x;
-	if (xdiff < 0)
-	{
-		xdiff = -xdiff;
-	}
-	if (xdiff > range)
-	{
-		// too far away, reject
-		return false;
-	}
+    xdiff = (SDWORD)psObj1->pos.x - (SDWORD)psObj2->pos.x;
+    if (xdiff < 0)
+    {
+        xdiff = -xdiff;
+    }
+    if (xdiff > range)
+    {
+        // too far away, reject
+        return false;
+    }
 
-	ydiff = (SDWORD)psObj1->pos.y - (SDWORD)psObj2->pos.y;
-	if (ydiff < 0)
-	{
-		ydiff = -ydiff;
-	}
-	if (ydiff > range)
-	{
-		// too far away, reject
-		return false;
-	}
+    ydiff = (SDWORD)psObj1->pos.y - (SDWORD)psObj2->pos.y;
+    if (ydiff < 0)
+    {
+        ydiff = -ydiff;
+    }
+    if (ydiff > range)
+    {
+        // too far away, reject
+        return false;
+    }
 
-	distSq = xdiff*xdiff + ydiff*ydiff;
-	rangeSq = range*range;
-	if (distSq > rangeSq)
-	{
-		// too far away, reject
-		return false;
-	}
+    distSq = xdiff*xdiff + ydiff*ydiff;
+    rangeSq = range*range;
+    if (distSq > rangeSq)
+    {
+        // too far away, reject
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
-static inline int objSensorRange(const BASE_OBJECT* psObj)
+static inline int objSensorRange(const BASE_OBJECT *psObj)
 {
-	return psObj->sensorRange;
+    return psObj->sensorRange;
 }
 
-static inline int objSensorPower(const BASE_OBJECT* psObj)
+static inline int objSensorPower(const BASE_OBJECT *psObj)
 {
-	return psObj->sensorPower;
+    return psObj->sensorPower;
 }
 
-static inline int objJammerPower(WZ_DECL_UNUSED const BASE_OBJECT* psObj)
+static inline int objJammerPower(WZ_DECL_UNUSED const BASE_OBJECT *psObj)
 {
-	return 0;
+    return 0;
 }
 
-static inline int objJammerRange(WZ_DECL_UNUSED const BASE_OBJECT* psObj)
+static inline int objJammerRange(WZ_DECL_UNUSED const BASE_OBJECT *psObj)
 {
-	return 0;
+    return 0;
 }
 
-static inline int objConcealment(const BASE_OBJECT* psObj)
+static inline int objConcealment(const BASE_OBJECT *psObj)
 {
-	return psObj->ECMMod;
+    return psObj->ECMMod;
 }
 
 #endif // __INCLUDED_SRC_VISIBILITY__

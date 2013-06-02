@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 static const unsigned int max_check_object_recursion = 4;
 
-void checkObject(const BASE_OBJECT* psObject, const char * const location_description, const char * function, const int recurse);
+void checkObject(const BASE_OBJECT *psObject, const char *const location_description, const char *function, const int recurse);
 
 /* assert if object is bad */
 #define CHECK_OBJECT(object) checkObject((object), AT_MACRO, __FUNCTION__, max_check_object_recursion)

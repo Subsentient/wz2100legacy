@@ -60,9 +60,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 //distance that VTOLs can be away from the reArm pad
 #define REARM_DIST			(TILE_UNITS*2)
 
-extern iIMDShape * factoryModuleIMDs[NUM_FACTORY_MODULES][NUM_FACMOD_TYPES];
-extern iIMDShape * researchModuleIMDs[NUM_RESEARCH_MODULES];
-extern iIMDShape * powerModuleIMDs[NUM_POWER_MODULES];
+extern iIMDShape *factoryModuleIMDs[NUM_FACTORY_MODULES][NUM_FACMOD_TYPES];
+extern iIMDShape *researchModuleIMDs[NUM_RESEARCH_MODULES];
+extern iIMDShape *powerModuleIMDs[NUM_POWER_MODULES];
 
 extern PRODUCTION_RUN		asProductionRun[NUM_FACTORY_TYPES][MAX_FACTORY][MAX_PROD_RUN];
 
@@ -93,7 +93,7 @@ extern REARM_UPGRADE		asReArmUpgrade[MAX_PLAYERS];
 
 //used to hold the modifiers cross refd by weapon effect and structureStrength
 extern STRUCTSTRENGTH_MODIFIER		asStructStrengthModifier[WE_NUMEFFECTS][
-													NUM_STRUCT_STRENGTH];
+    NUM_STRUCT_STRENGTH];
 
 extern void handleAbandonedStructures(void);
 
@@ -110,18 +110,18 @@ extern BOOL loadStructureStrengthModifiers(const char *pStrengthModData, UDWORD 
 extern BOOL	structureStatsShutDown(void);
 
 extern float structureDamage(STRUCTURE *psStructure, UDWORD damage,
-                            UDWORD weaponClass, UDWORD weaponSubClass, HIT_SIDE impactSide);
+                             UDWORD weaponClass, UDWORD weaponSubClass, HIT_SIDE impactSide);
 
 /* Set the type of droid for a factory to build */
 extern BOOL structSetManufacture(STRUCTURE *psStruct, DROID_TEMPLATE *psTempl,
-								 UBYTE quantity);
+                                 UBYTE quantity);
 
 //temp test function for creating structures at the start of the game
 extern void createTestStructures(void);
 
 //builds a specified structure at a given location
-extern STRUCTURE* buildStructure(STRUCTURE_STATS* pStructureType, UDWORD x, UDWORD y,
-						  UDWORD player,BOOL FromSave);
+extern STRUCTURE *buildStructure(STRUCTURE_STATS *pStructureType, UDWORD x, UDWORD y,
+                                 UDWORD player,BOOL FromSave);
 /// Create a blueprint structure, with just enough information to render it
 extern STRUCTURE *buildBlueprint(STRUCTURE_STATS *psStats, float x, float y, STRUCT_STATES state);
 /* The main update routine for all Structures */
@@ -140,7 +140,7 @@ BOOL removeStruct(STRUCTURE *psDel, BOOL bDestroy);
 
 //fills the list with Structures that can be built
 extern UDWORD fillStructureList(STRUCTURE_STATS **ppList, UDWORD selectedPlayer,
-						 UDWORD limit);
+                                UDWORD limit);
 /* checks that the location is a valid one to build on and sets the outline colour
 x and y in tile-coords*/
 extern BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
@@ -153,7 +153,7 @@ to and return this as the destination for the droid */
 /*for a structure or feature, find a location along an edge which the droid can get
 to and return this as the destination for the droid*/
 extern BOOL getDroidDestination(BASE_STATS *psPositionStats, UDWORD structX,
-	UDWORD structY, UDWORD * pDroidX, UDWORD *pDroidY);
+                                UDWORD structY, UDWORD *pDroidX, UDWORD *pDroidY);
 /* check along the width of a structure for an empty space */
 extern BOOL checkWidth(UDWORD maxRange, UDWORD x, UDWORD y, UDWORD *pDroidX, UDWORD *pDroidY);
 
@@ -191,7 +191,7 @@ extern void initFactoryNumFlag(void);
 extern void resetFactoryNumFlag(void);
 
 /* get demolish stat */
-extern STRUCTURE_STATS * structGetDemolishStat( void );
+extern STRUCTURE_STATS *structGetDemolishStat( void );
 
 /*find a location near to the factory to start the droid of*/
 extern BOOL placeDroid(STRUCTURE *psStructure, UDWORD *droidX, UDWORD *droidY);
@@ -204,10 +204,10 @@ extern BOOL placeDroid(STRUCTURE *psStructure, UDWORD *droidX, UDWORD *droidY);
 /* is this a lassat structure? */
 static inline BOOL isLasSat(STRUCTURE_STATS *pStructureType)
 {
-	ASSERT_OR_RETURN(false, pStructureType != NULL, "LasSat is invalid?");
+    ASSERT_OR_RETURN(false, pStructureType != NULL, "LasSat is invalid?");
 
-	return (pStructureType->psWeapStat[0]
-	        && pStructureType->psWeapStat[0]->weaponSubClass == WSC_LAS_SAT);
+    return (pStructureType->psWeapStat[0]
+            && pStructureType->psWeapStat[0]->weaponSubClass == WSC_LAS_SAT);
 }
 
 /*sets the flag to indicate a HQ Exists - so draw Radar*/
@@ -240,7 +240,7 @@ extern void assignFactoryCommandDroid(STRUCTURE *psStruct, struct DROID *psComma
 void clearCommandDroidFactory(DROID *psDroid);
 
 /*for a given structure, return a pointer to its module stat */
-extern STRUCTURE_STATS* getModuleStat(const STRUCTURE* psStruct);
+extern STRUCTURE_STATS *getModuleStat(const STRUCTURE *psStruct);
 
 /*called when a Res extractor is destroyed or runs out of power or is disconnected
 adjusts the owning Power Gen so that it can link to a different Res Extractor if one
@@ -271,7 +271,7 @@ extern BOOL validStructResistance(STRUCTURE *psStruct);
 stat type*/
 extern BOOL checkSpecificStructExists(UDWORD structInc, UDWORD player);
 
-extern float getStructureDamage(const STRUCTURE* psStructure);
+extern float getStructureDamage(const STRUCTURE *psStructure);
 
 /*Access functions for the upgradeable stats of a structure*/
 extern UDWORD	structureBody(const STRUCTURE *psStruct);
@@ -296,7 +296,7 @@ extern STRUCTURE	*findDeliveryFactory(FLAG_POSITION *psDelPoint);
 
 /*this is called when a factory produces a droid. The Template returned is the next
 one to build - if any*/
-extern DROID_TEMPLATE * factoryProdUpdate(STRUCTURE *psStructure, DROID_TEMPLATE *psTemplate);
+extern DROID_TEMPLATE *factoryProdUpdate(STRUCTURE *psStructure, DROID_TEMPLATE *psTemplate);
 
 //increment the production run for this type
 extern void factoryProdAdjust(STRUCTURE *psStructure, DROID_TEMPLATE *psTemplate, BOOL add);
@@ -342,24 +342,24 @@ extern BOOL structSensorDroidWeapon(STRUCTURE *psStruct, DROID *psDroid);
 
 /*checks if the structure has a Counter Battery sensor attached - returns
 true if it has*/
-extern BOOL structCBSensor(const STRUCTURE* psStruct);
+extern BOOL structCBSensor(const STRUCTURE *psStruct);
 /*checks if the structure has a Standard Turret sensor attached - returns
 true if it has*/
-extern BOOL structStandardSensor(const STRUCTURE* psStruct);
+extern BOOL structStandardSensor(const STRUCTURE *psStruct);
 
 /*checks if the structure has a VTOL Intercept sensor attached - returns
 true if it has*/
-extern BOOL structVTOLSensor(const STRUCTURE* psStruct);
+extern BOOL structVTOLSensor(const STRUCTURE *psStruct);
 
 /*checks if the structure has a VTOL Counter Battery sensor attached - returns
 true if it has*/
-extern BOOL structVTOLCBSensor(const STRUCTURE* psStruct);
+extern BOOL structVTOLCBSensor(const STRUCTURE *psStruct);
 
 // return the nearest rearm pad
 // if bClear is true it tries to find the nearest clear rearm pad in
 // the same cluster as psTarget
 // psTarget can be NULL
-STRUCTURE *	findNearestReArmPad(DROID *psDroid, STRUCTURE *psTarget, BOOL bClear);
+STRUCTURE 	*findNearestReArmPad(DROID *psDroid, STRUCTURE *psTarget, BOOL bClear);
 
 // check whether a rearm pad is clear
 BOOL clearRearmPad(STRUCTURE *psStruct);
@@ -374,7 +374,7 @@ BOOL vtolOnRearmPad(STRUCTURE *psStruct, DROID *psDroid);
 extern BOOL	structIsDamaged(STRUCTURE *psStruct);
 
 // give a structure from one player to another - used in Electronic Warfare
-extern STRUCTURE * giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, BOOL bFromScript);
+extern STRUCTURE *giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, BOOL bFromScript);
 
 /*Initialise the production list and set up the production player*/
 extern void changeProductionPlayer(UBYTE player);
@@ -390,7 +390,7 @@ all StructureStats parts have been loaded*/
 extern BOOL checkStructureStats(void);
 
 /*returns the power cost to build this structure*/
-extern UDWORD structPowerToBuild(const STRUCTURE* psStruct);
+extern UDWORD structPowerToBuild(const STRUCTURE *psStruct);
 
 extern UDWORD getMaxDroids(UDWORD PlayerNumber);
 
@@ -403,48 +403,48 @@ extern BOOL lasSatStructSelected(STRUCTURE *psStruct);
 
 BOOL structureCheckReferences(STRUCTURE *psVictimStruct);
 
-static inline int structSensorRange(const STRUCTURE* psObj)
+static inline int structSensorRange(const STRUCTURE *psObj)
 {
-	return objSensorRange((const BASE_OBJECT*)psObj);
+    return objSensorRange((const BASE_OBJECT *)psObj);
 }
 
-static inline int structSensorPower(const STRUCTURE* psObj)
+static inline int structSensorPower(const STRUCTURE *psObj)
 {
-	return objSensorPower((const BASE_OBJECT*)psObj);
+    return objSensorPower((const BASE_OBJECT *)psObj);
 }
 
-static inline int structJammerRange(const STRUCTURE* psObj)
+static inline int structJammerRange(const STRUCTURE *psObj)
 {
-	return objJammerRange((const BASE_OBJECT*)psObj);
+    return objJammerRange((const BASE_OBJECT *)psObj);
 }
 
-static inline int structJammerPower(const STRUCTURE* psObj)
+static inline int structJammerPower(const STRUCTURE *psObj)
 {
-	return objJammerPower((const BASE_OBJECT*)psObj);
+    return objJammerPower((const BASE_OBJECT *)psObj);
 }
 
-static inline int structConcealment(const STRUCTURE* psObj)
+static inline int structConcealment(const STRUCTURE *psObj)
 {
-	return objConcealment((const BASE_OBJECT*)psObj);
+    return objConcealment((const BASE_OBJECT *)psObj);
 }
 
 #define setStructureTarget(_psBuilding, _psNewTarget, _idx) _setStructureTarget(_psBuilding, _psNewTarget, _idx, __LINE__, __FUNCTION__)
 static inline void _setStructureTarget(STRUCTURE *psBuilding, BASE_OBJECT *psNewTarget, UWORD idx, int line, const char *func)
 {
-	assert(idx < STRUCT_MAXWEAPS);
-	psBuilding->psTarget[idx] = psNewTarget;
-	ASSERT(psNewTarget == NULL || !psNewTarget->died, "setStructureTarget set dead target");
+    assert(idx < STRUCT_MAXWEAPS);
+    psBuilding->psTarget[idx] = psNewTarget;
+    ASSERT(psNewTarget == NULL || !psNewTarget->died, "setStructureTarget set dead target");
 #ifdef DEBUG
-	psBuilding->targetLine[idx] = line;
-	sstrcpy(psBuilding->targetFunc[idx], func);
+    psBuilding->targetLine[idx] = line;
+    sstrcpy(psBuilding->targetFunc[idx], func);
 #else
-	// Prevent warnings about unused parameters
-	(void)line;
-	(void)func;
+    // Prevent warnings about unused parameters
+    (void)line;
+    (void)func;
 #endif
 }
 
-void checkStructure(const STRUCTURE* psStructure, const char * const location_description, const char * function, const int recurse);
+void checkStructure(const STRUCTURE *psStructure, const char *const location_description, const char *function, const int recurse);
 
 #define CHECK_STRUCTURE(object) checkStructure((object), AT_MACRO, __FUNCTION__, max_check_object_recursion)
 

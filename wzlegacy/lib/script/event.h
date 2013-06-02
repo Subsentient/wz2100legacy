@@ -30,9 +30,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* One chunk of variables for a script context */
 typedef struct _val_chunk
 {
-	INTERP_VAL		asVals[CONTEXT_VALS];
+    INTERP_VAL		asVals[CONTEXT_VALS];
 
-	struct _val_chunk *psNext;
+    struct _val_chunk *psNext;
 } VAL_CHUNK;
 
 
@@ -41,29 +41,29 @@ typedef struct _val_chunk
 /* One chunk of event links for a script context */
 typedef struct _link_chunk
 {
-	SWORD			aLinks[CONTEXT_LINKS];
+    SWORD			aLinks[CONTEXT_LINKS];
 
-	struct _link_chunk *psNext;
+    struct _link_chunk *psNext;
 } LINK_CHUNK;
 
 // Whether a context is released when there are no active triggers for it
 typedef enum _context_release
 {
-	CR_RELEASE,		// release the context
-	CR_NORELEASE,	// do not release the context
+    CR_RELEASE,		// release the context
+    CR_NORELEASE,	// do not release the context
 } CONTEXT_RELEASE;
 
 
 /* The data needed within an object to run a script */
 typedef struct _script_context
 {
-	SCRIPT_CODE		*psCode;		// The actual script to run
-	VAL_CHUNK		*psGlobals;		// The objects copy of the global variables
-	SDWORD			triggerCount;	// Number of currently active triggers
-	CONTEXT_RELEASE		release;		// Whether to release the context when there are no triggers
-	SWORD			id;
+    SCRIPT_CODE		*psCode;		// The actual script to run
+    VAL_CHUNK		*psGlobals;		// The objects copy of the global variables
+    SDWORD			triggerCount;	// Number of currently active triggers
+    CONTEXT_RELEASE		release;		// Whether to release the context when there are no triggers
+    SWORD			id;
 
-	struct _script_context *psNext;
+    struct _script_context *psNext;
 } SCRIPT_CONTEXT;
 
 /*
@@ -73,53 +73,53 @@ typedef struct _script_context
  */
 typedef struct _active_trigger
 {
-	UDWORD				testTime;
-	SCRIPT_CONTEXT		*psContext;
-	SWORD				type;			// enum - TRIGGER_TYPE
-	SWORD				trigger;
-	UWORD				event;
-	UWORD				offset;
-	BOOL				deactivated;	// Whether the trigger is marked for deletion
-	struct _active_trigger *psNext;
+    UDWORD				testTime;
+    SCRIPT_CONTEXT		*psContext;
+    SWORD				type;			// enum - TRIGGER_TYPE
+    SWORD				trigger;
+    UWORD				event;
+    UWORD				offset;
+    BOOL				deactivated;	// Whether the trigger is marked for deletion
+    struct _active_trigger *psNext;
 } ACTIVE_TRIGGER;
 
 // ID numbers for each user type
 typedef enum _scr_user_types
 {
-	ST_INTMESSAGE = VAL_USERTYPESTART,		// Intelligence message ?? (6) - (pointer)
-	ST_BASEOBJECT,							// Base object (pointer)
-	ST_DROID,								// Droid object (pointer)
-	ST_STRUCTURE,							// Structure object (pointer)
-	ST_FEATURE,								// Feature object (pointer)
-	ST_BASESTATS,							// General stats type
-	ST_COMPONENT,							// General component
-	ST_BODY,								// Component types (integer)
-	ST_PROPULSION,					//Propulsion type (integer)
-	ST_ECM,									//ECM type (integer)
-	ST_SENSOR,							//Sensor type (integer)
-	ST_CONSTRUCT,					//Construction type (integer)
-	ST_WEAPON,							//Droid weapon (integer)
-	ST_REPAIR,							//Repair component (integer)
-	ST_BRAIN,
-	ST_TEMPLATE,							// Template object (pointer)
-	ST_STRUCTUREID,							/* A structure ID number (don't really need this since just a number?) - integer*/
-	ST_STRUCTURESTAT,						// structure stat type (integer/pointer offset with asStructureStats as base)
-	ST_FEATURESTAT,							// feature stat type (integer)
-	ST_DROIDID,								// ID of a droid (integer)
-	ST_TEXTSTRING,							// text string for display messages in tutorial (string pointer)
-	ST_SOUND,								//(integer)
-	ST_LEVEL,								// The name of a game level (string pointer)
-	ST_GROUP,								// A group of droids
-	ST_RESEARCH,							// A research topic (pointer)
+    ST_INTMESSAGE = VAL_USERTYPESTART,		// Intelligence message ?? (6) - (pointer)
+    ST_BASEOBJECT,							// Base object (pointer)
+    ST_DROID,								// Droid object (pointer)
+    ST_STRUCTURE,							// Structure object (pointer)
+    ST_FEATURE,								// Feature object (pointer)
+    ST_BASESTATS,							// General stats type
+    ST_COMPONENT,							// General component
+    ST_BODY,								// Component types (integer)
+    ST_PROPULSION,					//Propulsion type (integer)
+    ST_ECM,									//ECM type (integer)
+    ST_SENSOR,							//Sensor type (integer)
+    ST_CONSTRUCT,					//Construction type (integer)
+    ST_WEAPON,							//Droid weapon (integer)
+    ST_REPAIR,							//Repair component (integer)
+    ST_BRAIN,
+    ST_TEMPLATE,							// Template object (pointer)
+    ST_STRUCTUREID,							/* A structure ID number (don't really need this since just a number?) - integer*/
+    ST_STRUCTURESTAT,						// structure stat type (integer/pointer offset with asStructureStats as base)
+    ST_FEATURESTAT,							// feature stat type (integer)
+    ST_DROIDID,								// ID of a droid (integer)
+    ST_TEXTSTRING,							// text string for display messages in tutorial (string pointer)
+    ST_SOUND,								//(integer)
+    ST_LEVEL,								// The name of a game level (string pointer)
+    ST_GROUP,								// A group of droids
+    ST_RESEARCH,							// A research topic (pointer)
 
-	//private types for game code - not for use in script
-	ST_POINTER_O,								//used so we can check for NULL objects etc
-	ST_POINTER_T,								//used so we can check for NULL templates
-	ST_POINTER_S,								// NULL stats
+    //private types for game code - not for use in script
+    ST_POINTER_O,								//used so we can check for NULL objects etc
+    ST_POINTER_T,								//used so we can check for NULL templates
+    ST_POINTER_S,								// NULL stats
 
-	ST_POINTER_STRUCTSTAT,						//for NULLSTRUCTURESTAT
+    ST_POINTER_STRUCTSTAT,						//for NULLSTRUCTURESTAT
 
-	ST_MAXTYPE,									// maximum possible type - should always be last
+    ST_MAXTYPE,									// maximum possible type - should always be last
 } SCR_USER_TYPES;
 
 
@@ -141,11 +141,11 @@ extern void eventShutDown(void);
 
 // add a TR_PAUSE trigger to the event system.
 extern BOOL eventAddPauseTrigger(SCRIPT_CONTEXT *psContext, UDWORD event, UDWORD offset,
-						  UDWORD time);
+                                 UDWORD time);
 
 // Load a trigger into the system from a save game
 extern BOOL eventLoadTrigger(UDWORD time, SCRIPT_CONTEXT *psContext,
-					  SDWORD type, SDWORD trigger, UDWORD event, UDWORD offset);
+                             SDWORD type, SDWORD trigger, UDWORD event, UDWORD offset);
 
 //resets the event timer - updateTime
 extern void eventTimeReset(UDWORD initTime);

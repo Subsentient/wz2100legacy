@@ -27,9 +27,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum packetDirectionEnum
 {
-	PACKET_ENCODE,
-	PACKET_DECODE,
-	PACKET_INVALID
+    PACKET_ENCODE,
+    PACKET_DECODE,
+    PACKET_INVALID
 } PACKETDIR;
 
 void NETbeginEncode(uint8_t type, uint8_t player);
@@ -41,7 +41,7 @@ BOOL NETint16_t(int16_t *ip);
 BOOL NETuint16_t(uint16_t *ip);
 BOOL NETint32_t(int32_t *ip);
 BOOL NETuint32_t(uint32_t *ip);
-BOOL NETfloat(float* fp);
+BOOL NETfloat(float *fp);
 BOOL NETbool(BOOL *bp);
 BOOL NETnull(void);
 BOOL NETstring(char *str, uint16_t maxlen);
@@ -51,19 +51,23 @@ PACKETDIR NETgetPacketDir(void);
 
 #if defined(__cplusplus)
 template <typename EnumT>
-BOOL NETenum(EnumT* enumPtr)
+BOOL NETenum(EnumT *enumPtr)
 {
-	int32_t val;
-	
-	if (NETgetPacketDir() == PACKET_ENCODE)
-		val = *enumPtr;
+    int32_t val;
 
-	const BOOL retVal = NETint32_t(&val);
+    if (NETgetPacketDir() == PACKET_ENCODE)
+    {
+        val = *enumPtr;
+    }
 
-	if (NETgetPacketDir() == PACKET_DECODE)
-		*enumPtr = static_cast<EnumT>(val);
+    const BOOL retVal = NETint32_t(&val);
 
-	return retVal;
+    if (NETgetPacketDir() == PACKET_DECODE)
+    {
+        *enumPtr = static_cast<EnumT>(val);
+    }
+
+    return retVal;
 }
 #else
 // FIXME: Causes tons of warnings: <enumPtr> is used unitialised in this function
@@ -78,7 +82,7 @@ do \
 } while(0)
 #endif
 
-BOOL NETVector3uw(Vector3uw* vp);
+BOOL NETVector3uw(Vector3uw *vp);
 
 /**
  *	Get player who is the source of the current packet.

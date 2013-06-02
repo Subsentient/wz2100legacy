@@ -40,25 +40,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 static inline float fmaxf(float x, float y)
 {
-	/* Any comparison will return false if either of the arguments are NAN */
-	return (x > y || isnan(y) ? x : y);
+    /* Any comparison will return false if either of the arguments are NAN */
+    return (x > y || isnan(y) ? x : y);
 }
 
 
 static inline float fminf(float x, float y)
 {
-	/* Any comparison will return false if either of the arguments are NAN */
-	return (x < y || isnan(y) ? x : y);
+    /* Any comparison will return false if either of the arguments are NAN */
+    return (x < y || isnan(y) ? x : y);
 }
 
 
 static inline int roundf(float x)
 {
-	// Ensure that float truncation results in a proper rounding
-	if (x < 0.0f)
-		return x - 0.5f;
-	else
-		return x + 0.5f;
+    // Ensure that float truncation results in a proper rounding
+    if (x < 0.0f)
+    {
+        return x - 0.5f;
+    }
+    else
+    {
+        return x + 0.5f;
+    }
 }
 
 
@@ -75,33 +79,33 @@ static inline int roundf(float x)
  */
 static double nearbyint(double x)
 {
-	if (ceil(x + 0.5) == floor(x + 0.5))
-	{
-		if ((int)ceil(x) % 2 == 0)
-		{
-			return ceil(x);
-		}
-		else
-		{
-			return floor(x);
-		}
-	}
-	else
-	{
-		return floor(x + 0.5);
-	}
+    if (ceil(x + 0.5) == floor(x + 0.5))
+    {
+        if ((int)ceil(x) % 2 == 0)
+        {
+            return ceil(x);
+        }
+        else
+        {
+            return floor(x);
+        }
+    }
+    else
+    {
+        return floor(x + 0.5);
+    }
 }
 
 
 static inline WZ_DECL_CONST double hypot(double x, double y)
 {
-	return sqrt(x * x + y * y);
+    return sqrt(x * x + y * y);
 }
 
 
 static inline WZ_DECL_CONST float hypotf(float x, float y)
 {
-	return sqrtf(x * x + y * y);
+    return sqrtf(x * x + y * y);
 }
 #endif
 
@@ -113,7 +117,7 @@ static inline WZ_DECL_CONST float hypotf(float x, float y)
  */
 static inline float frandom(void)
 {
-	return (float)rand() / (float)RAND_MAX;
+    return (float)rand() / (float)RAND_MAX;
 }
 
 
@@ -124,7 +128,7 @@ static inline float frandom(void)
  */
 static inline WZ_DECL_CONST float deg2radf(float x)
 {
-	return x * (float)M_PI / 180.0f;
+    return x * (float)M_PI / 180.0f;
 }
 
 
@@ -135,7 +139,7 @@ static inline WZ_DECL_CONST float deg2radf(float x)
  */
 static inline WZ_DECL_CONST float rad2degf(float x)
 {
-	return x / (float)M_PI * 180.0f;
+    return x / (float)M_PI * 180.0f;
 }
 
 
@@ -147,9 +151,15 @@ static inline WZ_DECL_CONST float rad2degf(float x)
  */
 static inline WZ_DECL_CONST int wrap(int x, int max)
 {
-	while(x < 0) x += max;
-	while(x >= max) x -= max;
-	return x;
+    while(x < 0)
+    {
+        x += max;
+    }
+    while(x >= max)
+    {
+        x -= max;
+    }
+    return x;
 }
 
 
@@ -161,9 +171,15 @@ static inline WZ_DECL_CONST int wrap(int x, int max)
  */
 static inline WZ_DECL_CONST float wrapf(float x, float max)
 {
-	while(x < 0.0f) x += max;
-	while(x >= max) x -= max;
-	return x;
+    while(x < 0.0f)
+    {
+        x += max;
+    }
+    while(x >= max)
+    {
+        x -= max;
+    }
+    return x;
 }
 
 
@@ -175,9 +191,15 @@ static inline WZ_DECL_CONST float wrapf(float x, float max)
  */
 static inline WZ_DECL_CONST int clip(int x, int min, int max)
 {
-	if (x < min) return min;
-	if (x > max) return max;
-	return x;
+    if (x < min)
+    {
+        return min;
+    }
+    if (x > max)
+    {
+        return max;
+    }
+    return x;
 }
 
 
@@ -189,9 +211,15 @@ static inline WZ_DECL_CONST int clip(int x, int min, int max)
  */
 static inline WZ_DECL_CONST float clipf(float x, float min, float max)
 {
-	if (x < min) return min;
-	if (x > max) return max;
-	return x;
+    if (x < min)
+    {
+        return min;
+    }
+    if (x > max)
+    {
+        return max;
+    }
+    return x;
 }
 
 #endif // MATH_EXT_H

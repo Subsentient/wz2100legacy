@@ -30,10 +30,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _screen_disp_data
 {
-	iIMDShape	*imd;
-	UDWORD		frameNumber;		// last frame it was drawn
-	UDWORD		screenX,screenY;
-	UDWORD		screenR;
+    iIMDShape	*imd;
+    UDWORD		frameNumber;		// last frame it was drawn
+    UDWORD		screenX,screenY;
+    UDWORD		screenR;
 } SCREEN_DISP_DATA;
 
 #endif // __INCLUDED_DISPLAYDEF_H__

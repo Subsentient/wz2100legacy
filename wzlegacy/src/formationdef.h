@@ -33,43 +33,43 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // (cuts down the memory use over proper pointers)
 typedef struct _f_line
 {
-	SWORD		xoffset,yoffset;	// position relative to center
-	SWORD		dir;				// orientation of line
-	SBYTE		member;				// first member in the 'linked list' of members
+    SWORD		xoffset,yoffset;	// position relative to center
+    SWORD		dir;				// orientation of line
+    SBYTE		member;				// first member in the 'linked list' of members
 } F_LINE;
 
 // information about a formation member
 typedef struct _f_member
 {
-	SBYTE			line;			// which line this member is on
-	SBYTE			next;			// the next member on this line
-	SWORD			dist;			// distance along the line
-	DROID                   *psDroid;               // the member unit
+    SBYTE			line;			// which line this member is on
+    SBYTE			next;			// the next member on this line
+    SWORD			dist;			// distance along the line
+    DROID                   *psDroid;               // the member unit
 } F_MEMBER;
 
 // information about a formation
 typedef struct _formation
 {
-	SWORD		refCount;	// number of units using the formation
+    SWORD		refCount;	// number of units using the formation
 
-	SWORD		size;	// maximum length of the lines
-	SWORD		rankDist;	// seperation between the ranks
-	SWORD		dir;	// direction of the formation
-	SDWORD		x,y;	// position of the front of the formation
+    SWORD		size;	// maximum length of the lines
+    SWORD		rankDist;	// seperation between the ranks
+    SWORD		dir;	// direction of the formation
+    SDWORD		x,y;	// position of the front of the formation
 
-	// the lines that make up a formation
-	F_LINE		asLines[F_MAXLINES];
-	SWORD		numLines;
-	UBYTE		maxRank;
+    // the lines that make up a formation
+    F_LINE		asLines[F_MAXLINES];
+    SWORD		numLines;
+    UBYTE		maxRank;
 
-	// the units that have a position allocated in the formation
-	SBYTE		free;
-	F_MEMBER	asMembers[F_MAXMEMBERS];
+    // the units that have a position allocated in the formation
+    SBYTE		free;
+    F_MEMBER	asMembers[F_MAXMEMBERS];
 
-	// formation speed (currently speed of slowest member) - GJ - sorry.
-	UDWORD		iSpeed;
+    // formation speed (currently speed of slowest member) - GJ - sorry.
+    UDWORD		iSpeed;
 
-	struct _formation	*psNext;
+    struct _formation	*psNext;
 } FORMATION;
 
 #endif // __INCLUDED_FORMATIONDEF_H__

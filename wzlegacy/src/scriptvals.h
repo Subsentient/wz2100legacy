@@ -28,31 +28,31 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // The possible types of initialisation values
 typedef enum _init_type
 {
-	IT_BOOL,
-	IT_INDEX,
-	IT_STRING,
+    IT_BOOL,
+    IT_INDEX,
+    IT_STRING,
 } INIT_TYPE;
 
 
 // All the possible values that may be used to initialise a variable
 typedef struct _var_init
 {
-	INIT_TYPE	type;
-	SDWORD		index;
-	char		*pString;
+    INIT_TYPE	type;
+    SDWORD		index;
+    char		*pString;
 } VAR_INIT;
 
 
 // store array access data
 typedef struct _array_indexes
 {
-	SDWORD		dimensions;
-	SDWORD		elements[VAR_MAX_DIMENSIONS];
+    SDWORD		dimensions;
+    SDWORD		elements[VAR_MAX_DIMENSIONS];
 } ARRAY_INDEXES;
 
 /* A simple error reporting routine */
 
-extern void scrv_error(const char* fmt, ...) WZ_DECL_FORMAT(printf, 1, 2);
+extern void scrv_error(const char *fmt, ...) WZ_DECL_FORMAT(printf, 1, 2);
 
 // Lookup a type
 extern BOOL scrvLookUpType(const char *pIdent, INTERP_TYPE *pType);
@@ -66,8 +66,8 @@ extern BOOL scrvLookUpArray(const char *pIdent, UDWORD *pIndex);
 // Whether the script is run immediately or stored for later use
 typedef enum _scrv_type
 {
-	SCRV_EXEC,
-	SCRV_NOEXEC,
+    SCRV_EXEC,
+    SCRV_NOEXEC,
 } SCRV_TYPE;
 
 // Add a new context to the list
@@ -101,7 +101,7 @@ extern void scrvShutDown(void);
 extern void scrvReset(void);
 
 // Load a script value file
-extern BOOL scrvLoad(PHYSFS_file* fileHandle);
+extern BOOL scrvLoad(PHYSFS_file *fileHandle);
 
 // Link any object types to the actual pointer values
 //extern BOOL scrvLinkValues(void);

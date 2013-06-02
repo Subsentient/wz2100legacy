@@ -42,9 +42,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-	ANIM_2D,
-	ANIM_3D_FRAMES,
-	ANIM_3D_TRANS
+    ANIM_2D,
+    ANIM_3D_FRAMES,
+    ANIM_3D_TRANS
 } ANIM_MODE;
 
 /***************************************************************************/
@@ -74,22 +74,22 @@ struct BASEANIM;
 
 typedef struct ANIM_STATE
 {
-	UWORD				uwFrame;		/* frame to play           */
-	Vector3i			vecPos;
-	Vector3i			vecAngle;
-	Vector3i			vecScale;
+    UWORD				uwFrame;		/* frame to play           */
+    Vector3i			vecPos;
+    Vector3i			vecAngle;
+    Vector3i			vecScale;
 }
 ANIM_STATE;
 
 typedef struct BASEANIM
 {
-	ANIM_BASE_ELEMENTS
+    ANIM_BASE_ELEMENTS
 }
 BASEANIM;
 
 typedef struct ANIM3D
 {
-	ANIM_3D_ELEMENTS
+    ANIM_3D_ELEMENTS
 }
 ANIM3D;
 
@@ -97,20 +97,20 @@ ANIM3D;
 
 BOOL		anim_Init(void);
 BOOL		anim_Shutdown(void);
-BASEANIM *	anim_LoadFromBuffer(char *pBuffer, UDWORD size);
-BASEANIM *	anim_LoadFromFile(PHYSFS_file* fileHandle);
+BASEANIM 	*anim_LoadFromBuffer(char *pBuffer, UDWORD size);
+BASEANIM 	*anim_LoadFromFile(PHYSFS_file *fileHandle);
 void		anim_ReleaseAnim(BASEANIM *psAnim);
 BOOL		anim_Create3D(char szPieFileName[], UWORD uwFrames, UWORD uwFrameRate, UWORD uwObj,
-		              ANIM_MODE ubType, UWORD uwID);
+                          ANIM_MODE ubType, UWORD uwID);
 void		anim_BeginScript(void);
 BOOL		anim_EndScript(void);
 BOOL		anim_AddFrameToAnim(int iFrame, Vector3i vecPos, Vector3i vecRot, Vector3i vecScale);
-BASEANIM *	anim_GetAnim(UWORD uwAnimID);
+BASEANIM 	*anim_GetAnim(UWORD uwAnimID);
 UWORD		anim_GetAnimID(char *szName);
-iIMDShape *	anim_GetShapeFromID(UWORD uwID);
+iIMDShape 	*anim_GetShapeFromID(UWORD uwID);
 UWORD		anim_GetFrame3D(ANIM3D *psAnim, UWORD uwObj, UDWORD udwGameTime, UDWORD udwStartTime,
-		                UDWORD udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot,
-		                Vector3i *psVecScale);
+                            UDWORD udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot,
+                            Vector3i *psVecScale);
 void		anim_SetVals(char szFileName[], UWORD uwAnimID);
 
 /***************************************************************************/

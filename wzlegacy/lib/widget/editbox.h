@@ -35,27 +35,27 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _w_editbox
 {
-	/* The common widget data */
-	WIDGET_BASE;
+    /* The common widget data */
+    WIDGET_BASE;
 
-	UDWORD		state;						// The current edit box state
-	utf_32_char	*aText;			// The text in the edit box
-	size_t		aTextAllocated;		// Allocated bytes.
-	enum iV_fonts FontID;
-	int 		blinkOffset;		// Cursor should be visible at time blinkOffset.
-	UWORD		insPos;						// The insertion point in the buffer
-	UWORD		printStart;					// Where in the string appears at the far left of the box
-	UWORD		printChars;					// The number of characters appearing in the box
-	UWORD		printWidth;					// The pixel width of the characters in the box
-	WIDGET_DISPLAY	pBoxDisplay;			// Optional callback to display the edit box background.
-	FONT_DISPLAY pFontDisplay;				// Optional callback to display a string.
-	SWORD HilightAudioID;					// Audio ID for form clicked sound
-	SWORD ClickedAudioID;					// Audio ID for form hilighted sound
-	WIDGET_AUDIOCALLBACK AudioCallback;		// Pointer to audio callback function
+    UDWORD		state;						// The current edit box state
+    utf_32_char	*aText;			// The text in the edit box
+    size_t		aTextAllocated;		// Allocated bytes.
+    enum iV_fonts FontID;
+    int 		blinkOffset;		// Cursor should be visible at time blinkOffset.
+    UWORD		insPos;						// The insertion point in the buffer
+    UWORD		printStart;					// Where in the string appears at the far left of the box
+    UWORD		printChars;					// The number of characters appearing in the box
+    UWORD		printWidth;					// The pixel width of the characters in the box
+    WIDGET_DISPLAY	pBoxDisplay;			// Optional callback to display the edit box background.
+    FONT_DISPLAY pFontDisplay;				// Optional callback to display a string.
+    SWORD HilightAudioID;					// Audio ID for form clicked sound
+    SWORD ClickedAudioID;					// Audio ID for form hilighted sound
+    WIDGET_AUDIOCALLBACK AudioCallback;		// Pointer to audio callback function
 } W_EDITBOX;
 
 /* Create an edit box widget data structure */
-extern W_EDITBOX* editBoxCreate(const W_EDBINIT* psInit);
+extern W_EDITBOX *editBoxCreate(const W_EDBINIT *psInit);
 
 /* Free the memory used by an edit box */
 extern void editBoxFree(W_EDITBOX *psWidget);
@@ -67,7 +67,7 @@ extern void editBoxInitialise(W_EDITBOX *psWidget);
 extern void editBoxSetString(W_EDITBOX *psWidget, const char *pText);
 
 /* Respond to loss of focus */
-extern void editBoxFocusLost(W_SCREEN* psScreen, W_EDITBOX *psWidget);
+extern void editBoxFocusLost(W_SCREEN *psScreen, W_EDITBOX *psWidget);
 
 /* Run an edit box widget */
 extern void editBoxRun(W_EDITBOX *psWidget, W_CONTEXT *psContext);

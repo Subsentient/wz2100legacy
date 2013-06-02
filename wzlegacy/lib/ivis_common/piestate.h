@@ -38,60 +38,60 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /***************************************************************************/
 
 typedef	enum	REND_MODE
-				{
-					REND_GOURAUD_TEX,
-					REND_ALPHA_TEX,
-					REND_ADDITIVE_TEX,
-					REND_FLAT,
-					REND_ALPHA_FLAT,
-					REND_ALPHA_ITERATED
-				}
-				REND_MODE;
+{
+    REND_GOURAUD_TEX,
+    REND_ALPHA_TEX,
+    REND_ADDITIVE_TEX,
+    REND_FLAT,
+    REND_ALPHA_FLAT,
+    REND_ALPHA_ITERATED
+}
+REND_MODE;
 
 typedef	enum	DEPTH_MODE
-				{
-					DEPTH_CMP_LEQ_WRT_ON,
-					DEPTH_CMP_ALWAYS_WRT_ON,
-					DEPTH_CMP_LEQ_WRT_OFF,
-					DEPTH_CMP_ALWAYS_WRT_OFF
-				}
-				DEPTH_MODE;
+{
+    DEPTH_CMP_LEQ_WRT_ON,
+    DEPTH_CMP_ALWAYS_WRT_ON,
+    DEPTH_CMP_LEQ_WRT_OFF,
+    DEPTH_CMP_ALWAYS_WRT_OFF
+}
+DEPTH_MODE;
 
 typedef	enum	TRANSLUCENCY_MODE
-				{
-					TRANS_DECAL,
-					TRANS_DECAL_FOG,
-					TRANS_FILTER,
-					TRANS_ALPHA,
-					TRANS_ADDITIVE
-				}
-				TRANSLUCENCY_MODE;
+{
+    TRANS_DECAL,
+    TRANS_DECAL_FOG,
+    TRANS_FILTER,
+    TRANS_ALPHA,
+    TRANS_ADDITIVE
+}
+TRANSLUCENCY_MODE;
 
 typedef	enum	COLOUR_MODE
-				{
-					COLOUR_FLAT_CONSTANT,
-					COLOUR_FLAT_ITERATED,
-					COLOUR_TEX_ITERATED,
-					COLOUR_TEX_CONSTANT
-				}
-				COLOUR_MODE;
+{
+    COLOUR_FLAT_CONSTANT,
+    COLOUR_FLAT_ITERATED,
+    COLOUR_TEX_ITERATED,
+    COLOUR_TEX_CONSTANT
+}
+COLOUR_MODE;
 
 typedef struct	RENDER_STATE
-				{
-					BOOL				fogEnabled;
-					BOOL				fog;
-					PIELIGHT			fogColour;
-					SDWORD				texPage;
-					REND_MODE			rendMode;
-					BOOL				keyingOn;
-					TRANSLUCENCY_MODE	transMode;
-				}
-				RENDER_STATE;
+{
+    BOOL				fogEnabled;
+    BOOL				fog;
+    PIELIGHT			fogColour;
+    SDWORD				texPage;
+    REND_MODE			rendMode;
+    BOOL				keyingOn;
+    TRANSLUCENCY_MODE	transMode;
+}
+RENDER_STATE;
 
 typedef enum
 {
-	TEXPAGE_NONE = -1,
-	TEXPAGE_FONT = -2
+    TEXPAGE_NONE = -1,
+    TEXPAGE_FONT = -2
 } TEXPAGE_TYPE;
 
 /***************************************************************************/
@@ -124,7 +124,7 @@ extern void pie_SetTexturePage(SDWORD num);
 extern void pie_SetAlphaTest(BOOL keyingOn);
 extern void pie_SetRendMode(REND_MODE rendMode);
 
-extern void pie_InitColourMouse(IMAGEFILE* img, const uint16_t cursorIDs[CURSOR_MAX]);
+extern void pie_InitColourMouse(IMAGEFILE *img, const uint16_t cursorIDs[CURSOR_MAX]);
 extern void pie_SetMouse(CURSOR cursor, bool coloured);
 extern void pie_DrawMouse(unsigned int X, unsigned int Y);
 extern void pie_ShowMouse(bool visible);

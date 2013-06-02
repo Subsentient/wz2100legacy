@@ -37,56 +37,56 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _landing_zone
 {
-	uint8_t x1;
-	uint8_t y1;
-	uint8_t x2;
-	uint8_t y2;
+    uint8_t x1;
+    uint8_t y1;
+    uint8_t x2;
+    uint8_t y2;
 } LANDING_ZONE;
 
 //storage structure for values that need to be kept between missions
 typedef struct _mission
 {
-	//MISSION_TYPE		type;							//defines which start and end functions to use
-	UDWORD				type;							//defines which start and end functions to use - see levels_type in levels.h
-	MAPTILE				*psMapTiles;					//the original mapTiles
-	UDWORD				mapWidth;						//the original mapWidth
-	UDWORD				mapHeight;						//the original mapHeight
-	struct _gateway		*psGateways;					//the gateway list
-	UBYTE				**apRLEZones;					//the RLE map zones
-	SDWORD				gwNumZones;						//the number of map zones
-	UBYTE				*aNumEquiv;						//zone equivalence data
-	UBYTE				**apEquivZones;
-	UBYTE				*aZoneReachable;
-	UDWORD				scrollMinX;						//scroll coords for original map
-	UDWORD				scrollMinY;
-	UDWORD				scrollMaxX;
-	UDWORD				scrollMaxY;
-	STRUCTURE					*apsStructLists[MAX_PLAYERS];	//original object lists
-	DROID						*apsDroidLists[MAX_PLAYERS];
-	FEATURE						*apsFeatureLists[MAX_PLAYERS];
-	BASE_OBJECT			*apsSensorList[1];
-	//struct _proximity_display	*apsProxDisp[MAX_PLAYERS];
-	FLAG_POSITION				*apsFlagPosLists[MAX_PLAYERS];
-	PLAYER_POWER				asPower[MAX_PLAYERS];
+    //MISSION_TYPE		type;							//defines which start and end functions to use
+    UDWORD				type;							//defines which start and end functions to use - see levels_type in levels.h
+    MAPTILE				*psMapTiles;					//the original mapTiles
+    UDWORD				mapWidth;						//the original mapWidth
+    UDWORD				mapHeight;						//the original mapHeight
+    struct _gateway		*psGateways;					//the gateway list
+    UBYTE				**apRLEZones;					//the RLE map zones
+    SDWORD				gwNumZones;						//the number of map zones
+    UBYTE				*aNumEquiv;						//zone equivalence data
+    UBYTE				**apEquivZones;
+    UBYTE				*aZoneReachable;
+    UDWORD				scrollMinX;						//scroll coords for original map
+    UDWORD				scrollMinY;
+    UDWORD				scrollMaxX;
+    UDWORD				scrollMaxY;
+    STRUCTURE					*apsStructLists[MAX_PLAYERS];	//original object lists
+    DROID						*apsDroidLists[MAX_PLAYERS];
+    FEATURE						*apsFeatureLists[MAX_PLAYERS];
+    BASE_OBJECT			*apsSensorList[1];
+    //struct _proximity_display	*apsProxDisp[MAX_PLAYERS];
+    FLAG_POSITION				*apsFlagPosLists[MAX_PLAYERS];
+    PLAYER_POWER				asPower[MAX_PLAYERS];
 
-	UDWORD				startTime;			//time the mission started
-	SDWORD				time;				//how long the mission can last
-											// < 0 = no limit
-	SDWORD				ETA;				//time taken for reinforcements to arrive
-											// < 0 = none allowed
-   	UDWORD				cheatTime;			//time the cheating started (mission time-wise!)
+    UDWORD				startTime;			//time the mission started
+    SDWORD				time;				//how long the mission can last
+    // < 0 = no limit
+    SDWORD				ETA;				//time taken for reinforcements to arrive
+    // < 0 = none allowed
+    UDWORD				cheatTime;			//time the cheating started (mission time-wise!)
 
-	//LANDING_ZONE		homeLZ;
+    //LANDING_ZONE		homeLZ;
     UWORD               homeLZ_X;           //selectedPlayer's LZ x and y
     UWORD               homeLZ_Y;
-	SDWORD				playerX;			//original view position
-	SDWORD				playerY;
+    SDWORD				playerX;			//original view position
+    SDWORD				playerY;
 
-	/* transporter entry/exit tiles */
-	UWORD				iTranspEntryTileX[MAX_PLAYERS];
-	UWORD				iTranspEntryTileY[MAX_PLAYERS];
-	UWORD				iTranspExitTileX[MAX_PLAYERS];
-	UWORD				iTranspExitTileY[MAX_PLAYERS];
+    /* transporter entry/exit tiles */
+    UWORD				iTranspEntryTileX[MAX_PLAYERS];
+    UWORD				iTranspEntryTileY[MAX_PLAYERS];
+    UWORD				iTranspExitTileX[MAX_PLAYERS];
+    UWORD				iTranspExitTileY[MAX_PLAYERS];
 
 } MISSION;
 

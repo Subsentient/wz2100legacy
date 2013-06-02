@@ -29,17 +29,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _object_type
 {
-	OBJ_DROID,      ///< Droids
-	OBJ_STRUCTURE,  ///< All Buildings
-	OBJ_FEATURE,    ///< Things like roads, trees, bridges, fires
-	OBJ_PROJECTILE, ///< Comes out of guns, stupid :-)
-	OBJ_TARGET,     ///< for the camera tracking
-	OBJ_NUM_TYPES,  ///< number of object types - MUST BE LAST
+    OBJ_DROID,      ///< Droids
+    OBJ_STRUCTURE,  ///< All Buildings
+    OBJ_FEATURE,    ///< Things like roads, trees, bridges, fires
+    OBJ_PROJECTILE, ///< Comes out of guns, stupid :-)
+    OBJ_TARGET,     ///< for the camera tracking
+    OBJ_NUM_TYPES,  ///< number of object types - MUST BE LAST
 } OBJECT_TYPE;
 
 typedef struct _tilePos
 {
-	UBYTE x, y;
+    UBYTE x, y;
 } TILEPOS;
 
 /*
@@ -95,25 +95,25 @@ typedef struct _tilePos
 
 typedef struct BASE_OBJECT
 {
-	BASE_ELEMENTS( struct BASE_OBJECT );
+    BASE_ELEMENTS( struct BASE_OBJECT );
 } WZ_DECL_MAY_ALIAS BASE_OBJECT;
 
 typedef struct SIMPLE_OBJECT
 {
-	SIMPLE_ELEMENTS( struct SIMPLE_OBJECT );
+    SIMPLE_ELEMENTS( struct SIMPLE_OBJECT );
 } SIMPLE_OBJECT;
 
-static inline bool isDead(const BASE_OBJECT* psObj)
+static inline bool isDead(const BASE_OBJECT *psObj)
 {
-	// See objmem.c for comments on the NOT_CURRENT_LIST hack
-	return (psObj->died > NOT_CURRENT_LIST);
+    // See objmem.c for comments on the NOT_CURRENT_LIST hack
+    return (psObj->died > NOT_CURRENT_LIST);
 }
 
 static inline int objPosDiffSq(Vector3uw pos1, Vector3uw pos2)
 {
-	const int xdiff = pos1.x - pos2.x;
-	const int ydiff = pos1.y - pos2.y;
-	return (xdiff * xdiff + ydiff * ydiff);
+    const int xdiff = pos1.x - pos2.x;
+    const int ydiff = pos1.y - pos2.y;
+    return (xdiff * xdiff + ydiff * ydiff);
 }
 
 // Must be #included __AFTER__ the definition of BASE_OBJECT

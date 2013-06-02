@@ -51,7 +51,7 @@ extern UDWORD selectedPlayer;
  *  @return true when the framework library is successfully initialised, false
  *          when a part of the initialisation failed.
  */
-extern bool frameInitialise(const char* pWindowName, UDWORD width, UDWORD height, UDWORD bitDepth, bool fullScreen, bool vsync);
+extern bool frameInitialise(const char *pWindowName, UDWORD width, UDWORD height, UDWORD bitDepth, bool fullScreen, bool vsync);
 
 extern bool selfTest;
 
@@ -63,8 +63,8 @@ extern void frameShutDown(void);
 
 typedef enum _focus_state
 {
-	FOCUS_OUT,		// Window does not have the focus
-	FOCUS_IN,		// Window has got the focus
+    FOCUS_OUT,		// Window does not have the focus
+    FOCUS_IN,		// Window has got the focus
 } FOCUS_STATE;
 
 /*!
@@ -101,12 +101,12 @@ extern UDWORD HashStringIgnoreCase( const char *String );
 # include <winsock2.h> /* for struct timeval */
 
 struct timezone;
-extern int gettimeofday(struct timeval* tv, struct timezone* tz);
+extern int gettimeofday(struct timeval *tv, struct timezone *tz);
 #endif
 
-static inline WZ_DECL_CONST const char * bool2string(bool var)
+static inline WZ_DECL_CONST const char *bool2string(bool var)
 {
-	return (var ? "true" : "false");
+    return (var ? "true" : "false");
 }
 
 #endif

@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "stringdef.h"
 
 // requester
-extern void		addMultiRequest(const char* searchDir, const char* fileExtension, UDWORD id,UBYTE mapCam, UBYTE numPlayers);
+extern void		addMultiRequest(const char *searchDir, const char *fileExtension, UDWORD id,UBYTE mapCam, UBYTE numPlayers);
 extern BOOL		multiRequestUp;
 extern W_SCREEN *psRScreen;			// requester stuff.
 extern BOOL		runMultiRequester(UDWORD id,UDWORD *contextmode, char *chosen,UDWORD *chosenValue, short *isHoverPreview);

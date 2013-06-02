@@ -19,6 +19,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include <physfs.h>
 
-extern bool ParseResourceFile(PHYSFS_file* fileHandle);
+extern bool ParseResourceFile(PHYSFS_file *fileHandle);
 
 #endif	/* _PARSER_H_ */

@@ -39,9 +39,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* The tool tip state */
 static enum _tip_state
 {
-	TIP_NONE,			// No tip, and no button hilited
-	TIP_WAIT,			// A button is hilited, but not yet ready to show the tip
-	TIP_ACTIVE,			// A tip is being displayed
+    TIP_NONE,			// No tip, and no button hilited
+    TIP_WAIT,			// A button is hilited, but not yet ready to show the tip
+    TIP_ACTIVE,			// A tip is being displayed
 } tipState;
 
 
@@ -59,14 +59,14 @@ static PIELIGHT TipColour;
 /* Initialise the tool tip module */
 void tipInitialise(void)
 {
-	tipState = TIP_NONE;
-	TipColour = WZCOL_WHITE;
+    tipState = TIP_NONE;
+    TipColour = WZCOL_WHITE;
 }
 
 // Set the global toop tip text colour.
 void widgSetTipColour(PIELIGHT colour)
 {
-	TipColour = colour;
+    TipColour = colour;
 }
 
 /*
@@ -81,25 +81,27 @@ void widgSetTipColour(PIELIGHT colour)
  * tip by.
  */
 void tipStart(WIDGET *psSource, const char *pNewTip, enum iV_fonts NewFontID,
-					 PIELIGHT *pNewColours, SDWORD x, SDWORD y, UDWORD width, UDWORD height)
+              PIELIGHT *pNewColours, SDWORD x, SDWORD y, UDWORD width, UDWORD height)
 {
-	ASSERT( psSource != NULL,
-		"tipStart: Invalid widget pointer" );
+    ASSERT( psSource != NULL,
+            "tipStart: Invalid widget pointer" );
 //	ASSERT( pNewTip != NULL,
 //		"tipStart: Invalid tip pointer" );
-	ASSERT( pNewColours != NULL,
-		"tipStart: Invalid colours pointer" );
+    ASSERT( pNewColours != NULL,
+            "tipStart: Invalid colours pointer" );
 
-	tipState = TIP_WAIT;
-	startTime = SDL_GetTicks();
-	mx = mouseX();
-	my = mouseY();
-	wx = x; wy = y;
-	ww = width; wh = height;
-	pTip = pNewTip;
-	psWidget = psSource;
-	FontID = NewFontID;
-	pColours = pNewColours;
+    tipState = TIP_WAIT;
+    startTime = SDL_GetTicks();
+    mx = mouseX();
+    my = mouseY();
+    wx = x;
+    wy = y;
+    ww = width;
+    wh = height;
+    pTip = pNewTip;
+    psWidget = psSource;
+    FontID = NewFontID;
+    pColours = pNewColours;
 }
 
 
@@ -108,13 +110,13 @@ void tipStart(WIDGET *psSource, const char *pNewTip, enum iV_fonts NewFontID,
  */
 void tipStop(WIDGET *psSource)
 {
-	ASSERT( psSource != NULL,
-		"tipStop: Invalid widget pointer" );
+    ASSERT( psSource != NULL,
+            "tipStop: Invalid widget pointer" );
 
-	if (tipState != TIP_NONE && psSource == psWidget)
-	{
-		tipState = TIP_NONE;
-	}
+    if (tipState != TIP_NONE && psSource == psWidget)
+    {
+        tipState = TIP_NONE;
+    }
 }
 
 
@@ -125,77 +127,77 @@ void tipStop(WIDGET *psSource)
 /* Update and possibly display the tip */
 void tipDisplay(void)
 {
-	SDWORD		newMX,newMY;
-	SDWORD		currTime;
-	SDWORD		fw, topGap;
+    SDWORD		newMX,newMY;
+    SDWORD		currTime;
+    SDWORD		fw, topGap;
 //	UDWORD		time;
 
-	switch (tipState)
-	{
-	case TIP_WAIT:
-		/* See if the tip has to be shown */
-		newMX = mouseX();
-		newMY = mouseY();
-		currTime = SDL_GetTicks();
-		if (newMX == mx &&
-			newMY == my &&
-			(currTime - startTime > TIP_PAUSE))
-		{
-			/* Activate the tip */
-			tipState = TIP_ACTIVE;
+    switch (tipState)
+    {
+        case TIP_WAIT:
+            /* See if the tip has to be shown */
+            newMX = mouseX();
+            newMY = mouseY();
+            currTime = SDL_GetTicks();
+            if (newMX == mx &&
+                    newMY == my &&
+                    (currTime - startTime > TIP_PAUSE))
+            {
+                /* Activate the tip */
+                tipState = TIP_ACTIVE;
 
-			/* Calculate the size of the tip box */
-			topGap = TIP_VGAP;
-			iV_SetFont(FontID);
+                /* Calculate the size of the tip box */
+                topGap = TIP_VGAP;
+                iV_SetFont(FontID);
 
-			fw = iV_GetTextWidth(pTip);
-			tw = fw + TIP_HGAP*2;
-			th = topGap*2 + iV_GetTextLineSize()+iV_GetTextBelowBase();
+                fw = iV_GetTextWidth(pTip);
+                tw = fw + TIP_HGAP*2;
+                th = topGap*2 + iV_GetTextLineSize()+iV_GetTextBelowBase();
 
-			/* Position the tip box */
-			tx = wx + (ww >> 1);
-			ty = wy + wh + TIP_VGAP;
+                /* Position the tip box */
+                tx = wx + (ww >> 1);
+                ty = wy + wh + TIP_VGAP;
 
-			/* Check the box is on screen */
-			if (tx < 0)
-			{
-				tx = 0;
-			}
-			if (tx + tw >= (SDWORD)screenWidth-RIGHTBORDER)
-			{
-				tx = screenWidth-RIGHTBORDER - tw - 1;
-			}
-			if (ty < 0)
-			{
-				ty = 0;
-			}
-			if (ty + th >= (SDWORD)screenHeight-BOTTOMBORDER)
-			{
-				/* Position the tip above the button */
-				ty = wy - th - TIP_VGAP;
-			}
-
-
-			/* Position the text */
-			fx = tx + TIP_HGAP;
-
-			fy = ty + (th - iV_GetTextLineSize())/2 - iV_GetTextAboveBase();
+                /* Check the box is on screen */
+                if (tx < 0)
+                {
+                    tx = 0;
+                }
+                if (tx + tw >= (SDWORD)screenWidth-RIGHTBORDER)
+                {
+                    tx = screenWidth-RIGHTBORDER - tw - 1;
+                }
+                if (ty < 0)
+                {
+                    ty = 0;
+                }
+                if (ty + th >= (SDWORD)screenHeight-BOTTOMBORDER)
+                {
+                    /* Position the tip above the button */
+                    ty = wy - th - TIP_VGAP;
+                }
 
 
-			/* Note the time */
-			startTime = SDL_GetTicks();
-		}
-		else if (newMX != mx ||
-				 newMY != my ||
-				 mousePressed(MOUSE_LMB))
-		{
-			mx = newMX;
-			my = newMY;
-			startTime = currTime;
-		}
-		break;
-	case TIP_ACTIVE:
-		/* See if the tip still needs to be displayed */
+                /* Position the text */
+                fx = tx + TIP_HGAP;
+
+                fy = ty + (th - iV_GetTextLineSize())/2 - iV_GetTextAboveBase();
+
+
+                /* Note the time */
+                startTime = SDL_GetTicks();
+            }
+            else if (newMX != mx ||
+                     newMY != my ||
+                     mousePressed(MOUSE_LMB))
+            {
+                mx = newMX;
+                my = newMY;
+                startTime = currTime;
+            }
+            break;
+        case TIP_ACTIVE:
+            /* See if the tip still needs to be displayed */
 //		time = GetTickCount();
 //		if (mousePressed(MOUSE_LMB) ||
 //			((time - startTime) > TIP_TIME))
@@ -205,20 +207,20 @@ void tipDisplay(void)
 //		}
 
 
-		/* Draw the tool tip */
-		pie_BoxFill(tx,ty, tx+tw, ty+th, pColours[WCOL_TIPBKGRND]);
-		iV_Box(tx,ty, tx+tw-1, ty+th-1, pColours[WCOL_LIGHT]);
-		iV_Line(tx+1, ty+th-2, tx+1,    ty+1, pColours[WCOL_DARK]);
-		iV_Line(tx+2, ty+1,    tx+tw-2, ty+1, pColours[WCOL_DARK]);
-		iV_Line(tx,	  ty+th,   tx+tw,   ty+th, pColours[WCOL_DARK]);
-		iV_Line(tx+tw,ty+th-1, tx+tw,   ty, pColours[WCOL_DARK]);
+            /* Draw the tool tip */
+            pie_BoxFill(tx,ty, tx+tw, ty+th, pColours[WCOL_TIPBKGRND]);
+            iV_Box(tx,ty, tx+tw-1, ty+th-1, pColours[WCOL_LIGHT]);
+            iV_Line(tx+1, ty+th-2, tx+1,    ty+1, pColours[WCOL_DARK]);
+            iV_Line(tx+2, ty+1,    tx+tw-2, ty+1, pColours[WCOL_DARK]);
+            iV_Line(tx,	  ty+th,   tx+tw,   ty+th, pColours[WCOL_DARK]);
+            iV_Line(tx+tw,ty+th-1, tx+tw,   ty, pColours[WCOL_DARK]);
 
-		iV_SetFont(FontID);
-		iV_SetTextColour(TipColour);
-		iV_DrawText(pTip,fx,fy);
+            iV_SetFont(FontID);
+            iV_SetTextColour(TipColour);
+            iV_DrawText(pTip,fx,fy);
 
-		break;
-	default:
-		break;
-	}
+            break;
+        default:
+            break;
+    }
 }

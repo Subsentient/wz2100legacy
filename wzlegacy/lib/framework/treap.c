@@ -32,41 +32,47 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct TREAP_NODE
 {
-	const char*                     key;                    //< The key to sort the node on
-	unsigned int                    priority;               //< Treap priority
-	const char*                     string;                 //< The string stored in the treap
-	struct TREAP_NODE               *psLeft, *psRight;      //< The sub trees
+    const char                     *key;                    //< The key to sort the node on
+    unsigned int                    priority;               //< Treap priority
+    const char                     *string;                 //< The string stored in the treap
+    struct TREAP_NODE               *psLeft, *psRight;      //< The sub trees
 } TREAP_NODE;
 
 /* A useful comparison function - keys are char pointers */
 static int treapStringCmp(const char *key1, const char *key2)
 {
-	int result;
+    int result;
 
-	result = strcmp(key1, key2);
-	if      (result < 0)
-		return -1;
-	else if (result > 0)
-		return 1;
-	else
-		return 0;
+    result = strcmp(key1, key2);
+    if      (result < 0)
+    {
+        return -1;
+    }
+    else if (result > 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 
-TREAP_NODE** treapCreate()
+TREAP_NODE **treapCreate()
 {
-	TREAP_NODE** const psTreap = (TREAP_NODE**)malloc(sizeof(*psTreap));
-	if (!psTreap)
-	{
-		debug(LOG_FATAL, "Out of memory");
-		abort();
-		return NULL;
-	}
+    TREAP_NODE **const psTreap = (TREAP_NODE **)malloc(sizeof(*psTreap));
+    if (!psTreap)
+    {
+        debug(LOG_FATAL, "Out of memory");
+        abort();
+        return NULL;
+    }
 
-	// Initialise the tree to nothing
-	*psTreap = NULL;
+    // Initialise the tree to nothing
+    *psTreap = NULL;
 
-	return psTreap;
+    return psTreap;
 }
 
 /* Rotate a tree to the right
@@ -74,12 +80,12 @@ TREAP_NODE** treapCreate()
  */
 static void treapRotRight(TREAP_NODE **ppsRoot)
 {
-	TREAP_NODE	*psNewRoot;
+    TREAP_NODE	*psNewRoot;
 
-	psNewRoot = (*ppsRoot)->psLeft;
-	(*ppsRoot)->psLeft = psNewRoot->psRight;
-	psNewRoot->psRight = *ppsRoot;
-	*ppsRoot = psNewRoot;
+    psNewRoot = (*ppsRoot)->psLeft;
+    (*ppsRoot)->psLeft = psNewRoot->psRight;
+    psNewRoot->psRight = *ppsRoot;
+    *ppsRoot = psNewRoot;
 }
 
 /* Rotate a tree to the left
@@ -87,169 +93,169 @@ static void treapRotRight(TREAP_NODE **ppsRoot)
  */
 static void treapRotLeft(TREAP_NODE **ppsRoot)
 {
-	TREAP_NODE	*psNewRoot;
+    TREAP_NODE	*psNewRoot;
 
-	psNewRoot = (*ppsRoot)->psRight;
-	(*ppsRoot)->psRight = psNewRoot->psLeft;
-	psNewRoot->psLeft = *ppsRoot;
-	*ppsRoot = psNewRoot;
+    psNewRoot = (*ppsRoot)->psRight;
+    (*ppsRoot)->psRight = psNewRoot->psLeft;
+    psNewRoot->psLeft = *ppsRoot;
+    *ppsRoot = psNewRoot;
 }
 
 /* Recursive function to add an object to a tree */
 static void treapAddNode(TREAP_NODE **ppsRoot, TREAP_NODE *psNew)
 {
-	if (*ppsRoot == NULL)
-	{
-		// Make the node the root of the tree
-		*ppsRoot = psNew;
-	}
-	else if (treapStringCmp(psNew->key, (*ppsRoot)->key) < 0)
-	{
-		// Node less than root, insert to the left of the tree
-		treapAddNode(&(*ppsRoot)->psLeft, psNew);
+    if (*ppsRoot == NULL)
+    {
+        // Make the node the root of the tree
+        *ppsRoot = psNew;
+    }
+    else if (treapStringCmp(psNew->key, (*ppsRoot)->key) < 0)
+    {
+        // Node less than root, insert to the left of the tree
+        treapAddNode(&(*ppsRoot)->psLeft, psNew);
 
-		// Sort the priority
-		if ((*ppsRoot)->priority > (*ppsRoot)->psLeft->priority)
-		{
-			// rotate tree right
-			treapRotRight(ppsRoot);
-		}
-	}
-	else
-	{
-		// Node greater than root, insert to the right of the tree
-		treapAddNode(&(*ppsRoot)->psRight, psNew);
+        // Sort the priority
+        if ((*ppsRoot)->priority > (*ppsRoot)->psLeft->priority)
+        {
+            // rotate tree right
+            treapRotRight(ppsRoot);
+        }
+    }
+    else
+    {
+        // Node greater than root, insert to the right of the tree
+        treapAddNode(&(*ppsRoot)->psRight, psNew);
 
-		// Sort the priority
-		if ((*ppsRoot)->priority > (*ppsRoot)->psRight->priority)
-		{
-			// rotate tree left
-			treapRotLeft(ppsRoot);
-		}
-	}
+        // Sort the priority
+        if ((*ppsRoot)->priority > (*ppsRoot)->psRight->priority)
+        {
+            // rotate tree left
+            treapRotLeft(ppsRoot);
+        }
+    }
 }
 
 
 /* Add an object to a treap
  */
-bool treapAdd(TREAP_NODE** psTreap, const char* key, const char* string)
+bool treapAdd(TREAP_NODE **psTreap, const char *key, const char *string)
 {
-	/* Over-allocate so that we can put the key and the string in the same
-	 * chunck of memory as the TREAP_NODE struct. Which means a single
-	 * free() call on the entire STR structure will suffice.
-	 */
-	const size_t key_size    = strlen(key)    + 1;
-	const size_t string_size = strlen(string) + 1;
-	TREAP_NODE * const psNew = malloc(sizeof(*psNew) + key_size + string_size);
+    /* Over-allocate so that we can put the key and the string in the same
+     * chunck of memory as the TREAP_NODE struct. Which means a single
+     * free() call on the entire STR structure will suffice.
+     */
+    const size_t key_size    = strlen(key)    + 1;
+    const size_t string_size = strlen(string) + 1;
+    TREAP_NODE *const psNew = malloc(sizeof(*psNew) + key_size + string_size);
 
-	if (psNew == NULL)
-	{
-		debug(LOG_FATAL, "treapAdd: Out of memory");
-		abort();
-		return false;
-	}
+    if (psNew == NULL)
+    {
+        debug(LOG_FATAL, "treapAdd: Out of memory");
+        abort();
+        return false;
+    }
 
-	psNew->key    = strcpy((char*)(psNew + 1),            key);
-	psNew->string = strcpy((char*)(psNew + 1) + key_size, string);
+    psNew->key    = strcpy((char *)(psNew + 1),            key);
+    psNew->string = strcpy((char *)(psNew + 1) + key_size, string);
 
-	psNew->priority = rand();
-	psNew->psLeft = NULL;
-	psNew->psRight = NULL;
+    psNew->priority = rand();
+    psNew->psLeft = NULL;
+    psNew->psRight = NULL;
 
-	treapAddNode(psTreap, psNew);
+    treapAddNode(psTreap, psNew);
 
-	return true;
+    return true;
 }
 
 
 /* Recursively find an object in a treap */
-static const char* treapFindRec(TREAP_NODE *psRoot, const char *key)
+static const char *treapFindRec(TREAP_NODE *psRoot, const char *key)
 {
-	if (psRoot == NULL)
-	{
-		return NULL;
-	}
+    if (psRoot == NULL)
+    {
+        return NULL;
+    }
 
-	switch (treapStringCmp(key, psRoot->key))
-	{
-	case 0:
-		// equal
-		return psRoot->string;
-		break;
-	case -1:
-		return treapFindRec(psRoot->psLeft, key);
-		break;
-	case 1:
-		return treapFindRec(psRoot->psRight, key);
-		break;
-	default:
-		ASSERT( false, "treapFindRec: invalid return from comparison" );
-		break;
-	}
-	return NULL;
+    switch (treapStringCmp(key, psRoot->key))
+    {
+        case 0:
+            // equal
+            return psRoot->string;
+            break;
+        case -1:
+            return treapFindRec(psRoot->psLeft, key);
+            break;
+        case 1:
+            return treapFindRec(psRoot->psRight, key);
+            break;
+        default:
+            ASSERT( false, "treapFindRec: invalid return from comparison" );
+            break;
+    }
+    return NULL;
 }
 
 
 /* Find an object in a treap */
-const char* treapFind(TREAP_NODE** psTreap, const char *key)
+const char *treapFind(TREAP_NODE **psTreap, const char *key)
 {
-	ASSERT(psTreap != NULL, "Invalid treap pointer!");
+    ASSERT(psTreap != NULL, "Invalid treap pointer!");
 
-	return treapFindRec(*psTreap, key);
+    return treapFindRec(*psTreap, key);
 }
 
-static const char* treapFindKeyRec(TREAP_NODE const * const psNode, const char * const string)
+static const char *treapFindKeyRec(TREAP_NODE const *const psNode, const char *const string)
 {
-	const char* key;
+    const char *key;
 
-	if (psNode == NULL)
-	{
-		return NULL;
-	}
+    if (psNode == NULL)
+    {
+        return NULL;
+    }
 
-	if (strcmp(psNode->string, string) == 0)
-	{
-		return psNode->key;
-	}
+    if (strcmp(psNode->string, string) == 0)
+    {
+        return psNode->key;
+    }
 
-	key = treapFindKeyRec(psNode->psLeft, string);
-	if (key)
-	{
-		return key;
-	}
+    key = treapFindKeyRec(psNode->psLeft, string);
+    if (key)
+    {
+        return key;
+    }
 
-	return treapFindKeyRec(psNode->psLeft, string);
+    return treapFindKeyRec(psNode->psLeft, string);
 }
 
-const char* treapFindKey(TREAP_NODE** psTreap, const char* string)
+const char *treapFindKey(TREAP_NODE **psTreap, const char *string)
 {
-	ASSERT(psTreap != NULL, "Invalid treap pointer!");
+    ASSERT(psTreap != NULL, "Invalid treap pointer!");
 
-	return treapFindKeyRec(*psTreap, string);
+    return treapFindKeyRec(*psTreap, string);
 }
 
 /* Recursively free a treap */
 static void treapDestroyRec(TREAP_NODE *psRoot)
 {
-	if (psRoot == NULL)
-	{
-		return;
-	}
+    if (psRoot == NULL)
+    {
+        return;
+    }
 
-	// free the sub branches
-	treapDestroyRec(psRoot->psLeft);
-	treapDestroyRec(psRoot->psRight);
+    // free the sub branches
+    treapDestroyRec(psRoot->psLeft);
+    treapDestroyRec(psRoot->psRight);
 
-	// free the root
-	free(psRoot);
+    // free the root
+    free(psRoot);
 }
 
 
 /* Destroy a treap and release all the memory associated with it */
-void treapDestroy(TREAP_NODE** psTreap)
+void treapDestroy(TREAP_NODE **psTreap)
 {
-	ASSERT(psTreap != NULL, "Invalid treap pointer!");
+    ASSERT(psTreap != NULL, "Invalid treap pointer!");
 
-	treapDestroyRec(*psTreap);
-	free(psTreap);
+    treapDestroyRec(*psTreap);
+    free(psTreap);
 }

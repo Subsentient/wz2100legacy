@@ -20,33 +20,33 @@ static UDWORD videoBufferDepth = 32, videoBufferWidth = 0, videoBufferHeight = 0
 
 BOOL pie_SetVideoBufferDepth(UDWORD depth)
 {
-	videoBufferDepth = depth;
-	return(true);
+    videoBufferDepth = depth;
+    return(true);
 }
 
 BOOL pie_SetVideoBufferWidth(UDWORD width)
 {
-	videoBufferWidth = width;
-	return(true);
+    videoBufferWidth = width;
+    return(true);
 }
 
 BOOL pie_SetVideoBufferHeight(UDWORD height)
 {
-	videoBufferHeight = height;
-	return(true);
+    videoBufferHeight = height;
+    return(true);
 }
 
 UDWORD pie_GetVideoBufferDepth(void)
 {
-	return(videoBufferDepth);
+    return(videoBufferDepth);
 }
 
 UDWORD pie_GetVideoBufferWidth(void)
 {
-	return(videoBufferWidth);
+    return(videoBufferWidth);
 }
 
 UDWORD pie_GetVideoBufferHeight(void)
 {
-	return(videoBufferHeight);
+    return(videoBufferHeight);
 }

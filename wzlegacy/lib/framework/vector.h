@@ -21,11 +21,26 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "math_ext.h"
 
 
-typedef struct { int x, y; } Vector2i;
-typedef struct { float x, y; } Vector2f;
-typedef struct { int x, y, z; } Vector3i;
-typedef struct { float x, y, z; } Vector3f;
-typedef struct { uint16_t x, y, z; } Vector3uw; // Only used for basedef.h BASE_ELEMENTS1.
+typedef struct
+{
+    int x, y;
+} Vector2i;
+typedef struct
+{
+    float x, y;
+} Vector2f;
+typedef struct
+{
+    int x, y, z;
+} Vector3i;
+typedef struct
+{
+    float x, y, z;
+} Vector3f;
+typedef struct
+{
+    uint16_t x, y, z;
+} Vector3uw; // Only used for basedef.h BASE_ELEMENTS1.
 
 
 /*!
@@ -36,8 +51,8 @@ typedef struct { uint16_t x, y, z; } Vector3uw; // Only used for basedef.h BASE_
  */
 static inline WZ_DECL_CONST Vector2i Vector2i_Init(const int x, const int y)
 {
-	Vector2i dest = { x, y };
-	return dest;
+    Vector2i dest = { x, y };
+    return dest;
 }
 
 
@@ -48,8 +63,8 @@ static inline WZ_DECL_CONST Vector2i Vector2i_Init(const int x, const int y)
  */
 static inline WZ_DECL_CONST Vector2f Vector2i_To2f(const Vector2i v)
 {
-	Vector2f dest = { (float)v.x, (float)v.y };
-	return dest;
+    Vector2f dest = { (float)v.x, (float)v.y };
+    return dest;
 }
 
 
@@ -58,7 +73,7 @@ static inline WZ_DECL_CONST Vector2f Vector2i_To2f(const Vector2i v)
  */
 static inline WZ_DECL_CONST bool Vector2i_Compare(const Vector2i a, const Vector2i b)
 {
-	return a.x == b.x && a.y == b.y;
+    return a.x == b.x && a.y == b.y;
 }
 
 
@@ -69,11 +84,12 @@ static inline WZ_DECL_CONST bool Vector2i_Compare(const Vector2i a, const Vector
  */
 static inline WZ_DECL_CONST Vector2i Vector2i_Add(const Vector2i op1, const Vector2i op2)
 {
-	Vector2i dest = {
-		op1.x + op2.x,
-		op1.y + op2.y
-	};
-	return dest;
+    Vector2i dest =
+    {
+        op1.x + op2.x,
+        op1.y + op2.y
+    };
+    return dest;
 }
 
 
@@ -84,11 +100,12 @@ static inline WZ_DECL_CONST Vector2i Vector2i_Add(const Vector2i op1, const Vect
  */
 static inline WZ_DECL_CONST Vector2i Vector2i_Sub(const Vector2i op1, const Vector2i op2)
 {
-	Vector2i dest = {
-		op1.x - op2.x,
-		op1.y - op2.y
-	};
-	return dest;
+    Vector2i dest =
+    {
+        op1.x - op2.x,
+        op1.y - op2.y
+    };
+    return dest;
 }
 
 
@@ -100,8 +117,8 @@ static inline WZ_DECL_CONST Vector2i Vector2i_Sub(const Vector2i op1, const Vect
  */
 static inline WZ_DECL_CONST Vector2i Vector2i_Mult(const Vector2i v, const int s)
 {
-	Vector2i dest = { v.x * s, v.y * s };
-	return dest;
+    Vector2i dest = { v.x * s, v.y * s };
+    return dest;
 }
 
 
@@ -112,7 +129,7 @@ static inline WZ_DECL_CONST Vector2i Vector2i_Mult(const Vector2i v, const int s
  */
 static inline WZ_DECL_CONST int Vector2i_ScalarP(const Vector2i op1, const Vector2i op2)
 {
-	return op1.x * op2.x + op1.y * op2.y;
+    return op1.x * op2.x + op1.y * op2.y;
 }
 
 
@@ -123,7 +140,7 @@ static inline WZ_DECL_CONST int Vector2i_ScalarP(const Vector2i op1, const Vecto
  */
 static inline WZ_DECL_CONST int Vector2i_Length(const Vector2i v)
 {
-	return sqrtf( (float)Vector2i_ScalarP(v, v) );
+    return sqrtf( (float)Vector2i_ScalarP(v, v) );
 }
 
 
@@ -141,12 +158,12 @@ static inline WZ_DECL_CONST int Vector2i_Length(const Vector2i v)
  */
 static inline WZ_DECL_CONST bool Vector2i_InCircle(const Vector2i v, const Vector2i c, const unsigned int r)
 {
-	Vector2i delta = Vector2i_Sub(v, c);
-	// Explictily cast to "unsigned int" because this number never can be
-	// negative, due to the fact that these numbers are squared. Still GCC
-	// warns about a comparison of a comparison between an unsigned and a
-	// signed integer.
-	return (unsigned int)((delta.x * delta.x) + (delta.y * delta.y)) < (r * r);
+    Vector2i delta = Vector2i_Sub(v, c);
+    // Explictily cast to "unsigned int" because this number never can be
+    // negative, due to the fact that these numbers are squared. Still GCC
+    // warns about a comparison of a comparison between an unsigned and a
+    // signed integer.
+    return (unsigned int)((delta.x * delta.x) + (delta.y * delta.y)) < (r * r);
 }
 
 
@@ -158,8 +175,8 @@ static inline WZ_DECL_CONST bool Vector2i_InCircle(const Vector2i v, const Vecto
  */
 static inline WZ_DECL_CONST Vector2f Vector2f_Init(const float x, const float y)
 {
-	Vector2f dest = { x, y };
-	return dest;
+    Vector2f dest = { x, y };
+    return dest;
 }
 
 
@@ -170,8 +187,8 @@ static inline WZ_DECL_CONST Vector2f Vector2f_Init(const float x, const float y)
  */
 static inline WZ_DECL_CONST Vector2i Vector2f_To2i(const Vector2f v)
 {
-	Vector2i dest = { (int)v.x, (int)v.y };
-	return dest;
+    Vector2i dest = { (int)v.x, (int)v.y };
+    return dest;
 }
 
 
@@ -182,11 +199,12 @@ static inline WZ_DECL_CONST Vector2i Vector2f_To2i(const Vector2f v)
  */
 static inline WZ_DECL_CONST Vector2f Vector2f_Add(const Vector2f op1, const Vector2f op2)
 {
-	Vector2f dest = {
-		op1.x + op2.x,
-		op1.y + op2.y
-	};
-	return dest;
+    Vector2f dest =
+    {
+        op1.x + op2.x,
+        op1.y + op2.y
+    };
+    return dest;
 }
 
 
@@ -197,11 +215,12 @@ static inline WZ_DECL_CONST Vector2f Vector2f_Add(const Vector2f op1, const Vect
  */
 static inline WZ_DECL_CONST Vector2f Vector2f_Sub(const Vector2f op1, const Vector2f op2)
 {
-	Vector2f dest = {
-		op1.x - op2.x,
-		op1.y - op2.y
-	};
-	return dest;
+    Vector2f dest =
+    {
+        op1.x - op2.x,
+        op1.y - op2.y
+    };
+    return dest;
 }
 
 /*!
@@ -212,8 +231,8 @@ static inline WZ_DECL_CONST Vector2f Vector2f_Sub(const Vector2f op1, const Vect
  */
 static inline WZ_DECL_CONST Vector2f Vector2f_Mult(const Vector2f v, const float s)
 {
-	Vector2f dest = { v.x * s, v.y * s };
-	return dest;
+    Vector2f dest = { v.x * s, v.y * s };
+    return dest;
 }
 
 
@@ -224,7 +243,7 @@ static inline WZ_DECL_CONST Vector2f Vector2f_Mult(const Vector2f v, const float
  */
 static inline WZ_DECL_CONST float Vector2f_ScalarP(const Vector2f op1, const Vector2f op2)
 {
-	return op1.x * op2.x + op1.y * op2.y;
+    return op1.x * op2.x + op1.y * op2.y;
 }
 
 
@@ -235,7 +254,7 @@ static inline WZ_DECL_CONST float Vector2f_ScalarP(const Vector2f op1, const Vec
  */
 static inline WZ_DECL_CONST float Vector2f_Length(const Vector2f v)
 {
-	return sqrtf( Vector2f_ScalarP(v, v) );
+    return sqrtf( Vector2f_ScalarP(v, v) );
 }
 
 
@@ -246,18 +265,18 @@ static inline WZ_DECL_CONST float Vector2f_Length(const Vector2f v)
  */
 static inline WZ_DECL_CONST Vector2f Vector2f_Normalise(const Vector2f v)
 {
-	float length = Vector2f_Length(v);
+    float length = Vector2f_Length(v);
 
-	if (length == 0.0f)
-	{
-		Vector2f dest = { 0.0f, 0.0f };
-		return dest;
-	}
-	else
-	{
-		Vector2f dest = { v.x / length, v.y / length };
-		return dest;
-	}
+    if (length == 0.0f)
+    {
+        Vector2f dest = { 0.0f, 0.0f };
+        return dest;
+    }
+    else
+    {
+        Vector2f dest = { v.x / length, v.y / length };
+        return dest;
+    }
 }
 
 /*!
@@ -268,12 +287,12 @@ static inline WZ_DECL_CONST Vector2f Vector2f_Normalise(const Vector2f v)
  */
 static inline WZ_DECL_CONST Vector2f Vector2f_Rotate2f(Vector2f v, float degrees)
 {
-	Vector2f result;
-	float radians = (degrees / 360) * 2 * 3.14;
-	result.x = v.x*cos(radians) - v.y*sin(radians);
-	result.y = v.x*sin(radians) + v.y*cos(radians);
+    Vector2f result;
+    float radians = (degrees / 360) * 2 * 3.14;
+    result.x = v.x*cos(radians) - v.y*sin(radians);
+    result.y = v.x*sin(radians) + v.y*cos(radians);
 
-	return result;
+    return result;
 }
 
 /*!
@@ -289,9 +308,9 @@ static inline WZ_DECL_CONST Vector2f Vector2f_Rotate2f(Vector2f v, float degrees
  */
 static inline WZ_DECL_CONST Vector2i Vector2i_LinearInterpolate(const Vector2i from, const Vector2i to, const float s)
 {
-	assert(s >= 0.f && s <= 1.f);
+    assert(s >= 0.f && s <= 1.f);
 
-	return Vector2i_Add(from, Vector2f_To2i(Vector2f_Mult(Vector2i_To2f(Vector2i_Sub(to, from)), s)));
+    return Vector2i_Add(from, Vector2f_To2i(Vector2f_Mult(Vector2i_To2f(Vector2i_Sub(to, from)), s)));
 }
 
 
@@ -308,9 +327,9 @@ static inline WZ_DECL_CONST Vector2i Vector2i_LinearInterpolate(const Vector2i f
  */
 static inline WZ_DECL_CONST Vector2f Vector2f_LinearInterpolate(const Vector2f from, const Vector2f to, const float s)
 {
-	assert(s >= 0.f && s <= 1.f);
+    assert(s >= 0.f && s <= 1.f);
 
-	return Vector2f_Add(from, Vector2f_Mult(Vector2f_Sub(to, from), s));
+    return Vector2f_Add(from, Vector2f_Mult(Vector2f_Sub(to, from), s));
 }
 
 
@@ -319,7 +338,7 @@ static inline WZ_DECL_CONST Vector2f Vector2f_LinearInterpolate(const Vector2f f
  */
 static inline void Vector3f_Print(const Vector3f v)
 {
-	printf("V: x:%f, y:%f, z:%f\n", v.x, v.y, v.z);
+    printf("V: x:%f, y:%f, z:%f\n", v.x, v.y, v.z);
 }
 
 
@@ -331,8 +350,8 @@ static inline void Vector3f_Print(const Vector3f v)
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_Init(const float x, const float y, const float z)
 {
-	Vector3f dest = { x, y, z };
-	return dest;
+    Vector3f dest = { x, y, z };
+    return dest;
 }
 
 
@@ -343,8 +362,8 @@ static inline WZ_DECL_CONST Vector3f Vector3f_Init(const float x, const float y,
  */
 static inline WZ_DECL_CONST Vector3i Vector3f_To3i(const Vector3f v)
 {
-	Vector3i dest = { (int)v.x, (int)v.y, (int)v.z };
-	return dest;
+    Vector3i dest = { (int)v.x, (int)v.y, (int)v.z };
+    return dest;
 }
 
 
@@ -355,8 +374,8 @@ static inline WZ_DECL_CONST Vector3i Vector3f_To3i(const Vector3f v)
  */
 static inline WZ_DECL_CONST Vector3uw Vector3f_To3uw(const Vector3f v)
 {
-	Vector3uw dest = { (uint16_t)v.x, (uint16_t)v.y, (uint16_t)v.z };
-	return dest;
+    Vector3uw dest = { (uint16_t)v.x, (uint16_t)v.y, (uint16_t)v.z };
+    return dest;
 }
 
 
@@ -365,7 +384,7 @@ static inline WZ_DECL_CONST Vector3uw Vector3f_To3uw(const Vector3f v)
  */
 static inline WZ_DECL_CONST bool Vector3f_Compare(const Vector3f a, const Vector3f b)
 {
-	return a.x == b.x && a.y == b.y && a.z == b.z;
+    return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
 
@@ -376,12 +395,13 @@ static inline WZ_DECL_CONST bool Vector3f_Compare(const Vector3f a, const Vector
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_Add(const Vector3f op1, const Vector3f op2)
 {
-	Vector3f dest = {
-		op1.x + op2.x,
-		op1.y + op2.y,
-		op1.z + op2.z
-	};
-	return dest;
+    Vector3f dest =
+    {
+        op1.x + op2.x,
+        op1.y + op2.y,
+        op1.z + op2.z
+    };
+    return dest;
 }
 
 
@@ -392,12 +412,13 @@ static inline WZ_DECL_CONST Vector3f Vector3f_Add(const Vector3f op1, const Vect
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_Sub(const Vector3f op1, const Vector3f op2)
 {
-	Vector3f dest = {
-		op1.x - op2.x,
-		op1.y - op2.y,
-		op1.z - op2.z
-	};
-	return dest;
+    Vector3f dest =
+    {
+        op1.x - op2.x,
+        op1.y - op2.y,
+        op1.z - op2.z
+    };
+    return dest;
 }
 
 
@@ -409,8 +430,8 @@ static inline WZ_DECL_CONST Vector3f Vector3f_Sub(const Vector3f op1, const Vect
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_Mult(const Vector3f v, const float s)
 {
-	Vector3f dest = { v.x * s, v.y * s, v.z * s };
-	return dest;
+    Vector3f dest = { v.x * s, v.y * s, v.z * s };
+    return dest;
 }
 
 
@@ -421,7 +442,7 @@ static inline WZ_DECL_CONST Vector3f Vector3f_Mult(const Vector3f v, const float
  */
 static inline WZ_DECL_CONST float Vector3f_ScalarP(const Vector3f op1, const Vector3f op2)
 {
-	return op1.x * op2.x + op1.y * op2.y + op1.z * op2.z;
+    return op1.x * op2.x + op1.y * op2.y + op1.z * op2.z;
 }
 
 
@@ -432,12 +453,13 @@ static inline WZ_DECL_CONST float Vector3f_ScalarP(const Vector3f op1, const Vec
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_CrossP(const Vector3f op1, const Vector3f op2)
 {
-	Vector3f dest = {
-		op1.y * op2.z - op1.z * op2.y,
-		op1.z * op2.x - op1.x * op2.z,
-		op1.x * op2.y - op1.y * op2.x
-	};
-	return dest;
+    Vector3f dest =
+    {
+        op1.y *op2.z - op1.z * op2.y,
+        op1.z *op2.x - op1.x * op2.z,
+        op1.x *op2.y - op1.y *op2.x
+    };
+    return dest;
 }
 
 
@@ -448,7 +470,7 @@ static inline WZ_DECL_CONST Vector3f Vector3f_CrossP(const Vector3f op1, const V
  */
 static inline WZ_DECL_CONST float Vector3f_Length(const Vector3f v)
 {
-	return sqrtf( Vector3f_ScalarP(v, v) );
+    return sqrtf( Vector3f_ScalarP(v, v) );
 }
 
 
@@ -459,18 +481,18 @@ static inline WZ_DECL_CONST float Vector3f_Length(const Vector3f v)
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_Normalise(const Vector3f v)
 {
-	float length = Vector3f_Length(v);
+    float length = Vector3f_Length(v);
 
-	if (length == 0.0f)
-	{
-		Vector3f dest = { 0.0f, 0.0f, 0.0f };
-		return dest;
-	}
-	else
-	{
-		Vector3f dest = { v.x / length, v.y / length, v.z / length };
-		return dest;
-	}
+    if (length == 0.0f)
+    {
+        Vector3f dest = { 0.0f, 0.0f, 0.0f };
+        return dest;
+    }
+    else
+    {
+        Vector3f dest = { v.x / length, v.y / length, v.z / length };
+        return dest;
+    }
 }
 
 
@@ -484,12 +506,12 @@ static inline WZ_DECL_CONST Vector3f Vector3f_Normalise(const Vector3f v)
  */
 static inline WZ_DECL_CONST bool Vector3f_InCircle(const Vector3f v, const Vector3f c, const float r)
 {
-	Vector3f delta = Vector3f_Sub(v, c);
-	// Explictily cast to "unsigned int" because this number never can be
-	// negative, due to the fact that these numbers are squared. Still GCC
-	// warns about a comparison of a comparison between an unsigned and a
-	// signed integer.
-	return (delta.x * delta.x) + (delta.y * delta.y) < (r * r);
+    Vector3f delta = Vector3f_Sub(v, c);
+    // Explictily cast to "unsigned int" because this number never can be
+    // negative, due to the fact that these numbers are squared. Still GCC
+    // warns about a comparison of a comparison between an unsigned and a
+    // signed integer.
+    return (delta.x * delta.x) + (delta.y * delta.y) < (r * r);
 }
 
 
@@ -506,12 +528,12 @@ static inline WZ_DECL_CONST bool Vector3f_InCircle(const Vector3f v, const Vecto
  */
 static inline WZ_DECL_CONST bool Vector3f_InSphere (const Vector3f v, const Vector3f c, const float r)
 {
-	Vector3f delta = Vector3f_Sub(v, c);
-	// Explictily cast to "unsigned int" because this number never can be
-	// negative, due to the fact that these numbers are squared. Still GCC
-	// warns about a comparison of a comparison between an unsigned and a
-	// signed integer.
-	return (delta.x * delta.x) + (delta.y * delta.y) + (delta.z * delta.z) < (r * r);
+    Vector3f delta = Vector3f_Sub(v, c);
+    // Explictily cast to "unsigned int" because this number never can be
+    // negative, due to the fact that these numbers are squared. Still GCC
+    // warns about a comparison of a comparison between an unsigned and a
+    // signed integer.
+    return (delta.x * delta.x) + (delta.y * delta.y) + (delta.z * delta.z) < (r * r);
 }
 
 
@@ -524,13 +546,14 @@ static inline WZ_DECL_CONST bool Vector3f_InSphere (const Vector3f v, const Vect
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_EulerToForwardVector(const Vector3f v)
 {
-	Vector3f dest = {
-		cosf(v.x) * sinf(v.y),
-		-sinf(v.x),
-		cosf(v.x) * cosf(v.y)
-	};
+    Vector3f dest =
+    {
+        cosf(v.x) *sinf(v.y),
+        -sinf(v.x),
+        cosf(v.x) *cosf(v.y)
+    };
 
-	return dest;
+    return dest;
 }
 
 /*!
@@ -542,13 +565,14 @@ static inline WZ_DECL_CONST Vector3f Vector3f_EulerToForwardVector(const Vector3
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_EulerToUpVector(const Vector3f v)
 {
-	Vector3f dest = {
-		sinf(v.x) * sinf(v.y) * cosf(v.z) - sinf(v.z) * cosf(v.z),
-		cosf(v.x) * cosf(v.z),
-		sinf(v.x) * cosf(v.y) * cosf(v.z) + sinf(v.y) * sinf(v.z)
-	};
+    Vector3f dest =
+    {
+        sinf(v.x) *sinf(v.y) *cosf(v.z) - sinf(v.z) *cosf(v.z),
+        cosf(v.x) *cosf(v.z),
+        sinf(v.x) *cosf(v.y) *cosf(v.z) + sinf(v.y) *sinf(v.z)
+    };
 
-	return dest;
+    return dest;
 }
 
 
@@ -565,9 +589,9 @@ static inline WZ_DECL_CONST Vector3f Vector3f_EulerToUpVector(const Vector3f v)
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_LinearInterpolate(const Vector3f from, const Vector3f to, const float s)
 {
-	assert(s >= 0.f && s <= 1.f);
+    assert(s >= 0.f && s <= 1.f);
 
-	return Vector3f_Add(from, Vector3f_Mult(Vector3f_Sub(to, from), s));
+    return Vector3f_Add(from, Vector3f_Mult(Vector3f_Sub(to, from), s));
 }
 
 /*!
@@ -578,8 +602,8 @@ static inline WZ_DECL_CONST Vector3f Vector3f_LinearInterpolate(const Vector3f f
  */
 static inline WZ_DECL_CONST Vector3i Vector3i_Init(const int x, const int y, const int z)
 {
-	Vector3i dest = { x, y, z };
-	return dest;
+    Vector3i dest = { x, y, z };
+    return dest;
 }
 
 
@@ -590,8 +614,8 @@ static inline WZ_DECL_CONST Vector3i Vector3i_Init(const int x, const int y, con
  */
 static inline WZ_DECL_CONST Vector3f Vector3i_To3f(const Vector3i v)
 {
-	Vector3f dest = { (float)v.x, (float)v.y, (float)v.z };
-	return dest;
+    Vector3f dest = { (float)v.x, (float)v.y, (float)v.z };
+    return dest;
 }
 
 
@@ -602,8 +626,8 @@ static inline WZ_DECL_CONST Vector3f Vector3i_To3f(const Vector3i v)
  */
 static inline WZ_DECL_CONST Vector3uw Vector3i_To3uw(const Vector3i v)
 {
-	Vector3uw dest = { (uint16_t)v.x, (uint16_t)v.y, (uint16_t)v.z };
-	return dest;
+    Vector3uw dest = { (uint16_t)v.x, (uint16_t)v.y, (uint16_t)v.z };
+    return dest;
 }
 
 
@@ -614,12 +638,13 @@ static inline WZ_DECL_CONST Vector3uw Vector3i_To3uw(const Vector3i v)
  */
 static inline WZ_DECL_CONST Vector3f Vector3f_ToRadians(const Vector3f v)
 {
-	Vector3f dest = {
-		deg2radf(v.x),
-		deg2radf(v.y),
-		deg2radf(v.z)
-	};
-	return dest;
+    Vector3f dest =
+    {
+        deg2radf(v.x),
+        deg2radf(v.y),
+        deg2radf(v.z)
+    };
+    return dest;
 }
 
 
@@ -631,9 +656,9 @@ static inline WZ_DECL_CONST Vector3f Vector3f_ToRadians(const Vector3f v)
  */
 static inline WZ_DECL_CONST Vector3f Vector3iPSX_To3fDegree(const Vector3i v)
 {
-	return Vector3f_Mult(Vector3i_To3f(v),
-	// Required to multiply by this to undo the PSX fixed point fract stuff
-	                     360.f / (float)DEG_360);
+    return Vector3f_Mult(Vector3i_To3f(v),
+                         // Required to multiply by this to undo the PSX fixed point fract stuff
+                         360.f / (float)DEG_360);
 }
 
 
@@ -642,7 +667,7 @@ static inline WZ_DECL_CONST Vector3f Vector3iPSX_To3fDegree(const Vector3i v)
  */
 static inline WZ_DECL_CONST bool Vector3i_Compare(const Vector3i a, const Vector3i b)
 {
-	return a.x == b.x && a.y == b.y && a.z == b.z;
+    return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
 
@@ -653,12 +678,13 @@ static inline WZ_DECL_CONST bool Vector3i_Compare(const Vector3i a, const Vector
  */
 static inline WZ_DECL_CONST Vector3i Vector3i_Add(const Vector3i op1, const Vector3i op2)
 {
-	Vector3i dest = {
-		op1.x + op2.x,
-		op1.y + op2.y,
-		op1.z + op2.z
-	};
-	return dest;
+    Vector3i dest =
+    {
+        op1.x + op2.x,
+        op1.y + op2.y,
+        op1.z + op2.z
+    };
+    return dest;
 }
 
 
@@ -669,12 +695,13 @@ static inline WZ_DECL_CONST Vector3i Vector3i_Add(const Vector3i op1, const Vect
  */
 static inline WZ_DECL_CONST Vector3i Vector3i_Sub(const Vector3i op1, const Vector3i op2)
 {
-	Vector3i dest = {
-		op1.x - op2.x,
-		op1.y - op2.y,
-		op1.z - op2.z
-	};
-	return dest;
+    Vector3i dest =
+    {
+        op1.x - op2.x,
+        op1.y - op2.y,
+        op1.z - op2.z
+    };
+    return dest;
 }
 
 
@@ -686,8 +713,8 @@ static inline WZ_DECL_CONST Vector3i Vector3i_Sub(const Vector3i op1, const Vect
  */
 static inline WZ_DECL_CONST Vector3i Vector3i_Mult(const Vector3i v, const int s)
 {
-	Vector3i dest = { v.x * s, v.y * s, v.z * s };
-	return dest;
+    Vector3i dest = { v.x * s, v.y * s, v.z * s };
+    return dest;
 }
 
 
@@ -699,8 +726,8 @@ static inline WZ_DECL_CONST Vector3i Vector3i_Mult(const Vector3i v, const int s
  */
 static inline WZ_DECL_CONST Vector3i Vector3i_Div(const Vector3i v, const int s)
 {
-	Vector3i dest = { v.x / s, v.y / s, v.z / s };
-	return dest;
+    Vector3i dest = { v.x / s, v.y / s, v.z / s };
+    return dest;
 }
 
 
@@ -711,7 +738,7 @@ static inline WZ_DECL_CONST Vector3i Vector3i_Div(const Vector3i v, const int s)
  */
 static inline WZ_DECL_CONST unsigned int Vector3i_ScalarP(const Vector3i op1, const Vector3i op2)
 {
-	return op1.x * op2.x + op1.y * op2.y + op1.z * op2.z;
+    return op1.x * op2.x + op1.y * op2.y + op1.z * op2.z;
 }
 
 
@@ -722,7 +749,7 @@ static inline WZ_DECL_CONST unsigned int Vector3i_ScalarP(const Vector3i op1, co
  */
 static inline WZ_DECL_CONST float Vector3i_Length(const Vector3i v)
 {
-	return sqrtf( Vector3i_ScalarP(v, v) );
+    return sqrtf( Vector3i_ScalarP(v, v) );
 }
 
 
@@ -733,18 +760,18 @@ static inline WZ_DECL_CONST float Vector3i_Length(const Vector3i v)
  */
 static inline WZ_DECL_CONST Vector3i Vector3i_Normalise(const Vector3i v)
 {
-	float length = Vector3i_Length(v);
+    float length = Vector3i_Length(v);
 
-	if (length == 0.0f)
-	{
-		Vector3i dest = { 0, 0, 0 };
-		return dest;
-	}
-	else
-	{
-		Vector3i dest = { v.x / length, v.y / length, v.z / length };
-		return dest;
-	}
+    if (length == 0.0f)
+    {
+        Vector3i dest = { 0, 0, 0 };
+        return dest;
+    }
+    else
+    {
+        Vector3i dest = { v.x / length, v.y / length, v.z / length };
+        return dest;
+    }
 }
 
 
@@ -758,12 +785,12 @@ static inline WZ_DECL_CONST Vector3i Vector3i_Normalise(const Vector3i v)
  */
 static inline WZ_DECL_CONST bool Vector3i_InCircle(const Vector3i v, const Vector3i c, const unsigned int r)
 {
-	Vector3i delta = Vector3i_Sub(v, c);
-	// Explictily cast to "unsigned int" because this number never can be
-	// negative, due to the fact that these numbers are squared. Still GCC
-	// warns about a comparison of a comparison between an unsigned and a
-	// signed integer.
-	return (unsigned int)((delta.x * delta.x) + (delta.y * delta.y)) < (r * r);
+    Vector3i delta = Vector3i_Sub(v, c);
+    // Explictily cast to "unsigned int" because this number never can be
+    // negative, due to the fact that these numbers are squared. Still GCC
+    // warns about a comparison of a comparison between an unsigned and a
+    // signed integer.
+    return (unsigned int)((delta.x * delta.x) + (delta.y * delta.y)) < (r * r);
 }
 
 
@@ -780,12 +807,12 @@ static inline WZ_DECL_CONST bool Vector3i_InCircle(const Vector3i v, const Vecto
  */
 static inline WZ_DECL_CONST bool Vector3i_InSphere (const Vector3i v, const Vector3i c, const unsigned int r)
 {
-	Vector3i delta = Vector3i_Sub(v, c);
-	// Explictily cast to "unsigned int" because this number never can be
-	// negative, due to the fact that these numbers are squared. Still GCC
-	// warns about a comparison of a comparison between an unsigned and a
-	// signed integer.
-	return (unsigned int)((delta.x * delta.x) + (delta.y * delta.y) + (delta.z * delta.z)) < (r * r);
+    Vector3i delta = Vector3i_Sub(v, c);
+    // Explictily cast to "unsigned int" because this number never can be
+    // negative, due to the fact that these numbers are squared. Still GCC
+    // warns about a comparison of a comparison between an unsigned and a
+    // signed integer.
+    return (unsigned int)((delta.x * delta.x) + (delta.y * delta.y) + (delta.z * delta.z)) < (r * r);
 }
 
 
@@ -802,9 +829,9 @@ static inline WZ_DECL_CONST bool Vector3i_InSphere (const Vector3i v, const Vect
  */
 static inline WZ_DECL_CONST Vector3i Vector3i_LinearInterpolate(const Vector3i from, const Vector3i to, const float s)
 {
-	assert(s >= 0.f && s <= 1.f);
+    assert(s >= 0.f && s <= 1.f);
 
-	return Vector3i_Add(from, Vector3f_To3i(Vector3f_Mult(Vector3i_To3f(Vector3i_Sub(to, from)), s)));
+    return Vector3i_Add(from, Vector3f_To3i(Vector3f_Mult(Vector3i_To3f(Vector3i_Sub(to, from)), s)));
 }
 
 
@@ -813,7 +840,7 @@ static inline WZ_DECL_CONST Vector3i Vector3i_LinearInterpolate(const Vector3i f
  */
 static inline void Vector3uw_Print(const Vector3uw v)
 {
-	printf("V: x:%u, y:%u, z:%u\n", v.x, v.y, v.z);
+    printf("V: x:%u, y:%u, z:%u\n", v.x, v.y, v.z);
 }
 
 
@@ -825,8 +852,8 @@ static inline void Vector3uw_Print(const Vector3uw v)
  */
 static inline WZ_DECL_CONST Vector3uw Vector3uw_Init(const unsigned int x, const unsigned int y, const unsigned int z)
 {
-	Vector3uw dest = { x, y, z };
-	return dest;
+    Vector3uw dest = { x, y, z };
+    return dest;
 }
 
 
@@ -837,8 +864,8 @@ static inline WZ_DECL_CONST Vector3uw Vector3uw_Init(const unsigned int x, const
  */
 static inline WZ_DECL_CONST Vector3i Vector3uw_To3i(const Vector3uw v)
 {
-	Vector3i dest = { (int)v.x, (int)v.y, (int)v.z };
-	return dest;
+    Vector3i dest = { (int)v.x, (int)v.y, (int)v.z };
+    return dest;
 }
 
 
@@ -849,8 +876,8 @@ static inline WZ_DECL_CONST Vector3i Vector3uw_To3i(const Vector3uw v)
  */
 static inline WZ_DECL_CONST Vector3f Vector3uw_To3f(const Vector3uw v)
 {
-	Vector3f dest = { (float)v.x, (float)v.y, (float)v.z };
-	return dest;
+    Vector3f dest = { (float)v.x, (float)v.y, (float)v.z };
+    return dest;
 }
 
 

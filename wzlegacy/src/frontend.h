@@ -25,66 +25,67 @@ extern "C"
 #endif //__cplusplus
 
 // determines which option screen to use. when in GS_TITLE_SCREEN mode.
-typedef enum _title_mode {
-	TITLE,			// 0 intro mode
-	SINGLE,			// 1 single player menu
-	MULTI,			// 2 multiplayer menu
-	OPTIONS,		// 3 options menu
-	GAME,			// 4
-	TUTORIAL,		// 5  tutorial/fastplay
-	CREDITS,		// 6  credits
-	PROTOCOL,		// 7  MULTIPLAYER, select proto
-	MULTIOPTION,	// 8 MULTIPLAYER, select game options
-	FORCESELECT,	// 9 MULTIPLAYER, Force design screen
-	GAMEFIND,		// 10 MULTIPLAYER, gamefinder.
-	MULTILIMIT,		// 11 MULTIPLAYER, Limit the multistuff.
-	STARTGAME,		// 12 Fire up the game
-	SHOWINTRO,		// 13 reshow the intro
-	QUIT,			// 14 leaving game
-	LOADSAVEGAME,	// 15 loading a save game
-	KEYMAP,			// 16 keymap editor
-	GRAPHICS_OPTIONS,       // 17 graphics options menu
-	AUDIO_OPTIONS,          // 18 audio options menu
-	VIDEO_OPTIONS,          // 19 video options menu
-	MOUSE_OPTIONS,          // 20 mouse options menu
-} tMode;
+    typedef enum _title_mode {
+        TITLE,			// 0 intro mode
+        SINGLE,			// 1 single player menu
+        MULTI,			// 2 multiplayer menu
+        OPTIONS,		// 3 options menu
+        GAME,			// 4
+        TUTORIAL,		// 5  tutorial/fastplay
+        CREDITS,		// 6  credits
+        PROTOCOL,		// 7  MULTIPLAYER, select proto
+        MULTIOPTION,	// 8 MULTIPLAYER, select game options
+        FORCESELECT,	// 9 MULTIPLAYER, Force design screen
+        GAMEFIND,		// 10 MULTIPLAYER, gamefinder.
+        MULTILIMIT,		// 11 MULTIPLAYER, Limit the multistuff.
+        STARTGAME,		// 12 Fire up the game
+        SHOWINTRO,		// 13 reshow the intro
+        QUIT,			// 14 leaving game
+        LOADSAVEGAME,	// 15 loading a save game
+        KEYMAP,			// 16 keymap editor
+        GRAPHICS_OPTIONS,       // 17 graphics options menu
+        AUDIO_OPTIONS,          // 18 audio options menu
+        VIDEO_OPTIONS,          // 19 video options menu
+        MOUSE_OPTIONS,          // 20 mouse options menu
+    }
+    tMode;
 
-extern tMode titleMode;					// the global case
-extern tMode lastTitleMode;
+    extern tMode titleMode;					// the global case
+    extern tMode lastTitleMode;
 
 #define MAX_LEVEL_NAME_SIZE	(256)
 
-extern char	aLevelName[MAX_LEVEL_NAME_SIZE+1];	//256];			// vital! the wrf file to use.
+    extern char	aLevelName[MAX_LEVEL_NAME_SIZE+1];	//256];			// vital! the wrf file to use.
 
-extern BOOL	bLimiterLoaded;
+    extern BOOL	bLimiterLoaded;
 
 
-void changeTitleMode(tMode mode);
-BOOL runTitleMenu(void);
-BOOL runSinglePlayerMenu(void);
-BOOL runMultiPlayerMenu(void);
-BOOL runGameOptionsMenu(void);
-BOOL runOptionsMenu(void);
-BOOL runGraphicsOptionsMenu(void);
-BOOL runAudioOptionsMenu(void);
-BOOL runVideoOptionsMenu(void);
-BOOL runMouseOptionsMenu(void);
-BOOL runTutorialMenu(void);
+    void changeTitleMode(tMode mode);
+    BOOL runTitleMenu(void);
+    BOOL runSinglePlayerMenu(void);
+    BOOL runMultiPlayerMenu(void);
+    BOOL runGameOptionsMenu(void);
+    BOOL runOptionsMenu(void);
+    BOOL runGraphicsOptionsMenu(void);
+    BOOL runAudioOptionsMenu(void);
+    BOOL runVideoOptionsMenu(void);
+    BOOL runMouseOptionsMenu(void);
+    BOOL runTutorialMenu(void);
 
-void addTopForm(void);
-void addBottomForm(void);
-void addBackdrop(void);
-void addTextButton(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style);
-void addSmallTextButton(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style);
-void addTextHint(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt);
-void addText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, UDWORD formID);
-void addSideText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt);
-void addFESlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos);
-void addFEAISlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos);
+    void addTopForm(void);
+    void addBottomForm(void);
+    void addBackdrop(void);
+    void addTextButton(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style);
+    void addSmallTextButton(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style);
+    void addTextHint(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt);
+    void addText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, UDWORD formID);
+    void addSideText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt);
+    void addFESlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos);
+    void addFEAISlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos);
 
-void displayTextOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+    void displayTextOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
 
-BOOL CancelPressed(void);
+    BOOL CancelPressed(void);
 
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -147,104 +148,104 @@ BOOL CancelPressed(void);
 #define FRONTEND_LOGOW			248
 #define FRONTEND_LOGOH			118
 
-enum
-{
-	FRONTEND_BACKDROP		= 20000,
-	FRONTEND_TOPFORM,
-	FRONTEND_BOTFORM,
-	FRONTEND_LOGO,
-	FRONTEND_SIDETEXT,					// side-ee-ways text
-	FRONTEND_SIDETEXT1,					// side-ee-ways text
-	FRONTEND_SIDETEXT2,					// side-ee-ways text
-	FRONTEND_SIDETEXT3,					// side-ee-ways text
-	FRONTEND_SIDETEXT4,					// side-ee-ways text
-	FRONTEND_LOADCAM2,					// loading via --GAME CAM_2A
-	FRONTEND_LOADCAM3,					// loading via --GAME CAM_3A
-	FRONTEND_PASSWORDFORM,
-	FRONTEND_HYPERLINK,
-	// begin menu
-	FRONTEND_SINGLEPLAYER	= 20100,	// title screen
-	FRONTEND_MULTIPLAYER,
-	FRONTEND_TUTORIAL,
-	FRONTEND_PLAYINTRO,
-	FRONTEND_OPTIONS,
-	FRONTEND_QUIT,
-	FRONTEND_FASTPLAY,					//tutorial menu option
-	FRONTEND_NEWGAME		= 20200,	// single player (menu)
-	FRONTEND_LOADGAME,
-	FRONTEND_SKIRMISH,
-	FRONTEND_CHALLENGES,
-	FRONTEND_HOST			= 20300,	//multiplayer menu options
-	FRONTEND_JOIN,
-	FE_P0,								// player 0 buton
-	FE_P1,								// player 1 buton
-	FE_P2,								// player 2 buton
-	FE_P3,								// player 3 buton
-	FE_P4,								// player 4 buton
-	FE_P5,								// player 5 buton
-	FE_P6,								// player 6 buton
-	FE_P7,								// player 7 buton
+    enum
+    {
+        FRONTEND_BACKDROP		= 20000,
+        FRONTEND_TOPFORM,
+        FRONTEND_BOTFORM,
+        FRONTEND_LOGO,
+        FRONTEND_SIDETEXT,					// side-ee-ways text
+        FRONTEND_SIDETEXT1,					// side-ee-ways text
+        FRONTEND_SIDETEXT2,					// side-ee-ways text
+        FRONTEND_SIDETEXT3,					// side-ee-ways text
+        FRONTEND_SIDETEXT4,					// side-ee-ways text
+        FRONTEND_LOADCAM2,					// loading via --GAME CAM_2A
+        FRONTEND_LOADCAM3,					// loading via --GAME CAM_3A
+        FRONTEND_PASSWORDFORM,
+        FRONTEND_HYPERLINK,
+        // begin menu
+        FRONTEND_SINGLEPLAYER	= 20100,	// title screen
+        FRONTEND_MULTIPLAYER,
+        FRONTEND_TUTORIAL,
+        FRONTEND_PLAYINTRO,
+        FRONTEND_OPTIONS,
+        FRONTEND_QUIT,
+        FRONTEND_FASTPLAY,					//tutorial menu option
+        FRONTEND_NEWGAME		= 20200,	// single player (menu)
+        FRONTEND_LOADGAME,
+        FRONTEND_SKIRMISH,
+        FRONTEND_CHALLENGES,
+        FRONTEND_HOST			= 20300,	//multiplayer menu options
+        FRONTEND_JOIN,
+        FE_P0,								// player 0 buton
+        FE_P1,								// player 1 buton
+        FE_P2,								// player 2 buton
+        FE_P3,								// player 3 buton
+        FE_P4,								// player 4 buton
+        FE_P5,								// player 5 buton
+        FE_P6,								// player 6 buton
+        FE_P7,								// player 7 buton
 
-	FRONTEND_GAMEOPTIONS = 21000,           // Game Options menu
-	FRONTEND_LANGUAGE,
-	FRONTEND_LANGUAGE_R,
-	FRONTEND_RADAR,
-	FRONTEND_RADAR_R,
-	FRONTEND_COLOUR,
-	FRONTEND_DIFFICULTY,
-	FRONTEND_DIFFICULTY_R,
-	FRONTEND_SCROLLSPEED_SL,
-	FRONTEND_SCROLLSPEED,				// screen scroll speed
+        FRONTEND_GAMEOPTIONS = 21000,           // Game Options menu
+        FRONTEND_LANGUAGE,
+        FRONTEND_LANGUAGE_R,
+        FRONTEND_RADAR,
+        FRONTEND_RADAR_R,
+        FRONTEND_COLOUR,
+        FRONTEND_DIFFICULTY,
+        FRONTEND_DIFFICULTY_R,
+        FRONTEND_SCROLLSPEED_SL,
+        FRONTEND_SCROLLSPEED,				// screen scroll speed
 
-	FRONTEND_GRAPHICSOPTIONS = 22000,       // Graphics Options Menu
-	FRONTEND_SSHAKE,
-	FRONTEND_SSHAKE_R,
-	FRONTEND_FMVMODE,
-	FRONTEND_FMVMODE_R,
-	FRONTEND_SCANLINES,
-	FRONTEND_SCANLINES_R,
-	FRONTEND_SUBTITLES,
-	FRONTEND_SUBTITLES_R,
-	FRONTEND_SHADOWS,
-	FRONTEND_SHADOWS_R,
-	FRONTEND_FOGTYPE,
-	FRONTEND_FOGTYPE_R,
+        FRONTEND_GRAPHICSOPTIONS = 22000,       // Graphics Options Menu
+        FRONTEND_SSHAKE,
+        FRONTEND_SSHAKE_R,
+        FRONTEND_FMVMODE,
+        FRONTEND_FMVMODE_R,
+        FRONTEND_SCANLINES,
+        FRONTEND_SCANLINES_R,
+        FRONTEND_SUBTITLES,
+        FRONTEND_SUBTITLES_R,
+        FRONTEND_SHADOWS,
+        FRONTEND_SHADOWS_R,
+        FRONTEND_FOGTYPE,
+        FRONTEND_FOGTYPE_R,
 
-	FRONTEND_AUDIOOPTIONS = 23000,          // Audio Options Menu
-	FRONTEND_3D_FX,						// 3d sound volume
-	FRONTEND_FX,						// 2d (voice) sound volume
-	FRONTEND_MUSIC,						// music volume
-	FRONTEND_3D_FX_SL,
-	FRONTEND_FX_SL,
-	FRONTEND_MUSIC_SL,
+        FRONTEND_AUDIOOPTIONS = 23000,          // Audio Options Menu
+        FRONTEND_3D_FX,						// 3d sound volume
+        FRONTEND_FX,						// 2d (voice) sound volume
+        FRONTEND_MUSIC,						// music volume
+        FRONTEND_3D_FX_SL,
+        FRONTEND_FX_SL,
+        FRONTEND_MUSIC_SL,
 
-	FRONTEND_VIDEOOPTIONS = 24000,          // video Options Menu
-	FRONTEND_WINDOWMODE,
-	FRONTEND_WINDOWMODE_R,
-	FRONTEND_RESOLUTION,
-	FRONTEND_RESOLUTION_R,
-	FRONTEND_TEXTURESZ,
-	FRONTEND_TEXTURESZ_R,
-	FRONTEND_TAKESEFFECT,
-	FRONTEND_VSYNC,
-	FRONTEND_VSYNC_R,
+        FRONTEND_VIDEOOPTIONS = 24000,          // video Options Menu
+        FRONTEND_WINDOWMODE,
+        FRONTEND_WINDOWMODE_R,
+        FRONTEND_RESOLUTION,
+        FRONTEND_RESOLUTION_R,
+        FRONTEND_TEXTURESZ,
+        FRONTEND_TEXTURESZ_R,
+        FRONTEND_TAKESEFFECT,
+        FRONTEND_VSYNC,
+        FRONTEND_VSYNC_R,
 
-	FRONTEND_MOUSEOPTIONS = 25000,          // Mouse Options Menu
-	FRONTEND_CURSORMODE,
-	FRONTEND_CURSORMODE_R,
-	FRONTEND_TRAP,
-	FRONTEND_TRAP_R,
-	FRONTEND_MFLIP,
-	FRONTEND_MFLIP_R,
-	FRONTEND_MBUTTONS,
-	FRONTEND_MBUTTONS_R,
-	FRONTEND_MMROTATE,
-	FRONTEND_MMROTATE_R,
+        FRONTEND_MOUSEOPTIONS = 25000,          // Mouse Options Menu
+        FRONTEND_CURSORMODE,
+        FRONTEND_CURSORMODE_R,
+        FRONTEND_TRAP,
+        FRONTEND_TRAP_R,
+        FRONTEND_MFLIP,
+        FRONTEND_MFLIP_R,
+        FRONTEND_MBUTTONS,
+        FRONTEND_MBUTTONS_R,
+        FRONTEND_MMROTATE,
+        FRONTEND_MMROTATE_R,
 
-	FRONTEND_KEYMAP			= 26000,	// Keymap menu
-	FRONTEND_NOGAMESAVAILABLE = 31666	// Used when no games are available in lobby
+        FRONTEND_KEYMAP			= 26000,	// Keymap menu
+        FRONTEND_NOGAMESAVAILABLE = 31666	// Used when no games are available in lobby
 
-};
+    };
 
 #ifdef __cplusplus
 }

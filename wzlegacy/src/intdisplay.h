@@ -39,38 +39,42 @@ power values in the buttons */
 #define POWERBAR_SCALE			(5 * WBAR_SCALE/STAT_PROGBARWIDTH)
 
 #define BUTTONOBJ_ROTSPEED		90	// Speed to rotate objects rendered in
-									// buttons ( degrees per second )
+// buttons ( degrees per second )
 
 //the two types of button used in the object display (bottom bar)
 #define		TOPBUTTON			0
 #define		BTMBUTTON			1
 
 
-enum {
-	IMDTYPE_NONE,
-	IMDTYPE_DROID,
-	IMDTYPE_DROIDTEMPLATE,
-	IMDTYPE_COMPONENT,
-	IMDTYPE_STRUCTURE,
-	IMDTYPE_RESEARCH,
-	IMDTYPE_STRUCTURESTAT,
+enum
+{
+    IMDTYPE_NONE,
+    IMDTYPE_DROID,
+    IMDTYPE_DROIDTEMPLATE,
+    IMDTYPE_COMPONENT,
+    IMDTYPE_STRUCTURE,
+    IMDTYPE_RESEARCH,
+    IMDTYPE_STRUCTURESTAT,
 };
 
-typedef struct {
-	char *Token;
-	SWORD ID;
+typedef struct
+{
+    char *Token;
+    SWORD ID;
 } TOKENID;
 
-typedef struct {
-	char *Token;
-	SWORD ID;
-	SWORD IMD;
+typedef struct
+{
+    char *Token;
+    SWORD ID;
+    SWORD IMD;
 } RESEARCHICON;
 
 
-typedef struct {
-	UBYTE *Buffer;		// Bitmap buffer.
-	iSurface *Surface;	// Ivis surface definition.
+typedef struct
+{
+    UBYTE *Buffer;		// Bitmap buffer.
+    iSurface *Surface;	// Ivis surface definition.
 } BUTTON_SURFACE;
 
 
@@ -83,14 +87,15 @@ typedef struct {
 #define IsBufferInitialised(x) ((x)->Initialised)
 #define IsBufferInUse(x) ((x)->InUse)
 
-typedef struct {
-	BOOL InUse;			// Is it in use.
-	BOOL Initialised;	// Is it initialised.
-	SDWORD ImdRotation;	// Rotation if button is an IMD.
-	UDWORD State;		// Copy of widget's state so we know if state has changed.
-	void *Data;			// Any data we want to attach.
-	void *Data2;		// Any data we want to attach.
-	BUTTON_SURFACE *ButSurf;	// Surface to render the button into.
+typedef struct
+{
+    BOOL InUse;			// Is it in use.
+    BOOL Initialised;	// Is it initialised.
+    SDWORD ImdRotation;	// Rotation if button is an IMD.
+    UDWORD State;		// Copy of widget's state so we know if state has changed.
+    void *Data;			// Any data we want to attach.
+    void *Data2;		// Any data we want to attach.
+    BUTTON_SURFACE *ButSurf;	// Surface to render the button into.
 //	uint8 *Buffer;		// Bitmap buffer.
 //	iSurface *Surface;	// Ivis surface definition.
 } RENDERED_BUTTON;
@@ -200,7 +205,7 @@ void intDisplayButtonPressed(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, P
 void intDisplayReticuleButton(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
 
 void intDisplayTab(WIDGET *psWidget,UDWORD TabType, UDWORD Position,
-					UDWORD Number,BOOL Selected,BOOL Hilight,UDWORD x,UDWORD y,UDWORD Width,UDWORD Height);
+                   UDWORD Number,BOOL Selected,BOOL Hilight,UDWORD x,UDWORD y,UDWORD Width,UDWORD Height);
 void intDisplaySlider(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
 
 void intDisplayNumber(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
@@ -214,10 +219,10 @@ void CloseButtonRender(void);
 void ClearButton(BOOL Down,UDWORD Size, UDWORD buttonType);
 
 void RenderToButton(IMAGEFILE *ImageFile,UWORD ImageID,void *Object,UDWORD Player,RENDERED_BUTTON *Buffer,
-					BOOL Down,UDWORD IMDType, UDWORD buttonType);
+                    BOOL Down,UDWORD IMDType, UDWORD buttonType);
 
 void CreateIMDButton(IMAGEFILE *ImageFile,UWORD ImageID,void *Object,UDWORD Player,RENDERED_BUTTON *Buffer,
-					BOOL Down,UDWORD IMDType,UDWORD buttonType);
+                     BOOL Down,UDWORD IMDType,UDWORD buttonType);
 
 void CreateImageButton(IMAGEFILE *ImageFile,UWORD ImageID,RENDERED_BUTTON *Buffer,BOOL Down, UDWORD buttonType);
 
@@ -265,23 +270,23 @@ void StatGetResearchImage(BASE_STATS *psStat, SDWORD *Image, iIMDShape **Shape,
 
 /* Draws a stats bar for the design screen */
 extern void intDisplayStatsBar(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
-							   PIELIGHT *pColours);
+                               PIELIGHT *pColours);
 /* Draws a Template Power Bar for the Design Screen */
 void intDisplayDesignPowerBar(WIDGET *psWidget, UDWORD xOffset,
-							  UDWORD yOffset, PIELIGHT *pColours);
+                              UDWORD yOffset, PIELIGHT *pColours);
 
 // Widget callback function to play an audio track.
 extern void WidgetAudioCallback(int AudioID);
 
 // Widget callback to display a contents button for the Transporter
 extern void intDisplayTransportButton(WIDGET *psWidget, UDWORD xOffset,
-						  UDWORD yOffset, PIELIGHT *pColours);
+                                      UDWORD yOffset, PIELIGHT *pColours);
 /*draws blips on radar to represent Proximity Display*/
 extern void drawRadarBlips(int radarX, int radarY, float pixSizeH, float pixSizeV);
 
 /*Displays the proximity messages blips over the world*/
 extern void intDisplayProximityBlips(WIDGET *psWidget, UDWORD xOffset,
-					UDWORD yOffset, PIELIGHT *pColours);
+                                     UDWORD yOffset, PIELIGHT *pColours);
 
 extern void intUpdateQuantitySlider(WIDGET *psWidget, W_CONTEXT *psContext);
 

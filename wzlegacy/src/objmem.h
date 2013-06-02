@@ -42,12 +42,12 @@ extern void objmemShutdown(void);
 extern void objmemUpdate(void);
 
 /* Create a new droid */
-extern DROID* createDroid(UDWORD player);
+extern DROID *createDroid(UDWORD player);
 
 /* add the droid to the Droid Lists */
 extern void addDroid(DROID *psDroidToAdd, DROID *pList[MAX_PLAYERS]);
 
- /*destroy a droid */
+/*destroy a droid */
 void killDroid(DROID *psDel);
 
 /* Remove all droids */
@@ -63,10 +63,10 @@ extern void freeAllMissionDroids(void);
 extern void freeAllLimboDroids(void);
 
 /* Create a new structure */
-extern STRUCTURE* createStruct(UDWORD player);
+extern STRUCTURE *createStruct(UDWORD player);
 
 /* add the structure to the Structure Lists */
- extern void addStructure(STRUCTURE *psStructToAdd);
+extern void addStructure(STRUCTURE *psStructToAdd);
 
 /* Destroy a structure */
 void killStruct(STRUCTURE *psDel);
@@ -79,10 +79,10 @@ extern void removeStructureFromList(STRUCTURE *psStructToRemove,
                                     STRUCTURE *pList[MAX_PLAYERS]);
 
 /* Create a new Feature */
-extern FEATURE* createFeature(void);
+extern FEATURE *createFeature(void);
 
 /* add the feature to the Feature Lists */
- extern void addFeature(FEATURE *psFeatureToAdd);
+extern void addFeature(FEATURE *psFeatureToAdd);
 
 /* Destroy a feature */
 void killFeature(FEATURE *psDel);

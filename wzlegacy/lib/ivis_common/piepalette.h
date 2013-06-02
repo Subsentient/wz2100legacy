@@ -84,39 +84,39 @@ extern void		pal_ShutDown(void);
 
 static inline PIELIGHT pal_Colour(UBYTE r, UBYTE g, UBYTE b)
 {
-	PIELIGHT c;
+    PIELIGHT c;
 
-	c.byte.r = r;
-	c.byte.g = g;
-	c.byte.b = b;
-	c.byte.a = UBYTE_MAX;
+    c.byte.r = r;
+    c.byte.g = g;
+    c.byte.b = b;
+    c.byte.a = UBYTE_MAX;
 
-	return c;
+    return c;
 }
 
 static inline PIELIGHT pal_SetBrightness(UBYTE brightness)
 {
-	PIELIGHT c;
+    PIELIGHT c;
 
-	c.byte.r = brightness;
-	c.byte.g = brightness;
-	c.byte.b = brightness;
-	c.byte.a = UBYTE_MAX;
+    c.byte.r = brightness;
+    c.byte.g = brightness;
+    c.byte.b = brightness;
+    c.byte.a = UBYTE_MAX;
 
-	return c;
+    return c;
 }
 
 #define pal_Grey pal_SetBrightness
 
 static inline PIELIGHT pal_RGBA(UBYTE r, UBYTE g, UBYTE b, UBYTE a)
 {
-	PIELIGHT c;
+    PIELIGHT c;
 
-	c.byte.r = r;
-	c.byte.g = g;
-	c.byte.b = b;
-	c.byte.a = a;
+    c.byte.r = r;
+    c.byte.g = g;
+    c.byte.b = b;
+    c.byte.a = a;
 
-	return c;
+    return c;
 }
 #endif

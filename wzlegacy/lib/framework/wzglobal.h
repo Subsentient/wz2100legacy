@@ -111,11 +111,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #  define WZ_OS_FREEBSD
 #  define WZ_OS_BSD4
 #elif defined(__FreeBSD_kernel__) && !defined(__FreeBSD__)
-   /* We're running a non-FreeBSD system with a FreeBSD kernel. Find out what C
-    * library we're using to detect the system we're running on. */
+/* We're running a non-FreeBSD system with a FreeBSD kernel. Find out what C
+ * library we're using to detect the system we're running on. */
 #  include <stdlib.h>
 #  if defined(__GLIBC__)
-     /* We're running GNU/kFreeBSD */
+/* We're running GNU/kFreeBSD */
 #    define WZ_OS_GNU_kFREEBSD
 #  endif
 #elif defined(__NetBSD__)

@@ -20,21 +20,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct
 {
-	union
-	{
-		PHYSFS_file* physfsfile;
-		struct
-		{
-			const char* begin;
-			const char* end;
-		} buffer;
-	} input;
+    union
+    {
+        PHYSFS_file *physfsfile;
+        struct
+        {
+            const char *begin;
+            const char *end;
+        } buffer;
+    } input;
 
-	enum
-	{
-		LEXINPUT_PHYSFS,
-		LEXINPUT_BUFFER,
-	} type;
+    enum
+    {
+        LEXINPUT_PHYSFS,
+        LEXINPUT_BUFFER,
+    } type;
 } lexerinput_t;
 
 #ifdef YY_EXTRA_TYPE
@@ -43,7 +43,7 @@ typedef struct
 
 #define YY_EXTRA_TYPE lexerinput_t *
 
-extern int lexer_input(lexerinput_t* input, char* buf, size_t max_size, int nullvalue);
+extern int lexer_input(lexerinput_t *input, char *buf, size_t max_size, int nullvalue);
 
 #define YY_INPUT(buf, result, max_size) \
 do \

@@ -29,19 +29,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _w_slider
 {
-	/* The common widget data */
-	WIDGET_BASE;
+    /* The common widget data */
+    WIDGET_BASE;
 
-	UWORD		orientation;		// The orientation of the slider
-	UWORD		numStops;			// Number of stop positions on the slider
-	UWORD		barSize;			// Thickness of slider bar
-	UWORD		pos;				// Current stop position of the slider
-	UWORD		state;				// Slider state
-	const char	*pTip;				// Tool tip
+    UWORD		orientation;		// The orientation of the slider
+    UWORD		numStops;			// Number of stop positions on the slider
+    UWORD		barSize;			// Thickness of slider bar
+    UWORD		pos;				// Current stop position of the slider
+    UWORD		state;				// Slider state
+    const char	*pTip;				// Tool tip
 } W_SLIDER;
 
 /* Create a slider widget data structure */
-extern W_SLIDER* sliderCreate(const W_SLDINIT* psInit);
+extern W_SLIDER *sliderCreate(const W_SLDINIT *psInit);
 
 /* Free the memory used by a slider */
 extern void sliderFree(W_SLIDER *psWidget);

@@ -21,16 +21,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _render_type
 {
-	RENDER_DROID,
-	RENDER_STRUCTURE,
-	RENDER_FEATURE,
-	RENDER_PROXMSG,
-	RENDER_PROJECTILE,
-	RENDER_SHADOW,
-	RENDER_ANIMATION,
-	RENDER_EFFECT,
-	RENDER_DELIVPOINT,
-	RENDER_PARTICLE
+    RENDER_DROID,
+    RENDER_STRUCTURE,
+    RENDER_FEATURE,
+    RENDER_PROXMSG,
+    RENDER_PROJECTILE,
+    RENDER_SHADOW,
+    RENDER_ANIMATION,
+    RENDER_EFFECT,
+    RENDER_DELIVPOINT,
+    RENDER_PARTICLE
 } RENDER_TYPE;
 
 //function prototypes
@@ -39,7 +39,7 @@ typedef enum _render_type
 extern BOOL bucketSetupList(void);
 
 /* add an object to the current render list */
-extern BOOL bucketAddTypeToList(RENDER_TYPE objectType, void* object);
+extern BOOL bucketAddTypeToList(RENDER_TYPE objectType, void *object);
 
 /* render Objects in list */
 extern BOOL bucketRenderCurrentList(void);

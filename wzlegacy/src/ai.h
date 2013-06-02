@@ -88,7 +88,7 @@ extern SDWORD aiBestNearestTarget(DROID *psDroid, BASE_OBJECT **ppsObj, int weap
 
 /* See if there is a target in range added int weapon_slot*/
 extern BOOL aiChooseTarget(BASE_OBJECT *psObj,
-						   BASE_OBJECT **ppsTarget, int weapon_slot, BOOL bUpdateTarget);
+                           BASE_OBJECT **ppsTarget, int weapon_slot, BOOL bUpdateTarget);
 
 /*set the droid to attack if wihin range otherwise move to target*/
 extern void attackTarget(DROID *psDroid, BASE_OBJECT *psTarget);

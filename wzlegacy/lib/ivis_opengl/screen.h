@@ -39,14 +39,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//*
 extern void screenSetTextColour(UBYTE red, UBYTE green, UBYTE blue);
 
 /* backDrop */
-extern void screen_SetBackDropFromFile(const char* filename);
+extern void screen_SetBackDropFromFile(const char *filename);
 extern void screen_StopBackDrop(void);
 extern void screen_RestartBackDrop(void);
 extern BOOL screen_GetBackDrop(void);
 extern void screen_Upload(const char *newBackDropBmp, BOOL preview);
 
 /* screendump */
-extern void screenDumpToDisk(const char* path);
+extern void screenDumpToDisk(const char *path);
 
 /* Toggle the display between full screen or windowed */
 extern void	screenToggleMode(void);

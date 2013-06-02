@@ -54,24 +54,24 @@ static BASE_OBJECT *TargetingObject;
 //
 void targetInitialise(void)
 {
-	TargetCurrent = 0;
-	TargetCurrentID = UDWORD_MAX;
+    TargetCurrent = 0;
+    TargetCurrentID = UDWORD_MAX;
 }
 
 // Reset the target list, call once per frame.
 //
 void targetOpenList(BASE_OBJECT *psTargeting)
 {
-	NumTargets = 0;
-	FoundCurrent = false;
-	TargetingObject = psTargeting;
+    NumTargets = 0;
+    FoundCurrent = false;
+    TargetingObject = psTargeting;
 }
 
 void targetCloseList(void)
 {
 }
 
-void targetAdd(WZ_DECL_UNUSED BASE_OBJECT* psObj)
+void targetAdd(WZ_DECL_UNUSED BASE_OBJECT *psObj)
 {
 }
 
@@ -79,103 +79,117 @@ void targetAdd(WZ_DECL_UNUSED BASE_OBJECT* psObj)
 //
 static BASE_OBJECT *targetAquireNearestView(SWORD x,SWORD y)
 {
-	UWORD i;
-	UWORD Nearesti = 0;
-	UDWORD NearestDx = UDWORD_MAX;
-	UDWORD dx,dy;
-	BASE_OBJECT *NearestObj = NULL;
-	BASE_OBJECT *psObj;
+    UWORD i;
+    UWORD Nearesti = 0;
+    UDWORD NearestDx = UDWORD_MAX;
+    UDWORD dx,dy;
+    BASE_OBJECT *NearestObj = NULL;
+    BASE_OBJECT *psObj;
 
-	for(i=0; i<NumTargets; i++) {
-		psObj = TargetList[i];
-		dx = abs(psObj->sDisplay.screenX - x);
-		dy = abs(psObj->sDisplay.screenY - y);
-		dx += dy/2;
-		if(dx < NearestDx) {
-			NearestDx = dx;
-			Nearesti = i;
-			NearestObj = psObj;
-		}
-	}
+    for(i=0; i<NumTargets; i++)
+    {
+        psObj = TargetList[i];
+        dx = abs(psObj->sDisplay.screenX - x);
+        dy = abs(psObj->sDisplay.screenY - y);
+        dx += dy/2;
+        if(dx < NearestDx)
+        {
+            NearestDx = dx;
+            Nearesti = i;
+            NearestObj = psObj;
+        }
+    }
 
-	if(NearestObj != NULL) {
-		TargetCurrent = Nearesti;
-		if(TargetCurrentID != NearestObj->id) {
-			TargetCurrentID = NearestObj->id;
-			targetStartAnim();
-		}
-	} else {
-		TargetCurrentID = UDWORD_MAX;
-	}
+    if(NearestObj != NULL)
+    {
+        TargetCurrent = Nearesti;
+        if(TargetCurrentID != NearestObj->id)
+        {
+            TargetCurrentID = NearestObj->id;
+            targetStartAnim();
+        }
+    }
+    else
+    {
+        TargetCurrentID = UDWORD_MAX;
+    }
 
-	return NearestObj;
+    return NearestObj;
 }
 
 // Aquire the target nearest to the specified object.
 //
 BASE_OBJECT *targetAquireNearestObjView(BASE_OBJECT *psObj)
 {
-	if(psObj != NULL) {
-		return targetAquireNearestView((SWORD)(psObj->sDisplay.screenX), (SWORD)(psObj->sDisplay.screenY));
-	} else {
-		return NULL;
-	}
+    if(psObj != NULL)
+    {
+        return targetAquireNearestView((SWORD)(psObj->sDisplay.screenX), (SWORD)(psObj->sDisplay.screenY));
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 // Get the currently targeted object.
 //
 BASE_OBJECT *targetGetCurrent(void)
 {
-	if(TargetCurrentID != UDWORD_MAX) {
-		return TargetList[TargetCurrent];
-	}
+    if(TargetCurrentID != UDWORD_MAX)
+    {
+        return TargetList[TargetCurrent];
+    }
 
-	return NULL;
+    return NULL;
 }
 
 // Start the box zoom animation.
 //
 void targetStartAnim(void)
 {
-	TargetEndTime = gameTime+GAME_TICKS_PER_SEC/2;
+    TargetEndTime = gameTime+GAME_TICKS_PER_SEC/2;
 }
 
 // Display a marker over the current target.
 //
 void targetMarkCurrent(void)
 {
-	SWORD x,y;
-	SWORD Offset;
-	SWORD x0,y0,x1,y1;
+    SWORD x,y;
+    SWORD Offset;
+    SWORD x0,y0,x1,y1;
 
-	if(TargetCurrentID == UDWORD_MAX) {
-		return;
-	}
+    if(TargetCurrentID == UDWORD_MAX)
+    {
+        return;
+    }
 
-	x = (SWORD)(TargetList[TargetCurrent]->sDisplay.screenX);
-	y = (SWORD)(TargetList[TargetCurrent]->sDisplay.screenY);
+    x = (SWORD)(TargetList[TargetCurrent]->sDisplay.screenX);
+    y = (SWORD)(TargetList[TargetCurrent]->sDisplay.screenY);
 
-	// Make it zoom in.
-	if(TargetEndTime > gameTime) {
-		Offset =(SWORD)(16+(TargetEndTime-gameTime)/2);
-	} else {
-		Offset = 16;
-	}
+    // Make it zoom in.
+    if(TargetEndTime > gameTime)
+    {
+        Offset =(SWORD)(16+(TargetEndTime-gameTime)/2);
+    }
+    else
+    {
+        Offset = 16;
+    }
 
-	x0 = (SWORD)(x-Offset);
-	y0 = (SWORD)(y-Offset);
-	x1 = (SWORD)(x+Offset);
-	y1 = (SWORD)(y+Offset);
+    x0 = (SWORD)(x-Offset);
+    y0 = (SWORD)(y-Offset);
+    x1 = (SWORD)(x+Offset);
+    y1 = (SWORD)(y+Offset);
 
-	iV_Line(x0, y0, x0 + 8, y0, WZCOL_YELLOW);
-	iV_Line(x0, y0, x0, y0 + 8, WZCOL_YELLOW);
+    iV_Line(x0, y0, x0 + 8, y0, WZCOL_YELLOW);
+    iV_Line(x0, y0, x0, y0 + 8, WZCOL_YELLOW);
 
-	iV_Line(x1, y0, x1 - 8, y0, WZCOL_YELLOW);
-	iV_Line(x1, y0, x1, y0 + 8, WZCOL_YELLOW);
+    iV_Line(x1, y0, x1 - 8, y0, WZCOL_YELLOW);
+    iV_Line(x1, y0, x1, y0 + 8, WZCOL_YELLOW);
 
-	iV_Line(x1, y1, x1 - 8, y1, WZCOL_YELLOW);
-	iV_Line(x1, y1, x1, y1 - 8, WZCOL_YELLOW);
+    iV_Line(x1, y1, x1 - 8, y1, WZCOL_YELLOW);
+    iV_Line(x1, y1, x1, y1 - 8, WZCOL_YELLOW);
 
-	iV_Line(x0, y1, x0 + 8, y1, WZCOL_YELLOW);
-	iV_Line(x0, y1, x0, y1 - 8, WZCOL_YELLOW);
+    iV_Line(x0, y1, x0 + 8, y1, WZCOL_YELLOW);
+    iV_Line(x0, y1, x0, y1 - 8, WZCOL_YELLOW);
 }

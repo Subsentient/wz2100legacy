@@ -41,9 +41,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _star
 {
-	int      xPos;
-	int      speed;
-	PIELIGHT colour;
+    int      xPos;
+    int      speed;
+    PIELIGHT colour;
 } STAR;
 
 static BOOL		firstcall = false;
@@ -62,42 +62,42 @@ static STAR *stars = NULL;
 
 static STAR newStar(void)
 {
-	STAR s;
-	s.xPos = rand() % barRightX;
-	s.speed = (rand() % 30 + 6) * pie_GetVideoBufferWidth() / 640.0;
-	s.colour = pal_Grey(150 + rand() % 100);
-	return s;
+    STAR s;
+    s.xPos = rand() % barRightX;
+    s.speed = (rand() % 30 + 6) * pie_GetVideoBufferWidth() / 640.0;
+    s.colour = pal_Grey(150 + rand() % 100);
+    return s;
 }
 
 static void setupLoadingScreen(void)
 {
-	unsigned int i;
-	int w = pie_GetVideoBufferWidth();
-	int h = pie_GetVideoBufferHeight();
-	int offset;
+    unsigned int i;
+    int w = pie_GetVideoBufferWidth();
+    int h = pie_GetVideoBufferHeight();
+    int offset;
 
-	boxHeight = h / 40.0;
-	offset = boxHeight;
-	boxWidth = w - 2.0 * offset;
+    boxHeight = h / 40.0;
+    offset = boxHeight;
+    boxWidth = w - 2.0 * offset;
 
-	barRightX = w - offset;
-	barRightY = h - offset;
+    barRightX = w - offset;
+    barRightY = h - offset;
 
-	barLeftX = barRightX - boxWidth;
-	barLeftY = barRightY - boxHeight;
+    barLeftX = barRightX - boxWidth;
+    barLeftY = barRightY - boxHeight;
 
-	starsNum = boxWidth / boxHeight;
-	starHeight = 2.0 * h / 640.0;
+    starsNum = boxWidth / boxHeight;
+    starHeight = 2.0 * h / 640.0;
 
-	if (!stars)
-	{
-		stars = (STAR *)malloc(sizeof(STAR) * starsNum);
-	}
+    if (!stars)
+    {
+        stars = (STAR *)malloc(sizeof(STAR) * starsNum);
+    }
 
-	for (i = 0; i < starsNum; ++i)
-	{
-		stars[i] = newStar();
-	}
+    for (i = 0; i < starsNum; ++i)
+    {
+        stars[i] = newStar();
+    }
 }
 
 
@@ -106,94 +106,96 @@ static void setupLoadingScreen(void)
 //
 BOOL frontendInitVars(void)
 {
-	firstcall = true;
-	setupLoadingScreen();
+    firstcall = true;
+    setupLoadingScreen();
 
-	return true;
+    return true;
 }
 
 // ///////////////// /////////////////////////////////////////////////
 // Main Front end game loop.
 TITLECODE titleLoop(void)
 {
-	TITLECODE RetCode = TITLECODE_CONTINUE;
+    TITLECODE RetCode = TITLECODE_CONTINUE;
 
-	pie_SetDepthBufferStatus(DEPTH_CMP_ALWAYS_WRT_ON);
-	pie_SetFogStatus(false);
-	screen_RestartBackDrop();
-	pie_ShowMouse(true);
+    pie_SetDepthBufferStatus(DEPTH_CMP_ALWAYS_WRT_ON);
+    pie_SetFogStatus(false);
+    screen_RestartBackDrop();
+    pie_ShowMouse(true);
 
-	// When we first init the game, firstcall is true.
-	if (firstcall)
-	{
-		firstcall = false;
-		// First check to see if --host was given as a command line option, if not,
-		// then check --join and if neither, run the normal game menu.
-		if( hostlaunch )
-		{
-			ingame.bHostSetup = true;
-			bMultiPlayer = true;
-			bMultiMessages = true;
-			game.type = SKIRMISH;		// needed?
-			changeTitleMode(MULTIOPTION);
-			hostlaunch = false;			// reset the bool to default state.
-		}
-		else if(strlen(iptoconnect) )
-		{
-			changeTitleMode(GAMEFIND);		// a ip/hostname was found, so go directly to the GAMEFIND screen
-		}
-		else
-		{
-			changeTitleMode(TITLE);			// normal game, run main title screen.
-		}
-		// Using software cursors (when on) for these menus due to a bug in SDL's SDL_ShowCursor()
-		pie_SetMouse(CURSOR_DEFAULT, war_GetColouredCursor());
-	}
+    // When we first init the game, firstcall is true.
+    if (firstcall)
+    {
+        firstcall = false;
+        // First check to see if --host was given as a command line option, if not,
+        // then check --join and if neither, run the normal game menu.
+        if( hostlaunch )
+        {
+            ingame.bHostSetup = true;
+            bMultiPlayer = true;
+            bMultiMessages = true;
+            game.type = SKIRMISH;		// needed?
+            changeTitleMode(MULTIOPTION);
+            hostlaunch = false;			// reset the bool to default state.
+        }
+        else if(strlen(iptoconnect) )
+        {
+            changeTitleMode(GAMEFIND);		// a ip/hostname was found, so go directly to the GAMEFIND screen
+        }
+        else
+        {
+            changeTitleMode(TITLE);			// normal game, run main title screen.
+        }
+        // Using software cursors (when on) for these menus due to a bug in SDL's SDL_ShowCursor()
+        pie_SetMouse(CURSOR_DEFAULT, war_GetColouredCursor());
+    }
 
-	if (titleMode != MULTIOPTION && titleMode != MULTILIMIT && titleMode != STARTGAME)
-		screen_disableMapPreview();
+    if (titleMode != MULTIOPTION && titleMode != MULTILIMIT && titleMode != STARTGAME)
+    {
+        screen_disableMapPreview();
+    }
 
-	switch(titleMode) // run relevant title screen code.
-	{
-		// MULTIPLAYER screens
-		case PROTOCOL:
-			runConnectionScreen(); // multiplayer connection screen.
-			break;
-		case MULTIOPTION:
-			runMultiOptions();
-			break;
-		case GAMEFIND:
-			runGameFind();
-			break;
-		case MULTI:
-			runMultiPlayerMenu();
-			break;
-		case MULTILIMIT:
-			runLimitScreen();
-			break;
-		case KEYMAP:
-			runKeyMapEditor();
-			break;
+    switch(titleMode) // run relevant title screen code.
+    {
+            // MULTIPLAYER screens
+        case PROTOCOL:
+            runConnectionScreen(); // multiplayer connection screen.
+            break;
+        case MULTIOPTION:
+            runMultiOptions();
+            break;
+        case GAMEFIND:
+            runGameFind();
+            break;
+        case MULTI:
+            runMultiPlayerMenu();
+            break;
+        case MULTILIMIT:
+            runLimitScreen();
+            break;
+        case KEYMAP:
+            runKeyMapEditor();
+            break;
 
-		case TITLE:
-			runTitleMenu();
-			break;
+        case TITLE:
+            runTitleMenu();
+            break;
 
-		case SINGLE:
-			runSinglePlayerMenu();
-			break;
+        case SINGLE:
+            runSinglePlayerMenu();
+            break;
 
-		case TUTORIAL:
-			runTutorialMenu();
-			break;
+        case TUTORIAL:
+            runTutorialMenu();
+            break;
 
 //		case GRAPHICS:
 //			runGraphicsOptionsMenu();
 //			break;
 
-		case CREDITS:
-			runCreditsScreen();
-			break;
+        case CREDITS:
+            runCreditsScreen();
+            break;
 
 //		case DEMOMODE:
 //			runDemoMenu();
@@ -201,73 +203,74 @@ TITLECODE titleLoop(void)
 //	case VIDEO:
 //			runVideoOptionsMenu();
 //			break;
-		case OPTIONS:
-			runOptionsMenu();
-			break;
+        case OPTIONS:
+            runOptionsMenu();
+            break;
 
-		case GAME:
-			runGameOptionsMenu();
-			break;
+        case GAME:
+            runGameOptionsMenu();
+            break;
 
 
-		case GRAPHICS_OPTIONS:
-			runGraphicsOptionsMenu();
-			break;
+        case GRAPHICS_OPTIONS:
+            runGraphicsOptionsMenu();
+            break;
 
-		case AUDIO_OPTIONS:
-			runAudioOptionsMenu();
-			break;
+        case AUDIO_OPTIONS:
+            runAudioOptionsMenu();
+            break;
 
-		case VIDEO_OPTIONS:
-			runVideoOptionsMenu();
-			break;
+        case VIDEO_OPTIONS:
+            runVideoOptionsMenu();
+            break;
 
-		case MOUSE_OPTIONS:
-			runMouseOptionsMenu();
-			break;
+        case MOUSE_OPTIONS:
+            runMouseOptionsMenu();
+            break;
 
-		case QUIT:
-			RetCode = TITLECODE_QUITGAME;
-			break;
+        case QUIT:
+            RetCode = TITLECODE_QUITGAME;
+            break;
 
-		case STARTGAME:
-		case LOADSAVEGAME:
-			initLoadingScreen(true);//render active
-  			if (titleMode == LOADSAVEGAME)
-			{
-				RetCode = TITLECODE_SAVEGAMELOAD;
-			}
-			else
-			{
-				RetCode = TITLECODE_STARTGAME;
-			}
-			return RetCode;			// don't flip!
+        case STARTGAME:
+        case LOADSAVEGAME:
+            initLoadingScreen(true);//render active
+            if (titleMode == LOADSAVEGAME)
+            {
+                RetCode = TITLECODE_SAVEGAMELOAD;
+            }
+            else
+            {
+                RetCode = TITLECODE_STARTGAME;
+            }
+            return RetCode;			// don't flip!
 
-		case SHOWINTRO:
-			pie_SetFogStatus(false);
-	  		pie_ScreenFlip(CLEAR_BLACK);
-			changeTitleMode(TITLE);
-			RetCode = TITLECODE_SHOWINTRO;
-			break;
+        case SHOWINTRO:
+            pie_SetFogStatus(false);
+            pie_ScreenFlip(CLEAR_BLACK);
+            changeTitleMode(TITLE);
+            RetCode = TITLECODE_SHOWINTRO;
+            break;
 
-		default:
-			debug( LOG_FATAL, "unknown title screen mode" );
-			abort();
-	}
+        default:
+            debug( LOG_FATAL, "unknown title screen mode" );
+            abort();
+    }
 
-	audio_Update();
-	
-	pie_DrawMouse(mouseX(), mouseY());
+    audio_Update();
 
-	pie_SetFogStatus(false);
-	pie_ScreenFlip(CLEAR_BLACK);//title loop
+    pie_DrawMouse(mouseX(), mouseY());
 
-	if ((keyDown(KEY_LALT) || keyDown(KEY_RALT))
-	    /* Check for toggling display mode */
-	    && keyPressed(KEY_RETURN)) {
-		screenToggleMode();
-	}
-	return RetCode;
+    pie_SetFogStatus(false);
+    pie_ScreenFlip(CLEAR_BLACK);//title loop
+
+    if ((keyDown(KEY_LALT) || keyDown(KEY_RALT))
+            /* Check for toggling display mode */
+            && keyPressed(KEY_RETURN))
+    {
+        screenToggleMode();
+    }
+    return RetCode;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -277,105 +280,105 @@ TITLECODE titleLoop(void)
 //loadbar update
 void loadingScreenCallback(void)
 {
-	const PIELIGHT loadingbar_background = pal_RGBA(0, 0, 0, 24);
-	const uint32_t currTick = SDL_GetTicks();
-	unsigned int i;
+    const PIELIGHT loadingbar_background = pal_RGBA(0, 0, 0, 24);
+    const uint32_t currTick = SDL_GetTicks();
+    unsigned int i;
 
-	if (currTick - lastTick < 50)
-	{
-		return;
-	}
-	lastTick = currTick;
+    if (currTick - lastTick < 50)
+    {
+        return;
+    }
+    lastTick = currTick;
 
-	/* Draw the black rectangle at the bottom, with a two pixel border */
-	pie_UniTransBoxFill(barLeftX - 2, barLeftY - 2, barRightX + 2, barRightY + 2, loadingbar_background);
+    /* Draw the black rectangle at the bottom, with a two pixel border */
+    pie_UniTransBoxFill(barLeftX - 2, barLeftY - 2, barRightX + 2, barRightY + 2, loadingbar_background);
 
-	for (i = 1; i < starsNum; ++i)
-	{
-		stars[i].xPos = stars[i].xPos + stars[i].speed;
-		if (stars[i].xPos >= barRightX)
-		{
-			stars[i] = newStar();
-			stars[i].xPos = 1;
-		}
-		{
-		const int topX = barLeftX + stars[i].xPos;
-		const int topY = barLeftY + i * (boxHeight - starHeight) / starsNum;
-		const int botX = MIN(topX + stars[i].speed, barRightX);
-		const int botY = topY + starHeight;
+    for (i = 1; i < starsNum; ++i)
+    {
+        stars[i].xPos = stars[i].xPos + stars[i].speed;
+        if (stars[i].xPos >= barRightX)
+        {
+            stars[i] = newStar();
+            stars[i].xPos = 1;
+        }
+        {
+            const int topX = barLeftX + stars[i].xPos;
+            const int topY = barLeftY + i * (boxHeight - starHeight) / starsNum;
+            const int botX = MIN(topX + stars[i].speed, barRightX);
+            const int botY = topY + starHeight;
 
-		pie_UniTransBoxFill(topX, topY, botX, botY, stars[i].colour);
-		}
-	}
+            pie_UniTransBoxFill(topX, topY, botX, botY, stars[i].colour);
+        }
+    }
 
-	pie_ScreenFlip(CLEAR_OFF_AND_NO_BUFFER_DOWNLOAD);//loading callback		// dont clear.
-	audio_Update();
+    pie_ScreenFlip(CLEAR_OFF_AND_NO_BUFFER_DOWNLOAD);//loading callback		// dont clear.
+    audio_Update();
 }
 
 // fill buffers with the static screen
 void initLoadingScreen( BOOL drawbdrop )
 {
-	pie_ShowMouse(false);
-	if (!drawbdrop)	// fill buffers
-	{
-		//just init the load bar with the current screen
-		// setup the callback....
-		pie_SetFogStatus(false);
-		pie_ScreenFlip(CLEAR_BLACK);
-		resSetLoadCallback(loadingScreenCallback);
-		return;
-	}
+    pie_ShowMouse(false);
+    if (!drawbdrop)	// fill buffers
+    {
+        //just init the load bar with the current screen
+        // setup the callback....
+        pie_SetFogStatus(false);
+        pie_ScreenFlip(CLEAR_BLACK);
+        resSetLoadCallback(loadingScreenCallback);
+        return;
+    }
 
-	pie_SetFogStatus(false);
-	pie_ScreenFlip(CLEAR_BLACK);//init loading
+    pie_SetFogStatus(false);
+    pie_ScreenFlip(CLEAR_BLACK);//init loading
 
-	// setup the callback....
-	resSetLoadCallback(loadingScreenCallback);
+    // setup the callback....
+    resSetLoadCallback(loadingScreenCallback);
 
-	// NOTE: When this is called, we stop the backdrop, but since the screen
-	// is double buffered, we only have the backdrop on 1 buffer, and not the other.
-	//screen_StopBackDrop();
+    // NOTE: When this is called, we stop the backdrop, but since the screen
+    // is double buffered, we only have the backdrop on 1 buffer, and not the other.
+    //screen_StopBackDrop();
 }
 
 
 // fill buffers with the static screen
 void startCreditsScreen(void)
 {
-	SCREENTYPE	screen = SCREEN_CREDITS;
+    SCREENTYPE	screen = SCREEN_CREDITS;
 
-	lastChange = gameTime;
-	// fill buffers
+    lastChange = gameTime;
+    // fill buffers
 
-	pie_LoadBackDrop(screen);
+    pie_LoadBackDrop(screen);
 
-	pie_SetFogStatus(false);
-	pie_ScreenFlip(CLEAR_BLACK);//init loading
+    pie_SetFogStatus(false);
+    pie_ScreenFlip(CLEAR_BLACK);//init loading
 }
 
 /* This function does nothing - since it's already been drawn */
 void runCreditsScreen( void )
 {
-	// Check for key presses now.
-	if( keyReleased(KEY_ESC)
-	   || keyReleased(KEY_SPACE)
-	   || mouseReleased(MOUSE_LMB)
-	   || gameTime - lastChange > 4000 )
-	{
-		lastChange = gameTime;
-		changeTitleMode(QUIT);
-	}
-	return;
+    // Check for key presses now.
+    if( keyReleased(KEY_ESC)
+            || keyReleased(KEY_SPACE)
+            || mouseReleased(MOUSE_LMB)
+            || gameTime - lastChange > 4000 )
+    {
+        lastChange = gameTime;
+        changeTitleMode(QUIT);
+    }
+    return;
 }
 
 // shut down the loading screen
 void closeLoadingScreen(void)
 {
-	if (stars)
-	{
-		free(stars);
-		stars = NULL;
-	}
-	resSetLoadCallback(NULL);
+    if (stars)
+    {
+        free(stars);
+        stars = NULL;
+    }
+    resSetLoadCallback(NULL);
 }
 
 
@@ -385,53 +388,53 @@ void closeLoadingScreen(void)
 
 BOOL displayGameOver(BOOL bDidit)
 {
-	if(bDidit)
-	{
-		setPlayerHasWon(true);
-		multiplayerWinSequence(true);
-		if(bMultiPlayer)
-		{
-			updateMultiStatsWins();
-		}
-	}
-	else
-	{
-		setPlayerHasLost(true);
-		if(bMultiPlayer)
-		{
-			updateMultiStatsLoses();
-		}
-	}
+    if(bDidit)
+    {
+        setPlayerHasWon(true);
+        multiplayerWinSequence(true);
+        if(bMultiPlayer)
+        {
+            updateMultiStatsWins();
+        }
+    }
+    else
+    {
+        setPlayerHasLost(true);
+        if(bMultiPlayer)
+        {
+            updateMultiStatsLoses();
+        }
+    }
 
-	//clear out any mission widgets - timers etc that may be on the screen
-	clearMissionWidgets();
-	intAddMissionResult(bDidit, true);
+    //clear out any mission widgets - timers etc that may be on the screen
+    clearMissionWidgets();
+    intAddMissionResult(bDidit, true);
 
-	return true;
+    return true;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 BOOL testPlayerHasLost( void )
 {
-	return(bPlayerHasLost);
+    return(bPlayerHasLost);
 }
 
 void setPlayerHasLost( BOOL val )
 {
-	bPlayerHasLost = val;
+    bPlayerHasLost = val;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 BOOL testPlayerHasWon( void )
 {
-	return(bPlayerHasWon);
+    return(bPlayerHasWon);
 }
 
 void setPlayerHasWon( BOOL val )
 {
-	bPlayerHasWon = val;
+    bPlayerHasWon = val;
 }
 
 /*access functions for scriptWinLoseVideo - used to indicate when the script is playing the win/lose video*/

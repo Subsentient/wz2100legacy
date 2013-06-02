@@ -24,19 +24,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _group_type
 {
-	GT_NORMAL,			// standard group
-	GT_COMMAND,			// command droid group
-	GT_TRANSPORTER,		// transporter group
+    GT_NORMAL,			// standard group
+    GT_COMMAND,			// command droid group
+    GT_TRANSPORTER,		// transporter group
 } GROUP_TYPE;
 
 typedef struct _droid_group
 {
-	SWORD		type;
-	SWORD		refCount;
-	DROID		*psList;			// list of droids in the group
-	DROID		*psCommander;		// the command droid of a command group
-	RUN_DATA	sRunData;			// where the group should retreat to
-	struct _droid_group *psNext, *psPrev;	// keep linked to destroy all (a workaround hack)
+    SWORD		type;
+    SWORD		refCount;
+    DROID		*psList;			// list of droids in the group
+    DROID		*psCommander;		// the command droid of a command group
+    RUN_DATA	sRunData;			// where the group should retreat to
+    struct _droid_group *psNext, *psPrev;	// keep linked to destroy all (a workaround hack)
 } DROID_GROUP;
 
 // initialise the group system
@@ -58,7 +58,7 @@ void grpJoinEnd(DROID_GROUP *psGroup, DROID *psDroid);
 void grpLeave(DROID_GROUP *psGroup, DROID *psDroid);
 
 // count the members of a group
-unsigned int grpNumMembers(const DROID_GROUP* psGroup);
+unsigned int grpNumMembers(const DROID_GROUP *psGroup);
 
 // remove all droids from a group
 void grpReset(DROID_GROUP *psGroup);

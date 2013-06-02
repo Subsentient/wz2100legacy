@@ -33,18 +33,18 @@ extern UDWORD gameTime;
 extern float frameTimeFraction;		/**< Private performance calculation. Do not use. */
 extern float frameTimeFraction2;	/**< Private performance calculation. Do not use. */
 
-/** 
+/**
  *	The time for the last frame. This tells you the amount of real world time
  *	that is spent by the current slice, or in other words, the time difference
- *	between the current frame and the previous frame. 
+ *	between the current frame and the previous frame.
  */
 extern UDWORD frameTime;
 
 /** The current time in the game world - never stops. */
 extern UDWORD gameTime2;
 
-/** 
- *	The time for the last frame - never stops. 
+/**
+ *	The time for the last frame - never stops.
  *	@see frameTime
  */
 extern UDWORD frameTime2;
@@ -69,7 +69,7 @@ extern void gameTimeReset(UDWORD time);
 
 /**
  *	Reset the game time modifiers.
- *	@see gameTimeSetMod 
+ *	@see gameTimeSetMod
  */
 void gameTimeResetMod(void);
 
@@ -81,7 +81,7 @@ void gameTimeGetMod(float *pMod);
 
 /**
  * Return a number that climbs over tickFrequency game ticks and ends up in the required range.
- * For instance getTimeValueRange(4096,256) will return a number that cycles through the values 
+ * For instance getTimeValueRange(4096,256) will return a number that cycles through the values
  * 0..256 every 4.096 seconds... Ensure that the first is an integer multiple of the second.
  * Useful for periodical stuff.
  *
@@ -91,7 +91,7 @@ extern UDWORD	getTimeValueRange(UDWORD tickFrequency, UDWORD requiredRange);
 
 /**
  * Return a number that climbs over tickFrequency game ticks and ends up in the required range.
- * For instance getTimeValueRange(4096,256) will return a number that cycles through the values 
+ * For instance getTimeValueRange(4096,256) will return a number that cycles through the values
  * 0..256 every 4.096 seconds... Ensure that the first is an integer multiple of the second.
  * Useful for periodical stuff.
  *
@@ -102,7 +102,7 @@ extern	UDWORD	getStaticTimeValueRange(UDWORD tickFrequency, UDWORD requiredRange
 /** Break down given time into its constituent components. */
 extern void	getTimeComponents(UDWORD time, UDWORD *hours, UDWORD *minutes, UDWORD *seconds);
 
-/** 
+/**
  * Return an incremental value adjusted for the time we have available this frame. Basically
  * multiplies the passed value by delta time.
  * @param value Amount to change something in a second.
@@ -111,14 +111,14 @@ extern void	getTimeComponents(UDWORD time, UDWORD *hours, UDWORD *minutes, UDWOR
  */
 static inline float timeAdjustedIncrement(float value, BOOL pauseTime)
 {
-	if (pauseTime)
-	{
-		return (value * frameTimeFraction);
-	}
-	else
-	{
-		return (value * frameTimeFraction2);
-	}
+    if (pauseTime)
+    {
+        return (value * frameTimeFraction);
+    }
+    else
+    {
+        return (value * frameTimeFraction2);
+    }
 }
 
 #endif

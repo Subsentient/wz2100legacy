@@ -102,29 +102,29 @@ static BOOL OldViewValid;
 /* Sets the camera to inactive to begin with */
 void	initWarCam( void )
 {
-	/* We're not intitially following anything */
-	trackingCamera.status = CAM_INACTIVE;
+    /* We're not intitially following anything */
+    trackingCamera.status = CAM_INACTIVE;
 
-	/* Logo setup */
-	warCamLogoRotation = 0;
+    /* Logo setup */
+    warCamLogoRotation = 0;
 
-	OldViewValid = false;
+    OldViewValid = false;
 }
 
 
 /* Static function that switches off tracking - and might not be desirable? - Jim?*/
 static void camSwitchOff( void )
 {
- 	/* Restore the angles */
+    /* Restore the angles */
 //	player.r.x = trackingCamera.oldView.r.x;
-	player.r.z = trackingCamera.oldView.r.z;
+    player.r.z = trackingCamera.oldView.r.z;
 
-	/* And height */
-	/* Is this desirable??? */
+    /* And height */
+    /* Is this desirable??? */
 //	player.p.y = trackingCamera.oldView.p.y;
 
-	/* Restore distance */
-	setViewDistance(trackingCamera.oldDistance);
+    /* Restore distance */
+    setViewDistance(trackingCamera.oldDistance);
 }
 
 
@@ -136,193 +136,193 @@ static void camSwitchOff( void )
 
 static void processLeaderSelection( void )
 {
-	DROID *psDroid;
-	DROID *psPresent;
-	DROID *psNew = NULL;
-	UDWORD leaderClass;
-	BOOL bSuccess;
-	UDWORD dif;
-	UDWORD bestSoFar;
+    DROID *psDroid;
+    DROID *psPresent;
+    DROID *psNew = NULL;
+    UDWORD leaderClass;
+    BOOL bSuccess;
+    UDWORD dif;
+    UDWORD bestSoFar;
 
-	if (demoGetStatus())
-	{
-		return;
-	}
+    if (demoGetStatus())
+    {
+        return;
+    }
 
-	if (getWarCamStatus())
-	{
-		/* Only do if we're tracking a droid */
-		if (trackingCamera.target->type != OBJ_DROID)
-		{
-			return;
-		}
-	}
-	else
-	{
-		return;
-	}
+    if (getWarCamStatus())
+    {
+        /* Only do if we're tracking a droid */
+        if (trackingCamera.target->type != OBJ_DROID)
+        {
+            return;
+        }
+    }
+    else
+    {
+        return;
+    }
 
-	/* Don't do if we're driving?! */
-	if (getDrivingStatus())
-	{
-		return;
-	}
+    /* Don't do if we're driving?! */
+    if (getDrivingStatus())
+    {
+        return;
+    }
 
-	psPresent = (DROID*)trackingCamera.target;
+    psPresent = (DROID *)trackingCamera.target;
 
-	if (keyPressed(KEY_LEFTARROW))
-	{
-		leaderClass = LEADER_LEFT;
-	}
+    if (keyPressed(KEY_LEFTARROW))
+    {
+        leaderClass = LEADER_LEFT;
+    }
 
-	else if (keyPressed(KEY_RIGHTARROW))
-	{
-		leaderClass = LEADER_RIGHT;
-	}
+    else if (keyPressed(KEY_RIGHTARROW))
+    {
+        leaderClass = LEADER_RIGHT;
+    }
 
-	else if (keyPressed(KEY_UPARROW))
-	{
-		leaderClass = LEADER_UP;
-	}
+    else if (keyPressed(KEY_UPARROW))
+    {
+        leaderClass = LEADER_UP;
+    }
 
-	else if (keyPressed(KEY_DOWNARROW))
-	{
-		leaderClass = LEADER_DOWN;
-	}
-	else
-	{
-		leaderClass = LEADER_STATIC;
-	}
+    else if (keyPressed(KEY_DOWNARROW))
+    {
+        leaderClass = LEADER_DOWN;
+    }
+    else
+    {
+        leaderClass = LEADER_STATIC;
+    }
 
-	bSuccess = false;
-	bestSoFar = UDWORD_MAX;
+    bSuccess = false;
+    bestSoFar = UDWORD_MAX;
 
-	switch (leaderClass)
-	{
-	case	LEADER_LEFT:
-		for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-		{
-			/* Is it even on the sscreen? */
-			if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
-			{
-				if (psDroid->sDisplay.screenX < psPresent->sDisplay.screenX)
-				{
-					dif = psPresent->sDisplay.screenX - psDroid->sDisplay.screenX;
-					if (dif < bestSoFar)
-					{
-						bestSoFar = dif;
-						bSuccess = true;
-						psNew = psDroid;
-					}
-				}
-			}
-		}
-		break;
-	case	LEADER_RIGHT:
-		for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-		{
-			/* Is it even on the sscreen? */
-			if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
-			{
-				if (psDroid->sDisplay.screenX > psPresent->sDisplay.screenX)
-				{
-					dif = psDroid->sDisplay.screenX - psPresent->sDisplay.screenX;
-					if (dif < bestSoFar)
-					{
-						bestSoFar = dif;
-						bSuccess = true;
-						psNew = psDroid;
-					}
-				}
-			}
-		}
-		break;
-	case	LEADER_UP:
-		for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-		{
-			/* Is it even on the sscreen? */
-			if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
-			{
-				if (psDroid->sDisplay.screenY < psPresent->sDisplay.screenY)
-				{
-					dif = psPresent->sDisplay.screenY - psDroid->sDisplay.screenY;
-					if (dif < bestSoFar)
-					{
-						bestSoFar = dif;
-						bSuccess = true;
-						psNew = psDroid;
-					}
-				}
-			}
-		}
-		break;
-	case	LEADER_DOWN:
-		for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-		{
-			/* Is it even on the sscreen? */
-			if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
-			{
-				if (psDroid->sDisplay.screenY > psPresent->sDisplay.screenY)
-				{
-					dif = psDroid->sDisplay.screenY - psPresent->sDisplay.screenY;
-					if (dif < bestSoFar)
-					{
-						bestSoFar = dif;
-						bSuccess = true;
-						psNew = psDroid;
-					}
-				}
-			}
-		}
-		break;
-	case	LEADER_STATIC:
-		break;
-	}
-	if (bSuccess)
-	{
-		camAllignWithTarget((BASE_OBJECT*)psNew);
-	}
+    switch (leaderClass)
+    {
+        case	LEADER_LEFT:
+            for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+            {
+                /* Is it even on the sscreen? */
+                if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
+                {
+                    if (psDroid->sDisplay.screenX < psPresent->sDisplay.screenX)
+                    {
+                        dif = psPresent->sDisplay.screenX - psDroid->sDisplay.screenX;
+                        if (dif < bestSoFar)
+                        {
+                            bestSoFar = dif;
+                            bSuccess = true;
+                            psNew = psDroid;
+                        }
+                    }
+                }
+            }
+            break;
+        case	LEADER_RIGHT:
+            for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+            {
+                /* Is it even on the sscreen? */
+                if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
+                {
+                    if (psDroid->sDisplay.screenX > psPresent->sDisplay.screenX)
+                    {
+                        dif = psDroid->sDisplay.screenX - psPresent->sDisplay.screenX;
+                        if (dif < bestSoFar)
+                        {
+                            bestSoFar = dif;
+                            bSuccess = true;
+                            psNew = psDroid;
+                        }
+                    }
+                }
+            }
+            break;
+        case	LEADER_UP:
+            for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+            {
+                /* Is it even on the sscreen? */
+                if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
+                {
+                    if (psDroid->sDisplay.screenY < psPresent->sDisplay.screenY)
+                    {
+                        dif = psPresent->sDisplay.screenY - psDroid->sDisplay.screenY;
+                        if (dif < bestSoFar)
+                        {
+                            bestSoFar = dif;
+                            bSuccess = true;
+                            psNew = psDroid;
+                        }
+                    }
+                }
+            }
+            break;
+        case	LEADER_DOWN:
+            for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+            {
+                /* Is it even on the sscreen? */
+                if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) && psDroid->selected && psDroid != psPresent)
+                {
+                    if (psDroid->sDisplay.screenY > psPresent->sDisplay.screenY)
+                    {
+                        dif = psDroid->sDisplay.screenY - psPresent->sDisplay.screenY;
+                        if (dif < bestSoFar)
+                        {
+                            bestSoFar = dif;
+                            bSuccess = true;
+                            psNew = psDroid;
+                        }
+                    }
+                }
+            }
+            break;
+        case	LEADER_STATIC:
+            break;
+    }
+    if (bSuccess)
+    {
+        camAllignWithTarget((BASE_OBJECT *)psNew);
+    }
 }
 
 
 /* Sets up the dummy target for the camera */
 static void setUpRadarTarget(SDWORD x, SDWORD y)
 {
-	radarTarget.pos.x = x;
-	radarTarget.pos.y = y;
+    radarTarget.pos.x = x;
+    radarTarget.pos.y = y;
 
-	if ((x < 0) || (y < 0) || (x > (SDWORD)((mapWidth - 1) * TILE_UNITS))
-	    || (y > (SDWORD)((mapHeight - 1) * TILE_UNITS)))
-	{
-		radarTarget.pos.z = 128 * ELEVATION_SCALE + CAMERA_PIVOT_HEIGHT;
-	}
-	else
-	{
-		radarTarget.pos.z = map_Height(x,y) + CAMERA_PIVOT_HEIGHT;
-	}
-	radarTarget.direction = calcDirection(player.p.x, player.p.z, x, y);
-	radarTarget.pitch = 0;
-	radarTarget.roll = 0;
-	radarTarget.type = OBJ_TARGET;
-	radarTarget.died = 0;
+    if ((x < 0) || (y < 0) || (x > (SDWORD)((mapWidth - 1) * TILE_UNITS))
+            || (y > (SDWORD)((mapHeight - 1) * TILE_UNITS)))
+    {
+        radarTarget.pos.z = 128 * ELEVATION_SCALE + CAMERA_PIVOT_HEIGHT;
+    }
+    else
+    {
+        radarTarget.pos.z = map_Height(x,y) + CAMERA_PIVOT_HEIGHT;
+    }
+    radarTarget.direction = calcDirection(player.p.x, player.p.z, x, y);
+    radarTarget.pitch = 0;
+    radarTarget.roll = 0;
+    radarTarget.type = OBJ_TARGET;
+    radarTarget.died = 0;
 }
 
 
 /* Attempts to find the target for the camera to track */
 static BASE_OBJECT *camFindTarget(void)
 {
-	/*	See if we can find a selected droid. If there's more than one
-		droid selected for the present player, then we track the oldest
-		one. */
+    /*	See if we can find a selected droid. If there's more than one
+    	droid selected for the present player, then we track the oldest
+    	one. */
 
-	if (bRadarTrackingRequested)
-	{
-		setUpRadarTarget(radarX, radarY);
-		bRadarTrackingRequested = false;
-		return(&radarTarget);
-	}
+    if (bRadarTrackingRequested)
+    {
+        setUpRadarTarget(radarX, radarY);
+        bRadarTrackingRequested = false;
+        return(&radarTarget);
+    }
 
-	return camFindDroidTarget();
+    return camFindDroidTarget();
 }
 
 
@@ -331,91 +331,91 @@ BOOL camTrackCamera(void);
 /* Updates the camera position/angle along with the object movement */
 BOOL	processWarCam( void )
 {
-BASE_OBJECT	*foundTarget;
-BOOL Status = true;
+    BASE_OBJECT	*foundTarget;
+    BOOL Status = true;
 
-	/* Get out if the camera isn't active */
-	if(trackingCamera.status == CAM_INACTIVE)
-	{
-		return(true);
-	}
+    /* Get out if the camera isn't active */
+    if(trackingCamera.status == CAM_INACTIVE)
+    {
+        return(true);
+    }
 
-	/* Ensure that the camera only ever flips state within this routine! */
-	switch(trackingCamera.status)
-	{
-	case CAM_REQUEST:
+    /* Ensure that the camera only ever flips state within this routine! */
+    switch(trackingCamera.status)
+    {
+        case CAM_REQUEST:
 
-			/* See if we can find the target to follow */
-			foundTarget = camFindTarget();
+            /* See if we can find the target to follow */
+            foundTarget = camFindTarget();
 
-			if(foundTarget && !foundTarget->died)
-			{
-				/* We've got one, so store away info */
-				camAllignWithTarget(foundTarget);
-				/* We're now into tracking status */
-				trackingCamera.status = CAM_TRACKING;
-				/* Inform via console */
-				if(foundTarget->type == OBJ_DROID)
-				{
-					if(getWarCamStatus())
-					{
-						CONPRINTF(ConsoleString,(ConsoleString,"WZ/CAM  - %s",droidGetName((DROID*)foundTarget)));
-					}
-				}
-				else
-				{
+            if(foundTarget && !foundTarget->died)
+            {
+                /* We've got one, so store away info */
+                camAllignWithTarget(foundTarget);
+                /* We're now into tracking status */
+                trackingCamera.status = CAM_TRACKING;
+                /* Inform via console */
+                if(foundTarget->type == OBJ_DROID)
+                {
+                    if(getWarCamStatus())
+                    {
+                        CONPRINTF(ConsoleString,(ConsoleString,"WZ/CAM  - %s",droidGetName((DROID *)foundTarget)));
+                    }
+                }
+                else
+                {
 //					CONPRINTF(ConsoleString,(ConsoleString,"DROID-CAM V0.1 Enabled - Now tracking new location"));
-				}
-			}
-			else
-			{
-				/* We've requested a track with no droid selected */
+                }
+            }
+            else
+            {
+                /* We've requested a track with no droid selected */
 //				addConsoleMessage("Droid-CAM V0.1 ERROR - No targets(s) selected",DEFAULT_JUSTIFY,SYSTEM_MESSAGE);
-				trackingCamera.status = CAM_INACTIVE;
-			}
-		break;
+                trackingCamera.status = CAM_INACTIVE;
+            }
+            break;
 
-	case CAM_TRACKING:
-			/* Track the droid unless routine comes back false */
-			if(!camTrackCamera())
-			{
-				/*
-					Camera track came back false, either because droid died or is
-					no longer selected, so reset to old values
-				*/
-				foundTarget = camFindTarget();
-				if(foundTarget && !foundTarget->died)
-				{
-					trackingCamera.status = CAM_REQUEST;
-				}
-				else
-				{
-					trackingCamera.status = CAM_RESET;
-				}
-			}
+        case CAM_TRACKING:
+            /* Track the droid unless routine comes back false */
+            if(!camTrackCamera())
+            {
+                /*
+                	Camera track came back false, either because droid died or is
+                	no longer selected, so reset to old values
+                */
+                foundTarget = camFindTarget();
+                if(foundTarget && !foundTarget->died)
+                {
+                    trackingCamera.status = CAM_REQUEST;
+                }
+                else
+                {
+                    trackingCamera.status = CAM_RESET;
+                }
+            }
 
-		processLeaderSelection();
+            processLeaderSelection();
 
-		break;
-	case CAM_RESET:
-			/* Reset camera to pre-droid tracking status */
-			if( (trackingCamera.target==NULL)
-			  ||(trackingCamera.target->type!=OBJ_TARGET))
-			{
-				camSwitchOff();
-			}
-			/* Switch to inactive mode */
-			trackingCamera.status = CAM_INACTIVE;
+            break;
+        case CAM_RESET:
+            /* Reset camera to pre-droid tracking status */
+            if( (trackingCamera.target==NULL)
+                    ||(trackingCamera.target->type!=OBJ_TARGET))
+            {
+                camSwitchOff();
+            }
+            /* Switch to inactive mode */
+            trackingCamera.status = CAM_INACTIVE;
 //			addConsoleMessage("Droid-CAM V0.1 Disabled",DEFAULT_JUSTIFY,SYSTEM_MESSAGE);
-			Status = false;
-		break;
-	default:
-		debug( LOG_FATAL, "Weirdy status for tracking Camera" );
-		abort();
-		break;
-	}
+            Status = false;
+            break;
+        default:
+            debug( LOG_FATAL, "Weirdy status for tracking Camera" );
+            abort();
+            break;
+    }
 
-	return Status;
+    return Status;
 }
 
 //-----------------------------------------------------------------------------------
@@ -423,65 +423,65 @@ BOOL Status = true;
 /* Flips states for camera active */
 void	setWarCamActive(BOOL status)
 {
-	debug( LOG_NEVER, "setWarCamActive(%d)\n", status );
+    debug( LOG_NEVER, "setWarCamActive(%d)\n", status );
 
-	/* We're trying to switch it on */
-	if(status == true)
-	{
-		/* If it's not inactive then it's already in use - so return */
-		/* We're tracking a droid */
-		if(trackingCamera.status!=CAM_INACTIVE)
-		{
-			if(bRadarTrackingRequested)
-			{
-				trackingCamera.status = CAM_REQUEST;
-			}
-			else
-			{
-				return;
-			}
-		}
-		else
-		{
-			/* Otherwise request the camera to track */
-			trackingCamera.status = CAM_REQUEST;
-		}
-	}
-	else
-		/* We trying to switch off */
-	{
-		/* Is it already off? */
-		if(trackingCamera.status == CAM_INACTIVE)
-		{
-			return;
-		}
-		else
-		{
-			/* Attempt to set to normal */
-			trackingCamera.status = CAM_RESET;
-		}
-	}
+    /* We're trying to switch it on */
+    if(status == true)
+    {
+        /* If it's not inactive then it's already in use - so return */
+        /* We're tracking a droid */
+        if(trackingCamera.status!=CAM_INACTIVE)
+        {
+            if(bRadarTrackingRequested)
+            {
+                trackingCamera.status = CAM_REQUEST;
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            /* Otherwise request the camera to track */
+            trackingCamera.status = CAM_REQUEST;
+        }
+    }
+    else
+        /* We trying to switch off */
+    {
+        /* Is it already off? */
+        if(trackingCamera.status == CAM_INACTIVE)
+        {
+            return;
+        }
+        else
+        {
+            /* Attempt to set to normal */
+            trackingCamera.status = CAM_RESET;
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------------
 
 BASE_OBJECT	*camFindDroidTarget(void)
 {
-	DROID	*psDroid;
+    DROID	*psDroid;
 
-	for(psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-	{
+    for(psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+    {
 
-		if(psDroid->selected)
+        if(psDroid->selected)
 
-		{
-			/* Return the first one found */
-			return( (BASE_OBJECT*)psDroid);
-		}
-	}
+        {
+            /* Return the first one found */
+            return( (BASE_OBJECT *)psDroid);
+        }
+    }
 
-	/* We didn't find one */
-	return(NULL);
+    /* We didn't find one */
+    return(NULL);
 }
 
 
@@ -490,174 +490,174 @@ BASE_OBJECT	*camFindDroidTarget(void)
 /* Stores away old viewangle info and sets up new distance and angles */
 void	camAllignWithTarget(BASE_OBJECT *psTarget)
 {
-	/* Store away the target */
-	trackingCamera.target = psTarget;
+    /* Store away the target */
+    trackingCamera.target = psTarget;
 
-	/* Save away all the view angles */
-	trackingCamera.oldView.r.x = trackingCamera.rotation.x = (float)player.r.x;
-	trackingCamera.oldView.r.y = trackingCamera.rotation.y = (float)player.r.y;
-	trackingCamera.oldView.r.z = trackingCamera.rotation.z = (float)player.r.z;
+    /* Save away all the view angles */
+    trackingCamera.oldView.r.x = trackingCamera.rotation.x = (float)player.r.x;
+    trackingCamera.oldView.r.y = trackingCamera.rotation.y = (float)player.r.y;
+    trackingCamera.oldView.r.z = trackingCamera.rotation.z = (float)player.r.z;
 
-	/* Store away the old positions and set the start position too */
-	trackingCamera.oldView.p.x = trackingCamera.position.x = (float)player.p.x;
-	trackingCamera.oldView.p.y = trackingCamera.position.y = (float)player.p.y;
-	trackingCamera.oldView.p.z = trackingCamera.position.z = (float)player.p.z;
+    /* Store away the old positions and set the start position too */
+    trackingCamera.oldView.p.x = trackingCamera.position.x = (float)player.p.x;
+    trackingCamera.oldView.p.y = trackingCamera.position.y = (float)player.p.y;
+    trackingCamera.oldView.p.z = trackingCamera.position.z = (float)player.p.z;
 
-   //	trackingCamera.rotation.x = player.r.x = DEG(-90);
-	/* No initial velocity for moving */
-	trackingCamera.velocity.x = trackingCamera.velocity.y = trackingCamera.velocity.z = 0.f;
-	/* Nor for rotation */
-	trackingCamera.rotVel.x = trackingCamera.rotVel.y = trackingCamera.rotVel.z = 0.f;
-	/* No initial acceleration for moving */
-	trackingCamera.acceleration.x = trackingCamera.acceleration.y = trackingCamera.acceleration.z = 0.f;
-	/* Nor for rotation */
-	trackingCamera.rotAccel.x = trackingCamera.rotAccel.y = trackingCamera.rotAccel.z = 0.f;
+    //	trackingCamera.rotation.x = player.r.x = DEG(-90);
+    /* No initial velocity for moving */
+    trackingCamera.velocity.x = trackingCamera.velocity.y = trackingCamera.velocity.z = 0.f;
+    /* Nor for rotation */
+    trackingCamera.rotVel.x = trackingCamera.rotVel.y = trackingCamera.rotVel.z = 0.f;
+    /* No initial acceleration for moving */
+    trackingCamera.acceleration.x = trackingCamera.acceleration.y = trackingCamera.acceleration.z = 0.f;
+    /* Nor for rotation */
+    trackingCamera.rotAccel.x = trackingCamera.rotAccel.y = trackingCamera.rotAccel.z = 0.f;
 
-	/* Sote the old distance */
-	trackingCamera.oldDistance = getViewDistance();	//distance;
+    /* Sote the old distance */
+    trackingCamera.oldDistance = getViewDistance();	//distance;
 
-	/* Store away when we started */
-	trackingCamera.lastUpdate = gameTime2;
+    /* Store away when we started */
+    trackingCamera.lastUpdate = gameTime2;
 
 
-	OldViewValid = true;
+    OldViewValid = true;
 }
 
 
 //-----------------------------------------------------------------------------------
 static SDWORD getAverageTrackAngle( BOOL bCheckOnScreen )
 {
-	DROID *psDroid;
-	float xShift, yShift;
-	float xTotal = 0.0, yTotal = 0.0;
-	float averageAngleFloat = 0;
-	SDWORD droidCount = 0, averageAngle = 0;
+    DROID *psDroid;
+    float xShift, yShift;
+    float xTotal = 0.0, yTotal = 0.0;
+    float averageAngleFloat = 0;
+    SDWORD droidCount = 0, averageAngle = 0;
 
-	/* Got thru' all droids */
-	for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-	{
-		/* Is he worth selecting? */
-		if (psDroid->selected)
-		{
-			if (bCheckOnScreen ? droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 6) : true)
-			{
-					droidCount++;
-					averageAngle += psDroid->direction;
-					xShift = trigSin(psDroid->direction);
-					yShift = trigCos(psDroid->direction);
-					xTotal += xShift;
-					yTotal += yShift;
-			}
-		}
-	}
-	if (droidCount)
-	{
-		averageAngleFloat = (float)RAD_TO_DEG(atan2(xTotal, yTotal));
-	}
-	// FIXME: Should we return 0 when retVal is 0?
-	presAvAngle = averageAngleFloat;//retVal;
-	return presAvAngle;
+    /* Got thru' all droids */
+    for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+    {
+        /* Is he worth selecting? */
+        if (psDroid->selected)
+        {
+            if (bCheckOnScreen ? droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 6) : true)
+            {
+                droidCount++;
+                averageAngle += psDroid->direction;
+                xShift = trigSin(psDroid->direction);
+                yShift = trigCos(psDroid->direction);
+                xTotal += xShift;
+                yTotal += yShift;
+            }
+        }
+    }
+    if (droidCount)
+    {
+        averageAngleFloat = (float)RAD_TO_DEG(atan2(xTotal, yTotal));
+    }
+    // FIXME: Should we return 0 when retVal is 0?
+    presAvAngle = averageAngleFloat;//retVal;
+    return presAvAngle;
 }
 
 
 //-----------------------------------------------------------------------------------
 static SDWORD getGroupAverageTrackAngle(UDWORD groupNumber, BOOL bCheckOnScreen)
 {
-	DROID *psDroid;
-	float xShift, yShift;
-	float xTotal = 0.0, yTotal = 0.0;
-	float averageAngleFloat = 0;
-	SDWORD droidCount = 0, averageAngle = 0;
+    DROID *psDroid;
+    float xShift, yShift;
+    float xTotal = 0.0, yTotal = 0.0;
+    float averageAngleFloat = 0;
+    SDWORD droidCount = 0, averageAngle = 0;
 
-	/* Got thru' all droids */
-	for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-	{
-		/* Is he worth considering? */
-		if (psDroid->group == groupNumber)
-		{
-			if (bCheckOnScreen ? droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 6) : true)
-			{
-					droidCount++;
-					averageAngle += psDroid->direction;
-					xShift = trigSin(psDroid->direction);
-					yShift = trigCos(psDroid->direction);
-					xTotal += xShift;
-					yTotal += yShift;
-			}
-		}
-	}
-	if (droidCount)
-	{
-		averageAngleFloat = RAD_TO_DEG(atan2(xTotal, yTotal));
-	}
-	// FIXME: Return 0 when retVal is 0?
-	presAvAngle = averageAngleFloat;//retVal;
-	return presAvAngle;
+    /* Got thru' all droids */
+    for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+    {
+        /* Is he worth considering? */
+        if (psDroid->group == groupNumber)
+        {
+            if (bCheckOnScreen ? droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 6) : true)
+            {
+                droidCount++;
+                averageAngle += psDroid->direction;
+                xShift = trigSin(psDroid->direction);
+                yShift = trigCos(psDroid->direction);
+                xTotal += xShift;
+                yTotal += yShift;
+            }
+        }
+    }
+    if (droidCount)
+    {
+        averageAngleFloat = RAD_TO_DEG(atan2(xTotal, yTotal));
+    }
+    // FIXME: Return 0 when retVal is 0?
+    presAvAngle = averageAngleFloat;//retVal;
+    return presAvAngle;
 }
 
 
 //-----------------------------------------------------------------------------------
 static void getTrackingConcerns(SDWORD *x, SDWORD *y, SDWORD *z)
 {
-	SDWORD xTotals = 0, yTotals = 0, zTotals = 0;
-	DROID *psDroid;
-	UDWORD count;
+    SDWORD xTotals = 0, yTotals = 0, zTotals = 0;
+    DROID *psDroid;
+    UDWORD count;
 
-	for (count = 0, psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-		{
-			if (psDroid->selected)
-			{
-				if (droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 4))
-				{
-					count++;
-					xTotals += psDroid->pos.x;
-					yTotals += psDroid->pos.z;	// note the flip
-					zTotals += psDroid->pos.y;
-				}
-			}
-		}
+    for (count = 0, psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+    {
+        if (psDroid->selected)
+        {
+            if (droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 4))
+            {
+                count++;
+                xTotals += psDroid->pos.x;
+                yTotals += psDroid->pos.z;	// note the flip
+                zTotals += psDroid->pos.y;
+            }
+        }
+    }
 
-	if (count)	// necessary!!!!!!!
-	{
-		*x = xTotals / count;
-		*y = yTotals / count;
-		*z = zTotals / count;
-	}
+    if (count)	// necessary!!!!!!!
+    {
+        *x = xTotals / count;
+        *y = yTotals / count;
+        *z = zTotals / count;
+    }
 }
 
 
 //-----------------------------------------------------------------------------------
 static void getGroupTrackingConcerns(SDWORD *x, SDWORD *y, SDWORD *z, UDWORD groupNumber, BOOL bOnScreen)
 {
-	SDWORD xTotals = 0, yTotals = 0, zTotals = 0;
-	DROID *psDroid;
-	UDWORD count;
+    SDWORD xTotals = 0, yTotals = 0, zTotals = 0;
+    DROID *psDroid;
+    UDWORD count;
 
-	for (count = 0, psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-		{
-			if (psDroid->group == groupNumber)
-			{
-				if (bOnScreen ? droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 4) : true)
-				{
-				 		count++;
-						xTotals += psDroid->pos.x;
-						yTotals += psDroid->pos.z;	// note the flip
-						zTotals += psDroid->pos.y;
-				}
-			}
-		}
+    for (count = 0, psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
+    {
+        if (psDroid->group == groupNumber)
+        {
+            if (bOnScreen ? droidOnScreen(psDroid, pie_GetVideoBufferWidth() / 4) : true)
+            {
+                count++;
+                xTotals += psDroid->pos.x;
+                yTotals += psDroid->pos.z;	// note the flip
+                zTotals += psDroid->pos.y;
+            }
+        }
+    }
 
-	if (count)	// necessary!!!!!!!
-	{
-		*x = xTotals / count;
-		*y = yTotals / count;
-		*z = zTotals / count;
-	}
+    if (count)	// necessary!!!!!!!
+    {
+        *x = xTotals / count;
+        *y = yTotals / count;
+        *z = zTotals / count;
+    }
 }
 
 
 //-----------------------------------------------------------------------------------
-							/* How this all works */
+/* How this all works */
 /*
 Each frame we calculate the new acceleration, velocity and positions for the location
 and rotation of the camera. The velocity is obviously based on the acceleration and this
@@ -698,314 +698,318 @@ in the case of location and degrees of arc in the case of rotation.
 
 static void updateCameraAcceleration(UBYTE update)
 {
-	Vector3i concern = {
-		trackingCamera.target->pos.x,
-		trackingCamera.target->pos.z,
-		trackingCamera.target->pos.y
-	};
-	Vector2i behind = {0, 0}; /* Irrelevant for normal radar tracking */
-	BOOL bFlying = false;
+    Vector3i concern =
+    {
+        trackingCamera.target->pos.x,
+        trackingCamera.target->pos.z,
+        trackingCamera.target->pos.y
+    };
+    Vector2i behind = {0, 0}; /* Irrelevant for normal radar tracking */
+    BOOL bFlying = false;
 
-	/*
-		This is where we check what it is we're tracking.
-		Were we to track a building or location - this is
-		where it'd be set up
-	*/
-	/*
-		If we're tracking a droid, then we need to track slightly in front
-		of it in order that the droid appears down the screen a bit. This means
-		that we need to find an offset point from it relative to it's present
-		direction
-	*/
-	if (trackingCamera.target->type == OBJ_DROID)
-	{
-		const int angle = 90 - abs((player.r.x/182) % 90);
+    /*
+    	This is where we check what it is we're tracking.
+    	Were we to track a building or location - this is
+    	where it'd be set up
+    */
+    /*
+    	If we're tracking a droid, then we need to track slightly in front
+    	of it in order that the droid appears down the screen a bit. This means
+    	that we need to find an offset point from it relative to it's present
+    	direction
+    */
+    if (trackingCamera.target->type == OBJ_DROID)
+    {
+        const int angle = 90 - abs((player.r.x/182) % 90);
 
-		const DROID *psDroid = (DROID*)trackingCamera.target;
-		const PROPULSION_STATS *psPropStats = &asPropulsionStats[psDroid->asBits[COMP_PROPULSION].nStat];
+        const DROID *psDroid = (DROID *)trackingCamera.target;
+        const PROPULSION_STATS *psPropStats = &asPropulsionStats[psDroid->asBits[COMP_PROPULSION].nStat];
 
-		if (psPropStats->propulsionType == PROPULSION_TYPE_LIFT)
-		{
-			bFlying = true;
-		}
+        if (psPropStats->propulsionType == PROPULSION_TYPE_LIFT)
+        {
+            bFlying = true;
+        }
 
-		/* Present direction is important */
-		if (getNumDroidsSelected() > 2)
-		{
-			unsigned int multiAngle;
+        /* Present direction is important */
+        if (getNumDroidsSelected() > 2)
+        {
+            unsigned int multiAngle;
 
-			if (trackingCamera.target->selected)
-			{
-				multiAngle = getAverageTrackAngle(true);
-				getTrackingConcerns(&concern.x, &concern.y, &concern.z);
-			}
-			else
-			{
-				multiAngle = getGroupAverageTrackAngle( trackingCamera.target->group, true );
-				getGroupTrackingConcerns(&concern.x, &concern.y, &concern.z, trackingCamera.target->group, true);
-			}
+            if (trackingCamera.target->selected)
+            {
+                multiAngle = getAverageTrackAngle(true);
+                getTrackingConcerns(&concern.x, &concern.y, &concern.z);
+            }
+            else
+            {
+                multiAngle = getGroupAverageTrackAngle( trackingCamera.target->group, true );
+                getGroupTrackingConcerns(&concern.x, &concern.y, &concern.z, trackingCamera.target->group, true);
+            }
 
-			behind.x = ( CAM_DEFAULT_Y_OFFSET * SIN( DEG(multiAngle) ) ) >> FP12_SHIFT;
-			behind.y = ( CAM_DEFAULT_X_OFFSET * COS( DEG(multiAngle) ) ) >> FP12_SHIFT;
-		}
-		else
-		{
-		 	behind.x = ( CAM_DEFAULT_Y_OFFSET * SIN( DEG( trackingCamera.target->direction ) ) ) >> FP12_SHIFT;
-			behind.y = ( CAM_DEFAULT_X_OFFSET * COS( DEG( trackingCamera.target->direction ) ) ) >> FP12_SHIFT;
-		}
+            behind.x = ( CAM_DEFAULT_Y_OFFSET * SIN( DEG(multiAngle) ) ) >> FP12_SHIFT;
+            behind.y = ( CAM_DEFAULT_X_OFFSET * COS( DEG(multiAngle) ) ) >> FP12_SHIFT;
+        }
+        else
+        {
+            behind.x = ( CAM_DEFAULT_Y_OFFSET * SIN( DEG( trackingCamera.target->direction ) ) ) >> FP12_SHIFT;
+            behind.y = ( CAM_DEFAULT_X_OFFSET * COS( DEG( trackingCamera.target->direction ) ) ) >> FP12_SHIFT;
+        }
 
-		concern.y += angle*5;
-	}
+        concern.y += angle*5;
+    }
 
-	if (update & X_UPDATE)
-	{
-		/* Need to update acceleration along x axis */
-		int realPos = concern.x - CAM_X_SHIFT - behind.x;
-		float separation = realPos - trackingCamera.position.x;
+    if (update & X_UPDATE)
+    {
+        /* Need to update acceleration along x axis */
+        int realPos = concern.x - CAM_X_SHIFT - behind.x;
+        float separation = realPos - trackingCamera.position.x;
 
-		if (!bFlying)
-		{
-		 	trackingCamera.acceleration.x = ACCEL_CONSTANT*separation - VELOCITY_CONSTANT*trackingCamera.velocity.x;
-		}
-		else
-		{
-			trackingCamera.acceleration.x = ACCEL_CONSTANT*separation*4 - VELOCITY_CONSTANT*2*trackingCamera.velocity.x;
-		}
-	}
+        if (!bFlying)
+        {
+            trackingCamera.acceleration.x = ACCEL_CONSTANT*separation - VELOCITY_CONSTANT*trackingCamera.velocity.x;
+        }
+        else
+        {
+            trackingCamera.acceleration.x = ACCEL_CONSTANT*separation*4 - VELOCITY_CONSTANT*2*trackingCamera.velocity.x;
+        }
+    }
 
-	if (update & Y_UPDATE)
-	{
-		/* Need to update acceleration along y axis */
-		int realPos = concern.y;
-		float separation = realPos - trackingCamera.position.y;
+    if (update & Y_UPDATE)
+    {
+        /* Need to update acceleration along y axis */
+        int realPos = concern.y;
+        float separation = realPos - trackingCamera.position.y;
 
-		if (!bFlying)
-		{
-		 	trackingCamera.acceleration.y = ACCEL_CONSTANT*separation - VELOCITY_CONSTANT*trackingCamera.velocity.y;
-		}
-		else
-		{
-			separation /= 2.0f;
-			trackingCamera.acceleration.y = ACCEL_CONSTANT*separation*4 - VELOCITY_CONSTANT*2*trackingCamera.velocity.y;
-		}
-	}
+        if (!bFlying)
+        {
+            trackingCamera.acceleration.y = ACCEL_CONSTANT*separation - VELOCITY_CONSTANT*trackingCamera.velocity.y;
+        }
+        else
+        {
+            separation /= 2.0f;
+            trackingCamera.acceleration.y = ACCEL_CONSTANT*separation*4 - VELOCITY_CONSTANT*2*trackingCamera.velocity.y;
+        }
+    }
 
-	if (update & Z_UPDATE)
-	{
-		/* Need to update acceleration along z axis */
-		int realPos = concern.z - CAM_Z_SHIFT - behind.y;
-		float separation = realPos - trackingCamera.position.z;
+    if (update & Z_UPDATE)
+    {
+        /* Need to update acceleration along z axis */
+        int realPos = concern.z - CAM_Z_SHIFT - behind.y;
+        float separation = realPos - trackingCamera.position.z;
 
-		if (!bFlying)
-		{
-			trackingCamera.acceleration.z = ACCEL_CONSTANT*separation - VELOCITY_CONSTANT*trackingCamera.velocity.z;
-		}
-		else
-		{
-			trackingCamera.acceleration.z = ACCEL_CONSTANT*separation*4 - VELOCITY_CONSTANT*2*trackingCamera.velocity.z;
-		}
-	}
+        if (!bFlying)
+        {
+            trackingCamera.acceleration.z = ACCEL_CONSTANT*separation - VELOCITY_CONSTANT*trackingCamera.velocity.z;
+        }
+        else
+        {
+            trackingCamera.acceleration.z = ACCEL_CONSTANT*separation*4 - VELOCITY_CONSTANT*2*trackingCamera.velocity.z;
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------------
 
 static void updateCameraVelocity(UBYTE update)
 {
-	if(update & X_UPDATE)
-	{
-		trackingCamera.velocity.x += timeAdjustedIncrement(trackingCamera.acceleration.x, false);
-	}
+    if(update & X_UPDATE)
+    {
+        trackingCamera.velocity.x += timeAdjustedIncrement(trackingCamera.acceleration.x, false);
+    }
 
-	if(update & Y_UPDATE)
-	{
-		trackingCamera.velocity.y += timeAdjustedIncrement(trackingCamera.acceleration.y, false);
-	}
+    if(update & Y_UPDATE)
+    {
+        trackingCamera.velocity.y += timeAdjustedIncrement(trackingCamera.acceleration.y, false);
+    }
 
-	if(update & Z_UPDATE)
-	{
-		trackingCamera.velocity.z += timeAdjustedIncrement(trackingCamera.acceleration.z, false);
-	}
+    if(update & Z_UPDATE)
+    {
+        trackingCamera.velocity.z += timeAdjustedIncrement(trackingCamera.acceleration.z, false);
+    }
 }
 
 //-----------------------------------------------------------------------------------
 
 static void	updateCameraPosition(UBYTE update)
 {
-	if(update & X_UPDATE)
-	{
-		/* Need to update position along x axis */
-		trackingCamera.position.x += timeAdjustedIncrement(trackingCamera.velocity.x, false);
-	}
+    if(update & X_UPDATE)
+    {
+        /* Need to update position along x axis */
+        trackingCamera.position.x += timeAdjustedIncrement(trackingCamera.velocity.x, false);
+    }
 
-	if(update & Y_UPDATE)
-	{
-		/* Need to update position along y axis */
-		trackingCamera.position.y += timeAdjustedIncrement(trackingCamera.velocity.y, false);
-	}
+    if(update & Y_UPDATE)
+    {
+        /* Need to update position along y axis */
+        trackingCamera.position.y += timeAdjustedIncrement(trackingCamera.velocity.y, false);
+    }
 
-	if(update & Z_UPDATE)
-	{
-		/* Need to update position along z axis */
-		trackingCamera.position.z += timeAdjustedIncrement(trackingCamera.velocity.z, false);
-	}
+    if(update & Z_UPDATE)
+    {
+        /* Need to update position along z axis */
+        trackingCamera.position.z += timeAdjustedIncrement(trackingCamera.velocity.z, false);
+    }
 }
 
 //-----------------------------------------------------------------------------------
 /* Calculate the acceleration that the camera spins around at */
 static void updateCameraRotationAcceleration( UBYTE update )
 {
-	SDWORD	worldAngle;
-	float	separation;
-	SDWORD	xConcern, yConcern, zConcern;
-	BOOL	bTooLow;
-	PROPULSION_STATS *psPropStats;
-	SDWORD	pitch;
-	BOOL	bGotFlying = false;
-	SDWORD	xPos = 0, yPos = 0, zPos = 0;
+    SDWORD	worldAngle;
+    float	separation;
+    SDWORD	xConcern, yConcern, zConcern;
+    BOOL	bTooLow;
+    PROPULSION_STATS *psPropStats;
+    SDWORD	pitch;
+    BOOL	bGotFlying = false;
+    SDWORD	xPos = 0, yPos = 0, zPos = 0;
 
-	bTooLow = false;
-	if(trackingCamera.target->type == OBJ_DROID)
-	{
-		DROID *psDroid = (DROID*)trackingCamera.target;
-		psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
-		if(psPropStats->propulsionType == PROPULSION_TYPE_LIFT)
-		{
-			UDWORD	droidHeight, difHeight, droidMapHeight;
+    bTooLow = false;
+    if(trackingCamera.target->type == OBJ_DROID)
+    {
+        DROID *psDroid = (DROID *)trackingCamera.target;
+        psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
+        if(psPropStats->propulsionType == PROPULSION_TYPE_LIFT)
+        {
+            UDWORD	droidHeight, difHeight, droidMapHeight;
 
-			bGotFlying = true;
-			droidHeight = psDroid->pos.z;
-			droidMapHeight = map_Height(psDroid->pos.x, psDroid->pos.y);
-			difHeight = abs(droidHeight - droidMapHeight);
-			if(difHeight < MIN_TRACK_HEIGHT)
-			{
-				bTooLow = true;
-			}
-		}
-	}
+            bGotFlying = true;
+            droidHeight = psDroid->pos.z;
+            droidMapHeight = map_Height(psDroid->pos.x, psDroid->pos.y);
+            difHeight = abs(droidHeight - droidMapHeight);
+            if(difHeight < MIN_TRACK_HEIGHT)
+            {
+                bTooLow = true;
+            }
+        }
+    }
 
-	if(update & Y_UPDATE)
-	{
-		/* Presently only y rotation being calculated - but same idea for other axes */
-		/* Check what we're tracking */
-		if(getNumDroidsSelected()>2 && trackingCamera.target->type == OBJ_DROID)
-		{
-			if(trackingCamera.target->selected)
-			{
-				yConcern = DEG( getAverageTrackAngle(false) ); //DEG(trackingCamera.target->direction);
-			}
-			else
-			{
-				yConcern = DEG( getGroupAverageTrackAngle(trackingCamera.target->group, false) ); //DEG(trackingCamera.target->direction);
-			}
-		}
-		else
-		{
-			yConcern = DEG( (int)trackingCamera.target->direction );
-		}
-		yConcern += DEG(180);
+    if(update & Y_UPDATE)
+    {
+        /* Presently only y rotation being calculated - but same idea for other axes */
+        /* Check what we're tracking */
+        if(getNumDroidsSelected()>2 && trackingCamera.target->type == OBJ_DROID)
+        {
+            if(trackingCamera.target->selected)
+            {
+                yConcern = DEG( getAverageTrackAngle(false) ); //DEG(trackingCamera.target->direction);
+            }
+            else
+            {
+                yConcern = DEG( getGroupAverageTrackAngle(trackingCamera.target->group, false) ); //DEG(trackingCamera.target->direction);
+            }
+        }
+        else
+        {
+            yConcern = DEG( (int)trackingCamera.target->direction );
+        }
+        yConcern += DEG(180);
 
-  		while(trackingCamera.rotation.y < 0)
-		{
-			trackingCamera.rotation.y += DEG(360);
-		}
+        while(trackingCamera.rotation.y < 0)
+        {
+            trackingCamera.rotation.y += DEG(360);
+        }
 
-		/* Which way are we facing? */
-		worldAngle =  trackingCamera.rotation.y;
-		separation = fmodf(yConcern - worldAngle, DEG(360));
+        /* Which way are we facing? */
+        worldAngle =  trackingCamera.rotation.y;
+        separation = fmodf(yConcern - worldAngle, DEG(360));
 
-		// Make sure that rotations larger than 180 degrees are noted
-		// in the range of -180 - 0 degrees.
-		if (separation > DEG(180))
-		{
-			separation -= DEG(360);
-		}
+        // Make sure that rotations larger than 180 degrees are noted
+        // in the range of -180 - 0 degrees.
+        if (separation > DEG(180))
+        {
+            separation -= DEG(360);
+        }
 
-		/* Make new acceleration */
-		trackingCamera.rotAccel.y = ROT_ACCEL_CONSTANT * separation - ROT_VELOCITY_CONSTANT * trackingCamera.rotVel.y;
-	}
+        /* Make new acceleration */
+        trackingCamera.rotAccel.y = ROT_ACCEL_CONSTANT * separation - ROT_VELOCITY_CONSTANT * trackingCamera.rotVel.y;
+    }
 
-	if(update & X_UPDATE)
-	{
-		if(trackingCamera.target->type == OBJ_DROID && !bGotFlying)
-		{
-			getTrackingConcerns(&xPos,&yPos,&zPos);
-			if(trackingCamera.target->selected)
-			{
-				getBestPitchToEdgeOfGrid(xPos,zPos,360-((getAverageTrackAngle(true)+180)%360),&pitch);
-			}
-			else
-			{
-				getBestPitchToEdgeOfGrid(xPos,zPos,360-((getGroupAverageTrackAngle(trackingCamera.target->group,true)+180)%360),&pitch);
-			}
-			if(pitch<14) pitch = 14;
-			xConcern = DEG(-pitch);
-		}
-		else
-		{
-			xConcern = DEG(trackingCamera.target->pitch);
-			xConcern += DEG(-16);
-		}
+    if(update & X_UPDATE)
+    {
+        if(trackingCamera.target->type == OBJ_DROID && !bGotFlying)
+        {
+            getTrackingConcerns(&xPos,&yPos,&zPos);
+            if(trackingCamera.target->selected)
+            {
+                getBestPitchToEdgeOfGrid(xPos,zPos,360-((getAverageTrackAngle(true)+180)%360),&pitch);
+            }
+            else
+            {
+                getBestPitchToEdgeOfGrid(xPos,zPos,360-((getGroupAverageTrackAngle(trackingCamera.target->group,true)+180)%360),&pitch);
+            }
+            if(pitch<14)
+            {
+                pitch = 14;
+            }
+            xConcern = DEG(-pitch);
+        }
+        else
+        {
+            xConcern = DEG(trackingCamera.target->pitch);
+            xConcern += DEG(-16);
+        }
 
-		//xConcern = DEG(trackingCamera.target->pitch);
-	   //	if(xConcern>DEG(MINCAMROTX))
-	   //	{
-	   //		xConcern = DEG(MINCAMROTX);
-	   //	}
-		while(trackingCamera.rotation.x<0)
-			{
-				trackingCamera.rotation.x+=DEG(360);
-			}
-		worldAngle =  trackingCamera.rotation.x;
-		separation = xConcern - worldAngle;
+        //xConcern = DEG(trackingCamera.target->pitch);
+        //	if(xConcern>DEG(MINCAMROTX))
+        //	{
+        //		xConcern = DEG(MINCAMROTX);
+        //	}
+        while(trackingCamera.rotation.x<0)
+        {
+            trackingCamera.rotation.x+=DEG(360);
+        }
+        worldAngle =  trackingCamera.rotation.x;
+        separation = xConcern - worldAngle;
 
-		// Make sure that rotations are noted
-		// in the range of -180 - 180 degrees.
-		while (separation > DEG(180))
-		{
-			separation -= DEG(360);
-		}
-		while (separation < -DEG(180))
-		{
-			separation += DEG(360);
-		}
+        // Make sure that rotations are noted
+        // in the range of -180 - 180 degrees.
+        while (separation > DEG(180))
+        {
+            separation -= DEG(360);
+        }
+        while (separation < -DEG(180))
+        {
+            separation += DEG(360);
+        }
 
-		/* Make new acceleration */
-		trackingCamera.rotAccel.x =
-			/* Make this really slow */
-			((ROT_ACCEL_CONSTANT)*separation - ROT_VELOCITY_CONSTANT*(float)trackingCamera.rotVel.x);
-	}
+        /* Make new acceleration */
+        trackingCamera.rotAccel.x =
+            /* Make this really slow */
+            ((ROT_ACCEL_CONSTANT)*separation - ROT_VELOCITY_CONSTANT*(float)trackingCamera.rotVel.x);
+    }
 
-	/* This looks a bit arse - looks like a flight sim */
-	if(update & Z_UPDATE)
-	{
-		if(bTooLow)
-		{
-			zConcern = 0;
-		}
-		else
-		{
-			zConcern = DEG(trackingCamera.target->roll);
-		}
-		while(trackingCamera.rotation.z<0)
-			{
-				trackingCamera.rotation.z+=DEG(360);
-			}
-		worldAngle =  trackingCamera.rotation.z;
-		separation = (float) ((zConcern - worldAngle));
-		if(separation<DEG(-180))
-		{
-			separation+=DEG(360);
-		}
-		else if(separation>DEG(180))
-		{
-			separation-=DEG(360);
-		}
+    /* This looks a bit arse - looks like a flight sim */
+    if(update & Z_UPDATE)
+    {
+        if(bTooLow)
+        {
+            zConcern = 0;
+        }
+        else
+        {
+            zConcern = DEG(trackingCamera.target->roll);
+        }
+        while(trackingCamera.rotation.z<0)
+        {
+            trackingCamera.rotation.z+=DEG(360);
+        }
+        worldAngle =  trackingCamera.rotation.z;
+        separation = (float) ((zConcern - worldAngle));
+        if(separation<DEG(-180))
+        {
+            separation+=DEG(360);
+        }
+        else if(separation>DEG(180))
+        {
+            separation-=DEG(360);
+        }
 
-		/* Make new acceleration */
-		trackingCamera.rotAccel.z =
-			/* Make this really slow */
-			((ROT_ACCEL_CONSTANT/1)*separation - ROT_VELOCITY_CONSTANT*(float)trackingCamera.rotVel.z);
-	}
+        /* Make new acceleration */
+        trackingCamera.rotAccel.z =
+            /* Make this really slow */
+            ((ROT_ACCEL_CONSTANT/1)*separation - ROT_VELOCITY_CONSTANT*(float)trackingCamera.rotVel.z);
+    }
 
 }
 
@@ -1014,18 +1018,18 @@ static void updateCameraRotationAcceleration( UBYTE update )
 	calculated acceleration */
 static void updateCameraRotationVelocity( UBYTE update )
 {
-	if(update & Y_UPDATE)
-	{
-		trackingCamera.rotVel.y += timeAdjustedIncrement(trackingCamera.rotAccel.y, false);
-	}
-	if(update & X_UPDATE)
-	{
-		trackingCamera.rotVel.x += timeAdjustedIncrement(trackingCamera.rotAccel.x, false);
-	}
-	if(update & Z_UPDATE)
-	{
-		trackingCamera.rotVel.z += timeAdjustedIncrement(trackingCamera.rotAccel.z, false);
-	}
+    if(update & Y_UPDATE)
+    {
+        trackingCamera.rotVel.y += timeAdjustedIncrement(trackingCamera.rotAccel.y, false);
+    }
+    if(update & X_UPDATE)
+    {
+        trackingCamera.rotVel.x += timeAdjustedIncrement(trackingCamera.rotAccel.x, false);
+    }
+    if(update & Z_UPDATE)
+    {
+        trackingCamera.rotVel.z += timeAdjustedIncrement(trackingCamera.rotAccel.z, false);
+    }
 
 }
 
@@ -1033,44 +1037,44 @@ static void updateCameraRotationVelocity( UBYTE update )
 /* Move the camera around by adding the velocity */
 static void updateCameraRotationPosition( UBYTE update )
 {
- 	if (update & Y_UPDATE)
-	{
-		trackingCamera.rotation.y += timeAdjustedIncrement(trackingCamera.rotVel.y, false);
-	}
-	if (update & X_UPDATE)
-	{
-		trackingCamera.rotation.x += timeAdjustedIncrement(trackingCamera.rotVel.x, false);
-	}
-	if (update & Z_UPDATE)
-	{
-		trackingCamera.rotation.z += timeAdjustedIncrement(trackingCamera.rotVel.z, false);
-	}
+    if (update & Y_UPDATE)
+    {
+        trackingCamera.rotation.y += timeAdjustedIncrement(trackingCamera.rotVel.y, false);
+    }
+    if (update & X_UPDATE)
+    {
+        trackingCamera.rotation.x += timeAdjustedIncrement(trackingCamera.rotVel.x, false);
+    }
+    if (update & Z_UPDATE)
+    {
+        trackingCamera.rotation.z += timeAdjustedIncrement(trackingCamera.rotVel.z, false);
+    }
 }
 
 /* Returns how far away we are from our goal in a radar track */
 static UDWORD getPositionMagnitude( void )
 {
-	Vector3i dif;
-	UDWORD val;
+    Vector3i dif;
+    UDWORD val;
 
-	dif.x = abs(player.p.x - oldPosition.x);
-	dif.y = abs(player.p.y - oldPosition.y);
-	dif.z = abs(player.p.z - oldPosition.z);
-	val = (dif.x * dif.x) + (dif.y * dif.y) + (dif.z * dif.z);
-	return val;
+    dif.x = abs(player.p.x - oldPosition.x);
+    dif.y = abs(player.p.y - oldPosition.y);
+    dif.z = abs(player.p.z - oldPosition.z);
+    val = (dif.x * dif.x) + (dif.y * dif.y) + (dif.z * dif.z);
+    return val;
 }
 
 
 static UDWORD getRotationMagnitude( void )
 {
-	Vector3i dif;
-	UDWORD val;
+    Vector3i dif;
+    UDWORD val;
 
-	dif.x = abs(player.r.x - oldRotation.x);
-	dif.y = abs(player.r.y - oldRotation.y);
-	dif.z = abs(player.r.z - oldRotation.z);
-	val = (dif.x * dif.x) + (dif.y * dif.y) + (dif.z * dif.z);
-	return val;
+    dif.x = abs(player.r.x - oldRotation.x);
+    dif.y = abs(player.r.y - oldRotation.y);
+    dif.z = abs(player.r.z - oldRotation.z);
+    val = (dif.x * dif.x) + (dif.y * dif.y) + (dif.z * dif.z);
+    return val;
 }
 
 
@@ -1078,166 +1082,175 @@ static UDWORD getRotationMagnitude( void )
 /* Updates the viewpoint according to the object being tracked */
 BOOL	camTrackCamera( void )
 {
-PROPULSION_STATS	*psPropStats;
-DROID	*psDroid;
-BOOL	bFlying;
+    PROPULSION_STATS	*psPropStats;
+    DROID	*psDroid;
+    BOOL	bFlying;
 
-	bFlying = false;
+    bFlying = false;
 
-	/* Most importantly - see if the target we're tracking is dead! */
-	if(trackingCamera.target->died)
-	{
-		setFindNewTarget();
-		return(false);
-	}
+    /* Most importantly - see if the target we're tracking is dead! */
+    if(trackingCamera.target->died)
+    {
+        setFindNewTarget();
+        return(false);
+    }
 
-	/*	Cancel tracking if it's no longer selected.
-		This may not be desirable? 	*/
-   	if(trackingCamera.target->type == OBJ_DROID)
-	{
+    /*	Cancel tracking if it's no longer selected.
+    	This may not be desirable? 	*/
+    if(trackingCamera.target->type == OBJ_DROID)
+    {
 
 //		if(!trackingCamera.target->selected)
 //		{
 //			return(false);
 //		}
-	}
+    }
 
-	/* Update the acceleration,velocity and position of the camera for movement */
-	updateCameraAcceleration(CAM_ALL);
-	updateCameraVelocity(CAM_ALL);
-	updateCameraPosition(CAM_ALL);
+    /* Update the acceleration,velocity and position of the camera for movement */
+    updateCameraAcceleration(CAM_ALL);
+    updateCameraVelocity(CAM_ALL);
+    updateCameraPosition(CAM_ALL);
 
-	/* Update the acceleration,velocity and rotation of the camera for rotation */
-	/*	You can track roll as well (z axis) but it makes you ill and looks
-		like a flight sim, so for now just pitch and orientation */
-
-
-	if(trackingCamera.target->type == OBJ_DROID)
-	{
-		psDroid = (DROID*)trackingCamera.target;
-		psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
-		if (psPropStats->propulsionType == PROPULSION_TYPE_LIFT)
-		{
-				bFlying = true;
-		}
-	}
-/*
-	bIsBuilding = false;
-	if(trackingCamera.target->type == OBJ_DROID)
-	{
-		psDroid= (DROID*)trackingCamera.target;
-		if(DroidIsBuilding(psDroid))
-		{
-			bIsBuilding = true;
-		}
-	}
-*/
+    /* Update the acceleration,velocity and rotation of the camera for rotation */
+    /*	You can track roll as well (z axis) but it makes you ill and looks
+    	like a flight sim, so for now just pitch and orientation */
 
 
-	if(bRadarAllign || trackingCamera.target->type == OBJ_DROID)
-	{
-		if(bFlying)
-		{
-			updateCameraRotationAcceleration(CAM_ALL);
-		}
-		else
-		{
-			updateCameraRotationAcceleration(CAM_X_AND_Y);
-		}
-	}
-	if(bFlying)
-	{
-	 	updateCameraRotationVelocity(CAM_ALL);
-		updateCameraRotationPosition(CAM_ALL);
-	}
-	/*
-	else if(bIsBuilding)
-	{
-		updateCameraRotationVelocity(CAM_X_ONLY);
-	}
-	*/
-	else
-	{
-		updateCameraRotationVelocity(CAM_X_AND_Y);
-		updateCameraRotationPosition(CAM_X_AND_Y);
-	}
+    if(trackingCamera.target->type == OBJ_DROID)
+    {
+        psDroid = (DROID *)trackingCamera.target;
+        psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
+        if (psPropStats->propulsionType == PROPULSION_TYPE_LIFT)
+        {
+            bFlying = true;
+        }
+    }
+    /*
+    	bIsBuilding = false;
+    	if(trackingCamera.target->type == OBJ_DROID)
+    	{
+    		psDroid= (DROID*)trackingCamera.target;
+    		if(DroidIsBuilding(psDroid))
+    		{
+    			bIsBuilding = true;
+    		}
+    	}
+    */
 
-	/* Record the old positions for comparison */
-	oldPosition.x = player.p.x;
-	oldPosition.y = player.p.y;
-	oldPosition.z = player.p.z;
 
-	/* Update the position that's now stored in trackingCamera.position */
-	player.p.x = trackingCamera.position.x;
-	player.p.y = trackingCamera.position.y;
-	player.p.z = trackingCamera.position.z;
+    if(bRadarAllign || trackingCamera.target->type == OBJ_DROID)
+    {
+        if(bFlying)
+        {
+            updateCameraRotationAcceleration(CAM_ALL);
+        }
+        else
+        {
+            updateCameraRotationAcceleration(CAM_X_AND_Y);
+        }
+    }
+    if(bFlying)
+    {
+        updateCameraRotationVelocity(CAM_ALL);
+        updateCameraRotationPosition(CAM_ALL);
+    }
+    /*
+    else if(bIsBuilding)
+    {
+    	updateCameraRotationVelocity(CAM_X_ONLY);
+    }
+    */
+    else
+    {
+        updateCameraRotationVelocity(CAM_X_AND_Y);
+        updateCameraRotationPosition(CAM_X_AND_Y);
+    }
 
-	/* Record the old positions for comparison */
-	oldRotation.x = player.r.x;
-	oldRotation.y = player.r.y;
-	oldRotation.z = player.r.z;
+    /* Record the old positions for comparison */
+    oldPosition.x = player.p.x;
+    oldPosition.y = player.p.y;
+    oldPosition.z = player.p.z;
 
-	/* Update the rotations that're now stored in trackingCamera.rotation */
-	player.r.x = trackingCamera.rotation.x;
-	/*if(!bIsBuilding)*/
-	player.r.y = trackingCamera.rotation.y;
-	player.r.z = trackingCamera.rotation.z;
+    /* Update the position that's now stored in trackingCamera.position */
+    player.p.x = trackingCamera.position.x;
+    player.p.y = trackingCamera.position.y;
+    player.p.z = trackingCamera.position.z;
 
-	/* There's a minimum for this - especially when John's VTOL code lets them land vertically on cliffs */
-	if(player.r.x>DEG(360+MAX_PLAYER_X_ANGLE))
-  	{
-   		player.r.x = DEG(360+MAX_PLAYER_X_ANGLE);
-   	}
+    /* Record the old positions for comparison */
+    oldRotation.x = player.r.x;
+    oldRotation.y = player.r.y;
+    oldRotation.z = player.r.z;
 
-	/*
-	if(bIsBuilding)
-	{
-		player.r.y+=DEG(1);
-	}
-	*/
-	/* Clip the position to the edge of the map */
-	CheckScrollLimits();
+    /* Update the rotations that're now stored in trackingCamera.rotation */
+    player.r.x = trackingCamera.rotation.x;
+    /*if(!bIsBuilding)*/
+    player.r.y = trackingCamera.rotation.y;
+    player.r.z = trackingCamera.rotation.z;
 
-	/* Store away our last update as acceleration and velocity are all fn()/dt */
-	trackingCamera.lastUpdate = gameTime2;
-	if(bFullInfo)
-	{
-		flushConsoleMessages();
-		if(trackingCamera.target->type == OBJ_DROID)
-		{
-			printDroidInfo((DROID*)trackingCamera.target);
-		}
-	}
+    /* There's a minimum for this - especially when John's VTOL code lets them land vertically on cliffs */
+    if(player.r.x>DEG(360+MAX_PLAYER_X_ANGLE))
+    {
+        player.r.x = DEG(360+MAX_PLAYER_X_ANGLE);
+    }
 
-	/* Switch off if we're jumping to a new location and we've got there */
-	if(getRadarTrackingStatus())
-	{
-		/*	This will ensure we come to a rest and terminate the tracking
-			routine once we're close enough
-		*/
-		if(getRotationMagnitude()<10000)
-		{
-			if(getPositionMagnitude() < 60)
-			{
-				setWarCamActive(false);
-			}
-		}
-	}
-	return(true);
+    /*
+    if(bIsBuilding)
+    {
+    	player.r.y+=DEG(1);
+    }
+    */
+    /* Clip the position to the edge of the map */
+    CheckScrollLimits();
+
+    /* Store away our last update as acceleration and velocity are all fn()/dt */
+    trackingCamera.lastUpdate = gameTime2;
+    if(bFullInfo)
+    {
+        flushConsoleMessages();
+        if(trackingCamera.target->type == OBJ_DROID)
+        {
+            printDroidInfo((DROID *)trackingCamera.target);
+        }
+    }
+
+    /* Switch off if we're jumping to a new location and we've got there */
+    if(getRadarTrackingStatus())
+    {
+        /*	This will ensure we come to a rest and terminate the tracking
+        	routine once we're close enough
+        */
+        if(getRotationMagnitude()<10000)
+        {
+            if(getPositionMagnitude() < 60)
+            {
+                setWarCamActive(false);
+            }
+        }
+    }
+    return(true);
 }
 //-----------------------------------------------------------------------------------
 DROID *getTrackingDroid( void )
 {
-	if(!getWarCamStatus()) return(NULL);
-	if(trackingCamera.status != CAM_TRACKING) return(NULL);
-	if(trackingCamera.target->type != OBJ_DROID) return(NULL);
-	return((DROID*)trackingCamera.target);
+    if(!getWarCamStatus())
+    {
+        return(NULL);
+    }
+    if(trackingCamera.status != CAM_TRACKING)
+    {
+        return(NULL);
+    }
+    if(trackingCamera.target->type != OBJ_DROID)
+    {
+        return(NULL);
+    }
+    return((DROID *)trackingCamera.target);
 }
 
 //-----------------------------------------------------------------------------------
 SDWORD	getPresAngle( void )
 {
-	return(presAvAngle);
+    return(presAvAngle);
 }
 //-----------------------------------------------------------------------------------
 
@@ -1245,7 +1258,7 @@ SDWORD	getPresAngle( void )
 //-----------------------------------------------------------------------------------
 UDWORD	getNumDroidsSelected( void )
 {
-	return(selNumSelected(selectedPlayer));
+    return(selNumSelected(selectedPlayer));
 }
 
 //-----------------------------------------------------------------------------------
@@ -1253,16 +1266,16 @@ UDWORD	getNumDroidsSelected( void )
 /* Returns whether or not the tracking camera is active */
 BOOL	getWarCamStatus( void )
 {
-	/* Is it switched off? */
-	if(trackingCamera.status == CAM_INACTIVE)
-	{
-		return(false);
-	}
-	else
-	{
-		/* Tracking is ON */
-		return(true);
-	}
+    /* Is it switched off? */
+    if(trackingCamera.status == CAM_INACTIVE)
+    {
+        return(false);
+    }
+    else
+    {
+        /* Tracking is ON */
+        return(true);
+    }
 }
 
 //-----------------------------------------------------------------------------------
@@ -1270,21 +1283,21 @@ BOOL	getWarCamStatus( void )
 /* Flips the status of tracking to the opposite of what it presently is */
 void	camToggleStatus( void )
 {
- 	/* If it's off */
-	if(trackingCamera.status == CAM_INACTIVE)
-	{
-		/* Switch it on */
-		setWarCamActive(true);
-	}
-	else
-	{
-		/* Otherwise, switch it off */
-		setWarCamActive(false);
-		if(getDrivingStatus())
-		{
-			StopDriverMode();
-		}
-	}
+    /* If it's off */
+    if(trackingCamera.status == CAM_INACTIVE)
+    {
+        /* Switch it on */
+        setWarCamActive(true);
+    }
+    else
+    {
+        /* Otherwise, switch it off */
+        setWarCamActive(false);
+        if(getDrivingStatus())
+        {
+            StopDriverMode();
+        }
+    }
 }
 
 
@@ -1292,53 +1305,53 @@ void	camToggleStatus( void )
 	If ON then this info is permanent on screen and realtime updating */
 void	camToggleInfo(void)
 {
-	bFullInfo = !bFullInfo;
+    bFullInfo = !bFullInfo;
 }
 
 /* Informs the tracking camera that we want to start tracking to a new radar target */
 void	requestRadarTrack(SDWORD x, SDWORD y)
 {
-	radarX = (SWORD)x;
- 	radarY = (SWORD)y;
- 	bRadarTrackingRequested = true;
-	trackingCamera.status = CAM_REQUEST;
-	processWarCam();
+    radarX = (SWORD)x;
+    radarY = (SWORD)y;
+    bRadarTrackingRequested = true;
+    trackingCamera.status = CAM_REQUEST;
+    processWarCam();
 // 	setWarCamActive(true);
 }
 
 /* Returns whether we're presently tracking to a new _location_ */
 BOOL	getRadarTrackingStatus( void )
 {
-BOOL	retVal;
+    BOOL	retVal;
 
-	if(trackingCamera.status == CAM_INACTIVE)
-	{
-		retVal = false;
-	}
-	else
-	{
-		//if(/*trackingCamera.target && */trackingCamera.target->type == OBJ_TARGET)
+    if(trackingCamera.status == CAM_INACTIVE)
+    {
+        retVal = false;
+    }
+    else
+    {
+        //if(/*trackingCamera.target && */trackingCamera.target->type == OBJ_TARGET)
         //if you know why the above check was commented out please tell me AB 19/11/98
         if(trackingCamera.target && trackingCamera.target->type == OBJ_TARGET)
-		{
-			retVal = true;
-		}
-		else
-		{
-			retVal = false;
-		}
-	}
-	return(retVal);
+        {
+            retVal = true;
+        }
+        else
+        {
+            retVal = false;
+        }
+    }
+    return(retVal);
 }
 
 void	toggleRadarAllignment( void )
 {
-	bRadarAllign = !bRadarAllign;
+    bRadarAllign = !bRadarAllign;
 }
 
 void	camInformOfRotation( Vector3i *rotation )
 {
-	trackingCamera.rotation.x = rotation->x;
-	trackingCamera.rotation.y = rotation->y;
-	trackingCamera.rotation.z = rotation->z;
+    trackingCamera.rotation.x = rotation->x;
+    trackingCamera.rotation.y = rotation->y;
+    trackingCamera.rotation.z = rotation->z;
 }

@@ -27,7 +27,7 @@ extern "C"
 
 #include "version.h" /*This smells like a bad idea for obvious reasons, but I think it's worth it.*/
 
-/*Configuration paths and whatnot.*/
+    /*Configuration paths and whatnot.*/
 #define CONFIG_FILENAME "legacyconfig.txt"
 #if defined(WZ_OS_WIN)
 #  undef WZ_DATADIR
@@ -47,17 +47,17 @@ extern "C"
 # define WZ_WRITEDIR ".wz2100legacy-" VERSIONBIG
 #endif
 
-/*Functions.*/
+    /*Functions.*/
 
-BOOL loadConfig(void);
-BOOL loadRenderMode(void);
-BOOL saveConfig(void);
-BOOL reloadMPConfig(void);
-void closeConfig( void );
-void setDefaultFrameRateLimit(void);
+    BOOL loadConfig(void);
+    BOOL loadRenderMode(void);
+    BOOL saveConfig(void);
+    BOOL reloadMPConfig(void);
+    void closeConfig( void );
+    void setDefaultFrameRateLimit(void);
 
 /// Default map for Skirmish
-static const char DEFAULTSKIRMISHMAP[] = "Sk-Rush";
+    static const char DEFAULTSKIRMISHMAP[] = "Sk-Rush";
 
 #ifdef __cplusplus
 }

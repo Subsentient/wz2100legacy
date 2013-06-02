@@ -79,29 +79,29 @@ static void resetMultiVisibility(UDWORD player);
 
 BOOL intDisplayMultiJoiningStatus(UBYTE joinCount)
 {
-	UDWORD			x,y,w,h;
-	char			sTmp[6];
+    UDWORD			x,y,w,h;
+    char			sTmp[6];
 
-	w = RET_FORMWIDTH;
-	h = RET_FORMHEIGHT;
-	x = RET_X;
-	y = RET_Y;
+    w = RET_FORMWIDTH;
+    h = RET_FORMHEIGHT;
+    x = RET_X;
+    y = RET_Y;
 
 //	cameraToHome(selectedPlayer);				// home the camera to the player.
-	RenderWindowFrame(FRAME_NORMAL, x, y ,w, h);		// draw a wee blu box.
+    RenderWindowFrame(FRAME_NORMAL, x, y ,w, h);		// draw a wee blu box.
 
-	// display how far done..
-	iV_DrawText(_("Players Still Joining"),
-					x+(w/2)-(iV_GetTextWidth(_("Players Still Joining"))/2),
-					y+(h/2)-8 );
-	if (!NetPlay.playercount)
-	{
-		return true;
-	}
-	sprintf(sTmp,"%d%%", PERCENT((NetPlay.playercount-joinCount),NetPlay.playercount) );
-	iV_DrawText(sTmp ,x + (w / 2) - 10, y + (h / 2) + 10);
+    // display how far done..
+    iV_DrawText(_("Players Still Joining"),
+                x+(w/2)-(iV_GetTextWidth(_("Players Still Joining"))/2),
+                y+(h/2)-8 );
+    if (!NetPlay.playercount)
+    {
+        return true;
+    }
+    sprintf(sTmp,"%d%%", PERCENT((NetPlay.playercount-joinCount),NetPlay.playercount) );
+    iV_DrawText(sTmp ,x + (w / 2) - 10, y + (h / 2) + 10);
 
-	return true;
+    return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -113,293 +113,296 @@ BOOL intDisplayMultiJoiningStatus(UBYTE joinCount)
 */
 void clearPlayer(UDWORD player,BOOL quietly)
 {
-	UDWORD			i;
-	STRUCTURE		*psStruct,*psNext;
+    UDWORD			i;
+    STRUCTURE		*psStruct,*psNext;
 
-	debug(LOG_NET, "R.I.P. %s (%u). quietly is %s", getPlayerName(player), player, quietly ? "true":"false");
+    debug(LOG_NET, "R.I.P. %s (%u). quietly is %s", getPlayerName(player), player, quietly ? "true":"false");
 
-	ingame.JoiningInProgress[player] = false;	// if they never joined, reset the flag
-	ingame.DataIntegrity[player] = false;
+    ingame.JoiningInProgress[player] = false;	// if they never joined, reset the flag
+    ingame.DataIntegrity[player] = false;
 
-	(void)setPlayerName(player,"");				//clear custom player name (will use default instead)
+    (void)setPlayerName(player,"");				//clear custom player name (will use default instead)
 
-	for(i = 0;i<MAX_PLAYERS;i++)				// remove alliances
-	{
-		alliances[player][i]	= ALLIANCE_BROKEN;
-		alliances[i][player]	= ALLIANCE_BROKEN;
-	}
+    for(i = 0; i<MAX_PLAYERS; i++)				// remove alliances
+    {
+        alliances[player][i]	= ALLIANCE_BROKEN;
+        alliances[i][player]	= ALLIANCE_BROKEN;
+    }
 
-	debug(LOG_DEATH, "killing off all droids for player %d", player);
-	while(apsDroidLists[player])				// delete all droids
-	{
-		if(quietly)			// don't show effects
-		{
-			killDroid(apsDroidLists[player]);
-		}
-		else				// show effects
-		{
-			destroyDroid(apsDroidLists[player]);
-		}
-	}
+    debug(LOG_DEATH, "killing off all droids for player %d", player);
+    while(apsDroidLists[player])				// delete all droids
+    {
+        if(quietly)			// don't show effects
+        {
+            killDroid(apsDroidLists[player]);
+        }
+        else				// show effects
+        {
+            destroyDroid(apsDroidLists[player]);
+        }
+    }
 
-	debug(LOG_DEATH, "killing off all structures for player %d", player);
-	psStruct = apsStructLists[player];
-	while(psStruct)				// delete all structs
-	{
-		psNext = psStruct->psNext;
+    debug(LOG_DEATH, "killing off all structures for player %d", player);
+    psStruct = apsStructLists[player];
+    while(psStruct)				// delete all structs
+    {
+        psNext = psStruct->psNext;
 
-		// FIXME: look why destroyStruct() doesn't put back the feature like removeStruct() does
-		if(quietly || psStruct->pStructureType->type == REF_RESOURCE_EXTRACTOR)		// don't show effects
-		{
-			removeStruct(psStruct, true);
-		}
-		else			// show effects
-		{
-			destroyStruct(psStruct);
-		}
+        // FIXME: look why destroyStruct() doesn't put back the feature like removeStruct() does
+        if(quietly || psStruct->pStructureType->type == REF_RESOURCE_EXTRACTOR)		// don't show effects
+        {
+            removeStruct(psStruct, true);
+        }
+        else			// show effects
+        {
+            destroyStruct(psStruct);
+        }
 
-		psStruct = psNext;
-	}
+        psStruct = psNext;
+    }
 
-	return;
+    return;
 }
 
 // Reset visibilty, so a new player can't see the old stuff!!
 static void resetMultiVisibility(UDWORD player)
 {
-	UDWORD		owned;
-	DROID		*pDroid;
-	STRUCTURE	*pStruct;
+    UDWORD		owned;
+    DROID		*pDroid;
+    STRUCTURE	*pStruct;
 
-	for(owned = 0 ; owned <MAX_PLAYERS ;owned++)		// for each player
-	{
-		if(owned != player)								// done reset own stuff..
-		{
-			//droids
-			for(pDroid = apsDroidLists[owned];pDroid;pDroid=pDroid->psNext)
-			{
-				pDroid->visible[player] = false;
-			}
+    for(owned = 0 ; owned <MAX_PLAYERS ; owned++)		// for each player
+    {
+        if(owned != player)								// done reset own stuff..
+        {
+            //droids
+            for(pDroid = apsDroidLists[owned]; pDroid; pDroid=pDroid->psNext)
+            {
+                pDroid->visible[player] = false;
+            }
 
-			//structures
-			for(pStruct= apsStructLists[owned];pStruct;pStruct=pStruct->psNext)
-			{
-				pStruct->visible[player] = false;
-			}
+            //structures
+            for(pStruct= apsStructLists[owned]; pStruct; pStruct=pStruct->psNext)
+            {
+                pStruct->visible[player] = false;
+            }
 
-		}
-	}
-	return;
+        }
+    }
+    return;
 }
 
 // ////////////////////////////////////////////////////////////////////////////
 // A remote player has left the game
 BOOL MultiPlayerLeave(UDWORD playerIndex)
 {
-	char	buf[255] = {'\0'};
+    char	buf[255] = {'\0'};
 
-	if (playerIndex >= MAX_PLAYERS)
-	{
-		ASSERT(false, "Bad player number");
-		return false;
-	}
+    if (playerIndex >= MAX_PLAYERS)
+    {
+        ASSERT(false, "Bad player number");
+        return false;
+    }
 
-	ssprintf(buf, "** Player %u [%s], has left the game.", playerIndex, getPlayerName(playerIndex));
-	NETlogEntry(buf, SYNC_FLAG, playerIndex);
-	debug(LOG_INFO,"%s", buf);
+    ssprintf(buf, "** Player %u [%s], has left the game.", playerIndex, getPlayerName(playerIndex));
+    NETlogEntry(buf, SYNC_FLAG, playerIndex);
+    debug(LOG_INFO,"%s", buf);
 
-	ssprintf(buf, _("%s has Left the Game"), getPlayerName(playerIndex));
+    ssprintf(buf, _("%s has Left the Game"), getPlayerName(playerIndex));
 
-	turnOffMultiMsg(true);
-	clearPlayer(playerIndex, false);		// don't do it quietly
-	game.skDiff[playerIndex] = DIFF_SLIDER_STOPS / 2;
+    turnOffMultiMsg(true);
+    clearPlayer(playerIndex, false);		// don't do it quietly
+    game.skDiff[playerIndex] = DIFF_SLIDER_STOPS / 2;
 
-	turnOffMultiMsg(false);
+    turnOffMultiMsg(false);
 
-	addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+    addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 
-	if (NetPlay.players[playerIndex].wzFile.isSending)
-	{
-		char buf[256];
+    if (NetPlay.players[playerIndex].wzFile.isSending)
+    {
+        char buf[256];
 
-		ssprintf(buf, _("File transfer has been aborted for %d.") , playerIndex);
-		addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-		debug(LOG_INFO, "=== File has been aborted for %d ===", playerIndex);
-		NetPlay.players[playerIndex].wzFile.isSending = false;
-		NetPlay.players[playerIndex].needFile = false;
-	}
+        ssprintf(buf, _("File transfer has been aborted for %d.") , playerIndex);
+        addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+        debug(LOG_INFO, "=== File has been aborted for %d ===", playerIndex);
+        NetPlay.players[playerIndex].wzFile.isSending = false;
+        NetPlay.players[playerIndex].needFile = false;
+    }
 
-	if (widgGetFromID(psWScreen, IDRET_FORM))
-	{
-		audio_QueueTrack(ID_CLAN_EXIT);
-	}
+    if (widgGetFromID(psWScreen, IDRET_FORM))
+    {
+        audio_QueueTrack(ID_CLAN_EXIT);
+    }
 
-	// fire script callback to reassign skirmish players.
-	CBPlayerLeft = playerIndex;
-	eventFireCallbackTrigger((TRIGGER_TYPE)CALL_PLAYERLEFT);
+    // fire script callback to reassign skirmish players.
+    CBPlayerLeft = playerIndex;
+    eventFireCallbackTrigger((TRIGGER_TYPE)CALL_PLAYERLEFT);
 
-	netPlayersUpdated = true;
-	return true;
+    netPlayersUpdated = true;
+    return true;
 }
 
 // ////////////////////////////////////////////////////////////////////////////
 // A Remote Player has joined the game.
 BOOL MultiPlayerJoin(UDWORD playerIndex)
 {
-	if(widgGetFromID(psWScreen,IDRET_FORM))	// if ingame.
-	{
-		audio_QueueTrack( ID_CLAN_ENTER );
-	}
+    if(widgGetFromID(psWScreen,IDRET_FORM))	// if ingame.
+    {
+        audio_QueueTrack( ID_CLAN_ENTER );
+    }
 
-	if(widgGetFromID(psWScreen,MULTIOP_PLAYERS))	// if in multimenu.
-	{
-		if (!multiRequestUp && (bHosted || ingame.localJoiningInProgress))
-		{
-			addPlayerBox(true);	// update the player box.
-		}
-	}
+    if(widgGetFromID(psWScreen,MULTIOP_PLAYERS))	// if in multimenu.
+    {
+        if (!multiRequestUp && (bHosted || ingame.localJoiningInProgress))
+        {
+            addPlayerBox(true);	// update the player box.
+        }
+    }
 
-	if(NetPlay.isHost)		// host responsible for welcoming this player.
-	{
-		// if we've already received a request from this player don't reallocate.
-		if (ingame.JoiningInProgress[playerIndex])
-		{
-			return true;
-		}
-		ASSERT(NetPlay.playercount <= MAX_PLAYERS, "Too many players!");
+    if(NetPlay.isHost)		// host responsible for welcoming this player.
+    {
+        // if we've already received a request from this player don't reallocate.
+        if (ingame.JoiningInProgress[playerIndex])
+        {
+            return true;
+        }
+        ASSERT(NetPlay.playercount <= MAX_PLAYERS, "Too many players!");
 
-		// setup data for this player, then broadcast it to the other players.
-		setupNewPlayer(playerIndex);						// setup all the guff for that player.
-		sendOptions();
-		bPlayerReadyGUI[playerIndex] = false;
+        // setup data for this player, then broadcast it to the other players.
+        setupNewPlayer(playerIndex);						// setup all the guff for that player.
+        sendOptions();
+        bPlayerReadyGUI[playerIndex] = false;
 
-		// if skirmish and game full, then kick...
-		if (NetPlay.playercount > game.maxPlayers)
-		{
-			kickPlayer(playerIndex, "the game is already full.", ERROR_FULL);
-		}
-		// send everyone's stats to the new guy
-		{
-			int i;
+        // if skirmish and game full, then kick...
+        if (NetPlay.playercount > game.maxPlayers)
+        {
+            kickPlayer(playerIndex, "the game is already full.", ERROR_FULL);
+        }
+        // send everyone's stats to the new guy
+        {
+            int i;
 
-			for (i = 0; i < MAX_PLAYERS; i++)
-			{
-				if (NetPlay.players[i].allocated)
-				{
-					setMultiStats(i, getMultiStats(i), false);
-				}
-			}
-		}
-	}
-	return true;
+            for (i = 0; i < MAX_PLAYERS; i++)
+            {
+                if (NetPlay.players[i].allocated)
+                {
+                    setMultiStats(i, getMultiStats(i), false);
+                }
+            }
+        }
+    }
+    return true;
 }
 
 bool sendDataCheck(void)
 {
-	int i = 0;
-	uint32_t	player = selectedPlayer;
+    int i = 0;
+    uint32_t	player = selectedPlayer;
 
-	NETbeginEncode(NET_DATA_CHECK, NET_HOST_ONLY);		// only need to send to HOST
-	for(i = 0; i < DATA_MAXDATA; i++)
-	{
-		NETuint32_t(&DataHash[i]);
-	}
-		NETuint32_t(&player);
-	NETend();
-	debug(LOG_NET, "sent hash to host");
-	return true;
+    NETbeginEncode(NET_DATA_CHECK, NET_HOST_ONLY);		// only need to send to HOST
+    for(i = 0; i < DATA_MAXDATA; i++)
+    {
+        NETuint32_t(&DataHash[i]);
+    }
+    NETuint32_t(&player);
+    NETend();
+    debug(LOG_NET, "sent hash to host");
+    return true;
 }
 
 bool recvDataCheck(void)
 {
-	int i = 0;
-	uint32_t	player;
-	uint32_t tempBuffer[DATA_MAXDATA] = {0};
+    int i = 0;
+    uint32_t	player;
+    uint32_t tempBuffer[DATA_MAXDATA] = {0};
 
-	if(!NetPlay.isHost)				// only host should act
-	{
-		ASSERT(false, "Host only routine detected for client!");
-		return false;
-	}
+    if(!NetPlay.isHost)				// only host should act
+    {
+        ASSERT(false, "Host only routine detected for client!");
+        return false;
+    }
 
-	NETbeginDecode(NET_DATA_CHECK);
-	for(i = 0; i < DATA_MAXDATA; i++)
-	{
-		NETuint32_t(&tempBuffer[i]);
-	}
-		NETuint32_t(&player);
-	NETend();
+    NETbeginDecode(NET_DATA_CHECK);
+    for(i = 0; i < DATA_MAXDATA; i++)
+    {
+        NETuint32_t(&tempBuffer[i]);
+    }
+    NETuint32_t(&player);
+    NETend();
 
-	if (player >= MAX_PLAYERS) // invalid player number.
-	{
-		debug(LOG_ERROR, "invalid player number (%u) detected.", player);
-		return false;
-	}
+    if (player >= MAX_PLAYERS) // invalid player number.
+    {
+        debug(LOG_ERROR, "invalid player number (%u) detected.", player);
+        return false;
+    }
 
-	if (whosResponsible(player) != NetMsg.source)
-	{
-		HandleBadParam("NET_DATA_CHECK given incorrect params.", player, NetMsg.source);
-		return false;
-	}
+    if (whosResponsible(player) != NetMsg.source)
+    {
+        HandleBadParam("NET_DATA_CHECK given incorrect params.", player, NetMsg.source);
+        return false;
+    }
 
-	debug(LOG_NET, "** Received NET_DATA_CHECK from player %u", player);
-	if (NetPlay.isHost)
-	{
-		if (memcmp(DataHash, tempBuffer, sizeof(DataHash)))
-		{
-			char msg[256] = {'\0'};
+    debug(LOG_NET, "** Received NET_DATA_CHECK from player %u", player);
+    if (NetPlay.isHost)
+    {
+        if (memcmp(DataHash, tempBuffer, sizeof(DataHash)))
+        {
+            char msg[256] = {'\0'};
 
-			for (i=0; i<DATA_MAXDATA; i++)
-			{
-				if (DataHash[i] != tempBuffer[i]) break;
-			}
+            for (i=0; i<DATA_MAXDATA; i++)
+            {
+                if (DataHash[i] != tempBuffer[i])
+                {
+                    break;
+                }
+            }
 
-			sprintf(msg, _("%s (%u) has an incompatible mod, and has been kicked."), getPlayerName(player), player);
-			sendTextMessage(msg, true);
-			addConsoleMessage(msg, LEFT_JUSTIFY, NOTIFY_MESSAGE);
+            sprintf(msg, _("%s (%u) has an incompatible mod, and has been kicked."), getPlayerName(player), player);
+            sendTextMessage(msg, true);
+            addConsoleMessage(msg, LEFT_JUSTIFY, NOTIFY_MESSAGE);
 
-			kickPlayer(player, "your data doesn't match the host's!", ERROR_WRONGDATA);
-			debug(LOG_WARNING, "%s (%u) has an incompatible mod. ([%d] got %x, expected %x)", getPlayerName(player), player, i, SDL_SwapBE32(tempBuffer[i]), SDL_SwapBE32(DataHash[i]));
-			debug(LOG_POPUP, "%s (%u), has an incompatible mod. ([%d] got %x, expected %x)", getPlayerName(player), player, i, SDL_SwapBE32(tempBuffer[i]), SDL_SwapBE32(DataHash[i]));
+            kickPlayer(player, "your data doesn't match the host's!", ERROR_WRONGDATA);
+            debug(LOG_WARNING, "%s (%u) has an incompatible mod. ([%d] got %x, expected %x)", getPlayerName(player), player, i, SDL_SwapBE32(tempBuffer[i]), SDL_SwapBE32(DataHash[i]));
+            debug(LOG_POPUP, "%s (%u), has an incompatible mod. ([%d] got %x, expected %x)", getPlayerName(player), player, i, SDL_SwapBE32(tempBuffer[i]), SDL_SwapBE32(DataHash[i]));
 
-			return false;
-		}
-		else
-		{
+            return false;
+        }
+        else
+        {
 #ifdef DEBUG
-			char msg[256] = {'\0'};
-			sprintf(msg, "DataCheck message received and verified for player %s (%u)", getPlayerName(player), player);
-			addConsoleMessage(msg, LEFT_JUSTIFY, NOTIFY_MESSAGE);
+            char msg[256] = {'\0'};
+            sprintf(msg, "DataCheck message received and verified for player %s (%u)", getPlayerName(player), player);
+            addConsoleMessage(msg, LEFT_JUSTIFY, NOTIFY_MESSAGE);
 #endif
-			debug(LOG_NET, "DataCheck message received and verified for player %s (%u)", getPlayerName(player), player);
-			ingame.DataIntegrity[player] = true;
-		}
-	}
-	return true;
+            debug(LOG_NET, "DataCheck message received and verified for player %s (%u)", getPlayerName(player), player);
+            ingame.DataIntegrity[player] = true;
+        }
+    }
+    return true;
 }
 // ////////////////////////////////////////////////////////////////////////////
 // Setup Stuff for a new player.
 void setupNewPlayer(UDWORD player)
 {
-	UDWORD i;
-	char buf[255];
+    UDWORD i;
+    char buf[255];
 
-	ingame.PingTimes[player] = 0;					// Reset ping time
-	ingame.JoiningInProgress[player] = true;			// Note that player is now joining
-	ingame.DataIntegrity[player] = false;
+    ingame.PingTimes[player] = 0;					// Reset ping time
+    ingame.JoiningInProgress[player] = true;			// Note that player is now joining
+    ingame.DataIntegrity[player] = false;
 
-	for (i = 0; i < MAX_PLAYERS; i++)				// Set all alliances to broken
-	{
-		alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
-		alliances[i][selectedPlayer] = ALLIANCE_BROKEN;
-	}
+    for (i = 0; i < MAX_PLAYERS; i++)				// Set all alliances to broken
+    {
+        alliances[selectedPlayer][i] = ALLIANCE_BROKEN;
+        alliances[i][selectedPlayer] = ALLIANCE_BROKEN;
+    }
 
-	resetMultiVisibility(player);						// set visibility flags.
+    resetMultiVisibility(player);						// set visibility flags.
 
-	setMultiStats(player, getMultiStats(player), true);  // get the players score
+    setMultiStats(player, getMultiStats(player), true);  // get the players score
 
-	ssprintf(buf, _("%s is Joining the Game"), getPlayerName(player));
-	addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+    ssprintf(buf, _("%s is Joining the Game"), getPlayerName(player));
+    addConsoleMessage(buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 }
 
 
@@ -407,7 +410,7 @@ void setupNewPlayer(UDWORD player)
 // unfortunatly, we don't get the message until after the setup is done.
 void ShowMOTD(void)
 {
-	// when HOST joins the game, show server MOTD message first
-	addConsoleMessage(_("System message:"), DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
-	addConsoleMessage(NetPlay.MOTD, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
+    // when HOST joins the game, show server MOTD message first
+    addConsoleMessage(_("System message:"), DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
+    addConsoleMessage(NetPlay.MOTD, DEFAULT_JUSTIFY, NOTIFY_MESSAGE);
 }

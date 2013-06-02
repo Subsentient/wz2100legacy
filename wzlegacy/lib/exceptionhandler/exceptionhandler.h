@@ -17,6 +17,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #ifndef __INCLUDED_LIB_EXCEPTIONHANDLER_EXCEPTIONHANDLER_H__
 #define __INCLUDED_LIB_EXCEPTIONHANDLER_EXCEPTIONHANDLER_H__
 
-extern void setupExceptionHandler(int argc, char * argv[]);
+extern void setupExceptionHandler(int argc, char *argv[]);
 extern bool OverrideRPTDirectory(char *newPath);
 #endif // __INCLUDED_LIB_EXCEPTIONHANDLER_EXCEPTIONHANDLER_H__

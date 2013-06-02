@@ -24,8 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _formation_type
 {
-	FT_LINE,
-	FT_COLUMN,
+    FT_LINE,
+    FT_COLUMN,
 } FORMATION_TYPE;
 
 // Initialise the formation system
@@ -36,16 +36,16 @@ extern void formationShutDown(void);
 
 // Create a new formation
 extern BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
-					SDWORD x, SDWORD y, SDWORD dir);
+                         SDWORD x, SDWORD y, SDWORD dir);
 
 // Try and find a formation near to a location
-extern FORMATION* formationFind(int x, int y);
+extern FORMATION *formationFind(int x, int y);
 
 // Associate a unit with a formation
-extern void formationJoin(FORMATION *psFormation, const DROID* psDroid);
+extern void formationJoin(FORMATION *psFormation, const DROID *psDroid);
 
 // Remove a unit from a formation
-extern void formationLeave(FORMATION *psFormation, const DROID* psDroid);
+extern void formationLeave(FORMATION *psFormation, const DROID *psDroid);
 
 // remove all the members from a formation and release it
 extern void formationReset(FORMATION *psFormation);
@@ -54,11 +54,11 @@ extern void formationReset(FORMATION *psFormation);
 extern void formationReorder(FORMATION *psFormation);
 
 // get a target position to move into a formation
-extern BOOL formationGetPos(FORMATION *psFormation, DROID* psDroid,
-					 SDWORD *pX, SDWORD *pY, BOOL bCheckLOS);
+extern BOOL formationGetPos(FORMATION *psFormation, DROID *psDroid,
+                            SDWORD *pX, SDWORD *pY, BOOL bCheckLOS);
 
 // See if a unit is a member of a formation (i.e. it has a position assigned)
-extern BOOL formationMember(FORMATION *psFormation, const DROID* psDroid);
+extern BOOL formationMember(FORMATION *psFormation, const DROID *psDroid);
 
 extern SDWORD formationGetSpeed( FORMATION *psFormation );
 

@@ -14,11 +14,11 @@
 extern "C" {
 #endif
 
-LIBSPEC void * miniwget(const char *, int *);
+    LIBSPEC void *miniwget(const char *, int *);
 
-LIBSPEC void * miniwget_getaddr(const char *, int *, char *, int);
+    LIBSPEC void *miniwget_getaddr(const char *, int *, char *, int);
 
-int parseURL(const char *, char *, unsigned short *, char * *);
+    int parseURL(const char *, char *, unsigned short *, char * *);
 
 #ifdef __cplusplus
 }

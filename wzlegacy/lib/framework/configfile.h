@@ -27,6 +27,6 @@ extern bool getWarzoneKeyNumeric(const char *pName, SDWORD *val);
 extern bool setWarzoneKeyNumeric(const char *pName, SDWORD val);
 extern bool getWarzoneKeyString(const char *pName, char *pString);
 extern bool setWarzoneKeyString(const char *pName, const char *pString);
-extern void setRegistryFilePath(const char* fileName);
+extern void setRegistryFilePath(const char *fileName);
 
 #endif // _INCLUDE_LIB_FRAMEWORK_CONFIGFILE_H_

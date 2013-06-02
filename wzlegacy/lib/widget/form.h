@@ -40,57 +40,57 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* The standard form */
 typedef struct _w_form
 {
-	/* The common form data */
-	FORM_BASE;
+    /* The common form data */
+    FORM_BASE;
 } W_FORM;
 
 /* Information for a minor tab */
 typedef struct _w_minortab
 {
-	/* Graphics data for the tab will go here */
-	WIDGET		*psWidgets;			// Widgets on the tab
-	char		*pTip;				// Tool tip
+    /* Graphics data for the tab will go here */
+    WIDGET		*psWidgets;			// Widgets on the tab
+    char		*pTip;				// Tool tip
 } W_MINORTAB;
 
 /* Information for a major tab */
 typedef struct _w_majortab
 {
-	/* Graphics data for the tab will go here */
-	UWORD			lastMinor;					// Store which was the last selected minor tab
-	UWORD			numMinor;
-	W_MINORTAB		asMinor[WFORM_MAXMINOR];	// Minor tab information
-	char			*pTip;
+    /* Graphics data for the tab will go here */
+    UWORD			lastMinor;					// Store which was the last selected minor tab
+    UWORD			numMinor;
+    W_MINORTAB		asMinor[WFORM_MAXMINOR];	// Minor tab information
+    char			*pTip;
 } W_MAJORTAB;
 
 /* The tabbed form data structure */
 typedef struct _w_tabform
 {
-	/* The common form data */
-	FORM_BASE;
+    /* The common form data */
+    FORM_BASE;
 
-	UWORD		majorPos, minorPos;		// Position of the tabs on the form
-	UWORD		majorSize,minorSize;	// the size of tabs horizontally and vertically
-	UWORD		tabMajorThickness;			// The thickness of the tabs
-	UWORD		tabMinorThickness;			// The thickness of the tabs
-	UWORD		tabMajorGap;					// The gap between tabs
-	UWORD		tabMinorGap;					// The gap between tabs
-	SWORD		tabVertOffset;				// Tab form overlap offset.
-	SWORD		tabHorzOffset;				// Tab form overlap offset.
-	SWORD		majorOffset;			// Tab start offset.
-	SWORD		minorOffset;			// Tab start offset.
-	UWORD		majorT,minorT;			// which tab is selected
-	UWORD		state;					// Current state of the widget
-	UWORD		tabHiLite;				// which tab is hilited.
-	/* NOTE: If tabHiLite is (UWORD)(-1) then there is no hilite.  A bit of a hack I know */
-	/*       but I don't really have the energy to change it.  (Don't design stuff after  */
-	/*       beers at lunch-time :-)                                                      */
+    UWORD		majorPos, minorPos;		// Position of the tabs on the form
+    UWORD		majorSize,minorSize;	// the size of tabs horizontally and vertically
+    UWORD		tabMajorThickness;			// The thickness of the tabs
+    UWORD		tabMinorThickness;			// The thickness of the tabs
+    UWORD		tabMajorGap;					// The gap between tabs
+    UWORD		tabMinorGap;					// The gap between tabs
+    SWORD		tabVertOffset;				// Tab form overlap offset.
+    SWORD		tabHorzOffset;				// Tab form overlap offset.
+    SWORD		majorOffset;			// Tab start offset.
+    SWORD		minorOffset;			// Tab start offset.
+    UWORD		majorT,minorT;			// which tab is selected
+    UWORD		state;					// Current state of the widget
+    UWORD		tabHiLite;				// which tab is hilited.
+    /* NOTE: If tabHiLite is (UWORD)(-1) then there is no hilite.  A bit of a hack I know */
+    /*       but I don't really have the energy to change it.  (Don't design stuff after  */
+    /*       beers at lunch-time :-)                                                      */
 
-	UWORD		numMajor;				// The number of major tabs
-	SWORD		TabMultiplier;				//used to tell system we got lots of tabs to display
-	UWORD		numStats;				//# of 'stats' (items) in list
-	UWORD		numButtons;				//# of buttons per form
-	W_MAJORTAB	asMajor[WFORM_MAXMAJOR];	// The major tab information
-	TAB_DISPLAY pTabDisplay;			// Optional callback for display tabs.
+    UWORD		numMajor;				// The number of major tabs
+    SWORD		TabMultiplier;				//used to tell system we got lots of tabs to display
+    UWORD		numStats;				//# of 'stats' (items) in list
+    UWORD		numButtons;				//# of buttons per form
+    W_MAJORTAB	asMajor[WFORM_MAXMAJOR];	// The major tab information
+    TAB_DISPLAY pTabDisplay;			// Optional callback for display tabs.
 } W_TABFORM;
 
 
@@ -107,20 +107,20 @@ typedef struct _w_tabform
 /* The clickable form data structure */
 typedef struct _w_clickform
 {
-	/* The common form data */
-	FORM_BASE;
+    /* The common form data */
+    FORM_BASE;
 
-	UDWORD		state;					// Button state of the form
-	const char	*pTip;					// Tip for the form
-	SWORD HilightAudioID;				// Audio ID for form clicked sound
-	SWORD ClickedAudioID;				// Audio ID for form hilighted sound
-	WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
+    UDWORD		state;					// Button state of the form
+    const char	*pTip;					// Tip for the form
+    SWORD HilightAudioID;				// Audio ID for form clicked sound
+    SWORD ClickedAudioID;				// Audio ID for form hilighted sound
+    WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
 } W_CLICKFORM;
 
 extern void formClearFlash(W_FORM *psWidget);
 
 /* Create a form widget data structure */
-extern W_FORM* formCreate(const W_FORMINIT* psInit);
+extern W_FORM *formCreate(const W_FORMINIT *psInit);
 
 /* Free the memory used by a form */
 extern void formFree(W_FORM *psWidget);
@@ -140,10 +140,10 @@ extern void formGetOrigin(W_FORM *psWidget, SDWORD *pXOrigin, SDWORD *pYOrigin);
 /* Variables for the formGetAllWidgets functions */
 typedef struct _w_formgetall
 {
-	WIDGET		*psGAWList;
-	W_TABFORM	*psGAWForm;
-	W_MAJORTAB	*psGAWMajor;
-	UDWORD		GAWMajor, GAWMinor;
+    WIDGET		*psGAWList;
+    W_TABFORM	*psGAWForm;
+    W_MAJORTAB	*psGAWMajor;
+    UDWORD		GAWMajor, GAWMinor;
 } W_FORMGETALL;
 
 /* Initialise the formGetAllWidgets function */

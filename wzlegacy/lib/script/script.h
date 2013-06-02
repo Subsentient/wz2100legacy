@@ -31,8 +31,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* Whether to include debug info when compiling */
 typedef enum _scr_debugtype
 {
-	SCR_DEBUGINFO,		// Generate debug info
-	SCR_NODEBUG,		// Do not generate debug info
+    SCR_DEBUGINFO,		// Generate debug info
+    SCR_NODEBUG,		// Do not generate debug info
 } SCR_DEBUGTYPE;
 
 // If this is defined we save out the compiled scripts
@@ -98,7 +98,7 @@ extern UDWORD retStackCallDepth(void);
  *  \return a valid, non-null pointer on success,
  *          otherwise a null pointer on failure.
  */
-extern SCRIPT_CODE* scriptCompile(PHYSFS_file* fileHandle, SCR_DEBUGTYPE debugType);
+extern SCRIPT_CODE *scriptCompile(PHYSFS_file *fileHandle, SCR_DEBUGTYPE debugType);
 
 /* Free a SCRIPT_CODE structure */
 extern void scriptFreeCode(SCRIPT_CODE *psCode);
@@ -115,7 +115,7 @@ extern const char *scriptFunctionToString(SCRIPT_FUNC function) WZ_DECL_PURE;
 
 /* Run a compiled script */
 extern BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType,
-							UDWORD index, UDWORD offset);
+                            UDWORD index, UDWORD offset);
 
 
 /***********************************************************************************
@@ -143,7 +143,7 @@ extern BOOL eventAddValueRelease(INTERP_TYPE type, VAL_RELEASE_FUNC release);
 
 // Create a new context for a script
 extern BOOL eventNewContext(SCRIPT_CODE *psCode,
-							CONTEXT_RELEASE release, SCRIPT_CONTEXT **ppsContext);
+                            CONTEXT_RELEASE release, SCRIPT_CONTEXT **ppsContext);
 
 // Copy a context, including variable values
 extern BOOL eventCopyContext(SCRIPT_CONTEXT *psContext, SCRIPT_CONTEXT **ppsNew);
@@ -157,11 +157,11 @@ extern void eventRemoveContext(SCRIPT_CONTEXT *psContext);
 
 // Set a global variable value for a context
 extern BOOL eventSetContextVar(SCRIPT_CONTEXT *psContext, UDWORD index,
-							   INTERP_VAL *data);
+                               INTERP_VAL *data);
 
 // Get the value pointer for a variable index
 extern BOOL eventGetContextVal(SCRIPT_CONTEXT *psContext, UDWORD index,
-							   INTERP_VAL **ppsVal);
+                               INTERP_VAL **ppsVal);
 
 // Process all the currently active triggers
 // Time is the application time at which all the triggers are to be processed

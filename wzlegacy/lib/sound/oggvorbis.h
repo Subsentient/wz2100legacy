@@ -25,29 +25,29 @@ extern "C"
 {
 #endif
 
-typedef struct
-{
-	// the size of the data contained in *data (NOTE: this is *NOT* the size of *data itself)
-	size_t size;
+    typedef struct
+    {
+        // the size of the data contained in *data (NOTE: this is *NOT* the size of *data itself)
+        size_t size;
 
-	// the size of the buffer *data points to plus sizeof(soundDataBuffer)
-	size_t bufferSize;
+        // the size of the buffer *data points to plus sizeof(soundDataBuffer)
+        size_t bufferSize;
 
-	unsigned int bitsPerSample;
-	unsigned int channelCount;
-	unsigned int frequency;
+        unsigned int bitsPerSample;
+        unsigned int channelCount;
+        unsigned int frequency;
 
-	// the raw PCM data
-	char* data;
-} soundDataBuffer;
+        // the raw PCM data
+        char *data;
+    } soundDataBuffer;
 
 // Forward declaration so we can take pointers to this type
-struct OggVorbisDecoderState;
+    struct OggVorbisDecoderState;
 
-struct OggVorbisDecoderState* sound_CreateOggVorbisDecoder(PHYSFS_file* PHYSFS_fileHandle, BOOL allowSeeking);
-void sound_DestroyOggVorbisDecoder(struct OggVorbisDecoderState* decoder);
+    struct OggVorbisDecoderState *sound_CreateOggVorbisDecoder(PHYSFS_file *PHYSFS_fileHandle, BOOL allowSeeking);
+    void sound_DestroyOggVorbisDecoder(struct OggVorbisDecoderState *decoder);
 
-soundDataBuffer* sound_DecodeOggVorbis(struct OggVorbisDecoderState* decoder, size_t bufferSize);
+    soundDataBuffer *sound_DecodeOggVorbis(struct OggVorbisDecoderState *decoder, size_t bufferSize);
 
 #if defined(__cplusplus)
 }
