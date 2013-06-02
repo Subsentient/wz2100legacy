@@ -147,6 +147,7 @@ typedef enum _struct_states
     SS_BLUEPRINT_VALID,
     SS_BLUEPRINT_INVALID,
     SS_BLUEPRINT_PLANNED,
+    SS_BLUEPRINT_ALLY
 } STRUCT_STATES;
 
 typedef struct _research_facility

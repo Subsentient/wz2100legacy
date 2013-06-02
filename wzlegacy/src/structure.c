@@ -217,7 +217,8 @@ BOOL structureIsBlueprint(STRUCTURE *psStructure)
 {
     return (psStructure->status == SS_BLUEPRINT_VALID ||
             psStructure->status == SS_BLUEPRINT_INVALID ||
-            psStructure->status == SS_BLUEPRINT_PLANNED);
+            psStructure->status == SS_BLUEPRINT_PLANNED ||
+            psStructure->status == SS_BLUEPRINT_ALLY);
 }
 
 void structureInitVars(void)

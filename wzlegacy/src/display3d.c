@@ -1693,7 +1693,7 @@ void displayBlueprints(void)
 {
     STRUCTURE *blueprint;
     DROID *psDroid;
-    int order;
+    int order, PlayerCounter, BlueprintColor;
     STRUCT_STATES state;
 
     if ( (buildState == BUILD3D_VALID || buildState == BUILD3D_POS) &&
@@ -1762,68 +1762,86 @@ void displayBlueprints(void)
         }
     }
 
-    // now we draw the blueprints for all ordered buildings
-    for (psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
-    {
-        if (psDroid->droidType == DROID_CONSTRUCT || psDroid->droidType == DROID_CYBORG_CONSTRUCT)
-        {
-            //draw the current build site if its a line of structures
-            if (psDroid->order == DORDER_LINEBUILD && psDroid->psTarStats)
-            {
-                int left, right, up, down;
-                // a wall (or something like that)
-
-                left = MIN(map_coord(psDroid->orderX), map_coord(psDroid->orderX2));
-                right = MAX(map_coord(psDroid->orderX), map_coord(psDroid->orderX2));
-                up = MIN(map_coord(psDroid->orderY), map_coord(psDroid->orderY2));
-                down = MAX(map_coord(psDroid->orderY), map_coord(psDroid->orderY2));
-
-                drawWallDrag((STRUCTURE_STATS *)psDroid->psTarStats, left, right, up, down, SS_BLUEPRINT_PLANNED);
-            }
-            if (psDroid->order == DORDER_BUILD && psDroid->psTarStats)
-            {
-                if (!TileHasStructure(mapTile(map_coord(psDroid->orderX),map_coord(psDroid->orderY))))
-                {
-                    blueprint = buildBlueprint((STRUCTURE_STATS *)psDroid->psTarStats,
-                                               psDroid->orderX,
-                                               psDroid->orderY,
-                                               SS_BLUEPRINT_PLANNED);
-                    renderStructure(blueprint);
-                    free(blueprint);
-                }
-            }
-            //now look thru' the list of orders to see if more building sites
-            for (order = 0; order < psDroid->listSize; order++)
-            {
-                if (psDroid->asOrderList[order].order == DORDER_BUILD)
-                {
-                    // a single building
-                    if (!TileHasStructure(mapTile(map_coord(psDroid->asOrderList[order].x),map_coord(psDroid->asOrderList[order].y))))
-                    {
-                        blueprint = buildBlueprint((STRUCTURE_STATS *)psDroid->asOrderList[order].psOrderTarget,
-                                                   psDroid->asOrderList[order].x,
-                                                   psDroid->asOrderList[order].y,
-                                                   SS_BLUEPRINT_PLANNED);
-                        renderStructure(blueprint);
-                        free(blueprint);
-                    }
-                }
-                else if (psDroid->asOrderList[order].order == DORDER_LINEBUILD)
-                {
-                    int left, right, up, down;
-                    // a wall (or something like that)
-
-                    left = MIN(map_coord(psDroid->asOrderList[order].x), map_coord(psDroid->asOrderList[order].x2));
-                    right = MAX(map_coord(psDroid->asOrderList[order].x), map_coord(psDroid->asOrderList[order].x2));
-                    up = MIN(map_coord(psDroid->asOrderList[order].y), map_coord(psDroid->asOrderList[order].y2));
-                    down = MAX(map_coord(psDroid->asOrderList[order].y), map_coord(psDroid->asOrderList[order].y2));
-
-                    drawWallDrag((STRUCTURE_STATS *)psDroid->asOrderList[order].psOrderTarget, left, right, up, down, SS_BLUEPRINT_PLANNED);
-                }
-            }
-        }
-    }
-
+	for (PlayerCounter = 0; PlayerCounter < MAX_PLAYERS; ++PlayerCounter)
+	{ /*Cycle through all players to see who we need to show blueprints for.*/
+		
+		if (alliances[selectedPlayer][PlayerCounter] != ALLIANCE_FORMED && PlayerCounter != selectedPlayer)
+		{ /*We are only interested in showing blueprints for ourselves and our allies.*/
+			continue;
+		}
+		
+		switch (PlayerCounter == selectedPlayer)
+		{
+			case 1:
+				BlueprintColor = SS_BLUEPRINT_PLANNED;
+				break;
+			case 0:
+				BlueprintColor = SS_BLUEPRINT_ALLY;
+				break;
+		}
+		
+	    // now we draw the blueprints for all ordered buildings
+	    for (psDroid = apsDroidLists[PlayerCounter]; psDroid; psDroid = psDroid->psNext)
+	    {
+	        if (psDroid->droidType == DROID_CONSTRUCT || psDroid->droidType == DROID_CYBORG_CONSTRUCT)
+	        {
+	            //draw the current build site if its a line of structures
+	            if (psDroid->order == DORDER_LINEBUILD && psDroid->psTarStats)
+	            {
+	                int left, right, up, down;
+	                // a wall (or something like that)
+	
+	                left = MIN(map_coord(psDroid->orderX), map_coord(psDroid->orderX2));
+	                right = MAX(map_coord(psDroid->orderX), map_coord(psDroid->orderX2));
+	                up = MIN(map_coord(psDroid->orderY), map_coord(psDroid->orderY2));
+	                down = MAX(map_coord(psDroid->orderY), map_coord(psDroid->orderY2));
+	
+	                drawWallDrag((STRUCTURE_STATS *)psDroid->psTarStats, left, right, up, down, BlueprintColor);
+	            }
+	            if (psDroid->order == DORDER_BUILD && psDroid->psTarStats)
+	            {
+	                if (!TileHasStructure(mapTile(map_coord(psDroid->orderX),map_coord(psDroid->orderY))))
+	                {
+	                    blueprint = buildBlueprint((STRUCTURE_STATS *)psDroid->psTarStats,
+	                                               psDroid->orderX,
+	                                               psDroid->orderY,
+	                                               BlueprintColor);
+	                    renderStructure(blueprint);
+	                    free(blueprint);
+	                }
+	            }
+	            //now look thru' the list of orders to see if more building sites
+	            for (order = 0; order < psDroid->listSize; order++)
+	            {
+	                if (psDroid->asOrderList[order].order == DORDER_BUILD)
+	                {
+	                    // a single building
+	                    if (!TileHasStructure(mapTile(map_coord(psDroid->asOrderList[order].x),map_coord(psDroid->asOrderList[order].y))))
+	                    {
+	                        blueprint = buildBlueprint((STRUCTURE_STATS *)psDroid->asOrderList[order].psOrderTarget,
+	                                                   psDroid->asOrderList[order].x,
+	                                                   psDroid->asOrderList[order].y,
+	                                                   BlueprintColor);
+	                        renderStructure(blueprint);
+	                        free(blueprint);
+	                    }
+	                }
+	                else if (psDroid->asOrderList[order].order == DORDER_LINEBUILD)
+	                {
+	                    int left, right, up, down;
+	                    // a wall (or something like that)
+	
+	                    left = MIN(map_coord(psDroid->asOrderList[order].x), map_coord(psDroid->asOrderList[order].x2));
+	                    right = MAX(map_coord(psDroid->asOrderList[order].x), map_coord(psDroid->asOrderList[order].x2));
+	                    up = MIN(map_coord(psDroid->asOrderList[order].y), map_coord(psDroid->asOrderList[order].y2));
+	                    down = MAX(map_coord(psDroid->asOrderList[order].y), map_coord(psDroid->asOrderList[order].y2));
+	
+	                    drawWallDrag((STRUCTURE_STATS *)psDroid->asOrderList[order].psOrderTarget, left, right, up, down, BlueprintColor);
+	                }
+	            }
+	        }
+	    }
+	}
 }
 
 /// Draw Factory Delivery Points
@@ -2296,6 +2314,8 @@ static PIELIGHT getBlueprintColour(STRUCT_STATES state)
             return WZCOL_BLUEPRINT_INVALID;
         case SS_BLUEPRINT_PLANNED:
             return WZCOL_BLUEPRINT_PLANNED;
+        case SS_BLUEPRINT_ALLY:
+			return WZCOL_LBLUE;
         default:
             debug(LOG_ERROR, "this is not a blueprint");
             return WZCOL_WHITE;
