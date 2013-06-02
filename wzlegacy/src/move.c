@@ -2913,12 +2913,12 @@ static void checkLocalFeatures(DROID *psDroid)
 	SDWORD			i;
 	BASE_OBJECT		*psObj;
 
-	// only do for players droids.
-	if(psDroid->player != selectedPlayer)
-	{
+	if (!bMultiPlayer && !NetPlay.bComms && psDroid->player != selectedPlayer)
+	{ /*if we are in a campaign, don't let anyone but the human player pick up
+		* any barrels or artifacts. That ruins the campaign.*/
 		return;
 	}
-
+	
 	droidGetNaybors(psDroid);// update naybor list.
 
 	// scan the neighbours
@@ -2937,15 +2937,22 @@ static void checkLocalFeatures(DROID *psDroid)
 
 		if(bMultiPlayer && (psObj->player == ANYPLAYER))
 		{
-			giftPower(ANYPLAYER,selectedPlayer,true);			// give power
-			CONPRINTF(ConsoleString,(ConsoleString,_("You found %u power in an oil drum."),OILDRUM_POWER));
+			giftPower(ANYPLAYER,psDroid->player,true);			// give power
+			
+			if (psDroid->player == selectedPlayer)
+			{
+				CONPRINTF(ConsoleString,(ConsoleString,_("You found %u power in an oil drum."),OILDRUM_POWER));
+			}
 			requestOilDrum(1);
 		}
 		else
 
 		{
-			addPower(selectedPlayer,OILDRUM_POWER);
-			CONPRINTF(ConsoleString,(ConsoleString,_("You found %u power in an oil drum"),OILDRUM_POWER));
+			addPower(psDroid->player,OILDRUM_POWER);
+			if (psDroid->player == selectedPlayer)
+			{
+				CONPRINTF(ConsoleString,(ConsoleString,_("You found %u power in an oil drum"),OILDRUM_POWER));
+			}
 		}
 		removeFeature((FEATURE*)psObj);							// remove artifact+ send multiplay info.
 
