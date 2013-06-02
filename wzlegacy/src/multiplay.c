@@ -81,6 +81,8 @@ char						beaconReceiveMsg[MAX_PLAYERS][MAX_CONSOLE_STRING_LENGTH];	//beacon msg
 char								playerName[MAX_PLAYERS][MAX_STR_LENGTH];	//Array to store all player names (humans and AIs)
 BOOL						bPlayerReadyGUI[MAX_PLAYERS] = {false};
 
+#define WIN_ROT_SPEED 48 // formula: MAX_ROT_SPEED / WIN_ROT_SPEED - as you decrease this value, speed is increased.
+
 /////////////////////////////////////
 /* multiplayer message stack stuff */
 /////////////////////////////////////
@@ -162,7 +164,7 @@ BOOL multiplayerWinSequence(BOOL firstCall)
     // rotate world
     if (MissionResUp && !getWarCamStatus())
     {
-        rotAmount = timeAdjustedIncrement(MAP_SPIN_RATE / 12, true);
+        rotAmount = timeAdjustedIncrement(MAP_SPIN_RATE / WIN_ROT_SPEED, true);
         player.r.y += rotAmount;
     }
 
