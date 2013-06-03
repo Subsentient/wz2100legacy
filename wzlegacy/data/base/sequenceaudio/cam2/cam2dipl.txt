@@ -1,7 +1,0 @@
-20	432	10	100	_("Decoding Transmission...")
-
-
-
-
-
-
