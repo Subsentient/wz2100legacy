@@ -7,7 +7,7 @@
 
 abort() {
 	code=$1
-	git checkout utils
+	cleanup
 	
 	case $code in
 		1) echo "[ERROR] Compilation error; Aborting operation." ;;
@@ -16,6 +16,11 @@ abort() {
 	esac
 	
 	exit $code
+}
+
+cleanup() {
+	rm -rf ./wzlegacy_build
+	git checkout utils
 }
 
 # check parameters
@@ -41,5 +46,4 @@ sudo make install || abort 1
 
 # cleanup
 cd ..
-rm -rf ./wzlegacy_build
-git checkout utils
+cleanup
