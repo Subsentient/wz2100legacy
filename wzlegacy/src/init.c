@@ -474,8 +474,9 @@ BOOL buildMapList(void)
     for ( file = filelist; *file != NULL; ++file )
     {
         len = strlen( *file );
-        if ( len > 10 // Do not add addon.lev again
-                && !strcasecmp( *file+(len-10), ".addon.lev") )
+        if (( len > 10 // Do not add addon.lev again
+                && !strcasecmp( *file+(len-10), ".addon.lev")) ||
+                (len > 13 && !strcasecmp( *file+(len-13), ".xplayers.lev"))) /*Add support for loading those xplayer maps.*/
         {
             loadLevFile( *file, mod_multiplay );
         }
