@@ -3399,6 +3399,8 @@ BOOL startMultiOptions(BOOL bReenter)
             game.scavengers = false;
             sstrcpy(game.map, DEFAULTSKIRMISHMAP);
             game.maxPlayers = 4;
+            
+            loadMapPreview(false); /*Load map preview, so we don't get the multiplayer preview.*/
         }
 
         ingame.localOptionsReceived = false;
