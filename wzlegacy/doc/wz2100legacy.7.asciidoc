@@ -74,6 +74,9 @@ OPTIONS
 *--(no)sound*::
       Toggle the sound.
       
+*--(no)texturecompression*::
+      Control texture compression. Some older video cards may require this to work properly.
+      
 *--selftest*::
       Run a self test. Currently broken.
 
