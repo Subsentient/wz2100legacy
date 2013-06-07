@@ -19,9 +19,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  * Warzone Global configuration functions.
  */
 
+#include <GLee.h>
 #include "lib/framework/frame.h"
 #include "warzoneconfig.h"
 #include "lib/ivis_common/piestate.h"
+#include "lib/ivis_opengl/screen.h"
 #include "advvis.h"
 
 /***************************************************************************/
@@ -117,6 +119,45 @@ void war_SetVsync(bool b)
 bool war_GetVsync(void)
 {
     return warGlobs.vsync;
+}
+
+void war_SetTextureCompression(bool b)
+{
+    switch (b)
+    {
+		case 1:
+		{
+			wz_texture_compression = GL_COMPRESSED_RGBA_ARB;
+			break;
+		}
+		
+		case 0:
+		{
+			wz_texture_compression = GL_RGBA;
+		}
+		
+		default:
+			break;
+	}
+}
+
+bool war_GetTextureCompression(void)
+{
+	switch (wz_texture_compression)
+    {
+		case GL_COMPRESSED_RGBA_ARB:
+		{
+			return 1;
+		}
+		
+		case GL_RGBA:
+		{
+			return 0;
+		}
+		
+		default:
+			break;
+	}
 }
 
 void war_SetWidth(UDWORD width)

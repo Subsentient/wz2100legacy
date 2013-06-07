@@ -52,7 +52,7 @@ BOOL pie_Initialise(void)
     rendSurface.size = 0;
 
     /* Find texture compression extension */
-    if (GLEE_ARB_texture_compression)
+    if (GLEE_ARB_texture_compression && wz_texture_compression != GL_RGBA)
     {
         debug(LOG_TEXTURE, "Texture compression: Yes");
         wz_texture_compression = GL_COMPRESSED_RGBA_ARB;

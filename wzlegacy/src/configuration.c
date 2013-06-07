@@ -268,6 +268,23 @@ BOOL loadConfig(void)
         NETsetMasterserverName("warzonelegacy.org");
         setWarzoneKeyString("masterserver_name", NETgetMasterserverName());
     }
+    
+    if (getWarzoneKeyNumeric("texturecompression", &val))
+    {
+		if (val)
+		{
+			war_SetTextureCompression(true);
+		}
+		else
+		{
+			war_SetTextureCompression(false);
+		}
+	}
+	else
+	{
+		war_SetTextureCompression(true);
+		setWarzoneKeyNumeric("texturecompression", 1);
+	}
 
     if (getWarzoneKeyString("fontname", sBuf))
     {
@@ -742,6 +759,7 @@ BOOL saveConfig(void)
     setWarzoneKeyString("masterserver_name", NETgetMasterserverName());
     setWarzoneKeyNumeric("masterserver_port", NETgetMasterserverPort());
     setWarzoneKeyNumeric("gameserver_port", NETgetGameserverPort());
+	setWarzoneKeyNumeric("texturecompression", war_GetTextureCompression());
 
     if(!bMultiPlayer)
     {

@@ -70,6 +70,8 @@ typedef enum
     CLI_HOSTLAUNCH,
     CLI_NOASSERT,
     CLI_CRASH,
+    CLI_TEXTURECOMPRESSION,
+    CLI_NOTEXTURECOMPRESSION
 } CLI_OPTIONS;
 
 static const struct poptOption *getOptionsTable(void)
@@ -108,6 +110,8 @@ static const struct poptOption *getOptionsTable(void)
         { "selftest",   '\0', POPT_ARG_NONE,   NULL, CLI_SELFTEST,   N_("Activate self-test"),                NULL },
         { "join",       '\0', POPT_ARG_STRING, NULL, CLI_CONNECTTOIP,N_("connect directly to IP/hostname"),   N_("host") },
         { "host",       '\0', POPT_ARG_NONE,   NULL, CLI_HOSTLAUNCH, N_("go directly to host screen"),        NULL },
+        { "texturecompression", '\0', POPT_ARG_NONE, NULL, CLI_TEXTURECOMPRESSION, N_("Enable texture compression"), NULL },
+		{ "notexturecompression", '\0', POPT_ARG_NONE, NULL, CLI_NOTEXTURECOMPRESSION, N_("Disable texture compression"), NULL },
         // Terminating entry
         { NULL,         '\0', 0,               NULL, 0,              NULL,                                    NULL },
     };
@@ -487,6 +491,16 @@ bool ParseCommandLine(int argc, const char **argv)
             case CLI_NOSOUND:
                 war_setSoundEnabled(false);
                 break;
+                
+			case CLI_TEXTURECOMPRESSION:
+				debug(LOG_INFO, "Enabling texture compression.");
+				war_SetTextureCompression(true);
+				break;
+
+			case CLI_NOTEXTURECOMPRESSION:
+				debug(LOG_INFO, "Disabling texture compression.");
+				war_SetTextureCompression(false);
+				break;
 
             case CLI_SELFTEST:
                 selfTest = true;

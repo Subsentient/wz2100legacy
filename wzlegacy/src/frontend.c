@@ -840,6 +840,17 @@ static BOOL startVideoOptionsMenu(void)
         addTextButton(FRONTEND_VSYNC_R, FRONTEND_POS5M-55, FRONTEND_POS5Y, _("Off"), 0);
     }
 
+    addTextButton(FRONTEND_TEXTURECOMPRESSION, FRONTEND_POS6X-35, FRONTEND_POS6Y, _("Compress textures"), 0);
+    
+    if (war_GetTextureCompression())
+    {
+        addTextButton(FRONTEND_TEXTURECOMPRESSION_R, FRONTEND_POS6M-55, FRONTEND_POS6Y, _("On"), 0);
+    }
+    else
+    {
+        addTextButton(FRONTEND_TEXTURECOMPRESSION_R, FRONTEND_POS6M-55, FRONTEND_POS6Y, _("Off"), 0);
+    }
+    
     // Add some text down the side of the form
     addSideText(FRONTEND_SIDETEXT, FRONTEND_SIDEX, FRONTEND_SIDEY, _("VIDEO OPTIONS"));
 
@@ -974,7 +985,22 @@ BOOL runVideoOptionsMenu(void)
                 }
                 break;
             }
-
+		case FRONTEND_TEXTURECOMPRESSION:
+		case FRONTEND_TEXTURECOMPRESSION_R:
+		{
+			if (war_GetTextureCompression())
+			{
+				war_SetTextureCompression(false);
+				widgSetString(psWScreen, FRONTEND_TEXTURECOMPRESSION_R, _("Off"));
+			}
+			else
+			{
+				war_SetTextureCompression(true);
+				widgSetString(psWScreen, FRONTEND_TEXTURECOMPRESSION_R, _("On"));
+			}
+			break;
+		}
+		
         case FRONTEND_QUIT:
             changeTitleMode(OPTIONS);
             break;
