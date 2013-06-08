@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
-char* ReadConfig(char *filename);
+char* ReadConfig(char* filename);
+char** ParseConfig(char* string);
 long GetFileSize(FILE *file);
-long NumLines(char *str);
+long NumLines(char* str);

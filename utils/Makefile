@@ -1,12 +1,12 @@
 CC=gcc
-CFLAGS=-c -std=c89 -Wall
+CFLAGS=-Wall
 
-all: restree
-clean: 
+all: config restree
+clean:
 	rm *.o
 
-config: config.c config.h
-	$(CC) $(CFLAGS) config.c
+config: config.c config.h config_test.c
+	$(CC) $(CFLAGS) config.c config_test.c -o config_test.o
 
 restree: config restree.c
-	$(CC) $(CFLAGS) restree.c -o restree
+	$(CC) $(CFLAGS) restree.c -o restree.o

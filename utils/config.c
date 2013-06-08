@@ -2,13 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 
-char* ReadConfig(char *filename)
+char* ReadConfig(char* filename)
 {
-    FILE *file;
-    char *str;
+    FILE* file;
+    char* str;
     
     file = fopen(filename, "r");
     if (file == NULL)
@@ -23,7 +24,31 @@ char* ReadConfig(char *filename)
 	return str;
 }
 
-long GetFileSize(FILE *file) 
+char** ParseConfig(char* string) 
+{
+	int numlines;
+	int i = 0;
+	char* delims = " ";
+	char* result = NULL;
+	char** arr;
+	
+	numlines = NumLines(string);
+	arr = malloc(numlines);
+	
+	result = strtok(string, delims);
+	while (result != NULL) {
+		/* add to array */
+		arr[i] = result;
+		
+		/* Refer to http://www.elook.org/programming/c/strtok.html */
+		result = strtok(NULL, delims);
+		
+		++i;
+	}
+	return arr;
+}
+
+long GetFileSize(FILE* file) 
 {
     char tmpChar;
     unsigned long FileSize = 0;
@@ -35,7 +60,7 @@ long GetFileSize(FILE *file)
     return FileSize;
 }
 
-long NumLines(char *str) 
+long NumLines(char* str) 
 {
 	unsigned long NumLines = 1;
 	unsigned long i;
