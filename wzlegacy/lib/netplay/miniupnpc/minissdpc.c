@@ -15,7 +15,6 @@
 #include <io.h>
 // Warzone additions
 #include "lib/framework/types.h"
-typedef SSIZE_T ssize_t;
 // end WZ
 /* Hack */
 #define UNIX_PATH_LEN   108

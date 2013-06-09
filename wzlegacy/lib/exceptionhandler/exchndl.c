@@ -1330,7 +1330,7 @@ void ExchndlSetup()
     prevExceptionFilter = SetUnhandledExceptionFilter(TopLevelExceptionFilter);
 
     // Retrieve the current version
-    formattedVersionString = strdup(version_getFormattedVersionString());
+    formattedVersionString = strdup(GetVersionInfo());
 
     // Because of UAC on vista / win7 we use this to write our dumps to (unless we override it via OverrideRPTDirectory())
     // NOTE: CSIDL_PERSONAL =  C:\Users\user name\Documents

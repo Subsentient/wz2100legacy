@@ -1,12 +1,12 @@
 SUBDIRS = \
 	win32 \
-	win32/nsis \
 	lib \
 	src \
 	data \
 	po \
 	doc \
-	icons
+	icons \
+	win32/nsis
 
 dist_doc_DATA = \
 	AUTHORS \

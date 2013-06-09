@@ -379,7 +379,7 @@ AC_CHECK_LIB(m, nearbyint, [MATH_LIB=""], AC_MSG_ERROR([nearbyint not found.]))
 if test "x$host_os_mingw32" = "xyes" ; then
     AC_CHECK_LIB(iberty, main, AC_SUBST([IBERTY_LIBS], [-liberty]), AC_MSG_ERROR([libiberty not found.]))
 
-    WIN32_LIBS="${WIN32_LIBS} ${IBERTY_LIBS}"
+    WIN32_LIBS="${WIN32_LIBS} ${IBERTY_LIBS} ${OPENAL_LIBS}"
 fi
 
 # Look for X11 if required
@@ -450,9 +450,9 @@ AC_SUBST([OPENGLC_LIBS], [${OPENGLC_LIBS}])
 # MinGW derived exception handler.
 if test "x$host_os_mingw32" = "xyes" ; then
     AC_CHECK_HEADER(bfd.h, , AC_MSG_ERROR([BFD header not found.]))
-    AC_CHECK_LIB(bfd, bfd_openr, AC_SUBST([BFD_LIBS], [-lbfd]), AC_MSG_ERROR([BFD not found.]), [${IBERTY_LIBS}])
+    AC_CHECK_LIB(bfd, bfd_openr, AC_SUBST([BFD_LIBS], [-lbfd]), AC_MSG_ERROR([BFD not found.]), [${WIN32_LIBS}])
 
-    WIN32_LIBS="${WIN32_LIBS} ${BFD_LIBS} ${IBERTY_LIBS} -lstdc++"
+    WIN32_LIBS="${BFD_LIBS} ${WIN32_LIBS} -lstdc++"
 fi
 
 WZ_CPPFLAGS="${WZ_CPPFLAGS} -DWZ_DATADIR=\"\\\"\${datadir}/\${PACKAGE}\\\"\""

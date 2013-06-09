@@ -77,7 +77,6 @@ static const int SOCKET_ERROR = -1;
 # define EISCONN     WSAEISCONN
 # define ETIMEDOUT   WSAETIMEDOUT
 # define EWOULDBLOCK WSAEWOULDBLOCK
-typedef SSIZE_T ssize_t;
 # ifndef AI_V4MAPPED
 #  define AI_V4MAPPED	0x0008	/* IPv4 mapped addresses are acceptable.  */
 # endif
