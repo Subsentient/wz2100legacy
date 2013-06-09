@@ -91,11 +91,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "init.h"
 #include "levels.h"
 
-#if defined(WZ_OS_MAC)
-#include <QuesoGLC/glc.h>
-#else
-#include <GL/glc.h>
-#endif
+#include "lib/libglc/GL/glc.h"
 
 #define MAP_PREVIEW_DISPLAY_TIME 2500	// number of milliseconds to show map in preview
 

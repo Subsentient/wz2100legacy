@@ -345,14 +345,6 @@ AS_IF([test "x$enable_sound" = "xyes"],[
 	PKG_CHECK_MODULES([OGGVORBIS], [vorbisfile >= 1.1])
 ])
 
-if test "x$enable_static" = "xyes" ; then
-	# If linking statically, make sure to include the direct dependencies of
-	# QuesoGLC as well, because it does not have a pkg-config file.
-	# FIXME Remove this whenever QuesoGLC has a pkg-config file
-	PKG_CHECK_MODULES([FONTCONFIG], [fontconfig])
-	PKG_CHECK_MODULES([FREETYPE], [freetype2])
-fi
-
 system_glee=false
 if test "x$host_os_mingw32" != "xyes" ; then
 	PKG_CHECK_MODULES([GLee], [glee >= 5.4.0], [system_glee=true], [system_glee=false])
@@ -443,19 +435,15 @@ AC_CHECK_LIB(GLU, main,
 		[${OPENGL_LIBS} -lm]), [${OPENGL_LIBS} -lm])
 AC_SUBST([OPENGL_LIBS], [${OPENGL_LIBS}])
 
-# Look for OpenGLC
-AC_CHECK_HEADER(GL/glc.h, ,
-	AC_MSG_ERROR([OpenGLC header not found. Please install QuesoGLC: http://quesoglc.sourceforge.net/]))
-AC_CHECK_LIB(GLC, main,
-	OPENGLC_LIBS="-lGLC",
-	AC_CHECK_LIB(glc32, main,
-		OPENGLC_LIBS="-lglc32",
-		AC_MSG_ERROR([OpenGLC library not found. Please install QuesoGLC: http://quesoglc.sourceforge.net/])))
-if test "x$enable_static" = "xyes" ; then
-	# If linking statically, make sure to link against the direct dependencies, too.
-	# FIXME Remove this whenever QuesoGLC has a pkg-config file
-	OPENGLC_LIBS="${OPENGLC_LIBS} ${FONTCONFIG_LIBS} ${FREETYPE_LIBS}"
-fi
+#QuesoGLC and deps.
+PKG_CHECK_MODULES([FRIBIDI], [fribidi])
+PKG_CHECK_MODULES([FREETYPE], [freetype2])
+PKG_CHECK_MODULES([GLEW], [glew >= 1.5.2])
+AC_CHECK_LIB(freetype, FTC_Manager_New,
+             AC_DEFINE([HAVE_FT_CACHE], [1],
+                       [Define if FreeType supports the caching routines]))
+PKG_CHECK_MODULES([FONTCONFIG], [fontconfig])
+OPENGLC_LIBS="${FRIBIDI_LIBS} ${FREETYPE_LIBS} ${FONTCONFIG_LIBS} ${PTHREAD_LIBS} ${OPENGL_LIBS} ${GLEW_LIBS}"
 AC_SUBST([OPENGLC_LIBS], [${OPENGLC_LIBS}])
 
 # When (cross-)compiling for Windows (MinGW) we need to link in BFD for the Dr.
@@ -500,6 +488,7 @@ AC_CONFIG_FILES([Makefile
 		lib/sequence/Makefile
 		lib/sound/Makefile
 		lib/widget/Makefile
+		lib/libglc/Makefile
 		src/Makefile])
 AC_OUTPUT
 

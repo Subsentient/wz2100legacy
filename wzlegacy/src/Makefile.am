@@ -288,7 +288,8 @@ wz2100legacy_LDADD = \
 	$(top_builddir)/lib/gamelib/libgamelib.a \
 	$(top_builddir)/lib/framework/libframework.a \
 	$(top_builddir)/lib/iniparser/libiniparser.a \
-	$(top_builddir)/lib/exceptionhandler/libexceptionhandler.a
+	$(top_builddir)/lib/exceptionhandler/libexceptionhandler.a \
+	$(top_builddir)/lib/libglc/libglc.a
 
 wz2100legacy_LDADD += $(LTLIBINTL) $(SDL_LIBS) $(PHYSFS_LIBS) $(PNG_LIBS) $(OGGVORBIS_LIBS) $(THEORA_LIBS) $(OPENAL_LIBS) $(OPENGLC_LIBS) $(OPENGL_LIBS) $(POPT_LIBS) $(MOTIF_LIBS) $(X11_LIBS) $(GLee_LIBS)
 
