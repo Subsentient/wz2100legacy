@@ -62,113 +62,6 @@ data		"wrf/piestats.wrf"
 data		"wrf/stats.wrf"
 data		"wrf/multires.wrf"
 
-/********************************************************/
-/*    		 DeathMatch            			*/
-
-/********************************************************/
-/* MultiPlayer campaigns With scavs etc. 		*/
-
-level 		Rush-T1
-players		4
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-rush.gam"
-data		"wrf/multi/campaign-scav.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Rush2-T1
-players		4
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-rush2.gam"
-data		"wrf/multi/campaign-scav.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Startup-T1
-players		2
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/2c-startup.gam"
-data		"wrf/multi/campaign-scav.wrf"
-data		"wrf/multi/fog1.wrf"
-
-/********************************************************/
-/* standard multiplayer campaigns 			*/
-
-/*cam1*/
-level 		MizaMaze-T1
-players		8
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-mizamaze.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Clover-T1
-players		8
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-clover.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-/*cam2*/
-level 		UrbanChasm-T1
-players		2
-type		12
-dataset		MULTI_CAM_2
-game		"multiplay/maps/2c-urbanchasm.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level		UrbanDuel-T1
-players		4
-type		12
-dataset		MULTI_CAM_2
-game		"multiplay/maps/4c-urbanduel.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level		Manhattan-T1
-players		8
-type		12
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-manhattan.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-/*cam3*/
-level 		HighGround-T1
-players		2
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/2c-highground.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-//level 		FishNet
-//players		4
-//type		12
-//dataset		MULTI_CAM_3
-//game		"multiplay\maps\4c-fishnet.gam"
-//data		"wrf\multi\campaign.wrf"
-//data		"wrf\multi\fog3.wrf"
-
-level 		Mountain-T1
-players		4
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/4c-mountain.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Bananas-T1
-players		8
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-bananas.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
 
 
 /******************************************************/
@@ -1105,31 +998,6 @@ game		"multiplay/maps/4c-rush2.gam"
 data		"wrf/multi/t3-skirmish4.wrf"
 data		"wrf/multi/fog1.wrf"
 
-// hidensneak
-level 		HideNSneak-T1
-players		8
-type		12
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-hidensneak.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		HideNSneak-T2
-players		8
-type		15
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-hidensneak.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		HideNSneak-T3
-players		8
-type		16
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-hidensneak.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
 level 		HideNSneak-T1
 players		8
 type		14
@@ -1157,40 +1025,6 @@ data		"wrf/multi/fog2.wrf"
 // rolling hills t1, t2, t3 and t1, t2, t3
 
 // RollingHills
-
-// Multiplay
-
-// Tech 1
-
-level 		RollingHills-T1
-players		4
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-rollinghills.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		RollingHills-T2
-players		4
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-rollinghills.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		RollingHills-T3
-players		4
-type		16
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-rollinghills.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Skirmish
 
 // Tech 1
 
@@ -1225,38 +1059,6 @@ data		"wrf/multi/fog1.wrf"
 // yin yang t1, t2, t3 and t1, t2, t3
 
 // YinYang
-
-// Multiplay
-
-// Tech 1
-
-level 		YinYang-T1
-players		8
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-yinyang.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-// Tech 2
-
-level 		YinYang-T2
-players		8
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-yinyang.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-// Tech 3
-
-level 		YinYang-T3
-players		8
-type		16
-dataset		MULTI_T3_C3
-game		"multiplay/maps/8c-yinyang.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
 
 // Skirmish
 
@@ -1361,40 +1163,6 @@ data		"wrf/multi/fog2.wrf"
 
 // Basingstoke
 
-// Multiplay
-
-// Tech 1
-
-level 		Basingstoke-T1
-players		4
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-basingstoke.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		Basingstoke-T2
-players		4
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-basingstoke.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		Basingstoke-T3
-players		4
-type		16
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-basingstoke.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Skirmish
-
 // Tech 1
 
 level 		Basingstoke-T1
@@ -1426,41 +1194,6 @@ data		"wrf/multi/t3-skirmish4.wrf"
 data		"wrf/multi/fog1.wrf"
 
 // LittleEgypt
-
-// Multiplay
-
-// Tech 1
-
-level 		LittleEgypt-T1
-players		4
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-littleegypt.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		LittleEgypt-T2
-players		4
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-littleegypt.gam"
-data		"wrf/multi/t2-campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		LittleEgypt-T3
-players		4
-type		16
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-littleegypt.gam"
-data		"wrf/multi/t3-campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Skirmish
-
 // Tech 1
 
 level 		LittleEgypt-T1
@@ -1494,41 +1227,6 @@ data		"wrf/multi/fog1.wrf"
 // New Maps Only
 
 // BeggarsKanyon - 8 player desert
-
-// Multiplay
-
-// Tech 1
-
-level 		BeggarsKanyon-T1
-players		8
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-beggarskanyon.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		BeggarsKanyon-T2
-players		8
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-beggarskanyon.gam"
-data		"wrf/multi/t2-campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		BeggarsKanyon-T3
-players		8
-type		16
-dataset		MULTI_T3_C1
-game		"multiplay/maps/8c-beggarskanyon.gam"
-data		"wrf/multi/t3-campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Skirmish
-
 // Tech 1
 
 level 		BeggarsKanyon-T1
@@ -1560,41 +1258,6 @@ data		"wrf/multi/t3-skirmish8.wrf"
 data		"wrf/multi/fog1.wrf"
 
 // Gridlock
-
-// Multiplay
-
-// Tech 1
-
-level 		Gridlock-T1
-players		8
-type		12
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-gridlock.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 2
-
-level 		Gridlock-T2
-players		8
-type		15
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-gridlock.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 3
-
-level 		Gridlock-T3
-players		8
-type		16
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-gridlock.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Skirmish
-
 // Tech 1
 
 level 		Gridlock-T1
@@ -1628,39 +1291,6 @@ data		"wrf/multi/fog2.wrf"
 
 /// New maps added by Warzone2100 Resurrection Team
 
-
-// MultiPlay Tech Level 1
-
-level	cockate-T1
-players	8
-type	12
-dataset	MULTI_CAM_1
-game	"multiplay/maps/8c-cockate.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// MultiPlay Tech Level 2
-
-level	cockate-T2
-players	8
-type	15
-dataset	MULTI_T2_C1
-game	"multiplay/maps/8c-cockate.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// MultiPlay Tech Level 3
-
-level	cockate-T3
-players	8
-type	16
-dataset	MULTI_T3_C1
-game	"multiplay/maps/8c-cockate.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// Skirmish Tech Level 1
-
 level	cockate-T1
 players	8
 type	14
@@ -1689,37 +1319,6 @@ game	"multiplay/maps/8c-cockate.gam"
 data	"wrf/multi/t3-skirmish8.wrf"
 data	"wrf/multi/fog1.wrf"
 
-
-// MultiPlay Tech Level 1
-
-level	cockpit-T1
-players	4
-type	12
-dataset	MULTI_CAM_1
-game	"multiplay/maps/4c-cockpit.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// MultiPlay Tech Level 2
-
-level	cockpit-T2
-players	4
-type	15
-dataset	MULTI_T2_C1
-game	"multiplay/maps/4c-cockpit.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// MultiPlay Tech Level 3
-
-level	cockpit-T3
-players	4
-type	16
-dataset	MULTI_T3_C1
-game	"multiplay/maps/4c-cockpit.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog1.wrf"
-
 // Skirmish Tech Level 1
 
 level	cockpit-T1
@@ -1750,37 +1349,6 @@ game	"multiplay/maps/4c-cockpit.gam"
 data	"wrf/multi/t3-skirmish4.wrf"
 data	"wrf/multi/fog1.wrf"
 
-
-// MultiPlay Tech Level 1
-
-level	Urban-Chaos-T1
-players	4
-type	12
-dataset	MULTI_CAM_2
-game	"multiplay/maps/4c-urban-chaos.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog2.wrf"
-
-// MultiPlay Tech Level 2
-
-level	Urban-Chaos-T2
-players	4
-type	15
-dataset	MULTI_T2_C2
-game	"multiplay/maps/4c-urban-chaos.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog2.wrf"
-
-// MultiPlay Tech Level 3
-
-level	Urban-Chaos-T3
-players	4
-type	16
-dataset	MULTI_T3_C2
-game	"multiplay/maps/4c-urban-chaos.gam"
-data	"wrf/multi/campaign.wrf"
-data	"wrf/multi/fog2.wrf"
-
 // Skirmish Tech Level 1
 
 level	Urban-Chaos-T1
@@ -1810,36 +1378,6 @@ dataset	MULTI_T3_C2
 game	"multiplay/maps/4c-urban-chaos.gam"
 data	"wrf/multi/t3-skirmish4.wrf"
 data	"wrf/multi/fog2.wrf"
-
-// MultiPlay Tech Level 1
-
-level	Pyramidal-T1
-players	4
-type	12
-dataset	MULTI_CAM_1
-game	"multiplay/maps/4c-pyramidal.gam"
-data	"wrf/multi/campaign-scav.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// MultiPlay Tech Level 2
-
-level	Pyramidal-T2
-players	4
-type	15
-dataset	MULTI_T2_C1
-game	"multiplay/maps/4c-pyramidal.gam"
-data	"wrf/multi/campaign-scav.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// MultiPlay Tech Level 3
-
-level	Pyramidal-T3
-players	4
-type	16
-dataset	MULTI_T3_C1
-game	"multiplay/maps/4c-pyramidal.gam"
-data	"wrf/multi/campaign-scav.wrf"
-data	"wrf/multi/fog1.wrf"
 
 // Skirmish Tech Level 1
 
