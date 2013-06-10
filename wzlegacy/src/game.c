@@ -11834,6 +11834,87 @@ static BOOL getNameFromComp(UDWORD compType, char *pDest, UDWORD compIndex)
 // -----------------------------------------------------------------------------------------
 // END
 
+// Show location of (at this time) oil on the map preview
+static void plotFeature(char *backDropSprite)
+{
+	FEATURE_SAVEHEADER	*psHeader;
+	SAVE_FEATURE_V2	*psSaveFeature;
+	PIELIGHT colour = WZCOL_BLACK;
+	LEVEL_DATASET *psLevel;
+	UDWORD xx, yy, count, fileSize;
+	UDWORD sizeOfSaveFeature = 0;
+	char *pFileData = NULL;
+	char aFileName[256];
+
+	psLevel = levFindDataSet(game.map);
+	strcpy(aFileName, psLevel->apDataFiles[0]);
+	aFileName[strlen(aFileName) - 4] = '\0';
+	strcat(aFileName, "/feat.bjo");
+
+	// Load in the chosen file data/
+	pFileData = fileLoadBuffer;
+	if (!loadFileToBuffer(aFileName, pFileData, FILE_LOAD_BUFFER_SIZE, &fileSize))
+	{
+		debug( LOG_ERROR, "Unable to load file %s?", aFileName);
+		return;
+	}
+
+	// Check the file type
+	psHeader = (FEATURE_SAVEHEADER *)pFileData;
+	if (psHeader->aFileType[0] != 'f' || psHeader->aFileType[1] != 'e' || psHeader->aFileType[2] != 'a' || psHeader->aFileType[3] != 't')
+	{
+		debug( LOG_ERROR, "Incorrect file type, looking at %s", aFileName);
+		return;
+	}
+
+	endian_udword(&psHeader->version);
+	endian_udword(&psHeader->quantity);
+
+	//increment to the start of the data
+	pFileData += FEATURE_HEADER_SIZE;
+
+	sizeOfSaveFeature = sizeof(SAVE_FEATURE_V2);
+
+	if ((sizeOfSaveFeature * psHeader->quantity + FEATURE_HEADER_SIZE) > fileSize)
+	{
+		debug( LOG_ERROR, "Unexpected end of file ?" );
+		return;
+	}
+
+	// Load in the feature data
+	for (count = 0; count < psHeader->quantity; count++, pFileData += sizeOfSaveFeature)
+	{
+		// All versions up to 19 are compatible with V2.
+		psSaveFeature = (SAVE_FEATURE_V2*) pFileData;
+
+		// we only care about oil
+		if (strncmp(psSaveFeature->name, "OilResource", 11) == 0)
+		{
+			colour.byte.b = 0;
+            colour.byte.g = 0xff;
+            colour.byte.r = 0xff;
+		}
+		else if (strncmp(psSaveFeature->name, "OilDrum", 7) == 0)
+		{
+			colour.byte.b = 0;
+            colour.byte.g = 0xff;
+            colour.byte.r = 0;
+		}
+		else
+		{
+			continue;
+		}
+		endian_udword(&psSaveFeature->x);
+		endian_udword(&psSaveFeature->y);
+		xx = map_coord(psSaveFeature->x);
+		yy = map_coord(psSaveFeature->y);
+
+        backDropSprite[3 * ((yy * BACKDROP_HACK_WIDTH) + xx)] = colour.byte.r;
+        backDropSprite[3 * ((yy * BACKDROP_HACK_WIDTH) + xx) + 1] = colour.byte.g;
+        backDropSprite[3 * ((yy * BACKDROP_HACK_WIDTH) + xx) + 2] = colour.byte.b;
+	}
+}
+
 /**
  * \param[out] backDropSprite The premade map texture.
  * \param scale               Scale of the map texture.
@@ -11992,5 +12073,7 @@ BOOL plotStructurePreview16(char *backDropSprite, Vector2i playeridpos[])
     }
 
     // NOTE: would do fallback if FBO is not available here.
+	plotFeature(backDropSprite);
+	
     return true;
 }
