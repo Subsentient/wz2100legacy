@@ -156,6 +156,7 @@ bool war_GetTextureCompression(void)
 		}
 		
 		default:
+			return 1;
 			break;
 	}
 }
