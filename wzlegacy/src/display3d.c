@@ -613,23 +613,23 @@ void draw3DScene( void )
             }
         }
     }
-    if (getWidgetsStatus() && getDebugMappingStatus() && !demoGetStatus() && !gamePaused())
+    
+	// show level name and time
+    if (getWidgetsStatus() && !gamePaused())
     {
-        iV_DrawText( "DEBUG ", RET_X + 134, 440 + E_H );
-    }
-    else
-    {
-        // show level name and time
-        if (getWidgetsStatus() && !gamePaused())
-        {
-            char buildInfo[255];
-            if (showLevelName)
-            {
-                iV_DrawText( getLevelName(), RET_X + 134, 420 + E_H );
-            }
-            getAsciiTime(buildInfo,gameTime);
-            iV_DrawText( buildInfo, RET_X + 134, 434 + E_H );
-        }
+	    char buildInfo[255];
+	    
+		if (showLevelName)
+		{
+			iV_DrawText( getLevelName(), RET_X + 134, 420 + E_H );
+		}
+		getAsciiTime(buildInfo,gameTime);
+		iV_DrawText( buildInfo, RET_X + 134, 434 + E_H );
+		
+		if (getDebugMappingStatus() && !demoGetStatus())
+		{ /*Draw the word DEBUG if we are in debug mode.*/
+			iV_DrawText( "DEBUG ", RET_X + 134, 448 + E_H );
+		}
     }
 
     while(player.r.y>DEG(360))
