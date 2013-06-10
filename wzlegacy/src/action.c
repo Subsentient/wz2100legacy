@@ -1028,7 +1028,7 @@ void actionUpdateDroid(DROID *psDroid)
 {
     BASE_OBJECT			*psTarget;
     PROPULSION_STATS	*psPropStats;
-    BOOL				(*actionUpdateFunc)(DROID *psDroid) = NULL, canBuild;
+    BOOL				(*actionUpdateFunc)(DROID *psDroid) = NULL;
     signed int i;
     unsigned int j;
     //this is a bit field
@@ -1037,6 +1037,7 @@ void actionUpdateDroid(DROID *psDroid)
     bool hasVisibleTarget = false;
     bool targetVisibile[DROID_MAXWEAPS] = { false };
     bool bHasTarget;
+    BuildPermissionState canBuild;
 
     CHECK_DROID(psDroid);
 
