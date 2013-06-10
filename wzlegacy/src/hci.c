@@ -2045,7 +2045,6 @@ INT_RETVAL intRunWidgets(void)
                         if(fireOnLocation(structX,structY))
                         {
                             AddDerrickBurningMessage();
-                            CanBuild = false;
                         }
                     }
 

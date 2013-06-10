@@ -1057,7 +1057,7 @@ droidBuildStartAudioCallback( void *psObj )
 
 
 /* Set up a droid to build a structure - returns true if successful */
-BOOL droidStartBuild(DROID *psDroid)
+BuildPermissionState droidStartBuild(DROID *psDroid)
 {
     STRUCTURE *psStruct;
 
@@ -1075,20 +1075,19 @@ BOOL droidStartBuild(DROID *psDroid)
         if (structLimit->currentQuantity >= structLimit->limit)
         {
             intBuildFinished(psDroid);
-            return false;
+            return PermissionDenied;
         }
         // Can't build on burning oil derricks.
         if (psStructStat->type == REF_RESOURCE_EXTRACTOR && fireOnLocation(psDroid->orderX,psDroid->orderY))
         {
-            intBuildFinished(psDroid);
-            return false;
+			return PermissionPending;
         }
         //ok to build
         psStruct = buildStructure(psStructStat, psDroid->orderX,psDroid->orderY, psDroid->player,false);
         if (!psStruct)
         {
             intBuildFinished(psDroid);
-            return false;
+            return PermissionDenied;
         }
 
         if (bMultiMessages)
@@ -1128,7 +1127,7 @@ BOOL droidStartBuild(DROID *psDroid)
 
     CHECK_DROID(psDroid);
 
-    return true;
+    return PermissionGranted;
 }
 
 static void droidAddWeldSound( Vector3i iVecEffect )

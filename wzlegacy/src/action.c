@@ -1028,7 +1028,7 @@ void actionUpdateDroid(DROID *psDroid)
 {
     BASE_OBJECT			*psTarget;
     PROPULSION_STATS	*psPropStats;
-    BOOL				(*actionUpdateFunc)(DROID *psDroid) = NULL;
+    BOOL				(*actionUpdateFunc)(DROID *psDroid) = NULL, canBuild;
     signed int i;
     unsigned int j;
     //this is a bit field
@@ -2203,10 +2203,16 @@ void actionUpdateDroid(DROID *psDroid)
 
                 //ready to start building the structure
                 if ( psDroid->action != DACTION_NONE &&
-                        droidStartBuild(psDroid))
+                        (canBuild = droidStartBuild( psDroid))) /*I didn't know about the order code, so I had to read
+                        how the wz2100.net guys did it. All credit goes to them. I just backported to their old 2.3 base.*/
+						/*We could have received 2, which means we are waiting to be able to build.*/
+                        
                 {
-                    debug( LOG_NEVER, "DACTION_BUILD_FOUNDATION: start build");
-                    psDroid->action = DACTION_BUILD;
+					if (canBuild == PermissionGranted) /*If we got just a flat out "you can build here."*/
+					{
+						debug( LOG_NEVER, "DACTION_BUILD_FOUNDATION: start build");
+						psDroid->action = DACTION_BUILD;
+					}
                 }
                 else
                 {

@@ -89,6 +89,9 @@ typedef enum
     HALF_FREE_TILE
 } PICKTILE;
 
+/*Can we build here, now or ever?*/
+typedef enum { PermissionDenied, PermissionGranted, PermissionPending } BuildPermissionState;
+
 /* Store for the objects near the droid currently being updated */
 #define MAX_NAYBORS		120
 extern NAYBOR_INFO		asDroidNaybors[MAX_NAYBORS];
@@ -162,7 +165,7 @@ extern float droidDamage(DROID *psDroid, UDWORD damage, UDWORD weaponClass,UDWOR
 extern void droidUpdate(DROID *psDroid);
 
 /* Set up a droid to build a structure - returns true if successful */
-extern BOOL droidStartBuild(DROID *psDroid);
+extern BuildPermissionState droidStartBuild(DROID *psDroid);
 
 /* Sets a droid to start demolishing - returns true if successful */
 extern BOOL	droidStartDemolishing( DROID *psDroid );

@@ -2204,7 +2204,6 @@ static void dealWithLMBFeature(FEATURE *psFeature)
                     {
                         // Can't build because it's burning
                         AddDerrickBurningMessage();
-                        break;
                     }
 
                     if (ctrlShiftDown())
