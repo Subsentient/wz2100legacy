@@ -93,7 +93,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "lib/libglc/GL/glc.h"
 
-#define MAP_PREVIEW_DISPLAY_TIME 2500	// number of milliseconds to show map in preview
+#define MAP_PREVIEW_DISPLAY_TIME 10000	// number of milliseconds to show map in preview
 
 // ////////////////////////////////////////////////////////////////////////////
 // tertile dependant colors for map preview
