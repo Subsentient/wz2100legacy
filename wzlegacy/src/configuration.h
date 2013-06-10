@@ -57,7 +57,7 @@ extern "C"
     void setDefaultFrameRateLimit(void);
 
 /// Default map for Skirmish
-    static const char DEFAULTSKIRMISHMAP[] = "Sk-Rush";
+    static const char DEFAULTSKIRMISHMAP[] = "Rush-T1";
 
 #ifdef __cplusplus
 }
