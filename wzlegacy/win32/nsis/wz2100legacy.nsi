@@ -116,9 +116,6 @@ SetOutPath "$INSTDIR"
   File "${TOP_BUILDDIR}\src\wz2100legacy.exe"
   File "${TOP_BUILDDIR}\data\mp.wzl"
   File "${TOP_BUILDDIR}\data\base.wzl"
-  File "${TOP_BUILDDIR}\README"
-  File "${TOP_BUILDDIR}\AUTHORS"
-  File "${TOP_BUILDDIR}\ChangeLog"
   File "${TOP_BUILDDIR}\COPYING"
   File "${TOP_BUILDDIR}\COPYING.NONGPL"
   File "${TOP_BUILDDIR}\COPYING.README"
@@ -247,17 +244,6 @@ Section /o "Migrate maps and ranks from Warzone 2100 3.1" Migrate31
  CreateDirectory "$LEGACYCONFIGDIR\multiplay\players\"
  CopyFiles "$DOCUMENTS\Warzone 2100 3.1\maps\*.*" "$LEGACYCONFIGDIR\maps\"
  CopyFiles "$DOCUMENTS\Warzone 2100 3.1\multiplay\players\*.*" "$LEGACYCONFIGDIR\multiplay\players\"
-SectionEnd
-
-Section /o "Modding/Map utilities" ModUtils
- CreateDirectory "$INSTDIR\util"
- SetOutPath "$INSTDIR\util"
- File "${TOP_BUILDDIR}\tools\image\image.exe"
- File "${TOP_BUILDDIR}\tools\map\map2lnd.exe"
- File "${TOP_BUILDDIR}\tools\map\map2png.exe"
- File "${TOP_BUILDDIR}\tools\map\map2preview.exe"
- File "${TOP_BUILDDIR}\tools\map\mapinfo.exe"
- File "${TOP_BUILDDIR}\tools\map\mapconv.exe"
 SectionEnd
 
 

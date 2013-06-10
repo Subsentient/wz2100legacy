@@ -379,7 +379,7 @@ AC_CHECK_LIB(m, nearbyint, [MATH_LIB=""], AC_MSG_ERROR([nearbyint not found.]))
 if test "x$host_os_mingw32" = "xyes" ; then
     AC_CHECK_LIB(iberty, main, AC_SUBST([IBERTY_LIBS], [-liberty]), AC_MSG_ERROR([libiberty not found.]))
 
-    WIN32_LIBS="${WIN32_LIBS} ${IBERTY_LIBS} ${OPENAL_LIBS}"
+    WIN32_LIBS="${WIN32_LIBS} ${IBERTY_LIBS}"
 fi
 
 # Look for X11 if required
