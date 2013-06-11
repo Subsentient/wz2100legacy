@@ -10,15 +10,21 @@ char* ReadConfig(char* filename)
 {
     FILE* file;
     char* str;
+    unsigned long i;
     
     file = fopen(filename, "r");
     if (file == NULL)
     {
-        fprintf(stderr, "Input file %s cannot be opened.!\n", filename);
+        fprintf(stderr, "Input file %s cannot be opened!\n", filename);
         exit(1);
     }
     
-	str = malloc(GetFileSize(file));
+	str = malloc(GetFileSize(filename));
+	for (i = 0; i < GetFileSize(filename); ++i)
+    {
+        str[i] = getc(file);
+    }
+    str[i] = '\0';
 	fclose(file);
     
 	return str;
@@ -26,35 +32,39 @@ char* ReadConfig(char* filename)
 
 char** ParseConfig(char* string) 
 {
-	int numlines;
-	int i = 0;
-	char* delims = " ";
-	char* result = NULL;
-	char** arr;
-	
-	numlines = NumLines(string);
-	arr = malloc(numlines);
-	
-	result = strtok(string, delims);
-	while (result != NULL) {
-		/* add to array */
-		arr[i] = result;
-		
-		/* Refer to http://www.elook.org/programming/c/strtok.html */
-		result = strtok(NULL, delims);
-		
-		++i;
+    unsigned long i;
+    char* delims = "\n";
+    char* result = NULL;
+    char** arr;
+    
+    arr = malloc(sizeof(char*) * NumLines(string));
+    
+    for (i = 0; i < NumLines(string); ++i)
+    {
+    	arr[i] = malloc(8192);
 	}
-	return arr;
+	
+	i = 0; do
+	{
+        result = strtok(string, delims);
+        strcpy(arr[i], result); /*Here, we are copying into an empty pointer.*/
+    } while (++i, result != NULL);
+
+    
+    return arr;
 }
 
-long GetFileSize(FILE* file) 
+
+long GetFileSize(char* filename) 
 {
     char tmpChar;
+    FILE *tmpFile = NULL;
     unsigned long FileSize = 0;
+    
+    tmpFile = fopen(filename, "r");
     do
     {
-        tmpChar = getc(file);
+        tmpChar = getc(tmpFile);
     } while (++FileSize, tmpChar != EOF);
     
     return FileSize;

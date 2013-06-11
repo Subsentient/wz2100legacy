@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-Wall -g3 -O0 -std=c89 -pedantic
 
 all: config restree
 clean:

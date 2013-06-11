@@ -4,5 +4,5 @@
 
 char* ReadConfig(char* filename);
 char** ParseConfig(char* string);
-long GetFileSize(FILE *file);
+long GetFileSize(char* filename);
 long NumLines(char* str);
