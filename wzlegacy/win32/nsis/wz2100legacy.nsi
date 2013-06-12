@@ -257,8 +257,8 @@ FunctionEnd
 
 ; Set our descriptions.
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate31} "Your player name files and maps from Warzone 2100 3.1 can be transferred during installation."
-  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate23} "Your player name files and maps from Warzone 2100 2.3 can be transferred during installation. NOTE: 3.1 textured maps will not work."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate31} "Your player name files and maps from Warzone 2100 3.1 can be transferred during installation. NOTE: 3.1 textured maps will not work."
+  !insertmacro MUI_DESCRIPTION_TEXT ${Migrate23} "Your player name files and maps from Warzone 2100 2.3 can be transferred during installation."
   !insertmacro MUI_DESCRIPTION_TEXT ${Videos} "Videos for Warzone 2100 Legacy. They are necessary for viewing the intro and make the campaign easier."
   !insertmacro MUI_DESCRIPTION_TEXT ${Langs} "Support for languages other than English."
   !insertmacro MUI_DESCRIPTION_TEXT ${BaseGame} "The Base Warzone 2100 Legacy game."
