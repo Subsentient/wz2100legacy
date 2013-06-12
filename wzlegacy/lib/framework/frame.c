@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "physfs_ext.h"
 #include "SDL_framerate.h"
 #include "trig.h"
-#include "wz2100icon.h"
+#include "windowicon.h"
 
 #include "lib/widget/scrap.h"
 
@@ -238,8 +238,8 @@ bool frameInitialise(
         return false;
     }
 
-    SDL_WM_SetIcon(SDL_CreateRGBSurfaceFrom((void *)wz2100icon.pixel_data, wz2100icon.width, wz2100icon.height, wz2100icon.bytes_per_pixel * 8,
-                                            wz2100icon.width * wz2100icon.bytes_per_pixel, rmask, gmask, bmask, amask), NULL);
+    SDL_WM_SetIcon(SDL_CreateRGBSurfaceFrom((void *)windowicon.pixel_data, windowicon.width, windowicon.height, windowicon.bytes_per_pixel * 8,
+                                            windowicon.width * windowicon.bytes_per_pixel, rmask, gmask, bmask, amask), NULL);
     SDL_WM_SetCaption(pWindowName, NULL);
 
     /* Initialise the trig stuff */
