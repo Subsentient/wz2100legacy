@@ -4980,20 +4980,15 @@ BOOL removeStruct(STRUCTURE *psDel, BOOL bDestroy)
 /* Remove a structure */
 BOOL destroyStruct(STRUCTURE *psDel)
 {
-    UDWORD			mapX, mapY, width,breadth;
+    UDWORD			mapX, mapY, width, breadth;
     UDWORD			i;
-    UDWORD			widthScatter,breadthScatter,heightScatter;
+    UDWORD			widthScatter, breadthScatter, heightScatter;
     Vector3i pos;
     BOOL			resourceFound = false;
     MAPTILE			*psTile;
     BOOL			bMinor = false;
 
     CHECK_STRUCTURE(psDel);
-
-    if (bMultiMessages)
-    {
-        SendDestroyStructure(psDel);
-    }
 
 //---------------------------------------
     /* Only add if visible */

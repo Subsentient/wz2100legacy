@@ -386,15 +386,6 @@ void	removeDroidBase(DROID *psDel)
         return;
     }
 
-    //ajl, inform others of destruction.
-    if (bMultiMessages
-            && !(psDel->player != selectedPlayer && psDel->order == DORDER_RECYCLE))
-    {
-        ASSERT_OR_RETURN( , droidOnMap(psDel), "Asking other players to destroy droid driving off the map");
-        SendDestroyDroid(psDel);
-    }
-
-
     /* remove animation if present */
     if (psDel->psCurAnim != NULL)
     {
@@ -1100,14 +1091,25 @@ BuildPermissionState droidStartBuild(DROID *psDroid)
 
     }
     else
-    {
+    {		
         /* Check the structure is still there to build (joining a partially built struct) */
         psStruct = (STRUCTURE *)psDroid->psTarget;
-        if (!droidNextToStruct(psDroid, (BASE_OBJECT *)psStruct))
+
+		/*Make ALL ordered trucks work on any given structure remotely.*/
+        if (droidNextToStruct(psDroid, (BASE_OBJECT *)psStruct))
+		{
+			if (psStruct->status != SS_BUILT && /*Not if it's built.*/
+				psDroid->action != DACTION_BUILD) /*Not if we are already building it with this truck.*/
+			{
+				sendBuildStarted(psStruct, psDroid);
+			}
+        
+		}
+        else
         {
-            /* Nope - stop building */
+			/* Nope - stop building */
             debug( LOG_NEVER, "not next to structure" );
-        }
+		}
     }
 
     // check structure not already built, and we still 'own' it
@@ -1223,11 +1225,13 @@ BOOL droidUpdateBuild(DROID *psDroid)
 
         intBuildFinished(psDroid);
 
+		/* Perhaps not such a good idea. This will reduce incentive for speed hacks, now that buildings build
+		 * at the same speed on all machines.
         if (bMultiMessages && myResponsibility(psStruct->player))
         {
             SendBuildFinished(psStruct);
         }
-
+		*/
 
         //only play the sound if selected player
         if (psStruct->player == selectedPlayer
