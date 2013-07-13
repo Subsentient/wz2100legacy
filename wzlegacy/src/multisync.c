@@ -787,7 +787,7 @@ BOOL recvStructureCheck()
     if (pS)
     {
         // Check its finished
-        if (pS->currentBuildPts > (SDWORD)pS->pStructureType->buildPoints)
+        if (pS->status != SS_BUILT)
         {
             pS->direction = direction;
             pS->id = ref;
