@@ -4332,9 +4332,12 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
 								{
 									if (map_coord(psT->pos.x) == i && map_coord(psT->pos.y) == j)
 									{
-										if (psT->order != DORDER_MOVE && psT->action == DACTION_NONE && aiCheckAlliances(psT->player, selectedPlayer))
-										{ /*Make droids move out of the way when we want to build.*/
-											orderDroidLoc(psT, DORDER_MOVE, psT->pos.x + world_coord(psBuilding->baseBreadth), psT->pos.y + world_coord(psBuilding->baseBreadth));
+										if (psT->order != DORDER_MOVE && psT->action == DACTION_NONE && psT->player == selectedPlayer)
+										{ /*Make our droids move out of the way when we want to build.*/
+											UDWORD MoveX = psT->pos.x + world_coord(psBuilding->baseBreadth);
+											UDWORD MoveY = psT->pos.y + world_coord(psBuilding->baseBreadth);
+											
+											orderDroidLoc(psT, DORDER_MOVE, MoveX, MoveY);
 										}
 										else
 										{
