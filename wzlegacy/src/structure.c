@@ -4317,16 +4317,33 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
                 if (valid &&	// only do if necessary
                         (psBuilding->type != REF_REPAIR_FACILITY))
                 {
+					DROID *psT;
+					unsigned long Inc;
+					
                     for (i = site.xTL; i <= site.xBR && valid; i++)
                     {
                         for (j = site.yTL; j <= site.yBR && valid; j++)
                         {
                             // This really needs to check to see if the droid that's in the way is the droid that wants to build
                             // in which case it should'nt invalidate the location.
-                            if(noDroid(i,j) == false)
-                            {
-                                valid = false;
-                            }
+							for (Inc = 0; Inc < MAX_PLAYERS; ++Inc)
+							{	
+								for (psT = apsDroidLists[Inc]; psT; psT = psT->psNext)
+								{
+									if (map_coord(psT->pos.x) == i && map_coord(psT->pos.y) == j)
+									{
+										if (psT->order != DORDER_MOVE && aiCheckAlliances(psT->player, selectedPlayer))
+										{ /*Make droids move out of the way when we want to build.*/
+											orderDroidLoc(psT, DORDER_MOVE, psT->pos.x + world_coord(psBuilding->baseBreadth), psT->pos.y + world_coord(psBuilding->baseBreadth));
+										}
+										else
+										{
+											valid = false;
+										}
+										break;
+									}
+								}
+							}
                         }
                     }
                 }
