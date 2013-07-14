@@ -7,7 +7,6 @@
 
 abort() {
 	code=$1
-	cleanup
 	
 	case $code in
 		1) echo "[ERROR] Compilation error; Aborting operation." ;;
