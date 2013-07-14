@@ -99,6 +99,12 @@ BOOL attemptCheatCode(const char *cheat_name)
         kf_ToggleDebugMappings();
         return true;
     }
+    
+    if (!strcmp(cheat_name, "stop it bots"))
+    { /*Allows you to stop AI allies from oil rushing you.*/
+		kf_StopAIOilRush();
+	}
+	
     if (!getDebugMappingStatus())
     {
         return false;

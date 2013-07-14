@@ -209,7 +209,7 @@ extern void	kf_SelectCommander_7( void );
 extern void	kf_SelectCommander_8( void );
 extern void	kf_SelectCommander_9( void );
 void kf_ToggleReopenBuildMenu( void );
-
+extern void kf_StopAIOilRush(void);
 extern void	kf_ToggleShowGateways(void);
 extern void	kf_ToggleShowPath(void);
 

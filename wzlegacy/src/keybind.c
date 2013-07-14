@@ -270,7 +270,52 @@ void	kf_FaceWest(void)
 }
 // --------------------------------------------------------------------------
 
-
+void kf_StopAIOilRush(void)
+{ /*New function to help out with AIs eating all your oil in Multiplayer and whatnot.*/
+	DROID *psT;
+	STRUCTURE *psStruct;
+	short Inc;    
+	
+    sendTextMessage(":: Attempting to stop AI ally oil rushes. ::", true);
+    
+	for (Inc = 0; Inc < MAX_PLAYERS; ++Inc)
+	{
+		if (!isHumanPlayer(Inc) && aiCheckAlliances(selectedPlayer, Inc))
+		{
+			for (psStruct = apsStructLists[Inc]; psStruct; psStruct = psStruct->psNext)
+			{
+				if (psStruct->pStructureType->type == REF_HQ)
+				{
+					break;
+				}
+			}
+			
+			for (psT = apsDroidLists[Inc]; psT; psT = psT->psNext)
+			{
+				const short OldDroidOwner = (short)psT->player;
+				
+				if (droidType(psT) != DROID_CONSTRUCT && droidType(psT) != DROID_CYBORG_CONSTRUCT)
+				{ /*Only bother with construction droids.*/
+					continue;
+				}
+				
+				psT->player = selectedPlayer;
+				
+				if (psStruct)
+				{
+					orderDroidLoc(psT, DORDER_MOVE, psStruct->pos.x, psStruct->pos.y);
+				}
+				else
+				{
+					orderDroid(psT, DORDER_STOP);
+				}
+				
+				psT->player = OldDroidOwner;
+			}
+		}
+	}
+}
+ 
 /* Writes out debug info about all the selected droids */
 void	kf_DebugDroidInfo( void )
 {
