@@ -558,7 +558,14 @@ bool seq_Play(const char *filename)
 {
     int pp_level_max = 0;
     int pp_level = 0;
+    static short VideosAvail = 1;
     ogg_packet op;
+    
+    if (!VideosAvail)
+    {
+		info("Request to play video %s being ignored since we failed to play some video before.", filename);
+		return false;
+	}
 
     debug(LOG_VIDEO, "starting playback of: %s", filename);
 
@@ -573,7 +580,8 @@ bool seq_Play(const char *filename)
     fpInfile = PHYSFS_openRead(filename);
     if (fpInfile == NULL)
     {
-        info("unable to open '%s' for playback", filename);
+		VideosAvail = 0; /*Don't keep telling us videos aren't available.*/
+        info("unable to open '%s' for playback, will not reattempt to play videos until restarted.", filename);
 
         fpInfile = PHYSFS_openRead("novideo.ogg");
         if (fpInfile == NULL)
