@@ -307,14 +307,6 @@ game		"multiplay/maps/4c-urbanduel.gam"
 data		"wrf/multi/campaign.wrf"
 data		"wrf/multi/fog2.wrf"
 
-level		Manhattan-T2
-players		8
-type		15
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-manhattan.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
 /*cam3*/
 level 		HighGround-T2
 players		2
@@ -619,14 +611,6 @@ players		4
 type		16
 dataset		MULTI_T3_C2
 game		"multiplay/maps/4c-urbanduel.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		Manhattan-T3
-players		8
-type		16
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-manhattan.gam"
 data		"wrf/multi/campaign.wrf"
 data		"wrf/multi/fog2.wrf"
 
