@@ -1230,7 +1230,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 			PlayerToKick = (short)atoi(InBuffer);
 			
-			if (PlayerToKick > MAX_PLAYERS || PlayerToKick < 0) 
+			if (PlayerToKick > (MAX_PLAYERS - 1) || PlayerToKick < 0) 
 			{
 				addConsoleMessage("Invalid player number.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
 				return 1;
@@ -1242,7 +1242,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 				return 1;
 			}
 			
-			sprintf(OutText, _("The host has kicked %s from the game!"), NetPlay.players[PlayerToKick].name);
+			sprintf(OutText, _("The host has kicked %s from the game!"), getPlayerName(PlayerToKick));
 			
 			sendTextMessage(OutText, true);
 			
@@ -1270,7 +1270,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 		PlayerToBeep = (short)atoi(InBuffer);
 		
-		if (PlayerToBeep > MAX_PLAYERS || PlayerToBeep < 0) 
+		if (PlayerToBeep > (MAX_PLAYERS - 1) || PlayerToBeep < 0) 
 		{
 			addConsoleMessage("Invalid player number.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
 			return 1;
@@ -1279,6 +1279,12 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		if (PlayerToBeep == selectedPlayer)
 		{
 			addConsoleMessage("You cannot beep yourself.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			return 1;
+		}
+		
+		if (!isHumanPlayer(PlayerToBeep))
+		{
+			addConsoleMessage("You can only beep human players.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
 			return 1;
 		}
 		
