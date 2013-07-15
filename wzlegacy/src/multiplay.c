@@ -1101,24 +1101,61 @@ BOOL recvResearchStatus()
 /*This function is used to try and understand all the odd commands you can give the Legacy console.*/
 short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 { /*I don't like bools.*/
-#define Matches(x, y) !strcmp(x,y)
-	char ConsoleOut[1024] = "No string."; //Meh, failsafe.
+#define Matches(y) !strcmp(InBuffer, y)
+#define StartsWith(y) !strncmp(InBuffer, y, strlen(y))
+	char ConsoleOut[MAX_CONSOLE_STRING_LENGTH] = "No string."; //Meh, failsafe.
+	struct { const char *CmdName; short AvailableAlways; } AvailableCommands[] =
+			{ { "!help", 1 }, { "!name", 0 }, { "!kick", 1 }, { "!beep", 0 }, { NULL } };
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
+	/*Begin in-game only commands*/
 	if (IsGameConsole)
 	{
-		if (Matches(InBuffer, "!help"))
+		if (StartsWith("!name "))
 		{
-			strcpy(ConsoleOut, "Help is not yet available.");
-			addConsoleMessage(ConsoleOut, LEFT_JUSTIFY, SYSTEM_MESSAGE);
-			return 1;
+			InBuffer += strlen("!name ");
+			
+            printConsoleNameChange(NetPlay.players[selectedPlayer].name, (char*)InBuffer);
+
+            NETchangePlayerName(selectedPlayer, (char*)InBuffer);
+            
+            return 1;
 		}
+	}
+	/*End in-game only commands*/
+	
+	if (Matches("!help"))
+	{ /*Help command.*/
+		unsigned long Inc, Counter;
+		
+		addConsoleMessage("The following console commands are available: ", DEFAULT_JUSTIFY, selectedPlayer);
+		
+		for (Inc = Counter = ConsoleOut[0] = 0; AvailableCommands[Inc].CmdName != NULL; ++Inc)
+		{
+			if (IsGameConsole || AvailableCommands[Inc].AvailableAlways)
+			{
+				strcat(ConsoleOut, AvailableCommands[Inc].CmdName);
+				strcat(ConsoleOut, " ");
+				++Counter;
+			}
+			
+			if (Counter == 5 || AvailableCommands[Inc + 1].CmdName == NULL)
+			{
+				addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, selectedPlayer);
+				ConsoleOut[0] = '\0';
+				Counter = 0;
+			}
+			
+		}
+				
+		return 1;
 	}
 	
 	if (InBuffer[0] == '/') /*Allow for true /me messages.*/
     {
-		char OutSend[1024];
+		char OutSend[MAX_CONSOLE_STRING_LENGTH];
 		
-        if (!strncmp("/me ", InBuffer, 4))
+        if (StartsWith("/me "))
         {
             InBuffer += 4;
         }
@@ -1139,6 +1176,48 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		
 		return 1;
     }
+	else if (StartsWith("!kick "))
+	{ /*Kick command, useful for quickness.*/
+		if (NetPlay.isHost)
+		{
+			char OutText[MAX_CONSOLE_STRING_LENGTH];
+			short PlayerToKick;
+			
+			InBuffer += strlen("!kick ");
+			
+			if (!isdigit(InBuffer[0]))
+			{
+				addConsoleMessage("Please enter a player number to kick.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				return 1;
+			}
+			
+			PlayerToKick = (short)atoi(InBuffer);
+			
+			if (PlayerToKick > MAX_PLAYERS || PlayerToKick < 0) 
+			{
+				addConsoleMessage("Invalid player number.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				return 1;
+			}
+			
+			if (PlayerToKick == selectedPlayer)
+			{ /*Uhh, can't kick ourselves.*/
+				addConsoleMessage("You cannot kick yourself.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				return 1;
+			}
+			
+			sprintf(OutText, _("The host has kicked %s from the game!"), NetPlay.players[PlayerToKick].name);
+			
+			sendTextMessage(OutText, true);
+			
+			kickPlayer(PlayerToKick, "you are unwanted by the host.", ERROR_KICKED);
+		}
+		else
+		{
+			addConsoleMessage("You are not the host.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+		}
+		
+		return 1;
+	}
 	
 	return 0;
 }
