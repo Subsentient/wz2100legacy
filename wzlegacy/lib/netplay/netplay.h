@@ -65,7 +65,7 @@ typedef enum
     NET_UNUSED_18,			//18
     NET_UNUSED_19,			//19
     NET_PLAYERCOMPLETE,		//20 All Setup information about player x has been sent
-    NET_UNUSED_21,			//
+    NET_PAGEPLAYER,			//21 Beep another player to get their attention.
     NET_STRUCT,				//22 a complete structure
     NET_UNUSED_23,			//
     NET_FEATURES,			//24 information regarding features.

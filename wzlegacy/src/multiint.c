@@ -52,6 +52,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "lib/iniparser/iniparser.h"
 
+#include "lib/sound/audio.h"
+#include "lib/sound/audio_id.h"
+
 #include "challenge.h"
 #include "main.h"
 #include "objects.h"
@@ -3186,6 +3189,29 @@ void frontendMultiMessages(void)
                     recvTextMessage();
                 }
                 break;
+            case NET_PAGEPLAYER:
+			{
+				uint32_t PagedPlayer, Pager;
+				
+				NETbeginDecode(NET_PAGEPLAYER);
+				NETuint32_t(&PagedPlayer);
+				NETuint32_t(&Pager);
+				NETend();
+				
+				if (PagedPlayer == selectedPlayer)
+				{
+					char TmpBuf[MAX_CONSOLE_STRING_LENGTH];
+					
+					snprintf(TmpBuf, MAX_CONSOLE_STRING_LENGTH, "Your attention is wanted by %s", NetPlay.players[Pager].name);
+					
+					addConsoleMessage(TmpBuf, DEFAULT_JUSTIFY, selectedPlayer);
+					
+					audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+					audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+					audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+				}
+				break;
+			}
         }
     }
 }

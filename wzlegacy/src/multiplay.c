@@ -857,6 +857,29 @@ BOOL recvMessage(void)
             case NET_PLAYER_STATS:
                 recvMultiStats();
                 break;
+            case NET_PAGEPLAYER:
+			{
+				uint32_t PagedPlayer, Pager;
+				
+				NETbeginDecode(NET_PAGEPLAYER);
+				NETuint32_t(&PagedPlayer);
+				NETuint32_t(&Pager);
+				NETend();
+				
+				if (PagedPlayer == selectedPlayer)
+				{
+					char TmpBuf[MAX_CONSOLE_STRING_LENGTH];
+					
+					snprintf(TmpBuf, MAX_CONSOLE_STRING_LENGTH, "Your attention is wanted by %s", NetPlay.players[Pager].name);
+					
+					addConsoleMessage(TmpBuf, DEFAULT_JUSTIFY, selectedPlayer);
+					
+					audio_QueueTrack(ID_SOUND_BUILD_FAIL); //This is a good beep sound.
+					audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+					audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+				}
+				break;
+			}
             default:
                 break;
         }
@@ -1105,7 +1128,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 #define StartsWith(y) !strncmp(InBuffer, y, strlen(y))
 	char ConsoleOut[MAX_CONSOLE_STRING_LENGTH] = "No string."; //Meh, failsafe.
 	struct { const char *CmdName; short AvailableAlways; } AvailableCommands[] =
-			{ { "!help", 1 }, { "!name", 0 }, { "!kick", 1 }, { "!beep", 0 }, { NULL } };
+			{ { "!help", 1 }, { "!name", 0 }, { "!kick", 1 }, { "!beep", 1 }, { NULL } };
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
 	/*Begin in-game only commands*/
@@ -1215,6 +1238,44 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		{
 			addConsoleMessage("You are not the host.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
 		}
+		
+		return 1;
+	}
+	else if (StartsWith("!beep "))
+	{
+		short PlayerToBeep;
+		const char *PageFormat = "Paging %s.";
+		
+		InBuffer += strlen("!beep ");
+		
+		if (!isdigit(InBuffer[0]))
+		{
+			addConsoleMessage("Please enter a player number to beep.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			return 1;
+		}
+			
+		PlayerToBeep = (short)atoi(InBuffer);
+		
+		if (PlayerToBeep > MAX_PLAYERS || PlayerToBeep < 0) 
+		{
+			addConsoleMessage("Invalid player number.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			return 1;
+		}
+		
+		if (PlayerToBeep == selectedPlayer)
+		{
+			addConsoleMessage("You cannot beep yourself.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			return 1;
+		}
+		
+		snprintf(ConsoleOut, MAX_CONSOLE_STRING_LENGTH, PageFormat, NetPlay.players[PlayerToBeep].name);
+		
+		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+		
+		NETbeginEncode(NET_PAGEPLAYER, PlayerToBeep);
+		NETuint32_t((uint32_t*)&PlayerToBeep);
+		NETuint32_t(&selectedPlayer);
+		NETend();
 		
 		return 1;
 	}
