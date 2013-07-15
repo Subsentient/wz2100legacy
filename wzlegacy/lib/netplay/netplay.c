@@ -131,7 +131,6 @@ static unsigned int masterserver_port = 0, gameserver_port = 0;
 // Function prototypes
 static void NETplayerLeaving(UDWORD player);		// Cleanup sockets on player leaving (nicely)
 static void NETplayerDropped(UDWORD player);		// Broadcast NET_PLAYER_DROPPED & cleanup
-static void NETregisterServer(int state);
 static void NETallowJoining(void);
 static bool onBanList(const char *ip);
 static void addToBanList(const char *ip, const char *name);
@@ -3347,7 +3346,7 @@ error:
     return SOCKET_ERROR;
 }
 
-static void NETregisterServer(int state)
+void NETregisterServer(int state)
 {
     static Socket *rs_socket[2] = { NULL };
     static int registered = 0;

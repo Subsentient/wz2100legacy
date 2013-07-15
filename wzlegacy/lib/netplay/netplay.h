@@ -359,6 +359,7 @@ extern bool NETisCorrectVersion(uint32_t game_version_major, uint32_t game_versi
 extern bool NETgameIsCorrectVersion(GAMESTRUCT *check_game);
 void NET_InitPlayer(int i, bool initPosition);
 extern void NET_InitPlayers(void);
+extern void NETregisterServer(int state);
 
 void NETGameLocked(bool flag);
 void NETresetGamePassword(void);
