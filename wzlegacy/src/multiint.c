@@ -2688,17 +2688,29 @@ static void processMultiopWidgets(UDWORD id)
             break;
 
         case MULTIOP_CHATEDIT:
-
+		{
+			const char *InBuffer = widgGetString(psWScreen, MULTIOP_CHATEDIT);
+			char OutBuffer[MAX_CONSOLE_STRING_LENGTH];
+			
             // don't send empty lines to other players in the lobby
-            if(!strcmp(widgGetString(psWScreen, MULTIOP_CHATEDIT), ""))
+            if(!strcmp(InBuffer, ""))
             {
                 break;
             }
-
-            sendTextMessage(widgGetString(psWScreen, MULTIOP_CHATEDIT),true);					//send
+            
+            if (parseConsoleCommands(InBuffer, 0)) //If we entered a known "interesting" string, do something about it.
+            {
+				widgSetString(psWScreen, MULTIOP_CHATEDIT, "");
+				break;
+			}
+			
+			snprintf(OutBuffer, MAX_CONSOLE_STRING_LENGTH, "%s: %s", NetPlay.players[selectedPlayer].name, InBuffer);
+			
+            sendTextMessage(OutBuffer, true);					//send
             widgSetString(psWScreen, MULTIOP_CHATEDIT, "");										// clear box
+            
             break;
-
+		}
         case CON_CANCEL:
             if (!challengeActive)
             {

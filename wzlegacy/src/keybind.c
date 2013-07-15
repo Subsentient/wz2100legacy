@@ -2024,9 +2024,17 @@ void kf_SendTextMessage(void)
             sstrcpy(ConsoleMsg, sTextToSend);
             eventFireCallbackTrigger((TRIGGER_TYPE)CALL_CONSOLE);
 
+			if (parseConsoleCommands(sTextToSend, 1))
+			{ /*Handle console commands.*/
+				return;
+			}
+			
             if (runningMultiplayer())
             {
-                sendTextMessage(sTextToSend,false);
+				char TempMsg[MAX_CONSOLE_STRING_LENGTH];
+				
+				snprintf(TempMsg, MAX_CONSOLE_STRING_LENGTH, "%s: %s", NetPlay.players[selectedPlayer].name, sTextToSend);
+                sendTextMessage(TempMsg,false);
                 attemptCheatCode(sTextToSend);
             }
             else
@@ -2035,7 +2043,7 @@ void kf_SendTextMessage(void)
 
                 //show the message we sent on our local console as well (even in skirmish, to see console commands)
                 sstrcpy(tmp, getPlayerName(selectedPlayer));
-                sstrcat(tmp, " : ");        // seperator
+                sstrcat(tmp, ": ");        // seperator
                 sstrcat(tmp, sTextToSend);  // add message
                 addConsoleMessage(tmp,DEFAULT_JUSTIFY, selectedPlayer);
 

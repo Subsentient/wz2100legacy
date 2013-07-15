@@ -1098,6 +1098,50 @@ BOOL recvResearchStatus()
 
     return true;
 }
+/*This function is used to try and understand all the odd commands you can give the Legacy console.*/
+short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
+{ /*I don't like bools.*/
+#define Matches(x, y) !strcmp(x,y)
+	char ConsoleOut[1024] = "No string."; //Meh, failsafe.
+	
+	if (IsGameConsole)
+	{
+		if (Matches(InBuffer, "!help"))
+		{
+			strcpy(ConsoleOut, "Help is not yet available.");
+			addConsoleMessage(ConsoleOut, LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			return 1;
+		}
+	}
+	
+	if (InBuffer[0] == '/') /*Allow for true /me messages.*/
+    {
+		char OutSend[1024];
+		
+        if (!strncmp("/me ", InBuffer, 4))
+        {
+            InBuffer += 4;
+        }
+        else /*Give choice of / or /me.*/
+        {
+            ++InBuffer;
+        }
+
+        snprintf(OutSend, MAX_CONSOLE_STRING_LENGTH, " » %s %s « ", /*8-bit woes.*/
+                 NetPlay.players[selectedPlayer].name, InBuffer);
+                 
+        addConsoleMessage(OutSend, LEFT_JUSTIFY, selectedPlayer);         
+        
+		NETbeginEncode(NET_TEXTMSG, NET_ALL_PLAYERS);
+		NETuint32_t(&selectedPlayer);
+		NETstring(OutSend, MAX_CONSOLE_STRING_LENGTH);
+		NETend();
+		
+		return 1;
+    }
+	
+	return 0;
+}
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
@@ -1236,26 +1280,7 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
     }
 
     //This is for local display
-    if (curStr[0] == '/') /*Allow for true /me messages.*/
-    {
-        if (!strncmp("/me ", curStr, 4))
-        {
-            curStr += 4;
-        }
-        else /*Give choice of / or /me.*/
-        {
-            ++curStr;
-        }
-
-        snprintf(msg, MAX_CONSOLE_STRING_LENGTH, " » %s %s « ", /*8-bit woes.*/
-                 NetPlay.players[selectedPlayer].name, (normal?curStr:display));
-    }
-    else
-    {
-        sstrcpy(msg, NetPlay.players[selectedPlayer].name);		// name
-        sstrcat(msg, ": ");						// seperator
-        sstrcat(msg, (normal?curStr:display));						// add message
-    }
+	sstrcpy(msg, (normal?curStr:display));						// add message
 
     addConsoleMessage(msg, DEFAULT_JUSTIFY, selectedPlayer);	// display
 
@@ -1382,16 +1407,14 @@ BOOL recvTextMessage()
 {
     UDWORD	playerIndex;
     char	msg[MAX_CONSOLE_STRING_LENGTH];
-    char newmsg[MAX_CONSOLE_STRING_LENGTH];
 
     memset(msg, 0x0, sizeof(msg));
-    memset(newmsg, 0x0, sizeof(newmsg));
 
     NETbeginDecode(NET_TEXTMSG);
     // Who this msg is from
     NETuint32_t(&playerIndex);
     // The message to send
-    NETstring(newmsg, MAX_CONSOLE_STRING_LENGTH);
+    NETstring(msg, MAX_CONSOLE_STRING_LENGTH);
     NETend();
 
     if (whosResponsible(playerIndex) != NetMsg.source)
@@ -1404,29 +1427,6 @@ BOOL recvTextMessage()
         return false;
     }
 
-    if (newmsg[0] == '/') /*Is the incoming message a /me?*/
-    {
-        char *tempMsg = newmsg; /*I want my pointer arithmetic!*/
-
-        if (!strncmp("/me ", tempMsg, 4))
-        {
-            tempMsg += 4;
-        }
-        else
-        {
-            ++tempMsg;
-        }
-
-        snprintf(msg, MAX_CONSOLE_STRING_LENGTH, " » %s %s « ", /*8-bit woes.*/
-                 NetPlay.players[playerIndex].name, tempMsg);
-    }
-    else
-    {
-        sstrcpy(msg, NetPlay.players[playerIndex].name);		// name
-        sstrcat(msg, ": ");						// seperator
-        sstrcat(msg, newmsg);						// add message
-    }
-
     addConsoleMessage(msg, DEFAULT_JUSTIFY, playerIndex);
 
     // Multiplayer message callback
@@ -1434,7 +1434,7 @@ BOOL recvTextMessage()
     MultiMsgPlayerFrom = playerIndex;
     MultiMsgPlayerTo = selectedPlayer;
 
-    sstrcpy(MultiplayMsg, newmsg);
+    sstrcpy(MultiplayMsg, msg);
     eventFireCallbackTrigger((TRIGGER_TYPE)CALL_AI_MSG);
 
     // make some noise!
