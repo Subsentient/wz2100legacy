@@ -1127,8 +1127,8 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 #define Matches(y) !strcmp(InBuffer, y)
 #define StartsWith(y) !strncmp(InBuffer, y, strlen(y))
 	char ConsoleOut[MAX_CONSOLE_STRING_LENGTH] = "No string."; //Meh, failsafe.
-	struct { const char *CmdName; short AvailableAlways; } AvailableCommands[] =
-			{ { "!help", 1 }, { "!name", 0 }, { "!kick", 1 }, { "!beep", 1 }, { NULL } };
+	struct { const char *CmdName; short AvailableAlways; short TakesArg; } AvailableCommands[] =
+			{ { "!help", 1, 0 }, { "!name", 0, 1 }, { "!kick", 1, 1 }, { "!beep", 1, 1 }, { "!mynum", 1, 0 }, { NULL } };
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
 	/*Begin in-game only commands*/
@@ -1150,19 +1150,32 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	if (Matches("!help"))
 	{ /*Help command.*/
 		unsigned long Inc, Counter;
+		const char *Format[2] = { " [%s ... ] ", " [%s] " };
+		short FormatNum;
 		
 		addConsoleMessage("The following console commands are available: ", DEFAULT_JUSTIFY, selectedPlayer);
 		
 		for (Inc = Counter = ConsoleOut[0] = 0; AvailableCommands[Inc].CmdName != NULL; ++Inc)
 		{
+			if (AvailableCommands[Inc].TakesArg)
+			{
+				FormatNum = 0;
+			}
+			else
+			{
+				FormatNum = 1;
+			}
+			
 			if (IsGameConsole || AvailableCommands[Inc].AvailableAlways)
 			{
-				strcat(ConsoleOut, AvailableCommands[Inc].CmdName);
-				strcat(ConsoleOut, " ");
+				char TmpConsole[MAX_CONSOLE_STRING_LENGTH];
+				
+				snprintf(TmpConsole, MAX_CONSOLE_STRING_LENGTH, Format[FormatNum], AvailableCommands[Inc].CmdName);
+				strncat(ConsoleOut, TmpConsole, MAX_CONSOLE_STRING_LENGTH);
 				++Counter;
 			}
 			
-			if (Counter == 5 || AvailableCommands[Inc + 1].CmdName == NULL)
+			if (Counter == 7 || AvailableCommands[Inc + 1].CmdName == NULL)
 			{
 				addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, selectedPlayer);
 				ConsoleOut[0] = '\0';
@@ -1170,11 +1183,12 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			}
 			
 		}
+		
+		addConsoleMessage("Items followed by periods expect a parameter.", DEFAULT_JUSTIFY, selectedPlayer);
 				
 		return 1;
 	}
-	
-	if (InBuffer[0] == '/') /*Allow for true /me messages.*/
+	else if (InBuffer[0] == '/') /*Allow for true /me messages.*/
     {
 		char OutSend[MAX_CONSOLE_STRING_LENGTH];
 		
@@ -1276,6 +1290,13 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		NETuint32_t((uint32_t*)&PlayerToBeep);
 		NETuint32_t(&selectedPlayer);
 		NETend();
+		
+		return 1;
+	}
+	else if (Matches("!mynum"))
+	{
+		snprintf(ConsoleOut, MAX_CONSOLE_STRING_LENGTH, "Your player number is %d.", selectedPlayer);
+		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, selectedPlayer);
 		
 		return 1;
 	}
