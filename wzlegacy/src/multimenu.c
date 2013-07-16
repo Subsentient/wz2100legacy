@@ -1522,6 +1522,26 @@ BOOL intCloseMultiMenu(void)
     return true;
 }
 
+/*How we do nick autocomplete.*/
+bool autoCompleteName(const char *InStream, char *OutStream)
+{
+	short Inc;
+	const char *CurName;
+	
+	for (Inc = 0; Inc < MAX_PLAYERS; ++Inc)
+	{		
+		CurName = getPlayerName(Inc);
+		
+		if (!strncmp(InStream, CurName, strlen(InStream)) && isHumanPlayer(Inc))
+		{
+			sprintf(OutStream, "%s: ", CurName);
+			return true;
+		}
+	}
+	
+	return false;
+}
+
 // ////////////////////////////////////////////////////////////////////////////
 // In Game Options house keeping stuff.
 BOOL intRunMultiMenu(void)

@@ -40,6 +40,7 @@ extern BOOL		intAddMultiMenu			(void);
 extern BOOL		addDebugMenu			(BOOL bAdd);
 extern void		intCloseDebugMenuNoAnim	(void);
 extern void		setDebugMenuEntry(char *entry, SDWORD index);
+extern bool autoCompleteName(const char *InStream, char *OutStream);
 
 extern BOOL		MultiMenuUp;
 extern BOOL		ClosingMultiMenu;

@@ -2081,6 +2081,16 @@ void kf_SendTextMessage(void)
             //	flushConsoleMessages();
             return;
         }
+        else if (ch == INPBUF_TAB)
+		{
+			char Tmp[MAX_CONSOLE_STRING_LENGTH] = { '\0' };
+		
+			if (autoCompleteName(sTextToSend, Tmp))
+			{
+				strncpy(sTextToSend, Tmp, MAX_CONSOLE_STRING_LENGTH);
+			}
+		}
+
         else							 						// display
         {
             const utf_32_char input_char[2] = { unicode, '\0' };
