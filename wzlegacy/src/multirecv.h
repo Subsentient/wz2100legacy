@@ -58,6 +58,7 @@ extern BOOL	recvMapFileRequested		(void);
 
 
 extern BOOL recvTextMessageAI		(void);		//AI multiplayer message
+extern bool recvPageSig				(void);
 extern BOOL	recvTeamRequest		(void);
 extern BOOL	recvReadyRequest		(void);
 

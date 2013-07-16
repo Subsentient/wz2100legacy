@@ -859,25 +859,7 @@ BOOL recvMessage(void)
                 break;
             case NET_PAGEPLAYER:
 			{
-				uint32_t PagedPlayer, Pager;
-				
-				NETbeginDecode(NET_PAGEPLAYER);
-				NETuint32_t(&PagedPlayer);
-				NETuint32_t(&Pager);
-				NETend();
-				
-				if (PagedPlayer == selectedPlayer)
-				{
-					char TmpBuf[MAX_CONSOLE_STRING_LENGTH];
-					
-					snprintf(TmpBuf, MAX_CONSOLE_STRING_LENGTH, "Your attention is wanted by %s", NetPlay.players[Pager].name);
-					
-					addConsoleMessage(TmpBuf, DEFAULT_JUSTIFY, selectedPlayer);
-					
-					audio_QueueTrack(ID_SOUND_BUILD_FAIL); //This is a good beep sound.
-					audio_QueueTrack(ID_SOUND_BUILD_FAIL);
-					audio_QueueTrack(ID_SOUND_BUILD_FAIL);
-				}
+				recvPageSig();
 				break;
 			}
             default:
@@ -1257,7 +1239,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	}
 	else if (StartsWith("!beep "))
 	{
-		short PlayerToBeep;
+		uint32_t PlayerToBeep;
 		const char *PageFormat = "Paging %s.";
 		
 		InBuffer += strlen("!beep ");
@@ -1270,7 +1252,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 		PlayerToBeep = (short)atoi(InBuffer);
 		
-		if (PlayerToBeep > (MAX_PLAYERS - 1) || PlayerToBeep < 0) 
+		if (PlayerToBeep > (MAX_PLAYERS - 1)) 
 		{
 			addConsoleMessage("Invalid player number.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
 			return 1;
@@ -1293,7 +1275,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 		
 		NETbeginEncode(NET_PAGEPLAYER, PlayerToBeep);
-		NETuint32_t((uint32_t*)&PlayerToBeep);
+		NETuint32_t(&PlayerToBeep);
 		NETuint32_t(&selectedPlayer);
 		NETend();
 		
@@ -1652,6 +1634,34 @@ BOOL recvTextMessageAI()
     }
 
     return true;
+}
+
+bool recvPageSig(void)
+{ /*When we are beeped/paged.*/
+	uint32_t PagedPlayer, Pager;
+	
+	NETbeginDecode(NET_PAGEPLAYER);
+	NETuint32_t(&PagedPlayer);
+	NETuint32_t(&Pager);
+	
+	if (PagedPlayer == selectedPlayer)
+	{
+		char TmpBuf[MAX_CONSOLE_STRING_LENGTH];
+		
+		snprintf(TmpBuf, MAX_CONSOLE_STRING_LENGTH, "Your attention is wanted by %s", NetPlay.players[Pager].name);
+		
+		addConsoleMessage(TmpBuf, DEFAULT_JUSTIFY, selectedPlayer);
+		
+		audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+		audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+		audio_QueueTrack(ID_SOUND_BUILD_FAIL);
+	}
+	else
+	{
+		debug(LOG_ERROR, "Player %d sent us a page signal for the wrong player. We are %d but they sent to %d.", Pager, selectedPlayer, PagedPlayer);
+	}
+	
+	return NETend();
 }
 
 // ////////////////////////////////////////////////////////////////////////////
