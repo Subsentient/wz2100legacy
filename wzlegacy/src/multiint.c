@@ -2380,8 +2380,8 @@ static void processMultiopWidgets(UDWORD id)
                 break;
 
             case MULTIOP_MAP:
-                widgSetString(psWScreen, MULTIOP_MAP,game.map);
-//			sstrcpy(game.map,widgGetString(psWScreen, MULTIOP_MAP));
+				sstrcpy(game.map,widgGetString(psWScreen, MULTIOP_MAP));
+				loadMapPreview(false);
                 break;
 
             case MULTIOP_GNAME_ICON:
