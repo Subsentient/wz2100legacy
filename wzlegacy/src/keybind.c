@@ -540,6 +540,21 @@ void kf_ToggleFPS(void) //This shows *just FPS* and is always visable (when acti
         CONPRINTF(ConsoleString, (ConsoleString, _("FPS display is disabled.")));
     }
 }
+
+void kf_ToggleTicker(void)
+{
+	showTicker = !showTicker;
+	
+	if (showTicker)
+	{
+		CONPRINTF(ConsoleString, (ConsoleString, _("Ticker display is enabled.")));
+	}
+	else
+	{
+		CONPRINTF(ConsoleString, (ConsoleString, _("Ticker display is disabled.")));
+	}
+}
+
 void kf_ToggleSamples(void) //Displays number of sound sample in the sound queues & lists.
 {
     // Toggle the boolean value of showFPS

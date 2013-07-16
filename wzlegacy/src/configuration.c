@@ -155,6 +155,16 @@ BOOL loadConfig(void)
         showFPS = false;
         setWarzoneKeyNumeric("showFPS", false);
     }
+    
+    if (getWarzoneKeyNumeric("showTicker", &val))
+    {
+        showTicker = val;
+    }
+    else
+    {
+		showTicker = true;
+		setWarzoneKeyNumeric("showTicker", true);
+	}
 
     // //////////////////////////
     // scroll
@@ -736,6 +746,7 @@ BOOL saveConfig(void)
     setWarzoneKeyNumeric("debugmode", bAllowDebugMode);
     setWarzoneKeyNumeric("framerate", (SDWORD)getFramerateLimit());
     setWarzoneKeyNumeric("showFPS", (SDWORD)showFPS);
+	setWarzoneKeyNumeric("showTicker", (SDWORD)showTicker);
     setWarzoneKeyNumeric("scroll",(SDWORD)scroll_speed_accel);		// scroll
     setWarzoneKeyNumeric("difficulty", getDifficultyLevel());		// level
     setWarzoneKeyNumeric("visfog",(SDWORD)(!war_GetFog()));			// fogtype

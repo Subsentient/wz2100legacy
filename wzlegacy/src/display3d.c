@@ -227,6 +227,10 @@ bool showLevelName = true;
 /** When we have a connection issue, we will flash a message on screen
 * 0 = no issue, 1= player leaving nicely, 2= player got disconnected
 */
+bool showTicker = true;
+/** Show the time, level name, and if in debug next to the reticule.
+ */
+  
 static bool errorWaiting = false;
 static char errorMessage[512];
 static uint32_t lastErrorTime = 0;
@@ -615,7 +619,7 @@ void draw3DScene( void )
     }
     
 	// show level name and time
-    if (getWidgetsStatus() && !gamePaused())
+    if (getWidgetsStatus() && !gamePaused() && showTicker)
     {
 	    char buildInfo[255];
 	    

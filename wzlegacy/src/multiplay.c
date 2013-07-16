@@ -1110,7 +1110,10 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 #define StartsWith(y) !strncmp(InBuffer, y, strlen(y))
 	char ConsoleOut[MAX_CONSOLE_STRING_LENGTH] = "No string."; //Meh, failsafe.
 	struct { const char *CmdName; short AvailableAlways; short TakesArg; } AvailableCommands[] =
-			{ { "!help", 1, 0 }, { "!name", 0, 1 }, { "!kick", 1, 1 }, { "!beep", 1, 1 }, { "!mynum", 1, 0 }, { NULL } };
+			{ 
+			{ "!help", 1, 0 }, { "!name", 0, 1 }, { "!kick", 1, 1 },
+			{ "!beep", 1, 1 }, { "!mynum", 1, 0 }, {"!toggleticker", 0, 0}, { NULL }
+			};
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
 	/*Begin in-game only commands*/
@@ -1125,6 +1128,11 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
             NETchangePlayerName(selectedPlayer, (char*)InBuffer);
             
             return 1;
+		}
+		else if (Matches("!toggleticker"))
+		{
+			kf_ToggleTicker();
+			return 1;
 		}
 	}
 	/*End in-game only commands*/
