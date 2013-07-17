@@ -9,3 +9,5 @@ lib/framework/tagfile.*
 	- Public Domain
 lib/netplay/miniupnpc/*
 	- BSD, copyright Thomas Bernard (http://miniupnp.free.fr)
+lib/libglc/* (This is QuesoGLC)
+	- LGPL 2.1, copyright Bertrand Coconnier
