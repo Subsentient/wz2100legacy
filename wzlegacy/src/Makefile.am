@@ -27,7 +27,6 @@ CLEANFILES = \
 	scriptvals_lexer.lex.c
 
 EXTRA_DIST = \
-	autorevision.h \
 	message_lexer.l message_parser.y \
 	scriptvals_lexer.l scriptvals_parser.y \
 	level_lexer.l
