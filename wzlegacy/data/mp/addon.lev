@@ -225,25 +225,6 @@ game		"multiplay/maps/8c-ziggurat.gam"
 data		"wrf/multi/campaign.wrf"
 data		"wrf/multi/fog1.wrf"
 
-
-
-level 		Valley-T1
-players		4
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/4c-valleyofdeath.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Valley-T2
-players		4
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/4c-valleyofdeath.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-
 // Add all currnet (old) maps for cam2 tech
 
 /* standard multiplayer campaigns - Now Enabled for Cam 2 Tech			*/
