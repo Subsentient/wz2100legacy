@@ -80,6 +80,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "combat.h"
 #include "order.h"
 #include "scores.h"
+#include "spectate.h"
 #include "multiplay.h"
 #include "environ.h"
 #include "advvis.h"

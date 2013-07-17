@@ -179,7 +179,6 @@ static void findAssemblyPointPosition(UDWORD *pX, UDWORD *pY, UDWORD player);
 static void removeStructFromMap(STRUCTURE *psStruct);
 static void	structUpdateRecoil( STRUCTURE *psStruct );
 static void resetResistanceLag(STRUCTURE *psBuilding);
-static void revealAll(UBYTE player);
 static void cbNewDroid(STRUCTURE *psFactory, DROID *psDroid);
 
 
@@ -5537,7 +5536,12 @@ void setHQExists(BOOL state, UDWORD player)
 
 /*returns the status of the flag*/
 BOOL getHQExists(UDWORD player)
-{
+{ /*If we are spectating, we have an HQ no matter what.*/
+	if (NetPlay.players[player].spectating && player == selectedPlayer)
+	{
+		return true;
+	}
+    
     return hqExists[player];
 }
 

@@ -147,6 +147,7 @@ noinst_HEADERS = \
 	scriptvals_parser.tab.h \
 	selection.h \
 	seqdisp.h \
+	spectate.h \
 	statsdef.h \
 	stats.h \
 	stringdef.h \
@@ -263,6 +264,7 @@ wz2100legacy_SOURCES = \
 	scriptvals_parser.tab.c \
 	selection.c \
 	seqdisp.c \
+	spectate.c \
 	stats.c \
 	structure.c \
 	target.c \

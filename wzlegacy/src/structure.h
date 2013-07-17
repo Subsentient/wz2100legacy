@@ -394,6 +394,9 @@ extern UDWORD structPowerToBuild(const STRUCTURE *psStruct);
 
 extern UDWORD getMaxDroids(UDWORD PlayerNumber);
 
+/*Show everything.*/
+extern void revealAll(UBYTE player);
+
 // check whether a factory of a certain number and type exists
 extern BOOL checkFactoryExists(UDWORD player, UDWORD factoryType, UDWORD inc);
 

@@ -99,7 +99,7 @@ static const char *packetname[NUM_GAME_PACKETS] =
     "NET_HOST_DROPPED",
     "NET_FUTURE1",
     "NET_FUTURE2",
-    "NET_FUTURE3",
+    "NET_SPECTATE",
     "NET_FILE_REQUESTED",
     "NET_FILE_CANCELLED",
     "NET_FILE_PAYLOAD",

@@ -1541,6 +1541,7 @@ void NET_InitPlayer(int i, bool initPosition)
     NetPlay.players[i].heartattacktime = 0;
     NetPlay.players[i].heartbeat = true;		// we always start with a hearbeat
     NetPlay.players[i].kick = false;
+    NetPlay.players[i].spectating = false;
     if (!ingame.TimeEveryoneIsInGame)
     {
         // only clear name outside of games.
@@ -1586,6 +1587,7 @@ static void NETSendNPlayerInfoTo(uint32_t *index, uint32_t indexLen, unsigned to
         NETbool(&NetPlay.players[index[n]].allocated);
         NETbool(&NetPlay.players[index[n]].heartbeat);
         NETbool(&NetPlay.players[index[n]].kick);
+		NETbool(&NetPlay.players[index[n]].spectating);
         NETstring(NetPlay.players[index[n]].name, sizeof(NetPlay.players[index[n]].name));
         NETuint32_t(&NetPlay.players[index[n]].heartattacktime);
         NETint32_t(&NetPlay.players[index[n]].colour);
@@ -2678,6 +2680,7 @@ static BOOL NETprocessSystemMessage(void)
                     NETbool(&NetPlay.players[index].allocated);
                     NETbool(&NetPlay.players[index].heartbeat);
                     NETbool(&NetPlay.players[index].kick);
+					NETbool(&NetPlay.players[index].spectating);
                     strncpy(oldName, NetPlay.players[index].name, sizeof(NetPlay.players[index].name));
                     NETstring(NetPlay.players[index].name, sizeof(NetPlay.players[index].name));
                     NETuint32_t(&NetPlay.players[index].heartattacktime);

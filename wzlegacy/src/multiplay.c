@@ -44,6 +44,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "lib/sound/audio_id.h"
 #include "levels.h"
 #include "selection.h"
+#include "spectate.h"
 
 #include "init.h"
 #include "warcam.h"	// these 4 for fireworks
@@ -704,6 +705,10 @@ BOOL recvMessage(void)
                 case NET_LASSAT:
                     recvLasSat();
                     break;
+                    
+				case NET_SPECTATE:
+					recvSpectateRequest();
+					break;
                 default:
                     break;
             }
@@ -1112,7 +1117,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	struct { const char *CmdName; short AvailableAlways; short TakesArg; } AvailableCommands[] =
 			{ 
 			{ "!help", 1, 0 }, { "!name", 0, 1 }, { "!kick", 1, 1 }, { "!playerlist", 1, 0},
-			{ "!beep", 1, 1 }, { "!mynum", 1, 0 }, {"!toggleticker", 0, 0}, { NULL }
+			{ "!beep", 1, 1 }, { "!mynum", 1, 0 }, {"!toggleticker", 0, 0}, { "!spectate", 0, 0 }, { NULL }
 			};
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
@@ -1132,6 +1137,11 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		else if (Matches("!toggleticker"))
 		{
 			kf_ToggleTicker();
+			return 1;
+		}
+		else if (Matches("!spectate"))
+		{
+			SendSpectateRequest();
 			return 1;
 		}
 	}

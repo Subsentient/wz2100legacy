@@ -81,6 +81,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "order.h"
 #include "drive.h"
 #include "selection.h"
+#include "spectate.h"
 #include "difficulty.h"
 #include "scriptcb.h"		/* for console callback */
 #include "aiexperience.h"	/* for console commands */
@@ -1404,6 +1405,10 @@ void kf_toggleTrapCursor(void)
     addConsoleMessage(msg, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 }
 
+void kf_SpecMe(void)
+{
+	SendSpectateRequest();
+}
 
 // --------------------------------------------------------------------------
 void	kf_TogglePauseMode( void )

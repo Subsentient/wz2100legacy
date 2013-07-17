@@ -114,7 +114,7 @@ typedef enum
     NET_HOST_DROPPED,		//67 Host has dropped
     NET_FUTURE1,			//68	future use
     NET_FUTURE2,			//69		"
-    NET_FUTURE3,			//70		"
+    NET_SPECTATE,			//70 Someone wants to become a spectator.
     NET_FILE_REQUESTED,		//71 Player has requested a file (map/mod/?)
     NET_FILE_CANCELLED,		//72 Player cancelled a file request
     NET_FILE_PAYLOAD,		//73 sending file to the player that needs it
@@ -263,6 +263,7 @@ typedef struct
     BOOL		needFile;			///< if We need a file sent to us
     WZFile		wzFile;				///< for each player, we keep track of map progress
     char		IPtextAddress[40];	///< IP of this player
+    BOOL 		spectating;
 } PLAYER;
 
 // ////////////////////////////////////////////////////////////////////////

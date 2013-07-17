@@ -251,6 +251,7 @@ _keymapsave keyMapSaveTable[] =
     kf_SetDroidMoveGuard,
     kf_toggleTrapCursor,
     kf_ToggleFPS,
+    kf_SpecMe,
     NULL		// last function!
 };
 
@@ -402,6 +403,7 @@ void	keyInitMappings( BOOL bForceDefaults )
     keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LALT,   KEY_T,   KEYMAP_PRESSED,  kf_toggleTrapCursor,     N_("Trap cursor"));
     keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL,  KEY_TAB, KEYMAP_PRESSED,  kf_ToggleRadarTerrain,   N_("Toggle radar terrain"));
     keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LSHIFT, KEY_TAB, KEYMAP_PRESSED,  kf_ToggleRadarAllyEnemy, N_("Toggle ally-enemy radar view"));
+    keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_INSERT, KEYMAP_PRESSED,  kf_SpecMe, N_("Enter spectator mode"));
 
     // Some extra non QWERTY mappings but functioning in same way
     keyAddMapping(KEYMAP_ASSIGNABLE, KEY_IGNORE, KEY_COMMA,        KEYMAP_PRESSED, kf_SetDroidRetreatMedium, N_("Retreat at Medium Damage"));

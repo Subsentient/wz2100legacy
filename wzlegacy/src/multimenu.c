@@ -156,7 +156,11 @@ char		debugMenuEntry[DEBUGMENU_MAX_ENTRIES][MAX_STR_LENGTH];
 static void SetPlayerTextColor( int mode, UDWORD player )
 {
     // override color if they are dead...
-    if (!apsDroidLists[player] && !apsStructLists[player])
+    if (NetPlay.players[player].spectating)
+    {
+		iV_SetTextColour(WZCOL_LBLUE);
+	}
+    else if (!apsDroidLists[player] && !apsStructLists[player])
     {
         iV_SetTextColour(WZCOL_GREY);			// dead text color
     }
@@ -908,11 +912,11 @@ static void displayMultiPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
             SetPlayerTextColor(alliances[selectedPlayer][player], player);
         }
 
-        while(iV_GetTextWidth(str) >= (MULTIMENU_C0-MULTIMENU_C2-10) )
+        while(iV_GetTextWidth(str) >= (MULTIMENU_C0 - (NetPlay.players[player].spectating ? 10 : MULTIMENU_C2) - 10) )
         {
             str[strlen(str)-1]='\0';
         }
-        iV_DrawText(str, x+MULTIMENU_C2, y+MULTIMENU_FONT_OSET);
+        iV_DrawText(str, x + (NetPlay.players[player].spectating ? 10 : MULTIMENU_C2), y+MULTIMENU_FONT_OSET);
 
         //c3-7 alliance
         //manage buttons by showing or hiding them. gifts only in campaign,
