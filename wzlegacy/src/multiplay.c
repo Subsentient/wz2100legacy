@@ -1143,7 +1143,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		const char *Format[2] = { " [%s ... ] ", " [%s] " };
 		short FormatNum;
 		
-		addConsoleMessage("The following console commands are available: ", DEFAULT_JUSTIFY, selectedPlayer);
+		addConsoleMessage(_("The following console commands are available: "), DEFAULT_JUSTIFY, selectedPlayer);
 		
 		for (Inc = Counter = ConsoleOut[0] = 0; AvailableCommands[Inc].CmdName != NULL; ++Inc)
 		{
@@ -1174,7 +1174,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 		}
 		
-		addConsoleMessage("Items followed by periods expect a parameter.", DEFAULT_JUSTIFY, selectedPlayer);
+		addConsoleMessage(_("Items followed by periods expect a parameter."), DEFAULT_JUSTIFY, selectedPlayer);
 				
 		return 1;
 	}
@@ -1214,7 +1214,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 			if (!isdigit(InBuffer[0]))
 			{
-				addConsoleMessage("Please enter a player number to kick.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("Please enter a player number to kick."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 				return 1;
 			}
 
@@ -1222,19 +1222,19 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 			if (PlayerToKick >= MAX_PLAYERS - 1 || PlayerToKick < 0) 
 			{
-				addConsoleMessage("Invalid player number.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 				return 1;
 			}
 			
 			if (PlayerToKick == selectedPlayer)
 			{ /*Uhh, can't kick ourselves.*/
-				addConsoleMessage("You cannot kick yourself.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("You cannot kick yourself."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 				return 1;
 			}
 			
 			if (!NetPlay.bComms && bMultiPlayer && !isHumanPlayer(PlayerToKick))
 			{
-				addConsoleMessage("You cannot kick AIs in a skirmish.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("You cannot kick AIs in a skirmish."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 				return 1;
 			}
 			
@@ -1242,11 +1242,11 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 			sendTextMessage(OutText, true);
 			
-			kickPlayer(PlayerToKick, "you are unwanted by the host.", ERROR_KICKED);
+			kickPlayer(PlayerToKick, _("you are unwanted by the host."), ERROR_KICKED);
 		}
 		else
 		{
-			addConsoleMessage("You are not the host.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("You are not the host."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 		}
 		
 		return 1;
@@ -1254,13 +1254,13 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	else if (StartsWith("!beep "))
 	{
 		uint32_t PlayerToBeep;
-		const char *PageFormat = "Paging %s.";
+		const char *PageFormat = _("Paging %s.");
 		
 		InBuffer += strlen("!beep ");
 		
 		if (!isdigit(InBuffer[0]))
 		{
-			addConsoleMessage("Please enter a player number to beep.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("Please enter a player number to beep."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 			return 1;
 		}
 			
@@ -1268,19 +1268,19 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		
 		if (PlayerToBeep >= MAX_PLAYERS) 
 		{
-			addConsoleMessage("Invalid player number.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 			return 1;
 		}
 		
 		if (PlayerToBeep == selectedPlayer)
 		{
-			addConsoleMessage("You cannot beep yourself.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("You cannot beep yourself."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 			return 1;
 		}
 		
 		if (!isHumanPlayer(PlayerToBeep))
 		{
-			addConsoleMessage("You can only beep human players.", LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("You can only beep human players."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 			return 1;
 		}
 		
@@ -1297,7 +1297,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	}
 	else if (Matches("!mynum"))
 	{
-		snprintf(ConsoleOut, MAX_CONSOLE_STRING_LENGTH, "Your player number is %d.", selectedPlayer);
+		snprintf(ConsoleOut, MAX_CONSOLE_STRING_LENGTH, _("Your player number is %d."), selectedPlayer);
 		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, selectedPlayer);
 		
 		return 1;
@@ -1307,13 +1307,13 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		short Inc;
 		char Temp[MAX_CONSOLE_STRING_LENGTH];
 		
-		strncpy(ConsoleOut, "Human players: ", MAX_CONSOLE_STRING_LENGTH);
+		strncpy(ConsoleOut, _("Human players: "), MAX_CONSOLE_STRING_LENGTH);
 		
 		for (Inc = 0; Inc < MAX_PLAYERS; ++Inc)
 		{
 			if (isHumanPlayer(Inc))
 			{
-				snprintf(Temp, MAX_CONSOLE_STRING_LENGTH, "%s at slot %d; ", getPlayerName(Inc), Inc);
+				snprintf(Temp, MAX_CONSOLE_STRING_LENGTH, _("%s at slot %d; "), getPlayerName(Inc), Inc);
 				strncat(ConsoleOut, Temp, MAX_CONSOLE_STRING_LENGTH);
 			}
 		}
