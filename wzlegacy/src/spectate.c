@@ -128,12 +128,21 @@ void MakeToSpectator(uint8_t inPlayer)
 	char Buf[MAX_CONSOLE_STRING_LENGTH];
 	DROID *psCDroid, *psNDroid;
 	STRUCTURE *psCStruct, *psNStruct;
+	short Inc;
 	
 	if (NetPlay.players[inPlayer].spectating)
 	{
 		debug(LOG_ERROR, "Received spectate request from player %d, but they are already spectating!", inPlayer);
 		return;
 	}
+	
+	/*End all alliances.*/
+	for (Inc = 0; Inc < MAX_PLAYERS; ++Inc)
+	{
+		alliances[inPlayer][Inc] = ALLIANCE_BROKEN;
+		alliances[Inc][inPlayer] = ALLIANCE_BROKEN;
+	}
+
 	
 	/*Destroy all their droids.*/	
 	for (psCDroid = apsDroidLists[inPlayer]; psCDroid; psCDroid = psNDroid)

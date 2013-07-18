@@ -925,7 +925,7 @@ static void displayMultiPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
             {
                 if(alliances[selectedPlayer][player] == ALLIANCE_FORMED)
                 {
-                    if(player != selectedPlayer &&  !giftsUp[player] )
+                    if(player != selectedPlayer && !giftsUp[player] )
                     {
                         if (game.alliance != ALLIANCES_TEAMS)
                         {
@@ -951,6 +951,11 @@ static void displayMultiPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
                         giftsUp[player] = false;
                     }
                 }
+                
+                if (PlayerSpectating(player) && player != selectedPlayer)
+                {
+					widgDelete(psWScreen, MULTIMENU_ALLIANCE_BASE + player);
+				}
             }
         }
     }
@@ -1232,7 +1237,9 @@ static void addMultiPlayer(UDWORD player,UDWORD pos)
         widgAddButton(psWScreen, &sButInit);
     }
 
-    if (game.alliance != NO_ALLIANCES && player != selectedPlayer && (NetPlay.players[player].allocated || (apsDroidLists[player] && apsStructLists[player])))
+    if (game.alliance != NO_ALLIANCES && player != selectedPlayer &&
+			(NetPlay.players[player].allocated || (apsDroidLists[player] && apsStructLists[player])) &&
+			!PlayerSpectating(selectedPlayer))
     {
         //alliance
         sButInit.x		= MULTIMENU_C3;
