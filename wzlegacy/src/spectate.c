@@ -54,6 +54,8 @@ void SendSpectateRequest(void)
 	
 	if (NetPlay.bComms)
 	{ /*Don't send if in skirmish.*/
+		debug(LOG_NET, _("Broadcasting spectator request to all peers."));
+		
 		NETbeginEncode(NET_SPECTATE, NET_ALL_PLAYERS);
 		NETuint8_t(&OurP);
 		NETend();
@@ -70,6 +72,8 @@ void recvSpectateRequest(void)
 	NETbeginDecode(NET_SPECTATE);
 	NETuint8_t(&inPlayer);
 	NETend();
+	
+	debug(LOG_NET, _("Receiving spectator request from %s (player %d)"), NetPlay.players[inPlayer].name, inPlayer);
 	
 	if (!AllowSpectating)
 	{
@@ -167,12 +171,14 @@ void MakeToSpectator(uint8_t inPlayer)
 		revealAll(inPlayer);
 		
 		strncpy(Buf, _("You are now a spectator."), MAX_CONSOLE_STRING_LENGTH);
+		debug(LOG_NET, Buf);
+		
 		addConsoleMessage(Buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 	}
 	else
 	{
 		snprintf(Buf, MAX_CONSOLE_STRING_LENGTH, _("%s has become a spectator."), NetPlay.players[inPlayer].name);
-		debug(LOG_INFO, Buf);
+		debug(LOG_NET, Buf);
 		
 		addConsoleMessage(Buf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 	}
