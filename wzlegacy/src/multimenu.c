@@ -50,6 +50,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "multijoin.h"
 #include "mission.h"
 #include "scores.h"
+#include "spectate.h"
 #include "keymap.h"
 #include "loop.h"
 #include "lib/framework/frameint.h"
