@@ -537,18 +537,6 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 	}
 	psDroid->secondaryOrder = state;
 	turnOffMultiMsg(false);
-	// see how well the sync worked, optionally update.
-	// offscreen updates will make this ok each time.
-	/*
-	if(  (fabs(fx - psDroid->sMove.fx)>(TILE_UNITS*2))		// if more than 2 tiles wrong.
-		||(fabs(fy - psDroid->sMove.fy)>(TILE_UNITS*2)) )
-	{
-		turnOffMultiMsg(true);
-		debug(LOG_SYNC, "Move order from %d,%d to %d,%d", (int)psDroid->pos.x, (int)psDroid->pos.y, (int)fx, (int)fy);
-		orderDroidLoc(psDroid, DORDER_MOVE, fx, fy);
-		turnOffMultiMsg(false);
-	}
-	*/
 }
 
 // droid needs modyfying. (now do onscreen as well)
@@ -589,28 +577,7 @@ static void offscreenUpdate(DROID *psDroid,
 	{
 		gridMoveDroid(psDroid, oldX, oldY);
 	}
-	/*
-	// stage one, update the droid's position & info, LOW LEVEL STUFF.
-	if(	   order == DORDER_ATTACK
-		|| order == DORDER_MOVE
-		|| order ==	DORDER_RTB
-		|| order == DORDER_RTR)	// move order
-	{
-		// reroute the droid.
-		turnOffMultiMsg(true);
-		moveDroidTo(psDroid, psDroid->sMove.DestinationX,psDroid->sMove.DestinationY);
-		turnOffMultiMsg(false);
-	}
 
-	// stop droid if remote droid has stopped.
-	if ((order == DORDER_NONE || order == DORDER_GUARD)
-	    && !(psDroid->order == DORDER_NONE || psDroid->order == DORDER_GUARD))
-	{
-		turnOffMultiMsg(true);
-		moveStopDroid(psDroid);
-		turnOffMultiMsg(false);
-	}
-	*/
 	// snap droid(if on ground)  to terrain level at x,y.
 	psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
 	ASSERT( psPropStats != NULL, "offscreenUpdate: invalid propulsion stats pointer" );
@@ -755,159 +722,159 @@ BOOL recvStructureCheck()
 	uint32_t		ref, type;
 
 	NETbeginDecode(NET_CHECK_STRUCT);
-		NETuint8_t(&player);
-		NETuint32_t(&ref);
-		NETuint32_t(&body);
-		NETuint32_t(&type);
-		NETuint16_t(&x);
-		NETuint16_t(&y);
-		NETuint16_t(&z);
-		NETfloat(&direction);
+	NETuint8_t(&player);
+	NETuint32_t(&ref);
+	NETuint32_t(&body);
+	NETuint32_t(&type);
+	NETuint16_t(&x);
+	NETuint16_t(&y);
+	NETuint16_t(&z);
+	NETfloat(&direction);
 
-		if (player >= MAX_PLAYERS)
-		{
-			debug(LOG_ERROR, "Bad NET_CHECK_STRUCT received!");
-			NETend();
-			return false;
-		}
+	if (player >= MAX_PLAYERS)
+	{
+		debug(LOG_ERROR, "Bad NET_CHECK_STRUCT received!");
+		NETend();
+		return false;
+	}
 
-		// If the structure exists our job is easy
-		pS = IdToStruct(ref, player);
-		if (pS)
-		{
-			pS->body = body;
-			pS->direction = direction;
-		}
-		// Structure was not found - build it
-		else
+	// If the structure exists our job is easy
+	pS = IdToStruct(ref, player);
+	if (pS)
+	{
+		pS->body = body;
+		pS->direction = direction;
+	}
+	// Structure was not found - build it
+	else
+	{
+#if defined (DEBUG)
+		NETlogEntry("structure check failed, adding struct. val=type", SYNC_FLAG, type - REF_STRUCTURE_START);
+#endif
+		for (i = 0; i < numStructureStats && asStructureStats[i].ref != type; i++);
+		psStats = &asStructureStats[i];
+
+		// Check for similar buildings, to avoid overlaps
+		if (TileHasStructure(mapTile(map_coord(x), map_coord(y))))
 		{
 #if defined (DEBUG)
-			NETlogEntry("structure check failed, adding struct. val=type", SYNC_FLAG, type - REF_STRUCTURE_START);
+			NETlogEntry("Tile has structure val=player", SYNC_FLAG, player);
 #endif
-			for (i = 0; i < numStructureStats && asStructureStats[i].ref != type; i++);
-			psStats = &asStructureStats[i];
+			pS = getTileStructure(map_coord(x), map_coord(y));
 
-			// Check for similar buildings, to avoid overlaps
-			if (TileHasStructure(mapTile(map_coord(x), map_coord(y))))
-			{
-#if defined (DEBUG)
-				NETlogEntry("Tile has structure val=player", SYNC_FLAG, player);
-#endif
-				pS = getTileStructure(map_coord(x), map_coord(y));
-
-				// If correct type && player then complete & modify
-				if (pS
-				 && pS->pStructureType->type == type
-				 && pS->player == player)
-				{
-					pS->direction = direction;
-					pS->id = ref;
-
-					if (pS->status != SS_BUILT)
-					{
-						pS->status = SS_BUILT;
-						buildingComplete(pS);
-					}
-#if defined (DEBUG)
-					NETlogEntry("scheck: fixed?", SYNC_FLAG, player);
-#endif
-				}
-				// Wall becoming a cornerwall
-				else if (pS->pStructureType->type == REF_WALL)
-				{
-					if (psStats->type == REF_WALLCORNER)
-					{
-#if defined (DEBUG)
-						NETlogEntry("scheck: fixed wall->cornerwall", SYNC_FLAG, 0);
-#endif
-						removeStruct(pS, true);
-
-						powerCalc(false);
-						pS = buildStructure((STRUCTURE_STATS * )psStats, x, y, player, true);
-						powerCalc(true);
-
-						if (pS)
-						{
-							pS->id = ref;
-						}
-						else
-						{
-							NETlogEntry("scheck: failed to upgrade wall!", SYNC_FLAG, player);
-							return false;
-						}
-					}
-				}
-				else
-				{
-					NETlogEntry("Tile did not have correct type or player val=player", SYNC_FLAG, player);
-					return false;
-				}
-			}
-			// Nothing exists there so lets get building!
-			else
-			{
-				NETlogEntry("didn't find structure at all, building it", SYNC_FLAG, 0);
-
-				powerCalc(false);
-				pS = buildStructure((STRUCTURE_STATS *) psStats, x, y, player, true);
-				powerCalc(true);
-			}
-		}
-
-		if (pS)
-		{
-			// Check its finished
-			if (pS->status != SS_BUILT)
+			// If correct type && player then complete & modify
+			if (pS
+			 && pS->pStructureType->type == type
+			 && pS->player == player)
 			{
 				pS->direction = direction;
 				pS->id = ref;
-				pS->status = SS_BUILT;
-				buildingComplete(pS);
-			}
 
-			// If the structure has a capacity
-			switch (pS->pStructureType->type)
-			{
-				case REF_RESEARCH:
-					ourCapacity = ((RESEARCH_FACILITY *) pS->pFunctionality)->capacity;
-					j = researchModuleStat;
-					break;
-				case REF_FACTORY:
-				case REF_VTOL_FACTORY:
-					ourCapacity = ((FACTORY *) pS->pFunctionality)->capacity;
-					j = factoryModuleStat;
-					break;
-				case REF_POWER_GEN:
-					ourCapacity = ((POWER_GEN *) pS->pFunctionality)->capacity;
-					j = powerModuleStat;
-					break;
-				default:
-					hasCapacity = false;
-					break;
-			}
-
-			// So long as the struct has a capacity fetch it from the packet
-			if (hasCapacity)
-			{
-				uint8_t actualCapacity = 0;
-
-				NETuint8_t(&actualCapacity);
-
-				// If our capacity is different upgrade ourself
-				for (; ourCapacity < actualCapacity; ourCapacity++)
+				if (pS->status != SS_BUILT)
 				{
-					buildStructure(&asStructureStats[j], pS->pos.x, pS->pos.y, pS->player, false);
+					pS->status = SS_BUILT;
+					buildingComplete(pS);
+				}
+#if defined (DEBUG)
+				NETlogEntry("scheck: fixed?", SYNC_FLAG, player);
+#endif
+			}
+			// Wall becoming a cornerwall
+			else if (pS->pStructureType->type == REF_WALL)
+			{
+				if (psStats->type == REF_WALLCORNER)
+				{
+#if defined (DEBUG)
+					NETlogEntry("scheck: fixed wall->cornerwall", SYNC_FLAG, 0);
+#endif
+					removeStruct(pS, true);
 
-					// Check it is finished
-					if (pS && pS->status != SS_BUILT)
+					powerCalc(false);
+					pS = buildStructure((STRUCTURE_STATS * )psStats, x, y, player, true);
+					powerCalc(true);
+
+					if (pS)
 					{
 						pS->id = ref;
-						pS->status = SS_BUILT;
-						buildingComplete(pS);
+					}
+					else
+					{
+						NETlogEntry("scheck: failed to upgrade wall!", SYNC_FLAG, player);
+						return false;
 					}
 				}
 			}
+			else
+			{
+				NETlogEntry("Tile did not have correct type or player val=player", SYNC_FLAG, player);
+				return false;
+			}
 		}
+		// Nothing exists there so lets get building!
+		else
+		{
+			NETlogEntry("didn't find structure at all, building it", SYNC_FLAG, 0);
+
+			powerCalc(false);
+			pS = buildStructure((STRUCTURE_STATS *) psStats, x, y, player, true);
+			powerCalc(true);
+		}
+	}
+
+	if (pS)
+	{
+		// Check its finished
+		if (pS->status != SS_BUILT)
+		{
+			pS->direction = direction;
+			pS->id = ref;
+			pS->status = SS_BUILT;
+			buildingComplete(pS);
+		}
+
+		// If the structure has a capacity
+		switch (pS->pStructureType->type)
+		{
+			case REF_RESEARCH:
+				ourCapacity = ((RESEARCH_FACILITY *) pS->pFunctionality)->capacity;
+				j = researchModuleStat;
+				break;
+			case REF_FACTORY:
+			case REF_VTOL_FACTORY:
+				ourCapacity = ((FACTORY *) pS->pFunctionality)->capacity;
+				j = factoryModuleStat;
+				break;
+			case REF_POWER_GEN:
+				ourCapacity = ((POWER_GEN *) pS->pFunctionality)->capacity;
+				j = powerModuleStat;
+				break;
+			default:
+				hasCapacity = false;
+				break;
+		}
+
+		// So long as the struct has a capacity fetch it from the packet
+		if (hasCapacity)
+		{
+			uint8_t actualCapacity = 0;
+
+			NETuint8_t(&actualCapacity);
+
+			// If our capacity is different upgrade ourself
+			for (; ourCapacity < actualCapacity; ourCapacity++)
+			{
+				buildStructure(&asStructureStats[j], pS->pos.x, pS->pos.y, pS->player, false);
+
+				// Check it is finished
+				if (pS && pS->status != SS_BUILT)
+				{
+					pS->id = ref;
+					pS->status = SS_BUILT;
+					buildingComplete(pS);
+				}
+			}
+		}
+	}
 
 	NETend();
 	return true;
@@ -962,8 +929,6 @@ BOOL recvPowerCheck()
 	power2 = getPower(player);
 	if (power != power2)
 	{
-//		debug(LOG_SYNC, "NET_CHECK_POWER: Adjusting power for player %d (%s) from %u to %u",
-//		      (int)player, isHumanPlayer(player) ? "Human" : "AI", power2, power);
 		setPower( (uint32_t)player, power);
 	}
 	return true;
