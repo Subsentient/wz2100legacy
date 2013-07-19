@@ -374,6 +374,14 @@ fi
 # check for nearbyint()
 AC_CHECK_LIB(m, nearbyint, [MATH_LIB=""], AC_MSG_ERROR([nearbyint not found.]))
 
+# When (cross-)compiling for Windows (MinGW) we need to link in iberty for
+# the Dr. MinGW derived exception handler.
+if test "x$host_os_mingw32" = "xyes" ; then
+    AC_CHECK_LIB(iberty, main, AC_SUBST([IBERTY_LIBS], [-liberty]), AC_MSG_ERROR([libiberty not found.]))
+
+    WIN32_LIBS="${WIN32_LIBS} ${IBERTY_LIBS}"
+fi 
+
 # Look for X11 if required
 AC_TRY_COMPILE(, [
 #if   (defined(__OS2__) && !defined(__EMX__))
