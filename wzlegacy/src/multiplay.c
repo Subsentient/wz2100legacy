@@ -1310,11 +1310,11 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		short Inc;
 		char Temp[MAX_CONSOLE_STRING_LENGTH];
 		
-		strncpy(ConsoleOut, _("Players by slot number: "), MAX_CONSOLE_STRING_LENGTH);
+		strncpy(ConsoleOut, _("Players: "), MAX_CONSOLE_STRING_LENGTH);
 		
 		for (Inc = 0; Inc < game.maxPlayers; ++Inc)
 		{
-			snprintf(Temp, MAX_CONSOLE_STRING_LENGTH, _("%s at slot %d; "), getPlayerName(Inc), Inc);
+			snprintf(Temp, MAX_CONSOLE_STRING_LENGTH, _("%s (%s) at slot %d; "), getPlayerName(Inc), getPlayerColourName(Inc), Inc);
 			strncat(ConsoleOut, Temp, MAX_CONSOLE_STRING_LENGTH);
 		}
 		
