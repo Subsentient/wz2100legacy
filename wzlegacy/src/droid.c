@@ -1099,8 +1099,7 @@ BuildPermissionState droidStartBuild(DROID *psDroid)
         if (droidNextToStruct(psDroid, (BASE_OBJECT *)psStruct))
 		{
 			if (psStruct->status != SS_BUILT && /*Not if it's built.*/
-				(psDroid->action != DACTION_BUILD || ((STRUCTURE_STATS *)psDroid->psTarStats)->type == REF_RESOURCE_EXTRACTOR))
-				/*Not if we are already building it with this truck, and a workaround for oil derricks.*/
+				psDroid->action != DACTION_BUILD) /*Not if we are already building it with this truck.*/
 			{
 				sendBuildStarted(psStruct, psDroid);
 			}
@@ -1114,12 +1113,6 @@ BuildPermissionState droidStartBuild(DROID *psDroid)
     }
 
     // check structure not already built, and we still 'own' it
-    if (!psStruct)
-    { /*Prevent crashes. This can happen, and it's fairly innocent.*/
-		debug(LOG_WARNING, "Attempted to access deleted structure. This is a netcode issue.");
-		return PermissionDenied;
-	}
-	
     if (psStruct->status != SS_BUILT && aiCheckAlliances(psStruct->player, psDroid->player))
     {
         psDroid->actionStarted = gameTime;
