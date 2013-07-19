@@ -367,7 +367,7 @@ static void formationFindFree(FORMATION *psFormation, DROID *psDroid,
     SDWORD		currDist, prev, rank;
     F_LINE		*asLines = psFormation->asLines;
     F_MEMBER	*asMembers = psFormation->asMembers;
-    SDWORD		x,y, xdiff,ydiff, dist, objDist;
+    SDWORD		x = 0, y = 0, xdiff,ydiff, dist, objDist;
     SDWORD		chosenLine, chosenDist, chosenPrev, chosenRank;
     BOOL		found;
 
