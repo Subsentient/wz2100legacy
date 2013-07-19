@@ -2238,6 +2238,12 @@ static void disableMultiButs(void)
         // FIXME: It don't seem to be locking it into the 2nd state?
         widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_LOCK);
     }
+    
+    if (!NetPlay.isHost)
+    { /*Don't let clients think that they can change the password if not the host.*/
+		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_DISABLE);
+		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
+	}
 
     // edit boxes
     widgSetButtonState(psWScreen,MULTIOP_GNAME,WEDBS_DISABLE);
