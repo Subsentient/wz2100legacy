@@ -116,7 +116,7 @@ BOOL sendCheck(void)
     NETgetPacketsRecvd();
 
     // dont send checks till all players are present.
-    for(i=0; i<MAX_PLAYERS; ++i)
+    for(i=0; i<MAX_PLAYERS; i++)
     {
         if(isHumanPlayer(i) && ingame.JoiningInProgress[i])
         {
@@ -130,57 +130,57 @@ BOOL sendCheck(void)
     if(okToSend())
     {
         sendDroidCheck();
-        ++sync_counter.sentDroidCheck;
+        sync_counter.sentDroidCheck++;
     }
     else
     {
-        ++sync_counter.unsentDroidCheck;
+        sync_counter.unsentDroidCheck++;
     }
     if(okToSend())
     {
         sendStructureCheck();
-        ++sync_counter.sentStructureCheck;
+        sync_counter.sentStructureCheck++;
 
     }
     else
     {
-        ++sync_counter.unsentStructureCheck;
+        sync_counter.unsentStructureCheck++;
     }
     if(okToSend())
     {
         sendPowerCheck();
-        ++sync_counter.sentPowerCheck;
+        sync_counter.sentPowerCheck++;
     }
     else
     {
-        ++sync_counter.unsentPowerCheck;
+        sync_counter.unsentPowerCheck++;
     }
     if(okToSend())
     {
         sendScoreCheck();
-        ++sync_counter.sentScoreCheck;
+        sync_counter.sentScoreCheck++;
     }
     else
     {
-        ++sync_counter.unsentScoreCheck;
+        sync_counter.unsentScoreCheck++;
     }
     if(okToSend())
     {
         sendPing();
-        ++sync_counter.sentPing;
+        sync_counter.sentPing++;
     }
     else
     {
-        ++sync_counter.unsentPing;
+        sync_counter.unsentPing++;
     }
 
     if (isMPDirtyBit)
     {
-        ++sync_counter.sentisMPDirtyBit;
+        sync_counter.sentisMPDirtyBit++;
     }
     else
     {
-        ++sync_counter.unsentisMPDirtyBit;
+        sync_counter.unsentisMPDirtyBit++;
     }
     // FIXME: reset flag--For now, we always do this since we have no way of knowing which routine(s) we had to set this flag
     isMPDirtyBit = false;
@@ -775,68 +775,69 @@ BOOL recvStructureCheck()
         NETend();
         return false;
     }
-    
-    if (!(pS = IdToStruct(ref, player)))
-    { /*Don't waste our time with non-existant structures.*/
-		NETend();
-		return true;
-	}
-	
-    pS->body = body;
-    pS->direction = direction;
-	
-	// Check its finished
-	if (pS->status != SS_BUILT)
-	{
-		pS->direction = direction;
-		pS->id = ref;
-		pS->status = SS_BUILT;
-		buildingComplete(pS);
-	}
-	
-	// If the structure has a capacity
-	switch (pS->pStructureType->type)
-	{
-		case REF_RESEARCH:
-			ourCapacity = ((RESEARCH_FACILITY *) pS->pFunctionality)->capacity;
-			j = researchModuleStat;
-			break;
-		case REF_FACTORY:
-		case REF_VTOL_FACTORY:
-			ourCapacity = ((FACTORY *) pS->pFunctionality)->capacity;
-			j = factoryModuleStat;
-			break;
-		case REF_POWER_GEN:
-			ourCapacity = ((POWER_GEN *) pS->pFunctionality)->capacity;
-			j = powerModuleStat;
-			break;
-		default:
-			hasCapacity = false;
-			break;
-	}
-	
-	// So long as the struct has a capacity fetch it from the packet
-	if (hasCapacity)
-	{
-		uint8_t actualCapacity = 0;
-	
-		NETuint8_t(&actualCapacity);
-	
-		// If our capacity is different upgrade ourself
-		for (; ourCapacity < actualCapacity; ourCapacity++)
-		{
-			buildStructure(&asStructureStats[j], pS->pos.x, pS->pos.y, pS->player, false);
-	
-			// Check it is finished
-			if (pS && pS->status != SS_BUILT)
-			{
-				pS->id = ref;
-				pS->status = SS_BUILT;
-				buildingComplete(pS);
-			}
-		}
-	}
 
+    // If the structure exists our job is easy
+    pS = IdToStruct(ref, player);
+    if (pS)
+    {
+        pS->body = body;
+        pS->direction = direction;
+    }
+	
+    if (pS)
+    {
+        // Check its finished
+        if (pS->status != SS_BUILT)
+        {
+            pS->direction = direction;
+            pS->id = ref;
+            pS->status = SS_BUILT;
+            buildingComplete(pS);
+        }
+
+        // If the structure has a capacity
+        switch (pS->pStructureType->type)
+        {
+            case REF_RESEARCH:
+                ourCapacity = ((RESEARCH_FACILITY *) pS->pFunctionality)->capacity;
+                j = researchModuleStat;
+                break;
+            case REF_FACTORY:
+            case REF_VTOL_FACTORY:
+                ourCapacity = ((FACTORY *) pS->pFunctionality)->capacity;
+                j = factoryModuleStat;
+                break;
+            case REF_POWER_GEN:
+                ourCapacity = ((POWER_GEN *) pS->pFunctionality)->capacity;
+                j = powerModuleStat;
+                break;
+            default:
+                hasCapacity = false;
+                break;
+        }
+
+        // So long as the struct has a capacity fetch it from the packet
+        if (hasCapacity)
+        {
+            uint8_t actualCapacity = 0;
+
+            NETuint8_t(&actualCapacity);
+
+            // If our capacity is different upgrade ourself
+            for (; ourCapacity < actualCapacity; ourCapacity++)
+            {
+                buildStructure(&asStructureStats[j], pS->pos.x, pS->pos.y, pS->player, false);
+
+                // Check it is finished
+                if (pS && pS->status != SS_BUILT)
+                {
+                    pS->id = ref;
+                    pS->status = SS_BUILT;
+                    buildingComplete(pS);
+                }
+            }
+        }
+    }
 
     NETend();
     return true;
