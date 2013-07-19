@@ -1348,7 +1348,7 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
     UDWORD				i;
     char				display[MAX_CONSOLE_STRING_LENGTH];
     char				msg[MAX_CONSOLE_STRING_LENGTH];
-    char				*curStr = (char *)pStr;
+    char				*curStr = (char *)pStr, *TmpStr, NameScan[1024];
 
     if (!ingame.localOptionsReceived)
     {
@@ -1365,6 +1365,18 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
     memset(sendto,0x0, sizeof(sendto));		//clear private flag
     memset(posTable,0x0, sizeof(posTable));		//clear buffer
     sstrcpy(msg, curStr);
+    
+    /*This bit of code goes past our names, which are passed to this function.*/
+    snprintf(NameScan, 1024, "%s: ", getPlayerName(selectedPlayer));
+    TmpStr = strstr(curStr, NameScan);
+    if (TmpStr == NULL)
+	{
+		TmpStr = curStr;
+	}
+	else
+	{
+		TmpStr += strlen(NameScan);
+	}
 
     if (!all)
     {
@@ -1374,9 +1386,9 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
             posTable[NetPlay.players[i].position] = i;
         }
 
-        if (curStr[0] == '.')
+        if (TmpStr[0] == '.')
         {
-            curStr++;
+            TmpStr++;
             for (i = 0; i < game.maxPlayers; i++)
             {
                 if (i != selectedPlayer && aiCheckAlliances(selectedPlayer, i))
@@ -1390,9 +1402,9 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
                 sstrcpy(display, _("(allies"));
             }
         }
-        for (; curStr[0] >= '0' && curStr[0] <= '7'; curStr++)		// for each 0..7 numeric char encountered
+        for (; TmpStr[0] >= '0' && TmpStr[0] <= '7'; TmpStr++)		// for each 0..7 numeric char encountered
         {
-            i = posTable[curStr[0]-'0'];
+            i = posTable[TmpStr[0]-'0'];
             if (normal)
             {
                 sstrcpy(display, _("(private to "));
@@ -1403,7 +1415,7 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
             }
             if ((isHumanPlayer(i) || (game.type == SKIRMISH && i<game.maxPlayers && game.skDiff[i] ) ))
             {
-                sstrcat(display, getPlayerName(posTable[curStr[0]-'0']));
+                sstrcat(display, getPlayerName(posTable[TmpStr[0]-'0']));
                 sendto[i] = true;
             }
             else
@@ -1415,12 +1427,16 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
 
         if (!normal)	// lets user know it is a private message
         {
-            if (curStr[0] == ' ')
+            if (TmpStr[0] == ' ')
             {
-                curStr++;
+                TmpStr++;
             }
             sstrcat(display, ") ");
-            sstrcat(display, curStr);
+            if (TmpStr != NULL)
+            {
+				sstrcat(display, NameScan);
+			}
+            sstrcat(display, TmpStr);
         }
     }
 
