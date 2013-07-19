@@ -1117,7 +1117,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	struct { const char *CmdName; short AvailableAlways; short TakesArg; } AvailableCommands[] =
 			{ 
 			{ "!help", 1, 0 }, { "!name", 0, 1 }, { "!kick", 1, 1 }, { "!playerlist", 1, 0},
-			{ "!beep", 1, 1 }, { "!mynum", 1, 0 }, {"!toggleticker", 0, 0}, { "!spectate", 0, 0 }, { NULL }
+			{ "!beep", 1, 1 }, {"!toggleticker", 0, 0}, { "!spectate", 0, 0 }, { NULL }
 			};
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
@@ -1230,7 +1230,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 
 			PlayerToKick = (short)atoi(InBuffer);
 			
-			if (PlayerToKick >= MAX_PLAYERS - 1 || PlayerToKick < 0) 
+			if (PlayerToKick >= MAX_PLAYERS || PlayerToKick < 0) 
 			{
 				addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
 				return 1;
@@ -1305,30 +1305,21 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		
 		return 1;
 	}
-	else if (Matches("!mynum"))
-	{
-		snprintf(ConsoleOut, MAX_CONSOLE_STRING_LENGTH, _("Your player number is %d."), selectedPlayer);
-		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, selectedPlayer);
-		
-		return 1;
-	}
 	else if (Matches("!playerlist"))
 	{
 		short Inc;
 		char Temp[MAX_CONSOLE_STRING_LENGTH];
 		
-		strncpy(ConsoleOut, _("Human players: "), MAX_CONSOLE_STRING_LENGTH);
+		strncpy(ConsoleOut, _("Players by slot number: "), MAX_CONSOLE_STRING_LENGTH);
 		
-		for (Inc = 0; Inc < MAX_PLAYERS; ++Inc)
+		for (Inc = 0; Inc < game.maxPlayers; ++Inc)
 		{
-			if (isHumanPlayer(Inc))
-			{
-				snprintf(Temp, MAX_CONSOLE_STRING_LENGTH, _("%s at slot %d; "), getPlayerName(Inc), Inc);
-				strncat(ConsoleOut, Temp, MAX_CONSOLE_STRING_LENGTH);
-			}
+			snprintf(Temp, MAX_CONSOLE_STRING_LENGTH, _("%s at slot %d; "), getPlayerName(Inc), Inc);
+			strncat(ConsoleOut, Temp, MAX_CONSOLE_STRING_LENGTH);
 		}
 		
-		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, selectedPlayer);
+		ConsoleOut[strlen(ConsoleOut) - 2] = '.'; //Remove trailing semicolon, replace with period.
+		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 		
 		return 1;
 	}
@@ -1710,7 +1701,7 @@ bool recvPageSig(void)
 		
 		snprintf(TmpBuf, MAX_CONSOLE_STRING_LENGTH, "Your attention is wanted by %s", NetPlay.players[Pager].name);
 		
-		addConsoleMessage(TmpBuf, DEFAULT_JUSTIFY, selectedPlayer);
+		addConsoleMessage(TmpBuf, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 		
 		audio_QueueTrack(ID_SOUND_BUILD_FAIL);
 		audio_QueueTrack(ID_SOUND_BUILD_FAIL);
