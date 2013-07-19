@@ -2267,7 +2267,7 @@ static void disableMultiButs(void)
 		else
 		{
 			widgSetButtonState(psWScreen,MULTIOP_SKIRMISH ,WBUT_DISABLE);
-		}
+		} 
 
         if(game.base != CAMP_CLEAN)
         {
