@@ -2259,6 +2259,15 @@ static void disableMultiButs(void)
         {
             widgSetButtonState(psWScreen,MULTIOP_FOG_ON ,WBUT_DISABLE);
         }
+        
+        if(!game.scavengers)
+        {
+			widgSetButtonState(psWScreen,MULTIOP_CAMPAIGN ,WBUT_DISABLE);
+		}
+		else
+		{
+			widgSetButtonState(psWScreen,MULTIOP_SKIRMISH ,WBUT_DISABLE);
+		}
 
         if(game.base != CAMP_CLEAN)
         {
