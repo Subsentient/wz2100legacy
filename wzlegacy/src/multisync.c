@@ -750,9 +750,9 @@ static BOOL sendStructureCheck(void)
 BOOL recvStructureCheck()
 {
     STRUCTURE		*pS;
-    //STRUCTURE_STATS	*psStats;
+    STRUCTURE_STATS	*psStats;
     BOOL			hasCapacity = true;
-    int				j;
+    int				i, j;
     float			direction;
     uint8_t			player, ourCapacity;
     uint32_t		body;
@@ -783,11 +783,86 @@ BOOL recvStructureCheck()
         pS->body = body;
         pS->direction = direction;
     }
-	
+    // Structure was not found - build it
+    else
+    {
+#if defined (DEBUG)
+        NETlogEntry("structure check failed, adding struct. val=type", SYNC_FLAG, type - REF_STRUCTURE_START);
+#endif
+        for (i = 0; i < numStructureStats && asStructureStats[i].ref != type; i++);
+        psStats = &asStructureStats[i];
+
+        // Check for similar buildings, to avoid overlaps
+        if (TileHasStructure(mapTile(map_coord(x), map_coord(y))))
+        {
+#if defined (DEBUG)
+            NETlogEntry("Tile has structure val=player", SYNC_FLAG, player);
+#endif
+            pS = getTileStructure(map_coord(x), map_coord(y));
+
+            // If correct type && player then complete & modify
+            if (pS
+                    && pS->pStructureType->type == type
+                    && pS->player == player)
+            {
+                pS->direction = direction;
+                pS->id = ref;
+
+                if (pS->status != SS_BUILT)
+                {
+                    pS->status = SS_BUILT;
+                    buildingComplete(pS);
+                }
+#if defined (DEBUG)
+                NETlogEntry("scheck: fixed?", SYNC_FLAG, player);
+#endif
+            }
+            // Wall becoming a cornerwall
+            else if (pS->pStructureType->type == REF_WALL)
+            {
+                if (psStats->type == REF_WALLCORNER)
+                {
+#if defined (DEBUG)
+                    NETlogEntry("scheck: fixed wall->cornerwall", SYNC_FLAG, 0);
+#endif
+                    removeStruct(pS, true);
+
+                    powerCalc(false);
+                    pS = buildStructure((STRUCTURE_STATS * )psStats, x, y, player, true);
+                    powerCalc(true);
+
+                    if (pS)
+                    {
+                        pS->id = ref;
+                    }
+                    else
+                    {
+                        NETlogEntry("scheck: failed to upgrade wall!", SYNC_FLAG, player);
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                NETlogEntry("Tile did not have correct type or player val=player", SYNC_FLAG, player);
+                return false;
+            }
+        }
+        // Nothing exists there so lets get building!
+        else
+        {
+            NETlogEntry("didn't find structure at all, building it", SYNC_FLAG, 0);
+
+            powerCalc(false);
+            pS = buildStructure((STRUCTURE_STATS *) psStats, x, y, player, true);
+            powerCalc(true);
+        }
+    }
+
     if (pS)
     {
         // Check its finished
-        if (pS->currentBuildPts > (SDWORD)pS->pStructureType->buildPoints)
+        if (pS->status != SS_BUILT)
         {
             pS->direction = direction;
             pS->id = ref;
