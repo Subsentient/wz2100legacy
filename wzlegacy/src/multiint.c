@@ -3740,19 +3740,18 @@ void displayPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *p
         }
         if (j == NET_HOST_ONLY && NetPlay.bComms)
         {
-            iV_DrawText(NetPlay.players[j].name, x + 65, y + 18);
             iV_SetFont(font_small);
             iV_SetTextColour(WZCOL_TEXT_MEDIUM);
-            iV_DrawText(_("HOST"), x + 65, y + 28);
+            iV_DrawText(_("HOST"), x + 145, y + 28);
             iV_SetFont(font_regular);
             iV_SetTextColour(WZCOL_TEXT_BRIGHT);
         }
-        else if (NetPlay.bComms && NetPlay.isHost)
+        
+        if (NetPlay.bComms && j != selectedPlayer)
         {
             char buf[250] = {'\0'};
 
             // show "actual" ping time
-            iV_DrawText(NetPlay.players[j].name, x + 65, y + 18);
             iV_SetFont(font_small);
             iV_SetTextColour(WZCOL_TEXT_MEDIUM);
             ssprintf(buf, "Ping: %03d", ingame.PingTimes[j]);
@@ -3760,10 +3759,8 @@ void displayPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *p
             iV_SetFont(font_regular);
             iV_SetTextColour(WZCOL_TEXT_BRIGHT);
         }
-        else
-        {
-            iV_DrawText(NetPlay.players[j].name, x + 65, y + 22);
-        }
+
+		iV_DrawText(NetPlay.players[j].name, x + 65, y + 18);
 
         // ping rating
         if (ingame.PingTimes[j] < PING_MED)
