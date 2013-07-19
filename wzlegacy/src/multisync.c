@@ -393,7 +393,7 @@ BOOL recvDroidCheck()
 			DROID		*pD;
 			BASE_OBJECT	*psTarget = NULL;
 			float		fx = 0, fy = 0;
-			DROID_ORDER	order = 0;
+			DROID_ORDER	order = DORDER_NONE;
 			BOOL		onscreen;
 			uint8_t		player;
 			float		direction, experience;
@@ -485,10 +485,8 @@ BOOL recvDroidCheck()
 //			      fx - pD->sMove.fx, fy - pD->sMove.fy, onscreen ? "onscreen" : "offscreen");
 
 			// Update the higher level stuff
-			if (!isVtolDroid(pD) || 1)
-			{
-				highLevelDroidUpdate(pD, tx, ty, secondaryOrder, order, psTarget, experience);
-			}
+
+			highLevelDroidUpdate(pD, tx, ty, secondaryOrder, order, psTarget, experience);
 
 			// ...and repeat!
 		}
@@ -510,12 +508,13 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 	psDroid->experience = experience;
 
 	turnOffMultiMsg(true);
-	if(order!=DORDER_NONE){
+	if(order != DORDER_NONE && psTarget) //psTarget is important.
+	{
 		if (validOrderForObj(order))
 		{
 			if(psTarget!=0)
 			{
-				if( !(psDroid->order==order && psDroid->psTarget==psTarget) )
+				if(psDroid->order != order && psDroid->psTarget != psTarget)
 				{
 					orderDroidObj(psDroid, order, psTarget);
 				}
@@ -523,13 +522,14 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 		}
 		else if (validOrderForLoc(order))
 		{
-			if( !(psDroid->order==order && psDroid->orderX==tx && psDroid->orderY==ty ) )
+			if(psDroid->order != order && psDroid->orderX != tx && psDroid->orderY != ty)
 			{
 				orderDroidLoc(psDroid, order, tx, ty);
-			 }
+			}
 		}
-		else{
-			if( !(psDroid->order==order) )
+		else
+		{
+			if(psDroid->order != order)
 			{
 				orderDroid(psDroid, order);
 			}
