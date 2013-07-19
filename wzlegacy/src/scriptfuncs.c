@@ -80,6 +80,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "group.h"
 #include "transporter.h"
 #include "radar.h"
+#include "spectate.h"
 #include "levels.h"
 #include "mission.h"
 #include "projectile.h"
@@ -3152,13 +3153,16 @@ BOOL scrGameOverMessage(void)
     SDWORD			player;
     VIEWDATA		*psViewData;
 
-
     if (!stackPopParams(4, ST_INTMESSAGE, &psViewData , VAL_INT, &msgType,
                         VAL_INT, &player, VAL_BOOL, &gameWon))
     {
         return false;
     }
-
+    
+    if (PlayerSpectating(selectedPlayer) && gameTime < 20000) //20 secs
+	{ /*Don't let spectators lose who spectate at the start of the game.*/
+		return true;
+	}
 
     if (player >= MAX_PLAYERS)
     {
