@@ -1103,11 +1103,22 @@ BuildPermissionState droidStartBuild(DROID *psDroid)
     {
         /* Check the structure is still there to build (joining a partially built struct) */
         psStruct = (STRUCTURE *)psDroid->psTarget;
-        if (!droidNextToStruct(psDroid, (BASE_OBJECT *)psStruct))
-        {
-            /* Nope - stop building */
-            debug( LOG_NEVER, "not next to structure" );
-        }
+        
+        /*Make ALL ordered trucks work on any given structure remotely.*/
+		if (droidNextToStruct(psDroid, (BASE_OBJECT *)psStruct))
+		{
+			if (psStruct->status != SS_BUILT && /*Not if it's built.*/
+				psDroid->action != DACTION_BUILD) /*Not if we are already building it with this truck.*/
+			{
+				sendBuildStarted(psStruct, psDroid);
+			}
+	        
+		}
+		else
+		{
+			/* Nope - stop building */ 
+			debug( LOG_NEVER, "not next to structure" ); 
+		}
     }
 
     // check structure not already built, and we still 'own' it
