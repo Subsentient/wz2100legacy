@@ -69,7 +69,7 @@ static void onscreenUpdate		(DROID *pDroid,UDWORD dam,		// the droid and its dam
 								 UWORD dir,					// direction it should facing
 								 DROID_ORDER order);			// what it should be doing
 */
-static void offscreenUpdate		(DROID *pDroid,UDWORD dam,
+static void DroidScreenUpdate		(DROID *pDroid,UDWORD dam,
 								 float fx,float fy,
 								 UWORD dir,
 								 DROID_ORDER order,
@@ -475,10 +475,10 @@ BOOL recvDroidCheck()
 			// Update the droid
 			//if (onscreen || isVtolDroid(pD)) 
 			//{ 
-			offscreenUpdate(pD, body, fx, fy, direction, order, onscreen); 
+			DroidScreenUpdate(pD, body, fx, fy, direction, order, onscreen); 
 			//} else
 			//{ 
-			//	offscreenUpdate(pD, body, fx, fy, direction, order, false);
+			//	DroidScreenUpdate(pD, body, fx, fy, direction, order, false);
 			//}
 
 //			debug(LOG_SYNC, "difference in position for droid %d; was (%g, %g); did %s update", (int)pD->id, 
@@ -540,7 +540,7 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 }
 
 // droid needs modyfying. (now do onscreen as well)
-static void offscreenUpdate(DROID *psDroid,
+static void DroidScreenUpdate(DROID *psDroid,
 							UDWORD dam,
 							float fx,
 							float fy,
@@ -580,7 +580,7 @@ static void offscreenUpdate(DROID *psDroid,
 
 	// snap droid(if on ground)  to terrain level at x,y.
 	psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
-	ASSERT( psPropStats != NULL, "offscreenUpdate: invalid propulsion stats pointer" );
+	ASSERT( psPropStats != NULL, "DroidScreenUpdate: invalid propulsion stats pointer" );
 	if(	psPropStats->propulsionType != PROPULSION_TYPE_LIFT )		// if not airborne.
 	{
 		psDroid->pos.z = map_Height(psDroid->pos.x, psDroid->pos.y);
