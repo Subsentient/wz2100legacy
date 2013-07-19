@@ -11,6 +11,9 @@
 
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
+   
+#include "src/version.h" //Used for version info.
+
 #define ENABLE_NLS 1
 
 /* Define to 1 if you have `alloca', as a function or macro. */
@@ -264,13 +267,13 @@
 #define PACKAGE_NAME PROJECTNAME
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING PROJECTNAME " microwave_rebase" /*This is helpful.*/
+#define PACKAGE_STRING PROJECTNAME VERSIONNUM /*This is helpful.*/
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "wz2100legacy"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "microwave_rebase"
+#define PACKAGE_VERSION VERSIONNUM
 
 /* Define if <inttypes.h> exists and defines unusable PRI* macros. */
 /* #undef PRI_MACROS_BROKEN */
