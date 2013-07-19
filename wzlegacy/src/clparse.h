@@ -26,10 +26,21 @@ extern "C"
 #endif //__cplusplus
 
 // parse the commandline
-    bool ParseCommandLine(int argc, const char **argv);
-    bool ParseCommandLineEarly(int argc, const char **argv);
+bool ParseCommandLine(int argc, const char **argv);
+bool ParseCommandLineEarly(int argc, const char **argv);
 
-    extern BOOL bAllowDebugMode;
+extern BOOL bAllowDebugMode;
+
+typedef enum {LARG_NONE, LARG_STRING, LARG_NUMBER, LARG_FLOAT, LARG_BOOLEAN} ARGTYPE;
+
+typedef struct 
+{
+	const char *ArgName;
+	short ArgArg;
+	long ArgID;
+	const char *Help;
+	const char *Example;
+} CLISPEC;
 
 #ifdef __cplusplus
 }

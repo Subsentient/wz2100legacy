@@ -19,8 +19,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  * Parse command line arguments
  *
  */
-
-#include <popt.h>
+ 
+/**This file is inferior to the previous implementation that provided popt, but it will suffice.**/
 
 #include "lib/framework/frame.h"
 #include "lib/netplay/netplay.h"
@@ -55,7 +55,6 @@ typedef enum
     CLI_MOD_CA,
     CLI_MOD_MP,
     CLI_SAVEGAME,
-    CLI_USAGE,
     CLI_WINDOW,
     CLI_MASTERSERVER,
     CLI_MASTERSERVER_PORT,
@@ -74,76 +73,137 @@ typedef enum
     CLI_NOTEXTURECOMPRESSION
 } CLI_OPTIONS;
 
-static const struct poptOption *getOptionsTable(void)
+static CLISPEC optionsTable[] =
+{ //with --masterserver-port as an example, list the longer argumnent that contains the name of a shorter one FIRST.
+	{ "--cheat",      LARG_NONE,   CLI_CHEAT,      N_("Run in cheat mode"),                 NULL },
+	{ "--datadir",    LARG_STRING, CLI_DATADIR,    N_("Set default data directory"),        N_("data directory") },
+	{ "--configdir",  LARG_STRING, CLI_CONFIGDIR,  N_("Set configuration directory"),       N_("configuration directory") },
+	{ "--debug",      LARG_STRING, CLI_DEBUG,      N_("Show debug for given level"),        N_("debug level") },
+	{ "--debugfile",  LARG_STRING, CLI_DEBUGFILE,  N_("Log debug output to file"),          N_("file") },
+	{ "--flush-debug-stderr", LARG_NONE, CLI_FLUSHDEBUGSTDERR, N_("Flush all debug output written to stderr"), NULL },
+	{ "--fullscreen", LARG_NONE,   CLI_FULLSCREEN, N_("Play in fullscreen mode"),           NULL },
+	{ "--game",       LARG_STRING, CLI_GAME,       N_("Load a specific game"),              N_("game-name") },
+	{ "--help",       LARG_NONE,   CLI_HELP,       N_("Show this help message and exit"),   NULL },
+	{ "--mod",        LARG_STRING, CLI_MOD_GLOB,   N_("Enable a global mod"),               N_("mod") },
+	{ "--mod_ca",     LARG_STRING, CLI_MOD_CA,     N_("Enable a campaign only mod"),        N_("mod") },
+	{ "--mod_mp",     LARG_STRING, CLI_MOD_MP,     N_("Enable a multiplay only mod"),       N_("mod") },
+	{ "--noassert",	LARG_NONE,   CLI_NOASSERT,   N_("Disable asserts"),                   NULL },
+	{ "--crash",		LARG_NONE,   CLI_CRASH,      N_("Causes a crash to test the crash handler"), NULL },
+	{ "--savegame",   LARG_STRING, CLI_SAVEGAME,   N_("Load a saved game"),                 N_("savegame") },
+	{ "--window",     LARG_NONE,   CLI_WINDOW,     N_("Play in windowed mode"),             NULL },
+	{ "--masterserver-port",LARG_STRING, CLI_MASTERSERVER_PORT, N_("Set port number for the lobby server. Default is 9990."), N_("e.g. 4444") },
+	{ "--masterserver",LARG_STRING, CLI_MASTERSERVER, N_("Set IP or domain to use for the lobby server."), N_("masterserver") },
+
+	{ "--version",    LARG_NONE,   CLI_VERSION,    N_("Show version information and exit"), NULL },
+	{ "--resolution", LARG_STRING, CLI_RESOLUTION, N_("Set the resolution to use"),         N_("WIDTHxHEIGHT") },
+	{ "--shadows",    LARG_NONE,   CLI_SHADOWS,    N_("Enable shadows"),                    NULL },
+	{ "--noshadows",  LARG_NONE,   CLI_NOSHADOWS,  N_("Disable shadows"),                   NULL },
+	{ "--sound",      LARG_NONE,   CLI_SOUND,      N_("Enable sound"),                      NULL },
+	{ "--nosound",    LARG_NONE,   CLI_NOSOUND,    N_("Disable sound"),                     NULL },
+	{ "--selftest",   LARG_NONE,   CLI_SELFTEST,   N_("Activate self-test"),                NULL },
+	{ "--join",       LARG_STRING, CLI_CONNECTTOIP,N_("connect directly to IP/hostname"),   N_("host") },
+	{ "--host",       LARG_NONE,   CLI_HOSTLAUNCH, N_("go directly to host screen"),        NULL },
+	{ "--texturecompression", LARG_NONE, CLI_TEXTURECOMPRESSION, N_("Enable texture compression"), NULL },
+	{ "--notexturecompression", LARG_NONE, CLI_NOTEXTURECOMPRESSION, N_("Disable texture compression"), NULL },
+	// Terminating entry
+	{ NULL }
+};
+
+static void DumpHelpToConsole(void)
 {
-    static const struct poptOption optionsTable[] =
-    {
-        { "cheat",      '\0', POPT_ARG_NONE,   NULL, CLI_CHEAT,      N_("Run in cheat mode"),                 NULL },
-        { "datadir",    '\0', POPT_ARG_STRING, NULL, CLI_DATADIR,    N_("Set default data directory"),        N_("data directory") },
-        { "configdir",  '\0', POPT_ARG_STRING, NULL, CLI_CONFIGDIR,  N_("Set configuration directory"),       N_("configuration directory") },
-        { "debug",      '\0', POPT_ARG_STRING, NULL, CLI_DEBUG,      N_("Show debug for given level"),        N_("debug level") },
-        { "debugfile",  '\0', POPT_ARG_STRING, NULL, CLI_DEBUGFILE,  N_("Log debug output to file"),          N_("file") },
-        { "flush-debug-stderr", '\0', POPT_ARG_NONE, NULL, CLI_FLUSHDEBUGSTDERR, N_("Flush all debug output written to stderr"), NULL },
-        { "fullscreen", '\0', POPT_ARG_NONE,   NULL, CLI_FULLSCREEN, N_("Play in fullscreen mode"),           NULL },
-        { "game",       '\0', POPT_ARG_STRING, NULL, CLI_GAME,       N_("Load a specific game"),              N_("game-name") },
-        { "help",       'h',  POPT_ARG_NONE,   NULL, CLI_HELP,       N_("Show this help message and exit"),   NULL },
-        { "mod",        '\0', POPT_ARG_STRING, NULL, CLI_MOD_GLOB,   N_("Enable a global mod"),               N_("mod") },
-        { "mod_ca",     '\0', POPT_ARG_STRING, NULL, CLI_MOD_CA,     N_("Enable a campaign only mod"),        N_("mod") },
-        { "mod_mp",     '\0', POPT_ARG_STRING, NULL, CLI_MOD_MP,     N_("Enable a multiplay only mod"),       N_("mod") },
-        { "noassert",	'\0', POPT_ARG_NONE,   NULL, CLI_NOASSERT,   N_("Disable asserts"),                   NULL },
-        { "crash",		'\0', POPT_ARG_NONE,   NULL, CLI_CRASH,      N_("Causes a crash to test the crash handler"), NULL },
-        { "savegame",   '\0', POPT_ARG_STRING, NULL, CLI_SAVEGAME,   N_("Load a saved game"),                 N_("savegame") },
-        {
-            "usage",      '\0', POPT_ARG_NONE
-            | POPT_ARGFLAG_DOC_HIDDEN,   NULL, CLI_USAGE,      NULL,                                    NULL,
-        },
-        { "window",     '\0', POPT_ARG_NONE,   NULL, CLI_WINDOW,     N_("Play in windowed mode"),             NULL },
-        { "masterserver",'\0', POPT_ARG_STRING, NULL, CLI_MASTERSERVER, N_("Set IP or domain to use for the lobby server."), N_("masterserver") },
-        { "masterserver-port",'\0', POPT_ARG_STRING, NULL, CLI_MASTERSERVER_PORT, N_("Set port number for the lobby server. Default is 9990."), N_("e.g. 4444") },
+	unsigned long Inc;
+	
+	
+	printf("%s\n\n", GetVersionInfo());
+	
+	for (Inc = 0; optionsTable[Inc].ArgName; ++Inc)
+	{
+		if (optionsTable[Inc].ArgArg)
+		{
+			printf("%s=%s\n%s\n\n", optionsTable[Inc].ArgName, optionsTable[Inc].Example, optionsTable[Inc].Help);
+		}
+		else
+		{
+			printf("%s\n%s\n\n", optionsTable[Inc].ArgName, optionsTable[Inc].Help);
+		}
+	}
+}
 
-        { "version",    '\0', POPT_ARG_NONE,   NULL, CLI_VERSION,    N_("Show version information and exit"), NULL },
-        { "resolution", '\0', POPT_ARG_STRING, NULL, CLI_RESOLUTION, N_("Set the resolution to use"),         N_("WIDTHxHEIGHT") },
-        { "shadows",    '\0', POPT_ARG_NONE,   NULL, CLI_SHADOWS,    N_("Enable shadows"),                    NULL },
-        { "noshadows",  '\0', POPT_ARG_NONE,   NULL, CLI_NOSHADOWS,  N_("Disable shadows"),                   NULL },
-        { "sound",      '\0', POPT_ARG_NONE,   NULL, CLI_SOUND,      N_("Enable sound"),                      NULL },
-        { "nosound",    '\0', POPT_ARG_NONE,   NULL, CLI_NOSOUND,    N_("Disable sound"),                     NULL },
-        { "selftest",   '\0', POPT_ARG_NONE,   NULL, CLI_SELFTEST,   N_("Activate self-test"),                NULL },
-        { "join",       '\0', POPT_ARG_STRING, NULL, CLI_CONNECTTOIP,N_("connect directly to IP/hostname"),   N_("host") },
-        { "host",       '\0', POPT_ARG_NONE,   NULL, CLI_HOSTLAUNCH, N_("go directly to host screen"),        NULL },
-        { "texturecompression", '\0', POPT_ARG_NONE, NULL, CLI_TEXTURECOMPRESSION, N_("Enable texture compression"), NULL },
-		{ "notexturecompression", '\0', POPT_ARG_NONE, NULL, CLI_NOTEXTURECOMPRESSION, N_("Disable texture compression"), NULL },
-        // Terminating entry
-        { NULL,         '\0', 0,               NULL, 0,              NULL,                                    NULL },
-    };
+static CLISPEC *lookupArgument(const char *InStream)
+{ /*Subsentient's replacement for libpopt.*/
+	unsigned long Inc;
+	
+	for (Inc = 0; optionsTable[Inc].ArgName != NULL; ++Inc)
+	{
+		if (!strncmp(InStream, optionsTable[Inc].ArgName, strlen(optionsTable[Inc].ArgName)))
+		{
+			return &optionsTable[Inc]; //Return a pointer.
+		}
+	}
+	
+	return NULL;
+}
 
-    static struct poptOption TranslatedOptionsTable[sizeof(optionsTable) / sizeof(struct poptOption)];
-    static bool translated = false;
-
-    if (translated == false)
-    {
-        unsigned int table_size = sizeof(optionsTable) / sizeof(struct poptOption) - 1;
-        unsigned int i;
-
-        for (i = 0; i < table_size; ++i)
-        {
-            TranslatedOptionsTable[i] = optionsTable[i];
-
-            // If there is a description, make sure to translate it with gettext
-            if (TranslatedOptionsTable[i].descrip != NULL)
-            {
-                TranslatedOptionsTable[i].descrip = gettext(TranslatedOptionsTable[i].descrip);
-            }
-
-            if (TranslatedOptionsTable[i].argDescrip != NULL)
-            {
-                TranslatedOptionsTable[i].argDescrip = gettext(TranslatedOptionsTable[i].argDescrip);
-            }
-        }
-
-        translated = true;
-    }
-
-    return TranslatedOptionsTable;
+static BOOL getArgumentParam(CLISPEC *ArgStruct, const char *CurArgv, void *OutPtr)
+{ /*Writes the desired argument type to OutPtr.*/
+	char *LookupTable = (char*)CurArgv;
+	char Delim[8192];
+	
+	snprintf(Delim, 8192, "%s=", ArgStruct->ArgName);
+	
+	if (!(LookupTable = strstr(LookupTable, Delim)))
+	{
+		return false;
+	}
+	
+	LookupTable += strlen(Delim); //Go past the equals.
+	
+	switch (ArgStruct->ArgArg)
+	{
+		case LARG_STRING:
+		{
+			strcpy((char*)OutPtr, LookupTable);
+			return true;
+			break;
+		}
+		case LARG_NUMBER:
+		{
+			*(int*)OutPtr = atoi(LookupTable);
+			return true;
+			break;
+		}
+		case LARG_FLOAT:
+		{
+			*(float*)OutPtr = atof(LookupTable);
+			return true;
+			break;
+		}
+		case LARG_BOOLEAN:
+		{
+			if (!strcmp(LookupTable, "true"))
+			{
+				*(BOOL*)OutPtr = true;
+				return true;
+			}
+			else if (!strcmp(LookupTable, "false"))
+			{
+				*(BOOL*)OutPtr = false;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			break;
+		}
+		case LARG_NONE:
+		default:
+		{
+			return false;
+		}
+	}
+	
+	return false;
 }
 
 //! Early parsing of the commandline
@@ -157,56 +217,47 @@ static const struct poptOption *getOptionsTable(void)
  * \return Returns true on success, false on error */
 bool ParseCommandLineEarly(int argc, const char **argv)
 {
-    poptContext poptCon = poptGetContext(NULL, argc, argv, getOptionsTable(), 0);
-    int iOption;
-
-#if defined(WZ_OS_MAC) && defined(DEBUG)
-    debug_enable_switch( "all" );
-#endif /* WZ_OS_MAC && DEBUG */
-
-    /* loop through command line */
-    while ((iOption = poptGetNextOpt(poptCon)) > 0 || iOption == POPT_ERROR_BADOPT)
-    {
-        CLI_OPTIONS option = iOption;
-        const char *token;
-
-        if (iOption == POPT_ERROR_BADOPT)
-        {
-            debug(LOG_FATAL, "Unrecognized option: %s", poptBadOption(poptCon, 0));
-            exit(1);
-        }
-
-        switch (option)
+	short Inc;
+	CLISPEC *CurArg;
+	char ArgRet[8192];
+	
+	for (Inc = 1; Inc < argc; ++Inc)
+	{
+		if (!(CurArg = lookupArgument(argv[Inc])))
+		{
+			continue;
+		}
+		
+        switch (CurArg->ArgID)
         {
             case CLI_DEBUG:
                 // retrieve the debug section name
-                token = poptGetOptArg(poptCon);
-                if (token == NULL)
+                
+                if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                 {
                     debug(LOG_FATAL, "Usage: --debug <flag>");
-                    poptFreeContext(poptCon);
+                    
                     return false;
                 }
 
                 // Attempt to enable the given debug section
-                if (!debug_enable_switch(token))
+                if (!debug_enable_switch(ArgRet))
                 {
-                    debug(LOG_FATAL, "Debug flag \"%s\" not found!", token);
-                    poptFreeContext(poptCon);
+                    debug(LOG_FATAL, "Debug flag \"%s\" not found!", ArgRet);
+                    
                     return false;
                 }
                 break;
 
             case CLI_DEBUGFILE:
                 // find the file name
-                token = poptGetOptArg(poptCon);
-                if (token == NULL)
+				if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                 {
                     debug(LOG_FATAL, "Missing debugfile filename?");
-                    poptFreeContext(poptCon);
+                    
                     return false;
                 }
-                debug_register_callback( debug_callback_file, debug_callback_file_init, debug_callback_file_exit, (void *)token );
+                debug_register_callback( debug_callback_file, debug_callback_file_init, debug_callback_file_exit, (void *)ArgRet );
                 customDebugfile = true;
                 break;
 
@@ -217,37 +268,29 @@ bool ParseCommandLineEarly(int argc, const char **argv)
 
             case CLI_CONFIGDIR:
                 // retrieve the configuration directory
-                token = poptGetOptArg(poptCon);
-                if (token == NULL)
+				if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                 {
                     debug(LOG_FATAL, "Unrecognised configuration directory");
-                    poptFreeContext(poptCon);
+                    
                     return false;
                 }
-                sstrcpy(configdir, token);
+                sstrcpy(configdir, ArgRet);
                 break;
 
             case CLI_HELP:
-                poptPrintHelp(poptCon, stdout, 0);
-                poptFreeContext(poptCon);
+                DumpHelpToConsole();
                 return false;
-
-            case CLI_USAGE:
-                poptPrintUsage(poptCon, stdout, 0);
-                poptFreeContext(poptCon);
-                return false;
-
+                break;
             case CLI_VERSION:
                 printf("%s\n", GetVersionInfo());
-                poptFreeContext(poptCon);
+                
                 return false;
+                break;
 
             default:
                 break;
-        };
+        }
     }
-
-    poptFreeContext(poptCon);
 
     return true;
 }
@@ -261,23 +304,25 @@ bool ParseCommandLineEarly(int argc, const char **argv)
  * \return Returns true on success, false on error */
 bool ParseCommandLine(int argc, const char **argv)
 {
-    poptContext poptCon = poptGetContext(NULL, argc, argv, getOptionsTable(), 0);
-    int iOption;
-
-    /* loop through command line */
-    while ((iOption = poptGetNextOpt(poptCon)) > 0)
-    {
-        const char *token;
-        CLI_OPTIONS option = iOption;
-
-        switch (option)
+	short Inc;
+	CLISPEC *CurArg;
+	char ArgRet[8192];
+	
+	for (Inc = 1; Inc < argc; ++Inc)
+	{
+		if (!(CurArg = lookupArgument(argv[Inc])))
+		{
+			printf("%s: invalid command line argument.\n", argv[Inc]);
+			continue;
+		}
+		
+        switch (CurArg->ArgID)
         {
             case CLI_DEBUG:
             case CLI_DEBUGFILE:
             case CLI_FLUSHDEBUGSTDERR:
             case CLI_CONFIGDIR:
             case CLI_HELP:
-            case CLI_USAGE:
             case CLI_VERSION:
                 // These options are parsed in ParseCommandLineEarly() already, so ignore them
                 break;
@@ -301,14 +346,13 @@ bool ParseCommandLine(int argc, const char **argv)
 
             case CLI_DATADIR:
                 // retrieve the quoted path name
-                token = poptGetOptArg(poptCon);
-                if (token == NULL)
+				if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                 {
                     debug(LOG_FATAL, "Unrecognised datadir");
-                    poptFreeContext(poptCon);
+                    
                     return false;
                 }
-                sstrcpy(datadir, token);
+                sstrcpy(datadir, ArgRet);
                 break;
 
             case CLI_FULLSCREEN:
@@ -316,14 +360,13 @@ bool ParseCommandLine(int argc, const char **argv)
                 break;
             case CLI_CONNECTTOIP:
                 //get the ip we want to connect with, and go directly to join screen.
-                token = poptGetOptArg(poptCon);
-                if (token == NULL)
+				if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                 {
                     debug(LOG_FATAL, "No IP/hostname given");
-                    poptFreeContext(poptCon);
+                    
                     return false;
                 }
-                sstrcpy(iptoconnect, token);
+                sstrcpy(iptoconnect, ArgRet);
                 break;
             case CLI_HOSTLAUNCH:
                 // go directly to host screen, bypass all others.
@@ -331,15 +374,14 @@ bool ParseCommandLine(int argc, const char **argv)
                 break;
             case CLI_GAME:
                 // retrieve the game name
-                token = poptGetOptArg(poptCon);
-                if (token == NULL)
+				if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                 {
                     debug(LOG_POPUP, "No game name");
-                    poptFreeContext(poptCon);
+                    
                     return false;
                 }
-                if (strcmp(token, "CAM_1A") && strcmp(token, "CAM_2A") && strcmp(token, "CAM_3A")
-                        && strcmp(token, "TUTORIAL3") && strcmp(token, "FASTPLAY"))
+                if (strcmp(ArgRet, "CAM_1A") && strcmp(ArgRet, "CAM_2A") && strcmp(ArgRet, "CAM_3A")
+                        && strcmp(ArgRet, "TUTORIAL3") && strcmp(ArgRet, "FASTPLAY"))
                 {
                     debug(LOG_FATAL, "The game parameter requires one of the following keywords:");
                     debug(LOG_FATAL, "CAM_1A, CAM_2A, CAM_3A, TUTORIAL3, or FASTPLAY");
@@ -349,7 +391,7 @@ bool ParseCommandLine(int argc, const char **argv)
                 bMultiPlayer = false;
                 bMultiMessages = false;
                 NetPlay.players[0].allocated = true;
-                if (strcmp(token, "CAM_1A") && strcmp(token, "CAM_2A") && strcmp(token, "CAM_3A"))
+                if (strcmp(ArgRet, "CAM_1A") && strcmp(ArgRet, "CAM_2A") && strcmp(ArgRet, "CAM_3A"))
                 {
                     game.type = CAMPAIGN;
                 }
@@ -357,7 +399,7 @@ bool ParseCommandLine(int argc, const char **argv)
                 {
                     game.type = SKIRMISH; // tutorial is skirmish for some reason
                 }
-                sstrcpy(aLevelName, token);
+                sstrcpy(aLevelName, ArgRet);
                 SetGameMode(GS_NORMAL);
                 break;
             case CLI_MOD_GLOB:
@@ -365,11 +407,10 @@ bool ParseCommandLine(int argc, const char **argv)
                     unsigned int i;
 
                     // retrieve the file name
-                    token = poptGetOptArg(poptCon);
-                    if (token == NULL)
+					if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                     {
                         debug(LOG_FATAL, "Missing mod name?");
-                        poptFreeContext(poptCon);
+                        
                         return false;
                     }
 
@@ -378,10 +419,10 @@ bool ParseCommandLine(int argc, const char **argv)
                     if (i >= 100 || global_mods[i] != NULL)
                     {
                         debug(LOG_FATAL, "Too many mods registered! Aborting!");
-                        poptFreeContext(poptCon);
+                        
                         return false;
                     }
-                    global_mods[i] = strdup(token);
+                    global_mods[i] = strdup(ArgRet);
                     break;
                 }
             case CLI_MOD_CA:
@@ -389,11 +430,10 @@ bool ParseCommandLine(int argc, const char **argv)
                     unsigned int i;
 
                     // retrieve the file name
-                    token = poptGetOptArg(poptCon);
-                    if (token == NULL)
+					if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                     {
                         debug(LOG_FATAL, "Missing mod name?");
-                        poptFreeContext(poptCon);
+                        
                         return false;
                     }
 
@@ -402,10 +442,10 @@ bool ParseCommandLine(int argc, const char **argv)
                     if (i >= 100 || campaign_mods[i] != NULL)
                     {
                         debug(LOG_FATAL, "Too many mods registered! Aborting!");
-                        poptFreeContext(poptCon);
+                        
                         return false;
                     }
-                    campaign_mods[i] = strdup(token);
+                    campaign_mods[i] = strdup(ArgRet);
                     break;
                 }
             case CLI_MOD_MP:
@@ -413,11 +453,10 @@ bool ParseCommandLine(int argc, const char **argv)
                     unsigned int i;
 
                     // retrieve the file name
-                    token = poptGetOptArg(poptCon);
-                    if (token == NULL)
+					if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                     {
                         debug(LOG_FATAL, "Missing mod name?");
-                        poptFreeContext(poptCon);
+                        
                         return false;
                     }
 
@@ -425,18 +464,23 @@ bool ParseCommandLine(int argc, const char **argv)
                     if (i >= 100 || multiplay_mods[i] != NULL)
                     {
                         debug(LOG_FATAL, "Too many mods registered! Aborting!");
-                        poptFreeContext(poptCon);
+                        
                         return false;
                     }
-                    multiplay_mods[i] = strdup(token);
+                    multiplay_mods[i] = strdup(ArgRet);
                     break;
                 }
             case CLI_RESOLUTION:
                 {
                     unsigned int width, height;
 
-                    token = poptGetOptArg(poptCon);
-                    if (sscanf(token, "%ix%i", &width, &height ) != 2 )
+                    if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
+                    {
+						debug(LOG_FATAL, "You must specify a proper resolution.");
+						return false;
+					}
+					
+                    if (sscanf(ArgRet, "%ix%i", &width, &height ) != 2 )
                     {
                         debug(LOG_FATAL, "Invalid parameter specified (format is WIDTHxHEIGHT, e.g. 800x600)");
                         return false;
@@ -461,14 +505,13 @@ bool ParseCommandLine(int argc, const char **argv)
                 }
             case CLI_SAVEGAME:
                 // retrieve the game name
-                token = poptGetOptArg(poptCon);
-                if (token == NULL)
+				if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                 {
                     debug(LOG_POPUP, "Unrecognised savegame name");
-                    poptFreeContext(poptCon);
+                    
                     return false;
                 }
-                snprintf(saveGameName, sizeof(saveGameName), "%s/%s", SaveGamePath, token);
+                snprintf(saveGameName, sizeof(saveGameName), "%s/%s", SaveGamePath, ArgRet);
                 SetGameMode(GS_SAVEGAMELOAD);
                 break;
 
@@ -511,18 +554,16 @@ bool ParseCommandLine(int argc, const char **argv)
                     const char *ServerVictory = "Using %s as masterserver.\n";
                     char OutMsg[512];
 
-                    token = poptGetOptArg(poptCon);
-
-                    if (token == NULL)
+					if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                     {
                         puts("Bad lobby server IP or domain provided.");
                         return false;
                     }
 
-                    snprintf(OutMsg, 512, ServerVictory, token);
+                    snprintf(OutMsg, 512, ServerVictory, ArgRet);
                     debug(LOG_INFO, OutMsg);
 
-                    NETsetMasterserverName(token);
+                    NETsetMasterserverName(ArgRet);
                     break;
                 }
             case CLI_MASTERSERVER_PORT:
@@ -533,24 +574,20 @@ bool ParseCommandLine(int argc, const char **argv)
                      * -Subsentient*/
 
                     //Allow us to set the lobby server port as well.
-                    token = poptGetOptArg(poptCon);
-
-                    if (token == NULL)
+					if (!getArgumentParam(CurArg, argv[Inc], ArgRet))
                     {
                         puts("Bad lobby server port provided.");
                         return false;
                     }
 
-                    snprintf(OutMsg, 512, PortVictory, token);
+                    snprintf(OutMsg, 512, PortVictory, ArgRet);
                     debug(LOG_INFO, OutMsg);
 
-                    NETsetMasterserverPort(atoi(token));
+                    NETsetMasterserverPort(atoi(ArgRet));
                     break;
                 }
-        };
+        }
     }
-
-    poptFreeContext(poptCon);
 
     return true;
 }

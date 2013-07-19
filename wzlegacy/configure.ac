@@ -374,14 +374,6 @@ fi
 # check for nearbyint()
 AC_CHECK_LIB(m, nearbyint, [MATH_LIB=""], AC_MSG_ERROR([nearbyint not found.]))
 
-# When (cross-)compiling for Windows (MinGW) we need to link in iberty for Popt
-# and the Dr. MinGW derived exception handler.
-if test "x$host_os_mingw32" = "xyes" ; then
-    AC_CHECK_LIB(iberty, main, AC_SUBST([IBERTY_LIBS], [-liberty]), AC_MSG_ERROR([libiberty not found.]))
-
-    WIN32_LIBS="${WIN32_LIBS} ${IBERTY_LIBS}"
-fi
-
 # Look for X11 if required
 AC_TRY_COMPILE(, [
 #if   (defined(__OS2__) && !defined(__EMX__))
@@ -406,10 +398,6 @@ AS_IF([test "$enable_motif" != "no"],[
 			[AC_MSG_ERROR([Motif library not found])]))
 ])
 AM_CONDITIONAL([MOTIF_AVAILABLE], test -n "$MOTIF_LIBS")
-
-# Look for Popt
-AC_CHECK_HEADER(popt.h, , AC_MSG_ERROR([Popt header not found.]))
-AC_CHECK_LIB(popt, poptGetContext, AC_SUBST([POPT_LIBS], [-lpopt]), AC_MSG_ERROR([Popt not found.]), [${WIN32_LIBS}])
 
 # Look for PhysicsFS
 AC_CHECK_HEADER(physfs.h, , AC_MSG_ERROR([PhysicsFS header not found.]))
