@@ -2695,6 +2695,8 @@ static void processMultiopWidgets(UDWORD id)
     // these work all the time.
     switch(id)
     {
+		static short AddedSlots = 0; //For slot controls.
+		
         case MULTIOP_STRUCTLIMITS:
             changeTitleMode(MULTILIMIT);
             break;
@@ -2807,6 +2809,7 @@ static void processMultiopWidgets(UDWORD id)
 			if (game.maxPlayers < MAX_PLAYERS)
 			{
 				++game.maxPlayers;
+				++AddedSlots;
 				if (NetPlay.bComms)
 				{
 					sendOptions();
@@ -2833,9 +2836,10 @@ static void processMultiopWidgets(UDWORD id)
 		{
 			char tmpbuf[256];
 			
-			if (game.maxPlayers > 2)
+			if (AddedSlots != 0)
 			{
 				--game.maxPlayers;
+				--AddedSlots;
 				if (NetPlay.bComms)
 				{
 					sendOptions();
