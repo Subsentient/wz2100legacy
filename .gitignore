@@ -2,4 +2,5 @@
 /.project
 /wzlegacy_build/
 /wzlegacy/autom4te.cache
+/temp/
 utils/
