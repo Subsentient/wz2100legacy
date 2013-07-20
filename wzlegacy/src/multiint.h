@@ -176,12 +176,6 @@ void loadMapPreview(bool hideInterface);
 
 #define MULTIOP_SPEC_FORM 11116
 
-#define MULTIOP_SPEC_FORMY MROW8
-#define MULTIOP_SPEC_FORMX MULTIOP_SLOT_FORMX - 10
-
-#define MULTIOP_SPECOFFSET_X 3
-#define MULTIOP_SPECOFFSET_Y 2
-
 #define MULTIOP_SPECON 11114
 #define MULTIOP_SPECOFF 11115
 
@@ -197,6 +191,7 @@ void loadMapPreview(bool hideInterface);
 #define	MROW8					MROW7+31
 #define	MROW9					MROW8+31
 #define	MROW10					MROW9+31
+#define	MROW11					MROW10+31
 
 #define MCOL0					50
 #define MCOL1					(MCOL0+26+10)	// rem 10 for 4 lines.

@@ -21,6 +21,6 @@ extern void recvSpectateRequest(void);
 extern void SendSpectateRequest(void);
 extern void MakeToSpectator(uint8_t inPlayer);
 
-extern bool AllowSpectating;
+extern BOOL AllowSpectating;
 
 #endif //__SPECTATE_H__

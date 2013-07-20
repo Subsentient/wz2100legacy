@@ -93,7 +93,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "init.h"
 #include "levels.h"
-
+#include "spectate.h"
 #include "lib/libglc/GL/glc.h"
 
 #define MAP_PREVIEW_DISPLAY_TIME 10000	// number of milliseconds to show map in preview
@@ -1277,9 +1277,34 @@ static void addGameOptions(BOOL bRedo)
 		iV_GetImageHeight(FrontImages,IMAGE_MINUS_SYM),
 		_("Remove player slot from map"), IMAGE_MINUS_SYM, IMAGE_MINUS_SYM_HI, IMAGE_MINUS_SYM_HI);
 	}
+	
+	//Add buttons to enable and disable spectators for the game.
+	addBlueForm(MULTIOP_OPTIONS, MULTIOP_SPEC_FORM, _("Spectators"), MCOL0, MROW7, MULTIOP_BLUEFORMW, 27);
+	
+	addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECOFF,
+	MCOL1, 2,
+	iV_GetImageWidth(FrontImages,IMAGE_RETURN),
+	iV_GetImageHeight(FrontImages,IMAGE_RETURN),
+	_("Disable spectators"), IMAGE_SPECOFF, IMAGE_SPECOFF_HI, true);	
+	
+	addMultiBut(psWScreen,MULTIOP_SPEC_FORM,MULTIOP_SPECON,
+	MCOL2, 2,
+	iV_GetImageWidth(FrontImages,IMAGE_RETURN),
+	iV_GetImageHeight(FrontImages,IMAGE_RETURN),
+	_("Enable spectators"), IMAGE_SPECON, IMAGE_SPECON_HI, true);
+	
+	if (AllowSpectating)
+	{
+		widgSetButtonState(psWScreen, MULTIOP_SPECON,WBUT_LOCK);
+	}
+	
+	else
+	{
+		widgSetButtonState(psWScreen, MULTIOP_SPECOFF,WBUT_LOCK);
+	}
 
     // alliances
-    addBlueForm(MULTIOP_OPTIONS, MULTIOP_ALLIANCES, _("Alliances"), MCOL0, MROW7, MULTIOP_BLUEFORMW, 27);
+    addBlueForm(MULTIOP_OPTIONS, MULTIOP_ALLIANCES, _("Alliances"), MCOL0, MROW8, MULTIOP_BLUEFORMW, 27);
 
     addMultiBut(psWScreen,MULTIOP_ALLIANCES,MULTIOP_ALLIANCE_N,MCOL1,2,MULTIOP_BUTW,MULTIOP_BUTH,
                 _("No Alliances"),IMAGE_NOALLI,IMAGE_NOALLI_HI,true);
@@ -1312,7 +1337,7 @@ static void addGameOptions(BOOL bRedo)
             break;
     }
 
-    addBlueForm(MULTIOP_OPTIONS, MULTIOP_POWER, _("Power"), MCOL0, MROW8, MULTIOP_BLUEFORMW, 27);
+    addBlueForm(MULTIOP_OPTIONS, MULTIOP_POWER, _("Power"), MCOL0, MROW9, MULTIOP_BLUEFORMW, 27);
     addMultiBut(psWScreen,MULTIOP_POWER,MULTIOP_POWLEV_LOW,MCOL1,2,MULTIOP_BUTW,MULTIOP_BUTH,
                 _("Low Power Levels"),IMAGE_POWLO,IMAGE_POWLO_HI,true);
     addMultiBut(psWScreen,MULTIOP_POWER,MULTIOP_POWLEV_MED,MCOL2,2,MULTIOP_BUTW,MULTIOP_BUTH,
@@ -1350,7 +1375,7 @@ static void addGameOptions(BOOL bRedo)
         }
     }
 
-    addBlueForm(MULTIOP_OPTIONS, MULTIOP_BASETYPE, _("Base"), MCOL0, MROW9, MULTIOP_BLUEFORMW, 27);
+    addBlueForm(MULTIOP_OPTIONS, MULTIOP_BASETYPE, _("Base"), MCOL0, MROW10, MULTIOP_BLUEFORMW, 27);
     addMultiBut(psWScreen,MULTIOP_BASETYPE,MULTIOP_CLEAN,MCOL1,2,MULTIOP_BUTW,MULTIOP_BUTH,
                 _("Start with No Bases"), IMAGE_NOBASE,IMAGE_NOBASE_HI,true);
     addMultiBut(psWScreen,MULTIOP_BASETYPE,MULTIOP_BASE,MCOL2,2,MULTIOP_BUTW,MULTIOP_BUTH,
@@ -1388,7 +1413,7 @@ static void addGameOptions(BOOL bRedo)
             break;
     }
 
-    addBlueForm(MULTIOP_OPTIONS, MULTIOP_MAP_PREVIEW, _("Map Preview"), MCOL0, MROW10, MULTIOP_BLUEFORMW, 27);
+    addBlueForm(MULTIOP_OPTIONS, MULTIOP_MAP_PREVIEW, _("Map Preview"), MCOL0, MROW11, MULTIOP_BLUEFORMW, 27);
     addMultiBut(psWScreen,MULTIOP_MAP_PREVIEW, MULTIOP_MAP_BUT, MCOL2, 2, MULTIOP_BUTW, MULTIOP_BUTH,
                 _("Click to see Map"), IMAGE_FOG_OFF, IMAGE_FOG_OFF_HI, true);
     widgSetButtonState(psWScreen, MULTIOP_MAP_BUT,0); //1 = OFF  0=ON
@@ -2281,6 +2306,15 @@ static void disableMultiButs(void)
             widgSetButtonState(psWScreen,MULTIOP_FOG_ON ,WBUT_DISABLE);
         }
         
+		if(AllowSpectating)
+        {
+			widgSetButtonState(psWScreen,MULTIOP_SPECOFF ,WBUT_DISABLE);
+		}
+		else
+		{
+			widgSetButtonState(psWScreen,MULTIOP_SPECON ,WBUT_DISABLE);
+		} 
+        
         if(!game.scavengers)
         {
 			widgSetButtonState(psWScreen,MULTIOP_CAMPAIGN ,WBUT_DISABLE);
@@ -2773,7 +2807,10 @@ static void processMultiopWidgets(UDWORD id)
 			if (game.maxPlayers < MAX_PLAYERS)
 			{
 				++game.maxPlayers;
-				sendOptions();
+				if (NetPlay.bComms)
+				{
+					sendOptions();
+				}
 				addPlayerBox(true);
 				
 				ssprintf(tmpbuf, _("*** Slot added. Map now has %d slots. ***"), game.maxPlayers);
@@ -2799,7 +2836,10 @@ static void processMultiopWidgets(UDWORD id)
 			if (game.maxPlayers > 2)
 			{
 				--game.maxPlayers;
-				sendOptions();
+				if (NetPlay.bComms)
+				{
+					sendOptions();
+				}
 				addPlayerBox(true);
 				
 				ssprintf(tmpbuf, _("*** Slot removed. Map now has %d slots. ***"), game.maxPlayers);
@@ -2819,6 +2859,24 @@ static void processMultiopWidgets(UDWORD id)
 			}
 			break;
 		}
+		case MULTIOP_SPECOFF:
+			AllowSpectating = false;
+			widgSetButtonState(psWScreen, MULTIOP_SPECON,0);
+            widgSetButtonState(psWScreen, MULTIOP_SPECOFF,WBUT_LOCK);
+            if (NetPlay.bComms)
+            {
+				sendOptions();
+			}
+			break;
+		case MULTIOP_SPECON:
+			AllowSpectating = true;
+			widgSetButtonState(psWScreen, MULTIOP_SPECOFF,0);
+            widgSetButtonState(psWScreen, MULTIOP_SPECON,WBUT_LOCK);
+            if (NetPlay.bComms)
+            {
+				sendOptions();
+			}
+			break;
         case MULTIOP_MAP_BUT:
             loadMapPreview(true);
             break;

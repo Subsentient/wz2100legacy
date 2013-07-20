@@ -49,6 +49,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "aiexperience.h"	//for beacon messages
 #include "multiint.h"
 #include "multirecv.h"
+#include "spectate.h"
 #include <SDL.h>
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -72,6 +73,7 @@ void sendOptions()
     NETuint8_t(&game.maxPlayers);
     NETstring(game.name, 128);
     NETbool(&game.fog);
+    NETbool(&AllowSpectating);
     NETuint32_t(&game.power);
     NETuint8_t(&game.base);
     NETuint8_t(&game.alliance);
@@ -148,6 +150,7 @@ void recvOptions()
     NETuint8_t(&game.maxPlayers);
     NETstring(game.name, 128);
     NETbool(&game.fog);
+    NETbool(&AllowSpectating);
     NETuint32_t(&game.power);
     NETuint8_t(&game.base);
     NETuint8_t(&game.alliance);
