@@ -1209,9 +1209,9 @@ static void addGameOptions(BOOL bRedo)
     // game type
     addBlueForm(MULTIOP_OPTIONS,MULTIOP_GAMETYPE,_("Scavengers"),MCOL0,MROW5,MULTIOP_BLUEFORMW,27);
     addMultiBut(psWScreen, MULTIOP_GAMETYPE, MULTIOP_CAMPAIGN, MCOL1, 2, MULTIOP_BUTW, MULTIOP_BUTH, _("Scavengers"),
-                IMAGE_SCAVENGERS_ON, IMAGE_SCAVENGERS_ON_HI, true);
+                IMAGE_DARK_SCAV, IMAGE_HI_SCAV, true);
     addMultiBut(psWScreen, MULTIOP_GAMETYPE, MULTIOP_SKIRMISH, MCOL2, 2, MULTIOP_BUTW, MULTIOP_BUTH, _("No Scavengers"),
-                IMAGE_SCAVENGERS_OFF, IMAGE_SCAVENGERS_OFF_HI, true);
+                IMAGE_DARK_NOSCAV, IMAGE_HI_NOSCAV, true);
 
     widgSetButtonState(psWScreen, MULTIOP_CAMPAIGN,	0);
     widgSetButtonState(psWScreen, MULTIOP_SKIRMISH,	0);
@@ -1256,6 +1256,27 @@ static void addGameOptions(BOOL bRedo)
     {
         widgSetButtonState(psWScreen, MULTIOP_FOG_OFF,WBUT_LOCK);
     }
+    
+    //Slot controls
+	if (bHosted && !challengeActive) //Only show these when we host. -Subsentient
+	{
+		// Add blue box form for our slot adding and deleting buttons. -Subsentient
+		addBlueForm(MULTIOP_OPTIONS, MULTIOP_SLOT_FORM, "", MULTIOP_SLOT_FORMX, MULTIOP_SLOT_FORMY, 30, 56);
+		
+		// Add slot button
+		addMultiBut(psWScreen,MULTIOP_SLOT_FORM,MULTIOP_ADDSLOT,
+		MULTIOP_SLOTOFFSET_X, MULTIOP_SLOTOFFSET_Y,
+		iV_GetImageWidth(FrontImages,IMAGE_PLUS_SYM),
+		iV_GetImageHeight(FrontImages,IMAGE_PLUS_SYM),
+		_("Add player slot to map"), IMAGE_PLUS_SYM, IMAGE_PLUS_SYM_HI, IMAGE_PLUS_SYM_HI);
+		
+		// Remove slot button
+		addMultiBut(psWScreen,MULTIOP_SLOT_FORM,MULTIOP_REMSLOT,
+		MULTIOP_SLOTOFFSET_X, MULTIOP_SLOTOFFSET_Y + 24,
+		iV_GetImageWidth(FrontImages,IMAGE_MINUS_SYM),
+		iV_GetImageHeight(FrontImages,IMAGE_MINUS_SYM),
+		_("Remove player slot from map"), IMAGE_MINUS_SYM, IMAGE_MINUS_SYM_HI, IMAGE_MINUS_SYM_HI);
+	}
 
     // alliances
     addBlueForm(MULTIOP_OPTIONS, MULTIOP_ALLIANCES, _("Alliances"), MCOL0, MROW7, MULTIOP_BLUEFORMW, 27);
@@ -2745,6 +2766,59 @@ static void processMultiopWidgets(UDWORD id)
                 changeTitleMode(TITLE);
             }
             break;
+		case MULTIOP_ADDSLOT:
+		{
+			char tmpbuf[256];
+						
+			if (game.maxPlayers < MAX_PLAYERS)
+			{
+				++game.maxPlayers;
+				sendOptions();
+				addPlayerBox(true);
+				
+				ssprintf(tmpbuf, _("*** Slot added. Map now has %d slots. ***"), game.maxPlayers);
+				sendTextMessage(tmpbuf, true);
+				
+				/*Re-register with lobby server.*/
+				if (bHosted && NetPlay.bComms)
+				{
+					NETregisterServer(0);
+					NETregisterServer(1);
+				}
+			}
+			else
+			{
+				addConsoleMessage(_("Cannot add player slot. Too many slots?"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+			}
+			break;
+		}
+		case MULTIOP_REMSLOT:
+		{
+			char tmpbuf[256];
+			
+			if (game.maxPlayers > 2)
+			{
+				--game.maxPlayers;
+				sendOptions();
+				addPlayerBox(true);
+				
+				ssprintf(tmpbuf, _("*** Slot removed. Map now has %d slots. ***"), game.maxPlayers);
+				sendTextMessage(tmpbuf, true);
+				debug(LOG_INFO, "WARNING: Slot removal is currently buggy. Use at the risk of needing to rehost.");
+				
+				/*Re-register with lobby server.*/
+				if (bHosted && NetPlay.bComms)
+				{
+					NETregisterServer(0);
+					NETregisterServer(1);
+				}
+			}
+			else
+			{
+				addConsoleMessage(_("Cannot remove player slot. Too few slots."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+			}
+			break;
+		}
         case MULTIOP_MAP_BUT:
             loadMapPreview(true);
             break;

@@ -3446,6 +3446,7 @@ void NETregisterServer(int state)
                     gamestruct.gameId = ntohl(gameId);
                     debug(LOG_NET, "Using game ID: %u", (unsigned int)gamestruct.gameId);
 
+					gamestruct.desc.dwMaxPlayers = game.maxPlayers; //Allow updating the player count.
                     // Register our game with the server for all available address families
                     for (i = 0; i < ARRAY_SIZE(rs_socket); ++i)
                     {
@@ -3859,7 +3860,7 @@ BOOL NEThostGame(const char *SessionName, const char *PlayerName,
     //gamestruct.desc.guidApplication = GAME_GUID;
     memset(gamestruct.desc.host, 0, sizeof(gamestruct.desc.host));
     gamestruct.desc.dwCurrentPlayers = 1;
-    gamestruct.desc.dwMaxPlayers = plyrs;
+    gamestruct.desc.dwMaxPlayers = NetPlay.maxPlayers;
     gamestruct.desc.dwFlags = 0;
     gamestruct.desc.dwUserFlags[0] = one;
     gamestruct.desc.dwUserFlags[1] = two;
