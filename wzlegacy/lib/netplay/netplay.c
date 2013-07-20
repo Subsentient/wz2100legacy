@@ -3860,7 +3860,7 @@ BOOL NEThostGame(const char *SessionName, const char *PlayerName,
     //gamestruct.desc.guidApplication = GAME_GUID;
     memset(gamestruct.desc.host, 0, sizeof(gamestruct.desc.host));
     gamestruct.desc.dwCurrentPlayers = 1;
-    gamestruct.desc.dwMaxPlayers = NetPlay.maxPlayers;
+    gamestruct.desc.dwMaxPlayers = plyrs;
     gamestruct.desc.dwFlags = 0;
     gamestruct.desc.dwUserFlags[0] = one;
     gamestruct.desc.dwUserFlags[1] = two;
