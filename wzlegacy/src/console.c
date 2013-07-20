@@ -433,6 +433,10 @@ void setConsoleTextColor(SDWORD player)
     {
         iV_SetTextColour(WZCOL_YELLOW);
     }
+    else if (player == CMD_MESSAGE)
+    {
+		iV_SetTextColour(WZCOL_GREEN);
+	}
     else
     {
         // Don't use friend-foe colors in the lobby

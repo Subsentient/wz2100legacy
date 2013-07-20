@@ -48,6 +48,7 @@ typedef struct _console
 /* ID to use for addConsoleMessage() in case of a system message */
 #define	SYSTEM_MESSAGE				(-1)
 #define NOTIFY_MESSAGE				(-2)		// mainly used for lobby messages
+#define CMD_MESSAGE					(-3)		// Used for console command system.
 
 /* Definition of a message */
 typedef struct	_console_message

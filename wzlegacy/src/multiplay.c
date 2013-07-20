@@ -1153,7 +1153,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		const char *Format[2] = { " [%s ... ] ", " [%s] " };
 		short FormatNum;
 		
-		addConsoleMessage(_("The following console commands are available: "), DEFAULT_JUSTIFY, selectedPlayer);
+		addConsoleMessage(_("The following console commands are available: "), DEFAULT_JUSTIFY, CMD_MESSAGE);
 		
 		for (Inc = Counter = ConsoleOut[0] = 0; AvailableCommands[Inc].CmdName != NULL; ++Inc)
 		{
@@ -1177,14 +1177,14 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 			if (Counter == 7 || AvailableCommands[Inc + 1].CmdName == NULL)
 			{
-				addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, selectedPlayer);
+				addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, CMD_MESSAGE);
 				ConsoleOut[0] = '\0';
 				Counter = 0;
 			}
 			
 		}
 		
-		addConsoleMessage(_("Items followed by periods expect a parameter."), DEFAULT_JUSTIFY, selectedPlayer);
+		addConsoleMessage(_("Items followed by periods expect a parameter."), DEFAULT_JUSTIFY, CMD_MESSAGE);
 				
 		return 1;
 	}
@@ -1224,7 +1224,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 			if (!isdigit(InBuffer[0]))
 			{
-				addConsoleMessage(_("Please enter a player number to kick."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("Please enter a player number to kick."), LEFT_JUSTIFY, CMD_MESSAGE);
 				return 1;
 			}
 
@@ -1232,19 +1232,19 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			
 			if (PlayerToKick >= MAX_PLAYERS || PlayerToKick < 0) 
 			{
-				addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, CMD_MESSAGE);
 				return 1;
 			}
 			
 			if (PlayerToKick == selectedPlayer)
 			{ /*Uhh, can't kick ourselves.*/
-				addConsoleMessage(_("You cannot kick yourself."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("You cannot kick yourself."), LEFT_JUSTIFY, CMD_MESSAGE);
 				return 1;
 			}
 			
 			if (!NetPlay.bComms && bMultiPlayer && !isHumanPlayer(PlayerToKick))
 			{
-				addConsoleMessage(_("You cannot kick AIs in a skirmish."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+				addConsoleMessage(_("You cannot kick AIs in a skirmish."), LEFT_JUSTIFY, CMD_MESSAGE);
 				return 1;
 			}
 			
@@ -1256,7 +1256,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		}
 		else
 		{
-			addConsoleMessage(_("You are not the host."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("You are not the host."), LEFT_JUSTIFY, CMD_MESSAGE);
 		}
 		
 		return 1;
@@ -1270,7 +1270,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		
 		if (!isdigit(InBuffer[0]))
 		{
-			addConsoleMessage(_("Please enter a player number to beep."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("Please enter a player number to beep."), LEFT_JUSTIFY, CMD_MESSAGE);
 			return 1;
 		}
 			
@@ -1278,25 +1278,25 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		
 		if (PlayerToBeep >= MAX_PLAYERS) 
 		{
-			addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, CMD_MESSAGE);
 			return 1;
 		}
 		
 		if (PlayerToBeep == selectedPlayer)
 		{
-			addConsoleMessage(_("You cannot beep yourself."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("You cannot beep yourself."), LEFT_JUSTIFY, CMD_MESSAGE);
 			return 1;
 		}
 		
 		if (!isHumanPlayer(PlayerToBeep))
 		{
-			addConsoleMessage(_("You can only beep human players."), LEFT_JUSTIFY, SYSTEM_MESSAGE);
+			addConsoleMessage(_("You can only beep human players."), LEFT_JUSTIFY, CMD_MESSAGE);
 			return 1;
 		}
 		
 		snprintf(ConsoleOut, MAX_CONSOLE_STRING_LENGTH, PageFormat, NetPlay.players[PlayerToBeep].name);
 		
-		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, CMD_MESSAGE);
 		
 		NETbeginEncode(NET_PAGEPLAYER, PlayerToBeep);
 		NETuint32_t(&PlayerToBeep);
@@ -1319,7 +1319,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		}
 		
 		ConsoleOut[strlen(ConsoleOut) - 2] = '.'; //Remove trailing semicolon, replace with period.
-		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, CMD_MESSAGE);
 		
 		return 1;
 	}
