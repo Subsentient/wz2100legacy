@@ -667,7 +667,7 @@ static void addGames(void)
                 /*Set up our tooltip.*/
                 ssprintf(tooltipbuffer[i], "Map: %s - Game: %s - Host: %s - IP: %s - Version: %s",
                          NetPlay.games[i].mapname, NetPlay.games[i].name, NetPlay.games[i].hostname,
-                         NetPlay.games[gameNumber].desc.host, NetPlay.games[i].versionstring);
+                         NetPlay.games[i].desc.host, NetPlay.games[i].versionstring);
 
                 if (!NETgameIsCorrectVersion(&NetPlay.games[i]))
                 {
