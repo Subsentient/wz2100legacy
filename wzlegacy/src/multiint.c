@@ -2450,10 +2450,35 @@ static void processMultiopWidgets(UDWORD id)
                 break;
 
             case MULTIOP_MAP:
-				sstrcpy(game.map,widgGetString(psWScreen, MULTIOP_MAP));
-				loadMapPreview(false);
+			{ //We do some funky to get the number of players for the map entered.
+				LEVEL_DATASET *TLev;
+				bool FoundMap = 0;
+				const char *NewMap = widgGetString(psWScreen, MULTIOP_MAP);
+				
+				for (TLev = psLevels; TLev; TLev = TLev->psNext)
+				{
+					if (!strcmp(NewMap, TLev->pName))
+					{
+						FoundMap = 1;
+						break;
+					}
+				}
+				
+				if (FoundMap)
+				{
+					sstrcpy(game.map, NewMap);
+					current_numplayers = game.maxPlayers = TLev->players;
+					loadMapPreview(false);
+				}
+				else
+				{
+					widgSetString(psWScreen, MULTIOP_MAP, game.map);
+					addConsoleMessage("Bad map name.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+				}
+				
                 break;
-
+			}
+			
             case MULTIOP_GNAME_ICON:
                 break;
 
@@ -2464,8 +2489,6 @@ static void processMultiopWidgets(UDWORD id)
                 debug(LOG_WZ, "processMultiopWidgets[MULTIOP_MAP_ICON]: %s.wrf", MultiCustomMapsPath);
                 addMultiRequest(MultiCustomMapsPath, ".wrf", MULTIOP_MAP, current_tech, current_numplayers);
                 break;
-
-
 
             case MULTIOP_MAP_BUT:
                 loadMapPreview(true);
