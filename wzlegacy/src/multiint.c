@@ -2477,6 +2477,10 @@ static void processMultiopWidgets(UDWORD id)
 					widgSetString(psWScreen, MULTIOP_MAP, TLev->pName);
 					current_numplayers = game.maxPlayers = TLev->players;
 					loadMapPreview(false);
+					if (bHosted)
+					{
+						addPlayerBox(true);
+					}
 				}
 				else
 				{
