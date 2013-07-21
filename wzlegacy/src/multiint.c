@@ -3405,6 +3405,7 @@ void runMultiOptions(void)
     int OldMap_PlayMax;
     KEY_CODE		k;
     char			str[3];
+    bool ReturnPressed;
 
     frontendMultiMessages();
 
@@ -3458,7 +3459,7 @@ void runMultiOptions(void)
 
     // if typing and not in an edit box then jump to chat box.
     k = getQwertyKey();
-    if(	k && psWScreen->psFocus == NULL)
+    if(	( (k || (ReturnPressed = keyPressed(KEY_RETURN))) && psWScreen->psFocus == NULL))
     {
         context.psScreen	= psWScreen;
         context.psForm		= (W_FORM *)psWScreen->psForm;
@@ -3467,10 +3468,16 @@ void runMultiOptions(void)
         context.mx			= mouseX();
         context.my			= mouseY();
 
-        keyScanToString(k,(char *)&str,3);
+		if (!ReturnPressed)
+		{
+			keyScanToString(k,(char *)&str,3);
+		}
         if(widgGetFromID(psWScreen,MULTIOP_CHATEDIT))
         {
-            widgSetString(psWScreen, MULTIOP_CHATEDIT, (char *)&str);	// start it up!
+            if (!ReturnPressed)
+            {
+				widgSetString(psWScreen, MULTIOP_CHATEDIT, (char *)&str);	// start it up!
+			}
             editBoxClicked((W_EDITBOX *)widgGetFromID(psWScreen,MULTIOP_CHATEDIT), &context);
         }
     }
