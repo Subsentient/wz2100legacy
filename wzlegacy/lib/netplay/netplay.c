@@ -200,7 +200,7 @@ NETPLAY	NetPlay;
 PLAYER_IP	*IPlist = NULL;
 static BOOL		allow_joining = false;
 static	bool server_not_there = false;
-static GAMESTRUCT	gamestruct;
+GAMESTRUCT	gamestruct;
 
 // update flags
 bool netPlayersUpdated;

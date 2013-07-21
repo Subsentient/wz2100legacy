@@ -300,6 +300,7 @@ extern NETPLAY				NetPlay;
 extern NETMSG NetMsg;
 extern SYNC_COUNTER sync_counter;
 extern PLAYER_IP	*IPlist;
+extern GAMESTRUCT gamestruct;
 // update flags
 extern bool netPlayersUpdated;
 extern int mapDownloadProgress;

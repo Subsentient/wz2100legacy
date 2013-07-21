@@ -1201,8 +1201,8 @@ static void addGameOptions(BOOL bRedo)
     // disable for one-player skirmish
     if (!NetPlay.bComms)
     {
-        widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
-        widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_DISABLE);
+        widgDelete(psWScreen, MULTIOP_PASSWORD_EDIT);
+        widgDelete(psWScreen, MULTIOP_PASSWORD_BUT);
     }
     // buttons.
 
@@ -2273,11 +2273,6 @@ static void addChatBox(void)
 // ////////////////////////////////////////////////////////////////////////////
 static void disableMultiButs(void)
 {
-
-    // edit box icons.
-    widgSetButtonState(psWScreen, MULTIOP_GNAME_ICON, WBUT_DISABLE);
-    widgSetButtonState(psWScreen, MULTIOP_MAP_ICON, WBUT_DISABLE);
-    
     if (NetPlay.GamePassworded)
     {
         // force the state down if a locked game
@@ -2286,17 +2281,11 @@ static void disableMultiButs(void)
     }
     
     if (!NetPlay.isHost)
-    { /*Don't let clients think that they can change the password if not the host.*/
-		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_DISABLE);
-		widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
-	}
-
-    // edit boxes
-    widgSetButtonState(psWScreen,MULTIOP_GNAME,WEDBS_DISABLE);
-    widgSetButtonState(psWScreen,MULTIOP_MAP,WEDBS_DISABLE);
-
-    if (!NetPlay.isHost)
     {
+		/*Don't let clients think that they can change the password if not the host.*/
+		widgDelete(psWScreen, MULTIOP_PASSWORD_BUT);
+		widgDelete(psWScreen, MULTIOP_PASSWORD_EDIT);
+		
         if( game.fog)
         {
             widgSetButtonState(psWScreen,MULTIOP_FOG_OFF ,WBUT_DISABLE);    //fog
@@ -2362,6 +2351,12 @@ static void disableMultiButs(void)
         {
             widgSetButtonState(psWScreen,MULTIOP_ALLIANCE_TEAMS ,WBUT_DISABLE);
         }
+        
+		widgSetButtonState(psWScreen, MULTIOP_GNAME_ICON, WBUT_DISABLE);
+		widgSetButtonState(psWScreen, MULTIOP_MAP_ICON, WBUT_DISABLE);
+		
+		widgSetButtonState(psWScreen,MULTIOP_GNAME,WEDBS_DISABLE);
+		widgSetButtonState(psWScreen,MULTIOP_MAP,WEDBS_DISABLE);
     }
 }
 
@@ -2439,17 +2434,12 @@ static void processMultiopWidgets(UDWORD id)
 {
     PLAYERSTATS playerStats;
 
-    // host, who is setting up the game
-    if((ingame.bHostSetup && !bHosted))
+    // host who is setting up or has hosted
+    if(ingame.bHostSetup)// || NetPlay.isHost) // FIXME Was: if(ingame.bHostSetup);{} ??? Note the ; !
     {
-        switch(id)												// Options buttons
+        switch(id)
         {
-
-            case MULTIOP_GNAME:										// we get this when nec.
-                sstrcpy(game.name,widgGetString(psWScreen, MULTIOP_GNAME));
-                break;
-
-            case MULTIOP_MAP:
+			case MULTIOP_MAP:
 			{ //We do some funky to get the number of players for the map entered.
 				LEVEL_DATASET *TLev;
 				bool FoundMap = 0;
@@ -2473,34 +2463,56 @@ static void processMultiopWidgets(UDWORD id)
 				else
 				{
 					widgSetString(psWScreen, MULTIOP_MAP, game.map);
-					addConsoleMessage("Bad map name.", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+					addConsoleMessage(_("Bad map name."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 				}
 				
-                break;
+				if (NetPlay.bComms)
+				{
+					sendOptions();
+					
+					sstrcpy(gamestruct.mapname, game.map);
+					NETregisterServer(0);
+					NETregisterServer(1);
+				}
+				
+				break;
 			}
 			
-            case MULTIOP_GNAME_ICON:
+			case MULTIOP_MAP_BUT:
+				if (bHosted)
+				{
+					loadMapPreview(false);
+				}
+				else
+				{
+					loadMapPreview(true);
+				}
                 break;
-
-            case MULTIOP_MAP_ICON:
+                
+			case MULTIOP_MAP_ICON:
                 widgDelete(psWScreen,MULTIOP_PLAYERS);
                 widgDelete(psWScreen,FRONTEND_SIDETEXT2);					// del text too,
 
                 debug(LOG_WZ, "processMultiopWidgets[MULTIOP_MAP_ICON]: %s.wrf", MultiCustomMapsPath);
                 addMultiRequest(MultiCustomMapsPath, ".wrf", MULTIOP_MAP, current_tech, current_numplayers);
                 break;
-
-            case MULTIOP_MAP_BUT:
-                loadMapPreview(true);
+                
+            case MULTIOP_GNAME:										// we get this when nec.
+                sstrcpy(game.name,widgGetString(psWScreen, MULTIOP_GNAME));
+                
+                if (NetPlay.bComms)
+                {
+					sendOptions();
+					
+					sstrcpy(gamestruct.name, game.name);
+					NETregisterServer(0);
+					NETregisterServer(1);
+					
+					addConsoleMessage(_("Game Name Updated."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+				}
+				
                 break;
-        }
-    }
-
-    // host who is setting up or has hosted
-    if(ingame.bHostSetup)// || NetPlay.isHost) // FIXME Was: if(ingame.bHostSetup);{} ??? Note the ; !
-    {
-        switch(id)
-        {
+			
             case MULTIOP_CAMPAIGN:									// turn on campaign game
                 widgSetButtonState(psWScreen, MULTIOP_CAMPAIGN, WBUT_LOCK);
                 widgSetButtonState(psWScreen, MULTIOP_SKIRMISH,0);
@@ -2712,6 +2724,8 @@ static void processMultiopWidgets(UDWORD id)
 				break;
 
 			}
+			case MULTIOP_GNAME_ICON:
+				break;
         }
     }
 
@@ -2746,6 +2760,15 @@ static void processMultiopWidgets(UDWORD id)
             setMultiStats(selectedPlayer,playerStats,false);
             setMultiStats(selectedPlayer,playerStats,true);
             netPlayersUpdated = true;
+            
+            if (bHosted && NetPlay.bComms)
+            {
+				sendOptions();
+					
+				sstrcpy(gamestruct.hostname, NetPlay.players[selectedPlayer].name);
+				NETregisterServer(0);
+				NETregisterServer(1);
+			}
             break;
 
         case MULTIOP_PNAME_ICON:
@@ -3486,6 +3509,15 @@ void runMultiOptions(void)
                     setMultiStats(selectedPlayer,playerStats,false);
                     setMultiStats(selectedPlayer,playerStats,true);
                     netPlayersUpdated = true;
+                    
+                    if (bHosted && NetPlay.bComms)
+                    {
+	                    sendOptions();
+						
+						sstrcpy(gamestruct.hostname, NetPlay.players[selectedPlayer].name);
+						NETregisterServer(0);
+						NETregisterServer(1);
+					}
                     break;
                 case MULTIOP_MAP:
                     {
@@ -3493,7 +3525,15 @@ void runMultiOptions(void)
                         OldMap_PlayMax = game.maxPlayers;
                         sstrcpy(game.map, sTemp);
                         game.maxPlayers = (UBYTE)value;
-                        loadMapPreview(!IsHoverPreview);
+                        
+                        if (!bHosted)
+                        {
+							loadMapPreview(!IsHoverPreview);
+						}
+						else
+						{
+							loadMapPreview(false);
+						}
 
                         if (IsHoverPreview)
                         {
@@ -3503,6 +3543,15 @@ void runMultiOptions(void)
 
                         widgSetString(psWScreen,MULTIOP_MAP,sTemp);
                         addGameOptions(false);
+                        
+                        if (bHosted && NetPlay.bComms && !IsHoverPreview)
+                        {
+							sendOptions();
+								
+							sstrcpy(gamestruct.mapname, game.map);
+							NETregisterServer(0);
+							NETregisterServer(1);
+						}
                         break;
                     }
                 default:
