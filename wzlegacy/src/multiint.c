@@ -2443,9 +2443,21 @@ static void processMultiopWidgets(UDWORD id)
 			{ //We do some funky to get the number of players for the map entered.
 				LEVEL_DATASET *TLev;
 				bool FoundMap = 0;
-				const char *NewMap = widgGetString(psWScreen, MULTIOP_MAP);
+				char NewMap[1024];
 				char LowerMap[2][1024];
 				unsigned long Inc;
+							
+				strncpy(NewMap, widgGetString(psWScreen, MULTIOP_MAP), 1024);
+				
+				if (strlen(NewMap) >= 1000) //~1K is too close.
+				{ //Whoa, you got a map that has a thousand-character name? No.
+					addConsoleMessage(_("Map name too long."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+				}
+				
+				if (!strstr(NewMap, "-T") && !strstr(NewMap, "-t")) //No tech level? Assume T1.
+				{
+					strcat(NewMap, "-T1");
+				}
 				
 				for (TLev = psLevels; TLev; TLev = TLev->psNext)
 				{
