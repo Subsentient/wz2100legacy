@@ -2444,10 +2444,27 @@ static void processMultiopWidgets(UDWORD id)
 				LEVEL_DATASET *TLev;
 				bool FoundMap = 0;
 				const char *NewMap = widgGetString(psWScreen, MULTIOP_MAP);
+				char LowerMap[2][1024];
+				unsigned long Inc;
 				
 				for (TLev = psLevels; TLev; TLev = TLev->psNext)
 				{
-					if (!strcmp(NewMap, TLev->pName))
+					/*Convert our value to lower case.*/
+					for (Inc = 0; NewMap[Inc] != '\0'; ++Inc)
+					{
+						LowerMap[0][Inc] = tolower(NewMap[Inc]);
+					}
+					LowerMap[0][Inc] = '\0';
+					
+					/*Convert the current map being scanned too.*/
+					for (Inc = 0; TLev->pName[Inc] != '\0'; ++Inc)
+					{
+						LowerMap[1][Inc] = tolower(TLev->pName[Inc]);
+					}
+					LowerMap[1][Inc] = '\0';
+					
+					/*Check them in Lower Case.*/
+					if (!strcmp(LowerMap[0], LowerMap[1]))
 					{
 						FoundMap = 1;
 						break;
@@ -2456,7 +2473,8 @@ static void processMultiopWidgets(UDWORD id)
 				
 				if (FoundMap)
 				{
-					sstrcpy(game.map, NewMap);
+					sstrcpy(game.map, TLev->pName);
+					widgSetString(psWScreen, MULTIOP_MAP, TLev->pName);
 					current_numplayers = game.maxPlayers = TLev->players;
 					loadMapPreview(false);
 				}
