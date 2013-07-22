@@ -26,7 +26,7 @@ cleanup() {
 branch="$1"
 if [ "$branch" == "" ]; then
 	echo "No git branch was specified; changing to default, 'microwave_rebase'."
-	branch="microwave_rebase"
+	branch="microwave"
 fi
 
 # git stuff
