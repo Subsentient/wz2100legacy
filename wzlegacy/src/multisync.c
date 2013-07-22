@@ -61,6 +61,8 @@ static void highLevelDroidUpdate(DROID *psDroid,
 								 float fy,
 								 UDWORD state,
 								 UDWORD order,
+								 UDWORD action,
+								 UDWORD movestatus,
 								 BASE_OBJECT *psTarget,
 								 float experience);
 
@@ -325,6 +327,8 @@ static void packageCheck(const DROID* pD)
 	uint8_t player = pD->player;
 	uint32_t droidID = pD->id;
 	int32_t order = pD->order;
+	int32_t action = pD->action;
+	int32_t movestatus = pD->sMove.Status;
 	uint32_t secondaryOrder = pD->secondaryOrder;
 	uint32_t body = pD->body;
 	float direction = pD->direction;
@@ -341,6 +345,9 @@ static void packageCheck(const DROID* pD)
 	// The droid's order
 	NETint32_t(&order);
 
+	// What the droid is doing
+	NETint32_t(&action);
+	
 	// The droids secondary order
 	NETuint32_t(&secondaryOrder);
 
@@ -349,6 +356,9 @@ static void packageCheck(const DROID* pD)
 
 	// Direction it is going in
 	NETfloat(&direction);
+	
+	// How it's moving, if at all. Fixes wiggly truck syndrome.
+	NETint32_t(&movestatus);
 
 	NETfloat(&sMoveX);
 	NETfloat(&sMoveY);
@@ -394,9 +404,11 @@ BOOL recvDroidCheck()
 			BASE_OBJECT	*psTarget = NULL;
 			float		fx = 0, fy = 0;
 			DROID_ORDER	order = DORDER_NONE;
+			DROID_ACTION action = 400;
 			BOOL		onscreen;
 			uint8_t		player;
 			float		direction, experience;
+			int32_t		movestatus;
 			uint16_t	tx, ty;
 			uint32_t	ref, body, target = 0, secondaryOrder;
 
@@ -408,6 +420,9 @@ BOOL recvDroidCheck()
 
 			// The droid's order
 			NETenum(&order);
+			
+			// What the droid is doing
+			NETenum(&action);
 
 			// Secondary order
 			NETuint32_t(&secondaryOrder);
@@ -417,13 +432,17 @@ BOOL recvDroidCheck()
 
 			// Direction
 			NETfloat(&direction);
+			
+			// What mode it's moving as.
+			NETint32_t(&movestatus);
 
 			// Fractional move
 			NETfloat(&fx);
 			NETfloat(&fy);
 
 			// Find out what the droid is aiming at
-			if(order!=DORDER_NONE){
+			if(order!=DORDER_NONE)
+			{
 				if (validOrderForObj(order))
 				{
 					NETuint32_t(&target);
@@ -472,21 +491,9 @@ BOOL recvDroidCheck()
 				onscreen = false;
 			}
 
-			// Update the droid
-			//if (onscreen || isVtolDroid(pD)) 
-			//{ 
 			DroidScreenUpdate(pD, body, fx, fy, direction, order, onscreen); 
-			//} else
-			//{ 
-			//	DroidScreenUpdate(pD, body, fx, fy, direction, order, false);
-			//}
 
-//			debug(LOG_SYNC, "difference in position for droid %d; was (%g, %g); did %s update", (int)pD->id, 
-//			      fx - pD->sMove.fx, fy - pD->sMove.fy, onscreen ? "onscreen" : "offscreen");
-
-			// Update the higher level stuff
-
-			highLevelDroidUpdate(pD, tx, ty, secondaryOrder, order, psTarget, experience);
+			highLevelDroidUpdate(pD, tx, ty, secondaryOrder, order, action, movestatus, psTarget, experience);
 
 			// ...and repeat!
 		}
@@ -501,13 +508,27 @@ BOOL recvDroidCheck()
 // ////////////////////////////////////////////////////////////////////////////
 // higher order droid updating. Works mainly at the order level. comes after the main sync.
 static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
-								 UDWORD state, UDWORD order,
+								 UDWORD state, UDWORD order, UDWORD action, UDWORD movestatus,
 								 BASE_OBJECT *psTarget,float experience)
 {
 	// update kill rating.
 	psDroid->experience = experience;
 
 	turnOffMultiMsg(true);
+	
+	if (action != 400 && psDroid->action != action && psTarget) //Action is initialized to 400 because it's not an action.
+	{ /*Synchronize droid's action too.*/
+		psDroid->action = action;
+	}
+	
+	/*Synchronize the move mode.*/
+	if (psDroid->sMove.Status != movestatus)
+	{
+		psDroid->sMove.Status = movestatus;
+	}
+	
+	/*Fix for infinitely shuffley droids*/
+	
 	if(order != DORDER_NONE && psTarget) //psTarget is important.
 	{
 		if (validOrderForObj(order))
@@ -515,8 +536,8 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 			if(psTarget!=0)
 			{
 				if(psDroid->order != order && psDroid->psTarget != psTarget)
-				{
-					orderDroidObj(psDroid, order, psTarget);
+				{					
+					orderDroidObj(psDroid, order, psTarget); //Set up the right one.
 				}
 			}
 		}
@@ -524,6 +545,8 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 		{
 			if(psDroid->order != order && psDroid->orderX != tx && psDroid->orderY != ty)
 			{
+				psDroid->order = DORDER_NONE;
+				
 				orderDroidLoc(psDroid, order, tx, ty);
 			}
 		}
@@ -536,6 +559,7 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 		}
 	}
 	psDroid->secondaryOrder = state;
+		
 	turnOffMultiMsg(false);
 }
 
@@ -559,20 +583,19 @@ static void DroidScreenUpdate(DROID *psDroid,
 
 	oldX			= psDroid->pos.x;
 	oldY			= psDroid->pos.y;
-	if(	!onScreen 
-		||(
-			(fabs(fx - psDroid->sMove.fx)>(TILE_UNITS*2))		// if more than 1 tiles wrong.
-		   	||(fabs(fy - psDroid->sMove.fy)>(TILE_UNITS*2)) 
-		)
-	)
-	{
-		psDroid->pos.x		= fx;				// update x
-		psDroid->pos.y		= fy;				// update y
+	
+	if(!onScreen || fabs(fx - psDroid->sMove.fx > TILE_UNITS) || fabs(fy - psDroid->sMove.fy)>(TILE_UNITS))
+	{ /*If we are not on the screen, or on the wrong tile, fix it.*/
+		psDroid->pos.x = fx;
+		psDroid->pos.y = fy;
 		psDroid->sMove.fx	= fx;
 		psDroid->sMove.fy	= fy;
-		psDroid->direction	= dir % 360;			// update rotation
 	}
+	
+	/*Synchronize these always*/
 	psDroid->body		= dam;								// update damage
+	psDroid->direction	= dir % 360;			// update rotation
+	
 	if (oldX != psDroid->pos.x || oldY != psDroid->pos.y)
 	{
 		gridMoveDroid(psDroid, oldX, oldY);
@@ -580,6 +603,7 @@ static void DroidScreenUpdate(DROID *psDroid,
 
 	// snap droid(if on ground)  to terrain level at x,y.
 	psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
+	
 	ASSERT( psPropStats != NULL, "DroidScreenUpdate: invalid propulsion stats pointer" );
 	if(	psPropStats->propulsionType != PROPULSION_TYPE_LIFT )		// if not airborne.
 	{
