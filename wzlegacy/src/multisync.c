@@ -584,7 +584,7 @@ static void DroidScreenUpdate(DROID *psDroid,
 	oldX			= psDroid->pos.x;
 	oldY			= psDroid->pos.y;
 	
-	if(!onScreen || fabs(fx - psDroid->sMove.fx > TILE_UNITS) || fabs(fy - psDroid->sMove.fy)>(TILE_UNITS))
+	if(!onScreen || fabs(fx - psDroid->sMove.fx) > TILE_UNITS || fabs(fy - psDroid->sMove.fy) > TILE_UNITS)
 	{ /*If we are not on the screen, or on the wrong tile, fix it.*/
 		psDroid->pos.x = fx;
 		psDroid->pos.y = fy;
