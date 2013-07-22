@@ -1,5 +1,5 @@
 AC_PREREQ([2.56])
-AC_INIT([Warzone 2100 Legacy],[microwave_rebase],[http://warzonelegacy.org/],[wz2100legacy])
+AC_INIT([Warzone 2100 Legacy],[microwave_popping],[http://warzonelegacy.org/],[wz2100legacy])
 
 AM_INIT_AUTOMAKE([1.10 tar-ustar])
 
