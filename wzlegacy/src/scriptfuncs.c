@@ -11706,6 +11706,43 @@ BOOL scrGetBodySize(void)
     return true;
 }
 
+/*Request that we become a spectator.*/
+BOOL scrInitSpectate(void)
+{
+	SendSpectateRequest();
+	
+	return true;
+}
+
+BOOL scrSpectatorsEnabled(void)
+{
+	scrFunctionResult.v.bval = AllowSpectating;
+	if (!stackPushResult(VAL_BOOL, &scrFunctionResult))
+	{
+		return false;
+	}
+	return true;
+}
+
+/*Are they spectating?*/
+BOOL scrPlayerSpectating(void)
+{
+	SDWORD InPlayer;
+	
+	if (!stackPopParams(1, VAL_INT, &InPlayer))
+    {
+        return false;
+    }
+	
+	scrFunctionResult.v.bval = (BOOL)PlayerSpectating(InPlayer);
+	if (!stackPushResult(VAL_BOOL, &scrFunctionResult))
+	{
+		return false;
+	}
+	
+	return true;
+}
+
 BOOL scrGettext()
 {
     if (!stackPopParams(1, VAL_STRING, &strParam1))

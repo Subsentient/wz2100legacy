@@ -2118,6 +2118,21 @@ FUNC_SYMBOL asFuncTable[] =
         1, { (INTERP_TYPE)ST_BODY },
         0, 0, NULL, 0, 0, NULL, NULL
     },
+    
+    {
+		"PlayerSpectating", scrPlayerSpectating, VAL_BOOL,
+		1, { VAL_INT }, 0, 0, NULL, 0, 0, NULL, NULL
+	},
+	
+	{
+		"initSpectate", scrInitSpectate, VAL_VOID,
+		0, { VAL_VOID }, 0, 0, NULL, 0, 0, NULL, NULL
+	},
+	
+	{
+		"SpectatorsEnabled", scrSpectatorsEnabled, VAL_BOOL,
+		0, { VAL_VOID }, 0, 0, NULL, 0, 0, NULL, NULL
+	},
 
     // Gettext functions
     {

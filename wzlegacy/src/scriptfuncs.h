@@ -658,6 +658,9 @@ extern BOOL scrGettext_noop(void);
 extern BOOL scrPgettext(void);
 extern BOOL scrPgettext_expr(void);
 extern BOOL scrPgettext_noop(void);
+extern BOOL scrPlayerSpectating(void);
+extern BOOL scrInitSpectate(void);
+extern BOOL scrSpectatorsEnabled(void);
 
 
 extern BOOL beingResearchedByAlly(SDWORD resIndex, SDWORD player);

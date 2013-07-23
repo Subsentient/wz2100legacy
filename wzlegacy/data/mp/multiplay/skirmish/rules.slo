@@ -51,7 +51,7 @@ trigger	endConditions(every, 100);
 
 
 event initialisedEvent(CALL_GAMEINIT)
-{
+{	
 	//set up the reticule buttons
 	addReticuleButton(OPTIONS);
 	addReticuleButton(CANCEL);
@@ -83,6 +83,11 @@ event initialisedEvent(CALL_GAMEINIT)
 	}
 
 	applyLimitSet();	// set limit options
+	
+	if (!anyDroidsLeft(selectedPlayer) and !anyFactoriesLeft(selectedPlayer) and SpectatorsEnabled())
+	{ //Turn us to a spectator if we start with nothing and spectating is allowed.
+		initSpectate();
+	}
 }
 
 event initialisedEventTwo(CALL_GAMEINIT)
