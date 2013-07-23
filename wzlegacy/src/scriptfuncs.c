@@ -3158,11 +3158,6 @@ BOOL scrGameOverMessage(void)
     {
         return false;
     }
-    
-    if (PlayerSpectating(selectedPlayer) && gameTime < 20000) //20 secs
-	{ /*Don't let spectators lose who spectate at the start of the game.*/
-		return true;
-	}
 
     if (player >= MAX_PLAYERS)
     {

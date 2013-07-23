@@ -153,9 +153,8 @@ event initialisedEventTwo(CALL_GAMEINIT)
 event checkEndConditions (endConditions)
 {
 	// Losing Conditions
-	if(	   ( not anyDroidsLeft(selectedPlayer))
-  	  and  ( not anyFactoriesLeft(selectedPlayer))	
-	  )
+	if (!anyDroidsLeft(selectedPlayer) && !anyFactoriesLeft(selectedPlayer) &&
+		!(PlayerSpectating(selectedPlayer) && gameTime < 20000)) //Prevent spectators from losing on game start.
 	{		
 		gameLost = TRUE;
 
