@@ -148,6 +148,7 @@ BOOL						bHosted			= false;				//we have set up a game
 char						sPlayer[128];							// player name (to be used)
 static int					colourChooserUp = -1;
 static int					teamChooserUp = -1;
+static short AddedSlots = 0; //For slot controls.
 static BOOL				SettingsUp		= false;
 static UBYTE				InitialProto	= 0;
 static W_SCREEN				*psConScreen;
@@ -2487,17 +2488,31 @@ static void processMultiopWidgets(UDWORD id)
 				{
 					sstrcpy(game.map, TLev->pName);
 					widgSetString(psWScreen, MULTIOP_MAP, TLev->pName);
-					current_numplayers = game.maxPlayers = TLev->players;
+					current_numplayers = TLev->players;
+					
+					if (NetPlay.playercount > TLev->players)
+					{ /*Don't change the player count if we have more maps than supported.*/
+						sendTextMessage(_("Number of players exceeds map's default capacity. Adding space."), true);
+						game.maxPlayers = NetPlay.playercount;
+					}
+					else
+					{
+						game.maxPlayers = TLev->players;
+					}
+					
 					loadMapPreview(false);
+					
 					if (bHosted)
 					{
 						addPlayerBox(true);
 					}
+					AddedSlots = 0;
 				}
 				else
 				{
 					widgSetString(psWScreen, MULTIOP_MAP, game.map);
 					addConsoleMessage(_("Bad map name."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+					break;
 				}
 				
 				if (NetPlay.bComms)
@@ -2765,9 +2780,7 @@ static void processMultiopWidgets(UDWORD id)
 
     // these work all the time.
     switch(id)
-    {
-		static short AddedSlots = 0; //For slot controls.
-		
+    {		
         case MULTIOP_STRUCTLIMITS:
             changeTitleMode(MULTILIMIT);
             break;
@@ -3561,11 +3574,21 @@ void runMultiOptions(void)
 					}
                     break;
                 case MULTIOP_MAP:
-                    {
+                {
+						
                         sstrcpy(OldMap, game.map);
                         OldMap_PlayMax = game.maxPlayers;
                         sstrcpy(game.map, sTemp);
-                        game.maxPlayers = (UBYTE)value;
+                        
+						if (NetPlay.playercount > value && !IsHoverPreview)
+						{ /*Don't change the player count if we have more maps than supported.*/
+							sendTextMessage(_("Number of players exceeds map's default capacity. Adding space."), true);
+							game.maxPlayers = NetPlay.playercount;
+						}
+						else
+						{
+							game.maxPlayers = (short)value;
+						}
                         
                         if (!bHosted)
                         {
@@ -3585,16 +3608,18 @@ void runMultiOptions(void)
                         widgSetString(psWScreen,MULTIOP_MAP,sTemp);
                         addGameOptions(false);
                         
+                        AddedSlots = 0; //Reset the number of slots we have added by ourselves.
+                        
                         if (bHosted && NetPlay.bComms && !IsHoverPreview)
                         {
 							sendOptions();
-								
+							
 							sstrcpy(gamestruct.mapname, game.map);
 							NETregisterServer(0);
 							NETregisterServer(1);
 						}
                         break;
-                    }
+				}
                 default:
                     loadMapPreview(false);
                     break;
