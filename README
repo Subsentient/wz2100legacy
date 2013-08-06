@@ -1,0 +1,19 @@
+This branch contains the utilities of Warzone 2100 Legacy, created by wei2912.
+
+To build Warzone 2100 Legacy, run *build.sh*.
+
+If you wish to generate stats, copy your mod into the directory, *stats/mod/*. Create that directory if it does not exist. Inside there, run the script according to the type of stats you wish to generate, using Python 3, with the following command:
+
+    python3 script.py
+
+Here's the list (growing steadily):
+
+    Research Technology Tree -> techtree.py
+    
+## Contributing to stats generator
+
+If you wish to contribute to stats generator, please study the scripts located there.
+
+Here's some notes:
+
+* When using the module utils.readfile, note that the read function appends a "mod/" to your directory path for clarity.
