@@ -5,13 +5,14 @@ def bold(line):
 	return "'''" + line + "'''"
 	
 def heading(line, level):
+	level += 1
 	head = "=" * level
 	return head + " " + line + " " + head
 
 # Horizontal rule
 def hr():
 	return "---"
-	
+
 # Unordered list (bullet list)
 def ul(line, level):
 	head = "*" * level
