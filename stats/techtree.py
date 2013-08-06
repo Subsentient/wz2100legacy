@@ -21,13 +21,13 @@ def main():
 	
 	for res_id in prereqs:
 		if res_id in strings:
-			print(wiki.heading(strings[res_id] + " " + wiki.italic(res_id), 1))
+			print(wiki.heading(strings[res_id] + " (" + res_id + ")", 1))
 		else:
 			print(wiki.heading(res_id, 1))
 		
 		for res_prereq in prereqs[res_id]:
 			if res_prereq in strings:
-				print(wiki.ul(strings[res_prereq] + " " + wiki.italic(res_prereq), 1))
+				print(wiki.ul(strings[res_prereq] + " (" + res_prereq + ")", 1))
 			else:
 				print(wiki.ul(res_prereq, 1))
 		
