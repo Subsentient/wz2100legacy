@@ -1,6 +1,19 @@
 This branch contains the utilities of Warzone 2100 Legacy, created by wei2912.
 
+## Quick build scripts
+
 To build Warzone 2100 Legacy, run *build.sh*.
+
+## Quick fixes
+
+If you experience errors such as the following:
+
+    gcc: error: resource_lexer.lex.c: No such file or directory
+    gcc: error: strres_lexer.lex.c: No such file or directory
+
+Extract `lex_c_files.tar.gz` into the build directory to fix the above issue. The archive contains all .lex.c files which some users may find missing.
+
+## Stats generator
 
 If you wish to generate stats, copy your mod into the directory, *stats/mod/*. Create that directory if it does not exist. Inside there, run the script according to the type of stats you wish to generate, using Python 3, with the following command:
 
