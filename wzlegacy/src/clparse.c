@@ -74,7 +74,7 @@ typedef enum
 } CLI_OPTIONS;
 
 static CLISPEC optionsTable[] =
-{ //with --masterserver-port as an example, list the longer argumnent that contains the name of a shorter one FIRST.
+{
 	{ "--cheat",      LARG_NONE,   CLI_CHEAT,      N_("Run in cheat mode"),                 NULL },
 	{ "--datadir",    LARG_STRING, CLI_DATADIR,    N_("Set default data directory"),        N_("data directory") },
 	{ "--configdir",  LARG_STRING, CLI_CONFIGDIR,  N_("Set configuration directory"),       N_("configuration directory") },
@@ -91,9 +91,8 @@ static CLISPEC optionsTable[] =
 	{ "--crash",		LARG_NONE,   CLI_CRASH,      N_("Causes a crash to test the crash handler"), NULL },
 	{ "--savegame",   LARG_STRING, CLI_SAVEGAME,   N_("Load a saved game"),                 N_("savegame") },
 	{ "--window",     LARG_NONE,   CLI_WINDOW,     N_("Play in windowed mode"),             NULL },
-	{ "--masterserver-port",LARG_STRING, CLI_MASTERSERVER_PORT, N_("Set port number for the lobby server. Default is 9990."), N_("e.g. 4444") },
 	{ "--masterserver",LARG_STRING, CLI_MASTERSERVER, N_("Set IP or domain to use for the lobby server."), N_("masterserver") },
-
+	{ "--masterserver-port",LARG_STRING, CLI_MASTERSERVER_PORT, N_("Set port number for the lobby server. Default is 9990."), N_("e.g. 4444") },
 	{ "--version",    LARG_NONE,   CLI_VERSION,    N_("Show version information and exit"), NULL },
 	{ "--resolution", LARG_STRING, CLI_RESOLUTION, N_("Set the resolution to use"),         N_("WIDTHxHEIGHT") },
 	{ "--shadows",    LARG_NONE,   CLI_SHADOWS,    N_("Enable shadows"),                    NULL },
@@ -132,12 +131,21 @@ static void DumpHelpToConsole(void)
 static CLISPEC *lookupArgument(const char *InStream)
 { /*Subsentient's replacement for libpopt.*/
 	unsigned long Inc;
+	char ArgStream[2048] = { '\0' }; // Should be more than enough.
+	
+	/*Don't include the data past the equals.*/
+	for (Inc = 0; InStream[Inc] != '\0' && InStream[Inc] != '='; ++Inc)
+	{
+		ArgStream[Inc] = InStream[Inc];
+	}
+	ArgStream[Inc] = '\0';
 	
 	for (Inc = 0; optionsTable[Inc].ArgName != NULL; ++Inc)
 	{
-		if (!strncmp(InStream, optionsTable[Inc].ArgName, strlen(optionsTable[Inc].ArgName)))
+		if (!strcmp(ArgStream, optionsTable[Inc].ArgName))
 		{
 			return &optionsTable[Inc]; //Return a pointer.
+										/*I'd sure hope so, past me!*/
 		}
 	}
 	
