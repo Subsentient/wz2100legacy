@@ -1052,7 +1052,7 @@ int main(int argc, char *argv[])
     initI18n();
 
     // find early boot info
-    if ( !ParseCommandLineEarly(argc, (const char **)argv) )
+    if ( !ParseCommandLine(argc, (const char **)argv, true) )
     {
         return -1;
     }
@@ -1110,7 +1110,7 @@ int main(int argc, char *argv[])
     NETinit(true);
 
     // parse the command line
-    if (!ParseCommandLine(argc, (const char **)argv))
+    if (!ParseCommandLine(argc, (const char **)argv, false))
     {
         return -1;
     }
