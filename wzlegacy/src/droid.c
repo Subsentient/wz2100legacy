@@ -1104,16 +1104,14 @@ BuildPermissionState droidStartBuild(DROID *psDroid)
         /* Check the structure is still there to build (joining a partially built struct) */
         psStruct = (STRUCTURE *)psDroid->psTarget;
         
-        /*Make ALL ordered trucks work on any given structure remotely.*/
-		if (droidNextToStruct(psDroid, (BASE_OBJECT *)psStruct))
+        /*Make ALL ordered trucks work on any given structure remotely.
+         * If it's not our truck, don't mess with it.*/
+		if (myResponsibility(psDroid->player) && droidNextToStruct(psDroid, (BASE_OBJECT *)psStruct) &&
+			psStruct->status != SS_BUILT && /*Not if it's built.*/
+			(psDroid->action != DACTION_BUILD || ((STRUCTURE_STATS *)psDroid->psTarStats)->type == REF_RESOURCE_EXTRACTOR))
+			/*Not if we are already building it with this truck, and a workaround for oil derricks.*/
 		{
-			if (psStruct->status != SS_BUILT && /*Not if it's built.*/
-				(psDroid->action != DACTION_BUILD || ((STRUCTURE_STATS *)psDroid->psTarStats)->type == REF_RESOURCE_EXTRACTOR))
-				/*Not if we are already building it with this truck, and a workaround for oil derricks.*/
-			{
-				sendBuildStarted(psStruct, psDroid);
-			}
-	        
+			sendBuildStarted(psStruct, psDroid);
 		}
 		else
 		{
