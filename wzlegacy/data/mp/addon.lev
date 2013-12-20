@@ -62,101 +62,23 @@ data		"wrf/piestats.wrf"
 data		"wrf/stats.wrf"
 data		"wrf/multires.wrf"
 
+/********************************************************/
+/*    		 DeathMatch            			*/
+
+/********************************************************/
+/* MultiPlayer campaigns With scavs etc. 		*/
+
+
+/********************************************************/
+/* standard multiplayer campaigns 			*/
+
+/*cam3*/
 
 
 /******************************************************/
 /* Skirmish Enabled Maps 			      */
 
-/*cam1*/
-level 		Rush-T1
-players		4
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-rush.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
 
-level 		Rush2-T1
-players		4
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-rush2.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Startup-T1
-players		2
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/2c-startup.gam"
-data		"wrf/multi/skirmish2.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Clover-T1
-players		8
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-clover.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		MizaMaze-T1
-players		8
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-mizamaze.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-/*cam2*/
-level 		UrbanChasm-T1
-players		2
-type		14
-dataset		MULTI_CAM_2
-game		"multiplay/maps/2c-urbanchasm.gam"
-data		"wrf/multi/skirmish2.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		UrbanDuel-T1
-players		4
-type		14
-dataset		MULTI_CAM_2
-game		"multiplay/maps/4c-urbanduel.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		Manhattan-T1
-players		8
-type		14
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-manhattan.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-/*cam3*/
-level 		HighGround-T1
-players		2
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/2c-highground.gam"
-data		"wrf/multi/skirmish2.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Mountain-T1
-players		4
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/4c-mountain.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Bananas-T1
-players		8
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-bananas.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
 /* END IMPORT FROM GAMEDESC.LEV */
 
 /********************************************************/
@@ -191,260 +113,7 @@ data		"wrf/multires2.wrf"
 
 /********************************************************/
 
-level 		Wheel-T1
-players		8
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-wheeloffortune.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Wheel-T2
-players		8
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-wheeloffortune.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-
-
-level 		Ziggurat-T1
-players		8
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-ziggurat.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Ziggurat-T2
-players		8
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-ziggurat.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Add all currnet (old) maps for cam2 tech
-
-/* standard multiplayer campaigns - Now Enabled for Cam 2 Tech			*/
-
-/*cam1*/
-
-level 		Rush-T2
-players		4
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-rush.gam"
-data		"wrf/multi/campaign-scav.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Rush2-T2
-players		4
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-rush2.gam"
-data		"wrf/multi/campaign-scav.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Startup-T2
-players		2
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/2c-startup.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		MizaMaze-T2
-players		8
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-mizamaze.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Clover-T2
-players		8
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-clover.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-/*cam2*/
-level 		UrbanChasm-T2
-players		2
-type		15
-dataset		MULTI_T2_C2
-game		"multiplay/maps/2c-urbanchasm.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level		UrbanDuel-T2
-players		4
-type		15
-dataset		MULTI_T2_C2
-game		"multiplay/maps/4c-urbanduel.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-/*cam3*/
-level 		HighGround-T2
-players		2
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/2c-highground.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Mountain-T2
-players		4
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/4c-mountain.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Bananas-T2
-players		8
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-bananas.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-
-// New Maps - Skirmish Versions
-// Skirmish entries same as old maps
-
-//VOD
-
-level 		Valley-T1
-players		4
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/4c-valleyofdeath.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-//WOF
-
-level 		Wheel-T1
-players		8
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-wheeloffortune.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-//ZIG
-
-level 		Ziggurat-T1
-players		8
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-ziggurat.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"// New Maps Only
-
-level 		Concrete-T1
-players		8
-type		12
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-concreteplayground.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		Concrete-T2
-players		8
-type		15
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-concreteplayground.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		FishNets-T1
-players		4
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/4c-fishnet.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		FishNets-T2
-players		4
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/4c-fishnet.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Concrete-T1
-players		8
-type		14
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-concreteplayground.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		FishNets-T1
-players		4
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/4c-fishnet.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"// New Maps Only
-
-
-// Great Rift
-level 		GreatRift-T1
-players		4
-type		12
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-greatrift.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		GreatRift-T2
-players		4
-type		15
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-greatrift.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		GreatRift-T1
-players		4
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-greatrift.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// ThePit
-level 		ThePit-T1
-players		8
-type		12
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-thepit.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		ThePit-T2
-players		8
-type		15
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-thepit.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		ThePit-T1
-players		8
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-thepit.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
+// New Maps Only
 
 /********************************************************/
 /********************************************************/
@@ -515,605 +184,176 @@ data		"wrf/piestats.wrf"
 data		"wrf/stats.wrf"
 data		"wrf/multires3.wrf"
 
-
-//********************************************************/
-//* skirmish tech level 2                                         */
-
-level 		Rush-T2
-players		4
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-rush.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Startup-T2
-players		2
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/2c-startup.gam"
-data		"wrf/multi/t2-skirmish2.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		MizaMaze-T2
-players		8
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-mizamaze.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Clover-T2
-players		8
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-clover.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		UrbanChasm-T2
-players		2
-type		18
-dataset		MULTI_T2_C2
-game		"multiplay/maps/2c-urbanchasm.gam"
-data		"wrf/multi/t2-skirmish2.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level		UrbanDuel-T2
-players		4
-type		18
-dataset		MULTI_T2_C2
-game		"multiplay/maps/4c-urbanduel.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level		Manhattan-T2
-players		8
-type		18
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-manhattan.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		HighGround-T2
-players		2
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/2c-highground.gam"
-data		"wrf/multi/t2-skirmish2.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Mountain-T2
-players		4
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/4c-mountain.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Bananas-T2
-players		8
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-bananas.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Wheel-T2
-players		8
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-wheeloffortune.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Ziggurat-T2
-players		8
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-ziggurat.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Valley-T2
-players		4
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/4c-valleyofdeath.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Concrete-T2
-players		8
-type		18
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-concreteplayground.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		FishNets-T2
-players		4
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/4c-fishnet.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		GreatRift-T2
-players		4
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-greatrift.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		ThePit-T2
-players		8
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-thepit.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-
-
-//*********************************************************/
-//* skirmish tech level 3
-
-level 		Rush-T3
-players		4
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-rush.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Startup-T3
-players		2
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/2c-startup.gam"
-data		"wrf/multi/t3-skirmish2.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		MizaMaze-T3
-players		8
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/8c-mizamaze.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Clover-T3
-players		8
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/8c-clover.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		UrbanChasm-T3
-players		2
-type		19
-dataset		MULTI_T3_C2
-game		"multiplay/maps/2c-urbanchasm.gam"
-data		"wrf/multi/t3-skirmish2.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level		UrbanDuel-T3
-players		4
-type		19
-dataset		MULTI_T3_C2
-game		"multiplay/maps/4c-urbanduel.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level		Manhattan-T3
-players		8
-type		19
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-manhattan.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		Mountain-T3
-players		4
-type		19
-dataset		MULTI_T3_C3
-game		"multiplay/maps/4c-mountain.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		HighGround-T3
-players		2
-type		19
-dataset		MULTI_T3_C3
-game		"multiplay/maps/2c-highground.gam"
-data		"wrf/multi/t3-skirmish2.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Bananas-T3
-players		8
-type		19
-dataset		MULTI_T3_C3
-game		"multiplay/maps/8c-bananas.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Wheel-T3
-players		8
-type		19
-dataset		MULTI_T3_C3
-game		"multiplay/maps/8c-wheeloffortune.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Ziggurat-T3
-players		8
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/8c-ziggurat.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		Valley-T3
-players		4
-type		19
-dataset		MULTI_T3_C3
-game		"multiplay/maps/4c-valleyofdeath.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		Concrete-T3
-players		8
-type		19
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-concreteplayground.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		FishNets-T3
-players		4
-type		19
-dataset		MULTI_T3_C3
-game		"multiplay/maps/4c-fishnet.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog3.wrf"
-
-level 		GreatRift-T3
-players		4
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-greatrift.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		ThePit-T3
-players		8
-type		19
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-thepit.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-// New Maps Only
-
-
-// Fix : Rush2 was not previously included for Tech 2 and 3
-
-// Tech 2
-
-level 		Rush2-T2
-players		4
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-rush2.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		Rush2-T3
-players		4
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-rush2.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-level 		HideNSneak-T1
-players		8
-type		14
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-hidensneak.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		HideNSneak-T2
-players		8
-type		18
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-hidensneak.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-level 		HideNSneak-T3
-players		8
-type		19
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-hidensneak.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// rolling hills t1, t2, t3 and t1, t2, t3
-
-// RollingHills
-
-// Tech 1
-
-level 		RollingHills-T1
-players		4
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-rollinghills.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		RollingHills-T2
-players		4
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-rollinghills.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		RollingHills-T3
-players		4
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-rollinghills.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// yin yang t1, t2, t3 and t1, t2, t3
-
-// YinYang
-
-// Skirmish
-
-// Tech 1
-
-level 		YinYang-T1
-players		8
-type		14
-dataset		MULTI_CAM_3
-game		"multiplay/maps/8c-yinyang.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-// Tech 2
-
-level 		YinYang-T2
-players		8
-type		18
-dataset		MULTI_T2_C3
-game		"multiplay/maps/8c-yinyang.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-// Tech 3
-
-level 		YinYang-T3
-players		8
-type		19
-dataset		MULTI_T3_C3
-game		"multiplay/maps/8c-yinyang.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog3.wrf"
-
-
-// New Maps Only
-
-// SandCastles
-
-// Multiplay
-
-// Tech 1
-
-level 		SandCastles-T1
-players		8
-type		12
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-sandcastles.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 2
-
-level 		SandCastles-T2
-players		8
-type		15
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-sandcastles.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 3
-
-level 		SandCastles-T3
-players		8
-type		16
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-sandcastles.gam"
-data		"wrf/multi/campaign.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Skirmish
-
-// Tech 1
-
-level 		SandCastles-T1
-players		8
-type		14
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-sandcastles.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 2
-
-level 		SandCastles-T2
-players		8
-type		18
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-sandcastles.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 3
-
-level 		SandCastles-T3
-players		8
-type		19
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-sandcastles.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Basingstoke
-
-// Tech 1
-
-level 		Basingstoke-T1
-players		4
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-basingstoke.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		Basingstoke-T2
-players		4
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-basingstoke.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		Basingstoke-T3
-players		4
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-basingstoke.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// LittleEgypt
-// Tech 1
-
-level 		LittleEgypt-T1
-players		4
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/4c-littleegypt.gam"
-data		"wrf/multi/skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		LittleEgypt-T2
-players		4
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/4c-littleegypt.gam"
-data		"wrf/multi/t2-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		LittleEgypt-T3
-players		4
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/4c-littleegypt.gam"
-data		"wrf/multi/t3-skirmish4.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// New Maps Only
-
-// BeggarsKanyon - 8 player desert
-// Tech 1
-
-level 		BeggarsKanyon-T1
-players		8
-type		14
-dataset		MULTI_CAM_1
-game		"multiplay/maps/8c-beggarskanyon.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 2
-
-level 		BeggarsKanyon-T2
-players		8
-type		18
-dataset		MULTI_T2_C1
-game		"multiplay/maps/8c-beggarskanyon.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Tech 3
-
-level 		BeggarsKanyon-T3
-players		8
-type		19
-dataset		MULTI_T3_C1
-game		"multiplay/maps/8c-beggarskanyon.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog1.wrf"
-
-// Gridlock
-// Tech 1
-
-level 		Gridlock-T1
-players		8
-type		14
-dataset		MULTI_CAM_2
-game		"multiplay/maps/8c-gridlock.gam"
-data		"wrf/multi/skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 2
-
-level 		Gridlock-T2
-players		8
-type		18
-dataset		MULTI_T2_C2
-game		"multiplay/maps/8c-gridlock.gam"
-data		"wrf/multi/t2-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-// Tech 3
-
-level 		Gridlock-T3
-players		8
-type		19
-dataset		MULTI_T3_C2
-game		"multiplay/maps/8c-gridlock.gam"
-data		"wrf/multi/t3-skirmish8.wrf"
-data		"wrf/multi/fog2.wrf"
-
-
-/// New maps added by Warzone2100 Resurrection Team
-
-level	cockate-T1
+level 	Rush-T1
+players	4
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/4c-rush.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Rush-T2
+players	4
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/4c-rush.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Rush-T3
+players	4
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/4c-rush.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Rush2-T1
+players	4
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/4c-rush2.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Rush2-T2
+players	4
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/4c-rush2.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Rush2-T3
+players	4
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/4c-rush2.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	YinYang-T1
+players	8
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/8c-yinyang.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	YinYang-T2
+players	8
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/8c-yinyang.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	YinYang-T3
+players	8
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/8c-yinyang.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	SandCastles-T1
+players	8
+type	14
+dataset	MULTI_CAM_2
+game	"multiplay/maps/8c-sandcastles.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	SandCastles-T2
+players	8
+type	18
+dataset	MULTI_T2_C2
+game	"multiplay/maps/8c-sandcastles.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	SandCastles-T3
+players	8
+type	19
+dataset	MULTI_T3_C2
+game	"multiplay/maps/8c-sandcastles.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+
+level 	LittleEgypt-T1
+players	4
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/4c-littleegypt.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	LittleEgypt-T2
+players	4
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/4c-littleegypt.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	LittleEgypt-T3
+players	4
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/4c-littleegypt.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	BeggarsKanyon-T1
+players	8
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/8c-beggarskanyon.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	BeggarsKanyon-T2
+players	8
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/8c-beggarskanyon.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	BeggarsKanyon-T3
+players	8
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/8c-beggarskanyon.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Gridlock-T1
+players	8
+type	14
+dataset	MULTI_CAM_2
+game	"multiplay/maps/8c-gridlock.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Gridlock-T2
+players	8
+type	18
+dataset	MULTI_T2_C2
+game	"multiplay/maps/8c-gridlock.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Gridlock-T3
+players	8
+type	19
+dataset	MULTI_T3_C2
+game	"multiplay/maps/8c-gridlock.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level	Cockate-T1
 players	8
 type	14
 dataset	MULTI_CAM_1
@@ -1121,9 +361,7 @@ game	"multiplay/maps/8c-cockate.gam"
 data	"wrf/multi/skirmish8.wrf"
 data	"wrf/multi/fog1.wrf"
 
-// Skirmish Tech Level 2
-
-level	cockate-T2
+level	Cockate-T2
 players	8
 type	18
 dataset	MULTI_T2_C1
@@ -1131,9 +369,7 @@ game	"multiplay/maps/8c-cockate.gam"
 data	"wrf/multi/t2-skirmish8.wrf"
 data	"wrf/multi/fog1.wrf"
 
-// Skirmish Tech Level 3
-
-level	cockate-T3
+level	Cockate-T3
 players	8
 type	19
 dataset	MULTI_T3_C1
@@ -1141,9 +377,7 @@ game	"multiplay/maps/8c-cockate.gam"
 data	"wrf/multi/t3-skirmish8.wrf"
 data	"wrf/multi/fog1.wrf"
 
-// Skirmish Tech Level 1
-
-level	cockpit-T1
+level	Cockpit-T1
 players	4
 type	14
 dataset	MULTI_CAM_1
@@ -1151,9 +385,7 @@ game	"multiplay/maps/4c-cockpit.gam"
 data	"wrf/multi/skirmish4.wrf"
 data	"wrf/multi/fog1.wrf"
 
-// Skirmish Tech Level 2
-
-level	cockpit-T2
+level	Cockpit-T2
 players	4
 type	18
 dataset	MULTI_T2_C1
@@ -1161,17 +393,13 @@ game	"multiplay/maps/4c-cockpit.gam"
 data	"wrf/multi/t2-skirmish4.wrf"
 data	"wrf/multi/fog1.wrf"
 
-// Skirmish Tech Level 3
-
-level	cockpit-T3
+level	Cockpit-T3
 players	4
 type	19
 dataset	MULTI_T3_C1
 game	"multiplay/maps/4c-cockpit.gam"
 data	"wrf/multi/t3-skirmish4.wrf"
 data	"wrf/multi/fog1.wrf"
-
-// Skirmish Tech Level 1
 
 level	Urban-Chaos-T1
 players	4
@@ -1181,8 +409,6 @@ game	"multiplay/maps/4c-urban-chaos.gam"
 data	"wrf/multi/skirmish4.wrf"
 data	"wrf/multi/fog2.wrf"
 
-// Skirmish Tech Level 2
-
 level	Urban-Chaos-T2
 players	4
 type	18
@@ -1191,8 +417,6 @@ game	"multiplay/maps/4c-urban-chaos.gam"
 data	"wrf/multi/t2-skirmish4.wrf"
 data	"wrf/multi/fog2.wrf"
 
-// Skirmish Tech Level 3
-
 level	Urban-Chaos-T3
 players	4
 type	19
@@ -1200,36 +424,6 @@ dataset	MULTI_T3_C2
 game	"multiplay/maps/4c-urban-chaos.gam"
 data	"wrf/multi/t3-skirmish4.wrf"
 data	"wrf/multi/fog2.wrf"
-
-// Skirmish Tech Level 1
-
-level	Pyramidal-T1
-players	4
-type	14
-dataset	MULTI_CAM_1
-game	"multiplay/maps/4c-pyramidal.gam"
-data	"wrf/multi/skirmish4.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// Skirmish Tech Level 2
-
-level	Pyramidal-T2
-players	4
-type	18
-dataset	MULTI_T2_C1
-game	"multiplay/maps/4c-pyramidal.gam"
-data	"wrf/multi/t2-skirmish4.wrf"
-data	"wrf/multi/fog1.wrf"
-
-// Skirmish Tech Level 3
-
-level	Pyramidal-T3
-players	4
-type	19
-dataset	MULTI_T3_C1
-game	"multiplay/maps/4c-pyramidal.gam"
-data	"wrf/multi/t3-skirmish4.wrf"
-data	"wrf/multi/fog1.wrf"
 
 level   Roughness-T1
 players 2
@@ -1327,7 +521,7 @@ game    "multiplay/maps/8c-TUBridge.gam"
 data    "wrf/multi/t3-skirmish8.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Source-v1-02-T1
+level   Source-T1
 players 8
 type    14
 dataset MULTI_CAM_1
@@ -1335,7 +529,7 @@ game    "multiplay/maps/8c-Source-v1-02.gam"
 data    "wrf/multi/skirmish8.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Source-v1-02-T2
+level   Source-T2
 players 8
 type    18
 dataset MULTI_T2_C1
@@ -1343,7 +537,7 @@ game    "multiplay/maps/8c-Source-v1-02.gam"
 data    "wrf/multi/t2-skirmish8.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Source-v1-02-T3
+level   Source-T3
 players 8
 type    19
 dataset MULTI_T3_C1
@@ -1431,8 +625,6 @@ game    "multiplay/maps/8c-ClutchV2.gam"
 data    "wrf/multi/campaign.wrf"
 data    "wrf/multi/fog1.wrf"
 
-// MultiPlay Tech Level 2
-
 level   ClutchV2-T2
 players 8
 type    15
@@ -1440,8 +632,6 @@ dataset MULTI_T2_C1
 game    "multiplay/maps/8c-ClutchV2.gam"
 data    "wrf/multi/campaign.wrf"
 data    "wrf/multi/fog1.wrf"
-
-// MultiPlay Tech Level 3
 
 level   ClutchV2-T3
 players 8
@@ -1451,7 +641,6 @@ game    "multiplay/maps/8c-ClutchV2.gam"
 data    "wrf/multi/campaign.wrf"
 data    "wrf/multi/fog1.wrf"
 
-// Skirmish Tech Level 1
 
 level   ClutchV2-T1
 players 8
@@ -1461,8 +650,6 @@ game    "multiplay/maps/8c-ClutchV2.gam"
 data    "wrf/multi/skirmish8.wrf"
 data    "wrf/multi/fog1.wrf"
 
-// Skirmish Tech Level 2
-
 level   ClutchV2-T2
 players 8
 type    18
@@ -1470,8 +657,6 @@ dataset MULTI_T2_C1
 game    "multiplay/maps/8c-ClutchV2.gam"
 data    "wrf/multi/t2-skirmish8.wrf"
 data    "wrf/multi/fog1.wrf"
-
-// Skirmish Tech Level 3
 
 level   ClutchV2-T3
 players 8
@@ -1481,7 +666,7 @@ game    "multiplay/maps/8c-ClutchV2.gam"
 data    "wrf/multi/t3-skirmish8.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Village-1-01-T1
+level   Village-T1
 players 4
 type    14
 dataset MULTI_CAM_3
@@ -1489,7 +674,7 @@ game    "multiplay/maps/4c-Village-1-01.gam"
 data    "wrf/multi/skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Village-1-01-T2
+level   Village-T2
 players 4
 type    18
 dataset MULTI_T2_C3
@@ -1497,7 +682,7 @@ game    "multiplay/maps/4c-Village-1-01.gam"
 data    "wrf/multi/t2-skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Village-1-01-T3
+level   Village-T3
 players 4
 type    19
 dataset MULTI_T3_C3
@@ -1505,7 +690,7 @@ game    "multiplay/maps/4c-Village-1-01.gam"
 data    "wrf/multi/t3-skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Mist-v1-01-T1
+level   Mist-T1
 players 4
 type    14
 dataset MULTI_CAM_3
@@ -1513,7 +698,7 @@ game    "multiplay/maps/4c-Mist-v1-01.gam"
 data    "wrf/multi/skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Mist-v1-01-T2
+level   Mist-T2
 players 4
 type    18
 dataset MULTI_T2_C3
@@ -1521,15 +706,13 @@ game    "multiplay/maps/4c-Mist-v1-01.gam"
 data    "wrf/multi/t2-skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Mist-v1-01-T3
+level   Mist-T3
 players 4
 type    19
 dataset MULTI_T3_C3
 game    "multiplay/maps/4c-Mist-v1-01.gam"
 data    "wrf/multi/t3-skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
-
-// MultiPlay Tech Level 1
 
 level   TokenRing-T1
 players 8
@@ -1539,8 +722,6 @@ game    "multiplay/maps/8c-TokenRing.gam"
 data    "wrf/multi/campaign.wrf"
 data    "wrf/multi/fog3.wrf"
 
-// MultiPlay Tech Level 2
-
 level   TokenRing-T2
 players 8
 type    15
@@ -1548,8 +729,6 @@ dataset MULTI_T2_C3
 game    "multiplay/maps/8c-TokenRing.gam"
 data    "wrf/multi/campaign.wrf"
 data    "wrf/multi/fog3.wrf"
-
-// MultiPlay Tech Level 3
 
 level   TokenRing-T3
 players 8
@@ -1559,8 +738,6 @@ game    "multiplay/maps/8c-TokenRing.gam"
 data    "wrf/multi/campaign.wrf"
 data    "wrf/multi/fog3.wrf"
 
-// Skirmish Tech Level 1
-
 level   TokenRing-T1
 players 8
 type    14
@@ -1568,8 +745,6 @@ dataset MULTI_CAM_3
 game    "multiplay/maps/8c-TokenRing.gam"
 data    "wrf/multi/skirmish8.wrf"
 data    "wrf/multi/fog3.wrf"
-
-// Skirmish Tech Level 2
 
 level   TokenRing-T2
 players 8
@@ -1579,8 +754,6 @@ game    "multiplay/maps/8c-TokenRing.gam"
 data    "wrf/multi/t2-skirmish8.wrf"
 data    "wrf/multi/fog3.wrf"
 
-// Skirmish Tech Level 3
-
 level   TokenRing-T3
 players 8
 type    19
@@ -1589,7 +762,7 @@ game    "multiplay/maps/8c-TokenRing.gam"
 data    "wrf/multi/t3-skirmish8.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Clash-1-01-T1
+level   Clash-T1
 players 4
 type    14
 dataset MULTI_CAM_1
@@ -1597,7 +770,7 @@ game    "multiplay/maps/4c-Clash-1-01.gam"
 data    "wrf/multi/skirmish4.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Clash-1-01-T2
+level   Clash-T2
 players 4
 type    18
 dataset MULTI_T2_C1
@@ -1605,7 +778,7 @@ game    "multiplay/maps/4c-Clash-1-01.gam"
 data    "wrf/multi/t2-skirmish4.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Clash-1-01-T3
+level   Clash-T3
 players 4
 type    19
 dataset MULTI_T3_C1
@@ -1613,7 +786,7 @@ game    "multiplay/maps/4c-Clash-1-01.gam"
 data    "wrf/multi/t3-skirmish4.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Artifact-1-01-T1
+level   Artifact-T1
 players 4
 type    14
 dataset MULTI_CAM_1
@@ -1621,7 +794,7 @@ game    "multiplay/maps/4c-Artifact-1-01.gam"
 data    "wrf/multi/skirmish4.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Artifact-1-01-T2
+level   Artifact-T2
 players 4
 type    18
 dataset MULTI_T2_C1
@@ -1629,7 +802,7 @@ game    "multiplay/maps/4c-Artifact-1-01.gam"
 data    "wrf/multi/t2-skirmish4.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Artifact-1-01-T3
+level   Artifact-T3
 players 4
 type    19
 dataset MULTI_T3_C1
@@ -1733,7 +906,7 @@ game    "multiplay/maps/8c-DesertRuins.gam"
 data    "wrf/multi/t3-skirmish8.wrf"
 data    "wrf/multi/fog1.wrf"
 
-level   Freezing-1-01-T1
+level   Freezing-T1
 players 4
 type    14
 dataset MULTI_CAM_3
@@ -1741,7 +914,7 @@ game    "multiplay/maps/4c-Freezing-1-01.gam"
 data    "wrf/multi/t3-skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Freezing-1-01-T2
+level   Freezing-T2
 players 4
 type    18
 dataset MULTI_T2_C3
@@ -1749,7 +922,7 @@ game    "multiplay/maps/4c-Freezing-1-01.gam"
 data    "wrf/multi/t2-skirmish4.wrf"
 data    "wrf/multi/fog3.wrf"
 
-level   Freezing-1-01-T3
+level   Freezing-T3
 players 4
 type    19
 dataset MULTI_T3_C3
@@ -1781,3 +954,484 @@ game    "multiplay/maps/7c-Epoch.gam"
 data    "wrf/multi/t3-skirmish7.wrf"
 data    "wrf/multi/fog1.wrf"
 
+level	Pyramidal-T1
+players	4
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/4c-pyramidal.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+
+level	Pyramidal-T2
+players	4
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/4c-pyramidal.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level	Pyramidal-T3
+players	4
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/4c-pyramidal.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Startup-T1
+players	2
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/2c-startup.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Startup-T2
+players	2
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/2c-startup.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Startup-T3
+players	2
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/2c-startup.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	MizaMaze-T1
+players	8
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/8c-mizamaze.gam"
+data	"wrf/multi/skirmish.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	MizaMaze-T2
+players	8
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/8c-mizamaze.gam"
+data	"wrf/multi/t2-skirmish.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	MizaMaze-T3
+players	8
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/8c-mizamaze.gam"
+data	"wrf/multi/t3-skirmish.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Clover-T1
+players	8
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/8c-clover.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Clover-T2
+players	8
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/8c-clover.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+
+level 	Clover-T3
+players	8
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/8c-clover.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	UrbanChasm-T1
+players	2
+type	14
+dataset	MULTI_CAM_2
+game	"multiplay/maps/2c-urbanchasm.gam"
+data	"wrf/multi/skirmish2.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	UrbanChasm-T2
+players	2
+type	18
+dataset	MULTI_T2_C2
+game	"multiplay/maps/2c-urbanchasm.gam"
+data	"wrf/multi/t2-skirmish2.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	UrbanChasm-T3
+players	2
+type	19
+dataset	MULTI_T3_C2
+game	"multiplay/maps/2c-urbanchasm.gam"
+data	"wrf/multi/t3-skirmish2.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	UrbanDuel-T1
+players	4
+type	14
+dataset	MULTI_CAM_2
+game	"multiplay/maps/4c-urbanduel.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	UrbanDuel-T2
+players	4
+type	18
+dataset	MULTI_T2_C2
+game	"multiplay/maps/4c-urbanduel.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	UrbanDuel-T3
+players	4
+type	19
+dataset	MULTI_T3_C2
+game	"multiplay/maps/4c-urbanduel.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Manhattan-T1
+players	8
+type	14
+dataset	MULTI_CAM_2
+game	"multiplay/maps/8c-manhattan.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Manhattan-T2
+players	8
+type	18
+dataset	MULTI_T2_C2
+game	"multiplay/maps/8c-manhattan.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Manhattan-T3
+players	8
+type	19
+dataset	MULTI_T3_C2
+game	"multiplay/maps/8c-manhattan.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	HighGround-T1
+players	2
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/2c-highground.gam"
+data	"wrf/multi/skirmish.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	HighGround-T2
+players	2
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/2c-highground.gam"
+data	"wrf/multi/t2-skirmish.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	HighGround-T3
+players	2
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/2c-highground.gam"
+data	"wrf/multi/t3-skirmish.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Mountain-T1
+players	4
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/4c-mountain.gam"
+data	"wrf/multi/skirmish.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Mountain-T2
+players	4
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/4c-mountain.gam"
+data	"wrf/multi/t2-skirmish.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Mountain-T3
+players	4
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/4c-mountain.gam"
+data	"wrf/multi/t3-skirmish.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Bananas-T1
+players	8
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/8c-bananas.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Bananas-T2
+players	8
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/8c-bananas.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Bananas-T3
+players	8
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/8c-bananas.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Wheel-T1
+players	8
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/8c-wheeloffortune.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Wheel-T2
+players	8
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/8c-wheeloffortune.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Wheel-T3
+players	8
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/8c-wheeloffortune.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level	Ziggurat-T1
+players	8
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/8c-ziggurat.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level	Ziggurat-T2
+players	8
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/8c-ziggurat.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level	Ziggurat-T3
+players	8
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/8c-ziggurat.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Valley-T1
+players	4
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/4c-valleyofdeath.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Valley-T2
+players	4
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/4c-valleyofdeath.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Valley-T3
+players	4
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/4c-valleyofdeath.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	Concrete-T1
+players	8
+type	14
+dataset	MULTI_CAM_2
+game	"multiplay/maps/8c-concreteplayground.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Concrete-T2
+players	8
+type	18
+dataset	MULTI_T2_C2
+game	"multiplay/maps/8c-concreteplayground.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Concrete-T3
+players	8
+type	19
+dataset	MULTI_T3_C2
+game	"multiplay/maps/8c-concreteplayground.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	Basingstoke-T1
+players	4
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/4c-basingstoke.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Basingstoke-T2
+players	4
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/4c-basingstoke.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	Basingstoke-T3
+players	4
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/4c-basingstoke.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	FishNets-T1
+players	4
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/4c-fishnet.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	FishNets-T2
+players	4
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/4c-fishnet.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	FishNets-T3
+players	4
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/4c-fishnet.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	GreatRift-T1
+players	4
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/4c-greatrift.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	GreatRift-T2
+players	4
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/4c-greatrift.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	GreatRift-T3
+players	4
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/4c-greatrift.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	ThePit-T1
+players	8
+type	14
+dataset	MULTI_CAM_3
+game	"multiplay/maps/8c-thepit.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	ThePit-T2
+players	8
+type	18
+dataset	MULTI_T2_C3
+game	"multiplay/maps/8c-thepit.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	ThePit-T3
+players	8
+type	19
+dataset	MULTI_T3_C3
+game	"multiplay/maps/8c-thepit.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog3.wrf"
+
+level 	HideNSneak-T1
+players	8
+type	14
+dataset	MULTI_CAM_2
+game	"multiplay/maps/8c-hidensneak.gam"
+data	"wrf/multi/skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	HideNSneak-T2
+players	8
+type	18
+dataset	MULTI_T2_C2
+game	"multiplay/maps/8c-hidensneak.gam"
+data	"wrf/multi/t2-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	HideNSneak-T3
+players	8
+type	19
+dataset	MULTI_T3_C2
+game	"multiplay/maps/8c-hidensneak.gam"
+data	"wrf/multi/t3-skirmish8.wrf"
+data	"wrf/multi/fog2.wrf"
+
+level 	RollingHills-T1
+players	4
+type	14
+dataset	MULTI_CAM_1
+game	"multiplay/maps/4c-rollinghills.gam"
+data	"wrf/multi/skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	RollingHills-T2
+players	4
+type	18
+dataset	MULTI_T2_C1
+game	"multiplay/maps/4c-rollinghills.gam"
+data	"wrf/multi/t2-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
+
+level 	RollingHills-T3
+players	4
+type	19
+dataset	MULTI_T3_C1
+game	"multiplay/maps/4c-rollinghills.gam"
+data	"wrf/multi/t3-skirmish4.wrf"
+data	"wrf/multi/fog1.wrf"
