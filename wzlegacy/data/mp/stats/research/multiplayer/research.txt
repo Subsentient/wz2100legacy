@@ -149,7 +149,7 @@ R-Wpn-RailGun02,Level Three,0,0,IMAGE_RES_WEAPONTECH,0,0,RES_W_RAIL2,0,RailGun2M
 R-Wpn-RailGun03,Level Three,0,0,IMAGE_RES_WEAPONTECH,0,0,RES_W_RAIL3,0,RailGun3Mk1,WEAPON,43200,1,2,0,0,0,0,0,1
 R-Defense-AASite-QuadBof,Level Two,0,0,IMAGE_RES_DEFENCE,0,0,RES_EMP_AA1,AASite-QuadBof,0,0,4800,0,2,0,1,0,1,0,0
 R-Defense-AASite-QuadMg1,Level Two,0,0,IMAGE_RES_DEFENCE,0,0,RES_EMP_AA2,AASite-QuadMg1,0,0,3600,1,2,0,1,0,1,0,0
-R-Defense-AASite-QuadRotMg,Level Two,0,0,IMAGE_RES_DEFENCE,0,0,RES_EMP_AA3,AASite-QuadRotMg,0,0,6000,0,3,0,1,1,1,0,0
+R-Defense-AASite-QuadRotMg,Level Two,0,0,IMAGE_RES_DEFENCE,0,0,RES_EMP_AA3,AASite-QuadRotMg,0,0,6000,0,2,0,1,1,1,0,0
 R-Defense-PrisLas,Level Three,0,0,IMAGE_RES_DEFENCE,0,0,RES_EMP_PrisLas,Emplacement-PrisLas,0,0,14400,0,2,0,1,0,1,0,0
 R-Defense-RotHow,Level Three,0,0,IMAGE_RES_DEFENCE,0,0,RES_EMP_RotHOW,Emplacement-RotHow,0,0,5000,0,2,0,1,1,1,0,0
 R-Defense-RotMor,Level Two,0,0,IMAGE_RES_DEFENCE,0,0,RES_EMP_RotMor,Emplacement-RotMor,0,0,4800,0,2,0,1,1,1,0,0
