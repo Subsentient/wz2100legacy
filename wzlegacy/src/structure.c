@@ -4529,6 +4529,7 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
         if (ctrlShiftDown() && player == selectedPlayer && bCheckBuildQueue)
         {
             DROID   *psDroid;
+            ORDER_LIST *asOrderList = NULL;
             SDWORD  order,left,right,up,down,size;
             BOOL    validCombi;
 
@@ -4546,16 +4547,16 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
                             psDroid->droidType == DROID_CYBORG_CONSTRUCT)
                     {
                         //look thru' the list of orders to see if more building sites
-                        for (order = 0; order < psDroid->listSize; order++)
+                        for (asOrderList = psDroid->asOrderList; asOrderList; asOrderList = asOrderList->Next)
                         {
-                            if (psDroid->asOrderList[order].order == DORDER_BUILD)
+                            if (asOrderList->order == DORDER_BUILD)
                             {
-                                STRUCTURE_STATS *orderTarget = (STRUCTURE_STATS *)psDroid->asOrderList[order].psOrderTarget;
+                                STRUCTURE_STATS *orderTarget = (STRUCTURE_STATS *)asOrderList->psOrderTarget;
 
                                 validCombi = false;
-                                if (((STRUCTURE_STATS *)psDroid->asOrderList[order].
+                                if (((STRUCTURE_STATS *)asOrderList->
                                         psOrderTarget)->type == REF_DEFENSE ||
-                                        ((STRUCTURE_STATS *)psDroid->asOrderList[order].
+                                        ((STRUCTURE_STATS *)asOrderList->
                                          psOrderTarget)->type == REF_MISSILE_SILO)
                                 {
                                     validCombi = true;
@@ -4571,17 +4572,16 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
                                 {
                                     /*need to check there is one tile between buildings*/
                                     //check if any corner is within the build site
-                                    size = ((STRUCTURE_STATS *)psDroid->asOrderList[order].
+                                    size = ((STRUCTURE_STATS *)asOrderList->
                                             psOrderTarget)->baseWidth;
-                                    left = map_coord(psDroid->asOrderList[order].x) - size/2;
+                                    left = map_coord(asOrderList->x) - size/2;
                                     right = left + size;
-                                    size = ((STRUCTURE_STATS *)psDroid->asOrderList[order].
+                                    size = ((STRUCTURE_STATS *)asOrderList->
                                             psOrderTarget)->baseBreadth;
-                                    up = map_coord(psDroid->asOrderList[order].y) - size/2;
+                                    up = map_coord(asOrderList->y) - size/2;
                                     down = up + size;
                                     // increase the size of a repair facility
-                                    if (((STRUCTURE_STATS *)psDroid->asOrderList[
-                                                order].psOrderTarget)->type == REF_REPAIR_FACILITY)
+                                    if (((STRUCTURE_STATS *)asOrderList->psOrderTarget)->type == REF_REPAIR_FACILITY)
                                     {
                                         left -= 1;
                                         up -= 1;
@@ -7598,6 +7598,7 @@ STRUCTURE *giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, BOOL 
 {
     STRUCTURE           *psNewStruct, *psStruct;
     DROID               *psCurr;
+    ORDER_LIST *asOrderList = NULL;
     STRUCTURE_STATS     *psType, *psModule;
     UDWORD              x, y;
     UBYTE               capacity = 0, originalPlayer;
@@ -7664,20 +7665,12 @@ STRUCTURE *giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, BOOL 
                     }
                 }
                 //check through order list
-                for (i = 0; i < psCurr->listSize; i++)
+                for (asOrderList = psCurr->asOrderList; asOrderList; asOrderList = asOrderList->Next)
                 {
-                    if (psCurr->asOrderList[i].psOrderTarget == (BASE_OBJECT *)psStructure)
+                    if (asOrderList->psOrderTarget == (BASE_OBJECT *)psStructure)
                     {
-                        removeDroidOrderTarget(psCurr, i);
-                        // move the rest of the list down
-                        memmove(&psCurr->asOrderList[i], &psCurr->asOrderList[i] + 1,
-                                (psCurr->listSize - i) * sizeof(ORDER_LIST));
-                        //adjust list size
-                        psCurr->listSize -= 1;
-                        //initialise the empty last slot
-                        memset(psCurr->asOrderList + psCurr->listSize, 0,
-                               sizeof(ORDER_LIST));
-                    }
+						OrderList_Delete(psCurr, asOrderList);
+					}
                 }
             }
 

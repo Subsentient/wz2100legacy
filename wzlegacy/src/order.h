@@ -250,17 +250,10 @@ extern BOOL getFactoryState(STRUCTURE *psStruct, SECONDARY_ORDER sec, SECONDARY_
 //lasSat structure can select a target
 extern void orderStructureObj(UDWORD player, BASE_OBJECT *psObj);
 
-static inline void setDroidOrderTarget(DROID *psDroid, void *psNewObject, SDWORD idx)
-{
-    assert(idx >= 0 && idx < ORDER_LIST_MAX);
-    psDroid->asOrderList[idx].psOrderTarget = psNewObject;
-}
-
-static inline void removeDroidOrderTarget(DROID *psDroid, SDWORD idx)
-{
-    assert(idx >= 0 && idx < ORDER_LIST_MAX);
-    psDroid->asOrderList[idx].psOrderTarget = NULL;
-}
+//controls for order queue lists
+extern ORDER_LIST *OrderList_Add(DROID *psDroid);
+extern void OrderList_Delete(DROID *psDroid, ORDER_LIST *delOrder);
+extern void OrderList_Shutdown(DROID *psDroid);
 
 extern DROID_ORDER chooseOrderLoc(DROID *psDroid, UDWORD x,UDWORD y, BOOL altOrder);
 extern DROID_ORDER chooseOrderObj(DROID *psDroid, BASE_OBJECT *psObj, BOOL altOrder);

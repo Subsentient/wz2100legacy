@@ -317,6 +317,9 @@ void droidRelease(DROID *psDroid)
     {
         free(psDroid->sMove.asPath);
     }
+    
+    //Free memory related to order queues.
+    OrderList_Shutdown(psDroid);
 }
 
 
@@ -583,6 +586,8 @@ BOOL droidRemove(DROID *psDroid, DROID *pList[MAX_PLAYERS])
         grpLeave(psDroid->psGroup, psDroid);
         psDroid->psGroup = NULL;
     }
+    
+    OrderList_Shutdown(psDroid);
 
     // reset the baseStruct
     setDroidBase(psDroid, NULL);
@@ -2989,6 +2994,7 @@ DROID *buildDroid(DROID_TEMPLATE *pTemplate, UDWORD x, UDWORD y, UDWORD player,
                   BOOL onMission)
 {
     DROID			*psDroid;
+    ORDER_LIST *asOrderList = NULL;
     DROID_GROUP		*psGrp;
     UDWORD			inc;
     UDWORD			numKills;
@@ -3065,9 +3071,6 @@ DROID *buildDroid(DROID_TEMPLATE *pTemplate, UDWORD x, UDWORD y, UDWORD player,
         psDroid->asWeaps[i].rotation = 0;
         psDroid->asWeaps[i].pitch = 0;
     }
-
-    psDroid->listSize = 0;
-    memset(psDroid->asOrderList, 0, sizeof(ORDER_LIST)*ORDER_LIST_MAX);
 
     psDroid->iAudioID = NO_SOUND;
     psDroid->psCurAnim = NULL;
@@ -4865,6 +4868,7 @@ DROID *giftSingleDroid(DROID *psD, UDWORD to)
     UWORD		x, y, numKills, i;
     float		direction;
     DROID		*psNewDroid, *psCurr;
+    ORDER_LIST *asOrderList = NULL;
     STRUCTURE	*psStruct;
     UDWORD		body, armourK[NUM_HIT_SIDES], armourH[NUM_HIT_SIDES];
     HIT_SIDE	impact_side;
@@ -4979,17 +4983,11 @@ DROID *giftSingleDroid(DROID *psD, UDWORD to)
                     orderDroid(psCurr, DORDER_STOP);
                 }
                 // check through order list
-                for (i = 0; i < psCurr->listSize; i++)
+                for (asOrderList = psCurr->asOrderList; asOrderList != NULL; asOrderList = asOrderList->Next)
                 {
-                    if (psCurr->asOrderList[i].psOrderTarget == (BASE_OBJECT *)psD)
+                    if (asOrderList->psOrderTarget == (BASE_OBJECT *)psD)
                     {
-                        removeDroidOrderTarget(psCurr, i);
-                        // move the rest of the list down
-                        memmove(&psCurr->asOrderList[i], &psCurr->asOrderList[i] + 1, (psCurr->listSize - i) * sizeof(ORDER_LIST));
-                        // adjust list size
-                        psCurr->listSize -= 1;
-                        // initialise the empty last slot
-                        memset(psCurr->asOrderList + psCurr->listSize, 0, sizeof(ORDER_LIST));
+                       OrderList_Delete(psCurr, asOrderList);
                     }
                 }
             }
@@ -5364,7 +5362,6 @@ void checkDroid(const DROID *droid, const char *const location, const char *func
     ASSERT_HELPER(droid->type == OBJ_DROID, location, function, "CHECK_DROID: Not droid (type %d)", (int)droid->type);
     ASSERT_HELPER(droid->direction <= 360.0f && droid->direction >= 0.0f, location, function, "CHECK_DROID: Bad droid direction %f", droid->direction);
     ASSERT_HELPER(droid->numWeaps <= DROID_MAXWEAPS, location, function, "CHECK_DROID: Bad number of droid weapons %d", (int)droid->numWeaps);
-    ASSERT_HELPER(droid->listSize <= ORDER_LIST_MAX, location, function, "CHECK_DROID: Bad number of droid orders %d", (int)droid->listSize);
     ASSERT_HELPER(droid->player < MAX_PLAYERS, location, function, "CHECK_DROID: Bad droid owner %d", (int)droid->player);
     ASSERT_HELPER(droidOnMap(droid), location, function, "CHECK_DROID: Droid off map");
     ASSERT_HELPER((!droid->psTarStats || ((STRUCTURE_STATS *)droid->psTarStats)->type != REF_DEMOLISH), location, function, "CHECK_DROID: Cannot build demolition");

@@ -85,9 +85,6 @@ RUN_DATA	asRunData[MAX_PLAYERS];
 // deal with a droid receiving a primary order
 BOOL secondaryGotPrimaryOrder(DROID *psDroid, DROID_ORDER order);
 
-// clear all the orders from the list
-void orderClearDroidList(DROID *psDroid);
-
 void orderDroidStatsTwoLocAdd(DROID *psDroid, DROID_ORDER order,
                               BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2);
 
@@ -214,6 +211,79 @@ BASE_OBJECT *checkForRepairRange(DROID *psDroid,DROID *psTarget)
     return NULL;
 }
 
+void OrderList_Shutdown(DROID *psDroid)
+{
+	ORDER_LIST *asOrderList = psDroid->asOrderList, *asNext = NULL;
+	
+	for (; asOrderList != NULL; asOrderList = asNext)
+	{
+		asNext = asOrderList->Next;
+		free(asOrderList);
+	}
+	
+	psDroid->asOrderList = NULL;
+}
+
+ORDER_LIST *OrderList_Add(DROID *psDroid)
+{
+	ORDER_LIST *asOrderList = psDroid->asOrderList;
+	
+	if (!asOrderList)
+	{ /*Fire up the list if it isn't already*/
+		asOrderList = psDroid->asOrderList = malloc(sizeof(ORDER_LIST));
+		memset(asOrderList, 0, sizeof(ORDER_LIST));
+		
+		return asOrderList;
+	}
+	
+	while (asOrderList->Next) asOrderList = asOrderList->Next;
+	
+	asOrderList->Next = malloc(sizeof(ORDER_LIST));
+	memset(asOrderList->Next, 0, sizeof(ORDER_LIST));
+	asOrderList->Next->Prev = asOrderList;
+	
+	return asOrderList->Next;
+}
+	
+void OrderList_Delete(DROID *psDroid, ORDER_LIST *delOrder)
+{
+	ORDER_LIST *asOrderList = psDroid->asOrderList;
+	
+	for (; asOrderList; asOrderList = asOrderList->Next)
+	{
+		if (asOrderList == delOrder)
+		{
+			/*If we are the first*/
+			if (asOrderList == psDroid->asOrderList)
+			{
+				if (asOrderList->Next)
+				{
+					asOrderList->Next->Prev = NULL;
+					psDroid->asOrderList = asOrderList->Next;
+					
+					free(asOrderList);
+				}
+				else
+				{
+					OrderList_Shutdown(psDroid);
+				}
+				
+				return;
+			}
+			
+			/*If we are NOT the first*/
+			asOrderList->Prev->Next = asOrderList->Next;
+			if (asOrderList->Next)
+			{
+				asOrderList->Next->Prev = asOrderList->Prev;
+			}
+			free(asOrderList);
+			
+			return;
+		}
+	}
+}
+			
 /*For a given constructor droid, check if there are any damaged buildings within
 a defined range*/
 BASE_OBJECT *checkForDamagedStruct(DROID *psDroid, STRUCTURE *psTarget)
@@ -2178,7 +2248,7 @@ void orderDroidLoc(DROID *psDroid, DROID_ORDER order, UDWORD x, UDWORD y)
     ASSERT_OR_RETURN(, psDroid != NULL, "Invalid unit pointer");
     ASSERT_OR_RETURN(, validOrderForLoc(order), "Invalid order for location");
 
-    orderClearDroidList(psDroid);
+    OrderList_Shutdown(psDroid);
 
     if (bMultiMessages) //ajl
     {
@@ -2240,7 +2310,7 @@ void orderDroidObj(DROID *psDroid, DROID_ORDER order, BASE_OBJECT *psObj)
     ASSERT(psDroid != NULL, "Invalid unit pointer");
     ASSERT(validOrderForObj(order), "Invalid order for object");
 
-    orderClearDroidList(psDroid);
+   OrderList_Shutdown(psDroid);
 
     if (bMultiMessages) //ajl
     {
@@ -2347,7 +2417,7 @@ void orderDroidStatsLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, 
     ASSERT(psDroid != NULL, "Invalid unit pointer");
     ASSERT(order == DORDER_BUILD, "Invalid order for location");
 
-    orderClearDroidList(psDroid);
+    OrderList_Shutdown(psDroid);
 
     memset(&sOrder,0,sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
@@ -2388,7 +2458,7 @@ void orderDroidStatsTwoLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStat
     ASSERT(order == DORDER_LINEBUILD, "Invalid order for location");
     ASSERT(x1 == x2 || y1 == y2, "Invalid locations for LINEBUILD");
 
-    orderClearDroidList(psDroid);
+	OrderList_Shutdown(psDroid);
 
     memset(&sOrder,0,sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
@@ -2475,14 +2545,8 @@ void orderDroidAdd(DROID *psDroid, DROID_ORDER_DATA *psOrder)
 
     ASSERT(psDroid != NULL, "Invalid unit pointer");
 
-    if (psDroid->listSize >= ORDER_LIST_MAX)
-    {
-        // no room to store the order, quit
-        return;
-    }
-
     // if not doing anything - do it immediately
-    if (psDroid->listSize == 0 &&
+    if (psDroid->asOrderList == NULL &&
             (psDroid->order == DORDER_NONE ||
              psDroid->order == DORDER_GUARD ||
              psDroid->order == DORDER_PATROL ||
@@ -2493,21 +2557,23 @@ void orderDroidAdd(DROID *psDroid, DROID_ORDER_DATA *psOrder)
     }
     else
     {
-        psDroid->asOrderList[psDroid->listSize].order = psOrder->order;
-        //psDroid->asOrderList[psDroid->listSize].psObj = psOrder->psObj;
+		ORDER_LIST *asOrderList = OrderList_Add(psDroid);
+		
+        asOrderList->order = psOrder->order;
+        
         if (psOrder->order == DORDER_BUILD || psOrder->order == DORDER_LINEBUILD)
         {
-            setDroidOrderTarget(psDroid, psOrder->psStats, psDroid->listSize);
+			asOrderList->psOrderTarget = (void*)psOrder->psStats;
         }
         else
         {
-            setDroidOrderTarget(psDroid, psOrder->psObj, psDroid->listSize);
+            asOrderList->psOrderTarget = (void*)psOrder->psObj;
         }
-        psDroid->asOrderList[psDroid->listSize].x = (UWORD)psOrder->x;
-        psDroid->asOrderList[psDroid->listSize].y = (UWORD)psOrder->y;
-        psDroid->asOrderList[psDroid->listSize].x2 = (UWORD)psOrder->x2;
-        psDroid->asOrderList[psDroid->listSize].y2 = (UWORD)psOrder->y2;
-        psDroid->listSize += 1;
+        
+        asOrderList->x = (UWORD)psOrder->x;
+        asOrderList->y = (UWORD)psOrder->y;
+        asOrderList->x2 = (UWORD)psOrder->x2;
+        asOrderList->y2 = (UWORD)psOrder->y2;
     }
 
     //don't display the arrow-effects with build orders since unnecessary
@@ -2534,13 +2600,15 @@ BOOL orderDroidList(DROID *psDroid)
 {
     DROID_ORDER_DATA	sOrder;
 
-    if (psDroid->listSize > 0)
+    if (psDroid->asOrderList != NULL)
     {
         // there are some orders to give
         memset(&sOrder, 0, sizeof(DROID_ORDER_DATA));
-        sOrder.order = psDroid->asOrderList[0].order;
+        
+        sOrder.order = psDroid->asOrderList->order;
+        
         //sOrder.psObj = psDroid->asOrderList[0].psObj;
-        switch (psDroid->asOrderList[0].order)
+        switch (psDroid->asOrderList->order)
         {
             case DORDER_MOVE:
             case DORDER_SCOUT:
@@ -2556,27 +2624,25 @@ BOOL orderDroidList(DROID *psDroid)
             case DORDER_DEMOLISH:
             case DORDER_HELPBUILD:
             case DORDER_BUILDMODULE:
-                sOrder.psObj = (BASE_OBJECT *)psDroid->asOrderList[0].psOrderTarget;
+                sOrder.psObj = (BASE_OBJECT *)psDroid->asOrderList->psOrderTarget;
                 break;
             case DORDER_BUILD:
             case DORDER_LINEBUILD:
                 sOrder.psObj = NULL;
-                sOrder.psStats = (BASE_STATS *)psDroid->asOrderList[0].psOrderTarget;
+                sOrder.psStats = (BASE_STATS *)psDroid->asOrderList->psOrderTarget;
                 break;
             default:
                 ASSERT( false, "orderDroidList: Invalid order" );
                 return false;
         }
-        sOrder.x	 = psDroid->asOrderList[0].x;
-        sOrder.y	 = psDroid->asOrderList[0].y;
-        sOrder.x2	 = psDroid->asOrderList[0].x2;
-        sOrder.y2	 = psDroid->asOrderList[0].y2;
-        psDroid->listSize -= 1;
+        sOrder.x	 = psDroid->asOrderList->x;
+        sOrder.y	 = psDroid->asOrderList->y;
+        sOrder.x2	 = psDroid->asOrderList->x2;
+        sOrder.y2	 = psDroid->asOrderList->y2;
 
-        // move the rest of the list down
-        memmove(psDroid->asOrderList, psDroid->asOrderList + 1, psDroid->listSize * sizeof(ORDER_LIST));
-        memset(psDroid->asOrderList + psDroid->listSize, 0, sizeof(ORDER_LIST));
-
+		//Now that we are done with it, delete the order.
+		OrderList_Delete(psDroid, psDroid->asOrderList);
+		
         orderDroidBase(psDroid, &sOrder);
 
         //don't send BUILD orders in multiplayer
@@ -2591,53 +2657,28 @@ BOOL orderDroidList(DROID *psDroid)
     return false;
 }
 
-
-// clear all the orders from the list
-void orderClearDroidList(DROID *psDroid)
-{
-    psDroid->listSize = 0;
-    memset(psDroid->asOrderList, 0, sizeof(ORDER_LIST)*ORDER_LIST_MAX);
-}
-
 // check all the orders in the list for died objects
 void orderCheckList(DROID *psDroid)
 {
-    SDWORD	i;
-
-    i=0;
-    while (i<psDroid->listSize)
+	ORDER_LIST *asOrderList = psDroid->asOrderList;
+	
+    for (; asOrderList; asOrderList = asOrderList->Next)
     {
-        //if (psDroid->asOrderList[i].psObj &&
-        //	(psDroid->asOrderList[i].psObj)->died)
-
-        //if order requires an object
-        if (psDroid->asOrderList[i].order == DORDER_ATTACK ||
-                psDroid->asOrderList[i].order == DORDER_REPAIR ||
-                psDroid->asOrderList[i].order == DORDER_OBSERVE ||
-                psDroid->asOrderList[i].order == DORDER_DROIDREPAIR ||
-                psDroid->asOrderList[i].order == DORDER_FIRESUPPORT ||
-                psDroid->asOrderList[i].order == DORDER_CLEARWRECK ||
-                psDroid->asOrderList[i].order == DORDER_DEMOLISH ||
-                psDroid->asOrderList[i].order == DORDER_HELPBUILD ||
-                psDroid->asOrderList[i].order == DORDER_BUILDMODULE)
+        if (asOrderList->order == DORDER_ATTACK ||
+                asOrderList->order == DORDER_REPAIR ||
+                asOrderList->order == DORDER_OBSERVE ||
+                asOrderList->order == DORDER_DROIDREPAIR ||
+                asOrderList->order == DORDER_FIRESUPPORT ||
+                asOrderList->order == DORDER_CLEARWRECK ||
+                asOrderList->order == DORDER_DEMOLISH ||
+                asOrderList->order == DORDER_HELPBUILD ||
+                asOrderList->order == DORDER_BUILDMODULE)
         {
-            if ((BASE_OBJECT *)psDroid->asOrderList[i].psOrderTarget &&
-                    ((BASE_OBJECT *)psDroid->asOrderList[i].psOrderTarget)->died)
+            if ((BASE_OBJECT *)asOrderList->psOrderTarget &&
+                    ((BASE_OBJECT *)asOrderList->psOrderTarget)->died)
             {
-                // copy any other orders down the stack
-                psDroid->listSize -= 1;
-                memmove(psDroid->asOrderList + i, psDroid->asOrderList + i + 1,
-                        (psDroid->listSize - i) * sizeof(ORDER_LIST));
-                memset(psDroid->asOrderList + psDroid->listSize, 0, sizeof(ORDER_LIST));
+				OrderList_Delete(psDroid, asOrderList);
             }
-            else
-            {
-                i++;
-            }
-        }
-        else
-        {
-            i ++;
         }
     }
 

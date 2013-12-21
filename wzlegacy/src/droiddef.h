@@ -74,13 +74,17 @@ typedef struct _component
 } COMPONENT;
 
 // maximum number of queued orders
-#define ORDER_LIST_MAX		10
+
 
 typedef struct _order_list
 {
     SDWORD          order;
     void           *psOrderTarget;  ///< this needs to cope with objects and stats
     UWORD           x, y, x2, y2;   ///< line build requires two sets of coords
+
+    struct _order_list *Next;
+    struct _order_list *Prev;
+    
 } ORDER_LIST;
 
 typedef struct _droid_template
@@ -156,8 +160,7 @@ typedef struct DROID
     struct DROID  *psGrpNext;
     struct _structure *psBaseStruct;                ///< a structure that this droid might be associated with. For VTOLs this is the rearming pad
     // queued orders
-    SDWORD          listSize;
-    ORDER_LIST      asOrderList[ORDER_LIST_MAX];
+    ORDER_LIST      *asOrderList;
 
     /* Order data */
     SDWORD          order;

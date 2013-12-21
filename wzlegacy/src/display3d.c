@@ -1698,6 +1698,7 @@ void displayBlueprints(void)
 {
     STRUCTURE *blueprint;
     DROID *psDroid;
+    ORDER_LIST *asOrderList = NULL;
     int order, PlayerCounter, BlueprintColor;
     STRUCT_STATES state;
 
@@ -1816,32 +1817,32 @@ void displayBlueprints(void)
 	                }
 	            }
 	            //now look thru' the list of orders to see if more building sites
-	            for (order = 0; order < psDroid->listSize; order++)
+	            for (asOrderList = psDroid->asOrderList; asOrderList; asOrderList = asOrderList->Next)
 	            {
-	                if (psDroid->asOrderList[order].order == DORDER_BUILD)
+	                if (asOrderList->order == DORDER_BUILD)
 	                {
 	                    // a single building
-	                    if (!TileHasStructure(mapTile(map_coord(psDroid->asOrderList[order].x),map_coord(psDroid->asOrderList[order].y))))
+	                    if (!TileHasStructure(mapTile(map_coord(asOrderList->x),map_coord(asOrderList->y))))
 	                    {
-	                        blueprint = buildBlueprint((STRUCTURE_STATS *)psDroid->asOrderList[order].psOrderTarget,
-	                                                   psDroid->asOrderList[order].x,
-	                                                   psDroid->asOrderList[order].y,
+	                        blueprint = buildBlueprint((STRUCTURE_STATS *)asOrderList->psOrderTarget,
+	                                                   asOrderList->x,
+	                                                   asOrderList->y,
 	                                                   BlueprintColor);
 	                        renderStructure(blueprint);
 	                        free(blueprint);
 	                    }
 	                }
-	                else if (psDroid->asOrderList[order].order == DORDER_LINEBUILD)
+	                else if (asOrderList->order == DORDER_LINEBUILD)
 	                {
 	                    int left, right, up, down;
 	                    // a wall (or something like that)
 	
-	                    left = MIN(map_coord(psDroid->asOrderList[order].x), map_coord(psDroid->asOrderList[order].x2));
-	                    right = MAX(map_coord(psDroid->asOrderList[order].x), map_coord(psDroid->asOrderList[order].x2));
-	                    up = MIN(map_coord(psDroid->asOrderList[order].y), map_coord(psDroid->asOrderList[order].y2));
-	                    down = MAX(map_coord(psDroid->asOrderList[order].y), map_coord(psDroid->asOrderList[order].y2));
+	                    left = MIN(map_coord(asOrderList->x), map_coord(asOrderList->x2));
+	                    right = MAX(map_coord(asOrderList->x), map_coord(asOrderList->x2));
+	                    up = MIN(map_coord(asOrderList->y), map_coord(asOrderList->y2));
+	                    down = MAX(map_coord(asOrderList->y), map_coord(asOrderList->y2));
 	
-	                    drawWallDrag((STRUCTURE_STATS *)psDroid->asOrderList[order].psOrderTarget, left, right, up, down, BlueprintColor);
+	                    drawWallDrag((STRUCTURE_STATS *)asOrderList->psOrderTarget, left, right, up, down, BlueprintColor);
 	                }
 	            }
 	        }

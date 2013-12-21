@@ -467,6 +467,8 @@ void addDroid(DROID *psDroidToAdd, DROID *pList[MAX_PLAYERS])
             addObjectToFuncList(mission.apsSensorList, (BASE_OBJECT *)psDroidToAdd, 0);
         }
     }
+    
+    psDroidToAdd->asOrderList = NULL;
 }
 
 /* Destroy a droid */
