@@ -516,11 +516,33 @@ static void highLevelDroidUpdate(DROID *psDroid, float tx, float ty,
 
 	turnOffMultiMsg(true);
 	
-	if (action != 400 && psDroid->action != action && psTarget) //Action is initialized to 400 because it's not an action.
+	if (action != 400 && psDroid->action != action) //Action is initialized to 400 because it's not an action.
 	{ /*Synchronize droid's action too.*/
-		psDroid->action = action;
+		
+		if (psTarget)
+		{
+			psDroid->action = action;
+		}
+		else
+		{
+			switch (action)
+			{ /*See, we can't set the action without a target
+				* unless we're certain that this action doesn't need one.*/
+				case DACTION_NONE:
+				case DACTION_TRANSPORTWAITTOFLYIN:
+				case DACTION_SULK:
+				case DACTION_DESTRUCT:
+				case DACTION_WAITFORREPAIR:
+				case DACTION_WAITDURINGREPAIR:
+					psDroid->action = action;
+					break;
+				default: /*This happens because we can get a target that doesn't exist anymore.*/
+					psDroid->action = DACTION_NONE;
+					break;
+			}
+		}
 	}
-	
+
 	/*Synchronize the move mode.*/
 	if (psDroid->sMove.Status != movestatus)
 	{
