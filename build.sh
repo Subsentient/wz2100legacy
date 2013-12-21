@@ -39,7 +39,7 @@ cp -R ./wzlegacy ./wzlegacy_build || abort 2
 cd ./wzlegacy_build
 
 ./autogen.sh || abort 1
-./configure CFLAGS="-march=native -mtune=native -O3" CXXFLAGS="-march=native -mtune=native -O3" || abort 1
+./configure --prefix=/usr || abort 1
 make -j32 || abort 1
 sudo make install || abort 1
 
