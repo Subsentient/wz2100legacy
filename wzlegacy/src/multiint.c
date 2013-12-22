@@ -3214,6 +3214,7 @@ void frontendMultiMessages(void)
                 if (recvMapFileData())
                 {
                     widgSetButtonState(psWScreen, MULTIOP_MAP_BUT, 0);	// turn it back on again
+                    loadMapPreview(false);
                 }
                 break;
 

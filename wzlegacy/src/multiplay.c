@@ -284,7 +284,7 @@ BOOL multiPlayerLoop(void)
                     {
                         char msg[256] = {'\0'};
 
-                        sprintf(msg, _("Kicking player %s, because they tried to bypass data integrity check!"), getPlayerName(index));
+                        snprintf(msg, 256, _("Kicking player %s, because they tried to bypass data integrity check!"), getPlayerName(index));
                         sendTextMessage(msg, true);
                         addConsoleMessage(msg, LEFT_JUSTIFY, NOTIFY_MESSAGE);
                         NETlogEntry(msg, SYNC_FLAG, index);
@@ -1117,7 +1117,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	struct { const char *CmdName; short AvailableAlways; short TakesArg; } AvailableCommands[] =
 			{ 
 			{ "!help", 1, 0 }, { "!name", 0, 1 }, { "!kick", 1, 1 }, { "!playerlist", 1, 0},
-			{ "!beep", 1, 1 }, {"!toggleticker", 0, 0}, { "!spectate", 0, 0 }, { NULL }
+			{ "!beep", 1, 1 }, {"!toggleticker", 0, 0}, { "!spectate", 0, 0 }, { NULL, 0, 0 }
 			};
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
@@ -2023,8 +2023,13 @@ BOOL recvMapFileData()
     mapDownloadProgress = NETrecvFile();
     if (mapDownloadProgress == 100)
     {
-        addConsoleMessage("MAP DOWNLOADED!",DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
-        sendTextMessage("MAP DOWNLOADED",true);					//send
+		char TBuf[128];
+		
+        addConsoleMessage("MAP DOWNLOADED!", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+        
+        snprintf(TBuf, 128, "%s: MAP DOWNLOADED!", getPlayerName(selectedPlayer));
+        sendTextMessage(TBuf, true);					//send
+        
         debug(LOG_NET, "=== File has been received. ===");
 
         // clear out the old level list.
