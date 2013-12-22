@@ -620,9 +620,20 @@ static void DroidScreenUpdate(DROID *psDroid,
 	
 	if (oldX != psDroid->pos.x || oldY != psDroid->pos.y)
 	{
+		turnOffMultiMsg(true);
 		gridMoveDroid(psDroid, oldX, oldY);
+		turnOffMultiMsg(false);
 	}
 
+	// stop droid if remote droid has stopped.
+	if ((order == DORDER_NONE || order == DORDER_GUARD)
+	    && (psDroid->order != DORDER_NONE && psDroid->order != DORDER_GUARD))
+	{
+		turnOffMultiMsg(true);
+		moveStopDroid(psDroid);
+		turnOffMultiMsg(false);
+	}
+	
 	// snap droid(if on ground)  to terrain level at x,y.
 	psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
 	
