@@ -301,7 +301,8 @@ BOOL found3DBuildLocTwo(UDWORD *px1, UDWORD *py1, UDWORD *px2, UDWORD *py2)
 {
     if ( (((STRUCTURE_STATS *)sBuildDetails.psStats)->type != REF_WALL &&
             ((STRUCTURE_STATS *)sBuildDetails.psStats)->type != REF_DEFENSE &&
-            ((STRUCTURE_STATS *)sBuildDetails.psStats)->type != REF_REARM_PAD) ||
+            ((STRUCTURE_STATS *)sBuildDetails.psStats)->type != REF_REARM_PAD &&
+            ((STRUCTURE_STATS *)sBuildDetails.psStats)->type != REF_RESOURCE_EXTRACTOR) ||
             wallDrag.status != DRAG_RELEASED)
     {
         return false;

@@ -4100,7 +4100,8 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
 
         //if we're dragging the wall/defense we need to check along the current dragged size
         if (wallDrag.status != DRAG_INACTIVE
-                && (psBuilding->type == REF_WALL || psBuilding->type == REF_DEFENSE || psBuilding->type == REF_REARM_PAD)
+                && (psBuilding->type == REF_WALL || psBuilding->type == REF_DEFENSE ||
+                psBuilding->type == REF_REARM_PAD || psBuilding->type == REF_RESOURCE_EXTRACTOR)
                 && !isLasSat(psBuilding))
         {
             UWORD    dx,dy;

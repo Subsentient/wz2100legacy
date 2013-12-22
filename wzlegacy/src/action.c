@@ -1864,7 +1864,8 @@ void actionUpdateDroid(DROID *psDroid)
                 }
                 else if ((psDroid->order == DORDER_LINEBUILD || psDroid->order==DORDER_BUILD)
                          && (psStructStats->type == REF_WALL || psStructStats->type == REF_WALLCORNER ||
-                             psStructStats->type == REF_DEFENSE || psStructStats->type == REF_REARM_PAD))
+                             psStructStats->type == REF_DEFENSE || psStructStats->type == REF_REARM_PAD ||
+                             psStructStats->type == REF_RESOURCE_EXTRACTOR))
                 {
                     // building a wall.
                     MAPTILE *const psTile = mapTile(map_coord(psDroid->orderX), map_coord(psDroid->orderY));
@@ -1901,6 +1902,22 @@ void actionUpdateDroid(DROID *psDroid)
                                 psDroid->action = DACTION_NONE;
                             }
                         }
+                        else if (TileHasFeature(psTile))
+                        {
+							FEATURE *const psFeature = getTileFeature(map_coord(psDroid->orderX), map_coord(psDroid->orderY));
+							
+							if (psStructStats->type == REF_RESOURCE_EXTRACTOR &&
+								psFeature->psStats->subType == FEAT_OIL_RESOURCE && 
+								droidStartBuild(psDroid))
+							{ /*This does not control whether or not we build on oil resources alone, there's a place
+								in structure.c that does that.*/
+								psDroid->action = DACTION_BUILD;
+							}
+							else
+							{
+								 psDroid->action = DACTION_NONE;
+							}
+						}
                         else
                         {
                             psDroid->action = DACTION_NONE;

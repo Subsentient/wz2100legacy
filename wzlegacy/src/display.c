@@ -662,7 +662,8 @@ static void CheckFinishedDrag(void)
                 {
                     if ((((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_WALL
                             || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_DEFENSE
-                            || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_REARM_PAD)
+                            || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_REARM_PAD
+                            || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_RESOURCE_EXTRACTOR)
                             && !isLasSat((STRUCTURE_STATS *)sBuildDetails.psStats))
                     {
                         wallDrag.x2 = mouseTileX;
@@ -708,7 +709,8 @@ static void CheckStartWallDrag(void)
         {
             if ((((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_WALL
                     || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_DEFENSE
-                    || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_REARM_PAD)
+                    || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_REARM_PAD
+                    || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_RESOURCE_EXTRACTOR)
                     && !isLasSat((STRUCTURE_STATS *)sBuildDetails.psStats))
             {
                 wallDrag.x1 = wallDrag.x2 = mouseTileX;
@@ -791,7 +793,8 @@ static void HandleDrag(void)
         {
             if ((((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_WALL
                     || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_DEFENSE
-                    || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_REARM_PAD)
+                    || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_REARM_PAD
+                    || ((STRUCTURE_STATS *)sBuildDetails.psStats)->type == REF_RESOURCE_EXTRACTOR)
                     && !isLasSat((STRUCTURE_STATS *)sBuildDetails.psStats))
             {
                 int dx, dy;
