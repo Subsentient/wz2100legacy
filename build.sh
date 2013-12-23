@@ -40,7 +40,7 @@ cd ./wzlegacy_build
 
 ./autogen.sh || abort 1
 ./configure --prefix=/usr || abort 1
-make -j32 || abort 1
+make -j2 || abort 1
 sudo make install || abort 1
 
 # cleanup
