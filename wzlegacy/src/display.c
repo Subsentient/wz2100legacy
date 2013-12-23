@@ -830,7 +830,6 @@ UDWORD getTargetType(void)
 //don't want to do any of these whilst in the Intelligence Screen
 void processMouseClickInput(void)
 {
-    UDWORD	i;
     SELECTION_TYPE	selection;
     MOUSE_TARGET	item=MT_NOTARGET;
     BOOL OverRadar = OverRadarAndNotDragging();
@@ -991,20 +990,9 @@ void processMouseClickInput(void)
             else if (selection==SC_DROID_CONSTRUCT)
             {
                 // We don't allow the build cursor under certain circumstances ....
-                // can't build if res extractors arent available.
-                if (item == MT_RESOURCE)
-                {
-                    for (i=0; (i<numStructureStats)&&(asStructureStats[i].type != REF_RESOURCE_EXTRACTOR); i++)	// find resource stat
-                    {
-                        if( (i < numStructureStats) && (apStructTypeLists[selectedPlayer][i] != AVAILABLE))		// check if you can build it!
-                        {
-                            item = MT_BLOCKING;				// don't allow build pointer.
-                        }
-                    }
-                }
 
                 // repair instead of sensor/guard with cons. droids.
-                else if (item == MT_SENSOR)
+                if (item == MT_SENSOR)
                 {
                     if(ObjUnderMouse							// something valid
                             && (ObjUnderMouse->type == OBJ_STRUCTURE))// check if struct
