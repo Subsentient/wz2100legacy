@@ -1699,7 +1699,7 @@ void displayBlueprints(void)
     STRUCTURE *blueprint;
     DROID *psDroid;
     ORDER_LIST *asOrderList = NULL;
-    int order, PlayerCounter, BlueprintColor;
+    int PlayerCounter, BlueprintColor;
     STRUCT_STATES state;
 
     if ( (buildState == BUILD3D_VALID || buildState == BUILD3D_POS) &&

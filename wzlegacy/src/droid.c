@@ -2994,7 +2994,6 @@ DROID *buildDroid(DROID_TEMPLATE *pTemplate, UDWORD x, UDWORD y, UDWORD player,
                   BOOL onMission)
 {
     DROID			*psDroid;
-    ORDER_LIST *asOrderList = NULL;
     DROID_GROUP		*psGrp;
     UDWORD			inc;
     UDWORD			numKills;
@@ -4865,7 +4864,7 @@ BOOL standardSensorDroid(DROID *psDroid)
 DROID *giftSingleDroid(DROID *psD, UDWORD to)
 {
     DROID_TEMPLATE	sTemplate;
-    UWORD		x, y, numKills, i;
+    UWORD		x, y, numKills;
     float		direction;
     DROID		*psNewDroid, *psCurr;
     ORDER_LIST *asOrderList = NULL;
