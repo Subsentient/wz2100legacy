@@ -4867,7 +4867,7 @@ DROID *giftSingleDroid(DROID *psD, UDWORD to)
     UWORD		x, y, numKills;
     float		direction;
     DROID		*psNewDroid, *psCurr;
-    ORDER_LIST *asOrderList = NULL;
+    ORDER_LIST *psOrderList = NULL;
     STRUCTURE	*psStruct;
     UDWORD		body, armourK[NUM_HIT_SIDES], armourH[NUM_HIT_SIDES];
     HIT_SIDE	impact_side;
@@ -4982,11 +4982,11 @@ DROID *giftSingleDroid(DROID *psD, UDWORD to)
                     orderDroid(psCurr, DORDER_STOP);
                 }
                 // check through order list
-                for (asOrderList = psCurr->asOrderList; asOrderList != NULL; asOrderList = asOrderList->Next)
+                for (psOrderList = psCurr->psOrderList; psOrderList != NULL; psOrderList = psOrderList->psNext)
                 {
-                    if (asOrderList->psOrderTarget == (BASE_OBJECT *)psD)
+                    if (psOrderList->psOrderTarget == (BASE_OBJECT *)psD)
                     {
-                       OrderList_Delete(psCurr, asOrderList);
+                       OrderList_Delete(psCurr, psOrderList);
                     }
                 }
             }

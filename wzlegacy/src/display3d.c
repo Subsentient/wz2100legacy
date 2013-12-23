@@ -1698,7 +1698,7 @@ void displayBlueprints(void)
 {
     STRUCTURE *blueprint;
     DROID *psDroid;
-    ORDER_LIST *asOrderList = NULL;
+    ORDER_LIST *psOrderList = NULL;
     int PlayerCounter, BlueprintColor;
     STRUCT_STATES state;
 
@@ -1810,32 +1810,32 @@ void displayBlueprints(void)
 	                }
 	            }
 	            //now look thru' the list of orders to see if more building sites
-	            for (asOrderList = psDroid->asOrderList; asOrderList; asOrderList = asOrderList->Next)
+	            for (psOrderList = psDroid->psOrderList; psOrderList; psOrderList = psOrderList->psNext)
 	            {
-	                if (asOrderList->order == DORDER_BUILD)
+	                if (psOrderList->order == DORDER_BUILD)
 	                {
 	                    // a single building
-	                    if (!TileHasStructure(mapTile(map_coord(asOrderList->x),map_coord(asOrderList->y))))
+	                    if (!TileHasStructure(mapTile(map_coord(psOrderList->x),map_coord(psOrderList->y))))
 	                    {
-	                        blueprint = buildBlueprint((STRUCTURE_STATS *)asOrderList->psOrderTarget,
-	                                                   asOrderList->x,
-	                                                   asOrderList->y,
+	                        blueprint = buildBlueprint((STRUCTURE_STATS *)psOrderList->psOrderTarget,
+	                                                   psOrderList->x,
+	                                                   psOrderList->y,
 	                                                   BlueprintColor);
 	                        renderStructure(blueprint);
 	                        free(blueprint);
 	                    }
 	                }
-	                else if (asOrderList->order == DORDER_LINEBUILD)
+	                else if (psOrderList->order == DORDER_LINEBUILD)
 	                {
 	                    int left, right, up, down;
 	                    // a wall (or something like that)
 	
-	                    left = MIN(map_coord(asOrderList->x), map_coord(asOrderList->x2));
-	                    right = MAX(map_coord(asOrderList->x), map_coord(asOrderList->x2));
-	                    up = MIN(map_coord(asOrderList->y), map_coord(asOrderList->y2));
-	                    down = MAX(map_coord(asOrderList->y), map_coord(asOrderList->y2));
+	                    left = MIN(map_coord(psOrderList->x), map_coord(psOrderList->x2));
+	                    right = MAX(map_coord(psOrderList->x), map_coord(psOrderList->x2));
+	                    up = MIN(map_coord(psOrderList->y), map_coord(psOrderList->y2));
+	                    down = MAX(map_coord(psOrderList->y), map_coord(psOrderList->y2));
 	
-	                    drawWallDrag((STRUCTURE_STATS *)asOrderList->psOrderTarget, left, right, up, down, BlueprintColor);
+	                    drawWallDrag((STRUCTURE_STATS *)psOrderList->psOrderTarget, left, right, up, down, BlueprintColor);
 	                }
 	            }
 	        }

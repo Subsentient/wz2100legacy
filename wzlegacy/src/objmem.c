@@ -468,7 +468,7 @@ void addDroid(DROID *psDroidToAdd, DROID *pList[MAX_PLAYERS])
         }
     }
     
-    psDroidToAdd->asOrderList = NULL;
+    psDroidToAdd->psOrderList = NULL;
 }
 
 /* Destroy a droid */

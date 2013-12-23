@@ -968,7 +968,7 @@ void aiUpdateDroid(DROID *psDroid)
     }
 
     // don't look for a target if there are any queued orders
-    if (psDroid->asOrderList)
+    if (psDroid->psOrderList)
     {
         lookForTarget = false;
         updateTarget = false;

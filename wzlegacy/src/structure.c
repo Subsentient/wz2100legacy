@@ -4530,7 +4530,7 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
         if (ctrlShiftDown() && player == selectedPlayer && bCheckBuildQueue)
         {
             DROID   *psDroid;
-            ORDER_LIST *asOrderList = NULL;
+            ORDER_LIST *psOrderList = NULL;
             SDWORD	left,right,up,down,size;
             BOOL    validCombi;
 
@@ -4548,16 +4548,16 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
                             psDroid->droidType == DROID_CYBORG_CONSTRUCT)
                     {
                         //look thru' the list of orders to see if more building sites
-                        for (asOrderList = psDroid->asOrderList; asOrderList; asOrderList = asOrderList->Next)
+                        for (psOrderList = psDroid->psOrderList; psOrderList; psOrderList = psOrderList->psNext)
                         {
-                            if (asOrderList->order == DORDER_BUILD)
+                            if (psOrderList->order == DORDER_BUILD)
                             {
-                                STRUCTURE_STATS *orderTarget = (STRUCTURE_STATS *)asOrderList->psOrderTarget;
+                                STRUCTURE_STATS *orderTarget = (STRUCTURE_STATS *)psOrderList->psOrderTarget;
 
                                 validCombi = false;
-                                if (((STRUCTURE_STATS *)asOrderList->
+                                if (((STRUCTURE_STATS *)psOrderList->
                                         psOrderTarget)->type == REF_DEFENSE ||
-                                        ((STRUCTURE_STATS *)asOrderList->
+                                        ((STRUCTURE_STATS *)psOrderList->
                                          psOrderTarget)->type == REF_MISSILE_SILO)
                                 {
                                     validCombi = true;
@@ -4573,16 +4573,16 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
                                 {
                                     /*need to check there is one tile between buildings*/
                                     //check if any corner is within the build site
-                                    size = ((STRUCTURE_STATS *)asOrderList->
+                                    size = ((STRUCTURE_STATS *)psOrderList->
                                             psOrderTarget)->baseWidth;
-                                    left = map_coord(asOrderList->x) - size/2;
+                                    left = map_coord(psOrderList->x) - size/2;
                                     right = left + size;
-                                    size = ((STRUCTURE_STATS *)asOrderList->
+                                    size = ((STRUCTURE_STATS *)psOrderList->
                                             psOrderTarget)->baseBreadth;
-                                    up = map_coord(asOrderList->y) - size/2;
+                                    up = map_coord(psOrderList->y) - size/2;
                                     down = up + size;
                                     // increase the size of a repair facility
-                                    if (((STRUCTURE_STATS *)asOrderList->psOrderTarget)->type == REF_REPAIR_FACILITY)
+                                    if (((STRUCTURE_STATS *)psOrderList->psOrderTarget)->type == REF_REPAIR_FACILITY)
                                     {
                                         left -= 1;
                                         up -= 1;
@@ -7599,7 +7599,7 @@ STRUCTURE *giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, BOOL 
 {
     STRUCTURE           *psNewStruct, *psStruct;
     DROID               *psCurr;
-    ORDER_LIST *asOrderList = NULL;
+    ORDER_LIST *psOrderList = NULL;
     STRUCTURE_STATS     *psType, *psModule;
     UDWORD              x, y;
     UBYTE               capacity = 0, originalPlayer;
@@ -7666,11 +7666,11 @@ STRUCTURE *giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, BOOL 
                     }
                 }
                 //check through order list
-                for (asOrderList = psCurr->asOrderList; asOrderList; asOrderList = asOrderList->Next)
+                for (psOrderList = psCurr->psOrderList; psOrderList; psOrderList = psOrderList->psNext)
                 {
-                    if (asOrderList->psOrderTarget == (BASE_OBJECT *)psStructure)
+                    if (psOrderList->psOrderTarget == (BASE_OBJECT *)psStructure)
                     {
-						OrderList_Delete(psCurr, asOrderList);
+						OrderList_Delete(psCurr, psOrderList);
 					}
                 }
             }

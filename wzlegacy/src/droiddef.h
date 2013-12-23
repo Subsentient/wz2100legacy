@@ -82,8 +82,8 @@ typedef struct _order_list
     void           *psOrderTarget;  ///< this needs to cope with objects and stats
     UWORD           x, y, x2, y2;   ///< line build requires two sets of coords
 
-    struct _order_list *Next;
-    struct _order_list *Prev;
+    struct _order_list *psNext;
+    struct _order_list *psPrev;
     
 } ORDER_LIST;
 
@@ -160,7 +160,7 @@ typedef struct DROID
     struct DROID  *psGrpNext;
     struct _structure *psBaseStruct;                ///< a structure that this droid might be associated with. For VTOLs this is the rearming pad
     // queued orders
-    ORDER_LIST      *asOrderList;
+    ORDER_LIST      *psOrderList;
 
     /* Order data */
     SDWORD          order;
