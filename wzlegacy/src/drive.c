@@ -263,7 +263,7 @@ static void ChangeDriver(void)
 
         for(psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
         {
-            if( (psDroid->sMove.Status == MOVEDRIVE) )
+            if (psDroid->sMove.Status == MOVEDRIVE)
             {
                 ASSERT( (psDroid->droidType != DROID_TRANSPORTER),"Tried to control a transporter" );
                 secondarySetState(psDroid, DSO_HALTTYPE, DSS_HALT_GUARD);
@@ -293,7 +293,7 @@ void StopDriverMode(void)
 
         for(psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
         {
-            if( (psDroid->sMove.Status == MOVEDRIVE) )
+            if (psDroid->sMove.Status == MOVEDRIVE)
             {
                 ASSERT( (psDroid->droidType != DROID_TRANSPORTER),"Tried to control a transporter" );
                 secondarySetState(psDroid, DSO_HALTTYPE, DSS_HALT_GUARD);

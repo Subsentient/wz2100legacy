@@ -4531,7 +4531,7 @@ BOOL validLocation(BASE_STATS *psStats, UDWORD x, UDWORD y, UDWORD player,
         {
             DROID   *psDroid;
             ORDER_LIST *asOrderList = NULL;
-            SDWORD  order,left,right,up,down,size;
+            SDWORD	left,right,up,down,size;
             BOOL    validCombi;
 
             //defense and missile silo's can be built next to anything so don't need to check

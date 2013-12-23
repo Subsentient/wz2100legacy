@@ -711,7 +711,7 @@ BOOL runMultiRequester(UDWORD id,UDWORD *mode, char *chosen, UDWORD *chosenValue
     static unsigned int hoverStartTime = 0;
     BOOL hoverPreview = false;
 
-    if((id == M_REQUEST_CLOSE))
+    if(id == M_REQUEST_CLOSE)
     {
         closeMultiRequester();
         return true;

@@ -1776,15 +1776,8 @@ void displayBlueprints(void)
 			continue;
 		}
 		
-		switch (PlayerCounter == selectedPlayer)
-		{
-			case 1:
-				BlueprintColor = SS_BLUEPRINT_PLANNED;
-				break;
-			case 0:
-				BlueprintColor = SS_BLUEPRINT_ALLY;
-				break;
-		}
+		/*If you're not sure, learn.*/
+		BlueprintColor = PlayerCounter == selectedPlayer ? SS_BLUEPRINT_PLANNED : SS_BLUEPRINT_ALLY;
 		
 	    // now we draw the blueprints for all ordered buildings
 	    for (psDroid = apsDroidLists[PlayerCounter]; psDroid; psDroid = psDroid->psNext)

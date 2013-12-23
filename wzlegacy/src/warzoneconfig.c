@@ -123,22 +123,15 @@ bool war_GetVsync(void)
 
 void war_SetTextureCompression(bool b)
 {
-    switch (b)
-    {
-		case 1:
-		{
-			wz_texture_compression = GL_COMPRESSED_RGBA_ARB;
-			break;
-		}
-		
-		case 0:
-		{
-			wz_texture_compression = GL_RGBA;
-		}
-		
-		default:
-			break;
+	if (b)
+	{
+		wz_texture_compression = GL_COMPRESSED_RGBA_ARB;
 	}
+	else
+	{
+		wz_texture_compression = GL_RGBA;
+	}
+	
 }
 
 bool war_GetTextureCompression(void)
@@ -147,7 +140,7 @@ bool war_GetTextureCompression(void)
     {
 		case GL_COMPRESSED_RGBA_ARB:
 		{
-			return 1;
+			return 1; 
 		}
 		
 		case GL_RGBA:
