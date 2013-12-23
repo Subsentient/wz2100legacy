@@ -313,7 +313,6 @@ static void packageCheck(const DROID* pD)
 	uint8_t player = pD->player;
 	uint32_t droidID = pD->id;
 	int32_t order = pD->order;
-	int32_t action = pD->action;
 	int8_t movestatus = pD->sMove.Status;
 	uint32_t secondaryOrder = pD->secondaryOrder;
 	uint32_t body = pD->body;
@@ -332,9 +331,6 @@ static void packageCheck(const DROID* pD)
 
 	// The droid's order
 	NETint32_t(&order);
-
-	// What the droid is doing
-	NETint32_t(&action);
 	
 	// The droids secondary order
 	NETuint32_t(&secondaryOrder);
@@ -412,9 +408,6 @@ BOOL recvDroidCheck()
 			// The droid's order
 			NETenum(&sDroid.order);
 			
-			// What the droid is doing
-			NETenum(&sDroid.action);
-
 			// Secondary order
 			NETuint32_t(&sDroid.secondaryOrder);
 
@@ -558,34 +551,6 @@ static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
 	{
 		psDroid->pos.z = map_Height(psDroid->pos.x, psDroid->pos.y);
 	}
-	
-	if (psDroid->action != psDData->action)
-	{ /*Synchronize droid's action too.*/
-		
-		if (psDData->psTarget)
-		{
-			psDroid->action = psDData->action;
-		}
-		else
-		{
-			switch (psDData->action)
-			{ /*See, we can't set the action without a target
-				* unless we're certain that this action doesn't need one.*/
-				case DACTION_NONE:
-				case DACTION_TRANSPORTWAITTOFLYIN:
-				case DACTION_SULK:
-				case DACTION_DESTRUCT:
-				case DACTION_WAITFORREPAIR:
-				case DACTION_WAITDURINGREPAIR:
-					psDroid->action = psDData->action;
-					break;
-				default: /*This happens because we can get a target that doesn't exist anymore.*/
-					psDroid->action = DACTION_NONE;
-					break;
-			}
-		}
-	}
-	
 	
 	/*Synchronize the move mode.*/
 	psDroid->sMove.Status = psDData->sMove.Status;
