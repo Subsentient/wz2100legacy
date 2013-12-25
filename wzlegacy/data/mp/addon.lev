@@ -1008,7 +1008,7 @@ players	8
 type	14
 dataset	MULTI_CAM_1
 game	"multiplay/maps/8c-mizamaze.gam"
-data	"wrf/multi/skirmish.wrf"
+data	"wrf/multi/skirmish8.wrf"
 data	"wrf/multi/fog1.wrf"
 
 level 	MizaMaze-T2
@@ -1016,7 +1016,7 @@ players	8
 type	18
 dataset	MULTI_T2_C1
 game	"multiplay/maps/8c-mizamaze.gam"
-data	"wrf/multi/t2-skirmish.wrf"
+data	"wrf/multi/t2-skirmish8.wrf"
 data	"wrf/multi/fog1.wrf"
 
 level 	MizaMaze-T3
@@ -1024,7 +1024,7 @@ players	8
 type	19
 dataset	MULTI_T3_C1
 game	"multiplay/maps/8c-mizamaze.gam"
-data	"wrf/multi/t3-skirmish.wrf"
+data	"wrf/multi/t3-skirmish8.wrf"
 data	"wrf/multi/fog1.wrf"
 
 level 	Clover-T1
@@ -1129,7 +1129,7 @@ players	2
 type	14
 dataset	MULTI_CAM_3
 game	"multiplay/maps/2c-highground.gam"
-data	"wrf/multi/skirmish.wrf"
+data	"wrf/multi/skirmish2.wrf"
 data	"wrf/multi/fog3.wrf"
 
 level 	HighGround-T2
@@ -1137,7 +1137,7 @@ players	2
 type	18
 dataset	MULTI_T2_C3
 game	"multiplay/maps/2c-highground.gam"
-data	"wrf/multi/t2-skirmish.wrf"
+data	"wrf/multi/t2-skirmish2.wrf"
 data	"wrf/multi/fog3.wrf"
 
 level 	HighGround-T3
@@ -1145,7 +1145,7 @@ players	2
 type	19
 dataset	MULTI_T3_C3
 game	"multiplay/maps/2c-highground.gam"
-data	"wrf/multi/t3-skirmish.wrf"
+data	"wrf/multi/t3-skirmish2.wrf"
 data	"wrf/multi/fog3.wrf"
 
 level 	Mountain-T1
@@ -1153,7 +1153,7 @@ players	4
 type	14
 dataset	MULTI_CAM_3
 game	"multiplay/maps/4c-mountain.gam"
-data	"wrf/multi/skirmish.wrf"
+data	"wrf/multi/skirmish4.wrf"
 data	"wrf/multi/fog3.wrf"
 
 level 	Mountain-T2
@@ -1161,7 +1161,7 @@ players	4
 type	18
 dataset	MULTI_T2_C3
 game	"multiplay/maps/4c-mountain.gam"
-data	"wrf/multi/t2-skirmish.wrf"
+data	"wrf/multi/t2-skirmish4.wrf"
 data	"wrf/multi/fog3.wrf"
 
 level 	Mountain-T3
@@ -1169,7 +1169,7 @@ players	4
 type	19
 dataset	MULTI_T3_C3
 game	"multiplay/maps/4c-mountain.gam"
-data	"wrf/multi/t3-skirmish.wrf"
+data	"wrf/multi/t3-skirmish4.wrf"
 data	"wrf/multi/fog3.wrf"
 
 level 	Bananas-T1
