@@ -464,9 +464,9 @@ static void LobbyLoop(void)
 			
 			for (; Worker; Worker = Worker->Next)
 			{
-				snprintf(OutBuf, sizeof OutBuf, "Name: %s | Map: %s | Host: %s | Players: %d/%d | IP: %s | Mods: %s | Private: %s\n",
+				snprintf(OutBuf, sizeof OutBuf, "Name: %s | Map: %s | Host: %s | Players: %d/%d | IP: %s | Version: %s | Mods: %s | Private: %s\n",
 						Worker->Game.GameName, Worker->Game.Map, Worker->Game.HostNick, Worker->Game.NetSpecs.CurPlayers,
-						Worker->Game.NetSpecs.MaxPlayers, Worker->Game.NetSpecs.HostIP,
+						Worker->Game.NetSpecs.MaxPlayers, Worker->Game.NetSpecs.HostIP, Worker->Game.VersionString,
 						*Worker->Game.ModList ? Worker->Game.ModList : "None", Worker->Game.PrivateGame ? "Yes" : "No");
 						
 				NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf));
