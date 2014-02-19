@@ -437,6 +437,30 @@ static void LobbyLoop(void)
 			close(ClientDescriptor);
 			continue;
 		}
+		else if (!strcmp("txlist", InBuf))
+		{
+			struct _GameTree *Worker = GameTree;
+			int Count = GameCountGames();
+			
+			printf("--[Text based game list requested by %s, sending total of %d games.]--\n", AddrBuf, Count);
+			
+			snprintf(OutBuf, sizeof OutBuf, "%d Games\n",Count);
+			
+			NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf));
+			
+			for (; Worker; Worker = Worker->Next)
+			{
+				snprintf(OutBuf, sizeof OutBuf, "Name: %s | Map: %s | Host: %s | Players: %d/%d | Mods: %s | Private: %s\n", Worker->Game.GameName,
+						Worker->Game.Map, Worker->Game.HostNick, Worker->Game.NetSpecs.CurPlayers, Worker->Game.NetSpecs.MaxPlayers,
+						*Worker->Game.ModList ? Worker->Game.ModList : "None", Worker->Game.PrivateGame ? "Yes" : "No");
+						
+				NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf));
+			}
+			
+			NetWrite(ClientDescriptor, "", 1); /*Write a null terminator.*/
+			close(ClientDescriptor);
+			continue;
+		}
 		else if (!strcmp("gaId", InBuf))
 		{
 			uint32_t GameID = GameGetGameID();
