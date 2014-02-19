@@ -29,6 +29,7 @@ along with Warzone 2100 Legacy.  If not, see <http://www.gnu.org/licenses/>.
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <signal.h>
 
 #define LOBBYPORT 9990
 #define MAX_SIMULTANIOUS 1024
@@ -361,7 +362,9 @@ static void LobbyLoop(void)
 	puts("--[Lobby loop started. Waiting for clients.]--");
 	
 	while (1)
-	{		
+	{
+		fflush(NULL); /*For logging etc*/
+		
 		if ((ClientDescriptor = accept(SocketDescriptor, &ClientInfo, &SockaddrSize)) == -1)
 		{
 			/*Just try and restart the server if an error occurs.*/
@@ -414,7 +417,7 @@ static void LobbyLoop(void)
 			int Count = htonl(GameCountGames());
 			struct _GameTree *Worker = GameTree;
 			
-			printf("--[Game list requested by %s, sending total of %d games.]--\n", AddrBuf, Count);
+			printf("--[Game list requested by %s, sending total of %d games.]--\n", AddrBuf, ntohl(Count));
 			
 			NetWrite(ClientDescriptor, &Count, sizeof(int));
 			
@@ -455,8 +458,9 @@ static void LobbyLoop(void)
 			{
 				GameStruct RecvGame = { 0 };
 				uint32_t StatusCode = 0, MOTDLength = 0;
-				const char *Msg;
-				Bool ES;
+				const char *Msg = NULL;
+				char MsgFromFile[128] = { '\0' };
+				Bool ES = false;
 				
 				while (!NetRead(ClientDescriptor, (void*)InBuf, PACKED_GS_SIZE, false)) usleep(1000);
 	
@@ -472,7 +476,31 @@ static void LobbyLoop(void)
 				}
 				else
 				{
-					Msg = "Welcome to the Subsentient lobby server!";
+					FILE *FileDescriptor = fopen("motd.txt", "r");
+					const char *FallbackMsg = "Welcome to the Warzone 2100 Legacy Lobby Server!";
+					
+					if (!FileDescriptor)
+					{
+						Msg = FallbackMsg;
+					}
+					else
+					{
+						int Inc = 0, TChar;
+						
+						for (; (TChar = getc(FileDescriptor)) != EOF && Inc < sizeof MsgFromFile - 1; ++Inc)
+						{
+							((unsigned char*)MsgFromFile)[Inc] = TChar; /*Cast is for in case someone is trying to send binary
+							* for whatever reason, because that can cause an overflow or trap etc if it's number is higher than
+							* a signed char.*/
+							
+						}
+						MsgFromFile[Inc] = '\0';
+						
+						fclose(FileDescriptor);
+						
+						Msg = MsgFromFile;
+					}
+
 					printf("--[Creating game for %s. Game ID %u, Name \"%s\", Map \"%s\", Hoster \"%s\".]--\n",
 							AddrBuf, RecvGame.GameID, RecvGame.GameName, RecvGame.Map, RecvGame.HostNick);
 					StatusCode = htonl(200);
@@ -708,13 +736,38 @@ static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream)
 	Worker += sizeof(uint32_t);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	puts("Warzone 2100 Legacy Lobby Server v0.1\n\n"
-		"Copyright 2014 Subsentient\n"
+		"Copyright 2014 The Warzone 2100 Legacy Project\n"
 		"This software is released under the GPLv2.\n"
 		"See the included file COPYING to read the license.\n---\n");
 
+	if (argc == 2 && !strcmp(argv[1], "--background"))
+	{
+		pid_t PID = fork();
+		
+		if (PID == -1)
+		{
+			fprintf(stderr, "Failed to fork()!");
+			exit(1);
+		}
+		
+		if (PID > 0)
+		{
+			puts("Backgrounding.");
+			signal(SIGCHLD, SIG_IGN);
+			exit(0);
+		}
+		
+		if (PID == 0)
+		{
+			setsid();
+			freopen("lobby.log", "a", stdout);
+			freopen("lobby.log", "a", stderr);
+		}
+	}
+	
 	printf("Opening socket on port %d... ", LOBBYPORT);
 	
 	if (!NetInit(LOBBYPORT)) exit(1);
