@@ -32,6 +32,7 @@ along with Warzone 2100 Legacy.  If not, see <http://www.gnu.org/licenses/>.
 #include <signal.h>
 #include <time.h>
 
+#define LOBBYVER "0.2"
 #define LOBBYPORT 9990
 #define MAX_SIMULTANIOUS 1024
 
@@ -778,7 +779,7 @@ static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream)
 
 int main(int argc, char **argv)
 {
-	puts("Warzone 2100 Legacy Lobby Server v0.1\n\n"
+	puts("Warzone 2100 Legacy Lobby Server v" LOBBYVER "\n\n"
 		"Copyright 2014 The Warzone 2100 Legacy Project\n"
 		"This software is released under the GPLv2.\n"
 		"See the included file COPYING to read the license.\n---\n");
