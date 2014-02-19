@@ -778,6 +778,26 @@ static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream)
 	Worker += sizeof(uint32_t);
 }
 
+static void SigHandler(int Signal)
+{
+	switch (Signal)
+	{
+		case SIGINT:
+			puts("SIGINT received, cleaning up and exiting.");
+			NetShutdown();
+			GameRemoveAll();
+			exit(0);
+			break;
+			
+		case SIGSEGV:
+			fprintf(stderr, "SIGSEGV received, a segmentation fault has occurred. Exiting.");
+			exit(1);
+			break;
+		default:
+			break;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	puts("Warzone 2100 Legacy Lobby Server v" LOBBYVER "\n\n"
@@ -810,12 +830,19 @@ int main(int argc, char **argv)
 		}
 	}
 	
+	/*SIGINT is used to make us clean up nicely.*/
+	signal(SIGINT, SigHandler);
+	signal(SIGSEGV, SigHandler);
+	
 	printf("Opening socket on port %d... ", LOBBYPORT);
 	
 	if (!NetInit(LOBBYPORT)) exit(1);
 	puts("Ok");
 	
 	LobbyLoop();
+	
+	NetShutdown();
+	GameRemoveAll();
 	
 	return exit(0), 0;
 }
