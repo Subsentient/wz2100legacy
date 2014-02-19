@@ -30,6 +30,7 @@ along with Warzone 2100 Legacy.  If not, see <http://www.gnu.org/licenses/>.
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <signal.h>
+#include <time.h>
 
 #define LOBBYPORT 9990
 #define MAX_SIMULTANIOUS 1024
@@ -84,6 +85,7 @@ typedef struct
 static struct _GameTree
 {
 	int Sock;
+	time_t TimeHosted;
 	GameStruct Game;
 	Bool Completed;
 	
@@ -93,6 +95,7 @@ static struct _GameTree
 
 static int SocketDescriptor;
 static int SocketFamily;
+static time_t LastHostTime;
 
 static Bool NetRead(int SockDescriptor, void *OutStream_, unsigned long MaxLength, Bool IsText);
 static Bool NetWrite(int SockDescriptor, void *InMsg, unsigned long WriteSize);
@@ -274,6 +277,9 @@ static Bool GameCompleteCreate(GameStruct *Game)
 			memcpy(Worker->Game.NetSpecs.HostIP, Addr, sizeof Addr);
 
 			Worker->Completed = true;
+			
+			LastHostTime = Worker->TimeHosted = time(NULL);
+			
 			return true;
 		}
 	}
@@ -393,7 +399,9 @@ static void LobbyLoop(void)
 				char RecvChar;
 				int Status = recv(Worker->Sock, &RecvChar, 1, MSG_DONTWAIT);
 				
-				if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK))
+				if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK) ||
+					(Worker->TimeHosted && time(NULL) - Worker->TimeHosted > 60 * 120))
+					/*You can only have a game open for two hours before you must re-register.*/
 				{
 					printf("--[Removing defunct game %s::%u::\"%s\" before handling client %s.]--\n",
 							Worker->Game.NetSpecs.HostIP, Worker->Game.GameID, Worker->Game.GameName, AddrBuf);
@@ -416,8 +424,9 @@ static void LobbyLoop(void)
 		{
 			int Count = htonl(GameCountGames());
 			struct _GameTree *Worker = GameTree;
+			uint32_t TempTime = LastHostTime ? htonl((time(NULL) - LastHostTime) / 60) : 0;
 			
-			printf("--[Game list requested by %s, sending total of %d games.]--\n", AddrBuf, ntohl(Count));
+			printf("--[Game list requested by %s, sending total of %d games.]--\n", AddrBuf, (int)ntohl(Count));
 			
 			NetWrite(ClientDescriptor, &Count, sizeof(int));
 			
@@ -434,6 +443,9 @@ static void LobbyLoop(void)
 				NetWrite(ClientDescriptor, OutBuf, PACKED_GS_SIZE);
 			}
 			
+			/*Write the time in minutes since the last game was hosted.*/
+			NetWrite(ClientDescriptor, &TempTime, sizeof(uint32_t));
+			
 			close(ClientDescriptor);
 			continue;
 		}
@@ -441,6 +453,7 @@ static void LobbyLoop(void)
 		{
 			struct _GameTree *Worker = GameTree;
 			int Count = GameCountGames();
+			uint32_t TempTime = LastHostTime ? (time(NULL) - LastHostTime) / 60: 0;
 			
 			printf("--[Text based game list requested by %s, sending total of %d games.]--\n", AddrBuf, Count);
 			
@@ -457,7 +470,10 @@ static void LobbyLoop(void)
 				NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf));
 			}
 			
-			NetWrite(ClientDescriptor, "", 1); /*Write a null terminator.*/
+			
+			snprintf(OutBuf, sizeof OutBuf, "Last game was hosted %lu minutes ago.\n", (unsigned long)TempTime);
+			NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf) + 1); /*Write a null terminator, so +1.*/
+			
 			close(ClientDescriptor);
 			continue;
 		}
@@ -466,7 +482,7 @@ static void LobbyLoop(void)
 			uint32_t GameID = GameGetGameID();
 			struct _GameTree *Game;
 
-			printf("--[Game ID Request from %s. Assigning Game ID \"%u\".]--\n", AddrBuf, GameID);
+			printf("--[Game ID Request from %s. Assigning Game ID \"%u\".]--\n", AddrBuf, (unsigned int)GameID);
 			
 			Game = GameCreate(GameID, ClientDescriptor); /*We store the client's socket descriptor.*/
 			
