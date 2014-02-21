@@ -33,6 +33,8 @@ along with Warzone 2100 Legacy.  If not, see <http://www.gnu.org/licenses/>.
 #include <time.h>
 
 #define LOBBYVER "0.2"
+
+#define GAMEPORT 2100
 #define LOBBYPORT 9990
 #define MAX_SIMULTANIOUS 1024
 
@@ -114,6 +116,7 @@ static void GameRemoveAll(void);
 static void LobbyLoop(void);
 static void ProtocolEncodeGS(GameStruct *InStruct, unsigned char *OutStream);
 static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream);
+static Bool ProtocolTestGamePort(unsigned short PortNum, const char *IP);
 
 /*Functions*/
 static Bool NetRead(int SockDescriptor, void *OutStream_, unsigned long MaxLength, Bool IsText)
@@ -401,6 +404,7 @@ static void LobbyLoop(void)
 				int Status = recv(Worker->Sock, &RecvChar, 1, MSG_DONTWAIT);
 				
 				if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK) ||
+					!ProtocolTestGamePort(GAMEPORT, AddrBuf) ||
 					(Worker->TimeHosted && time(NULL) - Worker->TimeHosted > 60 * 120))
 					/*You can only have a game open for two hours before you must re-register.*/
 				{
@@ -501,7 +505,7 @@ static void LobbyLoop(void)
 				GameStruct RecvGame = { 0 };
 				uint32_t StatusCode = 0, MOTDLength = 0;
 				const char *Msg = NULL;
-				char MsgFromFile[128] = { '\0' };
+				char MsgBuf[128] = { '\0' };
 				Bool ES = false;
 				
 				while (!NetRead(ClientDescriptor, (void*)InBuf, PACKED_GS_SIZE, false)) usleep(1000);
@@ -516,10 +520,20 @@ static void LobbyLoop(void)
 					StatusCode = htonl(8); /*Bad game ID.*/
 					MOTDLength = htonl(strlen(Msg));
 				}
+				else if (!ProtocolTestGamePort(GAMEPORT, AddrBuf))
+				{
+					snprintf(MsgBuf, sizeof MsgBuf,
+							"Unable to host your game.\n"
+							"The lobby server's test to see that you have port %d open has failed.\n"
+							"Check port forwarding?", GAMEPORT);
+					Msg = MsgBuf;
+					StatusCode = htonl(5);
+					MOTDLength = htonl(strlen(Msg));
+				}
 				else
 				{
 					FILE *FileDescriptor = fopen("motd.txt", "r");
-					const char *FallbackMsg = "Welcome to the Warzone 2100 Legacy Lobby Server!";
+					const char *FallbackMsg = "Welcome to the Warzone 2100 Legacy Lobby Server!\nYour game should now be listed.";
 					
 					if (!FileDescriptor)
 					{
@@ -529,18 +543,18 @@ static void LobbyLoop(void)
 					{
 						int Inc = 0, TChar;
 						
-						for (; (TChar = getc(FileDescriptor)) != EOF && Inc < sizeof MsgFromFile - 1; ++Inc)
+						for (; (TChar = getc(FileDescriptor)) != EOF && Inc < sizeof MsgBuf - 1; ++Inc)
 						{
-							((unsigned char*)MsgFromFile)[Inc] = TChar; /*Cast is for in case someone is trying to send binary
+							((unsigned char*)MsgBuf)[Inc] = TChar; /*Cast is for in case someone is trying to send binary
 							* for whatever reason, because that can cause an overflow or trap etc if it's number is higher than
 							* a signed char.*/
 							
 						}
-						MsgFromFile[Inc] = '\0';
+						MsgBuf[Inc] = '\0';
 						
 						fclose(FileDescriptor);
 						
-						Msg = MsgFromFile;
+						Msg = MsgBuf;
 					}
 
 					printf("--[Creating game for %s. Game ID %u, Name \"%s\", Map \"%s\", Hoster \"%s\".]--\n",
@@ -555,7 +569,7 @@ static void LobbyLoop(void)
 				
 				NetWrite(ClientDescriptor, OutBuf, sizeof(uint32_t) * 2 + ntohl(MOTDLength));
 				
-				if (!ES)
+				if (StatusCode != htonl(200))
 				{
 					printf("--[Closing socket to %s]--\n", AddrBuf);
 					close(ClientDescriptor);
@@ -587,6 +601,55 @@ static int GameCountGames(void)
 	for (; Worker; Worker = Worker->Next) ++Inc;
 	
 	return Inc;
+}
+
+static Bool ProtocolTestGamePort(unsigned short PortNum, const char *IP)
+{
+#define GPCONNECT_TIMEOUT 2 /*Seconds.*/
+	struct addrinfo BStruct, *Res = NULL;
+	char AsciiPort[16];
+	int TestDescriptor = 0, GAIExit = 0;
+	int Inc = 0;
+	
+	memset(&BStruct, 0, sizeof(struct addrinfo));
+	snprintf(AsciiPort, sizeof AsciiPort, "%hd", PortNum);
+	
+	printf("--[Testing game port %s for client %s ...]--\n", AsciiPort, IP);
+
+	BStruct.ai_family = AF_UNSPEC;
+	BStruct.ai_socktype = SOCK_STREAM;
+	BStruct.ai_flags = AI_PASSIVE;
+	
+	if ((GAIExit = getaddrinfo(IP, AsciiPort, &BStruct, &Res)) != 0)
+	{
+		fprintf(stderr, "--[Game Port test failed: Failed to getaddrinfo() for ProtocolTestGamePort() for client %s: %s]--\n",
+				IP, gai_strerror(GAIExit));
+		return false;
+	}
+	
+	if (!(TestDescriptor = socket(Res->ai_family, Res->ai_socktype, Res->ai_protocol)))
+	{
+		fprintf(stderr, "--[Game Port test failed: Failed to open a socket for ProtocolTestGamePort().]--\n");
+		return false;
+	}
+	
+	/*Set non-blocking so we can do funny stuff like this.*/
+	fcntl(TestDescriptor, F_SETFL, O_NONBLOCK);
+
+	/*Check for a connection every eighth of a second.*/
+	for (; connect(TestDescriptor, (void*)Res->ai_addr, Res->ai_addrlen) != 0 && Inc < GPCONNECT_TIMEOUT * 8; ++Inc) usleep(125000);
+	
+	/*We timed out! Failed the test.*/
+	if (Inc == GPCONNECT_TIMEOUT * 8)
+	{
+		fprintf(stderr, "--[Game Port test failed: Cannot connect to client via game port %s!]--\n", AsciiPort);
+		return false;
+	}
+	
+	close(TestDescriptor);
+	fprintf(stderr, "--[Game Port test succeeded.]--\n");
+	
+	return true;
 }
 
 static void ProtocolEncodeGS(GameStruct *InStruct, unsigned char *OutStream)
