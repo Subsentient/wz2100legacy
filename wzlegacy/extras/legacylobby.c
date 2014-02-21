@@ -571,6 +571,8 @@ static void LobbyLoop(void)
 				
 				if (StatusCode != htonl(200))
 				{
+					printf("--[Removing incomplete game created by client %s]--\n", AddrBuf);
+					GameRemove(ntohl(GameID));
 					printf("--[Closing socket to %s]--\n", AddrBuf);
 					close(ClientDescriptor);
 				}
