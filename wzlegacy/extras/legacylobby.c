@@ -32,7 +32,7 @@ along with Warzone 2100 Legacy.  If not, see <http://www.gnu.org/licenses/>.
 #include <signal.h>
 #include <time.h>
 
-#define LOBBYVER "0.2"
+#define LOBBYVER "0.3"
 
 #define GAMEPORT 2100
 #define LOBBYPORT 9990
@@ -52,9 +52,12 @@ sizeof InStruct.ModList +
 sizeof(uint32_t) * 9
 */
 
+
+/*Enums etc*/
 typedef signed char Bool;
 enum { false, true };
 
+/*Structures etc*/
 typedef struct
 {
 	uint32_t StructVer;
@@ -96,10 +99,21 @@ static struct _GameTree
 	struct _GameTree *Prev;
 } *GameTree;
 
+static struct _ChatQueueTree
+{
+	int Sock;
+	char IP[64];
+	
+	struct _ChatQueueTree *Next;
+	struct _ChatQueueTree *Prev;
+} *ChatTree;
+
+/*Globals*/
 static int SocketDescriptor;
 static int SocketFamily;
 static time_t LastHostTime;
 
+/*Prototypes*/
 static Bool NetRead(int SockDescriptor, void *OutStream_, unsigned long MaxLength, Bool IsText);
 static Bool NetWrite(int SockDescriptor, void *InMsg, unsigned long WriteSize);
 static Bool NetInit(unsigned short PortNum);
@@ -108,15 +122,16 @@ static Bool GameCompleteCreate(GameStruct *Game);
 static struct _GameTree *GameCreate(uint32_t GameID, int SockDesc);
 static uint32_t GameGetGameID(void);
 static int GameCountGames(void);
-/*
-static struct _GameTree *GameLookup(uint32_t GameID);
-*/
+/*static struct _GameTree *GameLookup(uint32_t GameID);*/
 static Bool GameRemove(uint32_t GameID);
 static void GameRemoveAll(void);
 static void LobbyLoop(void);
 static void ProtocolEncodeGS(GameStruct *InStruct, unsigned char *OutStream);
 static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream);
 static Bool ProtocolTestGamePort(unsigned short PortNum, const char *IP);
+static void ChatAddToQueue(const char *IP, int Sock);
+static Bool ChatDelFromQueue(const char *IP, int Sock);
+static void ChatShutdownQueue(void);
 
 /*Functions*/
 static Bool NetRead(int SockDescriptor, void *OutStream_, unsigned long MaxLength, Bool IsText)
@@ -363,6 +378,7 @@ static void LobbyLoop(void)
 	socklen_t SockaddrSize = sizeof(struct sockaddr);
 	char InBuf[PACKED_GS_SIZE + 2048], OutBuf[PACKED_GS_SIZE + 2048];
 	struct _GameTree *Worker = NULL;
+	struct _ChatQueueTree *CWorker = NULL;
 	struct sockaddr_in Addr;
 	socklen_t AddrSize = sizeof Addr;
 	char AddrBuf[128];
@@ -381,6 +397,7 @@ static void LobbyLoop(void)
 			fprintf(stderr, "Socket accept() error. Cycling sockets.");
 			NetShutdown();
 			GameRemoveAll();
+			ChatShutdownQueue();
 			NetInit(LOBBYPORT);
 			continue;
 		}
@@ -417,6 +434,23 @@ static void LobbyLoop(void)
 				else continue;
 			}
 		}
+	L3Start:
+		for (CWorker = ChatTree; CWorker; CWorker = CWorker->Next)
+		{ /*Delete dead chat descriptors.*/
+			char RecvChar;
+			int Status = recv(CWorker->Sock, &RecvChar, 1, MSG_DONTWAIT);
+			
+			ChatDelFromQueue(NULL, 0); /*Delete anything with no socket.*/
+			
+			if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK))
+			{
+				printf("--[Deleting dead chat listener client %s::%d]--\n", CWorker->IP, CWorker->Sock);
+				
+				ChatDelFromQueue(NULL, CWorker->Sock);
+				goto L3Start;
+			}
+		}
+				
 		
 		/*Get command.*/
 		if (!NetRead(ClientDescriptor, InBuf, sizeof InBuf, true))
@@ -583,6 +617,65 @@ static void LobbyLoop(void)
 				continue;
 			}
 			continue;
+		}
+		else if (!strcmp("listen", InBuf))
+		{ /*Adds this client to our chat send queue.*/
+			const Bool Ok = true;
+			int DOut = htonl(ClientDescriptor);
+			
+			printf("--[Client %s requested to be added to chat queue, we'll oblige.\n"
+					"Sending them their descriptor (%d)]--\n", AddrBuf, ClientDescriptor);
+			NetWrite(ClientDescriptor, (void*)&Ok, 1);
+			NetWrite(ClientDescriptor, &DOut, sizeof(int));
+			
+			ChatAddToQueue(AddrBuf, ClientDescriptor);
+			
+			continue;
+		}
+		else if (!strcmp("speak", InBuf))
+		{
+			struct _ChatQueueTree *Worker = ChatTree;
+			Bool Ok = true;
+			const char *Newline = "\n";
+			
+			NetWrite(ClientDescriptor, &Ok, 1);
+			
+			*InBuf = 0; /*So we know we aren't sending the same old trash.*/
+			
+			NetRead(ClientDescriptor, InBuf, sizeof InBuf, true);
+			
+			if (!*InBuf) Ok = false;
+			
+			NetWrite(ClientDescriptor, &Ok, 1);
+			
+			InBuf[127] = '\0'; /*Need to cap the size we send.*/
+			
+			printf("--[SPEAK %s: %s]--\n", AddrBuf, InBuf);
+			
+			for (; Worker; Worker = Worker->Next)
+			{
+				NetWrite(Worker->Sock, InBuf, strlen(InBuf));
+				NetWrite(Worker->Sock, (void*)Newline, strlen(Newline) + 1);
+			}
+			close(ClientDescriptor);
+			continue; 
+		}
+		else if (!strcmp("dc", InBuf))
+		{
+			Bool Ok = true;
+			int TDesc;
+			
+			NetRead(ClientDescriptor, &TDesc, sizeof(int), false);
+			
+			TDesc = ntohl(TDesc);
+			
+			Ok = ChatDelFromQueue(TDesc ? NULL : AddrBuf, TDesc); /*We delete by descriptor to allow lan parties.*/
+			
+			printf("--[Client %s chat disconnect %s]--\n", AddrBuf,
+					 Ok ? "succeeded" : "failed. Couldn't find descriptor.");
+			
+			NetWrite(ClientDescriptor, &Ok, 1);
+			close(ClientDescriptor);
 		}
 		else
 		{
@@ -843,6 +936,79 @@ static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream)
 	Worker += sizeof(uint32_t);
 }
 
+static void ChatAddToQueue(const char *IP, int Sock)
+{
+	struct _ChatQueueTree *Worker = ChatTree;
+	
+	if (!ChatTree)
+	{
+		ChatTree = Worker = malloc(sizeof(struct _ChatQueueTree));
+		memset(ChatTree, 0, sizeof(struct _ChatQueueTree));
+	}
+	else
+	{
+		while (Worker->Next) Worker = Worker->Next;
+		
+		Worker->Next = malloc(sizeof(struct _ChatQueueTree));
+		memset(Worker->Next, 0, sizeof(struct _ChatQueueTree));
+		Worker->Next->Prev = Worker;
+		Worker = Worker->Next;
+	}
+	
+	Worker->Sock = Sock;
+	strncpy(Worker->IP, IP, sizeof Worker->IP - 1);
+	Worker->IP[sizeof Worker->IP - 1] = '\0';
+}
+
+static Bool ChatDelFromQueue(const char *IP, int Sock)
+{
+	Bool Found = false;
+	struct _ChatQueueTree *Worker = ChatTree;
+	
+	for (; Worker; Worker = Worker->Next)
+	{
+		if ((Sock && Worker->Sock == Sock) || (IP && !strcmp(Worker->IP, IP)))
+		{
+			close(Worker->Sock); /*Well, disconnect it of course!*/
+			
+			if (Worker == ChatTree)
+			{
+				if (Worker->Next)
+				{
+					Worker->Next->Prev = NULL;
+					ChatTree = Worker->Next;
+					free(Worker);
+				}
+				else
+				{
+					free(Worker);
+					ChatTree = NULL;
+				}
+			}
+			else
+			{
+				if (Worker->Next) Worker->Next->Prev = Worker->Prev;
+				Worker->Prev->Next = Worker->Next;
+				free(Worker);
+			}
+			Found = true;
+		}
+	}
+	
+	return Found;
+}
+
+static void ChatShutdownQueue(void)
+{
+	struct _ChatQueueTree *Worker = ChatTree, *Temp;
+	
+	for (; Worker; Worker = Temp)
+	{
+		Temp = Worker->Next;
+		free(Worker);
+	}
+}
+	
 static void SigHandler(int Signal)
 {
 	switch (Signal)
@@ -851,6 +1017,7 @@ static void SigHandler(int Signal)
 			puts("SIGINT received, cleaning up and exiting.");
 			NetShutdown();
 			GameRemoveAll();
+			ChatShutdownQueue();
 			exit(0);
 			break;
 			
@@ -908,6 +1075,6 @@ int main(int argc, char **argv)
 	
 	NetShutdown();
 	GameRemoveAll();
-	
+	ChatShutdownQueue();
 	return exit(0), 0;
 }
