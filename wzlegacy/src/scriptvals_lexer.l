@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "src/scriptvals.h"
 
 /* Get the Yacc definitions */
-#include "scriptvals_parser.tab.h"
+#include "scriptvals_parser.h"
 
 
 /* Maximum length for any TEXT value */

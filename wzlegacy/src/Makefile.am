@@ -1,8 +1,3 @@
-%.tab.h %.tab.c:: %.y
-	$(YACC) $(YFLAGS) $(AM_YFLAGS) -o$@ $<
-
-%.lex.h %.lex.c:: %.l
-	$(LEX) $(LFLAGS) $(AM_LFLAGS) -o$@ $<
 
 # Required to force using a C++ linker
 force-linker.cpp:
@@ -15,16 +10,10 @@ AM_LFLAGS = $(FLEX_FLAGS)
 AM_YFLAGS = -d
 
 BUILT_SOURCES = \
-	force-linker.cpp \
-	level_lexer.lex.c \
-	message_lexer.lex.c \
-	scriptvals_lexer.lex.c
+	force-linker.cpp
 
 CLEANFILES = \
-	force-linker.cpp \
-	level_lexer.lex.c \
-	message_lexer.lex.c \
-	scriptvals_lexer.lex.c
+	force-linker.cpp
 
 EXTRA_DIST = \
 	message_lexer.l message_parser.y \
@@ -144,7 +133,7 @@ noinst_HEADERS = \
 	scriptobj.h \
 	scripttabs.h \
 	scriptvals.h \
-	scriptvals_parser.tab.h \
+	scriptvals_parser.h \
 	selection.h \
 	seqdisp.h \
 	spectate.h \
@@ -215,7 +204,7 @@ wz2100legacy_SOURCES = \
 	keybind.c \
 	keyedit.c \
 	keymap.c \
-	level_lexer.lex.c \
+	level_lexer.c \
 	levels.c \
 	lighting.c \
 	loadsave.c \
@@ -226,7 +215,7 @@ wz2100legacy_SOURCES = \
 	mapgrid.c \
 	mechanics.c \
 	message.c \
-	message_lexer.lex.c \
+	message_lexer.c \
 	message_parser.c \
 	miscimd.c \
 	mission.c \
@@ -260,8 +249,8 @@ wz2100legacy_SOURCES = \
 	scriptobj.c \
 	scripttabs.c \
 	scriptvals.c \
-	scriptvals_lexer.lex.c \
-	scriptvals_parser.tab.c \
+	scriptvals_lexer.c \
+	scriptvals_parser.c \
 	selection.c \
 	seqdisp.c \
 	spectate.c \

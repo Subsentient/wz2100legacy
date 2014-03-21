@@ -27,15 +27,6 @@ AC_PROG_CXX
 AC_CHECK_PROG(CXXCOMPILER, ${CXX}, cxxcompiler)
 test -z "${CXXCOMPILER}" && AC_MSG_ERROR(No C++ compiler found!)
 
-AC_PROG_YACC
-if test "x$YACC" != "xbison -y" ; then
-	AC_MSG_ERROR([Bison is not installed])
-fi
-AC_PROG_VERSION_CHECK([bison], [1.31])
-
-AC_PROG_LEX
-AC_PROG_VERSION_CHECK([${LEX}], [2.5.33], [2.5.34])
-
 AX_WITH_PROG([PERL], [perl])
 AX_PROG_PERL_VERSION([5.10], [], [ PERL="" ])
 AC_SUBST([PERL])

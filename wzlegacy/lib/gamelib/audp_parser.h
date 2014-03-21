@@ -30,14 +30,14 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_SCRV_SCRIPTVALS_PARSER_TAB_H_INCLUDED
-# define YY_SCRV_SCRIPTVALS_PARSER_TAB_H_INCLUDED
+#ifndef YY_AUDP_AUDP_PARSER_TAB_H_INCLUDED
+# define YY_AUDP_AUDP_PARSER_TAB_H_INCLUDED
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
 #if YYDEBUG
-extern int scrv_debug;
+extern int audp_debug;
 #endif
 
 /* Tokens.  */
@@ -46,29 +46,33 @@ extern int scrv_debug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     BOOLEAN_T = 258,
+     FLOAT_T = 258,
      INTEGER = 259,
-     IDENT = 260,
-     QTEXT = 261,
-     TYPE = 262,
-     VAR = 263,
-     ARRAY = 264,
-     SCRIPT = 265,
-     STORE = 266,
-     RUN = 267
+     QTEXT = 260,
+     ONESHOT = 261,
+     LOOP = 262,
+     AUDIO = 263,
+     ANIM3DFRAMES = 264,
+     ANIM3DTRANS = 265,
+     ANIM3DFILE = 266,
+     AUDIO_MODULE = 267,
+     ANIM_MODULE = 268,
+     ANIMOBJECT = 269
    };
 #endif
 /* Tokens.  */
-#define BOOLEAN_T 258
+#define FLOAT_T 258
 #define INTEGER 259
-#define IDENT 260
-#define QTEXT 261
-#define TYPE 262
-#define VAR 263
-#define ARRAY 264
-#define SCRIPT 265
-#define STORE 266
-#define RUN 267
+#define QTEXT 260
+#define ONESHOT 261
+#define LOOP 262
+#define AUDIO 263
+#define ANIM3DFRAMES 264
+#define ANIM3DTRANS 265
+#define ANIM3DFILE 266
+#define AUDIO_MODULE 267
+#define ANIM_MODULE 268
+#define ANIMOBJECT 269
 
 
 
@@ -76,39 +80,36 @@ extern int scrv_debug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 109 "scriptvals_parser.y"
+#line 39 "audp_parser.y"
 
-	BOOL			bval;
-	INTERP_TYPE		tval;
-	char			*sval;
-	UDWORD			vindex;
-	SDWORD			ival;
-	VAR_INIT		sInit;
-	ARRAY_INDEXES	*arrayIndex;
+	float		fval;
+	long		ival;
+	bool            bval;
+	char*		sval;
 
 
 /* Line 2058 of yacc.c  */
-#line 92 "scriptvals_parser.tab.h"
+#line 93 "audp_parser.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE scrv_lval;
+extern YYSTYPE audp_lval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
-int scrv_parse (void *YYPARSE_PARAM);
+int audp_parse (void *YYPARSE_PARAM);
 #else
-int scrv_parse ();
+int audp_parse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int scrv_parse (void);
+int audp_parse (void);
 #else
-int scrv_parse ();
+int audp_parse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
-#endif /* !YY_SCRV_SCRIPTVALS_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_AUDP_AUDP_PARSER_TAB_H_INCLUDED  */

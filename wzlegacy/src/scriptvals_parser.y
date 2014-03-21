@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "scriptvals.h"
 #include "lib/framework/lexer_input.h"
-#include "scriptvals_parser.tab.h"
+#include "scriptvals_parser.h"
 #include "src/scripttabs.h"
 #include "src/objects.h"
 #include "src/droid.h"
