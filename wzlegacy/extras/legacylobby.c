@@ -421,7 +421,7 @@ static void LobbyLoop(void)
 				int Status = recv(Worker->Sock, &RecvChar, 1, MSG_DONTWAIT);
 				
 				if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK) ||
-					!ProtocolTestGamePort(GAMEPORT, AddrBuf) ||
+					!ProtocolTestGamePort(GAMEPORT, Worker->Game.NetSpecs.HostIP) ||
 					(Worker->TimeHosted && time(NULL) - Worker->TimeHosted > 60 * 120))
 					/*You can only have a game open for two hours before you must re-register.*/
 				{
