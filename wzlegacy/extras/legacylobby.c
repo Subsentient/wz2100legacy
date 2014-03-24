@@ -463,17 +463,11 @@ static void LobbyLoop(void)
 		{
 			int Count = htonl(GameCountGames());
 			struct _GameTree *Worker = GameTree;
-			uint32_t TempTime = LastHostTime ? htonl((time(NULL) - LastHostTime) / 60) : 0;
+			uint32_t TempTime = LastHostTime ? htonl((time(NULL) - LastHostTime)) : 0;
 			
 			printf("--[Game list requested by %s, sending total of %d games.]--\n", AddrBuf, (int)ntohl(Count));
 			
 			NetWrite(ClientDescriptor, &Count, sizeof(int));
-			
-			if (Count == 0)
-			{
-				close(ClientDescriptor);
-				continue;
-			}
 			
 			for (; Worker; Worker = Worker->Next)
 			{
@@ -482,7 +476,7 @@ static void LobbyLoop(void)
 				NetWrite(ClientDescriptor, OutBuf, PACKED_GS_SIZE);
 			}
 			
-			/*Write the time in minutes since the last game was hosted.*/
+			/*Write the time in seconds since the last game was hosted.*/
 			NetWrite(ClientDescriptor, &TempTime, sizeof(uint32_t));
 			
 			close(ClientDescriptor);
