@@ -265,12 +265,12 @@ char StringBuffer[STRING_BUFFER_SIZE];
 /* the widget screen */
 extern W_SCREEN		*psWScreen;
 
-extern	UDWORD				objID;					// unique ID creation thing..
+extern	uint32_t				objID;					// unique ID creation thing..
 
 /* default droid design template */
 DROID_TEMPLATE sDefaultDesignTemplate;
 
-extern void intDisplayPlainForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+extern void intDisplayPlainForm(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 void desSetupDesignTemplates( void );
 
 /* Set the current mode of the design screen, and display the appropriate component lists */
@@ -282,22 +282,22 @@ static BOOL intSetSystemForm(COMPONENT_STATS *psStats);
 /* Set up the propulsion clickable form of the design screen given a set of stats */
 static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats);
 /* Add the component tab form to the design screen */
-static BOOL intAddComponentForm(UDWORD numButtons);
+static BOOL intAddComponentForm(uint32_t numButtons);
 /* Add the template tab form to the design screen */
 static BOOL intAddTemplateForm(DROID_TEMPLATE *psSelected);
 /* Add the Major system tab form to the design screen */
 // count the number of available components
-static UDWORD intNumAvailable(UBYTE *aAvailable, UDWORD numEntries,
-                              COMPONENT_STATS *asStats, UDWORD size);
+static uint32_t intNumAvailable(uint8_t *aAvailable, uint32_t numEntries,
+                              COMPONENT_STATS *asStats, uint32_t size);
 /* Add the system buttons (weapons, command droid, etc) to the design screen */
 static BOOL intAddSystemButtons(DES_COMPMODE mode);
 /* Add the component buttons to the main tab of the system or component form */
-static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, UDWORD size,
-                                   UBYTE *aAvailable,	UDWORD numEntries,
-                                   UDWORD compID,UDWORD WhichTab);
+static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, uint32_t size,
+                                   uint8_t *aAvailable,	uint32_t numEntries,
+                                   uint32_t compID,uint32_t WhichTab);
 /* Add the component buttons to the main tab of the component form */
-static BOOL intAddExtraSystemButtons(UDWORD sensorIndex, UDWORD ecmIndex,
-                                     UDWORD constIndex, UDWORD repairIndex, UDWORD brainIndex);
+static BOOL intAddExtraSystemButtons(uint32_t sensorIndex, uint32_t ecmIndex,
+                                     uint32_t constIndex, uint32_t repairIndex, uint32_t brainIndex);
 /* Set the bar graphs for the system clickable */
 static void intSetSystemStats(COMPONENT_STATS *psStats);
 /* Set the shadow bar graphs for the system clickable */
@@ -333,7 +333,7 @@ static void intSetPropulsionShadowStats(PROPULSION_STATS *psStats);
 /* Check whether a droid template is valid */
 BOOL intValidTemplate(DROID_TEMPLATE *psTempl, const char *newName);
 /* General display window for the design form */
-void intDisplayDesignForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+void intDisplayDesignForm(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 /* Sets the Design Power Bar for a given Template */
 static void intSetDesignPower(DROID_TEMPLATE *psTemplate);
 /* Sets the Power shadow Bar for the current Template with new stat*/
@@ -343,10 +343,10 @@ static void intSetBodyPoints(DROID_TEMPLATE *psTemplate);
 /* Sets the Body Points shadow Bar for the current Template with new stat*/
 static void intSetTemplateBodyShadowStats(COMPONENT_STATS *psStats);
 /* set flashing flag for button */
-static void intSetButtonFlash( UDWORD id, BOOL bFlash );
+static void intSetButtonFlash( uint32_t id, BOOL bFlash );
 /*Function to set the shadow bars for all the stats when the mouse is over
 the Template buttons*/
-static void runTemplateShadowStats(UDWORD id);
+static void runTemplateShadowStats(uint32_t id);
 
 static BOOL intCheckValidWeaponForProp(void);
 
@@ -361,17 +361,17 @@ static void desCreateDefaultTemplate( void );
 static char			aCurrName[WIDG_MAXSTR];
 
 /* Store a list of component stats pointers for the design screen */
-extern UDWORD			maxComponent;
-extern UDWORD			numComponent;
+extern uint32_t			maxComponent;
+extern uint32_t			numComponent;
 extern COMPONENT_STATS	**apsComponentList;
-extern UDWORD			maxExtraSys;
-extern UDWORD			numExtraSys;
+extern uint32_t			maxExtraSys;
+extern uint32_t			numExtraSys;
 extern COMPONENT_STATS	**apsExtraSysList;
 
 /* The button id of the component that is in the design */
-static UDWORD			desCompID;
+static uint32_t			desCompID;
 
-static UDWORD			droidTemplID;
+static uint32_t			droidTemplID;
 
 /* The current design being edited on the design screen */
 DROID_TEMPLATE			sCurrDesign;
@@ -379,10 +379,10 @@ DROID_TEMPLATE			sCurrDesign;
 /* Flag to indictate whether a 'spare' template button is required */
 static BOOL				newTemplate = false;
 
-static void intDisplayStatForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-static void intDisplayViewForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-void intDisplayTemplateButton(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-static void intDisplayComponentButton(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+static void intDisplayStatForm(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+static void intDisplayViewForm(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+void intDisplayTemplateButton(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+static void intDisplayComponentButton(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 extern BOOL bRender3DOnly;
 
@@ -431,8 +431,8 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sFormInit.formID = 0;
     sFormInit.id = IDDES_FORM;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD)DES_CENTERFORMX;	//0;
-    sFormInit.y = (SWORD)DES_CENTERFORMY;	//0;
+    sFormInit.x = (int16_t)DES_CENTERFORMX;	//0;
+    sFormInit.y = (int16_t)DES_CENTERFORMY;	//0;
     sFormInit.width = DES_CENTERFORMWIDTH;	//DISP_WIDTH-1;
     sFormInit.height = DES_CENTERFORMHEIGHT;	//DES_BASEHEIGHT;
     sFormInit.pDisplay = intDisplayPlainForm;
@@ -500,7 +500,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sFormInit.style = WFORM_PLAIN;
     sFormInit.x = DES_PARTFORMX;
     sFormInit.y = DES_PARTFORMY;
-    sFormInit.width = (UWORD)(iV_GetImageWidth(IntImages, IMAGE_DES_TURRET) +
+    sFormInit.width = (uint16_t)(iV_GetImageWidth(IntImages, IMAGE_DES_TURRET) +
                               2*DES_PARTSEPARATIONX);
     sFormInit.height = DES_PARTFORMHEIGHT;
     sFormInit.pDisplay = intDisplayDesignForm;
@@ -524,7 +524,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
 #else
     sButInit.pDisplay = intDisplayButtonHilight;
 #endif
-    sButInit.UserData = PACKDWORD_TRI(1, IMAGE_DES_BODYH, IMAGE_DES_BODY);
+    sButInit.UserData = PACKint32_t_TRI(1, IMAGE_DES_BODYH, IMAGE_DES_BODY);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -535,7 +535,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sButInit.id = IDDES_PROPBUTTON;
     sButInit.style = WBUT_PLAIN;
     sButInit.x = DES_PARTSEPARATIONX;
-    sButInit.y = (UWORD)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
+    sButInit.y = (uint16_t)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
                          2 * DES_PARTSEPARATIONY);
     sButInit.width = iV_GetImageWidth(IntImages, IMAGE_DES_PROPULSION);
     sButInit.height = iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION);
@@ -546,7 +546,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
 #else
     sButInit.pDisplay = intDisplayButtonHilight;
 #endif
-    sButInit.UserData = PACKDWORD_TRI(1, IMAGE_DES_PROPULSIONH, IMAGE_DES_PROPULSION);
+    sButInit.UserData = PACKint32_t_TRI(1, IMAGE_DES_PROPULSIONH, IMAGE_DES_PROPULSION);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -557,7 +557,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sButInit.id = IDDES_SYSTEMBUTTON;
     sButInit.style = WBUT_PLAIN;
     sButInit.x = DES_PARTSEPARATIONX;
-    sButInit.y = (UWORD)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
+    sButInit.y = (uint16_t)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
                          iV_GetImageHeight(IntImages, IMAGE_DES_BODY)   +
                          3*DES_PARTSEPARATIONY);
     sButInit.width = iV_GetImageWidth(IntImages, IMAGE_DES_TURRET);
@@ -569,7 +569,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
 #else
     sButInit.pDisplay = intDisplayButtonHilight;
 #endif
-    sButInit.UserData = PACKDWORD_TRI(1, IMAGE_DES_TURRETH, IMAGE_DES_TURRET);
+    sButInit.UserData = PACKint32_t_TRI(1, IMAGE_DES_TURRETH, IMAGE_DES_TURRET);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -581,7 +581,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sButInit.style = WBUT_PLAIN;
     sButInit.x = DES_PARTSEPARATIONX;
     // use BODY height for now
-    sButInit.y = (UWORD)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
+    sButInit.y = (uint16_t)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
                          iV_GetImageHeight(IntImages, IMAGE_DES_BODY)   +
                          iV_GetImageHeight(IntImages, IMAGE_DES_BODY)   +
                          4*DES_PARTSEPARATIONY);
@@ -594,7 +594,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
 #else
     sButInit.pDisplay = intDisplayButtonHilight;
 #endif
-    sButInit.UserData = PACKDWORD_TRI(1, IMAGE_DES_TURRETH, IMAGE_DES_TURRET);
+    sButInit.UserData = PACKint32_t_TRI(1, IMAGE_DES_TURRETH, IMAGE_DES_TURRET);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -606,7 +606,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sButInit.style = WBUT_PLAIN;
     sButInit.x = DES_PARTSEPARATIONX;
     //use body height for now
-    sButInit.y = (UWORD)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
+    sButInit.y = (uint16_t)(iV_GetImageHeight(IntImages, IMAGE_DES_PROPULSION) +
                          iV_GetImageHeight(IntImages, IMAGE_DES_BODY)   +
                          iV_GetImageHeight(IntImages, IMAGE_DES_BODY)   +
                          iV_GetImageHeight(IntImages, IMAGE_DES_BODY)   +
@@ -620,7 +620,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
 #else
     sButInit.pDisplay = intDisplayButtonHilight;
 #endif
-    sButInit.UserData = PACKDWORD_TRI(1, IMAGE_DES_TURRETH, IMAGE_DES_TURRET);
+    sButInit.UserData = PACKint32_t_TRI(1, IMAGE_DES_TURRETH, IMAGE_DES_TURRET);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -633,11 +633,11 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sButInit.width = iV_GetImageWidth(IntImages, IMAGE_DES_BIN);
     sButInit.height = iV_GetImageHeight(IntImages, IMAGE_DES_BIN);
     sButInit.x = DES_PARTSEPARATIONX;
-    sButInit.y = (UWORD)(DES_PARTFORMHEIGHT - sButInit.height - DES_PARTSEPARATIONY);
+    sButInit.y = (uint16_t)(DES_PARTFORMHEIGHT - sButInit.height - DES_PARTSEPARATIONY);
     sButInit.pTip = _("Delete Design");
     sButInit.FontID = font_regular;
     sButInit.pDisplay = intDisplayButtonHilight;
-    sButInit.UserData = PACKDWORD_TRI(0,IMAGE_DES_BINH, IMAGE_DES_BIN);
+    sButInit.UserData = PACKint32_t_TRI(0,IMAGE_DES_BINH, IMAGE_DES_BIN);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -647,8 +647,8 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sFormInit.formID = 0;
     sFormInit.id = IDDES_STATSFORM;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD)DES_STATSFORMX;
-    sFormInit.y = (SWORD)DES_STATSFORMY;
+    sFormInit.x = (int16_t)DES_STATSFORMX;
+    sFormInit.y = (int16_t)DES_STATSFORMY;
     sFormInit.width = DES_STATSFORMWIDTH;
     sFormInit.height = DES_STATSFORMHEIGHT;
     sFormInit.pDisplay = intDisplayPlainForm;
@@ -689,7 +689,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sBarInit.sMinorCol.byte.b = DES_CLICKBARMINORBLUE;
     sBarInit.pDisplay = intDisplayStatsBar;
     sBarInit.pTip = _("Kinetic Armour");
-    sBarInit.iRange = (UWORD)getMaxBodyArmour();//DBAR_BODYMAXARMOUR;
+    sBarInit.iRange = (uint16_t)getMaxBodyArmour();//DBAR_BODYMAXARMOUR;
     if (!widgAddBarGraph(psWScreen, &sBarInit))
     {
         return true;
@@ -698,7 +698,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sBarInit.id = IDDES_BODYARMOUR_H;
     sBarInit.y  = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
     sBarInit.pTip = _("Thermal Armour");
-    sBarInit.iRange = (UWORD)getMaxBodyArmour();//DBAR_BODYMAXARMOUR;
+    sBarInit.iRange = (uint16_t)getMaxBodyArmour();//DBAR_BODYMAXARMOUR;
     if (!widgAddBarGraph(psWScreen, &sBarInit))
     {
         return true;
@@ -714,7 +714,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sBarInit.id = IDDES_BODYPOWER;
     sBarInit.y = DES_STATBAR_Y3;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
     sBarInit.pTip = _("Engine Output");
-    sBarInit.iRange = (UWORD)getMaxBodyPower();//DBAR_BODYMAXPOWER;
+    sBarInit.iRange = (uint16_t)getMaxBodyPower();//DBAR_BODYMAXPOWER;
     if (!widgAddBarGraph(psWScreen, &sBarInit))
     {
         return true;
@@ -722,7 +722,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sBarInit.id = IDDES_BODYWEIGHT;
     sBarInit.y = DES_STATBAR_Y4;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
     sBarInit.pTip = _("Weight");
-    sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+    sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
     if (!widgAddBarGraph(psWScreen, &sBarInit))
     {
         return true;
@@ -820,10 +820,10 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sBarInit.id = IDDES_POWERBAR;
     sBarInit.style = WBAR_PLAIN;
     sBarInit.orientation = WBAR_LEFT;
-    sBarInit.x = (SWORD)(DES_POWERX + DES_POWERSEPARATIONX +
+    sBarInit.x = (int16_t)(DES_POWERX + DES_POWERSEPARATIONX +
                          iV_GetImageWidth(IntImages,IMAGE_DES_BODYPOINTS));
     sBarInit.y = DES_POWERY;
-    sBarInit.width = (SWORD)(DES_POWERFORMWIDTH - 15 -
+    sBarInit.width = (int16_t)(DES_POWERFORMWIDTH - 15 -
                              iV_GetImageWidth(IntImages,IMAGE_DES_BODYPOINTS));
     sBarInit.height = iV_GetImageHeight(IntImages,IMAGE_DES_POWERBACK);
     sBarInit.pDisplay = intDisplayDesignPowerBar;//intDisplayStatsBar;
@@ -838,7 +838,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sLabInit.formID	= IDDES_POWERFORM;
     sLabInit.id = IDDES_TEMPBODYLAB;
     sLabInit.x = DES_POWERX;
-    sLabInit.y = (SWORD)(DES_POWERY + DES_POWERSEPARATIONY +
+    sLabInit.y = (int16_t)(DES_POWERY + DES_POWERSEPARATIONY +
                          iV_GetImageHeight(IntImages,IMAGE_DES_BODYPOINTS));
     sLabInit.pTip = _("Total Body Points");
     sLabInit.pDisplay = intDisplayImage;
@@ -853,16 +853,16 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
     sBarInit.id = IDDES_BODYPOINTS;
     sBarInit.style = WBAR_PLAIN;
     sBarInit.orientation = WBAR_LEFT;
-    sBarInit.x = (SWORD)(DES_POWERX + DES_POWERSEPARATIONX +
+    sBarInit.x = (int16_t)(DES_POWERX + DES_POWERSEPARATIONX +
                          iV_GetImageWidth(IntImages,IMAGE_DES_BODYPOINTS));
-    sBarInit.y = (SWORD)(DES_POWERY + DES_POWERSEPARATIONY + 4 +
+    sBarInit.y = (int16_t)(DES_POWERY + DES_POWERSEPARATIONY + 4 +
                          iV_GetImageHeight(IntImages,IMAGE_DES_BODYPOINTS));
-    sBarInit.width = (SWORD)(DES_POWERFORMWIDTH - 15 -
+    sBarInit.width = (int16_t)(DES_POWERFORMWIDTH - 15 -
                              iV_GetImageWidth(IntImages,IMAGE_DES_BODYPOINTS));
     sBarInit.height = iV_GetImageHeight(IntImages,IMAGE_DES_POWERBACK);
     sBarInit.pDisplay = intDisplayDesignPowerBar;//intDisplayStatsBar;
     sBarInit.pTip = _("Total Body Points");
-    sBarInit.iRange = DBAR_TEMPLATEMAXPOINTS;//(UWORD)getMaxBodyPoints();//DBAR_BODYMAXPOINTS;
+    sBarInit.iRange = DBAR_TEMPLATEMAXPOINTS;//(uint16_t)getMaxBodyPoints();//DBAR_BODYMAXPOINTS;
     if (!widgAddBarGraph(psWScreen, &sBarInit))
     {
         return false;
@@ -892,7 +892,7 @@ static BOOL _intAddDesign( BOOL bShowCentreScreen )
 void desSetupDesignTemplates( void )
 {
     DROID_TEMPLATE	*psTempl;
-    UDWORD			i;
+    uint32_t			i;
 
     /* init template list */
     memset( apsTemplateList, 0, sizeof(DROID_TEMPLATE *) * MAXTEMPLATES );
@@ -924,8 +924,8 @@ void desSetupDesignTemplates( void )
 static BOOL _intAddTemplateForm(DROID_TEMPLATE *psSelected)
 {
     W_FORMINIT	sFormInit;
-    UDWORD		numButtons, butPerForm;
-    UDWORD		i;
+    uint32_t		numButtons, butPerForm;
+    uint32_t		i;
 
 
     /* Count the number of minor tabs needed for the template form */
@@ -949,8 +949,8 @@ static BOOL _intAddTemplateForm(DROID_TEMPLATE *psSelected)
     sFormInit.formID = 0;
     sFormInit.id = IDDES_TEMPLBASE;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD)RET_X;
-    sFormInit.y = (SWORD)DESIGN_Y;
+    sFormInit.x = (int16_t)RET_X;
+    sFormInit.y = (int16_t)DESIGN_Y;
     sFormInit.width = RET_FORMWIDTH;
     sFormInit.height = DES_LEFTFORMHEIGHT + 4;
     sFormInit.pDisplay = intDisplayPlainForm;
@@ -1014,16 +1014,16 @@ static BOOL _intAddTemplateForm(DROID_TEMPLATE *psSelected)
 
 
 /* Add the droid template buttons to a form */
-BOOL intAddTemplateButtons(UDWORD formID, UDWORD formWidth, UDWORD formHeight,
-                           UDWORD butWidth, UDWORD butHeight, UDWORD gap,
+BOOL intAddTemplateButtons(uint32_t formID, uint32_t formWidth, uint32_t formHeight,
+                           uint32_t butWidth, uint32_t butHeight, uint32_t gap,
                            DROID_TEMPLATE *psSelected)
 {
     W_FORMINIT		sButInit;
     W_BARINIT		sBarInit;
     DROID_TEMPLATE	*psTempl = NULL;
     char			aButText[DES_COMPBUTMAXCHAR + 1];
-    SDWORD			BufferID;
-    UDWORD			i;
+    int32_t			BufferID;
+    uint32_t			i;
     char TempString[256];
     int BufferPos = 0;
 
@@ -1086,7 +1086,7 @@ BOOL intAddTemplateButtons(UDWORD formID, UDWORD formWidth, UDWORD formHeight,
             }
 
             sBarInit.iRange = POWERPOINTS_DROIDDIV;
-            sBarInit.size = (UWORD)(psTempl->powerPoints  / POWERPOINTS_DROIDDIV);
+            sBarInit.size = (uint16_t)(psTempl->powerPoints  / POWERPOINTS_DROIDDIV);
             if(sBarInit.size > WBAR_SCALE)
             {
                 sBarInit.size = WBAR_SCALE;
@@ -1117,11 +1117,11 @@ BOOL intAddTemplateButtons(UDWORD formID, UDWORD formWidth, UDWORD formHeight,
             /* Update the init struct for the next button */
             sBarInit.id += 1;
             sButInit.id += 1;
-            sButInit.x = (SWORD)(sButInit.x + butWidth + gap);
+            sButInit.x = (int16_t)(sButInit.x + butWidth + gap);
             if (sButInit.x + butWidth + gap > formWidth)
             {
                 sButInit.x = DES_LEFTFORMBUTX;
-                sButInit.y = (SWORD)(sButInit.y + butHeight + gap);
+                sButInit.y = (int16_t)(sButInit.y + butHeight + gap);
             }
             if (sButInit.y + butHeight + gap > formHeight)
             {
@@ -1146,7 +1146,7 @@ BOOL intAddTemplateButtons(UDWORD formID, UDWORD formWidth, UDWORD formHeight,
  */
 static void intSetDesignMode(DES_COMPMODE newCompMode)
 {
-    UDWORD	weaponIndex;
+    uint32_t	weaponIndex;
 
     if (newCompMode != desCompMode)
     {
@@ -1548,7 +1548,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
     {
         /* Add the bar graphs*/
         sBarInit.id = IDDES_SENSORRANGE;
-        sBarInit.iRange = (UWORD)getMaxSensorRange();//DBAR_SENSORMAXRANGE;
+        sBarInit.iRange = (uint16_t)getMaxSensorRange();//DBAR_SENSORMAXRANGE;
         sBarInit.pTip = _("Sensor Range");
         sBarInit.denominator = TILE_UNITS;
         sBarInit.precision = 1;
@@ -1560,7 +1560,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         sBarInit.precision = 0;
         sBarInit.id = IDDES_SENSORPOWER;
         sBarInit.y = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
-        sBarInit.iRange = (UWORD)getMaxSensorPower();//DBAR_SENSORMAXPOWER;
+        sBarInit.iRange = (uint16_t)getMaxSensorPower();//DBAR_SENSORMAXPOWER;
         sBarInit.pTip = _("Sensor Power");
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
@@ -1568,7 +1568,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         }
         sBarInit.id = IDDES_SENSORWEIGHT;
         sBarInit.y = DES_STATBAR_Y3;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
-        sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+        sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
         sBarInit.pTip = _("Weight");
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
@@ -1608,7 +1608,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
     {
         /* Add the bar graphs */
         sBarInit.id = IDDES_ECMPOWER;
-        sBarInit.iRange = (UWORD)getMaxECMPower();//DBAR_ECMMAXPOWER;
+        sBarInit.iRange = (uint16_t)getMaxECMPower();//DBAR_ECMMAXPOWER;
         sBarInit.pTip = _("ECM Power");
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
@@ -1616,7 +1616,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         }
         sBarInit.id = IDDES_ECMWEIGHT;
         sBarInit.y = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
-        sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+        sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
         sBarInit.pTip = _("Weight");
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
@@ -1648,7 +1648,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         /* Add the bar graphs */
         sBarInit.id = IDDES_CONSTPOINTS;
         sBarInit.pTip = _("Build Points");
-        sBarInit.iRange = (UWORD)getMaxConstPoints();//DBAR_CONSTMAXPOINTS;
+        sBarInit.iRange = (uint16_t)getMaxConstPoints();//DBAR_CONSTMAXPOINTS;
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
             return false;
@@ -1656,7 +1656,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         sBarInit.id = IDDES_CONSTWEIGHT;
         sBarInit.y = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
         sBarInit.pTip = _("Weight");
-        sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+        sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
             return false;
@@ -1687,7 +1687,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         /* Add the bar graphs */
         sBarInit.id = IDDES_REPAIRPOINTS;
         sBarInit.pTip = _("Build Points");
-        sBarInit.iRange = (UWORD)getMaxRepairPoints();//DBAR_REPAIRMAXPOINTS;
+        sBarInit.iRange = (uint16_t)getMaxRepairPoints();//DBAR_REPAIRMAXPOINTS;
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
             return false;
@@ -1695,7 +1695,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         sBarInit.id = IDDES_REPAIRWEIGHT;
         sBarInit.y = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
         sBarInit.pTip = _("Weight");
-        sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+        sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
             return false;
@@ -1725,7 +1725,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
     {
         /* Add the bar graphs */
         sBarInit.id = IDDES_WEAPRANGE;
-        sBarInit.iRange = (UWORD)getMaxWeaponRange();//DBAR_WEAPMAXRANGE;
+        sBarInit.iRange = (uint16_t)getMaxWeaponRange();//DBAR_WEAPMAXRANGE;
         sBarInit.pTip = _("Range");
         sBarInit.denominator = TILE_UNITS;
         sBarInit.precision = 1;
@@ -1737,7 +1737,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         sBarInit.precision = 0;
         sBarInit.id = IDDES_WEAPDAMAGE;
         sBarInit.y = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
-        sBarInit.iRange = (UWORD)getMaxWeaponDamage();//DBAR_WEAPMAXDAMAGE;
+        sBarInit.iRange = (uint16_t)getMaxWeaponDamage();//DBAR_WEAPMAXDAMAGE;
         sBarInit.pTip = _("Damage");
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
@@ -1753,7 +1753,7 @@ static BOOL _intSetSystemForm(COMPONENT_STATS *psStats)
         }
         sBarInit.id = IDDES_WEAPWEIGHT;
         sBarInit.y = DES_STATBAR_Y4;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
-        sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+        sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
         sBarInit.pTip = _("Weight");
         if (!widgAddBarGraph(psWScreen, &sBarInit))
         {
@@ -1915,7 +1915,7 @@ static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats)
         case IDES_AIR:
             /* Add the bar graphs */
             sBarInit.id = IDDES_PROPAIR;
-            sBarInit.iRange = (UWORD)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
+            sBarInit.iRange = (uint16_t)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
             sBarInit.pTip = _("Air Speed");
             sBarInit.denominator = TILE_UNITS;
             sBarInit.precision = 2;
@@ -1927,7 +1927,7 @@ static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats)
             sBarInit.precision = 0;
             sBarInit.id = IDDES_PROPWEIGHT;
             sBarInit.y = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
-            sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+            sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
             sBarInit.pTip = _("Weight");
             if (!widgAddBarGraph(psWScreen, &sBarInit))
             {
@@ -1957,7 +1957,7 @@ static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats)
             /* Add the bar graphs */
             sBarInit.id = IDDES_PROPROAD;
             sBarInit.pTip = _("Road Speed");
-            sBarInit.iRange = (UWORD)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
+            sBarInit.iRange = (uint16_t)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
             sBarInit.denominator = TILE_UNITS;
             sBarInit.precision = 2;
             if (!widgAddBarGraph(psWScreen, &sBarInit))
@@ -1967,7 +1967,7 @@ static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats)
             sBarInit.id = IDDES_PROPCOUNTRY;
             sBarInit.y = DES_STATBAR_Y2;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
             sBarInit.pTip = _("Off-Road Speed");
-            sBarInit.iRange = (UWORD)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
+            sBarInit.iRange = (uint16_t)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
             if (!widgAddBarGraph(psWScreen, &sBarInit))
             {
                 return false;
@@ -1975,7 +1975,7 @@ static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats)
             sBarInit.id = IDDES_PROPWATER;
             sBarInit.y = DES_STATBAR_Y3;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
             sBarInit.pTip = _("Water Speed");
-            sBarInit.iRange = (UWORD)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
+            sBarInit.iRange = (uint16_t)getMaxPropulsionSpeed();//DBAR_PROPMAXSPEED;
             if (!widgAddBarGraph(psWScreen, &sBarInit))
             {
                 return false;
@@ -1985,7 +1985,7 @@ static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats)
             sBarInit.id = IDDES_PROPWEIGHT;
             sBarInit.y = DES_STATBAR_Y4;	//+= DES_CLICKBARHEIGHT + DES_CLICKGAP;
             sBarInit.pTip = _("Weight");
-            sBarInit.iRange = (UWORD)getMaxComponentWeight();//DBAR_MAXWEIGHT;
+            sBarInit.iRange = (uint16_t)getMaxComponentWeight();//DBAR_MAXWEIGHT;
             if (!widgAddBarGraph(psWScreen, &sBarInit))
             {
                 return false;
@@ -2046,10 +2046,10 @@ static BOOL intSetPropulsionForm(PROPULSION_STATS *psStats)
 
 
 // count the number of available components
-static UDWORD intNumAvailable(UBYTE *aAvailable, UDWORD numEntries,
-                              COMPONENT_STATS *asStats, UDWORD size)
+static uint32_t intNumAvailable(uint8_t *aAvailable, uint32_t numEntries,
+                              COMPONENT_STATS *asStats, uint32_t size)
 {
-    UDWORD				numButtons, i;
+    uint32_t				numButtons, i;
     COMPONENT_STATS		*psCurrStats;
 
     numButtons = 0;
@@ -2062,7 +2062,7 @@ static UDWORD intNumAvailable(UBYTE *aAvailable, UDWORD numEntries,
             numButtons++;
         }
 
-        psCurrStats = (COMPONENT_STATS *)( (UBYTE *)psCurrStats + size );
+        psCurrStats = (COMPONENT_STATS *)( (uint8_t *)psCurrStats + size );
     }
 
     return numButtons;
@@ -2070,10 +2070,10 @@ static UDWORD intNumAvailable(UBYTE *aAvailable, UDWORD numEntries,
 
 
 /* Add the component tab form to the design screen */
-static BOOL intAddComponentForm(UDWORD numButtons)
+static BOOL intAddComponentForm(uint32_t numButtons)
 {
     W_FORMINIT		sFormInit;
-    UDWORD			i, butPerForm, numFrm;
+    uint32_t			i, butPerForm, numFrm;
 
     memset(&sFormInit, 0, sizeof(W_FORMINIT));
     butPerForm = DES_BUTSPERFORM;
@@ -2083,8 +2083,8 @@ static BOOL intAddComponentForm(UDWORD numButtons)
     sFormInit.formID = 0;
     sFormInit.id = IDDES_RIGHTBASE;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD)(RADTLX-2);
-    sFormInit.y = (SWORD)DESIGN_Y;
+    sFormInit.x = (int16_t)(RADTLX-2);
+    sFormInit.y = (int16_t)DESIGN_Y;
     sFormInit.width = RET_FORMWIDTH;
     sFormInit.height = DES_RIGHTFORMHEIGHT + 4;
     sFormInit.pDisplay = intDisplayPlainForm;
@@ -2103,7 +2103,7 @@ static BOOL intAddComponentForm(UDWORD numButtons)
     sFormInit.width = DES_RIGHTFORMWIDTH;
     sFormInit.height = DES_RIGHTFORMHEIGHT;
     numFrm = numForms(numButtons, butPerForm);
-    sFormInit.numMajor = (UWORD)(numFrm >= WFORM_MAXMAJOR ? WFORM_MAXMAJOR-1 : numFrm);
+    sFormInit.numMajor = (uint16_t)(numFrm >= WFORM_MAXMAJOR ? WFORM_MAXMAJOR-1 : numFrm);
     sFormInit.majorPos = WFORM_TABTOP;
     sFormInit.minorPos = WFORM_TABNONE;
     sFormInit.majorSize = DES_TAB_WIDTH;
@@ -2149,7 +2149,7 @@ static BOOL intAddSystemButtons(DES_COMPMODE mode)
     sButInit.pTip = _("Weapons");
     sButInit.FontID = font_regular;
     sButInit.pDisplay = intDisplayButtonHilight;
-    sButInit.UserData = PACKDWORD_TRI(0,IMAGE_DES_EXTRAHI , IMAGE_DES_WEAPONS);
+    sButInit.UserData = PACKint32_t_TRI(0,IMAGE_DES_EXTRAHI , IMAGE_DES_WEAPONS);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -2171,7 +2171,7 @@ static BOOL intAddSystemButtons(DES_COMPMODE mode)
         sButInit.pTip = _("Systems");
         sButInit.FontID = font_regular;
         sButInit.pDisplay = intDisplayButtonHilight;
-        sButInit.UserData = PACKDWORD_TRI(0,IMAGE_DES_EXTRAHI , IMAGE_DES_SYSTEMS);
+        sButInit.UserData = PACKint32_t_TRI(0,IMAGE_DES_EXTRAHI , IMAGE_DES_SYSTEMS);
         if (!widgAddButton(psWScreen, &sButInit))
         {
             return false;
@@ -2202,19 +2202,19 @@ static BOOL intAddSystemButtons(DES_COMPMODE mode)
 
 
 /* Add the component buttons to the main tab of the component form */
-static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, UDWORD size,
-                                   UBYTE *aAvailable,	UDWORD numEntries,
-                                   UDWORD compID,UDWORD WhichTab)
+static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, uint32_t size,
+                                   uint8_t *aAvailable,	uint32_t numEntries,
+                                   uint32_t compID,uint32_t WhichTab)
 {
     W_FORMINIT			sButInit;
     W_TABFORM           *psTabForm;
-    UDWORD				i, maxComponents;
+    uint32_t				i, maxComponents;
     COMPONENT_STATS		*psCurrStats;
     char				aButText[DES_COMPBUTMAXCHAR + 1];
-    SDWORD				BufferID;
+    int32_t				BufferID;
     PROPULSION_STATS	*psPropStats;
     BOOL				bVTol, bWeapon, bVtolWeapon;
-    UWORD               numTabs;
+    uint16_t               numTabs;
 
     ClearObjectBuffers();
 
@@ -2291,7 +2291,7 @@ static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, UDWORD size,
                 || !psCurrStats->designable)
         {
             /* Update the stats pointer for the next button */
-            psCurrStats = (COMPONENT_STATS *)(((UBYTE *)psCurrStats) + size);
+            psCurrStats = (COMPONENT_STATS *)(((uint8_t *)psCurrStats) + size);
 
             continue;
         }
@@ -2311,7 +2311,7 @@ static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, UDWORD size,
             if ( (bVTol && !bVtolWeapon) || (!bVTol && bVtolWeapon) )
             {
                 /* Update the stats pointer for the next button */
-                psCurrStats = (COMPONENT_STATS *)(((UBYTE *)psCurrStats) + size);
+                psCurrStats = (COMPONENT_STATS *)(((uint8_t *)psCurrStats) + size);
                 continue;
             }
         }
@@ -2398,7 +2398,7 @@ static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, UDWORD size,
         }
 
         /* Update the stats pointer for the next button */
-        psCurrStats = (COMPONENT_STATS *)(((UBYTE *)psCurrStats) + size);
+        psCurrStats = (COMPONENT_STATS *)(((uint8_t *)psCurrStats) + size);
     }
 
     //hack to sort out the tabs on the weapon form
@@ -2407,7 +2407,7 @@ static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, UDWORD size,
     if (psTabForm)
     {
         numTabs = psTabForm->numMajor;
-        if (numComponent < (UDWORD)(numTabs * DES_BUTSPERFORM))
+        if (numComponent < (uint32_t)(numTabs * DES_BUTSPERFORM))
         {
             psTabForm->numMajor = numForms(numComponent, DES_BUTSPERFORM);
         }
@@ -2417,17 +2417,17 @@ static BOOL intAddComponentButtons(COMPONENT_STATS *psStats, UDWORD size,
 }
 
 /* Add the component buttons to the main tab of the component form */
-static BOOL intAddExtraSystemButtons(UDWORD sensorIndex, UDWORD ecmIndex,
-                                     UDWORD constIndex, UDWORD repairIndex,
-                                     UDWORD brainIndex)
+static BOOL intAddExtraSystemButtons(uint32_t sensorIndex, uint32_t ecmIndex,
+                                     uint32_t constIndex, uint32_t repairIndex,
+                                     uint32_t brainIndex)
 {
     W_FORMINIT		sButInit;
-    UDWORD			i, buttonType, size=0;
-    UDWORD			compIndex=0, numStats=0;
+    uint32_t			i, buttonType, size=0;
+    uint32_t			compIndex=0, numStats=0;
     COMPONENT_STATS	*psCurrStats=0;
-    UBYTE			*aAvailable=0;
+    uint8_t			*aAvailable=0;
     char			aButText[DES_COMPBUTMAXCHAR + 1];
-    SDWORD			BufferID;
+    int32_t			BufferID;
 
     memset(aButText, 0, DES_COMPBUTMAXCHAR + 1);
     memset(&sButInit, 0, sizeof(W_FORMINIT));  // [sic], W_FORMINIT sButInit;
@@ -2509,7 +2509,7 @@ static BOOL intAddExtraSystemButtons(UDWORD sensorIndex, UDWORD ecmIndex,
                     || !psCurrStats->designable)
             {
                 // Update the stats pointer for the next button
-                psCurrStats = (COMPONENT_STATS *)(((UBYTE *)psCurrStats) + size);
+                psCurrStats = (COMPONENT_STATS *)(((uint8_t *)psCurrStats) + size);
 
                 continue;
             }
@@ -2567,7 +2567,7 @@ static BOOL intAddExtraSystemButtons(UDWORD sensorIndex, UDWORD ecmIndex,
             }
 
             // Update the stats pointer for the next button
-            psCurrStats = (COMPONENT_STATS *)(((UBYTE *)psCurrStats) + size);
+            psCurrStats = (COMPONENT_STATS *)(((uint8_t *)psCurrStats) + size);
         }
     }
 
@@ -2713,10 +2713,10 @@ static void intSetSensorStats(SENSOR_STATS *psStats)
 
     /* range */
     widgSetBarSize(psWScreen, IDDES_SENSORRANGE,
-                   sensorRange(psStats, (UBYTE)selectedPlayer));
+                   sensorRange(psStats, (uint8_t)selectedPlayer));
     /* power */
     widgSetBarSize(psWScreen, IDDES_SENSORPOWER,
-                   sensorPower(psStats, (UBYTE)selectedPlayer));
+                   sensorPower(psStats, (uint8_t)selectedPlayer));
     /* weight */
     widgSetBarSize(psWScreen, IDDES_SENSORWEIGHT, psStats->weight);
 }
@@ -2733,10 +2733,10 @@ static void intSetSensorShadowStats(SENSOR_STATS *psStats)
     {
         /* range */
         widgSetMinorBarSize(psWScreen, IDDES_SENSORRANGE,
-                            sensorRange(psStats, (UBYTE)selectedPlayer));
+                            sensorRange(psStats, (uint8_t)selectedPlayer));
         /* power */
         widgSetMinorBarSize(psWScreen, IDDES_SENSORPOWER,
-                            sensorPower(psStats, (UBYTE)selectedPlayer));
+                            sensorPower(psStats, (uint8_t)selectedPlayer));
         /* weight */
         widgSetMinorBarSize(psWScreen, IDDES_SENSORWEIGHT, psStats->weight);
     }
@@ -2759,7 +2759,7 @@ static void intSetECMStats(ECM_STATS *psStats)
 
     /* power */
     widgSetBarSize(psWScreen, IDDES_ECMPOWER,
-                   ecmPower(psStats, (UBYTE)selectedPlayer));
+                   ecmPower(psStats, (uint8_t)selectedPlayer));
     /* weight */
     widgSetBarSize(psWScreen, IDDES_ECMWEIGHT, psStats->weight);
 }
@@ -2776,7 +2776,7 @@ static void intSetECMShadowStats(ECM_STATS *psStats)
     {
         /* power */
         widgSetMinorBarSize(psWScreen, IDDES_ECMPOWER,
-                            ecmPower(psStats, (UBYTE)selectedPlayer));
+                            ecmPower(psStats, (uint8_t)selectedPlayer));
         /* weight */
         widgSetMinorBarSize(psWScreen, IDDES_ECMWEIGHT, psStats->weight);
     }
@@ -2798,7 +2798,7 @@ static void intSetConstructStats(CONSTRUCT_STATS *psStats)
 
     /* power */
     widgSetBarSize(psWScreen, IDDES_CONSTPOINTS,
-                   constructorPoints(psStats, (UBYTE)selectedPlayer));
+                   constructorPoints(psStats, (uint8_t)selectedPlayer));
     /* weight */
     widgSetBarSize(psWScreen, IDDES_CONSTWEIGHT, psStats->weight);
 }
@@ -2816,7 +2816,7 @@ static void intSetConstructShadowStats(CONSTRUCT_STATS *psStats)
     {
         /* power */
         widgSetMinorBarSize(psWScreen, IDDES_CONSTPOINTS,
-                            constructorPoints(psStats, (UBYTE)selectedPlayer));
+                            constructorPoints(psStats, (uint8_t)selectedPlayer));
         /* weight */
         widgSetMinorBarSize(psWScreen, IDDES_CONSTWEIGHT, psStats->weight);
     }
@@ -2837,7 +2837,7 @@ static void intSetRepairStats(REPAIR_STATS *psStats)
 
     /* power */
     widgSetBarSize(psWScreen, IDDES_REPAIRPOINTS,
-                   repairPoints(psStats, (UBYTE)selectedPlayer));
+                   repairPoints(psStats, (uint8_t)selectedPlayer));
     /* weight */
     widgSetBarSize(psWScreen, IDDES_REPAIRWEIGHT, psStats->weight);
 }
@@ -2855,7 +2855,7 @@ static void intSetRepairShadowStats(REPAIR_STATS *psStats)
     {
         /* power */
         widgSetMinorBarSize(psWScreen, IDDES_REPAIRPOINTS,
-                            repairPoints(psStats, (UBYTE)selectedPlayer));
+                            repairPoints(psStats, (uint8_t)selectedPlayer));
         /* weight */
         widgSetMinorBarSize(psWScreen, IDDES_REPAIRWEIGHT, psStats->weight);
     }
@@ -2878,10 +2878,10 @@ static void intSetWeaponStats(WEAPON_STATS *psStats)
     /* range */
     widgSetBarSize(psWScreen, IDDES_WEAPRANGE, proj_GetLongRange(psStats));
     /* rate of fire */
-    widgSetBarSize(psWScreen, IDDES_WEAPROF, weaponROF(psStats, (SBYTE)selectedPlayer));
+    widgSetBarSize(psWScreen, IDDES_WEAPROF, weaponROF(psStats, (int8_t)selectedPlayer));
     /* damage */
-    widgSetBarSize(psWScreen, IDDES_WEAPDAMAGE, (UWORD)weaponDamage(psStats,
-                   (UBYTE)selectedPlayer));
+    widgSetBarSize(psWScreen, IDDES_WEAPDAMAGE, (uint16_t)weaponDamage(psStats,
+                   (uint8_t)selectedPlayer));
     /* weight */
     widgSetBarSize(psWScreen, IDDES_WEAPWEIGHT, psStats->weight);
 }
@@ -2899,10 +2899,10 @@ static void intSetWeaponShadowStats(WEAPON_STATS *psStats)
         /* range */
         widgSetMinorBarSize(psWScreen, IDDES_WEAPRANGE, proj_GetLongRange(psStats));
         /* rate of fire */
-        widgSetMinorBarSize(psWScreen, IDDES_WEAPROF, weaponROF(psStats, (SBYTE)selectedPlayer));
+        widgSetMinorBarSize(psWScreen, IDDES_WEAPROF, weaponROF(psStats, (int8_t)selectedPlayer));
         /* damage */
-        widgSetMinorBarSize(psWScreen, IDDES_WEAPDAMAGE, (UWORD)weaponDamage(
-                                psStats, (UBYTE)selectedPlayer));
+        widgSetMinorBarSize(psWScreen, IDDES_WEAPDAMAGE, (uint16_t)weaponDamage(
+                                psStats, (uint8_t)selectedPlayer));
         /* weight */
         widgSetMinorBarSize(psWScreen, IDDES_WEAPWEIGHT, psStats->weight);
     }
@@ -2933,10 +2933,10 @@ static void intSetBodyStats(BODY_STATS *psStats)
     //	size = WBAR_SCALE * psStats->armourValue/DBAR_BODYMAXARMOUR;
     //do kinetic armour
     widgSetBarSize(psWScreen, IDDES_BODYARMOUR_K, bodyArmour(psStats,
-                   (UBYTE)selectedPlayer, DROID_BODY_UPGRADE, WC_KINETIC, 0));
+                   (uint8_t)selectedPlayer, DROID_BODY_UPGRADE, WC_KINETIC, 0));
     //do heat armour
     widgSetBarSize(psWScreen, IDDES_BODYARMOUR_H, bodyArmour(psStats,
-                   (UBYTE)selectedPlayer, DROID_BODY_UPGRADE, WC_HEAT, 0));
+                   (uint8_t)selectedPlayer, DROID_BODY_UPGRADE, WC_HEAT, 0));
     /* body points */
     /*size = WBAR_SCALE * psStats->body/DBAR_BODYMAXPOINTS;
     if (size > WBAR_SCALE)
@@ -2947,7 +2947,7 @@ static void intSetBodyStats(BODY_STATS *psStats)
     /* power */
     //widgSetBarSize(psWScreen, IDDES_BODYPOWER, psStats->powerOutput);
     widgSetBarSize(psWScreen, IDDES_BODYPOWER, bodyPower(psStats,
-                   (UBYTE)selectedPlayer,DROID_BODY_UPGRADE));
+                   (uint8_t)selectedPlayer,DROID_BODY_UPGRADE));
 
     /* weight */
     widgSetBarSize(psWScreen, IDDES_BODYWEIGHT, psStats->weight);
@@ -2974,11 +2974,11 @@ static void intSetBodyShadowStats(BODY_STATS *psStats)
         //size = WBAR_SCALE * psStats->armourValue/DBAR_BODYMAXARMOUR;
         //widgSetMinorBarSize(psWScreen, IDDES_BODYARMOUR_K,psStats->armourValue[WC_KINETIC]);
         widgSetMinorBarSize(psWScreen, IDDES_BODYARMOUR_K, bodyArmour(psStats,
-                            (UBYTE)selectedPlayer, DROID_BODY_UPGRADE, WC_KINETIC, 0));
+                            (uint8_t)selectedPlayer, DROID_BODY_UPGRADE, WC_KINETIC, 0));
         //armour - heat
         //widgSetMinorBarSize(psWScreen, IDDES_BODYARMOUR_H,psStats->armourValue[WC_HEAT]);
         widgSetMinorBarSize(psWScreen, IDDES_BODYARMOUR_H,bodyArmour(psStats,
-                            (UBYTE)selectedPlayer, DROID_BODY_UPGRADE, WC_HEAT, 0));
+                            (uint8_t)selectedPlayer, DROID_BODY_UPGRADE, WC_HEAT, 0));
         /* body points */
 //			size = WBAR_SCALE * psStats->bodyPoints/DBAR_BODYMAXPOINTS;
 //			if (size > WBAR_SCALE)
@@ -2989,7 +2989,7 @@ static void intSetBodyShadowStats(BODY_STATS *psStats)
         /* power */
         //widgSetMinorBarSize(psWScreen, IDDES_BODYPOWER, psStats->powerOutput);
         widgSetMinorBarSize(psWScreen, IDDES_BODYPOWER, bodyPower(psStats,
-                            (UBYTE)selectedPlayer, DROID_BODY_UPGRADE));
+                            (uint8_t)selectedPlayer, DROID_BODY_UPGRADE));
 
         /* weight */
         widgSetMinorBarSize(psWScreen, IDDES_BODYWEIGHT, psStats->weight);
@@ -3013,7 +3013,7 @@ static void intSetDesignPower(DROID_TEMPLATE *psTemplate)
 }
 
 // work out current system component
-static UDWORD getSystemType(DROID_TEMPLATE *droidTemplate)
+static uint32_t getSystemType(DROID_TEMPLATE *droidTemplate)
 {
     if (droidTemplate->asParts[COMP_ECM])
     {
@@ -3045,22 +3045,22 @@ static UDWORD getSystemType(DROID_TEMPLATE *droidTemplate)
 /* Set the shadow bar graphs for the template power points - psStats is new hilited stats*/
 static void intSetTemplatePowerShadowStats(COMPONENT_STATS *psStats)
 {
-    UDWORD				type;
-    UDWORD				power;
+    uint32_t				type;
+    uint32_t				power;
 
     if (psStats != NULL)
     {
-        UDWORD bodyPower        = asBodyStats[sCurrDesign.asParts[COMP_BODY]].buildPower;
-        UDWORD brainPower       = asBrainStats[sCurrDesign.asParts[COMP_BRAIN]].buildPower;
-        UDWORD sensorPower      = asSensorStats[sCurrDesign.asParts[COMP_SENSOR]].buildPower;
-        UDWORD ECMPower         = asECMStats[sCurrDesign.asParts[COMP_ECM]].buildPower;
-        UDWORD repairPower      = asRepairStats[sCurrDesign.asParts[COMP_REPAIRUNIT]].buildPower;
-        UDWORD constructPower   = asConstructStats[sCurrDesign.asParts[COMP_CONSTRUCT]].buildPower;
-        UDWORD propulsionPower  = asPropulsionStats[sCurrDesign.asParts[COMP_PROPULSION]].buildPower;
-        UDWORD weaponPower1     = asWeaponStats[sCurrDesign.numWeaps ? sCurrDesign.asWeaps[0] : 0].buildPower;
-        UDWORD weaponPower2     = asWeaponStats[sCurrDesign.numWeaps>=2 ? sCurrDesign.asWeaps[1] : 0].buildPower;
-        UDWORD weaponPower3     = asWeaponStats[sCurrDesign.numWeaps>=3 ? sCurrDesign.asWeaps[2] : 0].buildPower;
-        UDWORD newComponentPower= psStats->buildPower;
+        uint32_t bodyPower        = asBodyStats[sCurrDesign.asParts[COMP_BODY]].buildPower;
+        uint32_t brainPower       = asBrainStats[sCurrDesign.asParts[COMP_BRAIN]].buildPower;
+        uint32_t sensorPower      = asSensorStats[sCurrDesign.asParts[COMP_SENSOR]].buildPower;
+        uint32_t ECMPower         = asECMStats[sCurrDesign.asParts[COMP_ECM]].buildPower;
+        uint32_t repairPower      = asRepairStats[sCurrDesign.asParts[COMP_REPAIRUNIT]].buildPower;
+        uint32_t constructPower   = asConstructStats[sCurrDesign.asParts[COMP_CONSTRUCT]].buildPower;
+        uint32_t propulsionPower  = asPropulsionStats[sCurrDesign.asParts[COMP_PROPULSION]].buildPower;
+        uint32_t weaponPower1     = asWeaponStats[sCurrDesign.numWeaps ? sCurrDesign.asWeaps[0] : 0].buildPower;
+        uint32_t weaponPower2     = asWeaponStats[sCurrDesign.numWeaps>=2 ? sCurrDesign.asWeaps[1] : 0].buildPower;
+        uint32_t weaponPower3     = asWeaponStats[sCurrDesign.numWeaps>=3 ? sCurrDesign.asWeaps[2] : 0].buildPower;
+        uint32_t newComponentPower= psStats->buildPower;
 
 
         type = statType(psStats->ref);
@@ -3142,28 +3142,28 @@ static void intSetBodyPoints(DROID_TEMPLATE *psTemplate)
 {
     // If total greater than Body Bar size then scale values.
     widgSetBarSize( psWScreen, IDDES_BODYPOINTS, calcTemplateBody(psTemplate,
-                    (UBYTE)selectedPlayer) );
+                    (uint8_t)selectedPlayer) );
 }
 
 /* Set the shadow bar graphs for the template Body points - psStats is new hilited stats*/
 static void intSetTemplateBodyShadowStats(COMPONENT_STATS *psStats)
 {
-    UDWORD				type;
-    UDWORD				body;
+    uint32_t				type;
+    uint32_t				body;
 
     if (psStats != NULL)
     {
-        UDWORD bodyBody        = asBodyStats[sCurrDesign.asParts[COMP_BODY]].body;
-        UDWORD brainBody       = asBrainStats[sCurrDesign.asParts[COMP_BRAIN]].body;
-        UDWORD sensorBody      = asSensorStats[sCurrDesign.asParts[COMP_SENSOR]].body;
-        UDWORD ECMBody         = asECMStats[sCurrDesign.asParts[COMP_ECM]].body;
-        UDWORD repairBody      = asRepairStats[sCurrDesign.asParts[COMP_REPAIRUNIT]].body;
-        UDWORD constructBody   = asConstructStats[sCurrDesign.asParts[COMP_CONSTRUCT]].body;
-        UDWORD propulsionBody  = asPropulsionStats[sCurrDesign.asParts[COMP_PROPULSION]].body;
-        UDWORD weaponBody1     = asWeaponStats[sCurrDesign.numWeaps ? sCurrDesign.asWeaps[0] : 0].body;
-        UDWORD weaponBody2     = asWeaponStats[sCurrDesign.numWeaps>=2 ? sCurrDesign.asWeaps[1] : 0].body;
-        UDWORD weaponBody3     = asWeaponStats[sCurrDesign.numWeaps>=3 ? sCurrDesign.asWeaps[2] : 0].body;
-        UDWORD newComponentBody= psStats->body;
+        uint32_t bodyBody        = asBodyStats[sCurrDesign.asParts[COMP_BODY]].body;
+        uint32_t brainBody       = asBrainStats[sCurrDesign.asParts[COMP_BRAIN]].body;
+        uint32_t sensorBody      = asSensorStats[sCurrDesign.asParts[COMP_SENSOR]].body;
+        uint32_t ECMBody         = asECMStats[sCurrDesign.asParts[COMP_ECM]].body;
+        uint32_t repairBody      = asRepairStats[sCurrDesign.asParts[COMP_REPAIRUNIT]].body;
+        uint32_t constructBody   = asConstructStats[sCurrDesign.asParts[COMP_CONSTRUCT]].body;
+        uint32_t propulsionBody  = asPropulsionStats[sCurrDesign.asParts[COMP_PROPULSION]].body;
+        uint32_t weaponBody1     = asWeaponStats[sCurrDesign.numWeaps ? sCurrDesign.asWeaps[0] : 0].body;
+        uint32_t weaponBody2     = asWeaponStats[sCurrDesign.numWeaps>=2 ? sCurrDesign.asWeaps[1] : 0].body;
+        uint32_t weaponBody3     = asWeaponStats[sCurrDesign.numWeaps>=3 ? sCurrDesign.asWeaps[2] : 0].body;
+        uint32_t newComponentBody= psStats->body;
 
         type = statType(psStats->ref);
         // Commanders receive the stats of their associated weapon.
@@ -3241,9 +3241,9 @@ static void intSetTemplateBodyShadowStats(COMPONENT_STATS *psStats)
 
 
 /* Calculate the speed of a droid over a type of terrain */
-static UDWORD intCalcSpeed(TYPE_OF_TERRAIN type, PROPULSION_STATS *psProp)
+static uint32_t intCalcSpeed(TYPE_OF_TERRAIN type, PROPULSION_STATS *psProp)
 {
-    UDWORD		weight;
+    uint32_t		weight;
 
     /* Calculate the weight */
     weight = calcDroidWeight(&sCurrDesign);
@@ -3262,7 +3262,7 @@ static UDWORD intCalcSpeed(TYPE_OF_TERRAIN type, PROPULSION_STATS *psProp)
 
 
     return calcDroidSpeed(calcDroidBaseSpeed(&sCurrDesign, weight,
-                          (UBYTE)selectedPlayer), type, psProp - asPropulsionStats, 0);
+                          (uint8_t)selectedPlayer), type, psProp - asPropulsionStats, 0);
 }
 
 
@@ -3270,7 +3270,7 @@ static UDWORD intCalcSpeed(TYPE_OF_TERRAIN type, PROPULSION_STATS *psProp)
 static void intSetPropulsionStats(PROPULSION_STATS *psStats)
 {
     W_FORM	    *psForm;
-    UDWORD      weight;
+    uint32_t      weight;
 
     ASSERT_OR_RETURN( , psStats != NULL, "Invalid stats pointer");
     ASSERT_OR_RETURN( , (psStats->ref >= REF_PROPULSION_START) &&
@@ -3324,7 +3324,7 @@ static void intSetPropulsionStats(PROPULSION_STATS *psStats)
 /* Set the shadow bar graphs for the Propulsion stats */
 static void intSetPropulsionShadowStats(PROPULSION_STATS *psStats)
 {
-    UDWORD      weight;
+    uint32_t      weight;
 
 
     ASSERT( psStats == NULL ||
@@ -3410,7 +3410,7 @@ static void intSetPropulsionShadowStats(PROPULSION_STATS *psStats)
 /* Check whether a droid template is valid */
 BOOL intValidTemplate(DROID_TEMPLATE *psTempl, const char *newName)
 {
-    UDWORD i;
+    uint32_t i;
 
     // set the weapon for a command droid
     if (psTempl->asParts[COMP_BRAIN] != 0)
@@ -3545,7 +3545,7 @@ void intRemoveDesign(void)
 }
 
 /* set flashing flag for button */
-static void intSetButtonFlash( UDWORD id, BOOL bFlash )
+static void intSetButtonFlash( uint32_t id, BOOL bFlash )
 {
 #ifdef FLASH_BUTTONS
     WIDGET	*psWidget = widgGetFromID( psWScreen, id );
@@ -3584,12 +3584,12 @@ static BOOL desTemplateNameCustomised( DROID_TEMPLATE *psTemplate )
 }
 
 /* Process return codes from the design screen */
-void intProcessDesign(UDWORD id)
+void intProcessDesign(uint32_t id)
 {
     DROID_TEMPLATE	*psTempl = NULL, *psCurr, *psPrev;
     //DROID_TEMPLATE	*psTempPrev;
-    UDWORD			currID;
-    UDWORD			i;
+    uint32_t			currID;
+    uint32_t			i;
     BOOL			bTemplateNameCustomised;
 
     /* check template button pressed */
@@ -4168,7 +4168,7 @@ void intProcessDesign(UDWORD id)
 
                     // Delete the template.
                     //before deleting the template, need to make sure not being used in production
-                    deleteTemplateFromProduction(psTempl, (UBYTE)selectedPlayer);
+                    deleteTemplateFromProduction(psTempl, (uint8_t)selectedPlayer);
                     free(psTempl);
 
                     /* get previous template and set as current */
@@ -4414,7 +4414,7 @@ void intProcessDesign(UDWORD id)
 /* Set the shadow bar graphs for the design screen */
 void intRunDesign(void)
 {
-    UDWORD				statID;
+    uint32_t				statID;
     COMPONENT_STATS		*psStats;
     BOOL				templateButton;
     int compIndex;
@@ -4486,32 +4486,32 @@ void intRunDesign(void)
     }
 }
 
-static void intDisplayStatForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void intDisplayStatForm(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    static UDWORD	iRY = 45;
+    static uint32_t	iRY = 45;
 
     W_CLICKFORM		*Form = (W_CLICKFORM *)psWidget;
-    UWORD			x0 = xOffset+Form->x, y0 = yOffset+Form->y;
+    uint16_t			x0 = xOffset+Form->x, y0 = yOffset+Form->y;
 
     /* get stats from userdata pointer in widget stored in
      * intSetSystemStats, intSetBodyStats, intSetPropulsionStats
      */
     BASE_STATS *psStats = (BASE_STATS *) Form->pUserData;
 
-    SWORD templateRadius = getComponentRadius(psStats);
+    int16_t templateRadius = getComponentRadius(psStats);
 
     Vector3i Rotation = {-30, iRY, 0}, Position = {0, -templateRadius / 4, BUTTON_DEPTH /* templateRadius * 12 */};
 
     //scale the object around the BUTTON_RADIUS so that half size objects are draw are draw 75% the size of normal objects
-    SDWORD falseScale = (DESIGN_COMPONENT_SCALE * COMPONENT_RADIUS) / templateRadius / 2 + (DESIGN_COMPONENT_SCALE / 2);
+    int32_t falseScale = (DESIGN_COMPONENT_SCALE * COMPONENT_RADIUS) / templateRadius / 2 + (DESIGN_COMPONENT_SCALE / 2);
 
-    iV_DrawImage(IntImages,(UWORD)(IMAGE_DES_STATBACKLEFT),x0,y0);
+    iV_DrawImage(IntImages,(uint16_t)(IMAGE_DES_STATBACKLEFT),x0,y0);
     iV_DrawImageRect(IntImages,IMAGE_DES_STATBACKMID,
                      x0+iV_GetImageWidth(IntImages,IMAGE_DES_STATBACKLEFT),y0,
                      Form->width-iV_GetImageWidth(IntImages,IMAGE_DES_STATBACKLEFT)-iV_GetImageWidth(IntImages,IMAGE_DES_STATBACKRIGHT),
                      iV_GetImageHeight(IntImages,IMAGE_DES_STATBACKMID) );
     iV_DrawImage(IntImages,IMAGE_DES_STATBACKRIGHT,
-                 x0+Form->width-iV_GetImageWidth(IntImages,(UWORD)(IMAGE_DES_STATBACKRIGHT)),y0);
+                 x0+Form->width-iV_GetImageWidth(IntImages,(uint16_t)(IMAGE_DES_STATBACKRIGHT)),y0);
 
     /* display current component */
     pie_SetGeometricOffset( (xOffset+psWidget->width/4),
@@ -4529,14 +4529,14 @@ static void intDisplayStatForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
 }
 
 /* Displays the 3D view of the droid in a window on the design form */
-static void intDisplayViewForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void intDisplayViewForm(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_FORM			*Form = (W_FORM *)psWidget;
-    UDWORD			x0,y0,x1,y1;
-    static UDWORD	iRY = 45;
+    uint32_t			x0,y0,x1,y1;
+    static uint32_t	iRY = 45;
     Vector3i			Rotation, Position;
-    SWORD			templateRadius;
-    SDWORD			falseScale;
+    int16_t			templateRadius;
+    int32_t			falseScale;
 
     x0 = xOffset+Form->x;
     y0 = yOffset+Form->y;
@@ -4565,7 +4565,7 @@ static void intDisplayViewForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
         Position.y = -100;
         Position.z = BUTTON_DEPTH;
 
-        templateRadius = (SWORD)(getComponentDroidTemplateRadius((DROID_TEMPLATE *)
+        templateRadius = (int16_t)(getComponentDroidTemplateRadius((DROID_TEMPLATE *)
                                  CurrentStatsTemplate));
         //scale the object around the OBJECT_RADIUS so that half size objects are draw are draw 75% the size of normal objects
         falseScale = (DESIGN_DROID_SCALE * OBJECT_RADIUS) / templateRadius;
@@ -4576,16 +4576,16 @@ static void intDisplayViewForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset,
 }
 
 
-void intDisplayTemplateButton(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void intDisplayTemplateButton(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
     intDisplayStatsButton(psWidget, xOffset, yOffset, pColours);
 }
 
 
-static void intDisplayComponentButton(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+static void intDisplayComponentButton(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
 //	iIMDShape *OldCurShape = CurrentStatsShape;
-//	SWORD OldCurIndex = CurrentStatsIndex;
+//	int16_t OldCurIndex = CurrentStatsIndex;
     BASE_STATS *OldCurStatsTemplate = CurrentStatsTemplate;
 
     intDisplayStatsButton(psWidget, xOffset, yOffset, pColours);
@@ -4596,10 +4596,10 @@ static void intDisplayComponentButton(WIDGET *psWidget, UDWORD xOffset, UDWORD y
 }
 
 /* General display window for the design form  SOLID BACKGROUND - NOT TRANSPARENT*/
-void intDisplayDesignForm(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+void intDisplayDesignForm(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_TABFORM *Form = (W_TABFORM *)psWidget;
-    UDWORD x0,y0,x1,y1;
+    uint32_t x0,y0,x1,y1;
 
     x0 = xOffset+Form->x;
     y0 = yOffset+Form->y;
@@ -4617,7 +4617,7 @@ static BOOL saveTemplate(void)
 {
     DROID_TEMPLATE	*psTempl = NULL, *psPlayerTempl, *psPrevTempl;
     BOOL			stored = false, bTemplateFound = false;
-    UDWORD			i, iCurrID;
+    uint32_t			i, iCurrID;
 
     /* if first (New Design) button selected find empty template
      * else find current button template
@@ -4701,7 +4701,7 @@ static BOOL saveTemplate(void)
             newTemplate = false;
             /*ANY change to the template affect the production - even if the
             template is changed and then changed back again!*/
-            deleteTemplateFromProduction(psTempl, (UBYTE)selectedPlayer);
+            deleteTemplateFromProduction(psTempl, (uint8_t)selectedPlayer);
         }
 
         /* Copy the template */
@@ -4732,13 +4732,13 @@ static BOOL saveTemplate(void)
 
 /*Function to set the shadow bars for all the stats when the mouse is over
 the Template buttons*/
-void runTemplateShadowStats(UDWORD id)
+void runTemplateShadowStats(uint32_t id)
 {
-    UDWORD			currID;
+    uint32_t			currID;
     DROID_TEMPLATE	*psTempl = NULL;
     COMPONENT_STATS	*psStats;
     DROID_TYPE		templType;
-    UDWORD			i;
+    uint32_t			i;
     int				compIndex;
 
     /* Find the template for the new button */
@@ -4806,7 +4806,7 @@ void runTemplateShadowStats(UDWORD id)
         //intSetTemplateBodyShadowStats(psStats);
         //haven't got a stat so just do the code required here...
         widgSetMinorBarSize( psWScreen, IDDES_BODYPOINTS,
-                             calcTemplateBody(psTempl, (UBYTE)selectedPlayer) );
+                             calcTemplateBody(psTempl, (uint8_t)selectedPlayer) );
 
         //intSetTemplatePowerShadowStats(psStats);
         widgSetMinorBarSize( psWScreen, IDDES_POWERBAR,

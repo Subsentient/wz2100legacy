@@ -117,21 +117,21 @@ typedef struct _pause_state
 } PAUSE_STATE;
 
 static PAUSE_STATE	pauseState;
-static	UDWORD	numDroids[MAX_PLAYERS];
-static	UDWORD	numMissionDroids[MAX_PLAYERS];
-static	UDWORD	numTransporterDroids[MAX_PLAYERS];
-static	UDWORD	numCommandDroids[MAX_PLAYERS];
-static	UDWORD	numConstructorDroids[MAX_PLAYERS];
+static	uint32_t	numDroids[MAX_PLAYERS];
+static	uint32_t	numMissionDroids[MAX_PLAYERS];
+static	uint32_t	numTransporterDroids[MAX_PLAYERS];
+static	uint32_t	numCommandDroids[MAX_PLAYERS];
+static	uint32_t	numConstructorDroids[MAX_PLAYERS];
 
-static SDWORD videoMode = 0;
+static int32_t videoMode = 0;
 
 LOOP_MISSION_STATE		loopMissionState = LMS_NORMAL;
 
 // this is set by scrStartMission to say what type of new level is to be started
-SDWORD	nextMissionType = LDS_NONE;//MISSION_NONE;
+int32_t	nextMissionType = LDS_NONE;//MISSION_NONE;
 
 /* Force 3D display */
-UDWORD	mcTime;
+uint32_t	mcTime;
 
 /* The main game loop */
 GAMECODE gameLoop(void)
@@ -139,7 +139,7 @@ GAMECODE gameLoop(void)
     DROID		*psCurr, *psNext;
     STRUCTURE	*psCBuilding, *psNBuilding;
     FEATURE		*psCFeat, *psNFeat;
-    UDWORD		i,widgval;
+    uint32_t		i,widgval;
     BOOL		quitting=false;
     INT_RETVAL	intRetVal;
     int			clearMode = 0;
@@ -785,7 +785,7 @@ void loop_ClearVideoPlaybackMode(void)
 }
 
 
-SDWORD loop_GetVideoMode(void)
+int32_t loop_GetVideoMode(void)
 {
     return videoMode;
 }
@@ -875,42 +875,42 @@ void setAllPauseStates(BOOL state)
     setConsolePause(state);
 }
 
-UDWORD	getNumDroids(UDWORD player)
+uint32_t	getNumDroids(uint32_t player)
 {
     return(numDroids[player]);
 }
 
-UDWORD	getNumTransporterDroids(UDWORD player)
+uint32_t	getNumTransporterDroids(uint32_t player)
 {
     return(numTransporterDroids[player]);
 }
 
-UDWORD	getNumMissionDroids(UDWORD player)
+uint32_t	getNumMissionDroids(uint32_t player)
 {
     return(numMissionDroids[player]);
 }
 
-UDWORD	getNumCommandDroids(UDWORD player)
+uint32_t	getNumCommandDroids(uint32_t player)
 {
     return numCommandDroids[player];
 }
 
-UDWORD	getNumConstructorDroids(UDWORD player)
+uint32_t	getNumConstructorDroids(uint32_t player)
 {
     return numConstructorDroids[player];
 }
 
 
 // increase the droid counts - used by update factory to keep the counts in sync
-void incNumDroids(UDWORD player)
+void incNumDroids(uint32_t player)
 {
     numDroids[player] += 1;
 }
-void incNumCommandDroids(UDWORD player)
+void incNumCommandDroids(uint32_t player)
 {
     numCommandDroids[player] += 1;
 }
-void incNumConstructorDroids(UDWORD player)
+void incNumConstructorDroids(uint32_t player)
 {
     numConstructorDroids[player] += 1;
 }

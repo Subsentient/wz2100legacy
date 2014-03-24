@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "messagedef.h"
 
 extern BOOL initMiscImds( void );
-extern iIMDShape	*getImdFromIndex(UDWORD	index);
+extern iIMDShape	*getImdFromIndex(uint32_t	index);
 extern iIMDShape	*getRandomWreckageImd( void );
 extern iIMDShape	*getRandomDebrisImd( void );
 

@@ -306,7 +306,7 @@ static void giftResearch(uint8_t from, uint8_t to, BOOL send)
 // give Power
 void giftPower(uint8_t from, uint8_t to, BOOL send)
 {
-    UDWORD gifval;
+    uint32_t gifval;
     uint32_t dummy = 0;
 
     if (from == ANYPLAYER)
@@ -791,7 +791,7 @@ void recvMultiPlayerRandomArtifacts()
 }
 
 // ///////////////////////////////////////////////////////////////
-void giftArtifact(UDWORD owner, UDWORD x, UDWORD y)
+void giftArtifact(uint32_t owner, uint32_t x, uint32_t y)
 {
     PLAYER_RESEARCH	*pR = asPlayerResList[selectedPlayer];
 
@@ -827,9 +827,9 @@ void giftArtifact(UDWORD owner, UDWORD x, UDWORD y)
 // ///////////////////////////////////////////////////////////////
 void processMultiPlayerArtifacts(void)
 {
-    static UDWORD lastCall;
+    static uint32_t lastCall;
     FEATURE	*pF,*pFN;
-    UDWORD	x,y,pl;
+    uint32_t	x,y,pl;
     Vector3i position;
     BOOL	found=false;
 

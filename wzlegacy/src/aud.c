@@ -82,7 +82,7 @@ void audio_Get3DPlayerRotAboutVerticalAxis(float *angle)
  * Get QSound axial position from world (x,y)
 @FIXME we don't need to do this, since we are not using qsound.
  */
-void audio_GetStaticPos(SDWORD iWorldX, SDWORD iWorldY, SDWORD *piX, SDWORD *piY, SDWORD *piZ)
+void audio_GetStaticPos(int32_t iWorldX, int32_t iWorldY, int32_t *piX, int32_t *piY, int32_t *piZ)
 {
     *piX = iWorldX;
     *piZ = map_TileHeight(map_coord(iWorldX), map_coord(iWorldY));
@@ -91,7 +91,7 @@ void audio_GetStaticPos(SDWORD iWorldX, SDWORD iWorldY, SDWORD *piX, SDWORD *piY
 }
 
 // @FIXME we don't need to do this, since we are not using qsound.
-void audio_GetObjectPos(void *psObj, SDWORD *piX, SDWORD *piY, SDWORD *piZ)
+void audio_GetObjectPos(void *psObj, int32_t *piX, int32_t *piY, int32_t *piZ)
 {
     BASE_OBJECT	*psBaseObj = (BASE_OBJECT *) psObj;
 
@@ -106,7 +106,7 @@ void audio_GetObjectPos(void *psObj, SDWORD *piX, SDWORD *piY, SDWORD *piZ)
     *piY = world_coord(GetHeightOfMap()) - psBaseObj->pos.y;
 }
 
-UDWORD sound_GetGameTime()
+uint32_t sound_GetGameTime()
 {
     return gameTime;
 }

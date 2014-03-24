@@ -25,34 +25,34 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _move_control
 {
-    UBYTE	Status;						// Inactive, Navigating or moving point to point status
-    UBYTE	Position;	   				// Position in asPath
-    UBYTE	numPoints;					// number of points in asPath
+    uint8_t	Status;						// Inactive, Navigating or moving point to point status
+    uint8_t	Position;	   				// Position in asPath
+    uint8_t	numPoints;					// number of points in asPath
     Vector2i *asPath;					// Pointer to list of block X,Y map coordinates.
-    SDWORD	DestinationX, DestinationY;			// World coordinates of movement destination
-    SDWORD	srcX,srcY,targetX,targetY;
+    int32_t	DestinationX, DestinationY;			// World coordinates of movement destination
+    int32_t	srcX,srcY,targetX,targetY;
 
     /* Stuff for John's movement update */
     float	fx,fy;						// droid location as a fract
     float	speed;						// Speed of motion
-    SWORD	boundX,boundY;				// Vector for the end of path boundary
+    int16_t	boundX,boundY;				// Vector for the end of path boundary
 
     float	moveDir;						// direction of motion (not the direction the droid is facing)
-    SWORD	bumpDir;					// direction at last bump
-    UDWORD	bumpTime;					// time of first bump with something
-    UWORD	lastBump;					// time of last bump with a droid - relative to bumpTime
-    UWORD	pauseTime;					// when MOVEPAUSE started - relative to bumpTime
-    UWORD	bumpX,bumpY;				// position of last bump
+    int16_t	bumpDir;					// direction at last bump
+    uint32_t	bumpTime;					// time of first bump with something
+    uint16_t	lastBump;					// time of last bump with a droid - relative to bumpTime
+    uint16_t	pauseTime;					// when MOVEPAUSE started - relative to bumpTime
+    uint16_t	bumpX,bumpY;				// position of last bump
 
-    UDWORD	shuffleStart;				// when a shuffle started
+    uint32_t	shuffleStart;				// when a shuffle started
 
     struct _formation	*psFormation;			// formation the droid is currently a member of
 
     /* vtol movement - GJ */
-    SWORD	iVertSpeed;
+    int16_t	iVertSpeed;
 
     // iAttackRuns tracks the amount of ammunition a VTOL has remaining for each weapon
-    UDWORD	iAttackRuns[VTOL_MAXWEAPS];
+    uint32_t	iAttackRuns[VTOL_MAXWEAPS];
 
     // added for vtol movement
     float	fz;

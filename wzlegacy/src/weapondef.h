@@ -28,15 +28,15 @@ typedef struct _weapon
      */
     unsigned int    nStat;
 
-    UDWORD          ammo;
+    uint32_t          ammo;
 
     /**
      * @c gameTime when this weapon was last fired.
      */
-    UDWORD          lastFired;
-    UDWORD          recoilValue;
-    UWORD		pitch;
-    UWORD		rotation;
+    uint32_t          lastFired;
+    uint32_t          recoilValue;
+    uint16_t		pitch;
+    uint16_t		rotation;
 } WEAPON;
 
 #endif // __INCLUDED_WEAPONDEF_H__

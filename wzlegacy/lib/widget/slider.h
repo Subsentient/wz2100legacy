@@ -32,11 +32,11 @@ typedef struct _w_slider
     /* The common widget data */
     WIDGET_BASE;
 
-    UWORD		orientation;		// The orientation of the slider
-    UWORD		numStops;			// Number of stop positions on the slider
-    UWORD		barSize;			// Thickness of slider bar
-    UWORD		pos;				// Current stop position of the slider
-    UWORD		state;				// Slider state
+    uint16_t		orientation;		// The orientation of the slider
+    uint16_t		numStops;			// Number of stop positions on the slider
+    uint16_t		barSize;			// Thickness of slider bar
+    uint16_t		pos;				// Current stop position of the slider
+    uint16_t		state;				// Slider state
     const char	*pTip;				// Tool tip
 } W_SLIDER;
 
@@ -65,6 +65,6 @@ extern void sliderHiLite(W_SLIDER *psWidget);
 extern void sliderHiLiteLost(W_SLIDER *psWidget);
 
 /* The slider display function */
-extern void sliderDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+extern void sliderDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 #endif // __INCLUDED_LIB_WIDGET_SLIDER_H__

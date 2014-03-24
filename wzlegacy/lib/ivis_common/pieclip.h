@@ -50,11 +50,11 @@ typedef struct
  */
 /***************************************************************************/
 
-extern BOOL pie_SetVideoBufferDepth(UDWORD depth);
-extern BOOL pie_SetVideoBufferWidth(UDWORD width);
-extern BOOL pie_SetVideoBufferHeight(UDWORD height);
-extern UDWORD pie_GetVideoBufferDepth( void ) WZ_DECL_PURE;
-extern UDWORD pie_GetVideoBufferWidth( void ) WZ_DECL_PURE;
-extern UDWORD pie_GetVideoBufferHeight( void ) WZ_DECL_PURE;
+extern BOOL pie_SetVideoBufferDepth(uint32_t depth);
+extern BOOL pie_SetVideoBufferWidth(uint32_t width);
+extern BOOL pie_SetVideoBufferHeight(uint32_t height);
+extern uint32_t pie_GetVideoBufferDepth( void ) WZ_DECL_PURE;
+extern uint32_t pie_GetVideoBufferWidth( void ) WZ_DECL_PURE;
+extern uint32_t pie_GetVideoBufferHeight( void ) WZ_DECL_PURE;
 
 #endif // _pieclip_h

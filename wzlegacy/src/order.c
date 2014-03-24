@@ -86,10 +86,10 @@ RUN_DATA	asRunData[MAX_PLAYERS];
 BOOL secondaryGotPrimaryOrder(DROID *psDroid, DROID_ORDER order);
 
 void orderDroidStatsTwoLocAdd(DROID *psDroid, DROID_ORDER order,
-                              BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2);
+                              BASE_STATS *psStats, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
 
 //Watermelon:add a timestamp to order circle
-static UDWORD orderStarted;
+static uint32_t orderStarted;
 
 // whether an order effect has been displayed
 static BOOL bOrderEffectDisplayed = false;
@@ -102,7 +102,7 @@ extern char DROIDDOING[512];
 //call this *AFTER* every mission so it gets reset
 void initRunData(void)
 {
-    UBYTE   i;
+    uint8_t   i;
 
     for (i = 0; i < MAX_PLAYERS; i++)
     {
@@ -112,10 +112,10 @@ void initRunData(void)
 
 //FIXME: unit doesn't shoot while returning to the guard position
 // check whether a droid has to move back to the thing it is guarding
-static void orderCheckGuardPosition(DROID *psDroid, SDWORD range)
+static void orderCheckGuardPosition(DROID *psDroid, int32_t range)
 {
-    SDWORD		xdiff, ydiff;
-    UDWORD		x,y;
+    int32_t		xdiff, ydiff;
+    uint32_t		x,y;
 
     if (psDroid->psTarget != NULL)
     {
@@ -124,8 +124,8 @@ static void orderCheckGuardPosition(DROID *psDroid, SDWORD range)
                 && psDroid->psTarget->type == OBJ_DROID && orderStateLoc((DROID *)psDroid->psTarget, DORDER_MOVE, &x,&y))
         {
             // got a moving droid - check against where the unit is going
-            psDroid->orderX = (UWORD)x;
-            psDroid->orderY = (UWORD)y;
+            psDroid->orderX = (uint16_t)x;
+            psDroid->orderY = (uint16_t)y;
         }
         else
         {
@@ -134,16 +134,16 @@ static void orderCheckGuardPosition(DROID *psDroid, SDWORD range)
         }
     }
 
-    xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psDroid->orderX;
-    ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psDroid->orderY;
+    xdiff = (int32_t)psDroid->pos.x - (int32_t)psDroid->orderX;
+    ydiff = (int32_t)psDroid->pos.y - (int32_t)psDroid->orderY;
     if (xdiff*xdiff + ydiff*ydiff > range*range)
     {
         if ((psDroid->sMove.Status != MOVEINACTIVE) &&
                 ((psDroid->action == DACTION_MOVE) ||
                  (psDroid->action == DACTION_MOVEFIRE)))
         {
-            xdiff = (SDWORD)psDroid->sMove.DestinationX - (SDWORD)psDroid->orderX;
-            ydiff = (SDWORD)psDroid->sMove.DestinationY - (SDWORD)psDroid->orderY;
+            xdiff = (int32_t)psDroid->sMove.DestinationX - (int32_t)psDroid->orderX;
+            ydiff = (int32_t)psDroid->sMove.DestinationY - (int32_t)psDroid->orderY;
             if (xdiff*xdiff + ydiff*ydiff > range*range)
             {
                 actionDroidLoc(psDroid, DACTION_MOVE, psDroid->orderX, psDroid->orderY);
@@ -161,7 +161,7 @@ a defined range*/
 BASE_OBJECT *checkForRepairRange(DROID *psDroid,DROID *psTarget)
 {
     DROID		*psCurr;
-    SDWORD		xdiff, ydiff;
+    int32_t		xdiff, ydiff;
 
     ASSERT( psDroid->droidType == DROID_REPAIR || psDroid->droidType ==
             DROID_CYBORG_REPAIR, "checkForRepairRange:Invalid droid type" );
@@ -198,8 +198,8 @@ BASE_OBJECT *checkForRepairRange(DROID *psDroid,DROID *psTarget)
                 visibleObject((BASE_OBJECT *)psDroid, (BASE_OBJECT *)psCurr, false))
         {
             //check for within range
-            xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psCurr->pos.x;
-            ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psCurr->pos.y;
+            xdiff = (int32_t)psDroid->pos.x - (int32_t)psCurr->pos.x;
+            ydiff = (int32_t)psDroid->pos.y - (int32_t)psCurr->pos.y;
             if ( (xdiff*xdiff) + (ydiff*ydiff) <
                     ((psDroid->order==DORDER_NONE && secondaryGetState(psDroid, DSO_HALTTYPE)==DSS_HALT_HOLD) ?
                      REPAIR_RANGE : REPAIR_MAXDIST*REPAIR_MAXDIST) ) // REPAIR_RANGE
@@ -289,7 +289,7 @@ a defined range*/
 BASE_OBJECT *checkForDamagedStruct(DROID *psDroid, STRUCTURE *psTarget)
 {
     STRUCTURE		*psCurr;
-    SDWORD			xdiff, ydiff;
+    int32_t			xdiff, ydiff;
 
     ASSERT(psDroid->droidType == DROID_CONSTRUCT || psDroid->droidType == DROID_CYBORG_CONSTRUCT, "Invalid unit type");
 
@@ -316,8 +316,8 @@ BASE_OBJECT *checkForDamagedStruct(DROID *psDroid, STRUCTURE *psTarget)
                 visibleObject((BASE_OBJECT *)psDroid, (BASE_OBJECT *)psCurr, false))
         {
             //check for within range
-            xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psCurr->pos.x;
-            ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psCurr->pos.y;
+            xdiff = (int32_t)psDroid->pos.x - (int32_t)psCurr->pos.x;
+            ydiff = (int32_t)psDroid->pos.y - (int32_t)psCurr->pos.y;
             //check for repair distance and not construct_dist - this allows for structures being up to 3 tiles across
             if ( (xdiff*xdiff) + (ydiff*ydiff) <
                     ((psDroid->order==DORDER_NONE && secondaryGetState(psDroid, DSO_HALTTYPE)==DSS_HALT_HOLD) ?
@@ -336,11 +336,11 @@ void orderUpdateDroid(DROID *psDroid)
     BASE_OBJECT		*psObj;
     STRUCTURE		*psStruct, *psWall;
     REPAIR_FACILITY	*psRepairFac;
-    SDWORD			xdiff,ydiff;
+    int32_t			xdiff,ydiff;
     BOOL			bAttack;
-    UBYTE i;
+    uint8_t i;
     float			radToAction;
-    SDWORD			xoffset,yoffset;
+    int32_t			xoffset,yoffset;
 
     // clear the target if it has died
     if (psDroid->psTarget && psDroid->psTarget->died)
@@ -407,8 +407,8 @@ void orderUpdateDroid(DROID *psDroid)
                      secondaryGetState(psDroid, DSO_HALTTYPE) == DSS_HALT_GUARD &&
                      !isVtolDroid(psDroid))
             {
-                UDWORD actionX = psDroid->pos.x;
-                UDWORD actionY = psDroid->pos.y;
+                uint32_t actionX = psDroid->pos.x;
+                uint32_t actionY = psDroid->pos.y;
 
                 orderDroidLoc(psDroid, DORDER_GUARD, actionX,actionY);
             }
@@ -603,26 +603,26 @@ void orderUpdateDroid(DROID *psDroid)
                 {
                     // Don't stray too far from the patrol path - only attack if we're near it
                     // A fun algorithm to detect if we're near the path
-                    SDWORD deltaX, deltaY;
-                    deltaX = (SDWORD)psDroid->orderX - (SDWORD)psDroid->orderX2;
-                    deltaY = (SDWORD)psDroid->orderY - (SDWORD)psDroid->orderY2;
+                    int32_t deltaX, deltaY;
+                    deltaX = (int32_t)psDroid->orderX - (int32_t)psDroid->orderX2;
+                    deltaY = (int32_t)psDroid->orderY - (int32_t)psDroid->orderY2;
                     if (deltaX == 0 && deltaY == 0)
                     {
                         tooFarFromPath = false;
                     }
                     else if (abs(deltaX) >= abs(deltaY) &&
-                             (SDWORD)MIN(psDroid->orderX, psDroid->orderX2)-SCOUT_DIST <= psDroid->pos.x &&
-                             psDroid->pos.x <= (SDWORD)MAX(psDroid->orderX, psDroid->orderX2)+SCOUT_DIST)
+                             (int32_t)MIN(psDroid->orderX, psDroid->orderX2)-SCOUT_DIST <= psDroid->pos.x &&
+                             psDroid->pos.x <= (int32_t)MAX(psDroid->orderX, psDroid->orderX2)+SCOUT_DIST)
                     {
-                        tooFarFromPath = (abs(((SDWORD)psDroid->pos.x - (SDWORD)psDroid->orderX) * deltaY/deltaX +
-                                              (SDWORD)psDroid->orderY - (SDWORD)psDroid->pos.y) > SCOUT_DIST);
+                        tooFarFromPath = (abs(((int32_t)psDroid->pos.x - (int32_t)psDroid->orderX) * deltaY/deltaX +
+                                              (int32_t)psDroid->orderY - (int32_t)psDroid->pos.y) > SCOUT_DIST);
                     }
                     else if (abs(deltaX) <= abs(deltaY) &&
-                             (SDWORD)MIN(psDroid->orderY, psDroid->orderY2)-SCOUT_DIST <= psDroid->pos.y &&
-                             psDroid->pos.y <= (SDWORD)MAX(psDroid->orderY, psDroid->orderY2)+SCOUT_DIST)
+                             (int32_t)MIN(psDroid->orderY, psDroid->orderY2)-SCOUT_DIST <= psDroid->pos.y &&
+                             psDroid->pos.y <= (int32_t)MAX(psDroid->orderY, psDroid->orderY2)+SCOUT_DIST)
                     {
-                        tooFarFromPath = (abs(((SDWORD)psDroid->pos.y - (SDWORD)psDroid->orderY) * deltaX/deltaY +
-                                              (SDWORD)psDroid->orderX - (SDWORD)psDroid->pos.x) > SCOUT_DIST);
+                        tooFarFromPath = (abs(((int32_t)psDroid->pos.y - (int32_t)psDroid->orderY) * deltaX/deltaY +
+                                              (int32_t)psDroid->orderX - (int32_t)psDroid->pos.x) > SCOUT_DIST);
                     }
                     else
                     {
@@ -654,13 +654,13 @@ void orderUpdateDroid(DROID *psDroid)
             }
             if (psDroid->action == DACTION_NONE)
             {
-                xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psDroid->orderX;
-                ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psDroid->orderY;
+                xdiff = (int32_t)psDroid->pos.x - (int32_t)psDroid->orderX;
+                ydiff = (int32_t)psDroid->pos.y - (int32_t)psDroid->orderY;
                 if (xdiff*xdiff + ydiff*ydiff < SCOUT_DIST*SCOUT_DIST)
                 {
                     if (psDroid->order == DORDER_PATROL)
                     {
-                        UDWORD tempCoord;
+                        uint32_t tempCoord;
                         // see if we have anything queued up
                         if (orderDroidList(psDroid))
                         {
@@ -698,8 +698,8 @@ void orderUpdateDroid(DROID *psDroid)
                      (psDroid->action == DACTION_MOVETOOBSERVE))
             {
                 // attacking something - see if the droid has gone too far
-                xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psDroid->actionX;
-                ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psDroid->actionY;
+                xdiff = (int32_t)psDroid->pos.x - (int32_t)psDroid->actionX;
+                ydiff = (int32_t)psDroid->pos.y - (int32_t)psDroid->actionY;
                 if (xdiff*xdiff + ydiff*ydiff > SCOUT_ATTACK_DIST*SCOUT_ATTACK_DIST)
                 {
                     actionDroidLoc(psDroid, DACTION_RETURNTOPOS, psDroid->actionX,psDroid->actionY);
@@ -747,8 +747,8 @@ void orderUpdateDroid(DROID *psDroid)
                 }
                 psDroid->action = DACTION_NONE;
 
-                xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psDroid->orderX;
-                ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psDroid->orderY;
+                xdiff = (int32_t)psDroid->pos.x - (int32_t)psDroid->orderX;
+                ydiff = (int32_t)psDroid->pos.y - (int32_t)psDroid->orderY;
                 if (xdiff*xdiff + ydiff*ydiff <= 2000 * 2000)
                 {
                     if (psDroid->order == DORDER_CIRCLE)
@@ -757,8 +757,8 @@ void orderUpdateDroid(DROID *psDroid)
                         radToAction = atan2f((float)xdiff, (float)ydiff);
                         xoffset = sinf(radToAction) * 1500;
                         yoffset = cosf(radToAction) * 1500;
-                        xdiff = (SDWORD)psDroid->pos.x - (SDWORD)(psDroid->orderX + xoffset);
-                        ydiff = (SDWORD)psDroid->pos.y - (SDWORD)(psDroid->orderY + yoffset);
+                        xdiff = (int32_t)psDroid->pos.x - (int32_t)(psDroid->orderX + xoffset);
+                        ydiff = (int32_t)psDroid->pos.y - (int32_t)(psDroid->orderY + yoffset);
                         if (xdiff*xdiff + ydiff*ydiff < TILE_UNITS * TILE_UNITS)
                         {
                             //Watermelon:conter-clockwise 30 degree's per action
@@ -785,8 +785,8 @@ void orderUpdateDroid(DROID *psDroid)
                      (psDroid->action == DACTION_MOVETOOBSERVE))
             {
                 // attacking something - see if the droid has gone too far
-                xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psDroid->actionX;
-                ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psDroid->actionY;
+                xdiff = (int32_t)psDroid->pos.x - (int32_t)psDroid->actionX;
+                ydiff = (int32_t)psDroid->pos.y - (int32_t)psDroid->actionY;
                 //if (xdiff*xdiff + ydiff*ydiff > psDroid->sMove.iGuardRadius * psDroid->sMove.iGuardRadius)
                 if (xdiff*xdiff + ydiff*ydiff > 2000 * 2000)
                 {
@@ -932,8 +932,8 @@ void orderUpdateDroid(DROID *psDroid)
                     psDroid->order = DORDER_NONE;
                     actionDroid(psDroid, DACTION_NONE);
                 }
-                else if (abs((SDWORD)psDroid->pos.x - (SDWORD)psDroid->psTarget->pos.x) < TILE_UNITS
-                         && abs((SDWORD)psDroid->pos.y - (SDWORD)psDroid->psTarget->pos.y) < TILE_UNITS)
+                else if (abs((int32_t)psDroid->pos.x - (int32_t)psDroid->psTarget->pos.x) < TILE_UNITS
+                         && abs((int32_t)psDroid->pos.y - (int32_t)psDroid->psTarget->pos.y) < TILE_UNITS)
                 {
                     // if in multiPlayer, only want to process if this player's droid
                     if (!bMultiPlayer || psDroid->player == selectedPlayer)
@@ -1025,8 +1025,8 @@ void orderUpdateDroid(DROID *psDroid)
                 ASSERT( psRepairFac != NULL,
                         "orderUpdateUnit: invalid repair facility pointer" );
 
-                xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psDroid->psTarget->pos.x;
-                ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psDroid->psTarget->pos.y;
+                xdiff = (int32_t)psDroid->pos.x - (int32_t)psDroid->psTarget->pos.x;
+                ydiff = (int32_t)psDroid->pos.y - (int32_t)psDroid->psTarget->pos.y;
                 if (xdiff*xdiff + ydiff*ydiff < (TILE_UNITS*8)*(TILE_UNITS*8))
                 {
                     /* action droid to wait */
@@ -1400,7 +1400,7 @@ void orderUpdateDroid(DROID *psDroid)
 static void orderCmdGroupBase(DROID_GROUP *psGroup, DROID_ORDER_DATA *psData)
 {
     DROID	*psCurr, *psChosen;
-    SDWORD	xdiff,ydiff, currdist, mindist;
+    int32_t	xdiff,ydiff, currdist, mindist;
 
     ASSERT( psGroup != NULL,
             "cmdUnitOrderGroupBase: invalid unit group" );
@@ -1409,11 +1409,11 @@ static void orderCmdGroupBase(DROID_GROUP *psGroup, DROID_ORDER_DATA *psData)
     {
         // picking up an artifact - only need to send one unit
         psChosen = NULL;
-        mindist = SDWORD_MAX;
+        mindist = int32_t_MAX;
         for(psCurr = psGroup->psList; psCurr; psCurr=psCurr->psGrpNext)
         {
-            xdiff = (SDWORD)psCurr->pos.x - (SDWORD)psData->psObj->pos.x;
-            ydiff = (SDWORD)psCurr->pos.y - (SDWORD)psData->psObj->pos.y;
+            xdiff = (int32_t)psCurr->pos.x - (int32_t)psData->psObj->pos.x;
+            ydiff = (int32_t)psCurr->pos.y - (int32_t)psData->psObj->pos.y;
             currdist = xdiff*xdiff + ydiff*ydiff;
             if (currdist < mindist)
             {
@@ -1444,9 +1444,9 @@ static void orderCmdGroupBase(DROID_GROUP *psGroup, DROID_ORDER_DATA *psData)
 // them to pull back if the sensor is going to move through them
 WZ_DECL_UNUSED static void orderCheckFireSupportPos(DROID *psSensor, DROID_ORDER_DATA *psOrder)
 {
-    SDWORD		fsx,fsy, fsnum, sensorVX,sensorVY, fsVX,fsVY;
+    int32_t		fsx,fsy, fsnum, sensorVX,sensorVY, fsVX,fsVY;
     float		sensorAngle, fsAngle, adiff;
-    SDWORD		xdiff,ydiff;
+    int32_t		xdiff,ydiff;
     DROID		*psCurr;
     BASE_OBJECT	*psTarget;
     BOOL		bRetreat;
@@ -1462,8 +1462,8 @@ WZ_DECL_UNUSED static void orderCheckFireSupportPos(DROID *psSensor, DROID_ORDER
         {
             // got a unit doing fire support
             fsnum += 1;
-            fsx += (SDWORD)psCurr->pos.x;
-            fsy += (SDWORD)psCurr->pos.y;
+            fsx += (int32_t)psCurr->pos.x;
+            fsy += (int32_t)psCurr->pos.y;
         }
     }
 
@@ -1475,17 +1475,17 @@ WZ_DECL_UNUSED static void orderCheckFireSupportPos(DROID *psSensor, DROID_ORDER
         fsy /= fsnum;
 
         // don't do it if too near to the firesupport units
-        xdiff = fsx - (SDWORD)psSensor->pos.x;
-        ydiff = fsy - (SDWORD)psSensor->pos.y;
+        xdiff = fsx - (int32_t)psSensor->pos.x;
+        ydiff = fsy - (int32_t)psSensor->pos.y;
         if (xdiff*xdiff + ydiff*ydiff < (TILE_UNITS*5)*(TILE_UNITS*5))
         {
             goto done;
         }
 
-        sensorVX = (SDWORD)psOrder->x - (SDWORD)psSensor->pos.x;
-        sensorVY = (SDWORD)psOrder->y - (SDWORD)psSensor->pos.y;
-        fsVX = fsx - (SDWORD)psSensor->pos.x;
-        fsVY = fsy - (SDWORD)psSensor->pos.y;
+        sensorVX = (int32_t)psOrder->x - (int32_t)psSensor->pos.x;
+        sensorVY = (int32_t)psOrder->y - (int32_t)psSensor->pos.y;
+        fsVX = fsx - (int32_t)psSensor->pos.x;
+        fsVY = fsy - (int32_t)psSensor->pos.y;
 
         // now check if the move position is further away than the firesupport units
         if (sensorVX*sensorVX + sensorVY*sensorVY < fsVX*fsVX + fsVY*fsVY)
@@ -1547,7 +1547,7 @@ static void orderPlayFireSupportAudio( BASE_OBJECT *psObj )
 {
     DROID		*psDroid = NULL;
     STRUCTURE	*psStruct = NULL;
-    SDWORD		iAudioID = NO_SOUND;
+    int32_t		iAudioID = NO_SOUND;
 
 
 
@@ -1596,10 +1596,10 @@ static void orderPlayFireSupportAudio( BASE_OBJECT *psObj )
 /* The base order function */
 void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder)
 {
-    UDWORD		iRepairFacDistSq, iStructDistSq, iFactoryDistSq;
+    uint32_t		iRepairFacDistSq, iStructDistSq, iFactoryDistSq;
     STRUCTURE	*psStruct, *psRepairFac, *psFactory;
-    SDWORD		iDX, iDY;
-    UDWORD		droidX,droidY;
+    int32_t		iDX, iDY;
+    uint32_t		droidX,droidY;
 
     // deal with a droid receiving a primary order
     if (secondaryGotPrimaryOrder(psDroid, psOrder->order))
@@ -1888,8 +1888,8 @@ void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder)
             }
             else
             {
-                psDroid->orderX = (UWORD)asRunData[psDroid->player].sPos.x;
-                psDroid->orderY = (UWORD)asRunData[psDroid->player].sPos.y;
+                psDroid->orderX = (uint16_t)asRunData[psDroid->player].sPos.x;
+                psDroid->orderY = (uint16_t)asRunData[psDroid->player].sPos.y;
             }
             if (psDroid->orderX == 0 || psDroid->orderY)
             {
@@ -1975,8 +1975,8 @@ void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder)
                             ((psStruct->pStructureType->type == REF_HQ) && (psRepairFac == NULL)))
                     {
                         /* get droid->facility distance squared */
-                        iDX = (SDWORD)psDroid->pos.x - (SDWORD)psStruct->pos.x;
-                        iDY = (SDWORD)psDroid->pos.y - (SDWORD)psStruct->pos.y;
+                        iDX = (int32_t)psDroid->pos.x - (int32_t)psStruct->pos.x;
+                        iDY = (int32_t)psDroid->pos.y - (int32_t)psStruct->pos.y;
                         iStructDistSq = iDX*iDX + iDY*iDY;
 
                         /* choose current structure if first repair facility found or
@@ -2020,7 +2020,7 @@ void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder)
                      * repaired, need to find a suitable location to drop down. */
                     if (game.maxPlayers > 0 && psDroid->droidType == DROID_TRANSPORTER)
                     {
-                        UDWORD droidX, droidY;
+                        uint32_t droidX, droidY;
                         droidX = psDroid->orderX;
                         droidY = psDroid->orderY;
 
@@ -2089,8 +2089,8 @@ void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder)
                         psStruct->pStructureType->type == REF_REPAIR_FACILITY)
                 {
                     /* get droid->facility distance squared */
-                    iDX = (SDWORD)psDroid->pos.x - (SDWORD)psStruct->pos.x;
-                    iDY = (SDWORD)psDroid->pos.y - (SDWORD)psStruct->pos.y;
+                    iDX = (int32_t)psDroid->pos.x - (int32_t)psStruct->pos.x;
+                    iDY = (int32_t)psDroid->pos.y - (int32_t)psStruct->pos.y;
                     iStructDistSq = iDX*iDX + iDY*iDY;
 
                     /* choose current structure if first facility found or
@@ -2111,7 +2111,7 @@ void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder)
                 /* move to front of structure */
                 psDroid->order  = DORDER_RECYCLE;
                 psDroid->orderX = psFactory->pos.x;
-                psDroid->orderY = (UWORD)(psFactory->pos.y +
+                psDroid->orderY = (uint16_t)(psFactory->pos.y +
                                           world_coord(psFactory->pStructureType->baseBreadth) / 2 +
                                           TILE_UNITS / 2);
                 setDroidTarget(psDroid, (BASE_OBJECT *) psFactory);
@@ -2241,7 +2241,7 @@ BOOL validOrderForLoc(DROID_ORDER order)
 }
 
 /* Give a droid an order with a location target */
-void orderDroidLoc(DROID *psDroid, DROID_ORDER order, UDWORD x, UDWORD y)
+void orderDroidLoc(DROID *psDroid, DROID_ORDER order, uint32_t x, uint32_t y)
 {
     DROID_ORDER_DATA	sOrder;
 
@@ -2258,8 +2258,8 @@ void orderDroidLoc(DROID *psDroid, DROID_ORDER order, UDWORD x, UDWORD y)
 
     memset(&sOrder,0,sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
-    sOrder.x = (UWORD)x;
-    sOrder.y = (UWORD)y;
+    sOrder.x = (uint16_t)x;
+    sOrder.y = (uint16_t)y;
     orderDroidBase(psDroid, &sOrder);
 
     turnOffMultiMsg(false);	//msgs back on..
@@ -2267,7 +2267,7 @@ void orderDroidLoc(DROID *psDroid, DROID_ORDER order, UDWORD x, UDWORD y)
 
 
 /* Get the state of a droid order with it's location */
-BOOL orderStateLoc(DROID *psDroid, DROID_ORDER order, UDWORD *pX, UDWORD *pY)
+BOOL orderStateLoc(DROID *psDroid, DROID_ORDER order, uint32_t *pX, uint32_t *pY)
 {
     if (order != psDroid->order)
     {
@@ -2410,7 +2410,7 @@ BASE_OBJECT *orderStateObj(DROID *psDroid, DROID_ORDER order)
 
 
 /* Give a droid an order with a location and a stat */
-void orderDroidStatsLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, UDWORD x, UDWORD y)
+void orderDroidStatsLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, uint32_t x, uint32_t y)
 {
     DROID_ORDER_DATA	sOrder;
 
@@ -2421,14 +2421,14 @@ void orderDroidStatsLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, 
 
     memset(&sOrder,0,sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
-    sOrder.x = (UWORD)x;
-    sOrder.y = (UWORD)y;
+    sOrder.x = (uint16_t)x;
+    sOrder.y = (uint16_t)y;
     sOrder.psStats = psStats;
     orderDroidBase(psDroid, &sOrder);
 }
 
 /* add an order with a location and a stat to the droids order list*/
-void orderDroidStatsLocAdd(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, UDWORD x, UDWORD y)
+void orderDroidStatsLocAdd(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, uint32_t x, uint32_t y)
 {
     DROID_ORDER_DATA	sOrder;
 
@@ -2442,15 +2442,15 @@ void orderDroidStatsLocAdd(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStat
 
     memset(&sOrder,0,sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
-    sOrder.x = (UWORD)x;
-    sOrder.y = (UWORD)y;
+    sOrder.x = (uint16_t)x;
+    sOrder.y = (uint16_t)y;
     sOrder.psStats = psStats;
     orderDroidAdd(psDroid, &sOrder);
 }
 
 
 /* Give a droid an order with a location and a stat */
-void orderDroidStatsTwoLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2)
+void orderDroidStatsTwoLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2)
 {
     DROID_ORDER_DATA	sOrder;
 
@@ -2462,17 +2462,17 @@ void orderDroidStatsTwoLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStat
 
     memset(&sOrder,0,sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
-    sOrder.x = (UWORD)x1;
-    sOrder.y = (UWORD)y1;
-    sOrder.x2 = (UWORD)x2;
-    sOrder.y2 = (UWORD)y2;
+    sOrder.x = (uint16_t)x1;
+    sOrder.y = (uint16_t)y1;
+    sOrder.x2 = (uint16_t)x2;
+    sOrder.y2 = (uint16_t)y2;
     sOrder.psStats = psStats;
     orderDroidBase(psDroid, &sOrder);
 }
 
 /* Add an order with a location and a stat */
 void orderDroidStatsTwoLocAdd(DROID *psDroid, DROID_ORDER order,
-                              BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2)
+                              BASE_STATS *psStats, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2)
 {
     DROID_ORDER_DATA	sOrder;
 
@@ -2482,17 +2482,17 @@ void orderDroidStatsTwoLocAdd(DROID *psDroid, DROID_ORDER order,
 
     memset(&sOrder,0,sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
-    sOrder.x = (UWORD)x1;
-    sOrder.y = (UWORD)y1;
-    sOrder.x2 = (UWORD)x2;
-    sOrder.y2 = (UWORD)y2;
+    sOrder.x = (uint16_t)x1;
+    sOrder.y = (uint16_t)y1;
+    sOrder.x2 = (uint16_t)x2;
+    sOrder.y2 = (uint16_t)y2;
     sOrder.psStats = psStats;
     orderDroidAdd(psDroid, &sOrder);
 }
 
 
 /* Get the state of a droid order with a location and a stat */
-BOOL orderStateStatsLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS **ppsStats, UDWORD *pX, UDWORD *pY)
+BOOL orderStateStatsLoc(DROID *psDroid, DROID_ORDER order, BASE_STATS **ppsStats, uint32_t *pX, uint32_t *pY)
 {
     BOOL	match = false;
 
@@ -2570,10 +2570,10 @@ void orderDroidAdd(DROID *psDroid, DROID_ORDER_DATA *psOrder)
             psOrderList->psOrderTarget = (void*)psOrder->psObj;
         }
         
-        psOrderList->x = (UWORD)psOrder->x;
-        psOrderList->y = (UWORD)psOrder->y;
-        psOrderList->x2 = (UWORD)psOrder->x2;
-        psOrderList->y2 = (UWORD)psOrder->y2;
+        psOrderList->x = (uint16_t)psOrder->x;
+        psOrderList->y = (uint16_t)psOrder->y;
+        psOrderList->x2 = (uint16_t)psOrder->x2;
+        psOrderList->y2 = (uint16_t)psOrder->y2;
     }
 
     //don't display the arrow-effects with build orders since unnecessary
@@ -2686,7 +2686,7 @@ void orderCheckList(DROID *psDroid)
 
 
 // add a location order to a droids order list
-static BOOL orderDroidLocAdd(DROID *psDroid, DROID_ORDER order, UDWORD x, UDWORD y)
+static BOOL orderDroidLocAdd(DROID *psDroid, DROID_ORDER order, uint32_t x, uint32_t y)
 {
     DROID_ORDER_DATA	sOrder;
 
@@ -2698,8 +2698,8 @@ static BOOL orderDroidLocAdd(DROID *psDroid, DROID_ORDER order, UDWORD x, UDWORD
 
     memset(&sOrder, 0, sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
-    sOrder.x = (UWORD)x;
-    sOrder.y = (UWORD)y;
+    sOrder.x = (uint16_t)x;
+    sOrder.y = (uint16_t)y;
     orderDroidAdd(psDroid, &sOrder);
 
     return true;
@@ -2728,15 +2728,15 @@ static BOOL orderDroidObjAdd(DROID *psDroid, DROID_ORDER order, BASE_OBJECT *psO
     memset(&sOrder, 0, sizeof(DROID_ORDER_DATA));
     sOrder.order = order;
     sOrder.psObj = psObj[0];
-    sOrder.x = (UWORD)psObj[0]->pos.x;
-    sOrder.y = (UWORD)psObj[0]->pos.y;
+    sOrder.x = (uint16_t)psObj[0]->pos.x;
+    sOrder.y = (uint16_t)psObj[0]->pos.y;
     orderDroidAdd(psDroid, &sOrder);
 
     return true;
 }
 
 /* Choose an order for a droid from a location */
-DROID_ORDER chooseOrderLoc(DROID *psDroid, UDWORD x,UDWORD y, BOOL altOrder)
+DROID_ORDER chooseOrderLoc(DROID *psDroid, uint32_t x,uint32_t y, BOOL altOrder)
 {
     DROID_ORDER		order = DORDER_NONE;
     PROPULSION_TYPE		propulsion = getPropulsionStats(psDroid)->propulsionType;
@@ -2810,7 +2810,7 @@ void orderSelectedLoc(uint32_t player, uint32_t x, uint32_t y, bool add)
         return;
     }
 
-    if (!add && bMultiMessages && SendGroupOrderSelected((UBYTE)player,x,y,NULL,keyDown(KEY_LALT) || keyDown(KEY_RALT)) )
+    if (!add && bMultiMessages && SendGroupOrderSelected((uint8_t)player,x,y,NULL,keyDown(KEY_LALT) || keyDown(KEY_RALT)) )
     {
         // turn off multiplay messages,since we've send a group one instead.
         turnOffMultiMsg(true);
@@ -3074,13 +3074,13 @@ DROID_ORDER chooseOrderObj(DROID *psDroid, BASE_OBJECT *psObj, BOOL altOrder)
             /* check repair facility and in need of repair */
             if ( psStruct->pStructureType->type == REF_REPAIR_FACILITY &&
                     psStruct->status == SS_BUILT)
-                //			((SDWORD)(PERCENT(psDroid->body,psDroid->originalBody)) < 100) )
+                //			((int32_t)(PERCENT(psDroid->body,psDroid->originalBody)) < 100) )
             {
                 order = DORDER_RTR_SPECIFIED;
             }
             else if (electronicDroid(psDroid) &&
-                     //psStruct->resistance < (SDWORD)(psStruct->pStructureType->resistance))
-                     psStruct->resistance < (SDWORD)structureResistance(psStruct->
+                     //psStruct->resistance < (int32_t)(psStruct->pStructureType->resistance))
+                     psStruct->resistance < (int32_t)structureResistance(psStruct->
                              pStructureType, psStruct->player))
             {
                 order = DORDER_RESTORE;
@@ -3147,7 +3147,7 @@ DROID_ORDER chooseOrderObj(DROID *psDroid, BASE_OBJECT *psObj, BOOL altOrder)
     return order;
 }
 
-static void orderPlayOrderObjAudio( UDWORD player, BASE_OBJECT *psObj )
+static void orderPlayOrderObjAudio( uint32_t player, BASE_OBJECT *psObj )
 {
     DROID	*psDroid;
 
@@ -3176,12 +3176,12 @@ static void orderPlayOrderObjAudio( UDWORD player, BASE_OBJECT *psObj )
 /* Give selected droids an order from an object target
  * If add is true the order is queued with the droid
  */
-void orderSelectedObjAdd(UDWORD player, BASE_OBJECT *psObj, BOOL add)
+void orderSelectedObjAdd(uint32_t player, BASE_OBJECT *psObj, BOOL add)
 {
     DROID		*psCurr;
     DROID_ORDER	order;
 
-    if (!add && bMultiMessages && SendGroupOrderSelected((UBYTE)player,0,0,psObj,keyDown(KEY_LALT) || keyDown(KEY_RALT)) )
+    if (!add && bMultiMessages && SendGroupOrderSelected((uint8_t)player,0,0,psObj,keyDown(KEY_LALT) || keyDown(KEY_RALT)) )
     {
         // turn off multiplay messages,since we've send a group one instead.
         turnOffMultiMsg(true);
@@ -3222,15 +3222,15 @@ void orderSelectedObjAdd(UDWORD player, BASE_OBJECT *psObj, BOOL add)
     turnOffMultiMsg(false); //msgs back on.
 }
 
-void orderSelectedObj(UDWORD player, BASE_OBJECT *psObj)
+void orderSelectedObj(uint32_t player, BASE_OBJECT *psObj)
 {
     orderSelectedObjAdd(player, psObj, false);
 }
 
 
 /* order all selected droids with a location and a stat */
-void orderSelectedStatsLoc(UDWORD player, DROID_ORDER order,
-                           BASE_STATS *psStats, UDWORD x, UDWORD y, BOOL add)
+void orderSelectedStatsLoc(uint32_t player, DROID_ORDER order,
+                           BASE_STATS *psStats, uint32_t x, uint32_t y, BOOL add)
 {
     DROID		*psCurr;
 
@@ -3257,8 +3257,8 @@ void orderSelectedStatsLoc(UDWORD player, DROID_ORDER order,
 
 
 /* order all selected droids with two a locations and a stat */
-void orderSelectedStatsTwoLoc(UDWORD player, DROID_ORDER order,
-                              BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2, BOOL add)
+void orderSelectedStatsTwoLoc(uint32_t player, DROID_ORDER order,
+                              BASE_STATS *psStats, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, BOOL add)
 {
     DROID		*psCurr;
 
@@ -3304,7 +3304,7 @@ DROID *FindATransporter(void)
 
 // See if the player has access to a factory in this map.
 //
-static STRUCTURE *FindAFactory(UDWORD player, UDWORD factoryType)
+static STRUCTURE *FindAFactory(uint32_t player, uint32_t factoryType)
 {
     STRUCTURE *psStruct;
 
@@ -3491,9 +3491,9 @@ SECONDARY_STATE secondaryGetState(DROID *psDroid, SECONDARY_ORDER sec)
 
 
 #ifdef DEBUG
-static char *secondaryPrintFactories(UDWORD state)
+static char *secondaryPrintFactories(uint32_t state)
 {
-    SDWORD		i;
+    int32_t		i;
     static		char aBuff[255];
 
     memset(aBuff, 0, sizeof(aBuff));
@@ -3563,7 +3563,7 @@ void secondaryCheckDamageLevel(DROID *psDroid)
         }
         if (!isVtolDroid(psDroid))
         {
-            psDroid->group = UBYTE_MAX;
+            psDroid->group = uint8_t_MAX;
         }
 
         /* set return to repair if not on hold */
@@ -3587,9 +3587,9 @@ void secondaryCheckDamageLevel(DROID *psDroid)
 // set the state of a secondary order, return false if failed.
 BOOL secondarySetState(DROID *psDroid, SECONDARY_ORDER sec, SECONDARY_STATE State)
 {
-    UDWORD		CurrState, factType, prodType;
+    uint32_t		CurrState, factType, prodType;
     STRUCTURE	*psStruct;
-    SDWORD		factoryInc, order;
+    int32_t		factoryInc, order;
     BOOL		retVal;
     DROID		*psTransport, *psCurr, *psNext;
 
@@ -3750,7 +3750,7 @@ BOOL secondarySetState(DROID *psDroid, SECONDARY_ORDER sec, SECONDARY_STATE Stat
 //				CurrState &= ~(DSS_HOLD_SET|DSS_RTB_SET|DSS_RTR_SET|DSS_RECYCLE_SET);
                 CurrState &= ~(DSS_RTL_MASK|DSS_RECYCLE_MASK|DSS_HALT_MASK);
                 CurrState |= DSS_RECYCLE_SET|DSS_HALT_GUARD;
-                psDroid->group = UBYTE_MAX;
+                psDroid->group = uint8_t_MAX;
                 if (psDroid->psGroup != NULL)
                 {
                     if (psDroid->droidType == DROID_COMMAND)
@@ -3854,7 +3854,7 @@ BOOL secondarySetState(DROID *psDroid, SECONDARY_ORDER sec, SECONDARY_STATE Stat
                             // can't clear the selection here cos it breaks
                             // the secondary order screen
 //						psDroid->selected = false;
-//						psDroid->group = UBYTE_MAX;
+//						psDroid->group = uint8_t_MAX;
                         }
 //					else
 //					{
@@ -3930,7 +3930,7 @@ BOOL secondarySetState(DROID *psDroid, SECONDARY_ORDER sec, SECONDARY_STATE Stat
 // deal with a droid receiving a primary order
 BOOL secondaryGotPrimaryOrder(DROID *psDroid, DROID_ORDER order)
 {
-    UDWORD	oldState;
+    uint32_t	oldState;
 
     if (psDroid->droidType == DROID_TRANSPORTER)
     {
@@ -3959,7 +3959,7 @@ BOOL secondaryGotPrimaryOrder(DROID *psDroid, DROID_ORDER order)
 
 
 // set the state of a numeric group
-static void secondarySetGroupState(UDWORD player, UDWORD group, SECONDARY_ORDER sec, SECONDARY_STATE state)
+static void secondarySetGroupState(uint32_t player, uint32_t group, SECONDARY_ORDER sec, SECONDARY_STATE state)
 {
     DROID	*psCurr;
 
@@ -3974,14 +3974,14 @@ static void secondarySetGroupState(UDWORD player, UDWORD group, SECONDARY_ORDER 
 }
 
 // get the average secondary state of a numeric group
-static SECONDARY_STATE secondaryGetAverageGroupState(UDWORD player, UDWORD group, UDWORD mask)
+static SECONDARY_STATE secondaryGetAverageGroupState(uint32_t player, uint32_t group, uint32_t mask)
 {
 #define MAX_STATES		5
     struct
     {
-        UDWORD state, num;
+        uint32_t state, num;
     } aStateCount[MAX_STATES];
-    SDWORD	i, numStates, max;
+    int32_t	i, numStates, max;
     DROID	*psCurr;
 
     // count the number of units for each state
@@ -4023,13 +4023,13 @@ static SECONDARY_STATE secondaryGetAverageGroupState(UDWORD player, UDWORD group
 
 
 // make all the members of a numeric group have the same secondary states
-void secondarySetAverageGroupState(UDWORD player, UDWORD group)
+void secondarySetAverageGroupState(uint32_t player, uint32_t group)
 {
     // lookup table for orders and masks
 #define MAX_ORDERS	4
     struct
     {
-        UDWORD order, mask;
+        uint32_t order, mask;
     } aOrders[MAX_ORDERS] =
     {
         { DSO_ATTACK_RANGE, DSS_ARANGE_MASK },
@@ -4037,7 +4037,7 @@ void secondarySetAverageGroupState(UDWORD player, UDWORD group)
         { DSO_ATTACK_LEVEL, DSS_ALEV_MASK },
         { DSO_HALTTYPE, DSS_HALT_MASK }
     };
-    SDWORD	i, state;
+    int32_t	i, state;
 
     for(i=0; i<MAX_ORDERS; i++)
     {
@@ -4048,10 +4048,10 @@ void secondarySetAverageGroupState(UDWORD player, UDWORD group)
 
 
 // do a moral check for a player
-void orderMoralCheck(UDWORD player)
+void orderMoralCheck(uint32_t player)
 {
     DROID	*psCurr;
-    SDWORD	units, numVehicles, leadership, personLShip, check;
+    int32_t	units, numVehicles, leadership, personLShip, check;
 
     // count the number of vehicles and units on the side
     units=0;
@@ -4114,7 +4114,7 @@ void orderMoralCheck(UDWORD player)
 void orderGroupMoralCheck(DROID_GROUP *psGroup)
 {
     DROID		*psCurr;
-    SDWORD		units, numVehicles, leadership, personLShip, check;
+    int32_t		units, numVehicles, leadership, personLShip, check;
     RUN_DATA	*psRunData;
 
     // count the number of vehicles and units on the side
@@ -4178,8 +4178,8 @@ void orderGroupMoralCheck(DROID_GROUP *psGroup)
 void orderHealthCheck(DROID *psDroid)
 {
     DROID		*psCurr;
-    SBYTE       healthLevel = 0;
-    UDWORD      retreatX = 0, retreatY = 0;
+    int8_t       healthLevel = 0;
+    uint32_t      retreatX = 0, retreatY = 0;
 
     if (psDroid->droidType == DROID_TRANSPORTER)
     {
@@ -4253,7 +4253,7 @@ void orderHealthCheck(DROID *psDroid)
 // set the state of a secondary order for a Factory, return false if failed.
 BOOL setFactoryState(STRUCTURE *psStruct, SECONDARY_ORDER sec, SECONDARY_STATE State)
 {
-    UDWORD		CurrState;
+    uint32_t		CurrState;
     BOOL		retVal;
     FACTORY     *psFactory;
 
@@ -4322,7 +4322,7 @@ BOOL setFactoryState(STRUCTURE *psStruct, SECONDARY_ORDER sec, SECONDARY_STATE S
 // get the state of a secondary order for a Factory, return false if unsupported
 BOOL getFactoryState(STRUCTURE *psStruct, SECONDARY_ORDER sec, SECONDARY_STATE *pState)
 {
-    UDWORD	state;
+    uint32_t	state;
 
     ASSERT_OR_RETURN( false, StructIsFactory(psStruct), "structure is not a factory");
     ASSERT_OR_RETURN( false, psStruct->pFunctionality !=NULL, "Invalid factory?");
@@ -4355,7 +4355,7 @@ BOOL getFactoryState(STRUCTURE *psStruct, SECONDARY_ORDER sec, SECONDARY_STATE *
 }
 
 //lasSat structure can select a target
-void orderStructureObj(UDWORD player, BASE_OBJECT *psObj)
+void orderStructureObj(uint32_t player, BASE_OBJECT *psObj)
 {
     STRUCTURE   *psStruct;
 
@@ -4367,7 +4367,7 @@ void orderStructureObj(UDWORD player, BASE_OBJECT *psObj)
             Vector3i pos = Vector3uw_To3i(psObj->pos);
 
             // Lassats have just one weapon
-            unsigned int firePause = weaponFirePause(&asWeaponStats[psStruct->asWeaps[0].nStat], (UBYTE)player);
+            unsigned int firePause = weaponFirePause(&asWeaponStats[psStruct->asWeaps[0].nStat], (uint8_t)player);
             unsigned int damLevel = PERCENT(psStruct->body, structureBody(psStruct));
 
             if (damLevel < HEAVY_DAMAGE_LEVEL)

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 extern BOOL environInit					( void );
 extern unsigned int environGetValue		(unsigned int x, unsigned int y);
-extern UDWORD	environGetData			( UDWORD x, UDWORD y );
+extern uint32_t	environGetData			( uint32_t x, uint32_t y );
 extern void	environShutDown				( void );
 //this function is called whenever the map changes - load new level or return from an offWorld map
 extern void environReset(void);

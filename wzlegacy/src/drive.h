@@ -85,8 +85,8 @@ void driveProcessRadarInput(int x,int y);
 BOOL driveWasDriving(void);
 void driveDisableDriving(void);
 void driveRestoreDriving(void);
-SDWORD driveGetMoveSpeed(void);
-SDWORD driveGetMoveDir(void);
+int32_t driveGetMoveSpeed(void);
+int32_t driveGetMoveDir(void);
 BOOL driveSetDirectControl(BOOL Control);
 BOOL driveSetWasDriving(BOOL Driving);
 

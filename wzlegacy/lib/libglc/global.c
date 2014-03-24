@@ -283,7 +283,7 @@ void _init(void)
 
 
 #if defined __WIN32__ && !defined __GNUC__
-BOOL WINAPI DllMain(HANDLE hinstDLL, DWORD dwReason, LPVOID lpvReserved)
+BOOL WINAPI DllMain(HANDLE hinstDLL, int32_t dwReason, LPVOID lpvReserved)
 {
   switch(dwReason) {
   case DLL_PROCESS_ATTACH:

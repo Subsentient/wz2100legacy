@@ -43,11 +43,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define MAX_TARGETS	32
 
 static BOOL FoundCurrent;
-static UWORD NumTargets;
-static UWORD TargetCurrent;
-static UDWORD TargetCurrentID;
+static uint16_t NumTargets;
+static uint16_t TargetCurrent;
+static uint32_t TargetCurrentID;
 static BASE_OBJECT *TargetList[MAX_TARGETS];
-static UDWORD TargetEndTime;
+static uint32_t TargetEndTime;
 static BASE_OBJECT *TargetingObject;
 
 // Initialise the targeting system.
@@ -55,7 +55,7 @@ static BASE_OBJECT *TargetingObject;
 void targetInitialise(void)
 {
     TargetCurrent = 0;
-    TargetCurrentID = UDWORD_MAX;
+    TargetCurrentID = uint32_t_MAX;
 }
 
 // Reset the target list, call once per frame.
@@ -77,12 +77,12 @@ void targetAdd(WZ_DECL_UNUSED BASE_OBJECT *psObj)
 
 // Aquire the target nearest the vector from x,y to the top of the screen.
 //
-static BASE_OBJECT *targetAquireNearestView(SWORD x,SWORD y)
+static BASE_OBJECT *targetAquireNearestView(int16_t x,int16_t y)
 {
-    UWORD i;
-    UWORD Nearesti = 0;
-    UDWORD NearestDx = UDWORD_MAX;
-    UDWORD dx,dy;
+    uint16_t i;
+    uint16_t Nearesti = 0;
+    uint32_t NearestDx = uint32_t_MAX;
+    uint32_t dx,dy;
     BASE_OBJECT *NearestObj = NULL;
     BASE_OBJECT *psObj;
 
@@ -111,7 +111,7 @@ static BASE_OBJECT *targetAquireNearestView(SWORD x,SWORD y)
     }
     else
     {
-        TargetCurrentID = UDWORD_MAX;
+        TargetCurrentID = uint32_t_MAX;
     }
 
     return NearestObj;
@@ -123,7 +123,7 @@ BASE_OBJECT *targetAquireNearestObjView(BASE_OBJECT *psObj)
 {
     if(psObj != NULL)
     {
-        return targetAquireNearestView((SWORD)(psObj->sDisplay.screenX), (SWORD)(psObj->sDisplay.screenY));
+        return targetAquireNearestView((int16_t)(psObj->sDisplay.screenX), (int16_t)(psObj->sDisplay.screenY));
     }
     else
     {
@@ -135,7 +135,7 @@ BASE_OBJECT *targetAquireNearestObjView(BASE_OBJECT *psObj)
 //
 BASE_OBJECT *targetGetCurrent(void)
 {
-    if(TargetCurrentID != UDWORD_MAX)
+    if(TargetCurrentID != uint32_t_MAX)
     {
         return TargetList[TargetCurrent];
     }
@@ -154,32 +154,32 @@ void targetStartAnim(void)
 //
 void targetMarkCurrent(void)
 {
-    SWORD x,y;
-    SWORD Offset;
-    SWORD x0,y0,x1,y1;
+    int16_t x,y;
+    int16_t Offset;
+    int16_t x0,y0,x1,y1;
 
-    if(TargetCurrentID == UDWORD_MAX)
+    if(TargetCurrentID == uint32_t_MAX)
     {
         return;
     }
 
-    x = (SWORD)(TargetList[TargetCurrent]->sDisplay.screenX);
-    y = (SWORD)(TargetList[TargetCurrent]->sDisplay.screenY);
+    x = (int16_t)(TargetList[TargetCurrent]->sDisplay.screenX);
+    y = (int16_t)(TargetList[TargetCurrent]->sDisplay.screenY);
 
     // Make it zoom in.
     if(TargetEndTime > gameTime)
     {
-        Offset =(SWORD)(16+(TargetEndTime-gameTime)/2);
+        Offset =(int16_t)(16+(TargetEndTime-gameTime)/2);
     }
     else
     {
         Offset = 16;
     }
 
-    x0 = (SWORD)(x-Offset);
-    y0 = (SWORD)(y-Offset);
-    x1 = (SWORD)(x+Offset);
-    y1 = (SWORD)(y+Offset);
+    x0 = (int16_t)(x-Offset);
+    y0 = (int16_t)(y-Offset);
+    x1 = (int16_t)(x+Offset);
+    y1 = (int16_t)(y+Offset);
 
     iV_Line(x0, y0, x0 + 8, y0, WZCOL_YELLOW);
     iV_Line(x0, y0, x0, y0 + 8, WZCOL_YELLOW);

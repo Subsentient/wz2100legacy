@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #ifndef __INCLUDED_SRC_RADAR_H__
 #define __INCLUDED_SRC_RADAR_H__
 
-void radarColour(UDWORD tileNumber, uint8_t r, uint8_t g, uint8_t b);	///< Set radar colour for given terrain type.
+void radarColour(uint32_t tileNumber, uint8_t r, uint8_t g, uint8_t b);	///< Set radar colour for given terrain type.
 
 #define MAX_RADARZOOM		(16 * 4)    // 3.00x
 #define MIN_RADARZOOM		(16 * 2/4)  // 0.75x

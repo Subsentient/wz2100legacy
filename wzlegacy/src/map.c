@@ -54,40 +54,40 @@ struct ffnode
 };
 
 //scroll min and max values
-SDWORD		scrollMinX, scrollMaxX, scrollMinY, scrollMaxY;
+int32_t		scrollMinX, scrollMaxX, scrollMinY, scrollMaxY;
 
 /* Structure definitions for loading and saving map data */
 typedef struct _map_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		width;
-    UDWORD		height;
+    uint32_t		version;
+    uint32_t		width;
+    uint32_t		height;
 } MAP_SAVEHEADER;
 
 typedef struct _map_save_tilev2
 {
-    UWORD		texture;
-    UBYTE		height;
+    uint16_t		texture;
+    uint8_t		height;
 } MAP_SAVETILE;
 
 typedef struct _gateway_save_header
 {
-    UDWORD		version;
-    UDWORD		numGateways;
+    uint32_t		version;
+    uint32_t		numGateways;
 } GATEWAY_SAVEHEADER;
 
 typedef struct _gateway_save
 {
-    UBYTE	x0,y0,x1,y1;
+    uint8_t	x0,y0,x1,y1;
 } GATEWAY_SAVE;
 
 typedef struct _zonemap_save_header
 {
-    UWORD version;
-    UWORD numZones;
-    UWORD numEquivZones;
-    UWORD pad;
+    uint16_t version;
+    uint16_t numZones;
+    uint16_t numEquivZones;
+    uint16_t pad;
 } ZONEMAP_SAVEHEADER;
 
 /* Sanity check definitions for the save struct file sizes */
@@ -103,17 +103,17 @@ typedef struct _zonemap_save_header
 #define	ROOT_TABLE_SIZE		1024
 
 /* The size and contents of the map */
-UDWORD	mapWidth = 0, mapHeight = 0;
+uint32_t	mapWidth = 0, mapHeight = 0;
 MAPTILE	*psMapTiles = NULL;
 
 /* Look up table that returns the terrain type of a given tile texture */
-UBYTE terrainTypes[MAX_TILE_TEXTURES];
+uint8_t terrainTypes[MAX_TILE_TEXTURES];
 
 /* Create a new map of a specified size */
-BOOL mapNew(UDWORD width, UDWORD height)
+BOOL mapNew(uint32_t width, uint32_t height)
 {
     MAPTILE *psTile;
-    UDWORD	i;
+    uint32_t	i;
 
     /* See if a map has already been allocated */
     if (psMapTiles != NULL)
@@ -181,9 +181,9 @@ BOOL mapNew(UDWORD width, UDWORD height)
 }
 
 /* load the map data - for version 3 */
-static BOOL mapLoadV3(char *pFileData, UDWORD fileSize)
+static BOOL mapLoadV3(char *pFileData, uint32_t fileSize)
 {
-    UDWORD				i,j;
+    uint32_t				i,j;
     MAP_SAVETILE		*psTileData;
     GATEWAY_SAVEHEADER	*psGateHeader;
     GATEWAY_SAVE		*psGate;
@@ -202,9 +202,9 @@ static BOOL mapLoadV3(char *pFileData, UDWORD fileSize)
         memset(psMapTiles[i].watchers, 0, sizeof(psMapTiles[i].watchers));
         for (j=0; j<MAX_PLAYERS; j++)
         {
-            psMapTiles[i].tileVisBits =(UBYTE)(( (psMapTiles[i].tileVisBits) &~ (UBYTE)(1<<j) ));
+            psMapTiles[i].tileVisBits =(uint8_t)(( (psMapTiles[i].tileVisBits) &~ (uint8_t)(1<<j) ));
         }
-        psTileData = (MAP_SAVETILE *)(((UBYTE *)psTileData) + SAVE_TILE_SIZE);
+        psTileData = (MAP_SAVETILE *)(((uint8_t *)psTileData) + SAVE_TILE_SIZE);
     }
 
     psGateHeader = (GATEWAY_SAVEHEADER *)psTileData;
@@ -232,9 +232,9 @@ static BOOL mapLoadV3(char *pFileData, UDWORD fileSize)
 
 
 /* Initialise the map structure */
-BOOL mapLoad(char *pFileData, UDWORD fileSize)
+BOOL mapLoad(char *pFileData, uint32_t fileSize)
 {
-    UDWORD				width,height;
+    uint32_t				width,height;
     MAP_SAVEHEADER		*psHeader;
 
     /* Check the file type */
@@ -310,16 +310,16 @@ BOOL mapLoad(char *pFileData, UDWORD fileSize)
 }
 
 /* Save the map data */
-BOOL mapSave(char **ppFileData, UDWORD *pFileSize)
+BOOL mapSave(char **ppFileData, uint32_t *pFileSize)
 {
-    UDWORD	i;
+    uint32_t	i;
     MAP_SAVEHEADER	*psHeader = NULL;
     MAP_SAVETILE	*psTileData = NULL;
     MAPTILE	*psTile = NULL;
     GATEWAY *psCurrGate = NULL;
     GATEWAY_SAVEHEADER *psGateHeader = NULL;
     GATEWAY_SAVE *psGate = NULL;
-    SDWORD	numGateways = 0;
+    int32_t	numGateways = 0;
     ZONEMAP_SAVEHEADER *psZoneHeader = NULL;
 
     // find the number of non water gateways
@@ -372,7 +372,7 @@ BOOL mapSave(char **ppFileData, UDWORD *pFileSize)
         /* MAP_SAVETILE */
         endian_uword(&psTileData->texture);
 
-        psTileData = (MAP_SAVETILE *)((UBYTE *)psTileData + SAVE_TILE_SIZE);
+        psTileData = (MAP_SAVETILE *)((uint8_t *)psTileData + SAVE_TILE_SIZE);
         psTile ++;
     }
 
@@ -431,7 +431,7 @@ BOOL mapShutdown(void)
 }
 
 /* Return linear interpolated height of x,y */
-extern SWORD map_Height(int x, int y)
+extern int16_t map_Height(int x, int y)
 {
     int	retVal, tileX, tileY, tileYOffset, tileX2, tileY2Offset, dx, dy, ox, oy;
     int	h0, hx, hy, hxy, wTL = 0, wTR = 0, wBL = 0, wBR = 0;
@@ -509,9 +509,9 @@ extern SWORD map_Height(int x, int y)
             dx = ((hy - hxy) * ox )/ TILE_UNITS;
             dy = ((hx - hxy) * oy )/ TILE_UNITS;
 
-            retVal = (SDWORD)(((hxy + dx + dy)) * ELEVATION_SCALE);
+            retVal = (int32_t)(((hxy + dx + dy)) * ELEVATION_SCALE);
             ASSERT( retVal<MAX_HEIGHT,"Map height's gone weird!!!" );
-            return ((SWORD)retVal);
+            return ((int16_t)retVal);
         }
         else //tile split top right to bottom left object if in top left half
         {
@@ -528,9 +528,9 @@ extern SWORD map_Height(int x, int y)
             dx = ((hx - h0) * ox )/ TILE_UNITS;
             dy = ((hy - h0) * oy )/ TILE_UNITS;
 
-            retVal = (SDWORD)((h0 + dx + dy) * ELEVATION_SCALE);
+            retVal = (int32_t)((h0 + dx + dy) * ELEVATION_SCALE);
             ASSERT( retVal<MAX_HEIGHT,"Map height's gone weird!!!" );
-            return ((SWORD)retVal);
+            return ((int16_t)retVal);
         }
     }
     else
@@ -550,9 +550,9 @@ extern SWORD map_Height(int x, int y)
             }
             dx = ((hx - h0) * ox )/ TILE_UNITS;
             dy = ((hxy - hx) * oy )/ TILE_UNITS;
-            retVal = (SDWORD)(((h0 + dx + dy)) * ELEVATION_SCALE);
+            retVal = (int32_t)(((h0 + dx + dy)) * ELEVATION_SCALE);
             ASSERT( retVal<MAX_HEIGHT,"Map height's gone weird!!!" );
-            return ((SWORD)retVal);
+            return ((int16_t)retVal);
         }
         else //tile split topleft to bottom right object if in bottom left half
         {
@@ -569,9 +569,9 @@ extern SWORD map_Height(int x, int y)
             dx = ((hxy - hy) * ox )/ TILE_UNITS;
             dy = ((hy - h0) * oy )/ TILE_UNITS;
 
-            retVal = (SDWORD)((h0 + dx + dy) * ELEVATION_SCALE);
+            retVal = (int32_t)((h0 + dx + dy) * ELEVATION_SCALE);
             ASSERT( retVal<MAX_HEIGHT,"Map height's gone weird!!!" );
-            return ((SWORD)retVal);
+            return ((int16_t)retVal);
         }
     }
     return 0;
@@ -581,7 +581,7 @@ extern SWORD map_Height(int x, int y)
 extern BOOL mapObjIsAboveGround( BASE_OBJECT *psObj )
 {
     // min is used to make sure we don't go over array bounds!
-    SDWORD	iZ,
+    int32_t	iZ,
             tileX = map_coord(psObj->pos.x),
             tileY = map_coord(psObj->pos.y),
             tileYOffset1 = (tileY * mapWidth),
@@ -619,9 +619,9 @@ extern BOOL mapObjIsAboveGround( BASE_OBJECT *psObj )
 
 /* returns the max and min height of a tile by looking at the four corners
    in tile coords */
-void getTileMaxMin(UDWORD x, UDWORD y, UDWORD *pMax, UDWORD *pMin)
+void getTileMaxMin(uint32_t x, uint32_t y, uint32_t *pMax, uint32_t *pMin)
 {
-    UDWORD	height, i, j;
+    uint32_t	height, i, j;
 
     *pMin = TILE_MAX_HEIGHT;
     *pMax = TILE_MIN_HEIGHT;
@@ -643,14 +643,14 @@ void getTileMaxMin(UDWORD x, UDWORD y, UDWORD *pMax, UDWORD *pMin)
     }
 }
 
-UDWORD GetWidthOfMap(void)
+uint32_t GetWidthOfMap(void)
 {
     return mapWidth;
 }
 
 
 
-UDWORD GetHeightOfMap(void)
+uint32_t GetHeightOfMap(void)
 {
     return mapHeight;
 }

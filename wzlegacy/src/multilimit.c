@@ -73,11 +73,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // ////////////////////////////////////////////////////////////////////////////
 // protos.
 
-static void displayStructureBar(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+static void displayStructureBar(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 // ////////////////////////////////////////////////////////////////////////////
 
-static BOOL useStruct(UDWORD count,UDWORD i)
+static BOOL useStruct(uint32_t count,uint32_t i)
 {
     ASSERT(i < numStructureStats, "Bad structure for structure limit: %d", (int)i);
 
@@ -112,8 +112,8 @@ BOOL startLimitScreen(void)
 {
     W_FORMINIT		sButInit;
     W_FORMINIT		sFormInit;
-    UDWORD			numButtons = 0;
-    UDWORD			i;
+    uint32_t			numButtons = 0;
+    uint32_t			i;
 
     addBackdrop();//background
 
@@ -275,7 +275,7 @@ BOOL startLimitScreen(void)
 
 void runLimitScreen(void)
 {
-    UDWORD i, id, statid;
+    uint32_t i, id, statid;
 
     frontendMultiMessages();							// network stuff.
 
@@ -287,7 +287,7 @@ void runLimitScreen(void)
         statid = widgGetFromID(psWScreen,id-1)->UserData ;
         if(statid)
         {
-            asStructLimits[0][statid].limit = (UBYTE) ((W_SLIDER *)(widgGetFromID(psWScreen,id)))->pos;
+            asStructLimits[0][statid].limit = (uint8_t) ((W_SLIDER *)(widgGetFromID(psWScreen,id)))->pos;
         }
     }
     else
@@ -336,7 +336,7 @@ void runLimitScreen(void)
 // ////////////////////////////////////////////////////////////////////////////
 void createLimitSet(void)
 {
-    UDWORD			i, numchanges = 0, bufSize, idx = 0;
+    uint32_t			i, numchanges = 0, bufSize, idx = 0;
     MULTISTRUCTLIMITS	*pEntry;
 
     debug(LOG_NET, "LimitSet created");
@@ -366,7 +366,7 @@ void createLimitSet(void)
     memset(pEntry, 255, bufSize);
 
     // Prepare chunk
-    ASSERT(numStructureStats < UBYTE_MAX, "Too many structure stats");
+    ASSERT(numStructureStats < uint8_t_MAX, "Too many structure stats");
     for (i = 0; i < numStructureStats; i++)
     {
         if (asStructLimits[0][i].limit != LOTS_OF)
@@ -398,7 +398,7 @@ void applyLimitSet(void)
     // Get the limits and decode
     for (i = 0; i < ingame.numStructureLimits; ++i)
     {
-        UBYTE id = pEntry[i].id;
+        uint8_t id = pEntry[i].id;
 
         // So long as the ID is valid
         if (id < numStructureStats)
@@ -416,17 +416,17 @@ void applyLimitSet(void)
 
 // ////////////////////////////////////////////////////////////////////////////
 
-static void displayStructureBar(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayStructureBar(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
-    UDWORD	w = psWidget->width;
-    UDWORD	h = psWidget->height;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
+    uint32_t	w = psWidget->width;
+    uint32_t	h = psWidget->height;
     STRUCTURE_STATS	*stat = asStructureStats + psWidget->UserData;
     Vector3i Rotation, Position;
     char	str[3];
 
-    UDWORD scale,Radius;
+    uint32_t scale,Radius;
 
     drawBlueBox(x,y,w,h);
 

@@ -52,7 +52,7 @@ extern BOOL		bRequestLoad;
  */
 /***************************************************************************/
 
-extern void		drawBlueBox		(UDWORD x,UDWORD y, UDWORD w, UDWORD h);
+extern void		drawBlueBox		(uint32_t x,uint32_t y, uint32_t w, uint32_t h);
 
 extern BOOL		addLoadSave(LOADSAVE_MODE mode, const char *defaultdir, const char *extension, const char *title);
 extern BOOL		closeLoadSave	(void);

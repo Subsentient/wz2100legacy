@@ -50,17 +50,17 @@ extern BOOL moveInitialise(void);
 extern void moveUpdateBaseSpeed(void);
 
 /* Set a target location for a droid to move to  - returns a BOOL based on if there is a path to the destination (true if there is a path)*/
-extern BOOL moveDroidTo(DROID *psDroid, UDWORD x, UDWORD y);
+extern BOOL moveDroidTo(DROID *psDroid, uint32_t x, uint32_t y);
 
 /* Set a target location for a droid to move to  - returns a BOOL based on if there is a path to the destination (true if there is a path)*/
 // the droid will not join a formation when it gets to the location
-extern BOOL moveDroidToNoFormation(DROID *psDroid, UDWORD x, UDWORD y);
+extern BOOL moveDroidToNoFormation(DROID *psDroid, uint32_t x, uint32_t y);
 
 // move a droid directly to a location (used by vtols only)
-extern void moveDroidToDirect(DROID *psDroid, UDWORD x, UDWORD y);
+extern void moveDroidToDirect(DROID *psDroid, uint32_t x, uint32_t y);
 
 // Get a droid to turn towards a locaton
-extern void moveTurnDroid(DROID *psDroid, UDWORD x, UDWORD y);
+extern void moveTurnDroid(DROID *psDroid, uint32_t x, uint32_t y);
 
 /* Stop a droid */
 extern void moveStopDroid(DROID *psDroid);
@@ -71,7 +71,7 @@ extern void moveReallyStopDroid(DROID *psDroid);
 /* Get a droid to do a frame's worth of moving */
 extern void moveUpdateDroid(DROID *psDroid);
 
-SDWORD moveCalcDroidSpeed(DROID *psDroid);
+int32_t moveCalcDroidSpeed(DROID *psDroid);
 
 /* Frame update for the movement of a tracked droid */
 extern void moveUpdateTracked(DROID *psDroid);

@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 static TRACK			*g_apTrack[MAX_TRACKS];
 
 // number of tracks loaded
-static SDWORD			g_iCurTracks = 0;
+static int32_t			g_iCurTracks = 0;
 
 // flag set when system is active (for callbacks etc)
 static BOOL				g_bSystemActive = false;
@@ -185,7 +185,7 @@ void sound_CheckAllUnloaded( void )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-BOOL sound_TrackLooped( SDWORD iTrack )
+BOOL sound_TrackLooped( int32_t iTrack )
 {
     sound_CheckTrack( iTrack );
     return g_apTrack[iTrack]->bLoop;
@@ -195,7 +195,7 @@ BOOL sound_TrackLooped( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-SDWORD sound_GetNumPlaying( SDWORD iTrack )
+int32_t sound_GetNumPlaying( int32_t iTrack )
 {
     sound_CheckTrack( iTrack );
     return g_apTrack[iTrack]->iNumPlaying;
@@ -205,7 +205,7 @@ SDWORD sound_GetNumPlaying( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-BOOL sound_CheckTrack( SDWORD iTrack )
+BOOL sound_CheckTrack( int32_t iTrack )
 {
     if ( iTrack < 0 || iTrack > g_iCurTracks - 1 )
     {
@@ -226,7 +226,7 @@ BOOL sound_CheckTrack( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-SDWORD sound_GetTrackTime( SDWORD iTrack )
+int32_t sound_GetTrackTime( int32_t iTrack )
 {
     sound_CheckTrack( iTrack );
     return g_apTrack[iTrack]->iTime;
@@ -236,7 +236,7 @@ SDWORD sound_GetTrackTime( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-SDWORD sound_GetTrackVolume( SDWORD iTrack )
+int32_t sound_GetTrackVolume( int32_t iTrack )
 {
     sound_CheckTrack( iTrack );
     return g_apTrack[iTrack]->iVol;
@@ -246,7 +246,7 @@ SDWORD sound_GetTrackVolume( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-SDWORD sound_GetTrackAudibleRadius( SDWORD iTrack )
+int32_t sound_GetTrackAudibleRadius( int32_t iTrack )
 {
     sound_CheckTrack(iTrack);
     return g_apTrack[iTrack]->iAudibleRadius;
@@ -256,7 +256,7 @@ SDWORD sound_GetTrackAudibleRadius( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-const char *sound_GetTrackName( SDWORD iTrack )
+const char *sound_GetTrackName( int32_t iTrack )
 {
     // If we get an invalid track ID or there are
     // currently no tracks loaded then return NULL
@@ -372,7 +372,7 @@ void sound_FinishedCallback( AUDIO_SAMPLE *psSample )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-SDWORD sound_GetTrackID(TRACK *psTrack)
+int32_t sound_GetTrackID(TRACK *psTrack)
 {
     unsigned int i;
 
@@ -403,7 +403,7 @@ SDWORD sound_GetTrackID(TRACK *psTrack)
 // =======================================================================================================================
 // =======================================================================================================================
 //
-SDWORD sound_GetAvailableID()
+int32_t sound_GetAvailableID()
 {
     unsigned int i;
 
@@ -438,7 +438,7 @@ void sound_SetStoppedCallback( AUDIO_CALLBACK pStopTrackCallback )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-UDWORD sound_GetTrackTimeLastFinished( SDWORD iTrack )
+uint32_t sound_GetTrackTimeLastFinished( int32_t iTrack )
 {
     sound_CheckTrack( iTrack );
     return g_apTrack[iTrack]->iTimeLastFinished;
@@ -448,7 +448,7 @@ UDWORD sound_GetTrackTimeLastFinished( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-void sound_SetTrackTimeLastFinished( SDWORD iTrack, UDWORD iTime )
+void sound_SetTrackTimeLastFinished( int32_t iTrack, uint32_t iTime )
 {
     sound_CheckTrack( iTrack );
     g_apTrack[iTrack]->iTimeLastFinished = iTime;

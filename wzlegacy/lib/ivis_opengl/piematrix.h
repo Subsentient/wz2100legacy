@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//*****
 #define SIN(X) aSinTable[(Uint16)(X) >> 4]
 #define COS(X) aSinTable[((Uint16)(X) >> 4) + (SC_TABLESIZE/4)]
 
-extern SDWORD aSinTable[];
+extern int32_t aSinTable[];
 
 //*************************************************************************
 

@@ -52,7 +52,7 @@ extern int chat_debug;
      SQ_BRACKET_OPEN = 260,
      SQ_BRACKET_CLOSE = 261,
      PIPE = 262,
-     T_WORD = 263,
+     T_int16_t = 263,
      R_POSSESSION = 264,
      _T_QM = 265,
      _T_EM = 266,
@@ -142,7 +142,7 @@ extern int chat_debug;
 #define SQ_BRACKET_OPEN 260
 #define SQ_BRACKET_CLOSE 261
 #define PIPE 262
-#define T_WORD 263
+#define T_int16_t 263
 #define R_POSSESSION 264
 #define _T_QM 265
 #define _T_EM 266
@@ -233,7 +233,7 @@ typedef union YYSTYPE
 #line 173 "chat_parser.y"
 
 	BOOL				bval;
-	SDWORD			ival;
+	int32_t			ival;
 
 
 /* Line 2058 of yacc.c  */

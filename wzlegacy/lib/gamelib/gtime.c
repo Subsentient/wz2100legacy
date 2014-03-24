@@ -29,32 +29,32 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define GTIME_MINFRAME	(GAME_TICKS_PER_SEC/80)
 
 /* See header file for documentation */
-UDWORD gameTime = 0, frameTime = 0, gameTime2 = 0, frameTime2 = 0;
+uint32_t gameTime = 0, frameTime = 0, gameTime2 = 0, frameTime2 = 0;
 float frameTimeFraction = 0.0, frameTimeFraction2 = 0.0;
 
 /** The current clock modifier. Set to speed up the game. */
 static float modifier;
 
 /** The amount of game time before the last time clock speed was set. */
-static UDWORD	timeOffset;
+static uint32_t	timeOffset;
 
 /** The amount of game time before the last time clock speed was set. */
-static UDWORD	timeOffset2;
+static uint32_t	timeOffset2;
 
 /** The tick count the last time the clock speed was set. */
-static UDWORD	baseTime;
+static uint32_t	baseTime;
 
 /** The tick count the last time the clock speed was set. */
-static UDWORD	baseTime2;
+static uint32_t	baseTime2;
 
 /** When the game paused, so that gameTime can be adjusted when the game restarts. */
-static SDWORD	pauseStart;
+static int32_t	pauseStart;
 
 /**
   * Count how many times gameTimeStop has been called without a game time start.
   * We use this to ensure that we can properly nest stop commands.
   **/
-static UDWORD	stopCount;
+static uint32_t	stopCount;
 
 /* Initialise the game clock */
 BOOL gameTimeInit(void)
@@ -76,18 +76,18 @@ BOOL gameTimeInit(void)
     return true;
 }
 
-UDWORD	getTimeValueRange(UDWORD tickFrequency, UDWORD requiredRange)
+uint32_t	getTimeValueRange(uint32_t tickFrequency, uint32_t requiredRange)
 {
-    UDWORD	div1, div2;
+    uint32_t	div1, div2;
 
     div1 = gameTime2%tickFrequency;
     div2 = tickFrequency/requiredRange;
     return(div1/div2);
 }
 
-UDWORD	getStaticTimeValueRange(UDWORD tickFrequency, UDWORD requiredRange)
+uint32_t	getStaticTimeValueRange(uint32_t tickFrequency, uint32_t requiredRange)
 {
-    UDWORD	div1, div2;
+    uint32_t	div1, div2;
 
     div1 = gameTime%tickFrequency;
     div2 = tickFrequency/requiredRange;
@@ -229,7 +229,7 @@ void gameTimeStart(void)
 }
 
 /* Call this to reset the game timer */
-void gameTimeReset(UDWORD time)
+void gameTimeReset(uint32_t time)
 {
     // reset the game timers
     gameTime = time;
@@ -244,10 +244,10 @@ void gameTimeReset(UDWORD time)
     modifier = 1.0f;
 }
 
-void	getTimeComponents(UDWORD time, UDWORD *hours, UDWORD *minutes, UDWORD *seconds)
+void	getTimeComponents(uint32_t time, uint32_t *hours, uint32_t *minutes, uint32_t *seconds)
 {
-    UDWORD	h, m, s;
-    UDWORD	ticks_per_hour, ticks_per_minute;
+    uint32_t	h, m, s;
+    uint32_t	ticks_per_hour, ticks_per_minute;
 
     /* Ticks in a minute */
     ticks_per_minute = GAME_TICKS_PER_SEC * 60;

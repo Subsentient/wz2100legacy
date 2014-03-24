@@ -54,7 +54,7 @@ extern int scr_lex_destroy(void);
 
 /* Store for any string values */
 static char aText[TEXT_BUFFERS][YYLMAX];
-static UDWORD currText=0;
+static uint32_t currText=0;
 
 // Note if we are in a comment
 static BOOL inComment = false;
@@ -100,7 +100,7 @@ static char *pScrMacroBuffer[MAX_SCR_MACRO_DEPTH];
 static YYSTYPE dummy;
 
 /* Get the token type for a variable symbol */
-static SDWORD scriptGetVarToken(VAR_SYMBOL *psVar)
+static int32_t scriptGetVarToken(VAR_SYMBOL *psVar)
 {
 	BOOL	object;
 
@@ -214,7 +214,7 @@ static SDWORD scriptGetVarToken(VAR_SYMBOL *psVar)
 }
 
 /* Get the token type for a constant symbol */
-static SDWORD scriptGetConstToken(CONST_SYMBOL *psConst)
+static int32_t scriptGetConstToken(CONST_SYMBOL *psConst)
 {
 	BOOL	object;
 
@@ -255,7 +255,7 @@ static SDWORD scriptGetConstToken(CONST_SYMBOL *psConst)
 }
 
 /* Get the token type for a function symbol */
-static SDWORD scriptGetFuncToken(FUNC_SYMBOL *psFunc)
+static int32_t scriptGetFuncToken(FUNC_SYMBOL *psFunc)
 {
 	BOOL	object;
 
@@ -293,7 +293,7 @@ static SDWORD scriptGetFuncToken(FUNC_SYMBOL *psFunc)
 }
 
 /* Get the token type for a custom function symbol */
-static SDWORD scriptGetCustomFuncToken(EVENT_SYMBOL *psFunc)
+static int32_t scriptGetCustomFuncToken(EVENT_SYMBOL *psFunc)
 {
 	BOOL	object;
 

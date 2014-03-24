@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define GTIME_MAXFRAME (GAME_TICKS_PER_SEC/4)
 
 /** The current time in the game world. */
-extern UDWORD gameTime;
+extern uint32_t gameTime;
 
 extern float frameTimeFraction;		/**< Private performance calculation. Do not use. */
 extern float frameTimeFraction2;	/**< Private performance calculation. Do not use. */
@@ -38,16 +38,16 @@ extern float frameTimeFraction2;	/**< Private performance calculation. Do not us
  *	that is spent by the current slice, or in other words, the time difference
  *	between the current frame and the previous frame.
  */
-extern UDWORD frameTime;
+extern uint32_t frameTime;
 
 /** The current time in the game world - never stops. */
-extern UDWORD gameTime2;
+extern uint32_t gameTime2;
 
 /**
  *	The time for the last frame - never stops.
  *	@see frameTime
  */
-extern UDWORD frameTime2;
+extern uint32_t frameTime2;
 
 /** Initialise the game clock. */
 extern BOOL gameTimeInit(void);
@@ -65,7 +65,7 @@ extern void gameTimeStop(void);
 extern void gameTimeStart(void);
 
 /** Call this to reset the game timer. */
-extern void gameTimeReset(UDWORD time);
+extern void gameTimeReset(uint32_t time);
 
 /**
  *	Reset the game time modifiers.
@@ -87,7 +87,7 @@ void gameTimeGetMod(float *pMod);
  *
  * Unlike getStaticTimeValueRange this function operates on uninterrupted game time.
 */
-extern UDWORD	getTimeValueRange(UDWORD tickFrequency, UDWORD requiredRange);
+extern uint32_t	getTimeValueRange(uint32_t tickFrequency, uint32_t requiredRange);
 
 /**
  * Return a number that climbs over tickFrequency game ticks and ends up in the required range.
@@ -97,10 +97,10 @@ extern UDWORD	getTimeValueRange(UDWORD tickFrequency, UDWORD requiredRange);
  *
  * Operates on game time, which is subject to pause.
 */
-extern	UDWORD	getStaticTimeValueRange(UDWORD tickFrequency, UDWORD requiredRange);
+extern	uint32_t	getStaticTimeValueRange(uint32_t tickFrequency, uint32_t requiredRange);
 
 /** Break down given time into its constituent components. */
-extern void	getTimeComponents(UDWORD time, UDWORD *hours, UDWORD *minutes, UDWORD *seconds);
+extern void	getTimeComponents(uint32_t time, uint32_t *hours, uint32_t *minutes, uint32_t *seconds);
 
 /**
  * Return an incremental value adjusted for the time we have available this frame. Basically

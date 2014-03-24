@@ -174,7 +174,7 @@ static bool registry_load(const char *filename)
 {
     char *bufBegin = NULL, *bufEnd;
     char *lineEnd;
-    UDWORD filesize;
+    uint32_t filesize;
 
     debug(LOG_WZ, "Loading the registry from [directory: %s] %s", PHYSFS_getRealDir(filename), filename);
     if (PHYSFS_exists(filename))

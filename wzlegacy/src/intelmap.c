@@ -152,7 +152,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* the widget screen */
 extern W_SCREEN		*psWScreen;
 
-static UDWORD			messageID;
+static uint32_t			messageID;
 static BOOL				immediateMessage = false;
 
 //flags whether to open the Intel Screen with a message
@@ -161,26 +161,26 @@ static BOOL				playCurrent;
 /* functions declarations ****************/
 static BOOL intAddMessageForm(BOOL playCurrent);
 /*Displays the buttons used on the intelligence map */
-static void intDisplayMessageButton(WIDGET *psWidget, UDWORD xOffset,
-                                    UDWORD yOffset, PIELIGHT *pColours);
+static void intDisplayMessageButton(WIDGET *psWidget, uint32_t xOffset,
+                                    uint32_t yOffset, PIELIGHT *pColours);
 
 /*deal with the actual button press - proxMsg is set to true if a proximity
   button has been pressed*/
-static void intIntelButtonPressed(BOOL proxMsg, UDWORD id);
+static void intIntelButtonPressed(BOOL proxMsg, uint32_t id);
 
-static void intDisplayPIEView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+static void intDisplayPIEView(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 #ifndef NO_VIDEO
-static void intDisplayFLICView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+static void intDisplayFLICView(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 #endif
-static void intDisplayTEXTView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-static void addVideoText(SEQ_DISPLAY *psSeqDisplay, UDWORD sequence);
+static void intDisplayTEXTView(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+static void addVideoText(SEQ_DISPLAY *psSeqDisplay, uint32_t sequence);
 
 static void intDisplaySeqTextView(WIDGET *psWidget,
-                                  UDWORD xOffset, UDWORD yOffset,
+                                  uint32_t xOffset, uint32_t yOffset,
                                   PIELIGHT *pColours);
 static BOOL intDisplaySeqTextViewPage(VIEW_REPLAY *psViewReplay,
-                                      UDWORD x0, UDWORD y0,
-                                      UDWORD width, UDWORD height,
+                                      uint32_t x0, uint32_t y0,
+                                      uint32_t width, uint32_t height,
                                       BOOL render,
                                       size_t *major, size_t *minor);
 
@@ -255,8 +255,8 @@ BOOL intAddIntelMap(void)
     sFormInit.formID = 0;
     sFormInit.id = IDINTMAP_FORM;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD)INTMAP_X;
-    sFormInit.y = (SWORD)INTMAP_Y;
+    sFormInit.x = (int16_t)INTMAP_X;
+    sFormInit.y = (int16_t)INTMAP_Y;
     sFormInit.width = INTMAP_WIDTH;
     sFormInit.height = INTMAP_HEIGHT;
 
@@ -296,10 +296,10 @@ static BOOL intAddMessageForm(BOOL playCurrent)
 {
     W_FORMINIT		sFormInit;
     W_FORMINIT		sBFormInit;
-    UDWORD			numButtons, i;
+    uint32_t			numButtons, i;
     MESSAGE			*psMessage;
     RESEARCH		*psResearch;
-    SDWORD			BufferID;
+    int32_t			BufferID;
 
     /* Add the Message form */
     memset(&sFormInit, 0, sizeof(W_FORMINIT));
@@ -504,8 +504,8 @@ BOOL intAddMessageView(MESSAGE *psMessage)
     //size and position depends on the type of message - ONLY RESEARCH now
     sFormInit.width = INTMAP_RESEARCHWIDTH;
     sFormInit.height = INTMAP_RESEARCHHEIGHT;
-    sFormInit.x = (SWORD)INTMAP_RESEARCHX;
-    sFormInit.y = (SWORD)INTMAP_RESEARCHY;
+    sFormInit.x = (int16_t)INTMAP_RESEARCHX;
+    sFormInit.y = (int16_t)INTMAP_RESEARCHY;
 
     // If the window was closed then do open animation.
     if(Animate)
@@ -529,13 +529,13 @@ BOOL intAddMessageView(MESSAGE *psMessage)
     sButInit.formID = IDINTMAP_MSGVIEW;
     sButInit.id = IDINTMAP_CLOSE;
     sButInit.style = WBUT_PLAIN;
-    sButInit.x = (SWORD)(sFormInit.width - OPT_GAP - CLOSE_SIZE);
+    sButInit.x = (int16_t)(sFormInit.width - OPT_GAP - CLOSE_SIZE);
     sButInit.y = OPT_GAP;
     sButInit.width = CLOSE_SIZE;
     sButInit.height = CLOSE_SIZE;
     sButInit.pTip = _("Close");
     sButInit.pDisplay = intDisplayImageHilight;
-    sButInit.UserData = PACKDWORD_TRI(0,IMAGE_CLOSEHILIGHT , IMAGE_CLOSE);
+    sButInit.UserData = PACKint32_t_TRI(0,IMAGE_CLOSEHILIGHT , IMAGE_CLOSE);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -697,7 +697,7 @@ BOOL intAddMessageView(MESSAGE *psMessage)
 }
 
 /* Process return codes from the Intelligence Map */
-void intProcessIntelMap(UDWORD id)
+void intProcessIntelMap(uint32_t id)
 {
 
     if (id >= IDINTMAP_MSGSTART && id <= IDINTMAP_MSGEND)
@@ -724,13 +724,13 @@ void intProcessIntelMap(UDWORD id)
  * Draws the text for the intelligence display window.
  */
 static BOOL intDisplaySeqTextViewPage(VIEW_REPLAY *psViewReplay,
-                                      UDWORD x0, UDWORD y0,
-                                      UDWORD width, UDWORD height,
+                                      uint32_t x0, uint32_t y0,
+                                      uint32_t width, uint32_t height,
                                       BOOL render,
                                       size_t *cur_seq, size_t *cur_seqpage)
 {
-    UDWORD i, cur_y;
-    UDWORD sequence;
+    uint32_t i, cur_y;
+    uint32_t sequence;
 
     if (!psViewReplay)
     {
@@ -777,13 +777,13 @@ static BOOL intDisplaySeqTextViewPage(VIEW_REPLAY *psViewReplay,
  * Draw the text window for the intelligence display
  */
 static void intDisplaySeqTextView(WIDGET *psWidget,
-                                  UDWORD xOffset, UDWORD yOffset,
+                                  uint32_t xOffset, uint32_t yOffset,
                                   WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_TABFORM *Form = (W_TABFORM *)psWidget;
     VIEW_REPLAY *psViewReplay = (VIEW_REPLAY *)Form->pUserData;
     size_t cur_seq, cur_seqpage;
-    UDWORD x0, y0, page;
+    uint32_t x0, y0, page;
 
     x0 = xOffset + Form->x;
     y0 = yOffset + Form->y;
@@ -829,7 +829,7 @@ static void StartMessageSequences(MESSAGE *psMessage, BOOL Start)
     if (((VIEWDATA *)psMessage->pViewData)->type == VIEW_RPL)
     {
         VIEW_REPLAY		*psViewReplay;
-        UDWORD Sequence;
+        uint32_t Sequence;
 
         // Surely we don't need to set up psCurrentMsg when we pass the message into this routine ... tim
         psViewReplay = (VIEW_REPLAY *)((VIEWDATA *)psMessage->pViewData)->pData;
@@ -865,7 +865,7 @@ static void StartMessageSequences(MESSAGE *psMessage, BOOL Start)
     else if (((VIEWDATA *)psMessage->pViewData)->type == VIEW_RES)
     {
         VIEW_RESEARCH		*psViewReplay;
-        //UDWORD Sequence;
+        //uint32_t Sequence;
 
         psViewReplay = (VIEW_RESEARCH *)((VIEWDATA *)psCurrentMsg->pViewData)->pData;
 
@@ -884,10 +884,10 @@ static void StartMessageSequences(MESSAGE *psMessage, BOOL Start)
 deal with the actual button press - proxMsg is set to true if a proximity
 button has been pressed
 */
-void intIntelButtonPressed(BOOL proxMsg, UDWORD id)
+void intIntelButtonPressed(BOOL proxMsg, uint32_t id)
 {
     MESSAGE			*psMessage;
-    UDWORD			currID;//, i;
+    uint32_t			currID;//, i;
     RESEARCH		*psResearch;
 
     ASSERT( proxMsg != true,
@@ -1140,20 +1140,20 @@ void intRemoveMessageView(BOOL animated)
 
 
 /*Displays the buttons used on the intelligence map */
-void intDisplayMessageButton(WIDGET *psWidget, UDWORD xOffset,
-                             UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+void intDisplayMessageButton(WIDGET *psWidget, uint32_t xOffset,
+                             uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_CLICKFORM		*psButton = (W_CLICKFORM *)psWidget;
     RENDERED_BUTTON *psBuffer = (RENDERED_BUTTON *)psButton->pUserData;
     MESSAGE			*psMsg;
     BOOL			Hilight = false;
-    UDWORD			Down = 0, IMDType = 0, compID;
-    SDWORD			image = -1;
+    uint32_t			Down = 0, IMDType = 0, compID;
+    int32_t			image = -1;
     RESEARCH		*pResearch = NULL;
     BASE_STATS      *psResGraphic = NULL;
     BOOL MovieButton = false;
 
-    OpenButtonRender((UWORD)(xOffset+psButton->x), (UWORD)(yOffset+psButton->y),
+    OpenButtonRender((uint16_t)(xOffset+psButton->x), (uint16_t)(yOffset+psButton->y),
                      psButton->width, psButton->height);
 
     Down = psButton->state & (WBUTS_DOWN | WBUTS_CLICKLOCK);
@@ -1231,7 +1231,7 @@ void intDisplayMessageButton(WIDGET *psWidget, UDWORD xOffset,
         //do we have the same icon for the top right hand corner?
         if (image > 0)
         {
-            RenderToButton(IntImages, (UWORD)image, psResGraphic, selectedPlayer, psBuffer,Down, IMDType, TOPBUTTON);
+            RenderToButton(IntImages, (uint16_t)image, psResGraphic, selectedPlayer, psBuffer,Down, IMDType, TOPBUTTON);
         }
         else
         {
@@ -1248,12 +1248,12 @@ void intDisplayMessageButton(WIDGET *psWidget, UDWORD xOffset,
             {
                 // draw the button with the relevant image, don't add Down to the image ID if it's
                 // a movie button.
-                RenderImageToButton(IntImages,(UWORD)(image),psBuffer,Down,TOPBUTTON);
+                RenderImageToButton(IntImages,(uint16_t)(image),psBuffer,Down,TOPBUTTON);
             }
             else
             {
                 //draw the button with the relevant image
-                RenderImageToButton(IntImages,(UWORD)(image+Down),psBuffer,Down,TOPBUTTON);
+                RenderImageToButton(IntImages,(uint16_t)(image+Down),psBuffer,Down,TOPBUTTON);
             }
 
         }
@@ -1271,12 +1271,12 @@ void intDisplayMessageButton(WIDGET *psWidget, UDWORD xOffset,
 
 
 /* displays the PIE view for the current message */
-void intDisplayPIEView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+void intDisplayPIEView(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_TABFORM		*Form = (W_TABFORM *)psWidget;
     MESSAGE			*psMessage = (MESSAGE *)Form->pUserData;
-    UDWORD			x0,y0,x1,y1;
-    SWORD			image = -1;
+    uint32_t			x0,y0,x1,y1;
+    int16_t			image = -1;
     RESEARCH        *psResearch;
 
 
@@ -1296,7 +1296,7 @@ void intDisplayPIEView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL
         //moved from after close render
         RenderWindowFrame(FRAME_NORMAL, x0 - 1, y0 - 1, x1 - x0 + 2, y1 - y0 + 2);
 
-        OpenButtonRender((UWORD)(xOffset+Form->x), (UWORD)(yOffset+Form->y),
+        OpenButtonRender((uint16_t)(xOffset+Form->x), (uint16_t)(yOffset+Form->y),
                          Form->width, Form->height);
         //OpenButtonRender(Form->x, Form->y,Form->width, Form->height);
 
@@ -1313,7 +1313,7 @@ void intDisplayPIEView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL
         CloseButtonRender();
 
         //draw image icon in top left of window
-        image = (SWORD)getResearchForMsg((VIEWDATA *)psMessage->pViewData)->iconID;
+        image = (int16_t)getResearchForMsg((VIEWDATA *)psMessage->pViewData)->iconID;
         if (image > 0)
         {
             iV_DrawImage(IntImages,image,x0,y0);
@@ -1323,12 +1323,12 @@ void intDisplayPIEView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL
 
 #ifndef NO_VIDEO
 /* displays the FLIC view for the current message */
-void intDisplayFLICView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+void intDisplayFLICView(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
 
     W_TABFORM		*Form = (W_TABFORM *)psWidget;
     MESSAGE			*psMessage = (MESSAGE *)Form->pUserData;
-    UDWORD			x0,y0,x1,y1;
+    uint32_t			x0,y0,x1,y1;
     VIEW_RESEARCH	*psViewResearch;
 
     //shouldn't have any proximity messages here...
@@ -1339,7 +1339,7 @@ void intDisplayFLICView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DEC
 
     if (psMessage && psMessage->pViewData)
     {
-        OpenButtonRender((UWORD)(xOffset+Form->x), (UWORD)(yOffset+Form->y),
+        OpenButtonRender((uint16_t)(xOffset+Form->x), (uint16_t)(yOffset+Form->y),
                          Form->width, Form->height);
 
         x0 = xOffset+Form->x;
@@ -1370,12 +1370,12 @@ void intDisplayFLICView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DEC
  * If this function breaks, please merge it with intDisplaySeqTextViewPage
  * which presumably does almost the same.
  */
-void intDisplayTEXTView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+void intDisplayTEXTView(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_TABFORM		*Form = (W_TABFORM *)psWidget;
     MESSAGE			*psMessage = (MESSAGE *)Form->pUserData;
-    UDWORD			x0, y0, x1, y1, i, linePitch;
-    UDWORD			ty;
+    uint32_t			x0, y0, x1, y1, i, linePitch;
+    uint32_t			ty;
 
     x0 = xOffset+Form->x;
     y0 = yOffset+Form->y;
@@ -1415,9 +1415,9 @@ void intDisplayTEXTView(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DEC
 
 
 //adds text to full screen video
-void addVideoText(SEQ_DISPLAY *psSeqDisplay, UDWORD sequence)
+void addVideoText(SEQ_DISPLAY *psSeqDisplay, uint32_t sequence)
 {
-    UDWORD	i, x, y;
+    uint32_t	i, x, y;
 
     if (psSeqDisplay->numText > 0)
     {

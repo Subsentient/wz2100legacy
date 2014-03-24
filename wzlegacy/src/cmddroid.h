@@ -30,7 +30,7 @@ extern BOOL cmdDroidInit(void);
 extern void cmdDroidShutDown(void);
 
 // Make new command droids available
-extern void cmdDroidAvailable(BRAIN_STATS *psBrainStats, SDWORD player);
+extern void cmdDroidAvailable(BRAIN_STATS *psBrainStats, int32_t player);
 
 // update the command droids
 extern void cmdDroidUpdate(void);
@@ -39,16 +39,16 @@ extern void cmdDroidUpdate(void);
 extern void cmdDroidAddDroid(DROID *psCommander, DROID *psDroid);
 
 // return the current target designator for a player
-extern DROID *cmdDroidGetDesignator(UDWORD player);
+extern DROID *cmdDroidGetDesignator(uint32_t player);
 
 // set the current target designator for a player
 extern void cmdDroidSetDesignator(DROID *psDroid);
 
 // set the current target designator for a player
-extern void cmdDroidClearDesignator(UDWORD player);
+extern void cmdDroidClearDesignator(uint32_t player);
 
 // get the index of the command droid
-extern SDWORD cmdDroidGetIndex(DROID *psCommander);
+extern int32_t cmdDroidGetIndex(DROID *psCommander);
 
 // get the maximum group size for a command droid
 extern unsigned int cmdDroidMaxGroup(const DROID *psCommander);

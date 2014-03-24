@@ -46,7 +46,7 @@ ASR_RETVAL fpathAStarRoute(MOVE_CONTROL *psMove, PATHJOB *psJob);
 
 /** Check LOS (Line Of Sight) between two tiles
  */
-extern BOOL fpathTileLOS(SDWORD x1,SDWORD y1, SDWORD x2,SDWORD y2);
+extern BOOL fpathTileLOS(int32_t x1,int32_t y1, int32_t x2,int32_t y2);
 
 /** Clean up the path finding node table.
  *

@@ -610,17 +610,17 @@ struct internal_reloc
 #define R_DIR16 	 1
 #define R_DIR32 	 6
 #define R_IMAGEBASE	 7
-#define R_RELBYTE	15
-#define R_RELWORD	16
+#define R_RELint8_t	15
+#define R_RELint16_t	16
 #define R_RELLONG	17
-#define R_PCRBYTE	18
-#define R_PCRWORD	19
+#define R_PCRint8_t	18
+#define R_PCRint16_t	19
 #define R_PCRLONG	20
 #define R_IPRSHORT	24
 #define R_IPRLONG	26
 #define R_GETSEG	29
 #define R_GETPA 	30
-#define R_TAGWORD	31
+#define R_TAGint16_t	31
 #define R_JUMPTARG	32	/* strange 29k 00xx00xx reloc */
 
 #define R_PCR16L       128
@@ -680,7 +680,7 @@ struct internal_reloc
 
 /* This reloc identifies a 16bit pc-relative branch target which was
    shortened into an 8bit pc-relative branch target.  */
-#define R_PCRWORD_B	0x4b
+#define R_PCRint16_t_B	0x4b
 
 /* This reloc identifies mov.[wl] instructions with a 32/24 bit
    absolute address; the linker may turn this into a mov.[wl]

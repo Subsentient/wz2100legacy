@@ -154,7 +154,7 @@ BOOL audio_Shutdown( void )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-BOOL audio_GetPreviousQueueTrackPos( SDWORD *iX, SDWORD *iY, SDWORD *iZ )
+BOOL audio_GetPreviousQueueTrackPos( int32_t *iX, int32_t *iY, int32_t *iZ )
 {
     if (g_sPreviousSample.x == SAMPLE_COORD_INVALID
             || g_sPreviousSample.y == SAMPLE_COORD_INVALID
@@ -170,7 +170,7 @@ BOOL audio_GetPreviousQueueTrackPos( SDWORD *iX, SDWORD *iY, SDWORD *iZ )
     return true;
 }
 
-BOOL audio_GetPreviousQueueTrackRadarBlipPos( SDWORD *iX, SDWORD *iY )
+BOOL audio_GetPreviousQueueTrackRadarBlipPos( int32_t *iX, int32_t *iY )
 {
     if (g_sPreviousSample.x == SAMPLE_COORD_INVALID
             || g_sPreviousSample.y == SAMPLE_COORD_INVALID)
@@ -277,10 +277,10 @@ static void audio_RemoveSample( AUDIO_SAMPLE **ppsSampleList, AUDIO_SAMPLE *psSa
 // =======================================================================================================================
 // =======================================================================================================================
 //
-static BOOL audio_CheckSameQueueTracksPlaying( SDWORD iTrack )
+static BOOL audio_CheckSameQueueTracksPlaying( int32_t iTrack )
 {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    SDWORD			iCount;
+    int32_t			iCount;
     AUDIO_SAMPLE	*psSample = NULL;
     BOOL			bOK = true;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -318,7 +318,7 @@ static BOOL audio_CheckSameQueueTracksPlaying( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-static AUDIO_SAMPLE *audio_QueueSample( SDWORD iTrack )
+static AUDIO_SAMPLE *audio_QueueSample( int32_t iTrack )
 {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     AUDIO_SAMPLE	*psSample = NULL;
@@ -361,7 +361,7 @@ static AUDIO_SAMPLE *audio_QueueSample( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-void audio_QueueTrack( SDWORD iTrack )
+void audio_QueueTrack( int32_t iTrack )
 {
     // return if audio not enabled
     if ( g_bAudioEnabled == false || g_bAudioPaused == true)
@@ -383,11 +383,11 @@ void audio_QueueTrack( SDWORD iTrack )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-void audio_QueueTrackMinDelay( SDWORD iTrack, UDWORD iMinDelay )
+void audio_QueueTrackMinDelay( int32_t iTrack, uint32_t iMinDelay )
 {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     AUDIO_SAMPLE	*psSample;
-    UDWORD			iDelay;
+    uint32_t			iDelay;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // return if audio not enabled
@@ -418,11 +418,11 @@ void audio_QueueTrackMinDelay( SDWORD iTrack, UDWORD iMinDelay )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-void audio_QueueTrackMinDelayPos( SDWORD iTrack, UDWORD iMinDelay, SDWORD iX, SDWORD iY, SDWORD iZ )
+void audio_QueueTrackMinDelayPos( int32_t iTrack, uint32_t iMinDelay, int32_t iX, int32_t iY, int32_t iZ )
 {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     AUDIO_SAMPLE	*psSample;
-    UDWORD			iDelay;
+    uint32_t			iDelay;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // return if audio not enabled
@@ -457,7 +457,7 @@ void audio_QueueTrackMinDelayPos( SDWORD iTrack, UDWORD iMinDelay, SDWORD iX, SD
 // =======================================================================================================================
 // =======================================================================================================================
 //
-void audio_QueueTrackPos( SDWORD iTrack, SDWORD iX, SDWORD iY, SDWORD iZ )
+void audio_QueueTrackPos( int32_t iTrack, int32_t iX, int32_t iY, int32_t iZ )
 {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     AUDIO_SAMPLE	*psSample;
@@ -635,10 +635,10 @@ unsigned int audio_SetTrackVals(const char *fileName, BOOL loop, unsigned int vo
 // =======================================================================================================================
 // =======================================================================================================================
 //
-static BOOL audio_CheckSame3DTracksPlaying( SDWORD iTrack, SDWORD iX, SDWORD iY, SDWORD iZ )
+static BOOL audio_CheckSame3DTracksPlaying( int32_t iTrack, int32_t iX, int32_t iY, int32_t iZ )
 {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    SDWORD			iCount, iDx, iDy, iDz, iDistSq, iMaxDistSq, iRad;
+    int32_t			iCount, iDx, iDy, iDz, iDistSq, iMaxDistSq, iRad;
     AUDIO_SAMPLE	*psSample = NULL;
     BOOL			bOK = true;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -685,7 +685,7 @@ static BOOL audio_CheckSame3DTracksPlaying( SDWORD iTrack, SDWORD iX, SDWORD iY,
 // =======================================================================================================================
 // =======================================================================================================================
 //
-static BOOL audio_Play3DTrack( SDWORD iX, SDWORD iY, SDWORD iZ, int iTrack, void *psObj, AUDIO_CALLBACK pUserCallback )
+static BOOL audio_Play3DTrack( int32_t iX, int32_t iY, int32_t iZ, int iTrack, void *psObj, AUDIO_CALLBACK pUserCallback )
 {
     //~~~~~~~~~~~~~~~~~~~~~~
     AUDIO_SAMPLE	*psSample;
@@ -773,10 +773,10 @@ static BOOL audio_Play3DTrack( SDWORD iX, SDWORD iY, SDWORD iZ, int iTrack, void
 // =======================================================================================================================
 // =======================================================================================================================
 //
-BOOL audio_PlayStaticTrack( SDWORD iMapX, SDWORD iMapY, int iTrack )
+BOOL audio_PlayStaticTrack( int32_t iMapX, int32_t iMapY, int iTrack )
 {
     //~~~~~~~~~~~~~~~
-    SDWORD	iX, iY, iZ;
+    int32_t	iX, iY, iZ;
     //~~~~~~~~~~~~~~~
 
     // if audio not enabled return true to carry on game without audio
@@ -796,7 +796,7 @@ BOOL audio_PlayStaticTrack( SDWORD iMapX, SDWORD iMapY, int iTrack )
 BOOL audio_PlayObjStaticTrack( void *psObj, int iTrack )
 {
     //~~~~~~~~~~~~~~~
-    SDWORD	iX, iY, iZ;
+    int32_t	iX, iY, iZ;
     //~~~~~~~~~~~~~~~
 
     // if audio not enabled return true to carry on game without audio
@@ -816,7 +816,7 @@ BOOL audio_PlayObjStaticTrack( void *psObj, int iTrack )
 BOOL audio_PlayObjStaticTrackCallback( void *psObj, int iTrack, AUDIO_CALLBACK pUserCallback )
 {
     //~~~~~~~~~~~~~~~
-    SDWORD	iX, iY, iZ;
+    int32_t	iX, iY, iZ;
     //~~~~~~~~~~~~~~~
 
     // if audio not enabled return true to carry on game without audio
@@ -836,7 +836,7 @@ BOOL audio_PlayObjStaticTrackCallback( void *psObj, int iTrack, AUDIO_CALLBACK p
 BOOL audio_PlayObjDynamicTrack( void *psObj, int iTrack, AUDIO_CALLBACK pUserCallback )
 {
     //~~~~~~~~~~~~~~~
-    SDWORD	iX, iY, iZ;
+    int32_t	iX, iY, iZ;
     //~~~~~~~~~~~~~~~
 
     // if audio not enabled return true to carry on game without audio
@@ -1074,7 +1074,7 @@ void audio_StopAll( void )
 // =======================================================================================================================
 // =======================================================================================================================
 //
-SDWORD audio_GetTrackID( const char *fileName )
+int32_t audio_GetTrackID( const char *fileName )
 {
     //~~~~~~~~~~~~~
     TRACK	*psTrack;

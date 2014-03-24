@@ -31,8 +31,8 @@ typedef enum _group_type
 
 typedef struct _droid_group
 {
-    SWORD		type;
-    SWORD		refCount;
+    int16_t		type;
+    int16_t		refCount;
     DROID		*psList;			// list of droids in the group
     DROID		*psCommander;		// the command droid of a command group
     RUN_DATA	sRunData;			// where the group should retreat to
@@ -71,7 +71,7 @@ struct _droid_order_data;
 void orderGroup(DROID_GROUP *psGroup, DROID_ORDER order);
 
 /* Give a group of droids an order */
-void orderGroupLoc(DROID_GROUP *psGroup, DROID_ORDER order, UDWORD x, UDWORD y);
+void orderGroupLoc(DROID_GROUP *psGroup, DROID_ORDER order, uint32_t x, uint32_t y);
 
 /* Give a group of droids an order */
 void orderGroupObj(DROID_GROUP *psGroup, DROID_ORDER order, BASE_OBJECT *psObj);

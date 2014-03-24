@@ -836,7 +836,7 @@ bool OverrideRPTDirectory(char *newPath)
 
         LPVOID lpMsgBuf;
         LPVOID lpDisplayBuf;
-        DWORD dw = GetLastError();
+        int32_t dw = GetLastError();
         TCHAR szBuffer[4196];
 
         FormatMessage(

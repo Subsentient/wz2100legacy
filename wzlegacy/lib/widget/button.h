@@ -39,11 +39,11 @@ typedef struct _w_button
     /* The common widget data */
     WIDGET_BASE;
 
-    UDWORD		state;				// The current button state
+    uint32_t		state;				// The current button state
     const char *pText;				// The text for the button
     const char *pTip;				// The tool tip for the button
-    SWORD HilightAudioID;				// Audio ID for form clicked sound
-    SWORD ClickedAudioID;				// Audio ID for form hilighted sound
+    int16_t HilightAudioID;				// Audio ID for form clicked sound
+    int16_t ClickedAudioID;				// Audio ID for form hilighted sound
     WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
     enum iV_fonts FontID;
 } W_BUTTON;
@@ -64,10 +64,10 @@ extern void buttonInitialise(W_BUTTON *psWidget);
 extern void buttonRun(W_BUTTON *psWidget);
 
 /* Respond to a mouse click */
-extern void buttonClicked(W_BUTTON *psWidget, UDWORD key);
+extern void buttonClicked(W_BUTTON *psWidget, uint32_t key);
 
 /* Respond to a mouse button up */
-extern void buttonReleased(W_SCREEN *psScreen, W_BUTTON *psWidget, UDWORD key);
+extern void buttonReleased(W_SCREEN *psScreen, W_BUTTON *psWidget, uint32_t key);
 
 /* Respond to a mouse moving over a button */
 extern void buttonHiLite(W_BUTTON *psWidget, W_CONTEXT *psContext);
@@ -76,15 +76,15 @@ extern void buttonHiLite(W_BUTTON *psWidget, W_CONTEXT *psContext);
 extern void buttonHiLiteLost(W_BUTTON *psWidget);
 
 /* Get a button's state */
-extern UDWORD buttonGetState(W_BUTTON *psButton);
+extern uint32_t buttonGetState(W_BUTTON *psButton);
 
 /* Set a button's state */
-extern void buttonSetState(W_BUTTON *psWidget, UDWORD state);
+extern void buttonSetState(W_BUTTON *psWidget, uint32_t state);
 
 extern void buttonSetFlash(W_BUTTON *psButton);
 extern void buttonClearFlash(W_BUTTON *psButton);
 
 /* The button display function */
-extern void buttonDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+extern void buttonDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 #endif // __INCLUDED_LIB_WIDGET_BUTTON_H__

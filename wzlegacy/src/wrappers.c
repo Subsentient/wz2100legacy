@@ -49,11 +49,11 @@ typedef struct _star
 static BOOL		firstcall = false;
 static BOOL		bPlayerHasLost = false;
 static BOOL		bPlayerHasWon = false;
-static UBYTE    scriptWinLoseVideo = PLAY_NONE;
+static uint8_t    scriptWinLoseVideo = PLAY_NONE;
 
 void	runCreditsScreen	( void );
 
-static	UDWORD	lastChange = 0;
+static	uint32_t	lastChange = 0;
 BOOL hostlaunch = false;				// used to detect if we are hosting a game via command line option.
 
 static uint32_t lastTick = 0;
@@ -438,12 +438,12 @@ void setPlayerHasWon( BOOL val )
 }
 
 /*access functions for scriptWinLoseVideo - used to indicate when the script is playing the win/lose video*/
-void setScriptWinLoseVideo(UBYTE val)
+void setScriptWinLoseVideo(uint8_t val)
 {
     scriptWinLoseVideo = val;
 }
 
-UBYTE getScriptWinLoseVideo(void)
+uint8_t getScriptWinLoseVideo(void)
 {
     return scriptWinLoseVideo;
 }

@@ -263,7 +263,7 @@ extern "C"
     WZ_DECL_FORMAT(printf, 3, 4);
 
     /** Global to keep track of which game object to trace. */
-    extern UDWORD traceID;
+    extern uint32_t traceID;
 
     /**
      * Output printf style format str for debugging a specific game object whose debug part
@@ -272,13 +272,13 @@ extern "C"
      */
 #define objTrace(id, ...) do { if (id == traceID) _realObjTrace(id, __FUNCTION__, __VA_ARGS__); } while(0)
     void _realObjTrace(int id, const char *function, const char *str, ...) WZ_DECL_FORMAT(printf, 3, 4);
-    static inline void objTraceEnable(UDWORD id)
+    static inline void objTraceEnable(uint32_t id)
     {
         traceID = id;
     }
     static inline void objTraceDisable(void)
     {
-        traceID = (UDWORD)-1;
+        traceID = (uint32_t)-1;
     }
 
 // MSVC specific rotuines to set/clear allocation tracking

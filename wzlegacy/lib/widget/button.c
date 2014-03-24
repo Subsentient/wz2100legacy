@@ -127,9 +127,9 @@ void buttonInitialise(W_BUTTON *psWidget)
 
 
 /* Get a button's state */
-UDWORD buttonGetState(W_BUTTON *psButton)
+uint32_t buttonGetState(W_BUTTON *psButton)
 {
-    UDWORD State = 0;
+    uint32_t State = 0;
 
     if (psButton->state & WBUTS_GREY)
     {
@@ -169,7 +169,7 @@ void buttonClearFlash(W_BUTTON *psButton)
 
 
 /* Set a button's state */
-void buttonSetState(W_BUTTON *psButton, UDWORD state)
+void buttonSetState(W_BUTTON *psButton, uint32_t state)
 {
     ASSERT( !((state & WBUT_LOCK) && (state & WBUT_CLICKLOCK)),
             "widgSetButtonState: Cannot have WBUT_LOCK and WBUT_CLICKLOCK" );
@@ -219,7 +219,7 @@ void buttonRun(W_BUTTON *psButton)
 
 
 /* Respond to a mouse click */
-void buttonClicked(W_BUTTON *psWidget, UDWORD key)
+void buttonClicked(W_BUTTON *psWidget, uint32_t key)
 {
     /* Can't click a button if it is disabled or locked down */
     if (!(psWidget->state & (WBUTS_GREY | WBUTS_LOCKED)))
@@ -246,7 +246,7 @@ void buttonClicked(W_BUTTON *psWidget, UDWORD key)
 }
 
 /* Respond to a mouse button up */
-void buttonReleased(W_SCREEN *psScreen, W_BUTTON *psWidget, UDWORD key)
+void buttonReleased(W_SCREEN *psScreen, W_BUTTON *psWidget, uint32_t key)
 {
     if (psWidget->state & WBUTS_DOWN)
     {
@@ -294,10 +294,10 @@ void buttonHiLiteLost(W_BUTTON *psWidget)
 
 
 /* Display a button */
-void buttonDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void buttonDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
     W_BUTTON	*psButton;
-    SDWORD		x0,y0,x1,y1, fx,fy,fw;
+    int32_t		x0,y0,x1,y1, fx,fy,fw;
 
     ASSERT(psWidget != NULL && pColours != NULL, "Invalid pointers");
     if (!psWidget || !pColours)

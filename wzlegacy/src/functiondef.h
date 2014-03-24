@@ -64,9 +64,9 @@ enum FUNCTION_TYPES
 /*Common stats for all Structure Functions*/
 
 #define FUNCTION_STATS \
-	UDWORD		ref;			/* Unique ID of the item */ \
+	uint32_t		ref;			/* Unique ID of the item */ \
 	char*		pName;			/* Text name of the component */ \
-	UBYTE		type			/* The type of Function */
+	uint8_t		type			/* The type of Function */
 
 /*Common struct for all functions*/
 typedef struct _function
@@ -81,7 +81,7 @@ typedef struct _repair_droid_function
     //common stats
     FUNCTION_STATS;
 
-    UDWORD			repairPoints;	/*The number of repair points used to reduce
+    uint32_t			repairPoints;	/*The number of repair points used to reduce
 									  damage to the droid. These repair points can
 									  restore even destroyed droid components*/
 } REPAIR_DROID_FUNCTION;
@@ -92,14 +92,14 @@ typedef struct _power_gen_function
     //common stats
     FUNCTION_STATS;
 
-    UDWORD		powerOutput;		/*How much power is generated per power cycle*/
-    UDWORD		powerMultiplier;	/*Multiplies the output - upgradeable*/
-    UDWORD		criticalMassChance;	/*The % chance of an explosion when the power
+    uint32_t		powerOutput;		/*How much power is generated per power cycle*/
+    uint32_t		powerMultiplier;	/*Multiplies the output - upgradeable*/
+    uint32_t		criticalMassChance;	/*The % chance of an explosion when the power
 									  generator has taken damage*/
-    UDWORD		criticalMassRadius;	/*The primary blast radius*/
-    UDWORD		criticalMassDamage;	/*The base amount of damage applied to targets
+    uint32_t		criticalMassRadius;	/*The primary blast radius*/
+    uint32_t		criticalMassDamage;	/*The base amount of damage applied to targets
 									  within the primary blast area*/
-    UDWORD		radiationDecayTime;	/*How long the radiation lasts n time cycles*/
+    uint32_t		radiationDecayTime;	/*How long the radiation lasts n time cycles*/
 } POWER_GEN_FUNCTION;
 
 /*function used by walls to define which corner to use*/
@@ -118,7 +118,7 @@ typedef struct _resource_function
     //common stats
     FUNCTION_STATS;
 
-    UDWORD		maxPower;			/*The max amount output from the resource*/
+    uint32_t		maxPower;			/*The max amount output from the resource*/
 } RESOURCE_FUNCTION;
 
 /*To increase a production facilities output*/
@@ -127,11 +127,11 @@ typedef struct _production_upgrade_function
     //common stats
     FUNCTION_STATS;
 
-    UBYTE		outputModifier;		/*The amount added to a facility's Output*/
+    uint8_t		outputModifier;		/*The amount added to a facility's Output*/
 
-    UBYTE		factory;			/*flag to indicate upgrades standard factories*/
-    UBYTE		cyborgFactory;		/*flag to indicate upgrades cyborg factories*/
-    UBYTE		vtolFactory;		/*flag to indicate upgrades vtol factories*/
+    uint8_t		factory;			/*flag to indicate upgrades standard factories*/
+    uint8_t		cyborgFactory;		/*flag to indicate upgrades cyborg factories*/
+    uint8_t		vtolFactory;		/*flag to indicate upgrades vtol factories*/
 
 } PRODUCTION_UPGRADE_FUNCTION;
 
@@ -141,8 +141,8 @@ typedef struct _production_function
     //common stats
     FUNCTION_STATS;
 
-    UBYTE                                   capacity;               // The max size of body the factory can produce
-    UWORD					productionOutput;	/*Droid Build Points Produced Per
+    uint8_t                                   capacity;               // The max size of body the factory can produce
+    uint16_t					productionOutput;	/*Droid Build Points Produced Per
 												  Build Cycle*/
 } PRODUCTION_FUNCTION;
 
@@ -152,7 +152,7 @@ typedef struct _research_function
     //common stats
     FUNCTION_STATS;
 
-    UDWORD			researchPoints;	/*The number of research points added per
+    uint32_t			researchPoints;	/*The number of research points added per
 									  research cycle*/
 } RESEARCH_FUNCTION;
 
@@ -162,14 +162,14 @@ typedef struct _rearm_function
     //common stats
     FUNCTION_STATS;
 
-    UDWORD			reArmPoints;	/*The number of reArm points added per cycle*/
+    uint32_t			reArmPoints;	/*The number of reArm points added per cycle*/
 } REARM_FUNCTION;
 
 /*Generic upgrade function*/
 #define UPGRADE_FUNCTION_STATS \
 	FUNCTION_STATS;						/*common stats*/ \
-    UWORD			upgradePoints	/*The % to add to the action points*/
-//UBYTE			upgradePoints	/*The % to add to the action points*/
+    uint16_t			upgradePoints	/*The % to add to the action points*/
+//uint8_t			upgradePoints	/*The % to add to the action points*/
 
 typedef struct _upgrade_function
 {
@@ -191,13 +191,13 @@ typedef struct _weapon_upgrade_function
 //	WEAPON_CLASS            subClass;		/*which weapons are affected */
 // So need to do it this way...
     WEAPON_SUBCLASS		subClass;			/*which weapons are affected */
-    UBYTE			firePause;			/*The % to decrease the fire pause or reload time */
-    UWORD			shortHit;			/*The % to increase the  short range accuracy */
-    UWORD			longHit;			/*The % to increase the long range accuracy */
-    UWORD			damage;				/*The % to increase the damage*/
-    UWORD			radiusDamage;		/*The % to increase the radius damage*/
-    UWORD			incenDamage;		/*The % to increase the incendiary damage*/
-    UWORD			radiusHit;			/*The % to increase the chance to hit in blast radius*/
+    uint8_t			firePause;			/*The % to decrease the fire pause or reload time */
+    uint16_t			shortHit;			/*The % to increase the  short range accuracy */
+    uint16_t			longHit;			/*The % to increase the long range accuracy */
+    uint16_t			damage;				/*The % to increase the damage*/
+    uint16_t			radiusDamage;		/*The % to increase the radius damage*/
+    uint16_t			incenDamage;		/*The % to increase the incendiary damage*/
+    uint16_t			radiusHit;			/*The % to increase the chance to hit in blast radius*/
 
 } WEAPON_UPGRADE_FUNCTION;
 
@@ -207,9 +207,9 @@ typedef struct _structure_upgrade_function
     //common stats
     FUNCTION_STATS;
 
-    UWORD			armour;			/*The % to increase the armour value*/
-    UWORD			body;			/*The % to increase the body points*/
-    UWORD			resistance;		/*The % to increase the resistance*/
+    uint16_t			armour;			/*The % to increase the armour value*/
+    uint16_t			body;			/*The % to increase the body points*/
+    uint16_t			resistance;		/*The % to increase the resistance*/
 
 } STRUCTURE_UPGRADE_FUNCTION;
 
@@ -219,8 +219,8 @@ typedef struct _wallDefence_upgrade_function
     //common stats
     FUNCTION_STATS;
 
-    UWORD			armour;			/*The % to increase the armour value*/
-    UWORD			body;			/*The % to increase the body points*/
+    uint16_t			armour;			/*The % to increase the armour value*/
+    uint16_t			body;			/*The % to increase the body points*/
 
 } WALLDEFENCE_UPGRADE_FUNCTION;
 
@@ -231,24 +231,24 @@ typedef UPGRADE_FUNCTION	DROIDCONSTR_UPGRADE_FUNCTION;
 typedef struct _droidBody_upgrade_function
 {
     UPGRADE_FUNCTION_STATS;
-    UWORD					body;		//The % to increase the whole vehicle body points by*/
-    UWORD					armourValue[WC_NUM_WEAPON_CLASSES];
-    UBYTE					cyborg;		//flag to specify the upgrade is valid for cyborgs
-    UBYTE					droid;		/*flag to specify the upgrade is valid
+    uint16_t					body;		//The % to increase the whole vehicle body points by*/
+    uint16_t					armourValue[WC_NUM_WEAPON_CLASSES];
+    uint8_t					cyborg;		//flag to specify the upgrade is valid for cyborgs
+    uint8_t					droid;		/*flag to specify the upgrade is valid
 										  for droids (non cyborgs!)*/
 } DROIDBODY_UPGRADE_FUNCTION;
 
 typedef struct _droidsensor_upgrade_function
 {
     UPGRADE_FUNCTION_STATS;
-    UWORD					range;		// % to increase range by
+    uint16_t					range;		// % to increase range by
 } DROIDSENSOR_UPGRADE_FUNCTION;
 
 
 #if(0)
 typedef struct _function_upgrade
 {
-    UDWORD		functionInc;			/*The index of the function in asFunctions */
+    uint32_t		functionInc;			/*The index of the function in asFunctions */
     BOOL		available;				/*Flag to indicate whether this Upgrade is available*/
 } FUNCTION_UPGRADE;
 #endif
@@ -258,7 +258,7 @@ typedef struct _function_upgrade
 //	//common stats
 //	FUNCTION_STATS;
 //
-//	UDWORD			power;				/*The power value of the HQ*/
+//	uint32_t			power;				/*The power value of the HQ*/
 //} HQ_FUNCTION;
 
 
@@ -269,10 +269,10 @@ typedef struct _function_upgrade
 //	FUNCTION_STATS;
 //
 //	ARMOUR_STATS*	pArmour;		/*The armour to upgrade to*/
-//	UDWORD			buildPoints;	/*The number of build points required to upgrade
+//	uint32_t			buildPoints;	/*The number of build points required to upgrade
 //									  the structure*/
-//	UDWORD			powerRequired;	/*The amount of power required to upgrade*/
-//	UDWORD			armourPoints;	/*The percentage to increase the armour points by*/
+//	uint32_t			powerRequired;	/*The amount of power required to upgrade*/
+//	uint32_t			armourPoints;	/*The percentage to increase the armour points by*/
 //} ARMOUR_UPGRADE_FUNCTION;
 
 /*To regulate power flows*/
@@ -281,7 +281,7 @@ typedef struct _function_upgrade
 //	//common stats
 //	FUNCTION_STATS;
 //
-//	UDWORD		maxPower;			/*The maximum amount of power output the
+//	uint32_t		maxPower;			/*The maximum amount of power output the
 //									  regulator can handle*/
 //} POWER_REG_FUNCTION;
 
@@ -291,8 +291,8 @@ typedef struct _function_upgrade
 //	//common stats
 //	FUNCTION_STATS;
 //
-//	UDWORD		powerRelayType;		/*Broadcast=0 cable=1*/
-//	UDWORD		powerRelayRange;	/*The range in map distances that the power
+//	uint32_t		powerRelayType;		/*Broadcast=0 cable=1*/
+//	uint32_t		powerRelayRange;	/*The range in map distances that the power
 //									  can be relayed*/
 //} POWER_RELAY_FUNCTION;
 
@@ -302,9 +302,9 @@ typedef struct _function_upgrade
 //	//common stats
 //	FUNCTION_STATS;
 //
-//	UDWORD		radarDecayRate;		/*How fast the droids out of LOS decay on the
+//	uint32_t		radarDecayRate;		/*How fast the droids out of LOS decay on the
 //									  radar*/
-//	UDWORD		radarRadius;		/*How far a radar building can see with 100%
+//	uint32_t		radarRadius;		/*How far a radar building can see with 100%
 //									  accuracy*/
 //} RADAR_MAP_FUNCTION;
 
@@ -315,10 +315,10 @@ typedef struct _function_upgrade
 //	FUNCTION_STATS;
 
 //	struct REPAIR_STATS*	pRepair;		/*The repair unit to be upgraded*/
-//	UDWORD			repairPoints;	/*The percentage to increase the repair points by*/
-//	UDWORD			buildPoints;	/*The number of build points required to upgrade
+//	uint32_t			repairPoints;	/*The percentage to increase the repair points by*/
+//	uint32_t			buildPoints;	/*The number of build points required to upgrade
 //									  the structure*/
-//	UDWORD			powerRequired;	/*The amount of power required to upgrade*/
+//	uint32_t			powerRequired;	/*The amount of power required to upgrade*/
 //} REPAIR_UPGRADE_FUNCTION;
 
 /*Upgrade the body points of the structure*/
@@ -327,7 +327,7 @@ typedef struct _function_upgrade
 //	//common stats
 //	FUNCTION_STATS;
 //
-///	UDWORD			bodyPoints;		/*The percentage to increase the body points by*/
+///	uint32_t			bodyPoints;		/*The percentage to increase the body points by*/
 //} BODY_UPGRADE_FUNCTION;
 
 /*Upgrade the resistance*/
@@ -336,11 +336,11 @@ typedef struct _function_upgrade
 //	//common stats
 //	FUNCTION_STATS;
 //
-//	UDWORD			resistanceUpgrade;	/*This is unknown at the moment!!27/02/97*/
-//	UDWORD			buildPoints;		/*The number of build points required to
+//	uint32_t			resistanceUpgrade;	/*This is unknown at the moment!!27/02/97*/
+//	uint32_t			buildPoints;		/*The number of build points required to
 //										  upgrade the structure*/
-//	UDWORD			powerRequired;		/*The amount of power required to upgrade*/
-//	UDWORD			resistancePoints;	/*The percentage to increase the resistance points by*/
+//	uint32_t			powerRequired;		/*The amount of power required to upgrade*/
+//	uint32_t			resistancePoints;	/*The percentage to increase the resistance points by*/
 //} RESISTANCE_UPGRADE_FUNCTION;
 /*blocks LOS and restricts movement*/
 //typedef struct _defensive_structure_function
@@ -350,7 +350,7 @@ typedef struct _function_upgrade
 //
 //	struct SENSOR_STATS*	pSensor;		/*The Sensor fitted, if any*/
 //	struct ECM_STATS*		pECM;			/*The ECM fitted, if any*/
-//	UDWORD			weaponCapacity;	/*The size of weapon in system points that may
+//	uint32_t			weaponCapacity;	/*The size of weapon in system points that may
 //									  be added. 0 = no weapons can be added*/
 //} DEFENSIVE_STRUCTURE_FUNCTION;
 

@@ -72,22 +72,22 @@ static	W_SCREEN	*psRequestScreen;					// Widget screen for requester
 bool		challengesUp = false;		///< True when interface is up and should be run.
 bool		challengeActive = false;	///< Whether we are running a challenge
 
-static void displayLoadBanner(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayLoadBanner(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     PIELIGHT col = WZCOL_GREEN;
-    UDWORD	x = xOffset + psWidget->x;
-    UDWORD	y = yOffset + psWidget->y;
+    uint32_t	x = xOffset + psWidget->x;
+    uint32_t	y = yOffset + psWidget->y;
 
     pie_BoxFill(x, y, x + psWidget->width, y + psWidget->height, col);
     pie_BoxFill(x + 2, y + 2, x + psWidget->width - 2, y + psWidget->height - 2, WZCOL_MENU_BACKGROUND);
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-static void displayLoadSlot(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayLoadSlot(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
 
-    UDWORD	x = xOffset + psWidget->x;
-    UDWORD	y = yOffset + psWidget->y;
+    uint32_t	x = xOffset + psWidget->x;
+    uint32_t	y = yOffset + psWidget->y;
     char  butString[64];
 
     drawBlueBox(x, y, psWidget->width, psWidget->height);	//draw box
@@ -119,7 +119,7 @@ bool addChallenges()
     W_FORMINIT		sFormInit;
     W_BUTINIT		sButInit;
     W_LABINIT		sLabInit;
-    UDWORD			slotCount;
+    uint32_t			slotCount;
     static char		sSlotCaps[totalslots][totalslotspace];
     static char		sSlotTips[totalslots][totalslotspace];
     static char		sSlotFile[totalslots][totalslotspace];
@@ -135,8 +135,8 @@ bool addChallenges()
     sFormInit.formID = 0;				//this adds the blue background, and the "box" behind the buttons -Q
     sFormInit.id = CHALLENGE_FORM;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD) CHALLENGE_X;
-    sFormInit.y = (SWORD) CHALLENGE_Y;
+    sFormInit.x = (int16_t) CHALLENGE_X;
+    sFormInit.y = (int16_t) CHALLENGE_Y;
     sFormInit.width = CHALLENGE_W;
     // we need the form to be long enough for all resolutions, so we take the total number of items * height
     // and * the gaps, add the banner, and finally, the fudge factor ;)
@@ -177,7 +177,7 @@ bool addChallenges()
     sButInit.y = 8;
     sButInit.width		= iV_GetImageWidth(IntImages, IMAGE_NRUTER);
     sButInit.height		= iV_GetImageHeight(IntImages, IMAGE_NRUTER);
-    sButInit.UserData	= PACKDWORD_TRI(0, IMAGE_NRUTER , IMAGE_NRUTER);
+    sButInit.UserData	= PACKint32_t_TRI(0, IMAGE_NRUTER , IMAGE_NRUTER);
 
     sButInit.id = CHALLENGE_CANCEL;
     sButInit.style = WBUT_PLAIN;
@@ -202,19 +202,19 @@ bool addChallenges()
         if (slotCount < slotsInColumn)
         {
             sButInit.x	= 22 + CHALLENGE_HGAP;
-            sButInit.y	= (SWORD)((CHALLENGE_BANNER_DEPTH + (2 * CHALLENGE_VGAP)) + (
+            sButInit.y	= (int16_t)((CHALLENGE_BANNER_DEPTH + (2 * CHALLENGE_VGAP)) + (
                                       slotCount * (CHALLENGE_VGAP + CHALLENGE_ENTRY_H)));
         }
         else if (slotCount >= slotsInColumn && (slotCount < (slotsInColumn *2)))
         {
             sButInit.x	= 22 + (2 * CHALLENGE_HGAP + CHALLENGE_ENTRY_W);
-            sButInit.y	= (SWORD)((CHALLENGE_BANNER_DEPTH + (2 * CHALLENGE_VGAP)) + (
+            sButInit.y	= (int16_t)((CHALLENGE_BANNER_DEPTH + (2 * CHALLENGE_VGAP)) + (
                                       (slotCount % slotsInColumn) * (CHALLENGE_VGAP + CHALLENGE_ENTRY_H)));
         }
         else
         {
             sButInit.x	= 22 + (3 * CHALLENGE_HGAP + (2 * CHALLENGE_ENTRY_W));
-            sButInit.y	= (SWORD)((CHALLENGE_BANNER_DEPTH + (2 * CHALLENGE_VGAP)) + (
+            sButInit.y	= (int16_t)((CHALLENGE_BANNER_DEPTH + (2 * CHALLENGE_VGAP)) + (
                                       (slotCount % slotsInColumn) * (CHALLENGE_VGAP + CHALLENGE_ENTRY_H)));
         }
         widgAddButton(psRequestScreen, &sButInit);
@@ -327,7 +327,7 @@ bool closeChallenges()
 // slot was selected otherwise cancel was selected..
 bool runChallenges(void)
 {
-    UDWORD		id = 0;
+    uint32_t		id = 0;
 
     id = widgRunScreen(psRequestScreen);
 

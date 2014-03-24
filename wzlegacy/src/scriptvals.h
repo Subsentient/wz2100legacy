@@ -38,7 +38,7 @@ typedef enum _init_type
 typedef struct _var_init
 {
     INIT_TYPE	type;
-    SDWORD		index;
+    int32_t		index;
     char		*pString;
 } VAR_INIT;
 
@@ -46,8 +46,8 @@ typedef struct _var_init
 // store array access data
 typedef struct _array_indexes
 {
-    SDWORD		dimensions;
-    SDWORD		elements[VAR_MAX_DIMENSIONS];
+    int32_t		dimensions;
+    int32_t		elements[VAR_MAX_DIMENSIONS];
 } ARRAY_INDEXES;
 
 /* A simple error reporting routine */
@@ -58,10 +58,10 @@ extern void scrv_error(const char *fmt, ...) WZ_DECL_FORMAT(printf, 1, 2);
 extern BOOL scrvLookUpType(const char *pIdent, INTERP_TYPE *pType);
 
 // Lookup a variable identifier
-extern BOOL scrvLookUpVar(const char *pIdent, UDWORD *pIndex);
+extern BOOL scrvLookUpVar(const char *pIdent, uint32_t *pIndex);
 
 // Lookup an array identifier
-extern BOOL scrvLookUpArray(const char *pIdent, UDWORD *pIndex);
+extern BOOL scrvLookUpArray(const char *pIdent, uint32_t *pIndex);
 
 // Whether the script is run immediately or stored for later use
 typedef enum _scrv_type

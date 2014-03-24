@@ -44,10 +44,10 @@ void pie_ClipEnd()
     glDisable(GL_SCISSOR_TEST);
 }
 
-void pie_DrawViewingWindow(Vector3i *v, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2, PIELIGHT colour)
+void pie_DrawViewingWindow(Vector3i *v, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, PIELIGHT colour)
 {
     CLIP_VERTEX pieVrts[pie_MAX_VERTICES_PER_POLYGON];
-    SDWORD i;
+    int32_t i;
 
     pie_SetTexturePage(TEXPAGE_NONE);
     pie_SetRendMode(REND_ALPHA_FLAT);
@@ -95,7 +95,7 @@ void pie_DrawViewingWindow(Vector3i *v, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD 
 
 void pie_TransColouredTriangle(CLIP_VERTEX *vrt, PIELIGHT c)
 {
-    UDWORD i;
+    uint32_t i;
 
     pie_SetTexturePage(TEXPAGE_NONE);
     pie_SetRendMode(REND_ALPHA_ITERATED);
@@ -204,7 +204,7 @@ void pie_DrawFogBox(float left, float right, float front, float back, float heig
     glPopAttrib();
 }
 
-UBYTE pie_ByteScale(UBYTE a, UBYTE b)
+uint8_t pie_ByteScale(uint8_t a, uint8_t b)
 {
-    return ((UDWORD)a * (UDWORD)b) >> 8;
+    return ((uint32_t)a * (uint32_t)b) >> 8;
 }

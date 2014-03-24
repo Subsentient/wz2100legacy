@@ -71,10 +71,10 @@ enum _groupids
 };
 
 // Get values from a base object
-extern BOOL scrBaseObjGet(UDWORD index);
+extern BOOL scrBaseObjGet(uint32_t index);
 
 // Set values from a base object
-extern BOOL scrBaseObjSet(UDWORD index);
+extern BOOL scrBaseObjSet(uint32_t index);
 
 // convert a base object to a droid if it is the right type
 extern BOOL scrObjToDroid(void);
@@ -86,15 +86,15 @@ extern BOOL scrObjToStructure(void);
 extern BOOL scrObjToFeature(void);
 
 // Get values from a group
-extern BOOL scrGroupObjGet(UDWORD index);
+extern BOOL scrGroupObjGet(uint32_t index);
 
 // Get values from a weapon
-extern BOOL scrWeaponObjGet(UDWORD index);
+extern BOOL scrWeaponObjGet(uint32_t index);
 
 // default value save routine
-extern BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize);
+extern BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, uint32_t *pSize);
 
 // default value load routine
-extern BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size);
+extern BOOL scrValDefLoad(int32_t version, INTERP_VAL *psVal, char *pBuffer, uint32_t size);
 
 #endif // __INCLUDED_SRC_SCRIPTOBJ_H__

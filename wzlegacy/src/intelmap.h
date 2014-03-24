@@ -46,9 +46,9 @@ extern BOOL intAddMessageView(MESSAGE *psMessage);
 extern void intRemoveMessageView(BOOL animated);
 
 /* Process return codes from the Intelligence Map */
-extern void intProcessIntelMap(UDWORD id);
+extern void intProcessIntelMap(uint32_t id);
 /* Process return code from the Message View for Tutorial Mode*/
-//extern void intProcessMessageView(UDWORD id);
+//extern void intProcessMessageView(uint32_t id);
 
 /* rotate the view so looking directly down if forward = true or
  back to previous view if forward = false */
@@ -61,10 +61,10 @@ extern void intRemoveIntelMap(void);
 extern void intRemoveIntelMapNoAnim(void);
 
 //initialise the text display stats for the current message
-//extern void initTextDisplay(MESSAGE *psMessage, UDWORD fontID, UWORD fontColour);
+//extern void initTextDisplay(MESSAGE *psMessage, uint32_t fontID, uint16_t fontColour);
 
 /* scroll the text message from left to right - aka tickertape messages */
-//extern void scrollMessage(char *pText, UDWORD startX, UDWORD endX, UDWORD y, UDWORD gap);
+//extern void scrollMessage(char *pText, uint32_t startX, uint32_t endX, uint32_t y, uint32_t gap);
 
 /*sets psCurrentMsg for the Intelligence screen*/
 extern void setCurrentMsg(void);

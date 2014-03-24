@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "structuredef.h"
 
 // maximum number of clusters in a game
-#define CLUSTER_MAX		UBYTE_MAX
+#define CLUSTER_MAX		uint8_t_MAX
 
 // cluster information flags
 #define CLUSTER_PLAYER_MASK		0x07
@@ -32,10 +32,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define CLUSTER_STRUCTURE		0x10
 
 // Indirect the cluster ID to an actual cluster number
-extern UBYTE	aClusterMap[CLUSTER_MAX];
+extern uint8_t	aClusterMap[CLUSTER_MAX];
 
 // information about the cluster
-extern UBYTE	aClusterInfo[CLUSTER_MAX];
+extern uint8_t	aClusterInfo[CLUSTER_MAX];
 
 // initialise the cluster system
 void clustInitialise(void);
@@ -53,7 +53,7 @@ void clustNewStruct(STRUCTURE *psStruct);
 void clustUpdateObject(BASE_OBJECT *psObj);
 
 // update all objects from a list belonging to a specific cluster
-void clustUpdateCluster(BASE_OBJECT *psList, SDWORD cluster);
+void clustUpdateCluster(BASE_OBJECT *psList, int32_t cluster);
 
 // remove an object from the cluster system
 void clustRemoveObject(BASE_OBJECT *psObj);
@@ -65,18 +65,18 @@ void clustObjectSeen(BASE_OBJECT *psObj, BASE_OBJECT *psViewer);
 void clustObjectAttacked(BASE_OBJECT *psObj);
 
 // get the cluster ID for an object
-SDWORD clustGetClusterID(BASE_OBJECT *psObj);
+int32_t clustGetClusterID(BASE_OBJECT *psObj);
 
 // find the center of a cluster
-void clustGetCenter(BASE_OBJECT *psObj, SDWORD *px, SDWORD *py);
+void clustGetCenter(BASE_OBJECT *psObj, int32_t *px, int32_t *py);
 
 // initialise iterating a cluster
-void clustInitIterate(SDWORD clusterID);
+void clustInitIterate(int32_t clusterID);
 
 // iterate a cluster
 BASE_OBJECT *clustIterate(void);
 
 // reset the visibility for all clusters for a particular player
-void clustResetVisibility(SDWORD player);
+void clustResetVisibility(int32_t player);
 
 #endif // __INCLUDED_SRC_CLUSTER_H__

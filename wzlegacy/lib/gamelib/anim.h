@@ -55,11 +55,11 @@ struct BASEANIM;
 #define ANIM_BASE_ELEMENTS						\
 	char				szFileName[ANIM_MAX_STR];	\
 	char				animType;				\
-	UWORD				uwID;					\
-	UWORD				uwFrameRate;			\
-	UWORD				uwStates;				\
-	UWORD				uwObj;					\
-	UWORD				uwAnimTime;				\
+	uint16_t				uwID;					\
+	uint16_t				uwFrameRate;			\
+	uint16_t				uwStates;				\
+	uint16_t				uwObj;					\
+	uint16_t				uwAnimTime;				\
 	ANIM_MODE			ubType;					\
 	struct ANIM_STATE	*psStates;				\
 	struct BASEANIM		*psNext;
@@ -74,7 +74,7 @@ struct BASEANIM;
 
 typedef struct ANIM_STATE
 {
-    UWORD				uwFrame;		/* frame to play           */
+    uint16_t				uwFrame;		/* frame to play           */
     Vector3i			vecPos;
     Vector3i			vecAngle;
     Vector3i			vecScale;
@@ -97,21 +97,21 @@ ANIM3D;
 
 BOOL		anim_Init(void);
 BOOL		anim_Shutdown(void);
-BASEANIM 	*anim_LoadFromBuffer(char *pBuffer, UDWORD size);
+BASEANIM 	*anim_LoadFromBuffer(char *pBuffer, uint32_t size);
 BASEANIM 	*anim_LoadFromFile(PHYSFS_file *fileHandle);
 void		anim_ReleaseAnim(BASEANIM *psAnim);
-BOOL		anim_Create3D(char szPieFileName[], UWORD uwFrames, UWORD uwFrameRate, UWORD uwObj,
-                          ANIM_MODE ubType, UWORD uwID);
+BOOL		anim_Create3D(char szPieFileName[], uint16_t uwFrames, uint16_t uwFrameRate, uint16_t uwObj,
+                          ANIM_MODE ubType, uint16_t uwID);
 void		anim_BeginScript(void);
 BOOL		anim_EndScript(void);
 BOOL		anim_AddFrameToAnim(int iFrame, Vector3i vecPos, Vector3i vecRot, Vector3i vecScale);
-BASEANIM 	*anim_GetAnim(UWORD uwAnimID);
-UWORD		anim_GetAnimID(char *szName);
-iIMDShape 	*anim_GetShapeFromID(UWORD uwID);
-UWORD		anim_GetFrame3D(ANIM3D *psAnim, UWORD uwObj, UDWORD udwGameTime, UDWORD udwStartTime,
-                            UDWORD udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot,
+BASEANIM 	*anim_GetAnim(uint16_t uwAnimID);
+uint16_t		anim_GetAnimID(char *szName);
+iIMDShape 	*anim_GetShapeFromID(uint16_t uwID);
+uint16_t		anim_GetFrame3D(ANIM3D *psAnim, uint16_t uwObj, uint32_t udwGameTime, uint32_t udwStartTime,
+                            uint32_t udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot,
                             Vector3i *psVecScale);
-void		anim_SetVals(char szFileName[], UWORD uwAnimID);
+void		anim_SetVals(char szFileName[], uint16_t uwAnimID);
 
 /***************************************************************************/
 

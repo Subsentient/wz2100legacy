@@ -27,9 +27,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 	WIDGET_BASE;				/* The common widget data */ \
 	\
 	BOOL		disableChildren;	/* Disable all child widgets if true */ \
-	UWORD		Ax0,Ay0,Ax1,Ay1; 	/* Working coords for animations. */ \
-	UDWORD		animCount; 			/* Animation counter. */ \
-	UDWORD		startTime;			/* Animation start time */ \
+	uint16_t		Ax0,Ay0,Ax1,Ay1; 	/* Working coords for animations. */ \
+	uint32_t		animCount; 			/* Animation counter. */ \
+	uint32_t		startTime;			/* Animation start time */ \
 	PIELIGHT	aColours[WCOL_MAX];		/* Colours for the form and its widgets. signed since aColours -1 means use bitmap. */ \
 	WIDGET		*psLastHiLite;	/* The last widget to be hilited */ \
 								/* This is used to track when the mouse moves */ \
@@ -56,8 +56,8 @@ typedef struct _w_minortab
 typedef struct _w_majortab
 {
     /* Graphics data for the tab will go here */
-    UWORD			lastMinor;					// Store which was the last selected minor tab
-    UWORD			numMinor;
+    uint16_t			lastMinor;					// Store which was the last selected minor tab
+    uint16_t			numMinor;
     W_MINORTAB		asMinor[WFORM_MAXMINOR];	// Minor tab information
     char			*pTip;
 } W_MAJORTAB;
@@ -68,27 +68,27 @@ typedef struct _w_tabform
     /* The common form data */
     FORM_BASE;
 
-    UWORD		majorPos, minorPos;		// Position of the tabs on the form
-    UWORD		majorSize,minorSize;	// the size of tabs horizontally and vertically
-    UWORD		tabMajorThickness;			// The thickness of the tabs
-    UWORD		tabMinorThickness;			// The thickness of the tabs
-    UWORD		tabMajorGap;					// The gap between tabs
-    UWORD		tabMinorGap;					// The gap between tabs
-    SWORD		tabVertOffset;				// Tab form overlap offset.
-    SWORD		tabHorzOffset;				// Tab form overlap offset.
-    SWORD		majorOffset;			// Tab start offset.
-    SWORD		minorOffset;			// Tab start offset.
-    UWORD		majorT,minorT;			// which tab is selected
-    UWORD		state;					// Current state of the widget
-    UWORD		tabHiLite;				// which tab is hilited.
-    /* NOTE: If tabHiLite is (UWORD)(-1) then there is no hilite.  A bit of a hack I know */
+    uint16_t		majorPos, minorPos;		// Position of the tabs on the form
+    uint16_t		majorSize,minorSize;	// the size of tabs horizontally and vertically
+    uint16_t		tabMajorThickness;			// The thickness of the tabs
+    uint16_t		tabMinorThickness;			// The thickness of the tabs
+    uint16_t		tabMajorGap;					// The gap between tabs
+    uint16_t		tabMinorGap;					// The gap between tabs
+    int16_t		tabVertOffset;				// Tab form overlap offset.
+    int16_t		tabHorzOffset;				// Tab form overlap offset.
+    int16_t		majorOffset;			// Tab start offset.
+    int16_t		minorOffset;			// Tab start offset.
+    uint16_t		majorT,minorT;			// which tab is selected
+    uint16_t		state;					// Current state of the widget
+    uint16_t		tabHiLite;				// which tab is hilited.
+    /* NOTE: If tabHiLite is (uint16_t)(-1) then there is no hilite.  A bit of a hack I know */
     /*       but I don't really have the energy to change it.  (Don't design stuff after  */
     /*       beers at lunch-time :-)                                                      */
 
-    UWORD		numMajor;				// The number of major tabs
-    SWORD		TabMultiplier;				//used to tell system we got lots of tabs to display
-    UWORD		numStats;				//# of 'stats' (items) in list
-    UWORD		numButtons;				//# of buttons per form
+    uint16_t		numMajor;				// The number of major tabs
+    int16_t		TabMultiplier;				//used to tell system we got lots of tabs to display
+    uint16_t		numStats;				//# of 'stats' (items) in list
+    uint16_t		numButtons;				//# of buttons per form
     W_MAJORTAB	asMajor[WFORM_MAXMAJOR];	// The major tab information
     TAB_DISPLAY pTabDisplay;			// Optional callback for display tabs.
 } W_TABFORM;
@@ -110,10 +110,10 @@ typedef struct _w_clickform
     /* The common form data */
     FORM_BASE;
 
-    UDWORD		state;					// Button state of the form
+    uint32_t		state;					// Button state of the form
     const char	*pTip;					// Tip for the form
-    SWORD HilightAudioID;				// Audio ID for form clicked sound
-    SWORD ClickedAudioID;				// Audio ID for form hilighted sound
+    int16_t HilightAudioID;				// Audio ID for form clicked sound
+    int16_t ClickedAudioID;				// Audio ID for form hilighted sound
     WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
 } W_CLICKFORM;
 
@@ -135,7 +135,7 @@ extern void formInitialise(W_FORM *psWidget);
 extern WIDGET *formGetWidgets(W_FORM *psWidget);
 
 /* Return the origin on the form from which button locations are calculated */
-extern void formGetOrigin(W_FORM *psWidget, SDWORD *pXOrigin, SDWORD *pYOrigin);
+extern void formGetOrigin(W_FORM *psWidget, int32_t *pXOrigin, int32_t *pYOrigin);
 
 /* Variables for the formGetAllWidgets functions */
 typedef struct _w_formgetall
@@ -143,7 +143,7 @@ typedef struct _w_formgetall
     WIDGET		*psGAWList;
     W_TABFORM	*psGAWForm;
     W_MAJORTAB	*psGAWMajor;
-    UDWORD		GAWMajor, GAWMinor;
+    uint32_t		GAWMajor, GAWMinor;
 } W_FORMGETALL;
 
 /* Initialise the formGetAllWidgets function */
@@ -156,21 +156,21 @@ extern void formInitGetAllWidgets(W_FORM *psWidget, W_FORMGETALL *psCtrl);
 extern WIDGET *formGetAllWidgets(W_FORMGETALL *psCtrl);
 
 /* Get the button state of a click form */
-extern UDWORD formGetClickState(W_CLICKFORM *psForm);
+extern uint32_t formGetClickState(W_CLICKFORM *psForm);
 
 extern void formSetFlash(W_FORM *psWidget);
 
 /* Set the button state of a click form */
-extern void formSetClickState(W_CLICKFORM *psForm, UDWORD state);
+extern void formSetClickState(W_CLICKFORM *psForm, uint32_t state);
 
 /* Run a form widget */
 extern void formRun(W_FORM *psWidget, W_CONTEXT *psContext);
 
 /* Respond to a mouse click */
-extern void formClicked(W_FORM *psWidget, UDWORD key);
+extern void formClicked(W_FORM *psWidget, uint32_t key);
 
 /* Respond to a mouse form up */
-extern void formReleased(W_FORM *psWidget, UDWORD key, W_CONTEXT *psContext);
+extern void formReleased(W_FORM *psWidget, uint32_t key, W_CONTEXT *psContext);
 
 /* Respond to a mouse moving over a form */
 extern void formHiLite(W_FORM *psWidget, W_CONTEXT *psContext);
@@ -179,8 +179,8 @@ extern void formHiLite(W_FORM *psWidget, W_CONTEXT *psContext);
 extern void formHiLiteLost(W_FORM *psWidget, W_CONTEXT *psContext);
 
 /* Display function prototypes */
-extern void formDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-extern void formDisplayClickable(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-extern void formDisplayTabbed(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+extern void formDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+extern void formDisplayClickable(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+extern void formDisplayTabbed(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 #endif // __INCLUDED_LIB_WIDGET_FORM_H__

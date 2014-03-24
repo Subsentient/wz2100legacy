@@ -38,10 +38,10 @@ typedef enum
 
 typedef struct _console
 {
-    UDWORD	topX;
-    UDWORD	topY;
-    UDWORD	width;
-    UDWORD	textDepth;
+    uint32_t	topX;
+    uint32_t	topY;
+    uint32_t	width;
+    uint32_t	textDepth;
     BOOL	permanent;
 } CONSOLE;
 
@@ -54,21 +54,21 @@ typedef struct _console
 typedef struct	_console_message
 {
     char				text[MAX_CONSOLE_STRING_LENGTH];		// Text of the message
-    UDWORD				timeAdded;								// When was it added to our list?
-    //UDWORD			screenIndex;							// Info for justification
-    UDWORD				JustifyType;
-    UDWORD				id;
-    SDWORD				player;						// Player who sent this message or SYSTEM_MESSAGE
+    uint32_t				timeAdded;								// When was it added to our list?
+    //uint32_t			screenIndex;							// Info for justification
+    uint32_t				JustifyType;
+    uint32_t				id;
+    int32_t				player;						// Player who sent this message or SYSTEM_MESSAGE
     struct _console_message *psNext;
 } CONSOLE_MESSAGE;
 
 extern char ConsoleString[MAX_CONSOLE_TMP_STRING_LENGTH];
 
 extern void	consolePrintf				( char *layout, ... );
-extern BOOL	addConsoleMessage			( const char *messageText, CONSOLE_TEXT_JUSTIFICATION jusType, SDWORD player );
+extern BOOL	addConsoleMessage			( const char *messageText, CONSOLE_TEXT_JUSTIFICATION jusType, int32_t player );
 extern void	updateConsoleMessages		( void );
 extern void	initConsoleMessages			( void );
-extern void	setConsoleMessageDuration	( UDWORD time );
+extern void	setConsoleMessageDuration	( uint32_t time );
 extern void	removeTopConsoleMessage		( void );
 extern void	displayConsoleMessages		( void );
 extern void	flushConsoleMessages		( void );
@@ -76,12 +76,12 @@ extern void	setConsoleBackdropStatus	( BOOL state );
 extern void	enableConsoleDisplay		( BOOL state );
 extern BOOL getConsoleDisplayStatus		( void );
 extern void	setDefaultConsoleJust		( CONSOLE_TEXT_JUSTIFICATION defJ );
-extern void	setConsoleSizePos			( UDWORD x, UDWORD y, UDWORD width );
+extern void	setConsoleSizePos			( uint32_t x, uint32_t y, uint32_t width );
 extern void	setConsolePermanence		( BOOL state, BOOL bClearOld );
 extern BOOL	mouseOverConsoleBox			( void );
-extern UDWORD	getNumberConsoleMessages( void );
-extern void	setConsoleLineInfo			( UDWORD vis );
-extern UDWORD	getConsoleLineInfo		( void );
+extern uint32_t	getNumberConsoleMessages( void );
+extern void	setConsoleLineInfo			( uint32_t vis );
+extern uint32_t	getConsoleLineInfo		( void );
 extern void	permitNewConsoleMessages		( BOOL allow);
 extern	void	toggleConsoleDrop( void );
 extern void printf_console(const char *pFormat, ...); /// Print to the ingame console in debug mode only

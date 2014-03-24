@@ -89,20 +89,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define SAVEENTRY_EDIT			ID_LOADSAVE + totalslots + totalslots		// save edit box. must be highest value possible I guess. -Q
 
 // ////////////////////////////////////////////////////////////////////////////
-void drawBlueBox				(UDWORD x,UDWORD y, UDWORD w, UDWORD h);
+void drawBlueBox				(uint32_t x,uint32_t y, uint32_t w, uint32_t h);
 BOOL closeLoadSave				(void);
 BOOL runLoadSave				(BOOL bResetMissionWidgets);
 BOOL displayLoadSave			(void);
 static BOOL _addLoadSave		(BOOL bLoad, const char *sSearchPath, const char *sExtension, const char *title);
 static BOOL _runLoadSave		(BOOL bResetMissionWidgets);
-static void displayLoadBanner	(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-static void displayLoadSlot		(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-static void displayLoadSaveEdit	(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+static void displayLoadBanner	(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+static void displayLoadSlot		(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+static void displayLoadSaveEdit	(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 void		removeWildcards		(char *pStr);
 
 static	W_SCREEN	*psRequestScreen;					// Widget screen for requester
 static	BOOL		mode;
-static	UDWORD		chosenSlotId;
+static	uint32_t		chosenSlotId;
 
 BOOL				bLoadSaveUp = false;        // true when interface is up and should be run.
 char				saveGameName[256];          //the name of the save game to load from the front end
@@ -160,7 +160,7 @@ static BOOL _addLoadSave(BOOL bLoad, const char *sSearchPath, const char *sExten
     W_FORMINIT		sFormInit;
     W_BUTINIT		sButInit;
     W_LABINIT		sLabInit;
-    UDWORD			slotCount;
+    uint32_t			slotCount;
 // removed hardcoded values!  change with the defines above! -Q
     static char	sSlotCaps[totalslots][totalslotspace];
     static char	sSlotTips[totalslots][totalslotspace];
@@ -212,8 +212,8 @@ static BOOL _addLoadSave(BOOL bLoad, const char *sSearchPath, const char *sExten
     sFormInit.formID = 0;				//this adds the blue background, and the "box" behind the buttons -Q
     sFormInit.id = LOADSAVE_FORM;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD) LOADSAVE_X;
-    sFormInit.y = (SWORD) LOADSAVE_Y;
+    sFormInit.x = (int16_t) LOADSAVE_X;
+    sFormInit.y = (int16_t) LOADSAVE_Y;
     sFormInit.width = LOADSAVE_W;
     // we need the form to be long enough for all resolutions, so we take the total number of items * height
     // and * the gaps, add the banner, and finally, the fudge factor ;)
@@ -256,7 +256,7 @@ static BOOL _addLoadSave(BOOL bLoad, const char *sSearchPath, const char *sExten
     sButInit.y = 8;
     sButInit.width		= iV_GetImageWidth(IntImages,IMAGE_NRUTER);
     sButInit.height		= iV_GetImageHeight(IntImages,IMAGE_NRUTER);
-    sButInit.UserData	= PACKDWORD_TRI(0,IMAGE_NRUTER , IMAGE_NRUTER);
+    sButInit.UserData	= PACKint32_t_TRI(0,IMAGE_NRUTER , IMAGE_NRUTER);
 
     sButInit.id = LOADSAVE_CANCEL;
     sButInit.style = WBUT_PLAIN;
@@ -281,19 +281,19 @@ static BOOL _addLoadSave(BOOL bLoad, const char *sSearchPath, const char *sExten
         if(slotCount < slotsInColumn)
         {
             sButInit.x	= 22 + LOADSAVE_HGAP;
-            sButInit.y	= (SWORD)((LOADSAVE_BANNER_DEPTH +(2*LOADSAVE_VGAP)) + (
+            sButInit.y	= (int16_t)((LOADSAVE_BANNER_DEPTH +(2*LOADSAVE_VGAP)) + (
                                       slotCount*(LOADSAVE_VGAP+LOADENTRY_H)));
         }
         else if (slotCount >= slotsInColumn && (slotCount < (slotsInColumn *2)))
         {
             sButInit.x	= 22 + (2*LOADSAVE_HGAP + LOADENTRY_W);
-            sButInit.y	= (SWORD)((LOADSAVE_BANNER_DEPTH +(2* LOADSAVE_VGAP)) + (
+            sButInit.y	= (int16_t)((LOADSAVE_BANNER_DEPTH +(2* LOADSAVE_VGAP)) + (
                                       (slotCount % slotsInColumn)*(LOADSAVE_VGAP+LOADENTRY_H)));
         }
         else
         {
             sButInit.x	= 22 + (3*LOADSAVE_HGAP + (2*LOADENTRY_W));
-            sButInit.y	= (SWORD)((LOADSAVE_BANNER_DEPTH +(2* LOADSAVE_VGAP)) + (
+            sButInit.y	= (int16_t)((LOADSAVE_BANNER_DEPTH +(2* LOADSAVE_VGAP)) + (
                                       (slotCount % slotsInColumn)*(LOADSAVE_VGAP+LOADENTRY_H)));
         }
         widgAddButton(psRequestScreen, &sButInit);
@@ -444,10 +444,10 @@ void deleteSaveGame(char *saveGameName)
 // slot was selected otherwise cancel was selected..
 static BOOL _runLoadSave(BOOL bResetMissionWidgets)
 {
-    UDWORD		id=0;
+    uint32_t		id=0;
     W_EDBINIT	sEdInit;
     static char     sDelete[PATH_MAX];
-    UDWORD		i, campaign;
+    uint32_t		i, campaign;
     W_CONTEXT		context;
 
     id = widgRunScreen(psRequestScreen);
@@ -628,7 +628,7 @@ BOOL displayLoadSave(void)
 // char HANDLER, replaces dos wildcards in a string with harmless chars.
 void removeWildcards(char *pStr)
 {
-    UDWORD i;
+    uint32_t i;
 
     // Remember never to allow: < > : " / \ | ? *
 
@@ -687,11 +687,11 @@ void removeWildcards(char *pStr)
 // ////////////////////////////////////////////////////////////////////////////
 // DISPLAY FUNCTIONS
 
-static void displayLoadBanner(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayLoadBanner(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     PIELIGHT col;
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
 
     if(psWidget->pUserData)
     {
@@ -707,11 +707,11 @@ static void displayLoadBanner(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, 
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-static void displayLoadSlot(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayLoadSlot(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
 
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
     char  butString[64];
 
     drawBlueBox(x,y,psWidget->width,psWidget->height);	//draw box
@@ -734,19 +734,19 @@ static void displayLoadSlot(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-static void displayLoadSaveEdit(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayLoadSaveEdit(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
-    UDWORD	w = psWidget->width;
-    UDWORD  h = psWidget->height;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
+    uint32_t	w = psWidget->width;
+    uint32_t  h = psWidget->height;
 
     pie_BoxFill(x, y, x + w, y + h, WZCOL_MENU_LOAD_BORDER);
     pie_BoxFill(x + 1, y + 1, x + w - 1, y + h - 1, WZCOL_MENU_BACKGROUND);
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-void drawBlueBox(UDWORD x,UDWORD y, UDWORD w, UDWORD h)
+void drawBlueBox(uint32_t x,uint32_t y, uint32_t w, uint32_t h)
 {
     pie_BoxFill(x - 1, y - 1, x + w + 1, y + h + 1, WZCOL_MENU_BORDER);
     pie_BoxFill(x, y , x + w, y + h, WZCOL_MENU_BACKGROUND);

@@ -38,7 +38,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 typedef struct environ_data
 {
     float	val;
-    UBYTE	data;
+    uint8_t	data;
 } ENVIRON_DATA;
 
 static ENVIRON_DATA	*pEnvironData = NULL;
@@ -59,7 +59,7 @@ BOOL    environInit( void )
 /** This function is called whenever the map changes - load new level or return from an offWorld map. */
 void environReset(void)
 {
-    UDWORD	i, j;
+    uint32_t	i, j;
 
     if(pEnvironData == NULL ) // loading map preview..
     {
@@ -70,7 +70,7 @@ void environReset(void)
     {
         for(j=0; j<mapWidth; j++)
         {
-            UDWORD	index = (i * mapWidth) + j;
+            uint32_t	index = (i * mapWidth) + j;
             MAPTILE	*psTile = mapTile(j, i);
 
             if(terrainType(psTile) == TER_WATER)
@@ -99,9 +99,9 @@ unsigned int environGetValue(unsigned int x, unsigned int y)
     return retVal;
 }
 
-UDWORD	environGetData( UDWORD x, UDWORD y )
+uint32_t	environGetData( uint32_t x, uint32_t y )
 {
-    SDWORD	retVal = (pEnvironData[(y * mapWidth) + x].data);
+    int32_t	retVal = (pEnvironData[(y * mapWidth) + x].data);
 
     if (retVal < 0)
     {

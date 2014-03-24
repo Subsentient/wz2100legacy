@@ -201,8 +201,8 @@ struct __GLCcommonAreaRec {
 #endif /* HAVE_TLS */
 #else /* __WIN32__ */
   CRITICAL_SECTION section;
-  DWORD threadKey;
-  DWORD threadID;
+  int32_t threadKey;
+  int32_t threadID;
   LONG __glcInitThreadOnce;
 #endif
 

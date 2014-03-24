@@ -68,8 +68,8 @@ static LEVEL_DATASET	sSingleWRF = { 0, 0, 0, 0, 0, { 0 }, 0, 0, 0 };
 
 // return values from the lexer
 char *pLevToken;
-SDWORD levVal;
-static SDWORD levelLoadType;
+int32_t levVal;
+static int32_t levelLoadType;
 // modes for the parser
 typedef enum
 {
@@ -95,7 +95,7 @@ BOOL levInitialise(void)
     return true;
 }
 
-SDWORD getLevelLoadType(void)
+int32_t getLevelLoadType(void)
 {
     return levelLoadType;
 }
@@ -269,7 +269,7 @@ BOOL levParse(const char *buffer, size_t size, searchPathMode datadir)
             case LTK_INTEGER:
                 if (state == LP_PLAYERS)
                 {
-                    psDataSet->players = (SWORD)levVal;
+                    psDataSet->players = (int16_t)levVal;
                 }
                 else if (state == LP_TYPE)
                 {
@@ -279,7 +279,7 @@ BOOL levParse(const char *buffer, size_t size, searchPathMode datadir)
                         return false;
                     }
 
-                    psDataSet->type = (SWORD)levVal;
+                    psDataSet->type = (int16_t)levVal;
                 }
                 else
                 {
@@ -400,7 +400,7 @@ BOOL levParse(const char *buffer, size_t size, searchPathMode datadir)
                     // note the game index if necessary
                     if (state == LP_GAME)
                     {
-                        psDataSet->game = (SWORD)currData;
+                        psDataSet->game = (int16_t)currData;
                     }
 
                     // store the data name
@@ -447,7 +447,7 @@ BOOL levParse(const char *buffer, size_t size, searchPathMode datadir)
 // free the data for the current mission
 BOOL levReleaseMissionData(void)
 {
-    SDWORD i;
+    int32_t i;
 
     // release old data if any was loaded
     if (psCurrLevel != NULL)
@@ -484,7 +484,7 @@ BOOL levReleaseMissionData(void)
 // free the currently loaded dataset
 BOOL levReleaseAll(void)
 {
-    SDWORD i;
+    int32_t i;
 
     // clear out old effect data first
     initEffectsSystem();
@@ -583,7 +583,7 @@ char *getLevelName( void )
 BOOL levLoadData(const char *name, char *pSaveName, GAME_TYPE saveType)
 {
     LEVEL_DATASET	*psNewLevel, *psBaseData, *psChangeLevel;
-    SDWORD			i;
+    int32_t			i;
     BOOL            bCamChangeSaveGame;
 
     debug(LOG_WZ, "Loading level %s (%s, type %d)", name, pSaveName, (int)saveType);

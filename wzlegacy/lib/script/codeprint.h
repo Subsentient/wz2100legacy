@@ -34,7 +34,7 @@ extern void cpPrintVal(INTERP_VAL value);
 extern void cpPrintPackedVal(INTERP_VAL *ip);
 
 /* Print a variable access function name */
-extern void cpPrintVarFunc(SCRIPT_VARFUNC pFunc, UDWORD index);
+extern void cpPrintVarFunc(SCRIPT_VARFUNC pFunc, uint32_t index);
 
 #endif
 

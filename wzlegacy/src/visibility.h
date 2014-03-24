@@ -52,20 +52,20 @@ extern void processVisibility(BASE_OBJECT *psCurr);
 // update the visibility reduction
 extern void visUpdateLevel(void);
 
-extern void setUnderTilesVis(BASE_OBJECT *psObj, UDWORD player);
+extern void setUnderTilesVis(BASE_OBJECT *psObj, uint32_t player);
 
 void visRemoveVisibility(BASE_OBJECT *psObj);
 void visRemoveVisibilityOffWorld(BASE_OBJECT *psObj);
 
-extern bool scrTileIsVisible(SDWORD player, SDWORD x, SDWORD y);
-extern void scrResetPlayerTileVisibility(SDWORD player);
+extern bool scrTileIsVisible(int32_t player, int32_t x, int32_t y);
+extern void scrResetPlayerTileVisibility(int32_t player);
 
 // fast test for whether obj2 is in range of obj1
-static inline BOOL visObjInRange(BASE_OBJECT *psObj1, BASE_OBJECT *psObj2, SDWORD range)
+static inline BOOL visObjInRange(BASE_OBJECT *psObj1, BASE_OBJECT *psObj2, int32_t range)
 {
-    SDWORD	xdiff,ydiff, distSq, rangeSq;
+    int32_t	xdiff,ydiff, distSq, rangeSq;
 
-    xdiff = (SDWORD)psObj1->pos.x - (SDWORD)psObj2->pos.x;
+    xdiff = (int32_t)psObj1->pos.x - (int32_t)psObj2->pos.x;
     if (xdiff < 0)
     {
         xdiff = -xdiff;
@@ -76,7 +76,7 @@ static inline BOOL visObjInRange(BASE_OBJECT *psObj1, BASE_OBJECT *psObj2, SDWOR
         return false;
     }
 
-    ydiff = (SDWORD)psObj1->pos.y - (SDWORD)psObj2->pos.y;
+    ydiff = (int32_t)psObj1->pos.y - (int32_t)psObj2->pos.y;
     if (ydiff < 0)
     {
         ydiff = -ydiff;

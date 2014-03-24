@@ -42,7 +42,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  * \return calculated hash-value for the keys
  * \see hashTable_SetHashFunction
  */
-typedef UDWORD	(* HASHFUNC)		(intptr_t iKey1, intptr_t iKey2);
+typedef uint32_t	(* HASHFUNC)		(intptr_t iKey1, intptr_t iKey2);
 
 /**
  * Free Element function
@@ -71,11 +71,11 @@ typedef struct HASHTABLE
     HASHNODE		*psNextNode;
     HASHFUNC		pHashFunc;
     HASHFREEFUNC	pFreeFunc;
-    UDWORD			udwTableSize;
-    UDWORD			udwElements;
-    UDWORD			udwExtElements;
-    UDWORD			udwElementSize;
-    UDWORD			sdwCurIndex;
+    uint32_t			udwTableSize;
+    uint32_t			udwElements;
+    uint32_t			udwExtElements;
+    uint32_t			udwElementSize;
+    uint32_t			sdwCurIndex;
 }
 HASHTABLE;
 
@@ -92,9 +92,9 @@ HASHTABLE;
  * \param	udwExtElements	number of elements when extending the heap
  * \param	udwElementSize	size of elements to be stored in the hashtable
  */
-BOOL	hashTable_Create( HASHTABLE **ppsTable, UDWORD udwTableSize,
-                          UDWORD udwInitElements, UDWORD udwExtElements,
-                          UDWORD udwElementSize );
+BOOL	hashTable_Create( HASHTABLE **ppsTable, uint32_t udwTableSize,
+                          uint32_t udwInitElements, uint32_t udwExtElements,
+                          uint32_t udwElementSize );
 
 /**
  * Function to destroy a hashtable

@@ -46,7 +46,7 @@ typedef enum _key_state
 typedef struct _input_state
 {
     KEY_STATE state; /// Last key/mouse state
-    UDWORD lastdown; /// last key/mouse button down timestamp
+    uint32_t lastdown; /// last key/mouse button down timestamp
     Vector2i pressPos;    ///< Location of last mouse press event.
     Vector2i releasePos;  ///< Location of last mouse release event.
 } INPUT_STATE;
@@ -67,7 +67,7 @@ static Uint16 mouseXPos, mouseYPos;
 static MOUSE_KEY_CODE dragKey;
 
 /* The start of a possible drag by the mouse */
-static SDWORD dragX, dragY;
+static int32_t dragX, dragY;
 
 /* The current mouse button state */
 static INPUT_STATE aMouseState[6];
@@ -79,7 +79,7 @@ static INPUT_STATE aMouseState[6];
 /* The input string buffer */
 typedef struct _InputKey
 {
-    UDWORD key;
+    uint32_t key;
     utf_32_char unicode;
 } InputKey;
 static InputKey	pInputBuffer[INPUT_MAXSTR];
@@ -97,7 +97,7 @@ static SDLKey keyCodeToSDLKey(KEY_CODE code)
 }
 
 
-void keyScanToString(KEY_CODE code, char *ascii, UDWORD maxStringSize)
+void keyScanToString(KEY_CODE code, char *ascii, uint32_t maxStringSize)
 {
     if(keyCodeToSDLKey(code) == KEY_MAXSCAN)
     {
@@ -175,7 +175,7 @@ static InputKey *inputPointerNext(InputKey *p)
 }
 
 /* add count copies of the characater code to the input buffer */
-static void inputAddBuffer(UDWORD key, utf_32_char unicode)
+static void inputAddBuffer(uint32_t key, utf_32_char unicode)
 {
     /* Calculate what pEndBuffer will be set to next */
     InputKey	*pNext = inputPointerNext(pEndBuffer);
@@ -205,9 +205,9 @@ void inputClearBuffer(void)
  * windows key map.
  * All key presses are buffered up (including windows auto repeat).
  */
-UDWORD inputGetKey(utf_32_char *unicode)
+uint32_t inputGetKey(utf_32_char *unicode)
 {
-    UDWORD	retVal;
+    uint32_t	retVal;
 
     if (pStartBuffer == pEndBuffer)
     {
@@ -234,7 +234,7 @@ UDWORD inputGetKey(utf_32_char *unicode)
  */
 void inputHandleKeyEvent(SDL_KeyboardEvent *keyEvent)
 {
-    UDWORD code, vk;
+    uint32_t code, vk;
     utf_32_char unicode = keyEvent->keysym.unicode;
 
     switch (keyEvent->type)
@@ -537,7 +537,7 @@ bool mouseReleased(MOUSE_KEY_CODE code)
 }
 
 /* Check for a mouse drag, return the drag start coords if dragging */
-bool mouseDrag(MOUSE_KEY_CODE code, UDWORD *px, UDWORD *py)
+bool mouseDrag(MOUSE_KEY_CODE code, uint32_t *px, uint32_t *py)
 {
     if ((aMouseState[code].state == KEY_DRAG) ||
 
@@ -559,7 +559,7 @@ void SetMousePos(Uint16 x, Uint16 y)
 
     if (mousewarp == -1)
     {
-        SDWORD val;
+        int32_t val;
 
         mousewarp = 1;
         if (getWarzoneKeyNumeric("nomousewarp", &val))

@@ -50,7 +50,7 @@ BOOL allocPlayerPower(void)
 /*clear the playerPower */
 void clearPlayerPower(void)
 {
-    UDWORD player;
+    uint32_t player;
 
     for (player = 0; player < MAX_PLAYERS; player++)
     {
@@ -59,7 +59,7 @@ void clearPlayerPower(void)
 }
 
 /*check the current power - if enough return true, else return false */
-BOOL checkPower(UDWORD player, UDWORD quantity)
+BOOL checkPower(uint32_t player, uint32_t quantity)
 {
     ASSERT(player < MAX_PLAYERS, "checkPower: Bad player");
 
@@ -79,7 +79,7 @@ BOOL checkPower(UDWORD player, UDWORD quantity)
 /*check the current power - if enough subtracts the amount
  required to perform the task and returns true, else returns
  false */
-BOOL usePower(UDWORD player, UDWORD quantity)
+BOOL usePower(uint32_t player, uint32_t quantity)
 {
     ASSERT(player < MAX_PLAYERS, "usePower: Bad player");
 
@@ -99,7 +99,7 @@ BOOL usePower(UDWORD player, UDWORD quantity)
 }
 
 //return the power when a structure/droid is deliberately destroyed
-void addPower(UDWORD player, UDWORD quantity)
+void addPower(uint32_t player, uint32_t quantity)
 {
     ASSERT(player < MAX_PLAYERS, "addPower: Bad player (%u)", player);
 
@@ -213,7 +213,7 @@ static int32_t updateExtractedPower(STRUCTURE *psBuilding)
 }
 
 //returns the relevant list based on OffWorld or OnWorld
-static STRUCTURE *powerStructList(UBYTE player)
+static STRUCTURE *powerStructList(uint8_t player)
 {
     ASSERT(player < MAX_PLAYERS, "powerStructList: Bad player");
     if (offWorldKeepLists)
@@ -227,7 +227,7 @@ static STRUCTURE *powerStructList(UBYTE player)
 }
 
 /* Updates the current power based on the extracted power and a Power Generator*/
-static void updateCurrentPower(POWER_GEN *psPowerGen, UDWORD player)
+static void updateCurrentPower(POWER_GEN *psPowerGen, uint32_t player)
 {
     int32_t		power, i, extractedPower;
 
@@ -272,13 +272,13 @@ static void updateCurrentPower(POWER_GEN *psPowerGen, UDWORD player)
 }
 
 /* Update current power based on what Power Generators exist */
-void updatePlayerPower(UDWORD player)
+void updatePlayerPower(uint32_t player)
 {
     STRUCTURE		*psStruct;//, *psList;
 
     ASSERT(player < MAX_PLAYERS, "updatePlayerPower: Bad player");
 
-    for (psStruct = powerStructList((UBYTE)player); psStruct != NULL; psStruct =
+    for (psStruct = powerStructList((uint8_t)player); psStruct != NULL; psStruct =
                 psStruct->psNext)
     {
         if (psStruct->pStructureType->type == REF_POWER_GEN && psStruct->
@@ -290,14 +290,14 @@ void updatePlayerPower(UDWORD player)
 }
 
 // only used in multiplayer games.
-void setPower(UDWORD player, UDWORD avail)
+void setPower(uint32_t player, uint32_t avail)
 {
     ASSERT(player < MAX_PLAYERS, "setPower: Bad player (%u)", player);
 
     asPower[player].currentPower = avail;
 }
 
-UDWORD getPower(UDWORD player)
+uint32_t getPower(uint32_t player)
 {
     ASSERT(player < MAX_PLAYERS, "setPower: Bad player (%u)", player);
 
@@ -305,7 +305,7 @@ UDWORD getPower(UDWORD player)
 }
 
 /*sets the initial value for the power*/
-void setPlayerPower(UDWORD power, UDWORD player)
+void setPlayerPower(uint32_t power, uint32_t player)
 {
     ASSERT(player < MAX_PLAYERS, "setPlayerPower: Bad player (%u)", player);
 
@@ -315,7 +315,7 @@ void setPlayerPower(UDWORD power, UDWORD player)
 /*Temp function to give all players some power when a new game has been loaded*/
 void newGameInitPower(void)
 {
-    UDWORD		inc;
+    uint32_t		inc;
 
     for (inc=0; inc < MAX_PLAYERS; inc++)
     {
@@ -365,8 +365,8 @@ void accruePower(BASE_OBJECT *psObject)
     FACTORY					*psFactory;
     RESEARCH_FACILITY		*psResearch;
     REPAIR_FACILITY			*psRepair;
-    SDWORD					powerDiff;
-    UDWORD					count;
+    int32_t					powerDiff;
+    uint32_t					count;
     STRUCTURE			*psStructure;
     DROID				*psDroid, *psTarget;
 

@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "formation.h"
 
 // radius for the different body sizes
-static SDWORD	fmLtRad = 80, fmMedRad = 100, fmHvyRad = 110;
+static int32_t	fmLtRad = 80, fmMedRad = 100, fmHvyRad = 110;
 
 // heap sizes
 #define F_HEAPINIT		10
@@ -62,7 +62,7 @@ static SDWORD	fmLtRad = 80, fmMedRad = 100, fmHvyRad = 110;
 // The list of allocated formations
 static FORMATION	*psFormationList;
 
-static SDWORD formationObjRadius(const DROID *psDroid);
+static int32_t formationObjRadius(const DROID *psDroid);
 
 /** Initialise the formation system
  */
@@ -91,9 +91,9 @@ void formationShutDown(void)
 /** Create a new formation
  */
 BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
-                  SDWORD x, SDWORD y, SDWORD dir)
+                  int32_t x, int32_t y, int32_t dir)
 {
-    SDWORD		i;
+    int32_t		i;
     FORMATION	*psNew = malloc(sizeof(FORMATION));
 
     // get a heap structure
@@ -107,9 +107,9 @@ BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
 
     // initialise it
     psNew->refCount = 0;
-    psNew->size = (SWORD)F_DEFLENGTH;
-    psNew->rankDist = (SWORD)RANK_DIST;
-    psNew->dir = (SWORD)dir;
+    psNew->size = (int16_t)F_DEFLENGTH;
+    psNew->rankDist = (int16_t)RANK_DIST;
+    psNew->dir = (int16_t)dir;
     psNew->x = x;
     psNew->y = y;
     psNew->free = 0;
@@ -117,7 +117,7 @@ BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
     memset(psNew->asMembers, 0, sizeof(psNew->asMembers));
     for(i=0; i<F_MAXMEMBERS; i++)
     {
-        psNew->asMembers[i].next = (SBYTE)(i+1);
+        psNew->asMembers[i].next = (int8_t)(i+1);
     }
     psNew->asMembers[F_MAXMEMBERS - 1].next = -1;
 
@@ -129,12 +129,12 @@ BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
             // line to the left
             psNew->asLines[0].xoffset = 0;
             psNew->asLines[0].yoffset = 0;
-            psNew->asLines[0].dir = (SWORD)adjustDirection(dir, -110);
+            psNew->asLines[0].dir = (int16_t)adjustDirection(dir, -110);
             psNew->asLines[0].member = -1;
             // line to the right
             psNew->asLines[1].xoffset = 0;
             psNew->asLines[1].yoffset = 0;
-            psNew->asLines[1].dir = (SWORD)adjustDirection(dir, 110);
+            psNew->asLines[1].dir = (int16_t)adjustDirection(dir, 110);
             psNew->asLines[1].member = -1;
             break;
         case FT_COLUMN:
@@ -142,7 +142,7 @@ BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
             // line to the left
             psNew->asLines[0].xoffset = 0;
             psNew->asLines[0].yoffset = 0;
-            psNew->asLines[0].dir = (SWORD)adjustDirection(dir, 180);
+            psNew->asLines[0].dir = (int16_t)adjustDirection(dir, 180);
             psNew->asLines[0].member = -1;
             break;
         default:
@@ -185,7 +185,7 @@ FORMATION *formationFind(int x, int y)
  */
 static void formationUpdateSpeed(FORMATION *psFormation, const DROID *psNew)
 {
-    SDWORD		iUnit;
+    int32_t		iUnit;
     F_MEMBER	*asMembers = psFormation->asMembers;
 
     if (psNew != NULL)
@@ -215,7 +215,7 @@ static void formationUpdateSpeed(FORMATION *psFormation, const DROID *psNew)
  */
 void formationJoin(FORMATION *psFormation, const DROID *psDroid)
 {
-    SDWORD	rankDist, size;
+    int32_t	rankDist, size;
 
     ASSERT( psFormation != NULL,
             "formationJoin: invalid formation" );
@@ -225,13 +225,13 @@ void formationJoin(FORMATION *psFormation, const DROID *psDroid)
     rankDist = formationObjRadius(psDroid) * 2;
     if (psFormation->rankDist < rankDist)
     {
-        psFormation->rankDist = (SWORD)rankDist;
+        psFormation->rankDist = (int16_t)rankDist;
     }
 
     size = formationObjRadius(psDroid) * 4;
     if (psFormation->size < size)
     {
-        psFormation->size = (SWORD)size;
+        psFormation->size = (int16_t)size;
     }
 
     /* update formation speed */
@@ -242,7 +242,7 @@ void formationJoin(FORMATION *psFormation, const DROID *psDroid)
  */
 void formationLeave(FORMATION *psFormation, const DROID *psDroid)
 {
-    SDWORD		prev, curr, unit, line;
+    int32_t		prev, curr, unit, line;
     F_LINE		*asLines;
     F_MEMBER	*asMembers;
     FORMATION	*psCurr, *psPrev;
@@ -290,7 +290,7 @@ void formationLeave(FORMATION *psFormation, const DROID *psDroid)
         }
         asMembers[unit].next = psFormation->free;
         asMembers[unit].psDroid = NULL;
-        psFormation->free = (SBYTE)unit;
+        psFormation->free = (int8_t)unit;
 
         /* update formation speed */
         formationUpdateSpeed(psFormation, NULL);
@@ -337,8 +337,8 @@ void formationReset(FORMATION *psFormation)
 
 /** Calculate the coordinates of a position on a line
  */
-static void formationCalcPos(FORMATION *psFormation, SDWORD line, SDWORD dist,
-                             SDWORD *pX, SDWORD *pY)
+static void formationCalcPos(FORMATION *psFormation, int32_t line, int32_t dist,
+                             int32_t *pX, int32_t *pY)
 {
     const int rank = dist / psFormation->size;
 
@@ -361,14 +361,14 @@ static void formationCalcPos(FORMATION *psFormation, SDWORD line, SDWORD dist,
 
 // assign a unit to a free spot in the formation
 static void formationFindFree(FORMATION *psFormation, DROID *psDroid,
-                              SDWORD	*pX, SDWORD *pY)
+                              int32_t	*pX, int32_t *pY)
 {
-    SDWORD		line, unit, objRadius, radius;
-    SDWORD		currDist, prev, rank;
+    int32_t		line, unit, objRadius, radius;
+    int32_t		currDist, prev, rank;
     F_LINE		*asLines = psFormation->asLines;
     F_MEMBER	*asMembers = psFormation->asMembers;
-    SDWORD		x = 0, y = 0, xdiff,ydiff, dist, objDist;
-    SDWORD		chosenLine, chosenDist, chosenPrev, chosenRank;
+    int32_t		x = 0, y = 0, xdiff,ydiff, dist, objDist;
+    int32_t		chosenLine, chosenDist, chosenPrev, chosenRank;
     BOOL		found;
 
     if (psFormation->free == -1)
@@ -387,8 +387,8 @@ static void formationFindFree(FORMATION *psFormation, DROID *psDroid,
     chosenLine = 0;
     chosenDist = 0;
     chosenPrev = -1;
-    objDist = SDWORD_MAX;
-    chosenRank = SDWORD_MAX;
+    objDist = int32_t_MAX;
+    chosenRank = int32_t_MAX;
     for(line=0; line<psFormation->numLines; line++)
     {
         // find the first free position on this line
@@ -468,20 +468,20 @@ static void formationFindFree(FORMATION *psFormation, DROID *psDroid,
     // initialise the member
     unit = psFormation->free;
     psFormation->free = asMembers[unit].next;
-    asMembers[unit].line = (SBYTE)chosenLine;
-    asMembers[unit].dist = (SWORD)chosenDist;
+    asMembers[unit].line = (int8_t)chosenLine;
+    asMembers[unit].dist = (int16_t)chosenDist;
     asMembers[unit].psDroid = psDroid;
 
     // insert the unit into the list
     if (chosenPrev == -1)
     {
         asMembers[unit].next = asLines[chosenLine].member;
-        asLines[chosenLine].member = (SBYTE)unit;
+        asLines[chosenLine].member = (int8_t)unit;
     }
     else
     {
         asMembers[unit].next =  asMembers[chosenPrev].next;
-        asMembers[chosenPrev].next = (SBYTE)unit;
+        asMembers[chosenPrev].next = (int8_t)unit;
     }
 }
 
@@ -489,10 +489,10 @@ static void formationFindFree(FORMATION *psFormation, DROID *psDroid,
 // re-insert all the units in the formation
 void formationReorder(FORMATION *psFormation)
 {
-    SDWORD		numObj, i,curr,prev;
+    int32_t		numObj, i,curr,prev;
     F_MEMBER	*asMembers, asDroids[F_MAXMEMBERS];
-    SDWORD		xdiff,ydiff, insert;
-    SDWORD		aDist[F_MAXMEMBERS];
+    int32_t		xdiff,ydiff, insert;
+    int32_t		aDist[F_MAXMEMBERS];
 
     // first find all the units to insert
     asMembers = psFormation->asMembers;
@@ -534,13 +534,13 @@ void formationReorder(FORMATION *psFormation)
             if (prev == -1)
             {
                 // insert at the start of the list
-                asDroids[i].next = (SBYTE)insert;
+                asDroids[i].next = (int8_t)insert;
                 insert = i;
             }
             else
             {
                 asDroids[i].next = asDroids[prev].next;
-                asDroids[prev].next = (SBYTE)i;
+                asDroids[prev].next = (int8_t)i;
             }
         }
     }
@@ -550,7 +550,7 @@ void formationReorder(FORMATION *psFormation)
     memset(psFormation->asMembers, 0, sizeof(psFormation->asMembers));
     for(i=0; i<F_MAXMEMBERS; i++)
     {
-        psFormation->asMembers[i].next = (SBYTE)(i+1);
+        psFormation->asMembers[i].next = (int8_t)(i+1);
     }
     psFormation->asMembers[F_MAXMEMBERS - 1].next = -1;
     for(i=0; i<psFormation->numLines; i++)
@@ -568,9 +568,9 @@ void formationReorder(FORMATION *psFormation)
 
 // get a target position to move into a formation
 BOOL formationGetPos( FORMATION *psFormation, DROID *psDroid,
-                      SDWORD *pX, SDWORD *pY, BOOL bCheckLOS )
+                      int32_t *pX, int32_t *pY, BOOL bCheckLOS )
 {
-    SDWORD		member, x,y;
+    int32_t		member, x,y;
     F_MEMBER	*asMembers;
 
     ASSERT( psFormation != NULL,
@@ -640,7 +640,7 @@ BOOL formationGetPos( FORMATION *psFormation, DROID *psDroid,
 // See if a unit is a member of a formation (i.e. it has a position assigned)
 BOOL formationMember(FORMATION *psFormation, const DROID *psDroid)
 {
-    SDWORD		member;
+    int32_t		member;
     F_MEMBER	*asMembers;
 
     // see if the unit is already in the formation
@@ -656,7 +656,7 @@ BOOL formationMember(FORMATION *psFormation, const DROID *psDroid)
     return false;
 }
 
-SDWORD formationObjRadius(const DROID *psDroid)
+int32_t formationObjRadius(const DROID *psDroid)
 {
     const BODY_STATS *psBdyStats;
 

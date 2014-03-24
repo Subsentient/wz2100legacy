@@ -25,16 +25,16 @@ typedef struct _t_quad
     Vector2i coords[4];
 } QUAD;
 
-extern UDWORD adjustDirection( SDWORD present, SDWORD difference );
-extern SDWORD calcDirection( UDWORD x0, UDWORD y0, UDWORD x1, UDWORD y1 );
+extern uint32_t adjustDirection( int32_t present, int32_t difference );
+extern int32_t calcDirection( uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1 );
 extern void initBulletTable( void );
 extern int inQuad( const Vector2i *pt, const QUAD *quad );
-extern DROID *getNearestDroid( UDWORD x, UDWORD y, BOOL bSelected );
-extern BOOL droidOnScreen( DROID *psDroid, SDWORD tolerance );
+extern DROID *getNearestDroid( uint32_t x, uint32_t y, BOOL bSelected );
+extern BOOL droidOnScreen( DROID *psDroid, int32_t tolerance );
 
 extern unsigned int WZ_DECL_CONST dirtyHypot(int deltaX, int deltaY);
 
-static inline STRUCTURE *getTileStructure(UDWORD x, UDWORD y)
+static inline STRUCTURE *getTileStructure(uint32_t x, uint32_t y)
 {
     BASE_OBJECT *psObj = mapTile(x,y)->psObject;
     if (psObj && psObj->type == OBJ_STRUCTURE)
@@ -44,7 +44,7 @@ static inline STRUCTURE *getTileStructure(UDWORD x, UDWORD y)
     return NULL;
 }
 
-static inline FEATURE *getTileFeature(UDWORD x, UDWORD y)
+static inline FEATURE *getTileFeature(uint32_t x, uint32_t y)
 {
     BASE_OBJECT *psObj = mapTile(x,y)->psObject;
     if (psObj && psObj->type == OBJ_FEATURE)
@@ -54,7 +54,7 @@ static inline FEATURE *getTileFeature(UDWORD x, UDWORD y)
     return NULL;
 }
 
-static inline BASE_OBJECT *getTileOccupier(UDWORD x, UDWORD y)
+static inline BASE_OBJECT *getTileOccupier(uint32_t x, uint32_t y)
 {
     MAPTILE *psTile = mapTile(x,y);
 

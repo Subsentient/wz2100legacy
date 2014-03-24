@@ -110,7 +110,7 @@ static BOOL startTitleMenu(void)
 
 BOOL runTitleMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     id = widgRunScreen(psWScreen); // Run the current set of widgets
 
@@ -165,21 +165,21 @@ static BOOL startTutorialMenu(void)
 
 BOOL runTutorialMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
     switch(id)
     {
         case FRONTEND_TUTORIAL:
             NetPlay.players[0].allocated = true;
-            game.skDiff[0] = UBYTE_MAX;
+            game.skDiff[0] = uint8_t_MAX;
             sstrcpy(aLevelName, TUTORIAL_LEVEL);
             changeTitleMode(STARTGAME);
             break;
 
         case FRONTEND_FASTPLAY:
             NetPlay.players[0].allocated = true;
-            game.skDiff[0] = UBYTE_MAX;
+            game.skDiff[0] = uint8_t_MAX;
             sstrcpy(aLevelName, "FASTPLAY");
             changeTitleMode(STARTGAME);
             break;
@@ -242,7 +242,7 @@ static void loadOK( void )
 
 BOOL runSinglePlayerMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     if(bLoadSaveUp)
     {
@@ -266,7 +266,7 @@ BOOL runSinglePlayerMenu(void)
         bMultiMessages = false;
         game.type = CAMPAIGN;
         NetPlay.players[0].allocated = true;
-        game.skDiff[0] = UBYTE_MAX;
+        game.skDiff[0] = uint8_t_MAX;
         // make sure we have a valid color choice for our SP game. Valid values are 0, 4-7
         playercolor = getPlayerColour(0);
         if (playercolor >= 1 && playercolor <= 3)
@@ -358,7 +358,7 @@ static BOOL startMultiPlayerMenu(void)
 
 BOOL runMultiPlayerMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
     switch(id)
@@ -428,7 +428,7 @@ static BOOL startOptionsMenu(void)
 
 BOOL runOptionsMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
     switch(id)
@@ -582,7 +582,7 @@ static BOOL startGraphicsOptionsMenu(void)
 
 BOOL runGraphicsOptionsMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
     int mode = 0;
 
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
@@ -747,7 +747,7 @@ static BOOL startAudioOptionsMenu(void)
 
 BOOL runAudioOptionsMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
     switch(id)
@@ -863,7 +863,7 @@ static BOOL startVideoOptionsMenu(void)
 BOOL runVideoOptionsMenu(void)
 {
     SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
-    UDWORD id = widgRunScreen(psWScreen);
+    uint32_t id = widgRunScreen(psWScreen);
 
     switch (id)
     {
@@ -1107,7 +1107,7 @@ static BOOL startMouseOptionsMenu(void)
 
 BOOL runMouseOptionsMenu(void)
 {
-    UDWORD id = widgRunScreen(psWScreen);
+    uint32_t id = widgRunScreen(psWScreen);
 
     switch (id)
     {
@@ -1206,7 +1206,7 @@ BOOL runMouseOptionsMenu(void)
 // Game Options Menu
 static BOOL startGameOptionsMenu(void)
 {
-    UDWORD	w, h;
+    uint32_t	w, h;
     int playercolor;
 
     addBackdrop();
@@ -1273,7 +1273,7 @@ static BOOL startGameOptionsMenu(void)
 
 BOOL runGameOptionsMenu(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
     switch(id)
@@ -1409,7 +1409,7 @@ BOOL runGameOptionsMenu(void)
 // drawing functions
 
 // show a background piccy
-static void displayTitleBitmap(WZ_DECL_UNUSED WIDGET *psWidget, WZ_DECL_UNUSED UDWORD xOffset, WZ_DECL_UNUSED UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayTitleBitmap(WZ_DECL_UNUSED WIDGET *psWidget, WZ_DECL_UNUSED uint32_t xOffset, WZ_DECL_UNUSED uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     iV_SetFont(font_regular);
     iV_SetTextColour(WZCOL_GREY);
@@ -1420,7 +1420,7 @@ static void displayTitleBitmap(WZ_DECL_UNUSED WIDGET *psWidget, WZ_DECL_UNUSED U
 
 // ////////////////////////////////////////////////////////////////////////////
 // show warzone logo
-static void displayLogo(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayLogo(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     iV_DrawImage(FrontImages,IMAGE_FE_LOGO,xOffset+psWidget->x,yOffset+psWidget->y);
 
@@ -1441,38 +1441,38 @@ static void displayLogo(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DEC
 
 // ////////////////////////////////////////////////////////////////////////////
 // show, well have a guess..
-static void displayBigSlider(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayBigSlider(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_SLIDER *Slider = (W_SLIDER *)psWidget;
-    UDWORD x = xOffset+psWidget->x;
-    UDWORD y = yOffset+psWidget->y;
-    SWORD sx;
+    uint32_t x = xOffset+psWidget->x;
+    uint32_t y = yOffset+psWidget->y;
+    int16_t sx;
 
     iV_DrawImage(IntImages,IMAGE_SLIDER_BIG,x+STAT_SLD_OX,y+STAT_SLD_OY);			// draw bdrop
 
-    sx = (SWORD)((Slider->width-3 - Slider->barSize) * Slider->pos / Slider->numStops);	// determine pos.
+    sx = (int16_t)((Slider->width-3 - Slider->barSize) * Slider->pos / Slider->numStops);	// determine pos.
     iV_DrawImage(IntImages,IMAGE_SLIDER_BIGBUT,x+3+sx,y+3);								//draw amount
 }
 
-static void displayAISlider(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayAISlider(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
     W_SLIDER *Slider = (W_SLIDER *)psWidget;
-    UDWORD x = xOffset+psWidget->x;
-    UDWORD y = yOffset+psWidget->y;
-    SWORD sx;
+    uint32_t x = xOffset+psWidget->x;
+    uint32_t y = yOffset+psWidget->y;
+    int16_t sx;
 
     iV_DrawImage(IntImages,IMAGE_SLIDER_AI,x+STAT_SLD_OX,y+STAT_SLD_OY);			// draw bdrop
 
-    sx = (SWORD)((Slider->width-3 - Slider->barSize) * Slider->pos / Slider->numStops);	// determine pos.
+    sx = (int16_t)((Slider->width-3 - Slider->barSize) * Slider->pos / Slider->numStops);	// determine pos.
     iV_DrawImage(IntImages,IMAGE_SLIDER_BIGBUT,x+3+sx,y+3);								//draw amount
 }
 
 
 // ////////////////////////////////////////////////////////////////////////////
 // show text.
-static void displayText(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayText(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    SDWORD			fx,fy, fw;
+    int32_t			fx,fy, fw;
     W_LABEL		*psLab;
 
     psLab = (W_LABEL *)psWidget;
@@ -1498,9 +1498,9 @@ static void displayText(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DEC
 
 // ////////////////////////////////////////////////////////////////////////////
 // show text written on its side.
-static void displayTextAt270(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayTextAt270(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    SDWORD		fx,fy;
+    int32_t		fx,fy;
     W_LABEL		*psLab;
 
     psLab = (W_LABEL *)psWidget;
@@ -1518,9 +1518,9 @@ static void displayTextAt270(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, W
 
 // ////////////////////////////////////////////////////////////////////////////
 // show a text option.
-void displayTextOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+void displayTextOption(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    SDWORD			fx,fy, fw;
+    int32_t			fx,fy, fw;
     W_BUTTON		*psBut;
     BOOL			hilight = false;
     BOOL			greyOut = psWidget->UserData; // if option is unavailable.
@@ -1580,8 +1580,8 @@ void addBackdrop(void)
     sFormInit.formID = 0;
     sFormInit.id = FRONTEND_BACKDROP;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD)( (pie_GetVideoBufferWidth() - HIDDEN_FRONTEND_WIDTH)/2);
-    sFormInit.y = (SWORD)( (pie_GetVideoBufferHeight() - HIDDEN_FRONTEND_HEIGHT)/2);
+    sFormInit.x = (int16_t)( (pie_GetVideoBufferWidth() - HIDDEN_FRONTEND_WIDTH)/2);
+    sFormInit.y = (int16_t)( (pie_GetVideoBufferHeight() - HIDDEN_FRONTEND_HEIGHT)/2);
     sFormInit.width = HIDDEN_FRONTEND_WIDTH-1;
     sFormInit.height = HIDDEN_FRONTEND_HEIGHT-1;
     sFormInit.pDisplay = displayTitleBitmap;
@@ -1648,7 +1648,7 @@ void addBottomForm(void)
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-void addTextHint(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt)
+void addTextHint(uint32_t id, uint32_t PosX, uint32_t PosY, const char *txt)
 {
     W_LABINIT		sLabInit;
     memset(&sLabInit, 0, sizeof(W_LABINIT));
@@ -1668,7 +1668,7 @@ void addTextHint(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt)
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-void addText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, UDWORD formID)
+void addText(uint32_t id, uint32_t PosX, uint32_t PosY, const char *txt, uint32_t formID)
 {
     W_LABINIT		sLabInit;
     memset(&sLabInit, 0, sizeof(W_LABINIT));
@@ -1691,7 +1691,7 @@ void addText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, UDWORD formID
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-void addSideText(UDWORD id,  UDWORD PosX, UDWORD PosY, const char *txt)
+void addSideText(uint32_t id,  uint32_t PosX, uint32_t PosY, const char *txt)
 {
     W_LABINIT	sLabInit;
     memset(&sLabInit, 0, sizeof(W_LABINIT));
@@ -1712,7 +1712,7 @@ void addSideText(UDWORD id,  UDWORD PosX, UDWORD PosY, const char *txt)
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-void addTextButton(UDWORD id,  UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style)
+void addTextButton(uint32_t id,  uint32_t PosX, uint32_t PosY, const char *txt, unsigned int style)
 {
     W_BUTINIT		sButInit;
     memset(&sButInit, 0, sizeof(W_BUTINIT));
@@ -1756,7 +1756,7 @@ void addTextButton(UDWORD id,  UDWORD PosX, UDWORD PosY, const char *txt, unsign
     }
 }
 
-void addSmallTextButton(UDWORD id,  UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style)
+void addSmallTextButton(uint32_t id,  uint32_t PosX, uint32_t PosY, const char *txt, unsigned int style)
 {
     W_BUTINIT sButInit;
     memset(&sButInit, 0, sizeof(W_BUTINIT));
@@ -1800,7 +1800,7 @@ void addSmallTextButton(UDWORD id,  UDWORD PosX, UDWORD PosY, const char *txt, u
     }
 }
 // ////////////////////////////////////////////////////////////////////////////
-void addFESlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos)
+void addFESlider(uint32_t id, uint32_t parent, uint32_t x, uint32_t y, uint32_t stops, uint32_t pos)
 {
     W_SLDINIT		sSldInit;
 
@@ -1813,15 +1813,15 @@ void addFESlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDW
     sSldInit.width		= iV_GetImageWidth(IntImages,IMAGE_SLIDER_BIG);
     sSldInit.height		= iV_GetImageHeight(IntImages,IMAGE_SLIDER_BIG);
     sSldInit.orientation= WSLD_LEFT;
-    sSldInit.numStops	= (UBYTE) stops;
+    sSldInit.numStops	= (uint8_t) stops;
     sSldInit.barSize	= iV_GetImageHeight(IntImages,IMAGE_SLIDER_BIG);
-    sSldInit.pos		= (UBYTE) pos;
+    sSldInit.pos		= (uint8_t) pos;
     sSldInit.pDisplay	= displayBigSlider;
     sSldInit.pCallback  = intUpdateQuantitySlider;
     widgAddSlider(psWScreen, &sSldInit);
 }
 
-void addFEAISlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos)
+void addFEAISlider(uint32_t id, uint32_t parent, uint32_t x, uint32_t y, uint32_t stops, uint32_t pos)
 {
     W_SLDINIT		sSldInit;
 
@@ -1834,9 +1834,9 @@ void addFEAISlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, U
     sSldInit.width		= iV_GetImageWidth(IntImages,IMAGE_SLIDER_BIG);
     sSldInit.height		= iV_GetImageHeight(IntImages,IMAGE_SLIDER_BIG);
     sSldInit.orientation= WSLD_LEFT;
-    sSldInit.numStops	= (UBYTE) stops;
+    sSldInit.numStops	= (uint8_t) stops;
     sSldInit.barSize	= iV_GetImageHeight(IntImages,IMAGE_SLIDER_BIG);
-    sSldInit.pos		= (UBYTE) pos;
+    sSldInit.pos		= (uint8_t) pos;
     sSldInit.pDisplay	= displayAISlider;
     sSldInit.pCallback  = intUpdateQuantitySlider;
     widgAddSlider(psWScreen, &sSldInit);

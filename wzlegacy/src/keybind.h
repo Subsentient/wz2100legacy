@@ -59,7 +59,7 @@ extern void	kf_PitchForward( void );
 extern void	kf_ResetPitch( void );
 extern void	kf_ToggleDimension( void );
 extern void	kf_ShowMappings( void );
-extern void	kf_SelectGrouping( UDWORD groupNumber );
+extern void	kf_SelectGrouping( uint32_t groupNumber );
 extern void	kf_SelectGrouping_0( void );
 extern void	kf_SelectGrouping_1( void );
 extern void	kf_SelectGrouping_2( void );

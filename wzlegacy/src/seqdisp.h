@@ -70,9 +70,9 @@ extern BOOL seq_UpdateFullScreenVideo(int *bClear);
 
 extern BOOL seq_StopFullScreenVideo(void);
 //control
-extern BOOL seq_GetVideoSize(SDWORD *pWidth, SDWORD *pHeight);
+extern BOOL seq_GetVideoSize(int32_t *pWidth, int32_t *pHeight);
 //text
-extern BOOL seq_AddTextForVideo(const char *pText, SDWORD xOffset, SDWORD yOffset, SDWORD startTime, SDWORD endTime, SEQ_TEXT_POSITIONING textJustification);
+extern BOOL seq_AddTextForVideo(const char *pText, int32_t xOffset, int32_t yOffset, int32_t startTime, int32_t endTime, SEQ_TEXT_POSITIONING textJustification);
 //clear the sequence list
 extern void seq_ClearSeqList(void);
 //add a sequence to the list to be played

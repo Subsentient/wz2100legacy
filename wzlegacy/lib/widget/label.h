@@ -32,7 +32,7 @@ typedef struct _w_label
     /* The common widget data */
     WIDGET_BASE;
 
-    UDWORD		state;					// The current button state
+    uint32_t		state;					// The current button state
     char		aText[WIDG_MAXSTR];		// Text on the label
     enum iV_fonts FontID;
     const char	*pTip;					// The tool tip for the button
@@ -45,7 +45,7 @@ extern W_LABEL *labelCreate(const W_LABINIT *psInit);
 extern void labelFree(W_LABEL *psWidget);
 
 /* label display function */
-extern void labelDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+extern void labelDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 /* Respond to a mouse moving over a label */
 extern void labelHiLite(W_LABEL *psWidget, W_CONTEXT *psContext);

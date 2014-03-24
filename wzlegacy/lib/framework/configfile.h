@@ -23,8 +23,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 extern void registry_clear(void);
 extern bool openWarzoneKey(void);
 extern bool closeWarzoneKey(void);
-extern bool getWarzoneKeyNumeric(const char *pName, SDWORD *val);
-extern bool setWarzoneKeyNumeric(const char *pName, SDWORD val);
+extern bool getWarzoneKeyNumeric(const char *pName, int32_t *val);
+extern bool setWarzoneKeyNumeric(const char *pName, int32_t val);
 extern bool getWarzoneKeyString(const char *pName, char *pString);
 extern bool setWarzoneKeyString(const char *pName, const char *pString);
 extern void setRegistryFilePath(const char *fileName);

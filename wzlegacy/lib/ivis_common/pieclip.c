@@ -16,37 +16,37 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "pieclip.h"
 #include "ivi.h"
 
-static UDWORD videoBufferDepth = 32, videoBufferWidth = 0, videoBufferHeight = 0;
+static uint32_t videoBufferDepth = 32, videoBufferWidth = 0, videoBufferHeight = 0;
 
-BOOL pie_SetVideoBufferDepth(UDWORD depth)
+BOOL pie_SetVideoBufferDepth(uint32_t depth)
 {
     videoBufferDepth = depth;
     return(true);
 }
 
-BOOL pie_SetVideoBufferWidth(UDWORD width)
+BOOL pie_SetVideoBufferWidth(uint32_t width)
 {
     videoBufferWidth = width;
     return(true);
 }
 
-BOOL pie_SetVideoBufferHeight(UDWORD height)
+BOOL pie_SetVideoBufferHeight(uint32_t height)
 {
     videoBufferHeight = height;
     return(true);
 }
 
-UDWORD pie_GetVideoBufferDepth(void)
+uint32_t pie_GetVideoBufferDepth(void)
 {
     return(videoBufferDepth);
 }
 
-UDWORD pie_GetVideoBufferWidth(void)
+uint32_t pie_GetVideoBufferWidth(void)
 {
     return(videoBufferWidth);
 }
 
-UDWORD pie_GetVideoBufferHeight(void)
+uint32_t pie_GetVideoBufferHeight(void)
 {
     return(videoBufferHeight);
 }

@@ -32,40 +32,40 @@ typedef enum
 typedef struct research_stats
 {
     STATS_BASE;
-    UBYTE			techCode;
+    uint8_t			techCode;
     //char			*pTechnologyName;	/* Text name of the group the research is a
     //									   member of */
 //	char			*pSubGroupName;		/* Text name of the Subgroup to which the research belongs */
-    UWORD       	subGroup;			/* Subgroup of the item - an iconID from 'Framer' to depict in the button*/
+    uint16_t       	subGroup;			/* Subgroup of the item - an iconID from 'Framer' to depict in the button*/
 
-    UWORD			researchPoints;		/* Number of research points required to
+    uint16_t			researchPoints;		/* Number of research points required to
 										   complete the research */
-    UDWORD			researchPower;		/* Power cost to research */
-    UBYTE			keyTopic;			/* Flag to indicate whether in single player
+    uint32_t			researchPower;		/* Power cost to research */
+    uint8_t			keyTopic;			/* Flag to indicate whether in single player
 										   this topic must be explicitly enabled*/
-    UBYTE			storeCount;			/* used to load in the following lists*/
-    UBYTE			numPRRequired;
-    //UDWORD			*pPRList;			/* List of research pre-requisites */
-    //needs to be UWORD sized for Patches
-    UWORD			*pPRList;			/* List of research pre-requisites */
-    //UBYTE			*pPRList;			/* List of research pre-requisites */
-    UBYTE			numStructures;
-    //UDWORD			*pStructList;		/* List of structures that when built would
-    UWORD			*pStructList;		/* List of structures that when built would
+    uint8_t			storeCount;			/* used to load in the following lists*/
+    uint8_t			numPRRequired;
+    //uint32_t			*pPRList;			/* List of research pre-requisites */
+    //needs to be uint16_t sized for Patches
+    uint16_t			*pPRList;			/* List of research pre-requisites */
+    //uint8_t			*pPRList;			/* List of research pre-requisites */
+    uint8_t			numStructures;
+    //uint32_t			*pStructList;		/* List of structures that when built would
+    uint16_t			*pStructList;		/* List of structures that when built would
 										   enable this research */
-    UBYTE			numFunctions;
+    uint8_t			numFunctions;
     struct _function	**pFunctionList; /* List of functions that can be performed
 										   on completion of research */
-    UBYTE			numRedStructs;
-    //UDWORD			*pRedStructs;		/* List of Structures that become redundant */
-    UWORD			*pRedStructs;		/* List of Structures that become redundant */
-    UBYTE			numRedArtefacts;
+    uint8_t			numRedStructs;
+    //uint32_t			*pRedStructs;		/* List of Structures that become redundant */
+    uint16_t			*pRedStructs;		/* List of Structures that become redundant */
+    uint8_t			numRedArtefacts;
     COMPONENT_STATS	**pRedArtefacts;	/*List of Artefacts that become redundant */
-    UBYTE			numStructResults;
-    //UDWORD			*pStructureResults;	/*List of Structures that are possible after
-    UWORD			*pStructureResults;	/*List of Structures that are possible after
+    uint8_t			numStructResults;
+    //uint32_t			*pStructureResults;	/*List of Structures that are possible after
+    uint16_t			*pStructureResults;	/*List of Structures that are possible after
 										  this research */
-    UBYTE			numArteResults;
+    uint8_t			numArteResults;
     COMPONENT_STATS	**pArtefactResults;	/*List of Artefacts that are possible after
 										  this research*/
     COMPONENT_STATS	**pReplacedArtefacts;/*List of artefacts that are replaced by the above
@@ -73,7 +73,7 @@ typedef struct research_stats
 										  above list */
     struct _viewdata	*pViewData;		/*data used to display a message in the
 										  Intelligence Screen*/
-    UWORD			iconID;				/* the ID from 'Framer' for which graphic to draw in interface*/
+    uint16_t			iconID;				/* the ID from 'Framer' for which graphic to draw in interface*/
     BASE_STATS      *psStat;            /* A stat used to define which graphic is
 	                                       drawn instead of the two fields below*/
     iIMDShape		*pIMD;		/* the IMD to draw for this research topic */
@@ -84,17 +84,17 @@ typedef struct _player_research
 {
 
 
-    UDWORD		currentPoints;			// If the research has been suspended then this value contains the number of points generated at the suspension/cancel point
+    uint32_t		currentPoints;			// If the research has been suspended then this value contains the number of points generated at the suspension/cancel point
     // normally it is null
 
-    UBYTE		ResearchStatus;			// Bit flags   ...  see below
+    uint8_t		ResearchStatus;			// Bit flags   ...  see below
 
     bool            possible;                       ///< is the research possible ... so can enable topics vis scripts
 
 
-//	UBYTE		possible;				/* Flag to specify whether the research is possible - so
+//	uint8_t		possible;				/* Flag to specify whether the research is possible - so
 //										   can enable topics vis scripts */
-//	UBYTE		researched;				/* Flag to specify whether the research is
+//	uint8_t		researched;				/* Flag to specify whether the research is
 //										   complete	*/
 } PLAYER_RESEARCH;
 

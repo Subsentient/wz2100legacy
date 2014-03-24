@@ -25,18 +25,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 //holder for all functions
 extern FUNCTION **asFunctions;
-extern UDWORD numFunctions;
+extern uint32_t numFunctions;
 
-extern BOOL loadFunctionStats(const char *pFunctionData, UDWORD bufferSize);
+extern BOOL loadFunctionStats(const char *pFunctionData, uint32_t bufferSize);
 
-extern void productionUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void researchUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void powerUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void reArmUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void repairFacUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void weaponUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void structureUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void wallDefenceUpgrade(FUNCTION *pFunction, UBYTE player);
+extern void productionUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void researchUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void powerUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void reArmUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void repairFacUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void weaponUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void structureUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void wallDefenceUpgrade(FUNCTION *pFunction, uint8_t player);
 extern void structureBodyUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding);
 extern void structureArmourUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding);
 extern void structureResistanceUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding);
@@ -47,11 +47,11 @@ extern void structureRepairUpgrade(STRUCTURE *psBuilding);
 extern void structureSensorUpgrade(STRUCTURE *psBuilding);
 extern void structureReArmUpgrade(STRUCTURE *psBuilding);
 extern void structureECMUpgrade(STRUCTURE *psBuilding);
-extern void sensorUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void repairUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void ecmUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void constructorUpgrade(FUNCTION *pFunction, UBYTE player);
-extern void bodyUpgrade(FUNCTION *pFunction, UBYTE player);
+extern void sensorUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void repairUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void ecmUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void constructorUpgrade(FUNCTION *pFunction, uint8_t player);
+extern void bodyUpgrade(FUNCTION *pFunction, uint8_t player);
 extern void droidSensorUpgrade(DROID *psDroid);
 extern void droidECMUpgrade(DROID *psDroid);
 extern void droidBodyUpgrade(FUNCTION *pFunction, DROID *psDroid);

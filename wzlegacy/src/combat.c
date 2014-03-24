@@ -60,7 +60,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* direction array for missed bullets */
 typedef struct _bul_dir
 {
-    SDWORD x,y;
+    int32_t x,y;
 } BUL_DIR;
 #define BUL_MAXSCATTERDIR 8
 static BUL_DIR aScatterDir[BUL_MAXSCATTERDIR] =
@@ -93,15 +93,15 @@ BOOL combShutdown(void)
 void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, int weapon_slot)
 {
     WEAPON_STATS	*psStats;
-    UDWORD			xDiff, yDiff, distSquared;
-    UDWORD			dice, damLevel;
-    SDWORD			resultHitChance=0,baseHitChance=0,fireChance;
-    UDWORD			firePause;
-    SDWORD			targetDir,dirDiff;
-    SDWORD			longRange;
+    uint32_t			xDiff, yDiff, distSquared;
+    uint32_t			dice, damLevel;
+    int32_t			resultHitChance=0,baseHitChance=0,fireChance;
+    uint32_t			firePause;
+    int32_t			targetDir,dirDiff;
+    int32_t			longRange;
     DROID			*psDroid = NULL;
     int				minOffset = 5;
-    SDWORD			dist;
+    int32_t			dist;
     int				compIndex;
 
     CHECK_OBJECT(psAttacker);
@@ -224,7 +224,7 @@ void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
     if (psAttacker->type == OBJ_DROID && !psStats->rotate)
     {
         targetDir = calcDirection(psAttacker->pos.x, psAttacker->pos.y, psTarget->pos.x, psTarget->pos.y);
-        dirDiff = labs(targetDir - (SDWORD)psAttacker->direction);
+        dirDiff = labs(targetDir - (int32_t)psAttacker->direction);
         if (dirDiff > FIXED_TURRET_DIR)
         {
             return;
@@ -248,7 +248,7 @@ void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
         // get weapon chance to hit in the short range
         baseHitChance = weaponShortHit(psStats,psAttacker->player);
     }
-    else if ((SDWORD)distSquared <= longRange * longRange &&
+    else if ((int32_t)distSquared <= longRange * longRange &&
              ( (distSquared >= psStats->minRange * psStats->minRange) ||
                ((psAttacker->type == OBJ_DROID) &&
                 !proj_Direct(psStats) &&
@@ -271,7 +271,7 @@ void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
     // add the attacker's experience
     if (psAttacker->type == OBJ_DROID)
     {
-        SDWORD	level = getDroidEffectiveLevel((DROID *) psAttacker);
+        int32_t	level = getDroidEffectiveLevel((DROID *) psAttacker);
 
         // increase total accuracy by EXP_ACCURACY_BONUS % for each experience level
         resultHitChance += EXP_ACCURACY_BONUS * level * baseHitChance / 100;
@@ -280,7 +280,7 @@ void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
     // subtract the defender's experience
     if (psTarget->type == OBJ_DROID)
     {
-        SDWORD	level = getDroidEffectiveLevel((DROID *) psTarget);
+        int32_t	level = getDroidEffectiveLevel((DROID *) psTarget);
 
         // decrease weapon accuracy by EXP_ACCURACY_BONUS % for each experience level
         resultHitChance -= EXP_ACCURACY_BONUS * level * baseHitChance / 100;
@@ -343,7 +343,7 @@ void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
         if (psTarget->type == OBJ_DROID)
         {
             double flightTime;
-            SDWORD empTime = 0;
+            int32_t empTime = 0;
 
             if (proj_Direct(psStats) || dist <= psStats->minRange)
             {
@@ -352,9 +352,9 @@ void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, in
             else
             {
                 /* Copied out of proj_SendProjectile.  Simplified slightly. */
-                SDWORD dz = psTarget->pos.z - psAttacker->pos.z;
-                SDWORD iRadSq = distSquared + dz*dz;
-                SDWORD iVelSq = psStats->flightSpeed * psStats->flightSpeed;
+                int32_t dz = psTarget->pos.z - psAttacker->pos.z;
+                int32_t iRadSq = distSquared + dz*dz;
+                int32_t iVelSq = psStats->flightSpeed * psStats->flightSpeed;
                 double fA = ACC_GRAVITY * (double)iRadSq / (2.0 * iVelSq);
                 double fC = 4.0 * fA * (dz + fA);
                 double fS = (double)iRadSq - fC;
@@ -451,8 +451,8 @@ void counterBatteryFire(BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget)
     STRUCTURE		*psStruct;
     DROID			*psDroid;
     BASE_OBJECT		*psViewer;
-    SDWORD			sensorRange;
-    SDWORD			xDiff, yDiff;
+    int32_t			sensorRange;
+    int32_t			xDiff, yDiff;
 
     /*if a null target is passed in ignore - this will be the case when a 'miss'
     projectile is sent - we may have to cater for these at some point*/
@@ -465,7 +465,7 @@ void counterBatteryFire(BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget)
 
     CHECK_OBJECT(psTarget);
 
-    gridStartIterate((SDWORD)psTarget->pos.x, (SDWORD)psTarget->pos.y);
+    gridStartIterate((int32_t)psTarget->pos.x, (int32_t)psTarget->pos.y);
     for (psViewer = gridIterate(); psViewer != NULL; psViewer = gridIterate())
     {
         if (psViewer->player != psTarget->player)
@@ -496,8 +496,8 @@ void counterBatteryFire(BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget)
         //check sensor distance from target
         if (sensorRange)
         {
-            xDiff = (SDWORD)psViewer->pos.x - (SDWORD)psTarget->pos.x;
-            yDiff = (SDWORD)psViewer->pos.y - (SDWORD)psTarget->pos.y;
+            xDiff = (int32_t)psViewer->pos.x - (int32_t)psTarget->pos.x;
+            yDiff = (int32_t)psViewer->pos.y - (int32_t)psTarget->pos.y;
             if (xDiff*xDiff + yDiff*yDiff < sensorRange * sensorRange)
             {
                 //inform viewer of target
@@ -522,7 +522,7 @@ void counterBatteryFire(BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget)
  * \param angle angle of impact (from the damage dealing projectile in relation to this object)
  * \return < 0 when the dealt damage destroys the object, > 0 when the object survives
  */
-float objDamage(BASE_OBJECT *psObj, UDWORD damage, UDWORD originalhp, UDWORD weaponClass, UDWORD weaponSubClass, HIT_SIDE impactSide)
+float objDamage(BASE_OBJECT *psObj, uint32_t damage, uint32_t originalhp, uint32_t weaponClass, uint32_t weaponSubClass, HIT_SIDE impactSide)
 {
     int	actualDamage, armour, level = 1;
 
@@ -548,12 +548,12 @@ float objDamage(BASE_OBJECT *psObj, UDWORD damage, UDWORD originalhp, UDWORD wea
         if (psObj->player != selectedPlayer)
         {
             // Player inflicting damage on enemy.
-            damage = (UDWORD) modifyForDifficultyLevel(damage,true);
+            damage = (uint32_t) modifyForDifficultyLevel(damage,true);
         }
         else
         {
             // Enemy inflicting damage on player.
-            damage = (UDWORD) modifyForDifficultyLevel(damage,false);
+            damage = (uint32_t) modifyForDifficultyLevel(damage,false);
         }
     }
 

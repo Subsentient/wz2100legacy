@@ -43,10 +43,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define BUCKET_OFFSET	0
 #define BUCKET_RANGE	32000
 
-#define CLIP_LEFT	((SDWORD)0)
-#define CLIP_RIGHT	((SDWORD)pie_GetVideoBufferWidth())
-#define CLIP_TOP	((SDWORD)0)
-#define CLIP_BOTTOM ((SDWORD)pie_GetVideoBufferHeight())
+#define CLIP_LEFT	((int32_t)0)
+#define CLIP_RIGHT	((int32_t)pie_GetVideoBufferWidth())
+#define CLIP_TOP	((int32_t)0)
+#define CLIP_BOTTOM ((int32_t)pie_GetVideoBufferHeight())
 //scale depth = 1<<FP12_SHIFT>>STRETCHED_Z_SHIFT<<xpshift
 // Gerard - HACK Multiplied by 7 to fix clipping
 // someone needs to take a good look at the radius calculation
@@ -54,9 +54,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _tile_bucket
 {
-    UDWORD	i;
-    UDWORD	j;
-    SDWORD	depth;
+    uint32_t	i;
+    uint32_t	j;
+    int32_t	depth;
 }
 TILE_BUCKET;
 
@@ -65,29 +65,29 @@ typedef struct _bucket_tag
     struct _bucket_tag *psNextTag;
     RENDER_TYPE			objectType; //type of object held
     void				*pObject; //pointer to the object
-    SDWORD				actualZ;
+    int32_t				actualZ;
 } BUCKET_TAG;
 
 static BUCKET_TAG tagResource[NUM_OBJECTS];
 static BUCKET_TAG *bucketArray[NUM_BUCKETS];
-static UDWORD resourceCounter;
-static SDWORD zMax;
-static SDWORD zMin;
-static SDWORD worldMax,worldMin;
+static uint32_t resourceCounter;
+static int32_t zMax;
+static int32_t zMin;
+static int32_t worldMax,worldMin;
 
 /* function prototypes */
-static SDWORD bucketCalculateZ(RENDER_TYPE objectType, void *pObject);
-static SDWORD bucketCalculateState(RENDER_TYPE objectType, void *pObject);
+static int32_t bucketCalculateZ(RENDER_TYPE objectType, void *pObject);
+static int32_t bucketCalculateState(RENDER_TYPE objectType, void *pObject);
 
 /* reset object list */
 BOOL bucketSetupList(void)
 {
-    UDWORD i;
+    uint32_t i;
 
-    zMax = SDWORD_MIN;
-    zMin = SDWORD_MAX;
-    worldMax = SDWORD_MIN;
-    worldMin = SDWORD_MAX;
+    zMax = int32_t_MIN;
+    zMin = int32_t_MAX;
+    worldMax = int32_t_MIN;
+    worldMin = int32_t_MAX;
     //reset resource
     resourceCounter = 0;
     //reset buckets
@@ -102,7 +102,7 @@ BOOL bucketSetupList(void)
 extern BOOL bucketAddTypeToList(RENDER_TYPE objectType, void *pObject)
 {
     BUCKET_TAG *newTag;
-    SDWORD z;
+    int32_t z;
 
     //get next Tag
     newTag = &tagResource[resourceCounter];
@@ -205,7 +205,7 @@ extern BOOL bucketAddTypeToList(RENDER_TYPE objectType, void *pObject)
 /* render Objects in list */
 extern BOOL bucketRenderCurrentList(void)
 {
-    SDWORD z;
+    int32_t z;
     BUCKET_TAG *thisTag;
 
     for (z = NUM_BUCKETS - 1; z >= 0; z--) // render from back to front
@@ -254,20 +254,20 @@ extern BOOL bucketRenderCurrentList(void)
 
     //reset the tag array
     resourceCounter = 0;
-    zMax = SDWORD_MIN;
-    zMin = SDWORD_MAX;
-    worldMax = SDWORD_MIN;
-    worldMin = SDWORD_MAX;
+    zMax = int32_t_MIN;
+    zMin = int32_t_MAX;
+    worldMax = int32_t_MIN;
+    worldMin = int32_t_MAX;
     return true;
 }
 
-static SDWORD bucketCalculateZ(RENDER_TYPE objectType, void *pObject)
+static int32_t bucketCalculateZ(RENDER_TYPE objectType, void *pObject)
 {
-    SDWORD				z = 0, radius;
-    SDWORD				px, pz;
+    int32_t				z = 0, radius;
+    int32_t				px, pz;
     Vector2i				pixel;
     Vector3i				position;
-    UDWORD				droidSize;
+    uint32_t				droidSize;
     DROID				*psDroid;
     BODY_STATS			*psBStats;
     SIMPLE_OBJECT		*psSimpObj;
@@ -289,9 +289,9 @@ static SDWORD bucketCalculateZ(RENDER_TYPE objectType, void *pObject)
             position.y = ((ATPART *)pObject)->position.y;
             position.z = ((ATPART *)pObject)->position.z;
 
-            position.x = (SDWORD)(position.x - player.p.x) - terrainMidX*TILE_UNITS;
-            position.z = (SDWORD)(terrainMidY*TILE_UNITS - (position.z - player.p.z));
-            position.y = (SDWORD)position.y;
+            position.x = (int32_t)(position.x - player.p.x) - terrainMidX*TILE_UNITS;
+            position.z = (int32_t)(terrainMidY*TILE_UNITS - (position.z - player.p.z));
+            position.y = (int32_t)position.y;
 
             /* 16 below is HACK!!! */
             z = pie_RotateProject(&position,&pixel) - 16;
@@ -536,9 +536,9 @@ static SDWORD bucketCalculateZ(RENDER_TYPE objectType, void *pObject)
             /* Translate */
             iV_TRANSLATE(px,0,-pz);
 
-            position.x = (SDWORD)(((EFFECT *)pObject)->position.x - player.p.x) - terrainMidX*TILE_UNITS;
-            position.z = (SDWORD)(terrainMidY*TILE_UNITS - (((EFFECT *)pObject)->position.z - player.p.z));
-            position.y = (SDWORD)((EFFECT *)pObject)->position.y;
+            position.x = (int32_t)(((EFFECT *)pObject)->position.x - player.p.x) - terrainMidX*TILE_UNITS;
+            position.z = (int32_t)(terrainMidY*TILE_UNITS - (((EFFECT *)pObject)->position.z - player.p.z));
+            position.y = (int32_t)((EFFECT *)pObject)->position.y;
 
             /* 16 below is HACK!!! */
             z = pie_RotateProject(&position,&pixel) - 16;
@@ -600,9 +600,9 @@ static SDWORD bucketCalculateZ(RENDER_TYPE objectType, void *pObject)
     return z;
 }
 
-static SDWORD bucketCalculateState(RENDER_TYPE objectType, void *pObject)
+static int32_t bucketCalculateState(RENDER_TYPE objectType, void *pObject)
 {
-    SDWORD				z = 0;
+    int32_t				z = 0;
     iIMDShape			*pie;
 
     if (bucketCalculateZ(objectType,pObject) < 0)

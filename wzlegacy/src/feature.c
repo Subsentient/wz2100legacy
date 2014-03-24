@@ -52,10 +52,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 /* The statistics for the features */
 FEATURE_STATS	*asFeatureStats;
-UDWORD			numFeatureStats;
+uint32_t			numFeatureStats;
 
 //Value is stored for easy access to this feature in destroyDroid()/destroyStruct()
-UDWORD			oilResFeature;
+uint32_t			oilResFeature;
 
 /* other house droid to add */
 #define DROID_TEMPLINDEX	0
@@ -114,7 +114,7 @@ static void featureType(FEATURE_STATS *psFeature, const char *pType)
 }
 
 /* Load the feature stats */
-BOOL loadFeatureStats(const char *pFeatureData, UDWORD bufferSize)
+BOOL loadFeatureStats(const char *pFeatureData, uint32_t bufferSize)
 {
     FEATURE_STATS		*psFeature;
     unsigned int		i;
@@ -142,7 +142,7 @@ BOOL loadFeatureStats(const char *pFeatureData, UDWORD bufferSize)
     psFeature = asFeatureStats;
     for (i = 0; i < numFeatureStats; i++)
     {
-        UDWORD Width, Breadth;
+        uint32_t Width, Breadth;
         int damageable = 0, tileDraw = 0, allowLOS = 0, visibleAtStart = 0;
 
         memset(psFeature, 0, sizeof(FEATURE_STATS));
@@ -225,7 +225,7 @@ void featureStatsShutDown(void)
  *  \param impactSide the side/directon on which the feature is hit
  *  \return < 0 when the dealt damage destroys the feature, > 0 when the feature survives
  */
-float featureDamage(FEATURE *psFeature, UDWORD damage, UDWORD weaponClass, UDWORD weaponSubClass, HIT_SIDE impactSide)
+float featureDamage(FEATURE *psFeature, uint32_t damage, uint32_t weaponClass, uint32_t weaponSubClass, HIT_SIDE impactSide)
 {
     float		relativeDamage;
 
@@ -251,12 +251,12 @@ float featureDamage(FEATURE *psFeature, UDWORD damage, UDWORD weaponClass, UDWOR
 
 
 /* Create a feature on the map */
-FEATURE *buildFeature(FEATURE_STATS *psStats, UDWORD x, UDWORD y,BOOL FromSave)
+FEATURE *buildFeature(FEATURE_STATS *psStats, uint32_t x, uint32_t y,BOOL FromSave)
 {
-    UDWORD		mapX, mapY;
-    UDWORD		width,breadth, foundationMin,foundationMax, height;
-    UDWORD		startX,startY,max,min;
-    SDWORD		i;
+    uint32_t		mapX, mapY;
+    uint32_t		width,breadth, foundationMin,foundationMax, height;
+    uint32_t		startX,startY,max,min;
+    int32_t		i;
 
     //try and create the Feature
     FEATURE *psFeature = createFeature();
@@ -417,7 +417,7 @@ FEATURE *buildFeature(FEATURE_STATS *psStats, UDWORD x, UDWORD y,BOOL FromSave)
 
             if( (!psStats->tileDraw) && (FromSave == false) )
             {
-                psTile->height = (UBYTE)(height / ELEVATION_SCALE);
+                psTile->height = (uint8_t)(height / ELEVATION_SCALE);
             }
         }
     }
@@ -547,12 +547,12 @@ bool removeFeature(FEATURE *psDel)
 /* Remove a Feature and free it's memory */
 bool destroyFeature(FEATURE *psDel)
 {
-    UDWORD			widthScatter,breadthScatter,heightScatter, i;
+    uint32_t			widthScatter,breadthScatter,heightScatter, i;
     EFFECT_TYPE		explosionSize;
     Vector3i pos;
-    UDWORD			width,breadth;
-    UDWORD			mapX,mapY;
-    UDWORD			texture;
+    uint32_t			width,breadth;
+    uint32_t			mapX,mapY;
+    uint32_t			texture;
 
     ASSERT_OR_RETURN(false, psDel != NULL, "Invalid feature pointer");
 
@@ -614,7 +614,7 @@ bool destroyFeature(FEATURE *psDel)
                                 /* Clear feature bits */
                                 psTile->psObject = NULL;
                                 texture = TileNumber_texture(psTile->texture) | RUBBLE_TILE;
-                                psTile->texture = (UWORD)texture;
+                                psTile->texture = (uint16_t)texture;
                                 CLEAR_TILE_TALLSTRUCTURE(psTile);
                                 CLEAR_TILE_NOTBLOCKING(psTile);
                             }
@@ -623,7 +623,7 @@ bool destroyFeature(FEATURE *psDel)
                                 /* This remains a blocking tile */
                                 psTile->psObject = NULL;
                                 texture = TileNumber_texture(psTile->texture) | BLOCKING_RUBBLE_TILE;
-                                psTile->texture = (UWORD)texture;
+                                psTile->texture = (uint16_t)texture;
 
                             }
                         }
@@ -659,7 +659,7 @@ bool destroyFeature(FEATURE *psDel)
 }
 
 
-SDWORD getFeatureStatFromName( const char *pName )
+int32_t getFeatureStatFromName( const char *pName )
 {
     unsigned int inc;
     FEATURE_STATS *psStat;
@@ -681,8 +681,8 @@ wreckage to clear*/
 FEATURE	 *checkForWreckage(DROID *psDroid)
 {
     FEATURE		*psFeature;
-    UDWORD		startX, startY, incX, incY;
-    SDWORD		x=0, y=0;
+    uint32_t		startX, startY, incX, incY;
+    int32_t		x=0, y=0;
 
     startX = map_coord(psDroid->pos.x);
     startY = map_coord(psDroid->pos.y);
@@ -692,7 +692,7 @@ FEATURE	 *checkForWreckage(DROID *psDroid)
     {
         /* across the top */
         y = startY - incY;
-        for(x = startX - incX; x < (SDWORD)(startX + incX); x++)
+        for(x = startX - incX; x < (int32_t)(startX + incX); x++)
         {
             if(TileHasFeature(mapTile(x,y)))
             {
@@ -705,7 +705,7 @@ FEATURE	 *checkForWreckage(DROID *psDroid)
         }
         /* the right */
         x = startX + incX;
-        for(y = startY - incY; y < (SDWORD)(startY + incY); y++)
+        for(y = startY - incY; y < (int32_t)(startY + incY); y++)
         {
             if(TileHasFeature(mapTile(x,y)))
             {
@@ -718,7 +718,7 @@ FEATURE	 *checkForWreckage(DROID *psDroid)
         }
         /* across the bottom*/
         y = startY + incY;
-        for(x = startX + incX; x > (SDWORD)(startX - incX); x--)
+        for(x = startX + incX; x > (int32_t)(startX - incX); x--)
         {
             if(TileHasFeature(mapTile(x,y)))
             {
@@ -732,7 +732,7 @@ FEATURE	 *checkForWreckage(DROID *psDroid)
 
         /* the left */
         x = startX - incX;
-        for(y = startY + incY; y > (SDWORD)(startY - incY); y--)
+        for(y = startY + incY; y > (int32_t)(startY - incY); y--)
         {
             if(TileHasFeature(mapTile(x,y)))
             {

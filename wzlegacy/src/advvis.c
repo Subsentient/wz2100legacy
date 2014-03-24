@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 static BOOL bRevealActive = false;
 
 
-void	avInformOfChange(SDWORD x, SDWORD y)
+void	avInformOfChange(int32_t x, int32_t y)
 {
     MAPTILE	*psTile = mapTile(x, y);
 
@@ -46,7 +46,7 @@ void	avInformOfChange(SDWORD x, SDWORD y)
 
 
 // ------------------------------------------------------------------------------------
-static void processAVTile(UDWORD x, UDWORD y, float increment)
+static void processAVTile(uint32_t x, uint32_t y, float increment)
 {
     MAPTILE	*psTile = mapTile(x, y);
     float	maxLevel = psTile->illumination;
@@ -73,7 +73,7 @@ static void processAVTile(UDWORD x, UDWORD y, float increment)
 // ------------------------------------------------------------------------------------
 void	avUpdateTiles( void )
 {
-    UDWORD	i, j;
+    uint32_t	i, j;
     float	increment = timeAdjustedIncrement(FADE_IN_TIME, true);	// call once per frame
 
     /* Go through the tiles */
@@ -88,7 +88,7 @@ void	avUpdateTiles( void )
 
 
 // ------------------------------------------------------------------------------------
-UDWORD	avGetObjLightLevel(BASE_OBJECT *psObj,UDWORD origLevel)
+uint32_t	avGetObjLightLevel(BASE_OBJECT *psObj,uint32_t origLevel)
 {
     float div = (float)psObj->visible[selectedPlayer] / 255.f;
 
@@ -119,7 +119,7 @@ void	setRevealStatus( BOOL val )
 // ------------------------------------------------------------------------------------
 void	preProcessVisibility( void )
 {
-    UDWORD		i,j;
+    uint32_t		i,j;
     MAPTILE		*psTile;
 
     for(i=0; i<mapWidth; i++)
@@ -130,7 +130,7 @@ void	preProcessVisibility( void )
             psTile->level = 0;
             if(TEST_TILE_VISIBLE(selectedPlayer,psTile))
             {
-                processAVTile(i, j, UBYTE_MAX);
+                processAVTile(i, j, uint8_t_MAX);
                 SET_TILE_EXPLORED(psTile);
             }
             else

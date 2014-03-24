@@ -73,7 +73,7 @@ bool						isMPDirtyBit = false;		// When we are forced to use turnOffMultiMsg() 
 BOOL						bMultiPlayer				= false;	// true when more than 1 player.
 BOOL						bMultiMessages				= false;	// == bMultiPlayer unless multimessages are disabled
 BOOL						openchannels[MAX_PLAYERS]= {true};
-UBYTE						bDisplayMultiJoiningStatus;
+uint8_t						bDisplayMultiJoiningStatus;
 
 MULTIPLAYERGAME				game;									//info to describe game.
 MULTIPLAYERINGAME			ingame;
@@ -90,13 +90,13 @@ BOOL						bPlayerReadyGUI[MAX_PLAYERS] = {false};
 #define MAX_MSG_STACK	100				// must be *at least* 64
 
 static char msgStr[MAX_MSG_STACK][MAX_STR_LENGTH];
-static SDWORD msgPlFrom[MAX_MSG_STACK];
-static SDWORD msgPlTo[MAX_MSG_STACK];
-static SDWORD callbackType[MAX_MSG_STACK];
-static SDWORD locx[MAX_MSG_STACK];
-static SDWORD locy[MAX_MSG_STACK];
+static int32_t msgPlFrom[MAX_MSG_STACK];
+static int32_t msgPlTo[MAX_MSG_STACK];
+static int32_t callbackType[MAX_MSG_STACK];
+static int32_t locx[MAX_MSG_STACK];
+static int32_t locy[MAX_MSG_STACK];
 static DROID *msgDroid[MAX_MSG_STACK];
-static SDWORD msgStackPos = -1;				//top element pointer
+static int32_t msgStackPos = -1;				//top element pointer
 
 // ////////////////////////////////////////////////////////////////////////////
 // Remote Prototypes
@@ -137,7 +137,7 @@ BOOL multiplayerWinSequence(BOOL firstCall)
 {
     static Vector3i pos;
     Vector3i pos2;
-    static UDWORD last=0;
+    static uint32_t last=0;
     float		rotAmount;
     STRUCTURE	*psStruct;
 
@@ -219,8 +219,8 @@ BOOL multiplayerWinSequence(BOOL firstCall)
 // MultiPlayer main game loop code.
 BOOL multiPlayerLoop(void)
 {
-    UDWORD		i;
-    UBYTE		joinCount;
+    uint32_t		i;
+    uint8_t		joinCount;
 
     sendCheck();						// send some checking info if possible
     processMultiPlayerArtifacts();		// process artifacts
@@ -314,9 +314,9 @@ BOOL multiPlayerLoop(void)
 // quikie functions.
 
 // to get droids ...
-BOOL IdToDroid(UDWORD id, UDWORD player, DROID **psDroid)
+BOOL IdToDroid(uint32_t id, uint32_t player, DROID **psDroid)
 {
-    UDWORD i;
+    uint32_t i;
     DROID *d;
 
     if(player == ANYPLAYER)
@@ -360,10 +360,10 @@ BOOL IdToDroid(UDWORD id, UDWORD player, DROID **psDroid)
 
 // ////////////////////////////////////////////////////////////////////////////
 // find a structure
-STRUCTURE *IdToStruct(UDWORD id,UDWORD player)
+STRUCTURE *IdToStruct(uint32_t id,uint32_t player)
 {
     STRUCTURE	*psStr = NULL;
-    UDWORD		i;
+    uint32_t		i;
 
     if(player == ANYPLAYER)
     {
@@ -391,10 +391,10 @@ STRUCTURE *IdToStruct(UDWORD id,UDWORD player)
 
 // ////////////////////////////////////////////////////////////////////////////
 // find a feature
-FEATURE *IdToFeature(UDWORD id,UDWORD player)
+FEATURE *IdToFeature(uint32_t id,uint32_t player)
 {
     FEATURE	*psF =NULL;
-    UDWORD	i;
+    uint32_t	i;
 
     if(player == ANYPLAYER)
     {
@@ -422,10 +422,10 @@ FEATURE *IdToFeature(UDWORD id,UDWORD player)
 
 // ////////////////////////////////////////////////////////////////////////////
 
-DROID_TEMPLATE *IdToTemplate(UDWORD tempId,UDWORD player)
+DROID_TEMPLATE *IdToTemplate(uint32_t tempId,uint32_t player)
 {
     DROID_TEMPLATE *psTempl = NULL;
-    UDWORD		i;
+    uint32_t		i;
 
     // First try static templates from scripts (could potentially also happen for currently human controlled players)
     for (psTempl = apsStaticTemplates; psTempl && psTempl->multiPlayerID != tempId; psTempl = psTempl->psNext) ;
@@ -459,7 +459,7 @@ DROID_TEMPLATE *IdToTemplate(UDWORD tempId,UDWORD player)
 
 /////////////////////////////////////////////////////////////////////////////////
 //  Returns a pointer to base object, given an id and optionally a player.
-BASE_OBJECT *IdToPointer(UDWORD id,UDWORD player)
+BASE_OBJECT *IdToPointer(uint32_t id,uint32_t player)
 {
     DROID		*pD;
     STRUCTURE	*pS;
@@ -511,7 +511,7 @@ const char *getPlayerName(unsigned int player)
     return NetPlay.players[player].name;
 }
 
-BOOL setPlayerName(UDWORD player, const char *sName)
+BOOL setPlayerName(uint32_t player, const char *sName)
 {
     ASSERT_OR_RETURN(false, player < MAX_PLAYERS, "Player index (%u) out of range", player);
     sstrcpy(playerName[player], sName);
@@ -520,7 +520,7 @@ BOOL setPlayerName(UDWORD player, const char *sName)
 
 // ////////////////////////////////////////////////////////////////////////////
 // to determine human/computer players and responsibilities of each..
-BOOL isHumanPlayer(UDWORD player)
+BOOL isHumanPlayer(uint32_t player)
 {
     if (player >= MAX_PLAYERS)
     {
@@ -530,7 +530,7 @@ BOOL isHumanPlayer(UDWORD player)
 }
 
 // returns player responsible for 'player'
-UDWORD  whosResponsible(UDWORD player)
+uint32_t  whosResponsible(uint32_t player)
 {
     if (isHumanPlayer(player))
     {
@@ -547,7 +547,7 @@ UDWORD  whosResponsible(UDWORD player)
 }
 
 //returns true if selected player is responsible for 'player'
-BOOL myResponsibility(UDWORD player)
+BOOL myResponsibility(uint32_t player)
 {
     if(whosResponsible(player) == selectedPlayer)
     {
@@ -560,7 +560,7 @@ BOOL myResponsibility(UDWORD player)
 }
 
 //returns true if 'player' is responsible for 'playerinquestion'
-BOOL responsibleFor(UDWORD player, UDWORD playerinquestion)
+BOOL responsibleFor(uint32_t player, uint32_t playerinquestion)
 {
     if(whosResponsible(playerinquestion) == player)
     {
@@ -575,10 +575,10 @@ BOOL responsibleFor(UDWORD player, UDWORD playerinquestion)
 
 // ////////////////////////////////////////////////////////////////////////////
 // probably temporary. Places the camera on the players 1st droid or struct.
-Vector3i cameraToHome(UDWORD player,BOOL scroll)
+Vector3i cameraToHome(uint32_t player,BOOL scroll)
 {
     Vector3i res;
-    UDWORD x,y;
+    uint32_t x,y;
     STRUCTURE	*psBuilding;
 
     for (psBuilding = apsStructLists[player];
@@ -880,7 +880,7 @@ BOOL recvMessage(void)
 // Research Stuff. Nat games only send the result of research procedures.
 BOOL SendResearch(uint8_t player, uint32_t index)
 {
-    UBYTE i;
+    uint8_t i;
     PLAYER_RESEARCH *pPlayerRes;
 
     // Send the player that is researching the topic and the topic itself
@@ -1336,7 +1336,7 @@ BOOL sendTextMessage(const char *pStr, BOOL all)
     BOOL				normal = true;
     BOOL				sendto[MAX_PLAYERS];
     int					posTable[MAX_PLAYERS];
-    UDWORD				i;
+    uint32_t				i;
     char				display[MAX_CONSOLE_STRING_LENGTH];
     char				msg[MAX_CONSOLE_STRING_LENGTH];
     char				*curStr = (char *)pStr, *TmpStr, NameScan[1024];
@@ -1501,9 +1501,9 @@ void printConsoleNameChange(const char *oldName, const char *newName)
 
 
 //AI multiplayer message, send from a certain player index to another player index
-BOOL sendAIMessage(char *pStr, UDWORD player, UDWORD to)
+BOOL sendAIMessage(char *pStr, uint32_t player, uint32_t to)
 {
-    UDWORD	sendPlayer;
+    uint32_t	sendPlayer;
 
     //check if this is one of the local players, don't need net send then
     if (to == selectedPlayer || myResponsibility(to))	//(the only) human on this machine or AI on this machine
@@ -1588,7 +1588,7 @@ BOOL sendBeacon(int32_t locX, int32_t locY, int32_t forPlayer, int32_t sender, c
     return true;
 }
 
-void displayAIMessage(char *pStr, SDWORD from, SDWORD to)
+void displayAIMessage(char *pStr, int32_t from, int32_t to)
 {
     char				tmp[255];
 
@@ -1605,7 +1605,7 @@ void displayAIMessage(char *pStr, SDWORD from, SDWORD to)
 // Write a message to the console.
 BOOL recvTextMessage()
 {
-    UDWORD	playerIndex;
+    uint32_t	playerIndex;
     char	msg[MAX_CONSOLE_STRING_LENGTH];
 
     memset(msg, 0x0, sizeof(msg));
@@ -1653,7 +1653,7 @@ BOOL recvTextMessage()
 //AI multiplayer message - received message from AI (from scripts)
 BOOL recvTextMessageAI()
 {
-    UDWORD	sender, receiver;
+    uint32_t	sender, receiver;
     char	msg[MAX_CONSOLE_STRING_LENGTH];
     char	newmsg[MAX_CONSOLE_STRING_LENGTH];
 
@@ -1999,7 +1999,7 @@ BOOL recvMapFileRequested()
 void sendMap(void)
 {
     int i = 0;
-    UBYTE done;
+    uint8_t done;
 
     for (i = 0; i < MAX_PLAYERS; i++)
     {
@@ -2055,7 +2055,7 @@ void msgStackReset(void)
     msgStackPos = -1;		//Beginning of the stack
 }
 
-UDWORD msgStackPush(SDWORD CBtype, SDWORD plFrom, SDWORD plTo, const char *tStr, SDWORD x, SDWORD y, DROID *psDroid)
+uint32_t msgStackPush(int32_t CBtype, int32_t plFrom, int32_t plTo, const char *tStr, int32_t x, int32_t y, DROID *psDroid)
 {
     debug(LOG_WZ, "msgStackPush: pushing message type %d to pos %d", CBtype, msgStackPos + 1);
 
@@ -2092,7 +2092,7 @@ BOOL isMsgStackEmpty(void)
     return false;
 }
 
-BOOL msgStackGetFrom(SDWORD  *psVal)
+BOOL msgStackGetFrom(int32_t  *psVal)
 {
     if(msgStackPos < 0)
     {
@@ -2105,7 +2105,7 @@ BOOL msgStackGetFrom(SDWORD  *psVal)
     return true;
 }
 
-BOOL msgStackGetTo(SDWORD  *psVal)
+BOOL msgStackGetTo(int32_t  *psVal)
 {
     if(msgStackPos < 0)
     {
@@ -2118,7 +2118,7 @@ BOOL msgStackGetTo(SDWORD  *psVal)
     return true;
 }
 
-static BOOL msgStackGetCallbackType(SDWORD  *psVal)
+static BOOL msgStackGetCallbackType(int32_t  *psVal)
 {
     if(msgStackPos < 0)
     {
@@ -2131,7 +2131,7 @@ static BOOL msgStackGetCallbackType(SDWORD  *psVal)
     return true;
 }
 
-static BOOL msgStackGetXY(SDWORD  *psValx, SDWORD  *psValy)
+static BOOL msgStackGetXY(int32_t  *psValx, int32_t  *psValy)
 {
     if(msgStackPos < 0)
     {
@@ -2162,7 +2162,7 @@ BOOL msgStackGetMsg(char  *psVal)
 
 static BOOL msgStackSort(void)
 {
-    SDWORD i;
+    int32_t i;
 
     //go through all-1 elements (bottom-top)
     for(i=0; i<msgStackPos; i++)
@@ -2218,14 +2218,14 @@ BOOL msgStackGetDroid(DROID **ppsDroid)
     return true;
 }
 
-SDWORD msgStackGetCount(void)
+int32_t msgStackGetCount(void)
 {
     return msgStackPos + 1;
 }
 
 BOOL msgStackFireTop(void)
 {
-    SDWORD		_callbackType;
+    int32_t		_callbackType;
     char		msg[255];
 
     if(msgStackPos < 0)

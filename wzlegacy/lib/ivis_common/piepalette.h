@@ -82,33 +82,33 @@ extern PIELIGHT		psPalette[];
 extern void		pal_Init(void);
 extern void		pal_ShutDown(void);
 
-static inline PIELIGHT pal_Colour(UBYTE r, UBYTE g, UBYTE b)
+static inline PIELIGHT pal_Colour(uint8_t r, uint8_t g, uint8_t b)
 {
     PIELIGHT c;
 
     c.byte.r = r;
     c.byte.g = g;
     c.byte.b = b;
-    c.byte.a = UBYTE_MAX;
+    c.byte.a = uint8_t_MAX;
 
     return c;
 }
 
-static inline PIELIGHT pal_SetBrightness(UBYTE brightness)
+static inline PIELIGHT pal_SetBrightness(uint8_t brightness)
 {
     PIELIGHT c;
 
     c.byte.r = brightness;
     c.byte.g = brightness;
     c.byte.b = brightness;
-    c.byte.a = UBYTE_MAX;
+    c.byte.a = uint8_t_MAX;
 
     return c;
 }
 
 #define pal_Grey pal_SetBrightness
 
-static inline PIELIGHT pal_RGBA(UBYTE r, UBYTE g, UBYTE b, UBYTE a)
+static inline PIELIGHT pal_RGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     PIELIGHT c;
 

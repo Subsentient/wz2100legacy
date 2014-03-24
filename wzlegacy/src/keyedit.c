@@ -67,9 +67,9 @@ static char keymapVersion[8] = "KM_0002";
 // ////////////////////////////////////////////////////////////////////////////
 // funcs
 
-static BOOL pushedKeyMap(UDWORD key)
+static BOOL pushedKeyMap(uint32_t key)
 {
-//	UDWORD count =0;
+//	uint32_t count =0;
 //	id-KM_START
 //	for(selectedKeyMap = keyMappings;
 //		selectedKeyMap->status != KEYMAP_ASSIGNABLE;
@@ -199,9 +199,9 @@ static BOOL pushedKeyCombo(KEY_CODE subkey)
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-static UDWORD scanKeyBoardForBinding(void)
+static uint32_t scanKeyBoardForBinding(void)
 {
-    UDWORD i;
+    uint32_t i;
     for(i = 0; i < KEY_MAXSCAN; i++)
     {
         if(keyPressed(i))
@@ -226,7 +226,7 @@ static UDWORD scanKeyBoardForBinding(void)
 // ////////////////////////////////////////////////////////////////////////////
 BOOL runKeyMapEditor(void)
 {
-    UDWORD id;
+    uint32_t id;
 
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
 
@@ -293,12 +293,12 @@ static BOOL keyMapToString(char *pStr, KEY_MAPPING *psMapping)
 
 // ////////////////////////////////////////////////////////////////////////////
 // display a keymap on the interface.
-static void displayKeyMap(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayKeyMap(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    UDWORD		x = xOffset+psWidget->x;
-    UDWORD		y = yOffset+psWidget->y;
-    UDWORD		w = psWidget->width;
-    UDWORD		h = psWidget->height;
+    uint32_t		x = xOffset+psWidget->x;
+    uint32_t		y = yOffset+psWidget->y;
+    uint32_t		w = psWidget->width;
+    uint32_t		h = psWidget->height;
     KEY_MAPPING *psMapping = (KEY_MAPPING *)psWidget->pUserData;
     char		sKey[MAX_STR_LENGTH];
 
@@ -339,8 +339,8 @@ BOOL startKeyMapEditor(BOOL first)
     W_BUTINIT	sButInit;
     W_FORMINIT	sFormInit;
     KEY_MAPPING	*psMapping;
-    UDWORD		i,mapcount =0;
-    UDWORD		bubbleCount;
+    uint32_t		i,mapcount =0;
+    uint32_t		bubbleCount;
     BOOL		bAtEnd,bGotOne;
     KEY_MAPPING	*psPresent = NULL, *psNext;
     char		test[255];
@@ -501,7 +501,7 @@ BOOL startKeyMapEditor(BOOL first)
 BOOL saveKeyMap(void)
 {
     KEY_MAPPING	*psMapping;
-    SDWORD		count;
+    int32_t		count;
     char		name[128];
     PHYSFS_file *pfile;
 
@@ -576,8 +576,8 @@ BOOL loadKeyMap(void)
     KEY_CODE	subCode;
     KEY_ACTION	action;
     char		name[128];
-    SDWORD		count;
-    UDWORD		funcmap;
+    int32_t		count;
+    uint32_t		funcmap;
     char		ver[8];
     PHYSFS_file *pfile;
     PHYSFS_sint64 filesize;

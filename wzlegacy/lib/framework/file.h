@@ -27,17 +27,17 @@ extern PHYSFS_file *openSaveFile(const char *fileName);
 /** Load the file with name pointed to by pFileName into a memory buffer. */
 extern bool loadFile(const char *pFileName,		// The filename
                      char **ppFileData,	// A buffer containing the file contents
-                     UDWORD *pFileSize);	// The size of this buffer
+                     uint32_t *pFileSize);	// The size of this buffer
 
 /** Save the data in the buffer into the given file */
-extern bool saveFile(const char *pFileName, const char *pFileData, UDWORD fileSize);
+extern bool saveFile(const char *pFileName, const char *pFileData, uint32_t fileSize);
 
 /** Load a file from disk into a fixed memory buffer. */
-extern bool loadFileToBuffer(const char *pFileName, char *pFileBuffer, UDWORD bufferSize, UDWORD *pSize);
+extern bool loadFileToBuffer(const char *pFileName, char *pFileBuffer, uint32_t bufferSize, uint32_t *pSize);
 
 /** Load a file from disk, but returns quietly if no file found. */
-extern bool loadFileToBufferNoError(const char *pFileName, char *pFileBuffer, UDWORD bufferSize,
-                                    UDWORD *pSize);
+extern bool loadFileToBufferNoError(const char *pFileName, char *pFileBuffer, uint32_t bufferSize,
+                                    uint32_t *pSize);
 
 #endif // _file_h
 

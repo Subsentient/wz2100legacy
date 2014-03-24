@@ -54,12 +54,12 @@ typedef BOOL (* ANIMOBJDIEDTESTFUNC) ( void *psParent );
 	iIMDShape	*psShape;
 
 #define	ANIM_OBJECT_ELEMENTS(pointerType)					\
-	UWORD				uwID;								\
+	uint16_t				uwID;								\
 	ANIM3D				*psAnim;							\
 	void				*psParent;							\
-	UDWORD				udwStartTime;						\
-	UDWORD				udwStartDelay;						\
-	UWORD				uwCycles;							\
+	uint32_t				udwStartTime;						\
+	uint32_t				udwStartDelay;						\
+	uint16_t				uwCycles;							\
 	BOOL				bVisible;							\
 	ANIMOBJDONEFUNC		pDoneFunc;							\
 	/* this must be the last entry in this structure */		\
@@ -92,7 +92,7 @@ void			animObj_SetDoneFunc( ANIM_OBJECT *psObj,
 
 /* uwCycles=0 for infinite looping */
 ANIM_OBJECT 	*animObj_Add( void *pParentObj, int iAnimID,
-                              UDWORD udwStartDelay, UWORD uwCycles );
+                              uint32_t udwStartDelay, uint16_t uwCycles );
 bool animObj_Remove(ANIM_OBJECT *psObj, int iAnimID);
 
 ANIM_OBJECT 	*animObj_GetFirst( void );

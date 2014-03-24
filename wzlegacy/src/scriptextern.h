@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define __INCLUDED_SRC_SCRIPTEXTERN_H__
 
 // current game level
-extern SDWORD	scrGameLevel;
+extern int32_t	scrGameLevel;
 // whether the tutorial is active
 extern BOOL		bInTutorial;
 // whether any additional special case victory/failure conditions have been met
@@ -56,9 +56,9 @@ enum _externids
 extern void scrExternReset(void);
 
 // General function to get some basic game values
-extern BOOL scrGenExternGet(UDWORD index);
+extern BOOL scrGenExternGet(uint32_t index);
 
 // General function to set some basic game values
-extern BOOL scrGenExternSet(UDWORD index);
+extern BOOL scrGenExternSet(uint32_t index);
 
 #endif // __INCLUDED_SRC_SCRIPTEXTERN_H__

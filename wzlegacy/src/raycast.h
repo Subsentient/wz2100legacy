@@ -63,9 +63,9 @@ static inline Vector3i rayAngleToVector3i(float angle)
 
 // Calculates the maximum height and distance found along a line from any
 // point to the edge of the grid
-extern void	getBestPitchToEdgeOfGrid(UDWORD x, UDWORD y, UDWORD direction, SDWORD *pitch);
+extern void	getBestPitchToEdgeOfGrid(uint32_t x, uint32_t y, uint32_t direction, int32_t *pitch);
 
-extern void	getPitchToHighestPoint( UDWORD x, UDWORD y, UDWORD direction,
-                                    UDWORD thresholdDistance, SDWORD *pitch );
+extern void	getPitchToHighestPoint( uint32_t x, uint32_t y, uint32_t direction,
+                                    uint32_t thresholdDistance, int32_t *pitch );
 
 #endif // __INCLUDED_SRC_RAYCAST_H__

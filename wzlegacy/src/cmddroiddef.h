@@ -31,11 +31,11 @@ typedef struct _command_droid
     // define the command droid as a COMPONENT so it fits into the design screen
     STATS_COMPONENT;
 
-    UDWORD          died;
-    SWORD           aggression;
-    SWORD           survival;
-    SWORD           nWeapStat;
-    UWORD           kills;
+    uint32_t          died;
+    int16_t           aggression;
+    int16_t           survival;
+    int16_t           nWeapStat;
+    uint16_t           kills;
     DROID          *psDroid;
 } COMMAND_DROID;
 

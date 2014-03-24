@@ -24,19 +24,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 /* The statistics for the features */
 extern FEATURE_STATS	*asFeatureStats;
-extern UDWORD			numFeatureStats;
+extern uint32_t			numFeatureStats;
 
 //Value is stored for easy access to this feature in destroyDroid()/destroyStruct()
-extern UDWORD			oilResFeature;
+extern uint32_t			oilResFeature;
 
 /* Load the feature stats */
-extern BOOL loadFeatureStats(const char *pFeatureData, UDWORD bufferSize);
+extern BOOL loadFeatureStats(const char *pFeatureData, uint32_t bufferSize);
 
 /* Release the feature stats memory */
 extern void featureStatsShutDown(void);
 
 /* Create a feature on the map */
-extern FEATURE *buildFeature(FEATURE_STATS *psStats, UDWORD x, UDWORD y,BOOL FromSave);
+extern FEATURE *buildFeature(FEATURE_STATS *psStats, uint32_t x, uint32_t y,BOOL FromSave);
 
 /* Release the resources associated with a feature */
 extern void featureRelease(FEATURE *psFeature);
@@ -51,13 +51,13 @@ extern bool removeFeature(FEATURE *psDel);
 extern bool destroyFeature(FEATURE *psDel);
 
 /* get a feature stat id from its name */
-extern SDWORD getFeatureStatFromName(const char *pName);
+extern int32_t getFeatureStatFromName(const char *pName);
 
 /*looks around the given droid to see if there is any building
 wreckage to clear*/
 extern FEATURE	 *checkForWreckage(DROID *psDroid);
 
-extern float featureDamage(FEATURE *psFeature, UDWORD damage, UDWORD weaponClass, UDWORD weaponSubClass, HIT_SIDE impactSide);
+extern float featureDamage(FEATURE *psFeature, uint32_t damage, uint32_t weaponClass, uint32_t weaponSubClass, HIT_SIDE impactSide);
 
 extern void     featureInitVars(void);
 

@@ -70,7 +70,7 @@ typedef enum _droid_type
 
 typedef struct _component
 {
-    UBYTE           nStat;          ///< Allowing a maximum of 255 stats per file
+    uint8_t           nStat;          ///< Allowing a maximum of 255 stats per file
 } COMPONENT;
 
 // maximum number of queued orders
@@ -78,9 +78,9 @@ typedef struct _component
 
 typedef struct _order_list
 {
-    SDWORD          order;
+    int32_t          order;
     void           *psOrderTarget;  ///< this needs to cope with objects and stats
-    UWORD           x, y, x2, y2;   ///< line build requires two sets of coords
+    uint16_t           x, y, x2, y2;   ///< line build requires two sets of coords
 
     struct _order_list *psNext;
     struct _order_list *psPrev;
@@ -95,7 +95,7 @@ typedef struct _droid_template
     /// on the PC this contains the full editable UTF-8 encoded name of the template
     char            aName[MAX_STR_LENGTH];
 
-    UBYTE           NameVersion;                //< Version number used in name (e.g. Viper Mk "I" would be stored as 1 - Viper Mk "X" as 10)
+    uint8_t           NameVersion;                //< Version number used in name (e.g. Viper Mk "I" would be stored as 1 - Viper Mk "X" as 10)
 
     /*!
      * The droid components.
@@ -106,18 +106,18 @@ typedef struct _droid_template
      *
      * Weapons are stored in asWeaps, _not_ here at index COMP_WEAPON! (Which is the reason we do not have a COMP_NUMCOMPONENTS sized array here.)
      */
-    SDWORD          asParts[DROID_MAXCOMP];
+    int32_t          asParts[DROID_MAXCOMP];
 
-    UDWORD          buildPoints;                ///< total build points required to manufacture the droid
-    UDWORD          powerPoints;                ///< total power points required to build/maintain the droid
-    UDWORD          storeCount;                 ///< used to load in weaps and progs
+    uint32_t          buildPoints;                ///< total build points required to manufacture the droid
+    uint32_t          powerPoints;                ///< total power points required to build/maintain the droid
+    uint32_t          storeCount;                 ///< used to load in weaps and progs
 
     /* The weapon systems */
-    UDWORD          numWeaps;                   ///< Number of weapons
-    UDWORD          asWeaps[DROID_MAXWEAPS];    ///< weapon indices
+    uint32_t          numWeaps;                   ///< Number of weapons
+    uint32_t          asWeaps[DROID_MAXWEAPS];    ///< weapon indices
 
     DROID_TYPE      droidType;                  ///< The type of droid
-    UDWORD          multiPlayerID;              ///< multiplayer unique descriptor(cant use id's for templates). Used for save games as well now - AB 29/10/98
+    uint32_t          multiPlayerID;              ///< multiplayer unique descriptor(cant use id's for templates). Used for save games as well now - AB 29/10/98
     struct _droid_template *psNext;             ///< Pointer to next template
     bool		prefab;                     ///< Not player designed, not saved, never delete or change
 } WZ_DECL_MAY_ALIAS DROID_TEMPLATE;
@@ -142,17 +142,17 @@ typedef struct DROID
     /* The other droid data.  These are all derived from the components
      * but stored here for easy access
      */
-    UDWORD          weight;
-    UDWORD          baseSpeed;                      ///< the base speed dependant on propulsion type
-    UDWORD          originalBody;                   ///< the original body points
+    uint32_t          weight;
+    uint32_t          baseSpeed;                      ///< the base speed dependant on propulsion type
+    uint32_t          originalBody;                   ///< the original body points
     float           experience;
-    UBYTE           NameVersion;                    ///< Version number used for generating on-the-fly names (e.g. Viper Mk "I" would be stored as 1 - Viper Mk "X" as 10)  - copied from droid template
+    uint8_t           NameVersion;                    ///< Version number used for generating on-the-fly names (e.g. Viper Mk "I" would be stored as 1 - Viper Mk "X" as 10)  - copied from droid template
 
     int		lastFrustratedTime;		///< Set when eg being stuck; used for eg firing indiscriminately at map features to clear the way (note: signed, so wrap arounds after 24.9 days)
 
-    SWORD           resistance;                     ///< used in Electronic Warfare
+    int16_t           resistance;                     ///< used in Electronic Warfare
 
-    UDWORD          numWeaps;                       ///< Watermelon:Re-enabled this,I need this one in droid.c
+    uint32_t          numWeaps;                       ///< Watermelon:Re-enabled this,I need this one in droid.c
     WEAPON          asWeaps[DROID_MAXWEAPS];
 
     // The group the droid belongs to
@@ -163,9 +163,9 @@ typedef struct DROID
     ORDER_LIST      *psOrderList;
 
     /* Order data */
-    SDWORD          order;
-    UWORD           orderX, orderY;
-    UWORD           orderX2, orderY2;
+    int32_t          order;
+    uint16_t           orderX, orderY;
+    uint16_t           orderX2, orderY2;
 
     BOOL            bTargetted;
 
@@ -182,27 +182,27 @@ typedef struct DROID
 #endif
 
     // secondary order data
-    UDWORD          secondaryOrder;
+    uint32_t          secondaryOrder;
 
     /* Action data */
-    SDWORD          action;
-    UDWORD          actionX, actionY;
+    int32_t          action;
+    uint32_t          actionX, actionY;
     BASE_OBJECT    *psActionTarget[DROID_MAXWEAPS]; ///< Action target object
-    UDWORD          actionStarted;                  ///< Game time action started
-    UDWORD          actionPoints;                   ///< number of points done by action since start
-//	UWORD           actionHeight;                   ///< height to level the ground to for foundation,
+    uint32_t          actionStarted;                  ///< Game time action started
+    uint32_t          actionPoints;                   ///< number of points done by action since start
+//	uint16_t           actionHeight;                   ///< height to level the ground to for foundation,
     // possibly use it for other data as well? Yup! - powerAccrued!
-    UWORD           powerAccrued;                   ///< renamed the above variable since this is what its used for now!
+    uint16_t           powerAccrued;                   ///< renamed the above variable since this is what its used for now!
 
-    UBYTE           illumination;
-    UBYTE           updateFlags;
+    uint8_t           illumination;
+    uint8_t           updateFlags;
 
     /* Movement control data */
     MOVE_CONTROL    sMove;
 
     /* anim data */
     ANIM_OBJECT     *psCurAnim;
-    SDWORD          iAudioID;
+    int32_t          iAudioID;
 } WZ_DECL_MAY_ALIAS DROID;
 
 #endif // __INCLUDED_DROIDDEF_H__

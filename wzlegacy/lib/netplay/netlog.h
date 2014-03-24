@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 BOOL NETstartLogging(void);
 BOOL NETstopLogging(void);
-BOOL NETlogEntry( const char *str, UDWORD a, UDWORD b );
+BOOL NETlogEntry( const char *str, uint32_t a, uint32_t b );
 void NETlogPacket( uint8_t type, uint16_t size, BOOL received);
 
 #endif // _netlog_h

@@ -78,7 +78,7 @@ res_line:			dir_line
 
 dir_line:			DIRECTORY QTEXT_T
 				{
-					UDWORD len;
+					uint32_t len;
 
 					// set a new input directory
 					debug(LOG_NEVER, "directory: %s", $2);

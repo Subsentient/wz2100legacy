@@ -39,7 +39,7 @@ extern void	scroll(void);
 extern void resetScroll(void);
 extern void setMouseScroll(bool);
 
-extern BOOL DrawnInLastFrame(SDWORD Frame);
+extern BOOL DrawnInLastFrame(int32_t Frame);
 
 // Clear all selections.
 extern void clearSel(void);
@@ -71,7 +71,7 @@ extern void displayWorld(void);
 
 #define MAX_SCROLL_SPEED (800+scroll_speed_accel)	// make max speed dependant on accel chosen.
 
-extern UDWORD scroll_speed_accel;			// now user modifyable.
+extern uint32_t scroll_speed_accel;			// now user modifyable.
 
 
 #define DRAG_INACTIVE 0
@@ -83,13 +83,13 @@ extern UDWORD scroll_speed_accel;			// now user modifyable.
 
 struct	_dragBox
 {
-    UDWORD	x1;
-    UDWORD	y1;
-    UDWORD	x2;
-    UDWORD	y2;
-    UDWORD	status;
-    UDWORD	lastTime;
-    UDWORD	pulse;
+    uint32_t	x1;
+    uint32_t	y1;
+    uint32_t	x2;
+    uint32_t	y2;
+    uint32_t	status;
+    uint32_t	lastTime;
+    uint32_t	pulse;
 };
 
 extern struct	_dragBox dragBox3D,wallDrag;
@@ -167,7 +167,7 @@ extern BOOL		godMode;
 // reset the input state
 void resetInput(void);
 
-BOOL CheckInScrollLimits(SDWORD *xPos,SDWORD *zPos);
+BOOL CheckInScrollLimits(int32_t *xPos,int32_t *zPos);
 extern BOOL CheckScrollLimits(void);
 extern BOOL	rotActive;
 
@@ -176,7 +176,7 @@ BASE_OBJECT	*mouseTarget( void );
 BOOL StartObjectOrbit(BASE_OBJECT *psObj);
 void CancelObjectOrbit(void);
 
-extern void FinishDeliveryPosition(UDWORD xPos,UDWORD yPos,void *UserData);
+extern void FinishDeliveryPosition(uint32_t xPos,uint32_t yPos,void *UserData);
 extern void CancelDeliveryRepos(void);
 extern void StartDeliveryPosition( OBJECT_POSITION *psLocation );
 extern BOOL DeliveryReposValid(void);
@@ -184,10 +184,10 @@ extern FLAG_POSITION *deliveryPointToMove;
 
 extern void StartTacticalScrollObj(BOOL driveActive,BASE_OBJECT *psObj);
 extern void CancelTacticalScroll(void);
-extern void MoveTacticalScroll(SDWORD xVel,SDWORD yVel);
+extern void MoveTacticalScroll(int32_t xVel,int32_t yVel);
 extern BOOL	getRotActive( void );
-extern SDWORD	getDesiredPitch( void );
-extern void	setDesiredPitch(SDWORD pitch);
+extern int32_t	getDesiredPitch( void );
+extern void	setDesiredPitch(int32_t pitch);
 
 #define MAX_PLAYER_X_ANGLE	(-1)
 #define MIN_PLAYER_X_ANGLE	(-60)
@@ -218,6 +218,6 @@ void AddDerrickBurningMessage(void);
 // check whether the queue order keys are pressed
 extern BOOL ctrlShiftDown(void);
 
-extern UDWORD getTargetType(void);
+extern uint32_t getTargetType(void);
 
 #endif // __INCLUDED_SRC_DISPLAY_H__

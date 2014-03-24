@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "order.h"
 #include "multiplay.h"
 
-extern UDWORD selectedPlayer;
+extern uint32_t selectedPlayer;
 
 // the current command droid target designator for IDF structures
 DROID	*apsCmdDesignator[MAX_PLAYERS];
@@ -54,7 +54,7 @@ void cmdDroidShutDown(void)
 
 
 // Make new command droids available
-void cmdDroidAvailable(WZ_DECL_UNUSED BRAIN_STATS *psBrainStats, WZ_DECL_UNUSED SDWORD player)
+void cmdDroidAvailable(WZ_DECL_UNUSED BRAIN_STATS *psBrainStats, WZ_DECL_UNUSED int32_t player)
 {
 }
 
@@ -62,7 +62,7 @@ void cmdDroidAvailable(WZ_DECL_UNUSED BRAIN_STATS *psBrainStats, WZ_DECL_UNUSED 
 // update the command droids
 void cmdDroidUpdate(void)
 {
-    SDWORD	i;
+    int32_t	i;
 
     for(i=0; i<MAX_PLAYERS; i++)
     {
@@ -86,13 +86,13 @@ void cmdDroidAddDroid(DROID *psCommander, DROID *psDroid)
             return;
         }
         grpJoin(psGroup, psCommander);
-        psDroid->group = UBYTE_MAX;
+        psDroid->group = uint8_t_MAX;
     }
 
     if (grpNumMembers(psCommander->psGroup) < cmdDroidMaxGroup(psCommander))
     {
         grpJoin(psCommander->psGroup, psDroid);
-        psDroid->group = UBYTE_MAX;
+        psDroid->group = uint8_t_MAX;
 
         // set the secondary states for the unit
         secondarySetState(psDroid, DSO_ATTACK_RANGE, (SECONDARY_STATE)(psCommander->secondaryOrder & DSS_ARANGE_MASK));
@@ -105,7 +105,7 @@ void cmdDroidAddDroid(DROID *psCommander, DROID *psDroid)
 }
 
 // return the current target designator for a player
-DROID *cmdDroidGetDesignator(UDWORD player)
+DROID *cmdDroidGetDesignator(uint32_t player)
 {
     return apsCmdDesignator[player];
 }
@@ -122,15 +122,15 @@ void cmdDroidSetDesignator(DROID *psDroid)
 }
 
 // set the current target designator for a player
-void cmdDroidClearDesignator(UDWORD player)
+void cmdDroidClearDesignator(uint32_t player)
 {
     apsCmdDesignator[player] = NULL;
 }
 
 // get the index of the command droid
-SDWORD cmdDroidGetIndex(DROID *psCommander)
+int32_t cmdDroidGetIndex(DROID *psCommander)
 {
-    SDWORD	index = 1;
+    int32_t	index = 1;
     DROID	*psCurr;
 
     if (psCommander->droidType != DROID_COMMAND)

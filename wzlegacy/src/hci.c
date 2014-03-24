@@ -75,7 +75,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // Empty edit window
 //#define EDIT_OPTIONS
 
-static UDWORD		newMapWidth, newMapHeight;
+static uint32_t		newMapWidth, newMapHeight;
 
 #define RETXOFFSET (0)// Reticule button offset
 #define RETYOFFSET (0)
@@ -94,15 +94,15 @@ enum  				  // Reticule button indecies.
 
 typedef struct
 {
-    UDWORD id;
+    uint32_t id;
     BOOL Enabled;
     BOOL Hidden;
 } BUTSTATE;
 
 typedef struct
 {
-    SWORD x;
-    SWORD y;
+    int16_t x;
+    int16_t y;
 } BUTOFFSET;
 
 BUTOFFSET ReticuleOffsets[NUMRETBUTS] =  	// Reticule button form relative positions.
@@ -130,18 +130,18 @@ BUTSTATE ReticuleEnabled[NUMRETBUTS] =  	// Reticule button enable states.
 
 // Set the x,y members of a button widget initialiser given a reticule button index.
 //
-static void SetReticuleButPos(UWORD ButId, W_BUTINIT *sButInit)
+static void SetReticuleButPos(uint16_t ButId, W_BUTINIT *sButInit)
 {
     ASSERT( ButId < NUMRETBUTS,"SetReticuleButPos : Bad button index" );
 
-    sButInit->x = (SWORD)(ReticuleOffsets[ButId].x + RETXOFFSET);
-    sButInit->y = (SWORD)(ReticuleOffsets[ButId].y + RETYOFFSET);
+    sButInit->x = (int16_t)(ReticuleOffsets[ButId].x + RETXOFFSET);
+    sButInit->y = (int16_t)(ReticuleOffsets[ButId].y + RETYOFFSET);
 }
 
 
 static BOOL ClosingObject = false;
 static BOOL ClosingStats = false;
-static UDWORD	keyButtonMapping = 0;
+static uint32_t	keyButtonMapping = 0;
 BOOL ClosingMessageView = false;
 BOOL ClosingIntelMap = false;
 BOOL ClosingOrder = false;
@@ -278,7 +278,7 @@ PIELIGHT			outlineNotOK;
 BOOL				outlineTile = false;
 
 // The last widget ID from widgRunScreen
-UDWORD				intLastWidget;
+uint32_t				intLastWidget;
 
 INTMODE intMode;
 
@@ -323,26 +323,26 @@ static BOOL				objectsChanged;
 
 /* The current stats list being used by the stats screen */
 static BASE_STATS		**ppsStatsList;
-static UDWORD			numStatsListEntries;
+static uint32_t			numStatsListEntries;
 
 /* The selected object on the object screen when the stats screen is displayed */
 static BASE_OBJECT		*psObjSelected;
 
 /* The button ID of the objects stat when the stat screen is displayed */
-UDWORD			objStatID;
+uint32_t			objStatID;
 
 /* The button ID of an objects stat on the stat screen if it is locked down */
-static UDWORD			statID;
+static uint32_t			statID;
 
 /* The stats for the current getStructPos */
 static BASE_STATS		*psPositionStats;
 
 /* The number of tabs on the object form (used by intObjDestroyed to tell whether */
 /* the number of tabs has changed).                                             */
-static UWORD			objNumTabs;
+static uint16_t			objNumTabs;
 
 /* The tab positions of the object form when the structure form is displayed */
-static UWORD			objMajor, objMinor;
+static uint16_t			objMajor, objMinor;
 
 /* Store a list of stats pointers from the main structure stats */
 static STRUCTURE_STATS	**apsStructStatsList;
@@ -358,20 +358,20 @@ DROID_TEMPLATE			*psCurrTemplate = NULL;
 static FEATURE_STATS	**apsFeatureList;
 
 /*Store a list of research indices which can be performed*/
-static UWORD			*pList;
-static UWORD			*pSList;
+static uint16_t			*pList;
+static uint16_t			*pSList;
 
 /* Store a list of component stats pointers for the design screen */
-UDWORD			numComponent;
+uint32_t			numComponent;
 COMPONENT_STATS	**apsComponentList;
-UDWORD			numExtraSys;
+uint32_t			numExtraSys;
 COMPONENT_STATS	**apsExtraSysList;
 
 //defined in HCI.h now
 // store the objects that are being used for the object bar
 //#define			MAX_OBJECTS		15//10 we need at least 15 for the 3 different types of factory
 BASE_OBJECT		**apsObjectList;
-SDWORD			numObjects;
+int32_t			numObjects;
 //this list is used for sorting the objects - at the mo' this is just factories
 BASE_OBJECT		**apsListToOrder;
 /*max size required to store unordered factories */
@@ -382,10 +382,10 @@ BASE_OBJECT		**apsListToOrder;
 extern DROID_TEMPLATE	sCurrDesign;
 
 /* The button id of the component that is in the design */
-//UDWORD			desCompID;
+//uint32_t			desCompID;
 
 /* The button id of the droid template that has been locked down */
-//UDWORD			droidTemplID;
+//uint32_t			droidTemplID;
 
 /* Flags to check whether the power bars are currently on the screen */
 static BOOL				powerBarUp = false;
@@ -394,7 +394,7 @@ static BASE_OBJECT		*psStatsScreenOwner = NULL;
 
 #ifdef INCLUDE_PRODSLIDER
 // Size of a production run for manufacturing.
-static UBYTE			ProductionRun = 1;
+static uint8_t			ProductionRun = 1;
 #endif
 
 /* pointer to hold the imd to use for a new template in the design screen */
@@ -413,22 +413,22 @@ static BOOL intUpdateObject(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,BOOL
 void intRemoveObject(void);
 static void intRemoveObjectNoAnim(void);
 /* Process the object widgets */
-static void intProcessObject(UDWORD id);
+static void intProcessObject(uint32_t id);
 /* Get the object refered to by a button ID on the object screen.
  * This works for droid or structure buttons
  */
-static BASE_OBJECT *intGetObject(UDWORD id);
+static BASE_OBJECT *intGetObject(uint32_t id);
 /* Reset the stats button for an object */
-static void intSetStats(UDWORD id, BASE_STATS *psStats);
+static void intSetStats(uint32_t id, BASE_STATS *psStats);
 
 /* Add the stats widgets to the widget screen */
 /* If psSelected != NULL it specifies which stat should be hilited */
-static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
+static BOOL intAddStats(BASE_STATS **ppsStatsList, uint32_t numStats,
                         BASE_STATS *psSelected, BASE_OBJECT *psOwner);
 /* Process return codes from the stats screen */
-static void intProcessStats(UDWORD id);
+static void intProcessStats(uint32_t id);
 // clean up when an object dies
-static void intObjectDied(UDWORD objID);
+static void intObjectDied(uint32_t objID);
 
 /* Add the build widgets to the widget screen */
 /* If psSelected != NULL it specifies which droid should be hilited */
@@ -450,9 +450,9 @@ static void intStartStructPosition(BASE_STATS *psStats);
 static void intStopStructPosition(void);
 
 static STRUCTURE *CurrentStruct = NULL;
-static SWORD CurrentStructType = 0;
+static int16_t CurrentStructType = 0;
 static DROID *CurrentDroid = NULL;
-static SWORD CurrentDroidType = 0;
+static int16_t CurrentDroidType = 0;
 
 /******************Power Bar Stuff!**************/
 /* Add the power bars */
@@ -467,32 +467,32 @@ static void intRunPower(void);
 static void intRunStats(void);
 
 /*Deals with the RMB click for the stats screen */
-static void intStatsRMBPressed(UDWORD id);
+static void intStatsRMBPressed(uint32_t id);
 
 /*Deals with the RMB click for the object screen */
-static void intObjectRMBPressed(UDWORD id);
+static void intObjectRMBPressed(uint32_t id);
 
 /*Deals with the RMB click for the Object Stats buttons */
-static void intObjStatRMBPressed(UDWORD id);
+static void intObjStatRMBPressed(uint32_t id);
 
 //proximity display stuff
-static void processProximityButtons(UDWORD id);
+static void processProximityButtons(uint32_t id);
 
 static void intInitialiseReticule(void);
-static DROID *intCheckForDroid(UDWORD droidType);
-static STRUCTURE *intCheckForStructure(UDWORD structType);
+static DROID *intCheckForDroid(uint32_t droidType);
+static STRUCTURE *intCheckForStructure(uint32_t structType);
 
 static void intCheckReticuleButtons(void);
 
 // count the number of selected droids of a type
-static SDWORD intNumSelectedDroids(UDWORD droidType);
+static int32_t intNumSelectedDroids(uint32_t droidType);
 
 
 /***************************GAME CODE ****************************/
 /* Initialise the in game interface */
 BOOL intInitialise(void)
 {
-    UDWORD			comp, inc;
+    uint32_t			comp, inc;
 
     intInitialiseReticule();
 
@@ -529,11 +529,11 @@ BOOL intInitialise(void)
     }
 
     //create the list for the selected player
-    //needs to be UWORD sized for Patches
-    pList = (UWORD *) malloc(sizeof (UWORD) * MAXRESEARCH);
-    pSList = (UWORD *) malloc(sizeof (UWORD) * MAXRESEARCH);
-    //pList = (UBYTE *) malloc(sizeof (UBYTE) * MAXRESEARCH);
-    //pSList = (UBYTE *) malloc(sizeof (UBYTE) * MAXRESEARCH);
+    //needs to be uint16_t sized for Patches
+    pList = (uint16_t *) malloc(sizeof (uint16_t) * MAXRESEARCH);
+    pSList = (uint16_t *) malloc(sizeof (uint16_t) * MAXRESEARCH);
+    //pList = (uint8_t *) malloc(sizeof (uint8_t) * MAXRESEARCH);
+    //pSList = (uint8_t *) malloc(sizeof (uint8_t) * MAXRESEARCH);
 
     if (pList == NULL)
     {
@@ -772,7 +772,7 @@ static FLAG_POSITION *intFindSelectedDelivPoint(void)
 //
 static void intDoScreenRefresh(void)
 {
-    UWORD			objMajor=0, objMinor=0, statMajor=0, statMinor=0;
+    uint16_t			objMajor=0, objMinor=0, statMajor=0, statMinor=0;
     FLAG_POSITION	*psFlag;
 
     if(IntRefreshPending)
@@ -1025,9 +1025,9 @@ static void intRemoveEdit(void)
 /* Get  and validate the new map size from the options screen */
 static void intGetMapSize(void)
 {
-    SDWORD editWidth, editHeight;
+    int32_t editWidth, editHeight;
     char aText[WIDG_MAXSTR];
-    UDWORD i, tmp, bitCount;
+    uint32_t i, tmp, bitCount;
     BOOL widthChanged = false, heightChanged = false;
     const char *pStr = widgGetString(psWScreen, IDOPT_MAPWIDTH);
 
@@ -1329,9 +1329,9 @@ void intResetScreen(BOOL NoAnim)
 
 // calulate the center world coords for a structure stat given
 // top left tile coords
-static void intCalcStructCenter(STRUCTURE_STATS *psStats, UDWORD tilex, UDWORD tiley, UDWORD *pcx, UDWORD *pcy)
+static void intCalcStructCenter(STRUCTURE_STATS *psStats, uint32_t tilex, uint32_t tiley, uint32_t *pcx, uint32_t *pcy)
 {
-    SDWORD	width, height;
+    int32_t	width, height;
 
     width = psStats->baseWidth * TILE_UNITS;
     height = psStats->baseBreadth * TILE_UNITS;
@@ -1342,9 +1342,9 @@ static void intCalcStructCenter(STRUCTURE_STATS *psStats, UDWORD tilex, UDWORD t
 
 
 /* Process return codes from the Options screen */
-static void intProcessOptions(UDWORD id)
+static void intProcessOptions(uint32_t id)
 {
-    UDWORD i;
+    uint32_t i;
     DROID_TEMPLATE *psTempl;
     char saveName[PATH_MAX];
 
@@ -1488,7 +1488,7 @@ static void intProcessOptions(UDWORD id)
 
 
 /* Process return codes from the object placement stats screen */
-static void intProcessEditStats(UDWORD id)
+static void intProcessEditStats(uint32_t id)
 {
     if (id >= IDSTAT_START && id <= IDSTAT_END)
     {
@@ -1558,7 +1558,7 @@ static void intProcessEditStats(UDWORD id)
     else if (id == IDSTAT_TABSCRL_RIGHT) // user hit right scroll tab from DEBUG menu
     {
         W_TABFORM	*psTForm;
-        UWORD numTabs;
+        uint16_t numTabs;
 #ifdef  DEBUG_SCROLLTABS
         char buf[200];					// only used for debugging.
 #endif
@@ -1589,7 +1589,7 @@ static void intProcessEditStats(UDWORD id)
 
 #ifdef EDIT_OPTIONS
 /* Process return codes from the edit screen */
-static void intProcessEdit(UDWORD id)
+static void intProcessEdit(uint32_t id)
 {
     switch (id)
     {
@@ -1611,16 +1611,16 @@ static void intProcessEdit(UDWORD id)
 /* Run the widgets for the in game interface */
 INT_RETVAL intRunWidgets(void)
 {
-    UDWORD			retID;
+    uint32_t			retID;
 
     INT_RETVAL		retCode;
     BOOL			quitting = false;
-    UDWORD			structX,structY, structX2,structY2;
-    UWORD			objMajor, objMinor;
+    uint32_t			structX,structY, structX2,structY2;
+    uint16_t			objMajor, objMinor;
     STRUCTURE		*psStructure;
     DROID			*psDroid;
-    SDWORD			i;
-    UDWORD			widgOverID;
+    int32_t			i;
+    uint32_t			widgOverID;
 
     intDoScreenRefresh();
 
@@ -1644,7 +1644,7 @@ INT_RETVAL intRunWidgets(void)
         {
             if (apsObjectList[i] && apsObjectList[i]->died)
             {
-                intObjectDied((UDWORD)(i + IDOBJ_OBJSTART));
+                intObjectDied((uint32_t)(i + IDOBJ_OBJSTART));
                 apsObjectList[i] = NULL;
             }
         }
@@ -2217,9 +2217,9 @@ INT_RETVAL intRunWidgets(void)
 /* Set the shadow for the PowerBar */
 static void intRunPower(void)
 {
-    UDWORD				statID;
+    uint32_t				statID;
     BASE_STATS			*psStat;
-    UDWORD				quantity = 0;
+    uint32_t				quantity = 0;
     RESEARCH			*psResearch;
 
     /* Find out which button was hilited */
@@ -2280,9 +2280,9 @@ static void intRunPower(void)
 static void intRunStats(void)
 {
 #ifdef INCLUDE_PRODSLIDER
-    UDWORD				statID;
-    UDWORD				Power = 0;
-    UBYTE				Quantity;
+    uint32_t				statID;
+    uint32_t				Power = 0;
+    uint8_t				Quantity;
     BASE_OBJECT			*psOwner;
     STRUCTURE			*psStruct;
     FACTORY				*psFactory;
@@ -2312,7 +2312,7 @@ static void intRunStats(void)
             }
             else
             {
-                Quantity = (UBYTE)(widgGetSliderPos(psWScreen,IDSTAT_SLIDER) + 1);
+                Quantity = (uint8_t)(widgGetSliderPos(psWScreen,IDSTAT_SLIDER) + 1);
                 //Quantity = widgGetSliderPos(psWScreen,IDSTAT_SLIDER);
             }
         }
@@ -2327,7 +2327,7 @@ static void intRunStats(void)
                 Power = calcTemplatePower((DROID_TEMPLATE *)apsTemplateList[statID - IDSTAT_START]);
                 if (Power * Quantity > getPower(selectedPlayer))
                 {
-                    Quantity = (UBYTE)(getPower(selectedPlayer) / Power);
+                    Quantity = (uint8_t)(getPower(selectedPlayer) / Power);
                 }
             }
         }
@@ -2369,13 +2369,13 @@ static void intRunStats(void)
 
 
 /* Add the stats screen for a given object */
-static void intAddObjectStats(BASE_OBJECT *psObj, UDWORD id)
+static void intAddObjectStats(BASE_OBJECT *psObj, uint32_t id)
 {
     BASE_STATS		*psStats;
-    UWORD			statMajor = 0,statMinor = 0, newStatMajor, newStatMinor;
-    UDWORD			i,j, index;
-    UDWORD			count;
-    SDWORD			iconNumber, entryIN;
+    uint16_t			statMajor = 0,statMinor = 0, newStatMajor, newStatMinor;
+    uint32_t			i,j, index;
+    uint32_t			count;
+    int32_t			iconNumber, entryIN;
     W_TABFORM	    *psForm;
 
 
@@ -2437,7 +2437,7 @@ static void intAddObjectStats(BASE_OBJECT *psObj, UDWORD id)
             index = (RESEARCH *)psStats - asResearch;
         }
         //recalculate the list
-        numStatsListEntries = fillResearchList(pList,selectedPlayer, (UWORD)index, MAXRESEARCH);
+        numStatsListEntries = fillResearchList(pList,selectedPlayer, (uint16_t)index, MAXRESEARCH);
 
         //	-- Alex's reordering of the list
         // NOTE!  Do we even want this anymore, since we can have basically
@@ -2566,13 +2566,13 @@ static void intResetWindows(BASE_OBJECT *psObj)
 
 
 /* Process return codes from the object screen */
-static void intProcessObject(UDWORD id)
+static void intProcessObject(uint32_t id)
 {
     BASE_OBJECT		*psObj;
     STRUCTURE		*psStruct;
     BOOL IsDeliveryRepos = false;
-    SDWORD			butIndex;
-    UDWORD			statButID;
+    int32_t			butIndex;
+    uint32_t			statButID;
 
     ASSERT( widgGetFromID(psWScreen,IDOBJ_TABFORM) != NULL,"intProcessObject, missing form\n" );
 
@@ -2664,10 +2664,10 @@ static void intProcessObject(UDWORD id)
                             if (butIndex >= 0 && butIndex < IOBJ_MAX)
                             {
                                 if (((asJumpPos[butIndex].x == 0) && (asJumpPos[butIndex].y == 0)) ||
-                                        !DrawnInLastFrame((SDWORD)psObj->sDisplay.frameNumber) ||
+                                        !DrawnInLastFrame((int32_t)psObj->sDisplay.frameNumber) ||
                                         ((psObj->sDisplay.screenX > pie_GetVideoBufferWidth()) || (psObj->sDisplay.screenY > pie_GetVideoBufferHeight())))
                                 {
-                                    getPlayerPos((SDWORD *)&asJumpPos[butIndex].x, (SDWORD *)&asJumpPos[butIndex].y);
+                                    getPlayerPos((int32_t *)&asJumpPos[butIndex].x, (int32_t *)&asJumpPos[butIndex].y);
 
 
                                     setPlayerPos(psObj->pos.x, psObj->pos.y);
@@ -2776,7 +2776,7 @@ static void intProcessObject(UDWORD id)
 
 
 /* Process return codes from the stats screen */
-static void intProcessStats(UDWORD id)
+static void intProcessStats(uint32_t id)
 {
     BASE_STATS		*psStats;
     STRUCTURE		*psStruct;
@@ -2813,7 +2813,7 @@ static void intProcessStats(UDWORD id)
                 psStats = ppsStatsList[compIndex];
                 ASSERT_OR_RETURN( , psObjSelected != NULL, "Invalid structure pointer" );
                 ASSERT_OR_RETURN( , psStats != NULL, "Invalid template pointer" );
-                if (productionPlayer == (SBYTE)selectedPlayer)
+                if (productionPlayer == (int8_t)selectedPlayer)
                 {
                     FACTORY  *psFactory = (FACTORY *)((STRUCTURE *)psObjSelected)->pFunctionality;
 
@@ -3097,7 +3097,7 @@ static void intProcessStats(UDWORD id)
     else if (id == IDSTAT_TABSCRL_RIGHT)	// user hit right scroll tab from BUILD menu
     {
         W_TABFORM	*psTForm;
-        UWORD numTabs;
+        uint16_t numTabs;
 #ifdef  DEBUG_SCROLLTABS
         char buf[200];					// only used for debugging.
 #endif
@@ -3125,7 +3125,7 @@ static void intProcessStats(UDWORD id)
 
 
 /* Set the map view point to the world coordinates x,y */
-void intSetMapPos(UDWORD x, UDWORD y)
+void intSetMapPos(uint32_t x, uint32_t y)
 {
     if (!driveModeActive())
     {
@@ -3251,7 +3251,7 @@ void intCommanderSelected(DROID *psDroid)
     widgHide(psWScreen, IDOBJ_FORM);
 }
 
-extern void FinishStructurePosition(UDWORD xPos,UDWORD yPos,void *UserData);
+extern void FinishStructurePosition(uint32_t xPos,uint32_t yPos,void *UserData);
 
 /* Start looking for a structure location */
 static void intStartStructPosition(BASE_STATS *psStats)
@@ -3360,10 +3360,10 @@ void intNewObj(BASE_OBJECT *psObj)
 
 
 // clean up when an object dies
-static void intObjectDied(UDWORD objID)
+static void intObjectDied(uint32_t objID)
 {
     RENDERED_BUTTON		*psBut;
-    UDWORD				statsID, gubbinsID;
+    uint32_t				statsID, gubbinsID;
 
     // clear the object button
     psBut = (RENDERED_BUTTON *)widgGetUserData(psWScreen, objID);
@@ -3398,7 +3398,7 @@ static void intObjectDied(UDWORD objID)
 /* Tell the interface a construction droid has finished building */
 void intBuildFinished(DROID *psDroid)
 {
-    UDWORD	droidID;
+    uint32_t	droidID;
     DROID	*psCurr;
 
     ASSERT( psDroid != NULL,
@@ -3428,7 +3428,7 @@ void intBuildFinished(DROID *psDroid)
 /* Tell the interface a construction droid has started building*/
 void intBuildStarted(DROID *psDroid)
 {
-    UDWORD	droidID;
+    uint32_t	droidID;
     DROID	*psCurr;
 
     ASSERT( psDroid != NULL,
@@ -3488,7 +3488,7 @@ void intDemolishCancel(void)
 static void orderResearch(void)
 {
     BASE_OBJECT *psTemp;
-    UDWORD i, maxLoop  = (UDWORD)(numObjects / 2);
+    uint32_t i, maxLoop  = (uint32_t)(numObjects / 2);
 
     for (i = 0; i < maxLoop; i++)
     {
@@ -3502,7 +3502,7 @@ static void orderResearch(void)
 // reorder the commanders
 static void orderDroids(void)
 {
-    SDWORD i, j;
+    int32_t i, j;
     BASE_OBJECT *psTemp;
 
     debug( LOG_NEVER, "orderUnit\n" );
@@ -3529,8 +3529,8 @@ cyborg factories 1-5 and then Vtol factories 1-5*/
 static void orderFactories(void)
 {
     STRUCTURE *psStruct, *psNext;
-    SDWORD entry = 0;
-    UDWORD inc = 0, type = FACTORY_FLAG, objectInc = 0;
+    int32_t entry = 0;
+    uint32_t inc = 0, type = FACTORY_FLAG, objectInc = 0;
 
     ASSERT(numObjects <= NUM_FACTORY_TYPES * MAX_FACTORY, "too many factories!");
 
@@ -3543,7 +3543,7 @@ static void orderFactories(void)
         for (psStruct = (STRUCTURE *)apsListToOrder[objectInc]; psStruct != NULL; psStruct = psNext)
         {
             psNext = (STRUCTURE *)apsListToOrder[++objectInc];
-            if ((SDWORD)objectInc >= numObjects)
+            if ((int32_t)objectInc >= numObjects)
             {
                 psNext = NULL;
             }
@@ -3611,7 +3611,7 @@ static void orderObjectInterface(void)
 /* Tell the interface a factory has completed building ALL droids */
 void intManufactureFinished(STRUCTURE *psBuilding)
 {
-    SDWORD		    structureID;
+    int32_t		    structureID;
     STRUCTURE       *psCurr;
     BASE_OBJECT	*psObj;
 
@@ -3661,7 +3661,7 @@ void intManufactureFinished(STRUCTURE *psBuilding)
 /* Tell the interface a research facility has completed a topic */
 void intResearchFinished(STRUCTURE *psBuilding)
 {
-    //SDWORD		    structureID;
+    //int32_t		    structureID;
     //STRUCTURE       *psCurr;
     //BASE_OBJECT     *psObj;
 
@@ -3718,16 +3718,16 @@ void intResearchFinished(STRUCTURE *psBuilding)
  * buttons per page.
  * A simple div just doesn't quite do it....
  */
-UWORD numForms(UDWORD total, UDWORD perForm)
+uint16_t numForms(uint32_t total, uint32_t perForm)
 {
     /* If the buttons fit exactly, don't have to add one */
     if (total != 0 && (total % perForm) == 0)
     {
-        return (UWORD)(total/perForm);
+        return (uint16_t)(total/perForm);
     }
 
     /* Otherwise add one to the div */
-    return (UWORD)(total/perForm + 1);
+    return (uint16_t)(total/perForm + 1);
 }
 
 
@@ -3746,7 +3746,7 @@ BOOL intAddReticule(void)
         sFormInit.id = IDRET_FORM;
         sFormInit.style = WFORM_PLAIN;
         sFormInit.x = RET_X;
-        sFormInit.y = (SWORD)RET_Y;
+        sFormInit.y = (int16_t)RET_Y;
         sFormInit.width = RET_FORMWIDTH;
         sFormInit.height = 	RET_FORMHEIGHT;
         sFormInit.pDisplay = intDisplayPlainForm;
@@ -3924,8 +3924,8 @@ BOOL intAddPower(void)
     //start the power bar off in view (default)
     sBarInit.style = WBAR_TROUGH;
     sBarInit.orientation = WBAR_LEFT;
-    sBarInit.x = (SWORD)POW_X;
-    sBarInit.y = (SWORD)POW_Y;
+    sBarInit.x = (int16_t)POW_X;
+    sBarInit.y = (int16_t)POW_Y;
     sBarInit.width = POW_BARWIDTH;
     sBarInit.height = iV_GetImageHeight(IntImages,IMAGE_PBAR_EMPTY);
     sBarInit.sCol.byte.r = POW_CLICKBARMAJORRED;
@@ -3958,7 +3958,7 @@ BOOL intAddPower(void)
 
 /* Set the shadow power for the selected player */
 // Now just sets the global variable ManuPower which is used in the power bar display callback. PD
-void intSetShadowPower(UDWORD quantity)
+void intSetShadowPower(uint32_t quantity)
 {
     ManuPower = quantity;
 }
@@ -3971,7 +3971,7 @@ BOOL intAddOptions(void)
     W_EDBINIT	sEdInit;
     W_BUTINIT	sButInit;
     W_LABINIT	sLabInit;
-    UDWORD		player;
+    uint32_t		player;
     char		aText[WIDG_MAXSTR];
 
 //	widgEndScreen(psWScreen);
@@ -4279,12 +4279,12 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
     W_BARINIT		sBarInit;
     W_BARINIT		sBarInit2;
     W_BUTINIT		sButInit;
-    UDWORD			displayForm;
-    UDWORD			i, statID=0;
-    SDWORD			objLoop;
+    uint32_t			displayForm;
+    uint32_t			i, statID=0;
+    int32_t			objLoop;
     BASE_OBJECT		*psObj, *psFirst;
     BASE_STATS		*psStats;
-    SDWORD			BufferID;
+    int32_t			BufferID;
     DROID			*Droid;
     STRUCTURE		*Structure;
     W_LABINIT		sLabInit;
@@ -4451,8 +4451,8 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
     sFormInit.formID = 0;
     sFormInit.id = IDOBJ_FORM;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.x = (SWORD)OBJ_BACKX;
-    sFormInit.y = (SWORD)OBJ_BACKY;
+    sFormInit.x = (int16_t)OBJ_BACKX;
+    sFormInit.y = (int16_t)OBJ_BACKY;
     sFormInit.width = OBJ_BACKWIDTH;
     sFormInit.height = 	OBJ_BACKHEIGHT;
 // If the window was closed then do open animation.
@@ -4483,7 +4483,7 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
     sButInit.pTip = _("Close");
     sButInit.FontID = font_regular;
     sButInit.pDisplay = intDisplayImageHilight;
-    sButInit.UserData = PACKDWORD_TRI(0,IMAGE_CLOSEHILIGHT , IMAGE_CLOSE);
+    sButInit.UserData = PACKint32_t_TRI(0,IMAGE_CLOSEHILIGHT , IMAGE_CLOSE);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -4629,7 +4629,7 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
     sLabInitCmdExp.FontID = font_regular;
 
     displayForm = 0;
-    for(i=0; i<(UDWORD)numObjects; i++)
+    for(i=0; i<(uint32_t)numObjects; i++)
     {
         psObj = apsObjectList[i];
         if(psObj->died == 0)  	// Don't add the button if the objects dead.
@@ -4649,7 +4649,7 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
                         ASSERT_OR_RETURN( false, Droid->asBits[COMP_CONSTRUCT].nStat,"Invalid droid type" );
                         ASSERT_OR_RETURN( false, compIndex < numConstructStats, "Invalid range referenced for numConstructStats, %d > %d", compIndex, numConstructStats);
                         psStats = (BASE_STATS *)(asConstructStats + compIndex);
-                        sBarInit2.size = (UWORD)constructorPoints((CONSTRUCT_STATS *)psStats, Droid->player);
+                        sBarInit2.size = (uint16_t)constructorPoints((CONSTRUCT_STATS *)psStats, Droid->player);
                         if (sBarInit2.size > WBAR_SCALE)
                         {
                             sBarInit2.size = WBAR_SCALE;
@@ -4669,7 +4669,7 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
                         case REF_FACTORY:
                         case REF_CYBORG_FACTORY:
                         case REF_VTOL_FACTORY:
-                            sBarInit2.size = (UWORD)((FACTORY *)Structure->
+                            sBarInit2.size = (uint16_t)((FACTORY *)Structure->
                                                      pFunctionality)->productionOutput;	// Need to scale?
                             if (sBarInit2.size > WBAR_SCALE)
                             {
@@ -4681,7 +4681,7 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
                             break;
 
                         case REF_RESEARCH:
-                            sBarInit2.size = (UWORD)((RESEARCH_FACILITY *)Structure->
+                            sBarInit2.size = (uint16_t)((RESEARCH_FACILITY *)Structure->
                                                      pFunctionality)->researchPoints;	// Need to scale?
                             if (sBarInit2.size > WBAR_SCALE)
                             {
@@ -4946,7 +4946,7 @@ static BOOL intAddObjectWindow(BASE_OBJECT *psObjects, BASE_OBJECT *psSelected,B
     }
 
 //	widgStartScreen(psWScreen);
-    widgSetTabs(psWScreen, IDOBJ_TABFORM, (UWORD)displayForm, 0);
+    widgSetTabs(psWScreen, IDOBJ_TABFORM, (uint16_t)displayForm, 0);
 
     // if the selected object isn't on one of the main buttons (too many objects)
     // reset the selected pointer
@@ -5299,7 +5299,7 @@ void HandleClosingWindows(void)
     //	Widg = widgGetFromID(psWScreen,IDMISSIONRES_FORM);
     //	if(Widg) {
 // Has the window finished closing?
-    //		if( ((UDWORD)Widg->pUserData) ) {
+    //		if( ((uint32_t)Widg->pUserData) ) {
     //			intRemoveMissionResultNoAnim();
     //			resetMissionPauseState();	//reset the pauses
     //		}
@@ -5334,7 +5334,7 @@ void HandleClosingWindows(void)
 /**
  * Get the object refered to by a button ID on the object screen. This works for object or stats buttons.
  */
-static BASE_OBJECT *intGetObject(UDWORD id)
+static BASE_OBJECT *intGetObject(uint32_t id)
 {
     BASE_OBJECT		*psObj;
 
@@ -5345,7 +5345,7 @@ static BASE_OBJECT *intGetObject(UDWORD id)
     }
 
     /* Find the object that the ID refers to */
-    ASSERT_OR_RETURN(NULL, (SDWORD)id - IDOBJ_OBJSTART >= 0 && (SDWORD)id - IDOBJ_OBJSTART < numObjects, "Invalid button ID %u", id);
+    ASSERT_OR_RETURN(NULL, (int32_t)id - IDOBJ_OBJSTART >= 0 && (int32_t)id - IDOBJ_OBJSTART < numObjects, "Invalid button ID %u", id);
     psObj = apsObjectList[id - IDOBJ_OBJSTART];
 
     return psObj;
@@ -5353,13 +5353,13 @@ static BASE_OBJECT *intGetObject(UDWORD id)
 
 
 /* Reset the stats button for an object */
-static void intSetStats(UDWORD id, BASE_STATS *psStats)
+static void intSetStats(uint32_t id, BASE_STATS *psStats)
 {
     W_FORMINIT	sFormInit;
     W_BARINIT	sBarInit;
     W_LABINIT	sLabInit;
-    UDWORD		butPerForm, butPos;
-    SDWORD BufferID;
+    uint32_t		butPerForm, butPos;
+    int32_t BufferID;
     BASE_OBJECT	*psObj;
 
     /* Update the button on the object screen */
@@ -5370,12 +5370,12 @@ static void intSetStats(UDWORD id, BASE_STATS *psStats)
 
     sFormInit.formID = IDOBJ_TABFORM;
     butPerForm = (OBJ_WIDTH - OBJ_GAP) / (OBJ_BUTWIDTH + OBJ_GAP);
-    sFormInit.majorID = (UWORD)((id - IDOBJ_STATSTART) / butPerForm);
+    sFormInit.majorID = (uint16_t)((id - IDOBJ_STATSTART) / butPerForm);
     sFormInit.minorID = 0;
     sFormInit.id = id;
     sFormInit.style = WFORM_CLICKABLE | WFORM_SECONDARY;
     butPos = (id - IDOBJ_STATSTART) % butPerForm;
-    sFormInit.x = (UWORD)(butPos * (OBJ_BUTWIDTH + OBJ_GAP) + OBJ_STARTX);
+    sFormInit.x = (uint16_t)(butPos * (OBJ_BUTWIDTH + OBJ_GAP) + OBJ_STARTX);
     sFormInit.y = OBJ_STATSTARTY;
     sFormInit.width = OBJ_BUTWIDTH;
     sFormInit.height = OBJ_BUTHEIGHT;
@@ -5491,15 +5491,15 @@ static void intSetStats(UDWORD id, BASE_STATS *psStats)
 /* Add the stats widgets to the widget screen */
 /* If psSelected != NULL it specifies which stat should be hilited
    psOwner specifies which object is hilighted on the object bar for this stat*/
-static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
+static BOOL intAddStats(BASE_STATS **ppsStatsList, uint32_t numStats,
                         BASE_STATS *psSelected, BASE_OBJECT *psOwner)
 {
     W_FORMINIT			sFormInit;
     W_BUTINIT			sButInit;
     W_FORMINIT			sBFormInit;
     W_BARINIT			sBarInit;
-    UDWORD				i, butPerForm, statForm;
-    SDWORD				BufferID;
+    uint32_t				i, butPerForm, statForm;
+    int32_t				BufferID;
     BASE_STATS			*Stat;
     BOOL				Animate = true;
     W_LABINIT			sLabInit;
@@ -5549,7 +5549,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
     sFormInit.id = IDSTAT_FORM;
     sFormInit.style = WFORM_PLAIN;
     sFormInit.x = STAT_X;
-    sFormInit.y = (SWORD)STAT_Y;
+    sFormInit.y = (int16_t)STAT_Y;
     sFormInit.width = STAT_WIDTH;
     sFormInit.height = 	STAT_HEIGHT;
 // If the window was closed then do open animation.
@@ -5587,7 +5587,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
         sButInit.pTip = _("Infinite Production");
         sButInit.FontID = font_regular;
         sButInit.pDisplay = intDisplayButtonPressed;
-        sButInit.UserData = PACKDWORD_TRI(IMAGE_INFINITE_DOWN, IMAGE_INFINITE_HI, IMAGE_INFINITE_UP);
+        sButInit.UserData = PACKint32_t_TRI(IMAGE_INFINITE_DOWN, IMAGE_INFINITE_HI, IMAGE_INFINITE_UP);
         if (!widgAddButton(psWScreen, &sButInit))
         {
             return false;
@@ -5598,7 +5598,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
         sLabInit.formID = IDSTAT_FORM;	//0;
         sLabInit.id = IDSTAT_SLIDERCOUNT;
         sLabInit.style = WLAB_PLAIN;
-        sLabInit.x = (SWORD)(STAT_SLDX + STAT_SLDWIDTH + sButInit.width + 2);
+        sLabInit.x = (int16_t)(STAT_SLDX + STAT_SLDWIDTH + sButInit.width + 2);
         sLabInit.y = STAT_SLDY + 3;
         sLabInit.width = 16;
         sLabInit.height = 16;
@@ -5635,7 +5635,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
                 }
                 else
                 {
-                    sSldInit.pos = (UWORD)psFactory->quantity;
+                    sSldInit.pos = (uint16_t)psFactory->quantity;
                 }
             }
         }
@@ -5684,7 +5684,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
         sButInit.pTip = _("Loop Production");
         sButInit.FontID = font_regular;
         sButInit.pDisplay = intDisplayButtonPressed;
-        sButInit.UserData = PACKDWORD_TRI(IMAGE_LOOP_DOWN, IMAGE_LOOP_HI, IMAGE_LOOP_UP);
+        sButInit.UserData = PACKint32_t_TRI(IMAGE_LOOP_DOWN, IMAGE_LOOP_HI, IMAGE_LOOP_UP);
 
         if (!widgAddButton(psWScreen, &sButInit))
         {
@@ -5705,7 +5705,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
         sLabInit.formID = IDSTAT_FORM;
         sLabInit.id = IDSTAT_LOOP_LABEL;
         sLabInit.style = WLAB_PLAIN | WIDG_HIDDEN;
-        sLabInit.x = (UWORD)(sButInit.x - 15);
+        sLabInit.x = (uint16_t)(sButInit.x - 15);
         sLabInit.y = sButInit.y;
         sLabInit.width = 12;
         sLabInit.height = 15;
@@ -5750,7 +5750,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
     sButInit.pTip = _("Close");
     sButInit.FontID = font_regular;
     sButInit.pDisplay = intDisplayImageHilight;
-    sButInit.UserData = PACKDWORD_TRI(0,IMAGE_CLOSEHILIGHT , IMAGE_CLOSE);
+    sButInit.UserData = PACKint32_t_TRI(0,IMAGE_CLOSEHILIGHT , IMAGE_CLOSE);
     if (!widgAddButton(psWScreen, &sButInit))
     {
         return false;
@@ -5775,7 +5775,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
         sButInit.pTip = _("Tab Scroll left");
         sButInit.FontID = font_regular;
         sButInit.pDisplay = intDisplayImageHilight;
-        sButInit.UserData = PACKDWORD_TRI(0, IMAGE_LFTTABD, IMAGE_LFTTAB);
+        sButInit.UserData = PACKint32_t_TRI(0, IMAGE_LFTTABD, IMAGE_LFTTAB);
         if (!widgAddButton(psWScreen, &sButInit))
         {
             return false;
@@ -5792,7 +5792,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
         sButInit.pTip = _("Tab Scroll right");
         sButInit.FontID = font_regular;
         sButInit.pDisplay = intDisplayImageHilight;
-        sButInit.UserData = PACKDWORD_TRI(0, IMAGE_RGTTABD, IMAGE_RGTTAB);
+        sButInit.UserData = PACKint32_t_TRI(0, IMAGE_RGTTABD, IMAGE_RGTTAB);
         if (!widgAddButton(psWScreen, &sButInit))
         {
             return false;
@@ -5919,8 +5919,8 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
         {
 
             //sBarInit.pTip = _("Build Speed");
-            //sBarInit.size = (UWORD)(((STRUCTURE_STATS*)Stat)->buildPoints / BUILDPOINTS_STRUCTDIV);
-            sBarInit.size = (UWORD)(((STRUCTURE_STATS *)Stat)->powerToBuild /
+            //sBarInit.size = (uint16_t)(((STRUCTURE_STATS*)Stat)->buildPoints / BUILDPOINTS_STRUCTDIV);
+            sBarInit.size = (uint16_t)(((STRUCTURE_STATS *)Stat)->powerToBuild /
                                     POWERPOINTS_DROIDDIV);
             if(sBarInit.size > 100)
             {
@@ -5939,8 +5939,8 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
                  Stat->ref < REF_TEMPLATE_START + REF_RANGE)  	// It's a droid.
         {
 
-            //sBarInit.size = (UWORD)(((DROID_TEMPLATE*)Stat)->buildPoints  / BUILDPOINTS_DROIDDIV);
-            sBarInit.size = (UWORD)(((DROID_TEMPLATE *)Stat)->powerPoints /
+            //sBarInit.size = (uint16_t)(((DROID_TEMPLATE*)Stat)->buildPoints  / BUILDPOINTS_DROIDDIV);
+            sBarInit.size = (uint16_t)(((DROID_TEMPLATE *)Stat)->powerPoints /
                                     POWERPOINTS_DROIDDIV);
             //sBarInit.pTip = _("Power Usage");
             if(sBarInit.size > 100)
@@ -5984,7 +5984,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
             widgAddLabel(psWScreen, &sLabInit);
 
             //add power bar as well
-            sBarInit.size = (UWORD)(((RESEARCH *)Stat)->researchPower /
+            sBarInit.size = (uint16_t)(((RESEARCH *)Stat)->researchPower /
                                     POWERPOINTS_DROIDDIV);
             //sBarInit.pTip = _("Power Usage");
             if(sBarInit.size > 100)
@@ -5997,7 +5997,7 @@ static BOOL intAddStats(BASE_STATS **ppsStatsList, UDWORD numStats,
             if(bMultiPlayer)
             {
                 STRUCTURE *psOtherStruct;
-                UBYTE	ii;
+                uint8_t	ii;
                 for(ii=0; ii<MAX_PLAYERS; ii++)
                 {
                     if(ii != selectedPlayer && aiCheckAlliances(selectedPlayer,ii))
@@ -6070,7 +6070,7 @@ donelab:
     /* Set the correct page and button if necessary */
     if (statID)
     {
-        widgSetTabs(psWScreen, IDSTAT_TABFORM, (UWORD)statForm, 0);
+        widgSetTabs(psWScreen, IDSTAT_TABFORM, (uint16_t)statForm, 0);
         widgSetButtonState(psWScreen, statID, WBUT_CLICKLOCK);
     }
 
@@ -6104,7 +6104,7 @@ donelab:
 /* Select a command droid */
 static BOOL selectCommand(BASE_OBJECT *psObj)
 {
-//	UDWORD	i;
+//	uint32_t	i;
     DROID	*psDroid;
 
     ASSERT( psObj != NULL && psObj->type == OBJ_DROID,
@@ -6142,7 +6142,7 @@ static BOOL setCommandStats(WZ_DECL_UNUSED BASE_OBJECT *psObj, WZ_DECL_UNUSED BA
 /* Select a construction droid */
 static BOOL selectConstruction(BASE_OBJECT *psObj)
 {
-//	UDWORD	i;
+//	uint32_t	i;
     DROID	*psDroid;
 
     ASSERT( psObj != NULL && psObj->type == OBJ_DROID,
@@ -6173,7 +6173,7 @@ static BASE_STATS *getConstructionStats(BASE_OBJECT *psObj)
     DROID *psDroid = (DROID *)psObj;
     BASE_STATS *Stats;
     BASE_OBJECT *Structure;
-    UDWORD x, y;
+    uint32_t x, y;
 
     ASSERT( psObj != NULL && psObj->type == OBJ_DROID,
             "getConstructionStats: invalid droid pointer" );
@@ -6313,7 +6313,7 @@ static BOOL setResearchStats(BASE_OBJECT *psObj, BASE_STATS *psStats)
     STRUCTURE			*psBuilding;
     RESEARCH			*pResearch;
     PLAYER_RESEARCH		*pPlayerRes;
-    UDWORD				count;
+    uint32_t				count;
     RESEARCH_FACILITY	*psResFacilty;
 
     ASSERT( psObj != NULL && psObj->type == OBJ_STRUCTURE,
@@ -6479,7 +6479,7 @@ static BOOL setManufactureStats(BASE_OBJECT *psObj, BASE_STATS *psStats)
         else
         {*/
 //#ifdef INCLUDE_PRODSLIDER
-        widgSetSliderPos(psWScreen, IDSTAT_SLIDER, (UWORD)(ProductionRun-1));
+        widgSetSliderPos(psWScreen, IDSTAT_SLIDER, (uint16_t)(ProductionRun-1));
 //#endif
         //}
 
@@ -6594,7 +6594,7 @@ static BOOL intAddCommand(DROID *psSelected)
 
 
 /*Deals with the RMB click for the stats screen */
-static void intStatsRMBPressed(UDWORD id)
+static void intStatsRMBPressed(uint32_t id)
 {
     DROID_TEMPLATE		*psStats;
 #ifdef INCLUDE_FACTORYLISTS
@@ -6612,7 +6612,7 @@ static void intStatsRMBPressed(UDWORD id)
 
         ASSERT_OR_RETURN( , psObjSelected != NULL, "Invalid structure pointer");
         ASSERT_OR_RETURN( , psStats != NULL, "Invalid template pointer");
-        if (productionPlayer == (SBYTE)selectedPlayer)
+        if (productionPlayer == (int8_t)selectedPlayer)
         {
             FACTORY  *psFactory = (FACTORY *)((STRUCTURE *)psObjSelected)->pFunctionality;
 
@@ -6690,12 +6690,12 @@ static void intStatsRMBPressed(UDWORD id)
 }
 
 /*Deals with the RMB click for the Object screen */
-static void intObjectRMBPressed(UDWORD id)
+static void intObjectRMBPressed(uint32_t id)
 {
     BASE_OBJECT		*psObj;
     STRUCTURE		*psStructure;
 
-    ASSERT( (SDWORD)id - IDOBJ_OBJSTART < numObjects,
+    ASSERT( (int32_t)id - IDOBJ_OBJSTART < numObjects,
             "intObjectRMBPressed: Invalid object id" );
 
     /* Find the object that the ID refers to */
@@ -6720,12 +6720,12 @@ static void intObjectRMBPressed(UDWORD id)
 }
 
 /*Deals with the RMB click for the Object Stats buttons */
-static void intObjStatRMBPressed(UDWORD id)
+static void intObjStatRMBPressed(uint32_t id)
 {
     BASE_OBJECT		*psObj;
     STRUCTURE		*psStructure;
 
-    ASSERT( (SDWORD)id - IDOBJ_STATSTART < numObjects,
+    ASSERT( (int32_t)id - IDOBJ_STATSTART < numObjects,
             "intObjStatRMBPressed: Invalid stat id" );
 
     /* Find the object that the ID refers to */
@@ -6869,7 +6869,7 @@ STRUCTURE *interfaceStructList(void)
 
 
 /*causes a reticule button to start flashing*/
-void flashReticuleButton(UDWORD buttonID)
+void flashReticuleButton(uint32_t buttonID)
 {
 
     W_TABFORM		*psButton;
@@ -6885,21 +6885,21 @@ void flashReticuleButton(UDWORD buttonID)
 }
 
 // stop a reticule button flashing
-void stopReticuleButtonFlash(UDWORD buttonID)
+void stopReticuleButtonFlash(uint32_t buttonID)
 {
 
     WIDGET	*psButton = widgGetFromID(psWScreen,buttonID);
     if (psButton)
     {
-        UBYTE DownTime = UNPACKDWORD_QUAD_C(psButton->UserData);
-        UBYTE Index = UNPACKDWORD_QUAD_D(psButton->UserData);
-        UBYTE flashing = UNPACKDWORD_QUAD_A(psButton->UserData);
-        UBYTE flashTime = UNPACKDWORD_QUAD_B(psButton->UserData);
+        uint8_t DownTime = UNPACKint32_t_QUAD_C(psButton->UserData);
+        uint8_t Index = UNPACKint32_t_QUAD_D(psButton->UserData);
+        uint8_t flashing = UNPACKint32_t_QUAD_A(psButton->UserData);
+        uint8_t flashTime = UNPACKint32_t_QUAD_B(psButton->UserData);
 
         // clear flashing byte
         flashing = false;
         flashTime = 0;
-        psButton->UserData = PACKDWORD_QUAD(flashTime,flashing,DownTime,Index);
+        psButton->UserData = PACKint32_t_QUAD(flashTime,flashing,DownTime,Index);
     }
 
 }
@@ -6925,11 +6925,11 @@ void forceHidePowerBar(void)
 
 
 /* Add the Proximity message buttons */
-BOOL intAddProximityButton(PROXIMITY_DISPLAY *psProxDisp, UDWORD inc)
+BOOL intAddProximityButton(PROXIMITY_DISPLAY *psProxDisp, uint32_t inc)
 {
     W_FORMINIT			sBFormInit;
     PROXIMITY_DISPLAY	*psProxDisp2;
-    UDWORD				cnt;
+    uint32_t				cnt;
 
     memset(&sBFormInit, 0, sizeof(W_FORMINIT));
     sBFormInit.formID = 0;
@@ -6986,7 +6986,7 @@ void intRemoveProximityButton(PROXIMITY_DISPLAY *psProxDisp)
 }
 
 /*deals with the proximity message when clicked on*/
-void processProximityButtons(UDWORD id)
+void processProximityButtons(uint32_t id)
 {
     PROXIMITY_DISPLAY	*psProxDisp;
 
@@ -7017,7 +7017,7 @@ void processProximityButtons(UDWORD id)
 }
 
 /*	Fools the widgets by setting a key value */
-void	setKeyButtonMapping( UDWORD	val )
+void	setKeyButtonMapping( uint32_t	val )
 {
     keyButtonMapping = val;
 }
@@ -7026,7 +7026,7 @@ void	setKeyButtonMapping( UDWORD	val )
 /*Looks through the players list of structures to see if there is one selected
 of the required type. If there is more than one, they are all deselected and
 the first one reselected*/
-STRUCTURE *intCheckForStructure(UDWORD structType)
+STRUCTURE *intCheckForStructure(uint32_t structType)
 {
     STRUCTURE	*psStruct, *psSel = NULL;
 
@@ -7053,7 +7053,7 @@ STRUCTURE *intCheckForStructure(UDWORD structType)
 of the required type. If there is more than one, they are all deselected and
 the first one reselected*/
 // no longer do this for constructor droids - (gleeful its-near-the-end-of-the-project hack - JOHN)
-DROID *intCheckForDroid(UDWORD droidType)
+DROID *intCheckForDroid(uint32_t droidType)
 {
     DROID	*psDroid, *psSel = NULL;
 
@@ -7080,10 +7080,10 @@ DROID *intCheckForDroid(UDWORD droidType)
 
 
 // count the number of selected droids of a type
-static SDWORD intNumSelectedDroids(UDWORD droidType)
+static int32_t intNumSelectedDroids(uint32_t droidType)
 {
     DROID	*psDroid;
-    SDWORD	num;
+    int32_t	num;
 
     num = 0;
     for(psDroid = apsDroidLists[selectedPlayer]; psDroid; psDroid = psDroid->psNext)
@@ -7205,7 +7205,7 @@ void intCheckReticuleButtons(void)
 only if research facility is free*/
 void intCheckResearchButton(void)
 {
-    UWORD       index, count;
+    uint16_t       index, count;
     STRUCTURE	*psStruct;
     BOOL		resFree = false;
 
@@ -7225,9 +7225,9 @@ void intCheckResearchButton(void)
     if (resFree)
     {
         //set to value that won't be reached in fillResearchList
-        //needs to be UWORD sized for the Patches
-        index = (UWORD)(numResearch + 1);
-        //index = (UBYTE)(numResearch + 1);
+        //needs to be uint16_t sized for the Patches
+        index = (uint16_t)(numResearch + 1);
+        //index = (uint8_t)(numResearch + 1);
         //calculate the list
         count = fillResearchList(pList,selectedPlayer, index, MAXRESEARCH);
         if (count)
@@ -7240,9 +7240,9 @@ void intCheckResearchButton(void)
 
 
 // see if a reticule button is enabled
-BOOL intCheckReticuleButEnabled(UDWORD id)
+BOOL intCheckReticuleButEnabled(uint32_t id)
 {
-    SDWORD	i;
+    int32_t	i;
 
     for (i=0; i<NUMRETBUTS; i++)
     {
@@ -7280,15 +7280,15 @@ STRUCTURE *intFindAStructure(void)
 
 // Look through the players structures and find the next one of type structType.
 //
-STRUCTURE *intGotoNextStructureType(UDWORD structType,BOOL JumpTo,BOOL CancelDrive)
+STRUCTURE *intGotoNextStructureType(uint32_t structType,BOOL JumpTo,BOOL CancelDrive)
 {
     STRUCTURE	*psStruct;
     BOOL Found = false;
 
-    if((SWORD)structType != CurrentStructType)
+    if((int16_t)structType != CurrentStructType)
     {
         CurrentStruct = NULL;
-        CurrentStructType = (SWORD)structType;
+        CurrentStructType = (int16_t)structType;
     }
 
     if(CurrentStruct != NULL)
@@ -7362,7 +7362,7 @@ STRUCTURE *intGotoNextStructureType(UDWORD structType,BOOL JumpTo,BOOL CancelDri
 // Look through the players droids and find the next one of type droidType.
 // If Current=NULL then start at the beginning overwise start at Current.
 //
-DROID *intGotoNextDroidType(DROID *CurrDroid,UDWORD droidType,BOOL AllowGroup)
+DROID *intGotoNextDroidType(DROID *CurrDroid,uint32_t droidType,BOOL AllowGroup)
 {
     DROID *psDroid;
     BOOL Found = false;
@@ -7372,10 +7372,10 @@ DROID *intGotoNextDroidType(DROID *CurrDroid,UDWORD droidType,BOOL AllowGroup)
         CurrentDroid = CurrDroid;
     }
 
-    if( ((SWORD)droidType != CurrentDroidType) && (droidType != DROID_ANY))
+    if( ((int16_t)droidType != CurrentDroidType) && (droidType != DROID_ANY))
     {
         CurrentDroid = NULL;
-        CurrentDroidType = (SWORD)droidType;
+        CurrentDroidType = (int16_t)droidType;
     }
 
     if(CurrentDroid != NULL)
@@ -7389,9 +7389,9 @@ DROID *intGotoNextDroidType(DROID *CurrDroid,UDWORD droidType,BOOL AllowGroup)
 
     for(; psDroid != NULL; psDroid = psDroid->psNext)
     {
-        if( ( ((UDWORD)psDroid->droidType == droidType) ||
+        if( ( ((uint32_t)psDroid->droidType == droidType) ||
                 ((droidType == DROID_ANY) && (psDroid->droidType != DROID_TRANSPORTER)) ) &&
-                ((psDroid->group == UBYTE_MAX) || AllowGroup) )
+                ((psDroid->group == uint8_t_MAX) || AllowGroup) )
         {
             if(psDroid != CurrentDroid)
             {
@@ -7410,9 +7410,9 @@ DROID *intGotoNextDroidType(DROID *CurrDroid,UDWORD droidType,BOOL AllowGroup)
     {
         for(psDroid = apsDroidLists[selectedPlayer]; (psDroid != CurrentDroid) && (psDroid != NULL); psDroid = psDroid->psNext)
         {
-            if( ( ((UDWORD)psDroid->droidType == droidType) ||
+            if( ( ((uint32_t)psDroid->droidType == droidType) ||
                     ((droidType == DROID_ANY) && (psDroid->droidType != DROID_TRANSPORTER)) ) &&
-                    ((psDroid->group == UBYTE_MAX) || AllowGroup) )
+                    ((psDroid->group == uint8_t_MAX) || AllowGroup) )
             {
                 if(psDroid != CurrentDroid)
                 {

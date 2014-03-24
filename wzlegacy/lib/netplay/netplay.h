@@ -35,7 +35,7 @@ typedef enum
     ERROR_CHEAT,
     ERROR_KICKED,
     ERROR_WRONGVERSION,
-    ERROR_WRONGPASSWORD,				// NOTE WRONG_PASSWORD results in conflict
+    ERROR_WRONGPASint16_t,				// NOTE WRONG_PASint16_t results in conflict
     ERROR_HOSTDROPPED,
     ERROR_WRONGDATA,
     ERROR_UNKNOWNFILEISSUE
@@ -309,12 +309,12 @@ extern char iptoconnect[PATH_MAX]; // holds IP/hostname from command line
 // ////////////////////////////////////////////////////////////////////////
 // functions available to you.
 extern int   NETinit(BOOL bFirstCall);				// init
-extern BOOL   NETsend(NETMSG *msg, UDWORD player);	// send to player
+extern BOOL   NETsend(NETMSG *msg, uint32_t player);	// send to player
 extern BOOL   NETbcast(NETMSG *msg);				// broadcast to everyone
 extern BOOL   NETrecv(uint8_t *type);				// recv a message if possible
 
-extern UBYTE   NETsendFile(char *fileName, UDWORD player);	// send file chunk.
-extern UBYTE   NETrecvFile(void);			// recv file chunk
+extern uint8_t   NETsendFile(char *fileName, uint32_t player);	// send file chunk.
+extern uint8_t   NETrecvFile(void);			// recv file chunk
 
 extern int NETclose(void);					// close current game
 extern int NETshutdown(void);					// leave the game in play.
@@ -323,26 +323,26 @@ extern void NETaddRedirects(void);
 extern void NETremRedirects(void);
 extern void NETdiscoverUPnPDevices(void);
 
-extern UDWORD	NETgetBytesSent(void);				// return bytes sent/recv.  call regularly for good results
-extern UDWORD	NETgetPacketsSent(void);			// return packets sent/recv.  call regularly for good results
-extern UDWORD	NETgetBytesRecvd(void);				// return bytes sent/recv.  call regularly for good results
-extern UDWORD	NETgetPacketsRecvd(void);			// return packets sent/recv.  call regularly for good results
-extern UDWORD	NETgetRecentBytesSent(void);		// more immediate functions.
-extern UDWORD	NETgetRecentPacketsSent(void);
-extern UDWORD	NETgetRecentBytesRecvd(void);
+extern uint32_t	NETgetBytesSent(void);				// return bytes sent/recv.  call regularly for good results
+extern uint32_t	NETgetPacketsSent(void);			// return packets sent/recv.  call regularly for good results
+extern uint32_t	NETgetBytesRecvd(void);				// return bytes sent/recv.  call regularly for good results
+extern uint32_t	NETgetPacketsRecvd(void);			// return packets sent/recv.  call regularly for good results
+extern uint32_t	NETgetRecentBytesSent(void);		// more immediate functions.
+extern uint32_t	NETgetRecentPacketsSent(void);
+extern uint32_t	NETgetRecentBytesRecvd(void);
 
-extern void NETplayerKicked(UDWORD index);			// Cleanup after player has been kicked
+extern void NETplayerKicked(uint32_t index);			// Cleanup after player has been kicked
 
 // from netjoin.c
-extern SDWORD	NETgetGameFlags(UDWORD flag);			// return one of the four flags(dword) about the game.
+extern int32_t	NETgetGameFlags(uint32_t flag);			// return one of the four flags(dword) about the game.
 extern int32_t	NETgetGameFlagsUnjoined(unsigned int gameid, unsigned int flag);	// return one of the four flags(dword) about the game.
-extern BOOL	NETsetGameFlags(UDWORD flag, SDWORD value);	// set game flag(1-4) to value.
+extern BOOL	NETsetGameFlags(uint32_t flag, int32_t value);	// set game flag(1-4) to value.
 extern BOOL	NEThaltJoining(void);				// stop new players joining this game
 extern BOOL	NETfindGame(void);		// find games being played(uses GAME_GUID);
-extern BOOL	NETjoinGame(UDWORD gameNumber, const char *playername);			// join game given with playername
+extern BOOL	NETjoinGame(uint32_t gameNumber, const char *playername);			// join game given with playername
 extern BOOL	NEThostGame(const char *SessionName, const char *PlayerName,// host a game
-                        SDWORD one, SDWORD two, SDWORD three, SDWORD four, UDWORD plyrs);
-extern BOOL	NETchangePlayerName(UDWORD player, char *newName);// change a players name.
+                        int32_t one, int32_t two, int32_t three, int32_t four, uint32_t plyrs);
+extern BOOL	NETchangePlayerName(uint32_t player, char *newName);// change a players name.
 
 #include "netlog.h"
 

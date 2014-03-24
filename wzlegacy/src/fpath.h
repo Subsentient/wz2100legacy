@@ -40,7 +40,7 @@ typedef struct _jobNode
     DROID_TYPE	droidType;
     int		destX, destY;
     int		origX, origY;
-    UDWORD		droidID;
+    uint32_t		droidID;
     struct _jobNode	*next;
     FPATH_MOVETYPE	moveType;
     int		owner;		///< Player owner
@@ -65,7 +65,7 @@ extern void fpathUpdate(void);
 
 /** Find a route for a droid to a location.
  */
-extern FPATH_RETVAL fpathDroidRoute(DROID *psDroid, SDWORD targetX, SDWORD targetY);
+extern FPATH_RETVAL fpathDroidRoute(DROID *psDroid, int32_t targetX, int32_t targetY);
 
 /** Function pointer to the currently in-use blocking tile check function.
  *
@@ -74,8 +74,8 @@ extern FPATH_RETVAL fpathDroidRoute(DROID *psDroid, SDWORD targetX, SDWORD targe
  *
  *  @return true if the given tile is blocking for this droid
  */
-BOOL fpathBlockingTile(SDWORD x, SDWORD y, PROPULSION_TYPE propulsion);
-BOOL fpathBaseBlockingTile(SDWORD x, SDWORD y, PROPULSION_TYPE propulsion, int player, FPATH_MOVETYPE moveType);
+BOOL fpathBlockingTile(int32_t x, int32_t y, PROPULSION_TYPE propulsion);
+BOOL fpathBaseBlockingTile(int32_t x, int32_t y, PROPULSION_TYPE propulsion, int player, FPATH_MOVETYPE moveType);
 
 /** Set a direct path to position.
  *
@@ -84,7 +84,7 @@ BOOL fpathBaseBlockingTile(SDWORD x, SDWORD y, PROPULSION_TYPE propulsion, int p
  *
  *  Used for instance by VTOLs. Function is thread-safe.
  */
-extern void fpathSetDirectRoute(DROID *psDroid, SDWORD targetX, SDWORD targetY);
+extern void fpathSetDirectRoute(DROID *psDroid, int32_t targetX, int32_t targetY);
 
 /** Clean up path jobs and results for a droid. Function is thread-safe. */
 extern void fpathRemoveDroidData(int id);

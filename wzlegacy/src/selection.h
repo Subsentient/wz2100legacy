@@ -37,15 +37,15 @@ typedef enum _selectiontype
 } SELECTIONTYPE;
 
 // EXTERNALLY REFERENCED FUNCTIONS
-extern UDWORD	selDroidSelection( UDWORD	player, SELECTION_CLASS droidClass,
+extern uint32_t	selDroidSelection( uint32_t	player, SELECTION_CLASS droidClass,
                                    SELECTIONTYPE droidType, BOOL bOnScreen );
-extern UDWORD	selDroidDeselect		( UDWORD player );
-extern UDWORD	selNumSelected			( UDWORD player );
+extern uint32_t	selDroidDeselect		( uint32_t player );
+extern uint32_t	selNumSelected			( uint32_t player );
 extern void	selNextRepairUnit			( void );
 extern void selNextUnassignedUnit		( void );
-extern void	selNextSpecifiedBuilding	( UDWORD structType );
-extern	void	selNextSpecifiedUnit	(UDWORD unitType);
+extern void	selNextSpecifiedBuilding	( uint32_t structType );
+extern	void	selNextSpecifiedUnit	(uint32_t unitType);
 // select the n'th command droid
-extern void selCommander(SDWORD n);
+extern void selCommander(int32_t n);
 
 #endif // __INCLUDED_SRC_SELECTION_H__

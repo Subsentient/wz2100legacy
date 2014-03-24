@@ -67,9 +67,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define MINPITCH (768)
 #define PITCHCHANGE (512)
 
-static	SWORD DrivingAudioTrack=-1;		// Which hardware channel are we using for the car driving noise
+static	int16_t DrivingAudioTrack=-1;		// Which hardware channel are we using for the car driving noise
 
-extern UDWORD selectedPlayer;
+extern uint32_t selectedPlayer;
 extern BOOL DirectControl;
 
 // Driving characteristics.
@@ -83,15 +83,15 @@ extern BOOL DirectControl;
 
 DROID *psDrivenDroid = NULL;		// The droid that's being driven.
 static BOOL bDriveMode = false;
-static SDWORD driveDir;					// Driven droid's direction.
-static SDWORD driveSpeed;				// Driven droid's speed.
-static UDWORD driveBumpTime;				// Time that followers get a kick up the ass.
+static int32_t driveDir;					// Driven droid's direction.
+static int32_t driveSpeed;				// Driven droid's speed.
+static uint32_t driveBumpTime;				// Time that followers get a kick up the ass.
 static BOOL	DoFollowRangeCheck = true;
 static BOOL AllInRange = true;
 static BOOL	ClearFollowRangeCheck = false;
 static BOOL DriveControlEnabled = false;
 static BOOL DriveInterfaceEnabled = false;
-static UDWORD IdleTime;
+static uint32_t IdleTime;
 static BOOL TacticalActive = false;
 static BOOL WasDriving = false;
 
@@ -101,7 +101,7 @@ enum
     CONTROLMODE_DRIVE,
 };
 
-static UWORD ControlMode = CONTROLMODE_DRIVE;
+static uint16_t ControlMode = CONTROLMODE_DRIVE;
 static BOOL TargetFeatures = false;
 
 // Intialise drive statics, call with true if coming from frontend, false if
@@ -398,7 +398,7 @@ static void driveNextDriver(void)
 static BOOL driveControl(DROID *psDroid)
 {
     BOOL Input = false;
-    SDWORD MaxSpeed = moveCalcDroidSpeed(psDroid);
+    int32_t MaxSpeed = moveCalcDroidSpeed(psDroid);
 
     if(!DriveControlEnabled)
     {
@@ -648,13 +648,13 @@ void driveUpdate(void)
 }
 
 
-SDWORD driveGetMoveSpeed(void)
+int32_t driveGetMoveSpeed(void)
 {
     return driveSpeed;
 }
 
 
-SDWORD driveGetMoveDir(void)
+int32_t driveGetMoveDir(void)
 {
     return driveDir;
 }

@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "astar.h"
 
-static SDWORD	astarOuter, astarRemove;
+static int32_t	astarOuter, astarRemove;
 
 /** Keeps track of the amount of iterations done in the inner loop of our A*
  *  implementation.
@@ -50,8 +50,8 @@ static int resetIterationCount = 0;
 typedef struct _fp_node
 {
     int     x, y;           // map coords
-    SWORD	dist, est;	// distance so far and estimate to end
-    SWORD	type;		// open or closed node
+    int16_t	dist, est;	// distance so far and estimate to end
+    int16_t	type;		// open or closed node
     struct _fp_node *psOpen;
     struct _fp_node	*psRoute;	// Previous point in the route
     struct _fp_node *psNext;
@@ -195,9 +195,9 @@ void fpathHardTableReset()
 
 /** Compare two nodes
  */
-static inline SDWORD fpathCompare(FP_NODE *psFirst, FP_NODE *psSecond)
+static inline int32_t fpathCompare(FP_NODE *psFirst, FP_NODE *psSecond)
 {
-    SDWORD	first,second;
+    int32_t	first,second;
 
     first = psFirst->dist + psFirst->est;
     second = psSecond->dist + psSecond->est;
@@ -244,7 +244,7 @@ static void fpathOpenAdd(FP_NODE *psNode)
 static FP_NODE *fpathOpenGet(void)
 {
     FP_NODE	*psNode, *psCurr, *psPrev, *psParent = NULL;
-    SDWORD	comp;
+    int32_t	comp;
 
     if (psOpen == NULL)
     {
@@ -281,9 +281,9 @@ static FP_NODE *fpathOpenGet(void)
 
 /** Estimate the distance to the target point
  */
-static SDWORD fpathEstimate(SDWORD x, SDWORD y, SDWORD fx, SDWORD fy)
+static int32_t fpathEstimate(int32_t x, int32_t y, int32_t fx, int32_t fy)
 {
-    SDWORD xdiff, ydiff;
+    int32_t xdiff, ydiff;
 
     xdiff = x > fx ? x - fx : fx - x;
     ydiff = y > fy ? y - fy : fy - y;
@@ -296,7 +296,7 @@ static SDWORD fpathEstimate(SDWORD x, SDWORD y, SDWORD fx, SDWORD fy)
 
 /** Generate a new node
  */
-static FP_NODE *fpathNewNode(SDWORD x, SDWORD y, SDWORD dist, FP_NODE *psRoute)
+static FP_NODE *fpathNewNode(int32_t x, int32_t y, int32_t dist, FP_NODE *psRoute)
 {
     FP_NODE	*psNode = malloc(sizeof(FP_NODE));
 
@@ -306,9 +306,9 @@ static FP_NODE *fpathNewNode(SDWORD x, SDWORD y, SDWORD dist, FP_NODE *psRoute)
         return NULL;
     }
 
-    psNode->x = (SWORD)x;
-    psNode->y = (SWORD)y;
-    psNode->dist = (SWORD)dist;
+    psNode->x = (int16_t)x;
+    psNode->y = (int16_t)y;
+    psNode->dist = (int16_t)dist;
     psNode->psRoute = psRoute;
     psNode->type = NT_OPEN;
 
@@ -316,7 +316,7 @@ static FP_NODE *fpathNewNode(SDWORD x, SDWORD y, SDWORD dist, FP_NODE *psRoute)
 }
 
 // Variables for the callback
-static SDWORD	finalX,finalY, vectorX,vectorY;
+static int32_t	finalX,finalY, vectorX,vectorY;
 static BOOL		obstruction;
 
 /** The visibility ray callback
@@ -346,7 +346,7 @@ static bool fpathVisCallback(Vector3i pos, int dist, void *data)
     return true;
 }
 
-BOOL fpathTileLOS(SDWORD x1,SDWORD y1, SDWORD x2,SDWORD y2)
+BOOL fpathTileLOS(int32_t x1,int32_t y1, int32_t x2,int32_t y2)
 {
     // convert to world coords
     Vector3i p1 = { world_coord(x1) + TILE_UNITS / 2, world_coord(y1) + TILE_UNITS / 2, 0 };
@@ -369,7 +369,7 @@ ASR_RETVAL fpathAStarRoute(MOVE_CONTROL *psMove, PATHJOB *psJob)
 {
     FP_NODE		*psFound, *psCurr, *psNew, *psParent, *psNext;
     FP_NODE		*psNearest, *psRoute;
-    SDWORD		dir, x,y, currDist;
+    int32_t		dir, x,y, currDist;
     ASR_RETVAL		retval = ASR_OK;
     const int       tileSX = map_coord(psJob->origX);
     const int       tileSY = map_coord(psJob->origY);
@@ -386,7 +386,7 @@ ASR_RETVAL fpathAStarRoute(MOVE_CONTROL *psMove, PATHJOB *psJob)
         return ASR_FAILED;
     }
     // estimate the estimated distance/moves
-    psCurr->est = (SWORD)fpathEstimate(psCurr->x, psCurr->y, tileFX, tileFY);
+    psCurr->est = (int16_t)fpathEstimate(psCurr->x, psCurr->y, tileFX, tileFY);
     psOpen = NULL;
     fpathOpenAdd(psCurr);
     fpathAddNode(psCurr);
@@ -464,7 +464,7 @@ ASR_RETVAL fpathAStarRoute(MOVE_CONTROL *psMove, PATHJOB *psJob)
                 psNew = fpathNewNode(x,y, currDist, psCurr);
                 if (psNew)
                 {
-                    psNew->est = (SWORD)fpathEstimate(x,y, tileFX, tileFY);
+                    psNew->est = (int16_t)fpathEstimate(x,y, tileFX, tileFY);
                     fpathOpenAdd(psNew);
                     fpathAddNode(psNew);
                 }
@@ -474,14 +474,14 @@ ASR_RETVAL fpathAStarRoute(MOVE_CONTROL *psMove, PATHJOB *psJob)
                 astarRemove += 1;
 
                 // already in the open list but this is shorter
-                psFound->dist = (SWORD)currDist;
+                psFound->dist = (int16_t)currDist;
                 psFound->psRoute = psCurr;
             }
             else if (psFound->type == NT_CLOSED)
             {
                 // already in the closed list but this is shorter
                 psFound->type = NT_OPEN;
-                psFound->dist = (SWORD)currDist;
+                psFound->dist = (int16_t)currDist;
                 psFound->psRoute = psCurr;
                 fpathOpenAdd(psFound);
             }

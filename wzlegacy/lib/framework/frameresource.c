@@ -34,7 +34,7 @@ char aResDir[PATH_MAX];
 char aCurrResDir[PATH_MAX];
 
 // the current resource block ID
-static SDWORD resBlockID;
+static int32_t resBlockID;
 
 // callback to resload screen.
 static RESLOAD_CALLBACK resLoadCallback=NULL;
@@ -44,8 +44,8 @@ static RESLOAD_CALLBACK resLoadCallback=NULL;
 typedef struct
 {
     char *pBuffer;	// a pointer to the data
-    UDWORD size;	// number of bytes
-    UBYTE	type;	// what type of resource is it
+    uint32_t size;	// number of bytes
+    uint8_t	type;	// what type of resource is it
 } RESOURCEFILE;
 
 #define RESFILETYPE_EMPTY (0)			// empty entry
@@ -76,7 +76,7 @@ static inline void resDoResLoadCallback(void)
 // Clear out the resource list ... needs to be called during init.
 static void ResetResourceFile(void)
 {
-    UWORD i;
+    uint16_t i;
 
     for (i=0; i<MAXLOADEDRESOURCES; i++)
     {
@@ -111,7 +111,7 @@ void resShutDown(void)
 
 
 /* Parse the res file */
-bool resLoad(const char *pResFile, SDWORD blockID)
+bool resLoad(const char *pResFile, int32_t blockID)
 {
     bool retval = true;
     lexerinput_t input;
@@ -257,9 +257,9 @@ void SetLastResourceFilename(const char *pName)
 }
 
 // Returns an empty resource entry or -1 if none exsist
-static SDWORD FindEmptyResourceFile(void)
+static int32_t FindEmptyResourceFile(void)
 {
-    UWORD i;
+    uint16_t i;
     for (i=0; i<MAXLOADEDRESOURCES ; i++ )
     {
         if (LoadedResourceFiles[i].type==RESFILETYPE_EMPTY)
@@ -275,9 +275,9 @@ static SDWORD FindEmptyResourceFile(void)
 // Get a resource data file ... either loads it or just returns a pointer
 static bool RetreiveResourceFile(char *ResourceName, RESOURCEFILE **NewResource)
 {
-    SDWORD ResID;
+    int32_t ResID;
     RESOURCEFILE *ResData;
-    UDWORD size;
+    uint32_t size;
     char *pBuffer;
 
     ResID=FindEmptyResourceFile();
@@ -322,7 +322,7 @@ static void FreeResourceFile(RESOURCEFILE *OldResource)
 }
 
 
-static inline RES_DATA *resDataInit(const char *DebugName, UDWORD DataIDHash, void *pData, UDWORD BlockID)
+static inline RES_DATA *resDataInit(const char *DebugName, uint32_t DataIDHash, void *pData, uint32_t BlockID)
 {
     char *resID;
 
@@ -393,7 +393,7 @@ bool resLoadFile(const char *pType, const char *pFile)
     void		*pData;
     RES_DATA	*psRes;
     char		aFileName[PATH_MAX];
-    UDWORD HashedName, HashedType = HashString(pType);
+    uint32_t HashedName, HashedType = HashString(pType);
 
     // Find the resource-type
     for(psT = psResTypes; psT != NULL; psT = psT->psNext )
@@ -506,12 +506,12 @@ bool resLoadFile(const char *pType, const char *pFile)
 }
 
 /* Return the resource for a type and hashedname */
-void *resGetDataFromHash(const char *pType, UDWORD HashedID)
+void *resGetDataFromHash(const char *pType, uint32_t HashedID)
 {
     RES_TYPE	*psT = NULL;
     RES_DATA	*psRes = NULL;
     // Find the correct type
-    UDWORD HashedType = HashString(pType);
+    uint32_t HashedType = HashString(pType);
 
     for(psT = psResTypes; psT != NULL; psT = psT->psNext )
     {
@@ -558,13 +558,13 @@ void *resGetData(const char *pType, const char *pID)
 }
 
 
-bool resGetHashfromData(const char *pType, const void *pData, UDWORD *pHash)
+bool resGetHashfromData(const char *pType, const void *pData, uint32_t *pHash)
 {
     RES_TYPE	*psT;
     RES_DATA	*psRes;
 
     // Find the correct type
-    UDWORD	HashedType=HashString(pType);
+    uint32_t	HashedType=HashString(pType);
 
     for(psT = psResTypes; psT != NULL; psT = psT->psNext )
     {
@@ -605,7 +605,7 @@ const char *resGetNamefromData(const char *type, const void *data)
 {
     RES_TYPE	*psT;
     RES_DATA	*psRes;
-    UDWORD   HashedType;
+    uint32_t   HashedType;
 
     if (type == NULL || data == NULL)
     {
@@ -655,7 +655,7 @@ bool resPresent(const char *pType, const char *pID)
     RES_DATA	*psRes;
 
     // Find the correct type
-    UDWORD HashedType=HashString(pType);
+    uint32_t HashedType=HashString(pType);
 
     for(psT = psResTypes; psT != NULL; psT = psT->psNext )
     {
@@ -673,7 +673,7 @@ bool resPresent(const char *pType, const char *pID)
     }
 
     {
-        UDWORD HashedID=HashStringIgnoreCase(pID);
+        uint32_t HashedID=HashStringIgnoreCase(pID);
 
         for(psRes = psT->psRes; psRes; psRes = psRes->psNext)
         {
@@ -742,7 +742,7 @@ void resReleaseAllData(void)
 
 
 // release the data for a particular block ID
-void resReleaseBlockData(SDWORD blockID)
+void resReleaseBlockData(int32_t blockID)
 {
     RES_TYPE	*psT, *psNT;
     RES_DATA	*psPRes, *psRes, *psNRes;

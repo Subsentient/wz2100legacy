@@ -81,7 +81,7 @@ void cpPrintPackedVal(INTERP_VAL *ip)
 
 
 /* Print a variable access function name */
-void cpPrintVarFunc(SCRIPT_VARFUNC pFunc, UDWORD index)
+void cpPrintVarFunc(SCRIPT_VARFUNC pFunc, uint32_t index)
 {
     // Search the external variable functions
     if (asScrExternalTab)
@@ -149,10 +149,10 @@ void cpPrintProgram(SCRIPT_CODE *psProg)
 {
     INTERP_VAL		*ip, *end;
     OPCODE			opcode;
-    UDWORD			data, i, dim;
+    uint32_t			data, i, dim;
     SCRIPT_DEBUG	*psCurrDebug=NULL;
     BOOL			debugInfo, triggerCode;
-    UDWORD			jumpOffset;
+    uint32_t			jumpOffset;
     VAR_DEBUG		*psCurrVar;
     ARRAY_DATA		*psCurrArray;
     ARRAY_DEBUG		*psCurrArrayDebug;
@@ -210,7 +210,7 @@ void cpPrintProgram(SCRIPT_CODE *psProg)
     }
 
     ip = psProg->pCode;
-    end = (INTERP_VAL *)((UBYTE *)ip + psProg->size);
+    end = (INTERP_VAL *)((uint8_t *)ip + psProg->size);
     triggerCode = (psProg->numTriggers > 0);
 
     opcode = (ip->v.ival >> OPCODE_SHIFT);
@@ -221,13 +221,13 @@ void cpPrintProgram(SCRIPT_CODE *psProg)
         if (debugInfo)
         {
             // display a label if there is one
-            if ((UDWORD)(ip - psProg->pCode) == psCurrDebug->offset &&
+            if ((uint32_t)(ip - psProg->pCode) == psCurrDebug->offset &&
                     psCurrDebug->pLabel != NULL)
             {
                 debug( LOG_NEVER, "label: %s\n", psCurrDebug->pLabel );
             }
             // Display the line number
-            if ((UDWORD)(ip - psProg->pCode) == psCurrDebug->offset)
+            if ((uint32_t)(ip - psProg->pCode) == psCurrDebug->offset)
             {
                 debug( LOG_NEVER, "line: %-6d", psCurrDebug->line );
                 psCurrDebug++;
@@ -305,7 +305,7 @@ void cpPrintProgram(SCRIPT_CODE *psProg)
             case OP_JUMP:
             case OP_JUMPTRUE:
             case OP_JUMPFALSE:
-                debug( LOG_NEVER, "-> %d (%d)", (SWORD)data, (int)(ip - psProg->pCode + (SWORD)data) );
+                debug( LOG_NEVER, "-> %d (%d)", (int16_t)data, (int)(ip - psProg->pCode + (int16_t)data) );
                 break;
             case OP_BINARYOP:
             case OP_UNARYOP:

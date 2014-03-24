@@ -82,7 +82,7 @@ struct	_dragBox dragBox3D,wallDrag;
 
 extern char DROIDDOING[512];		// holds the string on what the droid is doing
 
-UDWORD	arnMPointers[POSSIBLE_TARGETS][POSSIBLE_SELECTIONS] =
+uint32_t	arnMPointers[POSSIBLE_TARGETS][POSSIBLE_SELECTIONS] =
 {
 // empty terrain tile
     {
@@ -209,39 +209,39 @@ UDWORD	arnMPointers[POSSIBLE_TARGETS][POSSIBLE_SELECTIONS] =
 };
 
 /// acceleration on scrolling. Game Option.
-UDWORD	scroll_speed_accel;
+uint32_t	scroll_speed_accel;
 
 static BOOL	buildingDamaged(STRUCTURE *psStructure);
-static BOOL	repairDroidSelected(UDWORD player);
-static DROID *constructorDroidSelected(UDWORD player);
-static BOOL vtolDroidSelected(UDWORD player);
-static BOOL	anyDroidSelected(UDWORD player);
-static BOOL cyborgDroidSelected(UDWORD player);
+static BOOL	repairDroidSelected(uint32_t player);
+static DROID *constructorDroidSelected(uint32_t player);
+static BOOL vtolDroidSelected(uint32_t player);
+static BOOL	anyDroidSelected(uint32_t player);
+static BOOL cyborgDroidSelected(uint32_t player);
 static BOOL bInvertMouse = true;
 static BOOL bRightClickOrders = false;
 static BOOL bMiddleClickRotate = false;
 static BOOL bDrawShadows = true;
-static SELECTION_TYPE	establishSelection(UDWORD selectedPlayer);
+static SELECTION_TYPE	establishSelection(uint32_t selectedPlayer);
 static void	dealWithLMB( void );
 static void	dealWithLMBDClick( void );
 static void	dealWithRMB( void );
-static BOOL	mouseInBox(SDWORD x0, SDWORD y0, SDWORD x1, SDWORD y1);
+static BOOL	mouseInBox(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
 static OBJECT_POSITION *checkMouseLoc(void);
 
 static BOOL	bInstantRadarJump = false;
-static SDWORD	desiredPitch = 340;
-static UDWORD	currentFrame;
-static UDWORD StartOfLastFrame;
-static SDWORD	rotX;
-static SDWORD	rotY;
-static UDWORD	worldAngle;
-static UDWORD	rotInitial;
-static UDWORD	rotInitialUp;
-static UDWORD	xMoved, yMoved;
+static int32_t	desiredPitch = 340;
+static uint32_t	currentFrame;
+static uint32_t StartOfLastFrame;
+static int32_t	rotX;
+static int32_t	rotY;
+static uint32_t	worldAngle;
+static uint32_t	rotInitial;
+static uint32_t	rotInitialUp;
+static uint32_t	xMoved, yMoved;
 static STRUCTURE	*psBuilding;
-static SDWORD	direction = 0;
+static int32_t	direction = 0;
 static BOOL	edgeOfMap = false;
-static UDWORD	scrollRefTime;
+static uint32_t	scrollRefTime;
 static float	scrollSpeedLeftRight; //use two directions and add them because its simple
 static float	scrollStepLeftRight;
 static float	scrollSpeedUpDown;
@@ -259,7 +259,7 @@ BOOL	rotActive = false;
 BOOL	gameStats = false;
 
 /* Hackety hack hack hack */
-SDWORD	screenShakeTable[100] =
+int32_t	screenShakeTable[100] =
 {
     -2,-2,-3,-4,-3,-3,-5,-4,-4,-4,
     -4,-5,-5,-5,-5,-7,-5,-6,-8,-6,
@@ -274,8 +274,8 @@ SDWORD	screenShakeTable[100] =
 };
 
 static BOOL	bScreenShakeActive = false;
-static UDWORD screenShakeStarted;
-static UDWORD screenShakeLength;
+static uint32_t screenShakeStarted;
+static uint32_t screenShakeLength;
 //used to determine is a weapon droid is assigned to a sensor tower or sensor droid
 static BOOL bSensorAssigned;
 //used to determine if the player has selected a Las Sat structure
@@ -381,7 +381,7 @@ void shakeStop(void)
 
 static void shakeUpdate(void)
 {
-    UDWORD	screenShakePercentage;
+    uint32_t	screenShakePercentage;
 
     /* Check if we're shaking the screen or not */
     if(bScreenShakeActive)
@@ -422,7 +422,7 @@ void ProcessRadarInput(void)
     int PosX, PosY;
     int x = mouseX();
     int y = mouseY();
-    UDWORD	temp1,temp2;
+    uint32_t	temp1,temp2;
 
     /* Only allow jump-to-area-of-map if radar is on-screen */
     mouseOverRadar = false;
@@ -774,7 +774,7 @@ static BOOL CheckFinishedFindPosition(void)
 
 static void HandleDrag(void)
 {
-    UDWORD dragX, dragY;
+    uint32_t dragX, dragY;
 
     if ( (driveModeActive() && mouseDown(MOUSE_LMB))
             || (mouseDrag(MOUSE_LMB, &dragX, &dragY) && !mouseOverRadar && !mouseDown(MOUSE_RMB)) )
@@ -820,9 +820,9 @@ static void HandleDrag(void)
     }
 }
 
-static UDWORD CurrentItemUnderMouse;
+static uint32_t CurrentItemUnderMouse;
 
-UDWORD getTargetType(void)
+uint32_t getTargetType(void)
 {
     return CurrentItemUnderMouse;
 }
@@ -892,7 +892,7 @@ void processMouseClickInput(void)
                 }
             }
 
-            if (!mouseDrag(MOUSE_SELECT,(UDWORD *)&rotX,(UDWORD *)&rotY) && bRadarDragging)
+            if (!mouseDrag(MOUSE_SELECT,(uint32_t *)&rotX,(uint32_t *)&rotY) && bRadarDragging)
             {
                 bRadarDragging = false;
             }
@@ -905,7 +905,7 @@ void processMouseClickInput(void)
                 kill3DBuilding();
                 bRadarDragging = false;
             }
-            if (mouseDrag(MOUSE_ROTATE,(UDWORD *)&rotX,(UDWORD *)&rotY) && !rotActive && !bRadarDragging)
+            if (mouseDrag(MOUSE_ROTATE,(uint32_t *)&rotX,(uint32_t *)&rotY) && !rotActive && !bRadarDragging)
             {
                 rotInitial = player.r.y;
                 rotInitialUp = player.r.x;
@@ -1028,7 +1028,7 @@ void processMouseClickInput(void)
             //check for VTOL droids being assigned to a sensor droid/structure
             else if ( (item == MT_SENSOR || item == MT_SENSORSTRUCT || item == MT_SENSORSTRUCTDAM)
                       && selection == SC_DROID_DIRECT
-                      && vtolDroidSelected((UBYTE)selectedPlayer))
+                      && vtolDroidSelected((uint8_t)selectedPlayer))
             {
                 // NB. psSelectedVtol was set by vtolDroidSelected - yes I know its horrible, but it
                 // only smells as much as the rest of display.c so I don't feel so bad
@@ -1045,7 +1045,7 @@ void processMouseClickInput(void)
             //vtols cannot pick up artifacts
             else if (item == MT_ARTIFACT
                      && selection == SC_DROID_DIRECT
-                     && vtolDroidSelected((UBYTE)selectedPlayer))
+                     && vtolDroidSelected((uint8_t)selectedPlayer))
             {
                 item = MT_BLOCKING;
             }
@@ -1151,8 +1151,8 @@ void scroll(void)
 {
     float	radians;
     float	cosine, sine;
-    SDWORD	xDif,yDif;
-    UDWORD	timeDiff;
+    int32_t	xDif,yDif;
+    uint32_t	timeDiff;
     BOOL mouseAtLeft = false, mouseAtRight = false,
          mouseAtTop = false, mouseAtBottom = false;
     float scroll_zoom_factor = 1+2*((getViewDistance()-MINDISTANCE)/((float)(MAXDISTANCE-MINDISTANCE)));
@@ -1313,7 +1313,7 @@ void scroll(void)
                        (float)GAME_TICKS_PER_SEC;
 
     /* Get angle vector to scroll along */
-    worldAngle = (UDWORD) ((UDWORD)player.r.y/DEG_1)%360;
+    worldAngle = (uint32_t) ((uint32_t)player.r.y/DEG_1)%360;
     direction = (360) - worldAngle;
 
     /* Convert to radians */
@@ -1343,13 +1343,13 @@ void resetScroll(void)
     scrollSpeedLeftRight = 0.0f;
 }
 
-// Check a coordinate is within the scroll limits, SDWORD version.
+// Check a coordinate is within the scroll limits, int32_t version.
 // Returns true if edge hit.
 //
-BOOL CheckInScrollLimits(SDWORD *xPos,SDWORD *zPos)
+BOOL CheckInScrollLimits(int32_t *xPos,int32_t *zPos)
 {
     BOOL EdgeHit = false;
-    SDWORD	minX,minY,maxX,maxY;
+    int32_t	minX,minY,maxX,maxY;
 
     //always view that little bit more than the scroll limits...
     /*minX = scrollMinX * TILE_UNITS;
@@ -1362,7 +1362,7 @@ BOOL CheckInScrollLimits(SDWORD *xPos,SDWORD *zPos)
     	minX = ((0 - visibleXTiles/2) * TILE_UNITS);
     }
 
-    if((UDWORD)scrollMaxX == mapWidth)
+    if((uint32_t)scrollMaxX == mapWidth)
     {
     	maxX = ((mapWidth-1-(visibleXTiles/2)) * TILE_UNITS);
     }
@@ -1372,7 +1372,7 @@ BOOL CheckInScrollLimits(SDWORD *xPos,SDWORD *zPos)
     	minY = ((0 - visibleYTiles/2) * TILE_UNITS);
     }
 
-    if((UDWORD)scrollMaxY == mapHeight)
+    if((uint32_t)scrollMaxY == mapHeight)
     {
     	maxY = ((mapHeight-1-(visibleYTiles/2)) * TILE_UNITS);
     }*/
@@ -1414,8 +1414,8 @@ BOOL CheckInScrollLimits(SDWORD *xPos,SDWORD *zPos)
 //
 BOOL CheckScrollLimits(void)
 {
-    SDWORD xp = player.p.x;
-    SDWORD zp = player.p.z;
+    int32_t xp = player.p.x;
+    int32_t zp = player.p.z;
     BOOL ret = CheckInScrollLimits(&xp,&zp);
 
     player.p.x = xp;
@@ -1499,14 +1499,14 @@ void displayWorld(void)
     draw3DScene();
 }
 
-static BOOL mouseInBox(SDWORD x0, SDWORD y0, SDWORD x1, SDWORD y1)
+static BOOL mouseInBox(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
 {
     return mouseX() > x0 && mouseX() < x1 && mouseY() > y0 && mouseY() < y1;
 }
 
-BOOL DrawnInLastFrame(SDWORD Frame)
+BOOL DrawnInLastFrame(int32_t Frame)
 {
-    if (Frame>=(SDWORD)StartOfLastFrame)
+    if (Frame>=(int32_t)StartOfLastFrame)
     {
         return true;
     }
@@ -1522,15 +1522,15 @@ BOOL DrawnInLastFrame(SDWORD Frame)
 
 BASE_OBJECT	*mouseTarget( void )
 {
-    UDWORD		i;
+    uint32_t		i;
     BASE_OBJECT	*psReturn;
     DROID		*psDroid;
-    UDWORD		dispX,dispY,dispR;
+    uint32_t		dispX,dispY,dispR;
 
     if( (mouseTileX < 0) ||
             (mouseTileY < 0) ||
-            (mouseTileX > (SDWORD)(mapWidth-1)) ||
-            (mouseTileY > (SDWORD)(mapHeight-1)) )
+            (mouseTileX > (int32_t)(mapWidth-1)) ||
+            (mouseTileY > (int32_t)(mapHeight-1)) )
     {
         return(NULL);
     }
@@ -1576,7 +1576,7 @@ BASE_OBJECT	*mouseTarget( void )
     return(psReturn);
 }
 
-UWORD lastangle;	// debugging only
+uint16_t lastangle;	// debugging only
 
 // Dummy structure stats used for positioning delivery points.
 static STRUCTURE_STATS ReposStats;
@@ -1634,10 +1634,10 @@ void StartDeliveryPosition( OBJECT_POSITION *psLocation )
     ReposStats.ref = 0;//REF_STRUCTURE_START;
 
     //set up the buildSite variable for drawing
-    buildSite.xTL = (UWORD)psLocation->screenX;
-    buildSite.yTL = (UWORD)psLocation->screenY;
-    buildSite.xBR = (UWORD)(buildSite.xTL-1);
-    buildSite.yBR = (UWORD)(buildSite.yTL-1);
+    buildSite.xTL = (uint16_t)psLocation->screenX;
+    buildSite.yTL = (uint16_t)psLocation->screenY;
+    buildSite.xBR = (uint16_t)(buildSite.xTL-1);
+    buildSite.yBR = (uint16_t)(buildSite.yTL-1);
 
     tmpStructStats = &ReposStats;
     tmpBaseStats = (BASE_STATS *)tmpStructStats;
@@ -1647,7 +1647,7 @@ void StartDeliveryPosition( OBJECT_POSITION *psLocation )
 
 // Finished repositioning a delivery point.
 //
-void FinishDeliveryPosition(UDWORD xPos,UDWORD yPos,void *UserData)
+void FinishDeliveryPosition(uint32_t xPos,uint32_t yPos,void *UserData)
 {
     //This deals with adding waypoints and moving the primary
     processDeliveryPoint(((FLAG_POSITION *)UserData)->player,
@@ -1762,7 +1762,7 @@ void dealWithDroidSelect(DROID *psDroid, BOOL bDragBox)
         for(psD = apsDroidLists[selectedPlayer],bGotGroup = false;
                 psD && !bGotGroup; psD = psD->psNext)
         {
-            if(psD->selected && (psD->group!=UBYTE_MAX))
+            if(psD->selected && (psD->group!=uint8_t_MAX))
             {
                 bGotGroup = true;
             }
@@ -1797,8 +1797,8 @@ void dealWithDroidSelect(DROID *psDroid, BOOL bDragBox)
 
 static void FeedbackOrderGiven(void)
 {
-    static UDWORD LastFrame = 0;
-    UDWORD ThisFrame = frameGetFrameNumber();
+    static uint32_t LastFrame = 0;
+    uint32_t ThisFrame = frameGetFrameNumber();
 
     // Ensure only played once per game cycle.
     if(ThisFrame != LastFrame)
@@ -2017,7 +2017,7 @@ static void dealWithLMBDroid(DROID *psDroid, SELECTION_TYPE selection)
                                   _("%s - Allied - Damage %d%% - Experience %d, %s"),
                                   droidGetName(psDroid),
                                   100 - clip(PERCENT(psDroid->body,psDroid->originalBody), 0, 100),
-                                  (SDWORD) psDroid->experience, getDroidLevelName(psDroid)));
+                                  (int32_t) psDroid->experience, getDroidLevelName(psDroid)));
 
         FeedbackOrderGiven();
     }
@@ -2421,12 +2421,12 @@ BOOL	getRotActive( void )
     return(rotActive);
 }
 
-SDWORD	getDesiredPitch( void )
+int32_t	getDesiredPitch( void )
 {
     return(desiredPitch);
 }
 
-void	setDesiredPitch(SDWORD pitch)
+void	setDesiredPitch(int32_t pitch)
 {
     desiredPitch = pitch;
 }
@@ -2494,8 +2494,8 @@ static OBJECT_POSITION 	*checkMouseLoc(void)
     OBJECT_POSITION		*psReturn;
     FLAG_POSITION		*psPoint;
     //PROXIMITY_DISPLAY	*psProxDisp;
-    UDWORD				i;
-    UDWORD				dispX,dispY,dispR;
+    uint32_t				i;
+    uint32_t				dispX,dispY,dispR;
 
     // We haven't found anything yet
     psReturn = NULL;
@@ -2817,11 +2817,11 @@ return code, but also a pointer to the BASE_OBJECT) ... well if your going to be
 */
 static MOUSE_TARGET	itemUnderMouse( BASE_OBJECT **ppObjectUnderMouse )
 {
-    UDWORD		i;
+    uint32_t		i;
     MOUSE_TARGET retVal;
     BASE_OBJECT	 *psNotDroid;
     DROID		*psDroid;
-    UDWORD		dispX,dispY,dispR;
+    uint32_t		dispX,dispY,dispR;
     STRUCTURE	*psStructure;
 
     *ppObjectUnderMouse=NULL;
@@ -2830,8 +2830,8 @@ static MOUSE_TARGET	itemUnderMouse( BASE_OBJECT **ppObjectUnderMouse )
     {
         if( (mouseTileX < 0) ||
                 (mouseTileY < 0) ||
-                (mouseTileX > (SDWORD)(mapWidth-1)) ||
-                (mouseTileY > (SDWORD)(mapHeight-1)) )
+                (mouseTileX > (int32_t)(mapWidth-1)) ||
+                (mouseTileY > (int32_t)(mapHeight-1)) )
         {
             retVal = MT_BLOCKING;
             return(retVal);
@@ -3057,7 +3057,7 @@ static MOUSE_TARGET	itemUnderMouse( BASE_OBJECT **ppObjectUnderMouse )
 //
 //#define NUM_DROID_WEIGHTS (10)
 #define NUM_DROID_WEIGHTS (13)
-UBYTE DroidSelectionWeights[NUM_DROID_WEIGHTS] =
+uint8_t DroidSelectionWeights[NUM_DROID_WEIGHTS] =
 {
     3,	//DROID_WEAPON,
     1,	//DROID_SENSOR,
@@ -3078,10 +3078,10 @@ UBYTE DroidSelectionWeights[NUM_DROID_WEIGHTS] =
 /* Only deals with one type of droid being selected!!!! */
 /*	We'll have to make it assesss which selection is to be dominant in the case
 	of multiple selections */
-static SELECTION_TYPE	establishSelection(UDWORD selectedPlayer)
+static SELECTION_TYPE	establishSelection(uint32_t selectedPlayer)
 {
     DROID			*psDroid,*psDominant=NULL;
-    UBYTE	CurrWeight;
+    uint8_t	CurrWeight;
 //BOOL			gotWeapon = false;
 //DROID			*psWeapDroid = NULL;
     BOOL			atLeastOne;
@@ -3089,7 +3089,7 @@ static SELECTION_TYPE	establishSelection(UDWORD selectedPlayer)
 
     atLeastOne = false;
     selectionClass = SC_INVALID;
-    CurrWeight = UBYTE_MAX;
+    CurrWeight = uint8_t_MAX;
 
     if (intDemolishSelectMode())
     {
@@ -3208,7 +3208,7 @@ static BOOL	buildingDamaged(STRUCTURE *psStructure)
 }
 
 /*Looks through the list of selected players droids to see if one is a repair droid*/
-BOOL	repairDroidSelected(UDWORD player)
+BOOL	repairDroidSelected(uint32_t player)
 {
     DROID	*psCurr;
 
@@ -3229,7 +3229,7 @@ BOOL	repairDroidSelected(UDWORD player)
 }
 
 /*Looks through the list of selected players droids to see if one is a constructor droid*/
-static DROID *constructorDroidSelected(UDWORD player)
+static DROID *constructorDroidSelected(uint32_t player)
 {
     DROID	*psCurr;
 
@@ -3250,7 +3250,7 @@ static DROID *constructorDroidSelected(UDWORD player)
 }
 
 /*Looks through the list of selected players droids to see if one is a VTOL droid*/
-BOOL	vtolDroidSelected(UDWORD player)
+BOOL	vtolDroidSelected(uint32_t player)
 {
     DROID	*psCurr;
 
@@ -3270,7 +3270,7 @@ BOOL	vtolDroidSelected(UDWORD player)
 }
 
 /*Looks through the list of selected players droids to see if any is selected*/
-BOOL	anyDroidSelected(UDWORD player)
+BOOL	anyDroidSelected(uint32_t player)
 {
     DROID	*psCurr;
 
@@ -3288,7 +3288,7 @@ BOOL	anyDroidSelected(UDWORD player)
 }
 
 /*Looks through the list of selected players droids to see if one is a cyborg droid*/
-BOOL cyborgDroidSelected(UDWORD player)
+BOOL cyborgDroidSelected(uint32_t player)
 {
     DROID	*psCurr;
 
@@ -3339,8 +3339,8 @@ void clearSel(void)
         psFlagPos->selected = false;
     }
 
-    setSelectedGroup(UBYTE_MAX);
-    setSelectedCommander(UBYTE_MAX);
+    setSelectedGroup(uint8_t_MAX);
+    setSelectedCommander(uint8_t_MAX);
     intRefreshScreen();
 }
 

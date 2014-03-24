@@ -41,9 +41,9 @@ extern "C"
 
     typedef struct _droid_order_data
     {
-        SDWORD			order;
-        UWORD			x,y;
-        UWORD			x2,y2;
+        int32_t			order;
+        uint16_t			x,y;
+        uint16_t			x2,y2;
         BASE_OBJECT		*psObj;
         BASE_STATS		*psStats;
     } DROID_ORDER_DATA;

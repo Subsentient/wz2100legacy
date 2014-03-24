@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 typedef BOOL (*SCRIPT_FUNC)(void);
 
 /* The type of function called to access an object or in-game variable */
-typedef BOOL (*SCRIPT_VARFUNC)(UDWORD index);
+typedef BOOL (*SCRIPT_VARFUNC)(uint32_t index);
 
 /* The possible value types for scripts */
 typedef enum _interp_type
@@ -144,15 +144,15 @@ typedef enum _op_code
     OP_TO_INT,				//int cast
 } OPCODE;
 
-/* How far the opcode is shifted up a UDWORD to allow other data to be
- * stored in the same UDWORD
+/* How far the opcode is shifted up a uint32_t to allow other data to be
+ * stored in the same uint32_t
  */
 #define OPCODE_SHIFT		24
 #define OPCODE_DATAMASK		0x00ffffff
 
 // maximum sizes for arrays
 #define VAR_MAX_DIMENSIONS		4
-#define VAR_MAX_ELEMENTS		UBYTE_MAX
+#define VAR_MAX_ELEMENTS		uint8_t_MAX
 
 /* The mask for the number of array elements stored in the data part of an opcode */
 #define ARRAY_BASE_MASK			0x000fffff
@@ -169,7 +169,7 @@ typedef enum _storage_type
     ST_LOCAL,		// A local variable
 } enum_STORAGE_TYPE;
 
-typedef UBYTE STORAGE_TYPE;
+typedef uint8_t STORAGE_TYPE;
 
 /* Variable debugging info for a script */
 typedef struct _var_debug
@@ -181,24 +181,24 @@ typedef struct _var_debug
 /* Array info for a script */
 typedef struct _array_data
 {
-    UDWORD			base;			// the base index of the array values
+    uint32_t			base;			// the base index of the array values
     INTERP_TYPE		type;			// the array data type
-    UBYTE			dimensions;
-    UBYTE			elements[VAR_MAX_DIMENSIONS];
+    uint8_t			dimensions;
+    uint8_t			elements[VAR_MAX_DIMENSIONS];
 } ARRAY_DATA;
 
 /* Array debug info for a script */
 typedef struct _array_debug
 {
     char			*pIdent;
-    UBYTE			storage;
+    uint8_t			storage;
 } ARRAY_DEBUG;
 
 /* Line debugging information for a script */
 typedef struct _script_debug
 {
-    UDWORD	offset;		// Offset in the compiled script that corresponds to
-    UDWORD	line;		// this line in the original script.
+    uint32_t	offset;		// Offset in the compiled script that corresponds to
+    uint32_t	line;		// this line in the original script.
     char	*pLabel;	// the trigger/event that starts at this line
 } SCRIPT_DEBUG;
 
@@ -218,41 +218,41 @@ typedef enum _trigger_type
 typedef struct _trigger_data
 {
     TRIGGER_TYPE		type;		// Type of trigger
-    UWORD			code;		// BOOL - is there code with this trigger
-    UDWORD			time;		// How often to check the trigger
+    uint16_t			code;		// BOOL - is there code with this trigger
+    uint32_t			time;		// How often to check the trigger
 } TRIGGER_DATA;
 
 /* A compiled script and its associated data */
 typedef struct _script_code
 {
-    UDWORD			size;			// The size (in bytes) of the compiled code
+    uint32_t			size;			// The size (in bytes) of the compiled code
     INTERP_VAL		*pCode;			// Pointer to the compiled code
 
-    UWORD			numTriggers;	// The number of triggers
-    UWORD			numEvents;		// The number of events
-    UWORD			*pTriggerTab;	// The table of trigger offsets
+    uint16_t			numTriggers;	// The number of triggers
+    uint16_t			numEvents;		// The number of events
+    uint16_t			*pTriggerTab;	// The table of trigger offsets
     TRIGGER_DATA	*psTriggerData;	// The extra info for each trigger
-    UWORD			*pEventTab;		// The table of event offsets
-    SWORD			*pEventLinks;	// The original trigger/event linkage
+    uint16_t			*pEventTab;		// The table of event offsets
+    int16_t			*pEventLinks;	// The original trigger/event linkage
     // -1 for no link
 
-    UWORD			numGlobals;		// The number of global variables
-    UWORD			numArrays;		// the number of arrays in the program
-    UDWORD			arraySize;		// the number of elements in all the defined arrays
+    uint16_t			numGlobals;		// The number of global variables
+    uint16_t			numArrays;		// the number of arrays in the program
+    uint32_t			arraySize;		// the number of elements in all the defined arrays
     INTERP_TYPE		*pGlobals;		// Types of the global variables
 
 
     INTERP_TYPE		**ppsLocalVars;		//storage for local vars (type)
-    UDWORD			*numLocalVars;		//number of local vars each event has
+    uint32_t			*numLocalVars;		//number of local vars each event has
     INTERP_VAL		**ppsLocalVarVal;	//Values of the local vars used during interpreting process
-    UDWORD			*numParams;			//number of arguments this event has
+    uint32_t			*numParams;			//number of arguments this event has
 
 
     VAR_DEBUG		*psVarDebug;	// The names and storage types of variables
     ARRAY_DATA		*psArrayInfo;	// The sizes of the program arrays
     ARRAY_DEBUG		*psArrayDebug;	// Debug info for the arrays
 
-    UWORD			debugEntries;	// Number of entries in psDebug
+    uint16_t			debugEntries;	// Number of entries in psDebug
     SCRIPT_DEBUG	*psDebug;		// Debugging info for the script
 } SCRIPT_CODE;
 
@@ -266,7 +266,7 @@ typedef enum _interp_runtype
 
 
 /* The size of each opcode */
-extern SDWORD aOpSize[];
+extern int32_t aOpSize[];
 
 /* Check if two types are equivalent */
 extern BOOL interpCheckEquiv(INTERP_TYPE to, INTERP_TYPE from) WZ_DECL_PURE;

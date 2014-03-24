@@ -57,7 +57,7 @@ bool 	isInGamePopupUp = false;
 
 // ////////////////////////////////////////////////////////////////////////////
 
-static BOOL addIGTextButton(UDWORD id, UWORD y, const char *string, UDWORD Style)
+static BOOL addIGTextButton(uint32_t id, uint16_t y, const char *string, uint32_t Style)
 {
     W_BUTINIT sButInit;
 
@@ -104,8 +104,8 @@ static BOOL addQuitOptions(void)
     sFormInit.style		= WFORM_PLAIN;
     sFormInit.width		= INTINGAMEOP3_W;
     sFormInit.height	= INTINGAMEOP3_H;;
-    sFormInit.x		= (SWORD)INTINGAMEOP3_X;
-    sFormInit.y		= (SWORD)INTINGAMEOP3_Y;
+    sFormInit.x		= (int16_t)INTINGAMEOP3_X;
+    sFormInit.y		= (int16_t)INTINGAMEOP3_Y;
     sFormInit.pDisplay	= intOpenPlainForm;
     sFormInit.disableChildren= true;
 
@@ -119,8 +119,8 @@ static BOOL addQuitOptions(void)
         sFormInit.id		= INTINGAMEPOPUP;
         sFormInit.width		= 600;
         sFormInit.height	= 26;
-        sFormInit.x			= (SWORD)(20+D_W);	// center it
-        sFormInit.y			= (SWORD) 130;
+        sFormInit.x			= (int16_t)(20+D_W);	// center it
+        sFormInit.y			= (int16_t) 130;
 
         widgAddForm(psWScreen, &sFormInit);
 
@@ -159,8 +159,8 @@ static BOOL addSlideOptions(void)
     sFormInit.formID	= 0;
     sFormInit.id		= INTINGAMEOP;
     sFormInit.style		= WFORM_PLAIN;
-    sFormInit.x		= (SWORD)INTINGAMEOP2_X;
-    sFormInit.y		= (SWORD)INTINGAMEOP2_Y;
+    sFormInit.x		= (int16_t)INTINGAMEOP2_X;
+    sFormInit.y		= (int16_t)INTINGAMEOP2_Y;
     sFormInit.width		= INTINGAMEOP2_W;
     sFormInit.height	= INTINGAMEOP2_H;
 
@@ -194,7 +194,7 @@ static BOOL addSlideOptions(void)
 
 static BOOL _intAddInGameOptions(void)
 {
-//	UWORD WindowWidth;
+//	uint16_t WindowWidth;
     W_FORMINIT		sFormInit;
 
 
@@ -233,8 +233,8 @@ static BOOL _intAddInGameOptions(void)
     sFormInit.formID	= 0;
     sFormInit.id		= INTINGAMEOP;
     sFormInit.style		= WFORM_PLAIN;
-    sFormInit.x			= (SWORD)INTINGAMEOP_X;
-    sFormInit.y			= (SWORD)INTINGAMEOP_Y;
+    sFormInit.x			= (int16_t)INTINGAMEOP_X;
+    sFormInit.y			= (int16_t)INTINGAMEOP_Y;
     sFormInit.height	= INTINGAMEOP_H;
 
 
@@ -329,8 +329,8 @@ void intAddInGamePopup(void)
     sFormInit.style		= WFORM_PLAIN;
     sFormInit.width		= 600;
     sFormInit.height	= 160;
-    sFormInit.x			= (SWORD)(20+D_W);
-    sFormInit.y			= (SWORD)((240-(160/2))+D_H);
+    sFormInit.x			= (int16_t)(20+D_W);
+    sFormInit.y			= (int16_t)((240-(160/2))+D_H);
     sFormInit.pDisplay	= intOpenPlainForm;
     sFormInit.disableChildren= true;
 
@@ -468,7 +468,7 @@ BOOL intCloseInGameOptions(BOOL bPutUpLoadSave, BOOL bResetMissionWidgets)
 
 // ////////////////////////////////////////////////////////////////////////////
 // process clicks made by user.
-void intProcessInGameOptions(UDWORD id)
+void intProcessInGameOptions(uint32_t id)
 {
 
 

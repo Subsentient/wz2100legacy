@@ -45,7 +45,7 @@ enum _token_type
 
 // return values from the lexer
 extern char *pLevToken;
-extern SDWORD levVal;
+extern int32_t levVal;
 
 // error report function for the level parser
 extern void lev_error(const char *msg);

@@ -162,7 +162,7 @@ static bool getTileHeightCallback(Vector3i pos, int distSq, void *data)
     return false;
 }
 
-void getBestPitchToEdgeOfGrid(UDWORD x, UDWORD y, UDWORD direction, SDWORD *pitch)
+void getBestPitchToEdgeOfGrid(uint32_t x, uint32_t y, uint32_t direction, int32_t *pitch)
 {
     Vector3i pos = { x, y, 0 };
     Vector3i dir = rayAngleToVector3i(direction);
@@ -173,8 +173,8 @@ void getBestPitchToEdgeOfGrid(UDWORD x, UDWORD y, UDWORD direction, SDWORD *pitc
     *pitch = help.pitch;
 }
 
-void getPitchToHighestPoint( UDWORD x, UDWORD y, UDWORD direction,
-                             UDWORD thresholdDistance, SDWORD *pitch)
+void getPitchToHighestPoint( uint32_t x, uint32_t y, uint32_t direction,
+                             uint32_t thresholdDistance, int32_t *pitch)
 {
     Vector3i pos = { x, y, 0 };
     Vector3i dir = rayAngleToVector3i(direction);

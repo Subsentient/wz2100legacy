@@ -69,13 +69,13 @@ typedef struct _interval
 /* The range for neighbouring objects */
 #define PROJ_NAYBOR_RANGE		(TILE_UNITS*4)
 // used to create a specific ID for projectile objects to facilitate tracking them.
-static const UDWORD ProjectileTrackerID =	0xdead0000;
+static const uint32_t ProjectileTrackerID =	0xdead0000;
 // Watermelon:neighbour global info ripped from droid.c
 static PROJ_NAYBOR_INFO	asProjNaybors[MAX_NAYBORS];
-static UDWORD		numProjNaybors = 0;
+static uint32_t		numProjNaybors = 0;
 
 static BASE_OBJECT	*CurrentProjNaybors = NULL;
-static UDWORD	projnayborTime = 0;
+static uint32_t	projnayborTime = 0;
 
 /* The list of projectiles in play */
 static PROJECTILE *psProjectileList = NULL;
@@ -90,14 +90,14 @@ BASE_OBJECT		*g_pProjLastAttacker;
 
 /***************************************************************************/
 
-static UDWORD	establishTargetRadius( BASE_OBJECT *psTarget );
-static UDWORD	establishTargetHeight( BASE_OBJECT *psTarget );
+static uint32_t	establishTargetRadius( BASE_OBJECT *psTarget );
+static uint32_t	establishTargetHeight( BASE_OBJECT *psTarget );
 static void	proj_ImpactFunc( PROJECTILE *psObj );
 static void	proj_PostImpactFunc( PROJECTILE *psObj );
 static void	proj_checkBurnDamage( BASE_OBJECT *apsList, PROJECTILE *psProj);
 static void	proj_Free(PROJECTILE *psObj);
 
-static float objectDamage(BASE_OBJECT *psObj, UDWORD damage, UDWORD weaponClass,UDWORD weaponSubClass, HIT_SIDE impactSide);
+static float objectDamage(BASE_OBJECT *psObj, uint32_t damage, uint32_t weaponClass,uint32_t weaponSubClass, HIT_SIDE impactSide);
 static HIT_SIDE getHitSide (PROJECTILE *psObj, BASE_OBJECT *psTarget);
 
 static void projGetNaybors(PROJECTILE *psObj);
@@ -323,11 +323,11 @@ static void proj_UpdateKills(PROJECTILE *psObj, float experienceInc)
 BOOL proj_SendProjectile(WEAPON *psWeap, BASE_OBJECT *psAttacker, int player, Vector3i target, BASE_OBJECT *psTarget, BOOL bVisible, int weapon_slot)
 {
     PROJECTILE		*psProj = malloc(sizeof(PROJECTILE));
-    SDWORD			tarHeight, srcHeight, iMinSq;
-    SDWORD			altChange, dx, dy, dz, iVelSq, iVel;
+    int32_t			tarHeight, srcHeight, iMinSq;
+    int32_t			altChange, dx, dy, dz, iVelSq, iVel;
     double          fR, fA, fS, fT, fC;
     Vector3f muzzle;
-    SDWORD			iRadSq, iPitchLow, iPitchHigh, iTemp;
+    int32_t			iRadSq, iPitchLow, iPitchHigh, iTemp;
     WEAPON_STATS *psStats = &asWeaponStats[psWeap->nStat];
 
     ASSERT_OR_RETURN( false, psWeap->nStat < numWeaponStats, "Invalid range referenced for numWeaponStats, %d > %d", psWeap->nStat, numWeaponStats);
@@ -419,8 +419,8 @@ BOOL proj_SendProjectile(WEAPON *psWeap, BASE_OBJECT *psAttacker, int player, Ve
     psProj->srcHeight	= srcHeight;
     psProj->altChange	= altChange;
 
-    dx = ((SDWORD)psProj->tarX) - muzzle.x;
-    dy = ((SDWORD)psProj->tarY) - muzzle.y;
+    dx = ((int32_t)psProj->tarX) - muzzle.x;
+    dy = ((int32_t)psProj->tarY) - muzzle.y;
     dz = tarHeight - muzzle.z;
 
     /* roll never set */
@@ -447,7 +447,7 @@ BOOL proj_SendProjectile(WEAPON *psWeap, BASE_OBJECT *psAttacker, int player, Ve
         {
             fR += 2.0 * M_PI;
         }
-        psProj->pitch = (SWORD)( RAD_TO_DEG(fR) );
+        psProj->pitch = (int16_t)( RAD_TO_DEG(fR) );
         psProj->state = PROJ_INFLIGHTDIRECT;
     }
     else
@@ -510,11 +510,11 @@ BOOL proj_SendProjectile(WEAPON *psWeap, BASE_OBJECT *psAttacker, int player, Ve
             /* chooselow pitch unless -ve */
             if ( iPitchLow > 0 )
             {
-                psProj->pitch = (SWORD)iPitchLow;
+                psProj->pitch = (int16_t)iPitchLow;
             }
             else
             {
-                psProj->pitch = (SWORD)iPitchHigh;
+                psProj->pitch = (int16_t)iPitchHigh;
             }
         }
 
@@ -794,11 +794,11 @@ static void proj_InFlightFunc(PROJECTILE *psProj, bool bIndirect)
     nextPos.y = psProj->startY + (distanceRatio * move.y);
     if (!bIndirect)
     {
-        nextPosZ = (SDWORD)(psProj->srcHeight + (distanceRatio * move.z));  // Save unclamped nextPos.z value.
+        nextPosZ = (int32_t)(psProj->srcHeight + (distanceRatio * move.z));  // Save unclamped nextPos.z value.
     }
     else
     {
-        nextPosZ = (SDWORD)(psProj->srcHeight + move.z);  // Save unclamped nextPos.z value.
+        nextPosZ = (int32_t)(psProj->srcHeight + move.z);  // Save unclamped nextPos.z value.
     }
     nextPos.z = MAX(0, nextPosZ);  // nextPos.z is unsigned.
 
@@ -1009,7 +1009,7 @@ static void proj_InFlightFunc(PROJECTILE *psProj, bool bIndirect)
 static void proj_ImpactFunc( PROJECTILE *psObj )
 {
     WEAPON_STATS	*psStats;
-    SDWORD			i, iAudioImpactID;
+    int32_t			i, iAudioImpactID;
     float			relativeDamage;
     Vector3i position,scatter;
     iIMDShape       *imd;
@@ -1374,7 +1374,7 @@ static void proj_ImpactFunc( PROJECTILE *psObj )
 static void proj_PostImpactFunc( PROJECTILE *psObj )
 {
     WEAPON_STATS	*psStats;
-    SDWORD			i, age;
+    int32_t			i, age;
 
     CHECK_PROJECTILE(psObj);
 
@@ -1382,10 +1382,10 @@ static void proj_PostImpactFunc( PROJECTILE *psObj )
     ASSERT( psStats != NULL,
             "proj_PostImpactFunc: Invalid weapon stats pointer" );
 
-    age = (SDWORD)gameTime - (SDWORD)psObj->born;
+    age = (int32_t)gameTime - (int32_t)psObj->born;
 
     /* Time to finish postimpact effect? */
-    if (age > (SDWORD)psStats->radiusLife && age > (SDWORD)psStats->incenTime)
+    if (age > (int32_t)psStats->radiusLife && age > (int32_t)psStats->incenTime)
     {
         psObj->died = gameTime;
         return;
@@ -1511,9 +1511,9 @@ void proj_UpdateAll()
 static void proj_checkBurnDamage( BASE_OBJECT *apsList, PROJECTILE *psProj)
 {
     BASE_OBJECT		*psCurr, *psNext;
-    SDWORD			xDiff,yDiff;
+    int32_t			xDiff,yDiff;
     WEAPON_STATS	*psStats;
-    UDWORD			radSquared;
+    uint32_t			radSquared;
     float			relativeDamage;
 
     CHECK_PROJECTILE(psProj);
@@ -1622,16 +1622,16 @@ bool proj_Direct(const WEAPON_STATS *psStats)
 /***************************************************************************/
 
 // return the maximum range for a weapon
-SDWORD proj_GetLongRange(const WEAPON_STATS *psStats)
+int32_t proj_GetLongRange(const WEAPON_STATS *psStats)
 {
     return psStats->longRange;
 }
 
 
 /***************************************************************************/
-static UDWORD	establishTargetRadius(BASE_OBJECT *psTarget)
+static uint32_t	establishTargetRadius(BASE_OBJECT *psTarget)
 {
-    UDWORD		radius;
+    uint32_t		radius;
     STRUCTURE	*psStructure;
     FEATURE		*psFeat;
 
@@ -1685,9 +1685,9 @@ static UDWORD	establishTargetRadius(BASE_OBJECT *psTarget)
 
 /*the damage depends on the weapon effect and the target propulsion type or
 structure strength*/
-UDWORD	calcDamage(UDWORD baseDamage, WEAPON_EFFECT weaponEffect, BASE_OBJECT *psTarget)
+uint32_t	calcDamage(uint32_t baseDamage, WEAPON_EFFECT weaponEffect, BASE_OBJECT *psTarget)
 {
-    UDWORD	damage;
+    uint32_t	damage;
 
     if (psTarget->type == OBJ_STRUCTURE)
     {
@@ -1729,7 +1729,7 @@ UDWORD	calcDamage(UDWORD baseDamage, WEAPON_EFFECT weaponEffect, BASE_OBJECT *ps
  *  - Should sufficient damage be done to destroy/kill a unit then the value is
  *    multiplied by -1, resulting in a negative number.
  */
-static float objectDamage(BASE_OBJECT *psObj, UDWORD damage, UDWORD weaponClass,UDWORD weaponSubClass, HIT_SIDE impactSide)
+static float objectDamage(BASE_OBJECT *psObj, uint32_t damage, uint32_t weaponClass,uint32_t weaponSubClass, HIT_SIDE impactSide)
 {
     switch (psObj->type)
     {
@@ -1893,9 +1893,9 @@ void	objectShimmy(BASE_OBJECT *psObj)
 
 // Watermelon:addProjNaybor ripped from droid.c
 /* Add a new object to the projectile naybor list */
-static void addProjNaybor(BASE_OBJECT *psObj, UDWORD distSqr)
+static void addProjNaybor(BASE_OBJECT *psObj, uint32_t distSqr)
 {
-    UDWORD	pos;
+    uint32_t	pos;
 
     if (numProjNaybors == 0)
     {
@@ -1932,8 +1932,8 @@ static void addProjNaybor(BASE_OBJECT *psObj, UDWORD distSqr)
 /* Find all the objects close to the projectile */
 static void projGetNaybors(PROJECTILE *psObj)
 {
-    SDWORD		xdiff, ydiff;
-    UDWORD		distSqr;
+    int32_t		xdiff, ydiff;
+    uint32_t		distSqr;
     BASE_OBJECT	*psTempObj;
 
     CHECK_PROJECTILE(psObj);
@@ -1955,8 +1955,8 @@ static void projGetNaybors(PROJECTILE *psObj)
         if (psTempObj != (BASE_OBJECT *)psObj && !psTempObj->died)
         {
             // See if an object is in NAYBOR_RANGE
-            xdiff = (SDWORD) psObj->pos.x - (SDWORD) psTempObj->pos.x;
-            ydiff = (SDWORD) psObj->pos.y - (SDWORD) psTempObj->pos.y;
+            xdiff = (int32_t) psObj->pos.x - (int32_t) psTempObj->pos.x;
+            ydiff = (int32_t) psObj->pos.y - (int32_t) psTempObj->pos.y;
 
             // Compute the distance squared
             distSqr = xdiff*xdiff + ydiff*ydiff;
@@ -1979,7 +1979,7 @@ static void projGetNaybors(PROJECTILE *psObj)
 #define BULLET_FLIGHT_HEIGHT 16
 
 
-static UDWORD	establishTargetHeight(BASE_OBJECT *psTarget)
+static uint32_t	establishTargetHeight(BASE_OBJECT *psTarget)
 {
     if (psTarget == NULL)
     {

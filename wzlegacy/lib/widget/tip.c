@@ -45,11 +45,11 @@ static enum _tip_state
 } tipState;
 
 
-static SDWORD		startTime;			// When the tip was created
-static SDWORD		mx,my;				// Last mouse coords
-static SDWORD		wx,wy,ww,wh;		// Position and size of button to place tip by
-static SDWORD		tx,ty,tw,th;		// Position and size of the tip box
-static SDWORD		fx,fy;				// Position of the text
+static int32_t		startTime;			// When the tip was created
+static int32_t		mx,my;				// Last mouse coords
+static int32_t		wx,wy,ww,wh;		// Position and size of button to place tip by
+static int32_t		tx,ty,tw,th;		// Position and size of the tip box
+static int32_t		fx,fy;				// Position of the text
 static const char *pTip;				// Tip text
 static PIELIGHT		*pColours;			// The colours for the tool tip
 static WIDGET		*psWidget;			// The button the tip is for
@@ -81,7 +81,7 @@ void widgSetTipColour(PIELIGHT colour)
  * tip by.
  */
 void tipStart(WIDGET *psSource, const char *pNewTip, enum iV_fonts NewFontID,
-              PIELIGHT *pNewColours, SDWORD x, SDWORD y, UDWORD width, UDWORD height)
+              PIELIGHT *pNewColours, int32_t x, int32_t y, uint32_t width, uint32_t height)
 {
     ASSERT( psSource != NULL,
             "tipStart: Invalid widget pointer" );
@@ -127,10 +127,10 @@ void tipStop(WIDGET *psSource)
 /* Update and possibly display the tip */
 void tipDisplay(void)
 {
-    SDWORD		newMX,newMY;
-    SDWORD		currTime;
-    SDWORD		fw, topGap;
-//	UDWORD		time;
+    int32_t		newMX,newMY;
+    int32_t		currTime;
+    int32_t		fw, topGap;
+//	uint32_t		time;
 
     switch (tipState)
     {
@@ -163,7 +163,7 @@ void tipDisplay(void)
                 {
                     tx = 0;
                 }
-                if (tx + tw >= (SDWORD)screenWidth-RIGHTBORDER)
+                if (tx + tw >= (int32_t)screenWidth-RIGHTBORDER)
                 {
                     tx = screenWidth-RIGHTBORDER - tw - 1;
                 }
@@ -171,7 +171,7 @@ void tipDisplay(void)
                 {
                     ty = 0;
                 }
-                if (ty + th >= (SDWORD)screenHeight-BOTTOMBORDER)
+                if (ty + th >= (int32_t)screenHeight-BOTTOMBORDER)
                 {
                     /* Position the tip above the button */
                     ty = wy - th - TIP_VGAP;

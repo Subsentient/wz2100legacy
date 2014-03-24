@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 bool mechanicsShutdown(void);
 
 // Allocate the list for a component
-BOOL allocComponentList(COMPONENT_TYPE	type, SDWORD number);
+BOOL allocComponentList(COMPONENT_TYPE	type, int32_t number);
 
 // release all the component lists
 void freeComponentLists(void);

@@ -48,7 +48,7 @@ extern void combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTar
 if any support a counter battery sensor*/
 extern void counterBatteryFire(BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget);
 
-extern float objDamage(BASE_OBJECT *psObj, UDWORD damage, UDWORD originalhp, UDWORD weaponClass,
-                       UDWORD weaponSubClass, HIT_SIDE impactSide);
+extern float objDamage(BASE_OBJECT *psObj, uint32_t damage, uint32_t originalhp, uint32_t weaponClass,
+                       uint32_t weaponSubClass, HIT_SIDE impactSide);
 
 #endif // __INCLUDED_SRC_COMBAT_H__

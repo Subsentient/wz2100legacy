@@ -123,7 +123,7 @@ BOOL scrvAddContext(char *pID, SCRIPT_CONTEXT *psContext, SCRV_TYPE type)
 // Add a new base pointer variable
 BOOL scrvAddBasePointer(INTERP_VAL *psVal)
 {
-    SDWORD	i;
+    int32_t	i;
 
     for(i=0; i<MAX_BASEPOINTER; i++)
     {
@@ -142,7 +142,7 @@ BOOL scrvAddBasePointer(INTERP_VAL *psVal)
 // remove a base pointer from the list
 void scrvReleaseBasePointer(INTERP_VAL *psVal)
 {
-    SDWORD	i;
+    int32_t	i;
 
     for(i=0; i<MAX_BASEPOINTER; i++)
     {

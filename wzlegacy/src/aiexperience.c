@@ -37,19 +37,19 @@
 
 static PHYSFS_file *aiSaveFile[8];
 
-SDWORD baseLocation[MAX_PLAYERS][MAX_PLAYERS][2];		//each player's visible enemy base x,y coords for each player (hence 3d)
-static SDWORD oilLocation[MAX_PLAYERS][MAX_OIL_LOCATIONS][2];	//remembered oil locations
+int32_t baseLocation[MAX_PLAYERS][MAX_PLAYERS][2];		//each player's visible enemy base x,y coords for each player (hence 3d)
+static int32_t oilLocation[MAX_PLAYERS][MAX_OIL_LOCATIONS][2];	//remembered oil locations
 
-SDWORD baseDefendLocation[MAX_PLAYERS][MAX_BASE_DEFEND_LOCATIONS][2];
-SDWORD baseDefendLocPrior[MAX_PLAYERS][MAX_BASE_DEFEND_LOCATIONS];		//Priority
+int32_t baseDefendLocation[MAX_PLAYERS][MAX_BASE_DEFEND_LOCATIONS][2];
+int32_t baseDefendLocPrior[MAX_PLAYERS][MAX_BASE_DEFEND_LOCATIONS];		//Priority
 
-SDWORD oilDefendLocation[MAX_PLAYERS][MAX_OIL_DEFEND_LOCATIONS][2];
-SDWORD oilDefendLocPrior[MAX_PLAYERS][MAX_OIL_DEFEND_LOCATIONS];
+int32_t oilDefendLocation[MAX_PLAYERS][MAX_OIL_DEFEND_LOCATIONS][2];
+int32_t oilDefendLocPrior[MAX_PLAYERS][MAX_OIL_DEFEND_LOCATIONS];
 
 
 void InitializeAIExperience(void)
 {
-    SDWORD i,j;
+    int32_t i,j;
 
     for(i=0; i<MAX_PLAYERS; i++)
     {
@@ -86,7 +86,7 @@ void InitializeAIExperience(void)
 
 void LoadAIExperience(BOOL bNotify)
 {
-    SDWORD player,status;
+    int32_t player,status;
 
     for(player=0; player<game.maxPlayers; player++)
     {
@@ -113,7 +113,7 @@ void LoadAIExperience(BOOL bNotify)
 
 BOOL SaveAIExperience(BOOL bNotify)
 {
-    SDWORD i;
+    int32_t i;
     for(i=0; i<game.maxPlayers; i++)
     {
         (void)SavePlayerAIExperience(i, bNotify);
@@ -122,7 +122,7 @@ BOOL SaveAIExperience(BOOL bNotify)
     return true;
 }
 
-SDWORD LoadPlayerAIExperience(SDWORD nPlayer)
+int32_t LoadPlayerAIExperience(int32_t nPlayer)
 {
     if((nPlayer > -1) && (nPlayer < MAX_PLAYERS))
     {
@@ -132,7 +132,7 @@ SDWORD LoadPlayerAIExperience(SDWORD nPlayer)
     return EXPERIENCE_LOAD_ERROR;
 }
 
-BOOL SavePlayerAIExperience(SDWORD nPlayer, BOOL bNotify)
+BOOL SavePlayerAIExperience(int32_t nPlayer, BOOL bNotify)
 {
     if((nPlayer > -1) && (nPlayer < MAX_PLAYERS))
     {
@@ -154,7 +154,7 @@ BOOL SavePlayerAIExperience(SDWORD nPlayer, BOOL bNotify)
     return true;
 }
 
-BOOL SetUpOutputFile(SDWORD nPlayer)
+BOOL SetUpOutputFile(int32_t nPlayer)
 {
     char			sPlayer[255] = "";
     char			SaveDir[PATH_MAX] = "multiplay/learndata/";
@@ -195,7 +195,7 @@ BOOL SetUpOutputFile(SDWORD nPlayer)
     return true;
 }
 
-BOOL SetUpInputFile(SDWORD nPlayer)
+BOOL SetUpInputFile(int32_t nPlayer)
 {
     char			FileName[255] = "";
     char			sPlayer[255] = "";
@@ -227,7 +227,7 @@ BOOL SetUpInputFile(SDWORD nPlayer)
 }
 
 
-BOOL ExperienceRecallOil(SDWORD nPlayer)
+BOOL ExperienceRecallOil(int32_t nPlayer)
 {
     FEATURE					*psFeature;
     return true;
@@ -244,14 +244,14 @@ BOOL ExperienceRecallOil(SDWORD nPlayer)
     }
 }
 
-BOOL WriteAISaveData(SDWORD nPlayer)
+BOOL WriteAISaveData(int32_t nPlayer)
 {
 
     FEATURE					*psFeature;
     STRUCTURE				*psCurr;
-    SDWORD					NumEntries=0;	//How many derricks/oil resources will be saved
-    UDWORD					PosXY[MAX_OIL_ENTRIES];		//Locations, 0=x,1=y,2=x etc
-    UDWORD					i,j;
+    int32_t					NumEntries=0;	//How many derricks/oil resources will be saved
+    uint32_t					PosXY[MAX_OIL_ENTRIES];		//Locations, 0=x,1=y,2=x etc
+    uint32_t					i,j;
     BOOL					bTileVisible;
 
     /* prepare experience file for the current map */
@@ -293,7 +293,7 @@ BOOL WriteAISaveData(SDWORD nPlayer)
         //debug(LOG_ERROR,"WriteAISaveData - MAX_PLAYERS ok");
 
         /* base locations of all players */
-        if(PHYSFS_write(aiSaveFile[nPlayer], baseLocation[nPlayer], sizeof(SDWORD), MAX_PLAYERS * 2) != (MAX_PLAYERS * 2))			//num of players to store
+        if(PHYSFS_write(aiSaveFile[nPlayer], baseLocation[nPlayer], sizeof(int32_t), MAX_PLAYERS * 2) != (MAX_PLAYERS * 2))			//num of players to store
         {
             debug(LOG_ERROR,"WriteAISaveData: failed to write base locations for player %d",nPlayer);
             return false;
@@ -307,21 +307,21 @@ BOOL WriteAISaveData(SDWORD nPlayer)
         NumEntries = MAX_BASE_DEFEND_LOCATIONS;
 
         /* write MAX_BASE_DEFEND_LOCATIONS */
-        if(PHYSFS_write(aiSaveFile[nPlayer], &NumEntries, sizeof(SDWORD), 1) < 1)
+        if(PHYSFS_write(aiSaveFile[nPlayer], &NumEntries, sizeof(int32_t), 1) < 1)
         {
             debug(LOG_ERROR,"WriteAISaveData: failed to write defence locations count for player %d",nPlayer);
             return false;
         }
 
         /* base defence locations */
-        if(PHYSFS_write(aiSaveFile[nPlayer], baseDefendLocation[nPlayer], sizeof(SDWORD), MAX_BASE_DEFEND_LOCATIONS * 2) < (MAX_BASE_DEFEND_LOCATIONS * 2))
+        if(PHYSFS_write(aiSaveFile[nPlayer], baseDefendLocation[nPlayer], sizeof(int32_t), MAX_BASE_DEFEND_LOCATIONS * 2) < (MAX_BASE_DEFEND_LOCATIONS * 2))
         {
             debug(LOG_ERROR,"WriteAISaveData: failed to write defence locations for player %d",nPlayer);
             return false;
         }
 
         /* base defend priorities */
-        if(PHYSFS_write(aiSaveFile[nPlayer], baseDefendLocPrior[nPlayer], sizeof(SDWORD), MAX_BASE_DEFEND_LOCATIONS * 2) < (MAX_BASE_DEFEND_LOCATIONS * 2))
+        if(PHYSFS_write(aiSaveFile[nPlayer], baseDefendLocPrior[nPlayer], sizeof(int32_t), MAX_BASE_DEFEND_LOCATIONS * 2) < (MAX_BASE_DEFEND_LOCATIONS * 2))
         {
             debug(LOG_ERROR,"WriteAISaveData: failed to write defence locations priority for player %d",nPlayer);
             return false;
@@ -335,21 +335,21 @@ BOOL WriteAISaveData(SDWORD nPlayer)
         NumEntries = MAX_OIL_DEFEND_LOCATIONS;
 
         /* MAX_OIL_DEFEND_LOCATIONS */
-        if(PHYSFS_write(aiSaveFile[nPlayer], &NumEntries, sizeof(SDWORD), 1) < 1)
+        if(PHYSFS_write(aiSaveFile[nPlayer], &NumEntries, sizeof(int32_t), 1) < 1)
         {
             debug(LOG_ERROR,"WriteAISaveData: failed to write oil defence locations count for player %d",nPlayer);
             return false;
         }
 
         /* oil locations */
-        if(PHYSFS_write(aiSaveFile[nPlayer], oilDefendLocation[nPlayer], sizeof(SDWORD), MAX_OIL_DEFEND_LOCATIONS * 2) < (MAX_OIL_DEFEND_LOCATIONS * 2))
+        if(PHYSFS_write(aiSaveFile[nPlayer], oilDefendLocation[nPlayer], sizeof(int32_t), MAX_OIL_DEFEND_LOCATIONS * 2) < (MAX_OIL_DEFEND_LOCATIONS * 2))
         {
             debug(LOG_ERROR,"WriteAISaveData: failed to write oil defence locations for player %d",nPlayer);
             return false;
         }
 
         /* oil location priority */
-        if(PHYSFS_write(aiSaveFile[nPlayer], oilDefendLocPrior[nPlayer], sizeof(SDWORD), MAX_OIL_DEFEND_LOCATIONS * 2) < (MAX_OIL_DEFEND_LOCATIONS * 2))
+        if(PHYSFS_write(aiSaveFile[nPlayer], oilDefendLocPrior[nPlayer], sizeof(int32_t), MAX_OIL_DEFEND_LOCATIONS * 2) < (MAX_OIL_DEFEND_LOCATIONS * 2))
         {
             debug(LOG_ERROR,"WriteAISaveData: failed to write oil defence locations priority for player %d",nPlayer);
             return false;
@@ -452,7 +452,7 @@ BOOL WriteAISaveData(SDWORD nPlayer)
         /* Write Oil Resources coords */
         if(NumEntries > 0)		//Anything to save
         {
-            if(PHYSFS_write(aiSaveFile[nPlayer], PosXY, sizeof(UDWORD), NumEntries * 2) < (NumEntries * 2))
+            if(PHYSFS_write(aiSaveFile[nPlayer], PosXY, sizeof(uint32_t), NumEntries * 2) < (NumEntries * 2))
             {
                 debug(LOG_ERROR,"WriteAISaveData: failed to write oil locations fir player %d",nPlayer);
                 return false;
@@ -489,9 +489,9 @@ BOOL WriteAISaveData(SDWORD nPlayer)
     return PHYSFS_close(aiSaveFile[nPlayer]);
 }
 
-BOOL canRecallOilAt(SDWORD nPlayer, SDWORD x, SDWORD y)
+BOOL canRecallOilAt(int32_t nPlayer, int32_t x, int32_t y)
 {
-    SDWORD i;
+    int32_t i;
 
     /* go through all remembered oil and check */
     for(i=0; i<MAX_OIL_LOCATIONS; i++)
@@ -512,14 +512,14 @@ BOOL canRecallOilAt(SDWORD nPlayer, SDWORD x, SDWORD y)
     return false;			//no
 }
 
-SDWORD ReadAISaveData(SDWORD nPlayer)
+int32_t ReadAISaveData(int32_t nPlayer)
 {
     FEATURE		*psFeature;
-    SDWORD		NumEntries=0;		//How many derricks/oil resources will be saved
-    UDWORD		PosXY[MAX_OIL_ENTRIES];		//Locations, 0=x,1=y,2=x etc
-    UDWORD		i,j;
+    int32_t		NumEntries=0;		//How many derricks/oil resources will be saved
+    uint32_t		PosXY[MAX_OIL_ENTRIES];		//Locations, 0=x,1=y,2=x etc
+    uint32_t		i,j;
     BOOL		bTileVisible;
-    UDWORD		version;
+    uint32_t		version;
 
     if(!SetUpInputFile(nPlayer))
     {
@@ -553,7 +553,7 @@ SDWORD ReadAISaveData(SDWORD nPlayer)
         }
 
         /* read base locations of all players */
-        if (PHYSFS_read(aiSaveFile[nPlayer], baseLocation[nPlayer], sizeof(SDWORD), NumEntries * 2 ) != (NumEntries * 2) )
+        if (PHYSFS_read(aiSaveFile[nPlayer], baseLocation[nPlayer], sizeof(int32_t), NumEntries * 2 ) != (NumEntries * 2) )
         {
             debug(LOG_ERROR,"ReadAISaveData(): Failed to load baseLocation for player '%d'",nPlayer);
             return EXPERIENCE_LOAD_ERROR;
@@ -564,7 +564,7 @@ SDWORD ReadAISaveData(SDWORD nPlayer)
         /************************************/
 
         /* read MAX_BASE_DEFEND_LOCATIONS */
-        if (PHYSFS_read(aiSaveFile[nPlayer], &NumEntries, sizeof(SDWORD), 1 ) != 1 )
+        if (PHYSFS_read(aiSaveFile[nPlayer], &NumEntries, sizeof(int32_t), 1 ) != 1 )
         {
             debug(LOG_ERROR,"ReadAISaveData(): Failed to read MAX_BASE_DEFEND_LOCATIONS for player '%d'",nPlayer);
             return EXPERIENCE_LOAD_ERROR;
@@ -580,14 +580,14 @@ SDWORD ReadAISaveData(SDWORD nPlayer)
         //debug(LOG_ERROR,"num base attack loc: %d", NumEntries);
 
         /* read base defence locations */
-        if (PHYSFS_read(aiSaveFile[nPlayer], baseDefendLocation[nPlayer], sizeof(SDWORD), NumEntries * 2 ) != (NumEntries * 2) )
+        if (PHYSFS_read(aiSaveFile[nPlayer], baseDefendLocation[nPlayer], sizeof(int32_t), NumEntries * 2 ) != (NumEntries * 2) )
         {
             debug(LOG_ERROR,"ReadAISaveData(): Failed to load baseDefendLocation for player '%d'",nPlayer);
             return EXPERIENCE_LOAD_ERROR;
         }
 
         /* read base defend priorities */
-        if (PHYSFS_read(aiSaveFile[nPlayer], baseDefendLocPrior[nPlayer], sizeof(SDWORD), NumEntries * 2 ) != (NumEntries * 2) )
+        if (PHYSFS_read(aiSaveFile[nPlayer], baseDefendLocPrior[nPlayer], sizeof(int32_t), NumEntries * 2 ) != (NumEntries * 2) )
         {
             debug(LOG_ERROR,"ReadAISaveData(): Failed to load baseDefendLocPrior for player '%d'",nPlayer);
             return EXPERIENCE_LOAD_ERROR;
@@ -614,14 +614,14 @@ SDWORD ReadAISaveData(SDWORD nPlayer)
         //debug(LOG_ERROR,"num oil attack loc: %d", NumEntries);
 
         /* read oil locations */
-        if (PHYSFS_read(aiSaveFile[nPlayer], oilDefendLocation[nPlayer], sizeof(SDWORD), NumEntries * 2 ) != (NumEntries * 2) )
+        if (PHYSFS_read(aiSaveFile[nPlayer], oilDefendLocation[nPlayer], sizeof(int32_t), NumEntries * 2 ) != (NumEntries * 2) )
         {
             debug(LOG_ERROR,"ReadAISaveData(): Failed to load oilDefendLocation for player '%d'",nPlayer);
             return EXPERIENCE_LOAD_ERROR;
         }
 
         /* read oil location priority */
-        if (PHYSFS_read(aiSaveFile[nPlayer], oilDefendLocPrior[nPlayer], sizeof(SDWORD), NumEntries * 2 ) != (NumEntries * 2) )
+        if (PHYSFS_read(aiSaveFile[nPlayer], oilDefendLocPrior[nPlayer], sizeof(int32_t), NumEntries * 2 ) != (NumEntries * 2) )
         {
             debug(LOG_ERROR,"ReadAISaveData(): Failed to load oilDefendLocPrior for player '%d'",nPlayer);
             return EXPERIENCE_LOAD_ERROR;
@@ -658,7 +658,7 @@ SDWORD ReadAISaveData(SDWORD nPlayer)
         if(NumEntries > 0)	//any oil resources were saved?
         {
             /* Read Oil Resources coordinates */
-            if (PHYSFS_read(aiSaveFile[nPlayer], PosXY, sizeof(UDWORD), NumEntries * 2 ) != (NumEntries * 2) )
+            if (PHYSFS_read(aiSaveFile[nPlayer], PosXY, sizeof(uint32_t), NumEntries * 2 ) != (NumEntries * 2) )
             {
                 debug(LOG_ERROR,"ReadAISaveData(): Failed to read Oil Resources coordinates for player '%d'",nPlayer);
                 return EXPERIENCE_LOAD_ERROR;
@@ -725,7 +725,7 @@ SDWORD ReadAISaveData(SDWORD nPlayer)
     return PHYSFS_close(aiSaveFile[nPlayer]) ? EXPERIENCE_LOAD_OK : EXPERIENCE_LOAD_ERROR;
 }
 
-BOOL OilResourceAt(UDWORD OilX,UDWORD OilY, SDWORD VisibleToPlayer)
+BOOL OilResourceAt(uint32_t OilX,uint32_t OilY, int32_t VisibleToPlayer)
 {
     FEATURE					*psFeature;
 
@@ -755,9 +755,9 @@ BOOL OilResourceAt(UDWORD OilX,UDWORD OilY, SDWORD VisibleToPlayer)
 
 //x and y are passed by script, find out if this loc is close to
 //an already stored loc, if yes then increase its priority
-BOOL StoreBaseDefendLoc(SDWORD x, SDWORD y, SDWORD nPlayer)
+BOOL StoreBaseDefendLoc(int32_t x, int32_t y, int32_t nPlayer)
 {
-    SDWORD	i, index;
+    int32_t	i, index;
 
     index = GetBaseDefendLocIndex(x, y, nPlayer);
     if(index < 0)			//this one is new
@@ -787,7 +787,7 @@ BOOL StoreBaseDefendLoc(SDWORD x, SDWORD y, SDWORD nPlayer)
 
         baseDefendLocPrior[nPlayer][index]++;	//higher the priority
 
-        if(baseDefendLocPrior[nPlayer][index] == SDWORD_MAX)
+        if(baseDefendLocPrior[nPlayer][index] == int32_t_MAX)
         {
             baseDefendLocPrior[nPlayer][index] = 1;    //start all over
         }
@@ -798,9 +798,9 @@ BOOL StoreBaseDefendLoc(SDWORD x, SDWORD y, SDWORD nPlayer)
     return true;
 }
 
-SDWORD GetBaseDefendLocIndex(SDWORD x, SDWORD y, SDWORD nPlayer)
+int32_t GetBaseDefendLocIndex(int32_t x, int32_t y, int32_t nPlayer)
 {
-    UDWORD	i,range;
+    uint32_t	i,range;
 
     range  = world_coord(SAME_LOC_RANGE);		//in world units
 
@@ -820,9 +820,9 @@ SDWORD GetBaseDefendLocIndex(SDWORD x, SDWORD y, SDWORD nPlayer)
 }
 
 //sort the priorities, placing the higher ones at the top
-BOOL SortBaseDefendLoc(SDWORD nPlayer)
+BOOL SortBaseDefendLoc(int32_t nPlayer)
 {
-    SDWORD i, prior, temp,LowestPrior,LowestIndex,SortBound;
+    int32_t i, prior, temp,LowestPrior,LowestIndex,SortBound;
 
 
 
@@ -830,7 +830,7 @@ BOOL SortBaseDefendLoc(SDWORD nPlayer)
 
     while(SortBound >= 0)		//while didn't reach the top
     {
-        LowestPrior = (SDWORD_MAX - 1);
+        LowestPrior = (int32_t_MAX - 1);
 
         LowestIndex = -1;
 
@@ -877,9 +877,9 @@ BOOL SortBaseDefendLoc(SDWORD nPlayer)
     return true;
 }
 
-void BaseExperienceDebug(SDWORD nPlayer)
+void BaseExperienceDebug(int32_t nPlayer)
 {
-    SDWORD i;
+    int32_t i;
 
     printf_console("-------------");
     for(i=0; i< MAX_BASE_DEFEND_LOCATIONS; i++)
@@ -889,9 +889,9 @@ void BaseExperienceDebug(SDWORD nPlayer)
     printf_console("-------------");
 }
 
-void OilExperienceDebug(SDWORD nPlayer)
+void OilExperienceDebug(int32_t nPlayer)
 {
-    SDWORD i;
+    int32_t i;
 
     printf_console("-------------");
     for(i=0; i< MAX_OIL_DEFEND_LOCATIONS; i++)
@@ -904,9 +904,9 @@ void OilExperienceDebug(SDWORD nPlayer)
 
 //x and y are passed by script, find out if this loc is close to
 //an already stored loc, if yes then increase its priority
-BOOL StoreOilDefendLoc(SDWORD x, SDWORD y, SDWORD nPlayer)
+BOOL StoreOilDefendLoc(int32_t x, int32_t y, int32_t nPlayer)
 {
-    SDWORD	i, index;
+    int32_t	i, index;
 
     index = GetOilDefendLocIndex(x, y, nPlayer);
     if(index < 0)			//this one is new
@@ -936,7 +936,7 @@ BOOL StoreOilDefendLoc(SDWORD x, SDWORD y, SDWORD nPlayer)
 
         oilDefendLocPrior[nPlayer][index]++;	//higher the priority
 
-        if(oilDefendLocPrior[nPlayer][index] == SDWORD_MAX)
+        if(oilDefendLocPrior[nPlayer][index] == int32_t_MAX)
         {
             oilDefendLocPrior[nPlayer][index] = 1;    //start all over
         }
@@ -947,9 +947,9 @@ BOOL StoreOilDefendLoc(SDWORD x, SDWORD y, SDWORD nPlayer)
     return true;
 }
 
-SDWORD GetOilDefendLocIndex(SDWORD x, SDWORD y, SDWORD nPlayer)
+int32_t GetOilDefendLocIndex(int32_t x, int32_t y, int32_t nPlayer)
 {
-    UDWORD	i,range;
+    uint32_t	i,range;
 
     range  = world_coord(SAME_LOC_RANGE);		//in world units
 
@@ -969,15 +969,15 @@ SDWORD GetOilDefendLocIndex(SDWORD x, SDWORD y, SDWORD nPlayer)
 }
 
 //sort the priorities, placing the higher ones at the top
-BOOL SortOilDefendLoc(SDWORD nPlayer)
+BOOL SortOilDefendLoc(int32_t nPlayer)
 {
-    SDWORD i, prior, temp,LowestPrior,LowestIndex,SortBound;
+    int32_t i, prior, temp,LowestPrior,LowestIndex,SortBound;
 
     SortBound = MAX_OIL_DEFEND_LOCATIONS-1;	//nothing sorted yet, point at last elem
 
     while(SortBound >= 0)		//while didn't reach the top
     {
-        LowestPrior = (SDWORD_MAX - 1);
+        LowestPrior = (int32_t_MAX - 1);
 
         LowestIndex = -1;
 
@@ -1024,7 +1024,7 @@ BOOL SortOilDefendLoc(SDWORD nPlayer)
     return true;
 }
 
-BOOL CanRememberPlayerBaseLoc(SDWORD lookingPlayer, SDWORD enemyPlayer)
+BOOL CanRememberPlayerBaseLoc(int32_t lookingPlayer, int32_t enemyPlayer)
 {
     if(lookingPlayer < 0 || enemyPlayer < 0)
     {
@@ -1048,7 +1048,7 @@ BOOL CanRememberPlayerBaseLoc(SDWORD lookingPlayer, SDWORD enemyPlayer)
     return true;
 }
 
-BOOL CanRememberPlayerBaseDefenseLoc(SDWORD player, SDWORD index)
+BOOL CanRememberPlayerBaseDefenseLoc(int32_t player, int32_t index)
 {
     if(player < 0)
     {
@@ -1074,7 +1074,7 @@ BOOL CanRememberPlayerBaseDefenseLoc(SDWORD player, SDWORD index)
     return true;
 }
 
-BOOL CanRememberPlayerOilDefenseLoc(SDWORD player, SDWORD index)
+BOOL CanRememberPlayerOilDefenseLoc(int32_t player, int32_t index)
 {
     if(player < 0)
     {

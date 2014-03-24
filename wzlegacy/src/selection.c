@@ -41,13 +41,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 // ---------------------------------------------------------------------
 // STATIC SUPPORT FUNCTIONS
-UDWORD	selSelectAllUnits		( UDWORD player, BOOL bOnScreen );
-UDWORD	selSelectAllSameProp	( UDWORD player, PROPULSION_TYPE propType,
+uint32_t	selSelectAllUnits		( uint32_t player, BOOL bOnScreen );
+uint32_t	selSelectAllSameProp	( uint32_t player, PROPULSION_TYPE propType,
                                   BOOL bOnScreen );
-UDWORD	selSelectAllCombat		( UDWORD player, BOOL bOnScreen);
-UDWORD	selSelectAllDamaged		( UDWORD player, BOOL bOnScreen);
-UDWORD	selSelectAllSame		( UDWORD player, BOOL bOnScreen);
-UDWORD	selNameSelect			( char *droidName, UDWORD player, BOOL bOnScreen );
+uint32_t	selSelectAllCombat		( uint32_t player, BOOL bOnScreen);
+uint32_t	selSelectAllDamaged		( uint32_t player, BOOL bOnScreen);
+uint32_t	selSelectAllSame		( uint32_t player, BOOL bOnScreen);
+uint32_t	selNameSelect			( char *droidName, uint32_t player, BOOL bOnScreen );
 // ---------------------------------------------------------------------
 /*
 	Selects the units of a given player according to given criteria.
@@ -58,10 +58,10 @@ static DROID	*psOldRD = NULL;	// pointer to last selected repair unit
 static DROID	*psOldNS = NULL;
 static STRUCTURE *psOldStruct = NULL;
 
-UDWORD	selDroidSelection( UDWORD	player, SELECTION_CLASS droidClass,
+uint32_t	selDroidSelection( uint32_t	player, SELECTION_CLASS droidClass,
                            SELECTIONTYPE droidType, BOOL bOnScreen )
 {
-    UDWORD	retVal;
+    uint32_t	retVal;
     char	selInfo[255];
 
     /* So far, we haven't selected any */
@@ -117,10 +117,10 @@ UDWORD	selDroidSelection( UDWORD	player, SELECTION_CLASS droidClass,
 
 // ---------------------------------------------------------------------
 // Selects all units owned by the player - onscreen toggle.
-UDWORD	selSelectAllUnits( UDWORD player, BOOL bOnScreen )
+uint32_t	selSelectAllUnits( uint32_t player, BOOL bOnScreen )
 {
     DROID	*psDroid;
-    UDWORD	count;
+    uint32_t	count;
 
     selDroidDeselect(player);
     /* Go thru' all */
@@ -145,12 +145,12 @@ UDWORD	selSelectAllUnits( UDWORD player, BOOL bOnScreen )
 // ---------------------------------------------------------------------
 // Selects all units owned by the player of a certain propulsion type.
 // On Screen toggle.
-UDWORD	selSelectAllSameProp( UDWORD player, PROPULSION_TYPE propType,
+uint32_t	selSelectAllSameProp( uint32_t player, PROPULSION_TYPE propType,
                               BOOL bOnScreen )
 {
     PROPULSION_STATS	*psPropStats;
     DROID	*psDroid;
-    UDWORD	count;
+    uint32_t	count;
 
     selDroidDeselect(player);
     /* Go thru' them all */
@@ -178,10 +178,10 @@ UDWORD	selSelectAllSameProp( UDWORD player, PROPULSION_TYPE propType,
 // ---------------------------------------------------------------------
 // Selects all units owned by the player that have a weapon. On screen
 // toggle.
-UDWORD	selSelectAllCombat( UDWORD player, BOOL bOnScreen)
+uint32_t	selSelectAllCombat( uint32_t player, BOOL bOnScreen)
 {
     DROID	*psDroid;
-    UDWORD	count;
+    uint32_t	count;
 
     selDroidDeselect(player);
     for(psDroid = apsDroidLists[player], count = 0;
@@ -207,11 +207,11 @@ UDWORD	selSelectAllCombat( UDWORD player, BOOL bOnScreen)
 }
 // ---------------------------------------------------------------------
 // Selects all damaged units - on screen toggle.
-UDWORD	selSelectAllDamaged( UDWORD player, BOOL bOnScreen)
+uint32_t	selSelectAllDamaged( uint32_t player, BOOL bOnScreen)
 {
     DROID	*psDroid;
-    UDWORD	damage;
-    UDWORD	count;
+    uint32_t	damage;
+    uint32_t	count;
 
     selDroidDeselect(player);
     for(psDroid = apsDroidLists[player], count = 0;
@@ -240,9 +240,9 @@ UDWORD	selSelectAllDamaged( UDWORD player, BOOL bOnScreen)
 }
 // ---------------------------------------------------------------------
 // Deselects all units for the player
-UDWORD	selDroidDeselect( UDWORD player )
+uint32_t	selDroidDeselect( uint32_t player )
 {
-    UDWORD	count;
+    uint32_t	count;
     DROID	*psDroid;
 
     for(psDroid = apsDroidLists[player], count = 0;
@@ -259,9 +259,9 @@ UDWORD	selDroidDeselect( UDWORD player )
 }
 // ---------------------------------------------------------------------
 // Lets you know how many are selected for a given player
-UDWORD	selNumSelected( UDWORD player )
+uint32_t	selNumSelected( uint32_t player )
 {
-    UDWORD	count;
+    uint32_t	count;
     DROID	*psDroid;
 
     for(psDroid = apsDroidLists[player], count = 0;
@@ -277,12 +277,12 @@ UDWORD	selNumSelected( UDWORD player )
 
 // ---------------------------------------------------------------------
 // Selects all units the same as the one(s) selected
-UDWORD	selSelectAllSame( UDWORD player, BOOL bOnScreen)
+uint32_t	selSelectAllSame( uint32_t player, BOOL bOnScreen)
 {
 
 
     DROID	*psDroid;
-    UDWORD	count;
+    uint32_t	count;
 
     for(psDroid = apsDroidLists[player], count = 0;
             psDroid; psDroid = psDroid->psNext)
@@ -299,11 +299,11 @@ UDWORD	selSelectAllSame( UDWORD player, BOOL bOnScreen)
 }
 // ---------------------------------------------------------------------
 // sub-function - selects all units with same name as one passed in
-UDWORD	selNameSelect( char *droidName, UDWORD player, BOOL bOnScreen )
+uint32_t	selNameSelect( char *droidName, uint32_t player, BOOL bOnScreen )
 {
 
     DROID	*psDroid;
-    UDWORD	count;
+    uint32_t	count;
 
     for(psDroid = apsDroidLists[player], count = 0;
             psDroid; psDroid = psDroid->psNext)
@@ -334,7 +334,7 @@ UDWORD	selNameSelect( char *droidName, UDWORD player, BOOL bOnScreen )
 
 // ffs am
 // ---------------------------------------------------------------------
-void	selNextSpecifiedUnit(UDWORD unitType)
+void	selNextSpecifiedUnit(uint32_t unitType)
 {
     DROID	*psCurr;
     DROID	*psResult;
@@ -344,7 +344,7 @@ void	selNextSpecifiedUnit(UDWORD unitType)
     for(psCurr = apsDroidLists[selectedPlayer],psFirst = NULL,psResult = NULL,bLaterInList = false;
             psCurr && !psResult; psCurr = psCurr->psNext)
     {
-        //if( psCurr->droidType == (SDWORD)unitType )
+        //if( psCurr->droidType == (int32_t)unitType )
         //exceptions - as always...
         bMatch = false;
         if (unitType == DROID_CONSTRUCT)
@@ -363,7 +363,7 @@ void	selNextSpecifiedUnit(UDWORD unitType)
                 bMatch = true;
             }
         }
-        else if(psCurr->droidType == (SDWORD)unitType)
+        else if(psCurr->droidType == (int32_t)unitType)
         {
             bMatch = true;
         }
@@ -456,7 +456,7 @@ void	selNextUnassignedUnit( void )
             psCurr && !psResult; psCurr = psCurr->psNext)
     {
         /* Only look at unselected ones */
-        if(psCurr->group==UBYTE_MAX)
+        if(psCurr->group==uint8_t_MAX)
         {
 
             /* Keep a record of first one */
@@ -520,7 +520,7 @@ void	selNextUnassignedUnit( void )
     }
 }
 // ---------------------------------------------------------------------
-void	selNextSpecifiedBuilding(UDWORD	structType)
+void	selNextSpecifiedBuilding(uint32_t	structType)
 {
     STRUCTURE	*psCurr;
     STRUCTURE	*psResult;
@@ -583,10 +583,10 @@ void	selNextSpecifiedBuilding(UDWORD	structType)
 // ---------------------------------------------------------------------
 
 // see if a commander is the n'th command droid
-static BOOL droidIsCommanderNum(DROID *psDroid, SDWORD n)
+static BOOL droidIsCommanderNum(DROID *psDroid, int32_t n)
 {
     DROID	*psCurr;
-    SDWORD	numLess;
+    int32_t	numLess;
 
     if (psDroid->droidType != DROID_COMMAND)
     {
@@ -612,7 +612,7 @@ static BOOL droidIsCommanderNum(DROID *psDroid, SDWORD n)
 }
 
 // select the n'th command droid
-void selCommander(SDWORD n)
+void selCommander(int32_t n)
 {
     DROID	*psCurr;
 
@@ -646,7 +646,7 @@ void selCommander(SDWORD n)
                 }
 
             }
-            setSelectedCommander((UDWORD)n);
+            setSelectedCommander((uint32_t)n);
             return;
         }
     }

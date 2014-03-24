@@ -34,13 +34,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 // -------------------------------------------------------------------------
 /* When did the camera last change it's point of interest? */
-static	UDWORD	lastCameraMove;
-static	UDWORD	lastDroidSending;
-static	UDWORD	presentStatus;
-static	UDWORD	demoCamInterval;
+static	uint32_t	lastCameraMove;
+static	uint32_t	lastDroidSending;
+static	uint32_t	presentStatus;
+static	uint32_t	demoCamInterval;
 static	DROID	*psLastDroid = NULL;
-static	UDWORD	lastSelectedPlayer;
-static	DROID	*getDroidForDemo( UDWORD player );
+static	uint32_t	lastSelectedPlayer;
+static	DROID	*getDroidForDemo( uint32_t player );
 
 // -------------------------------------------------------------------------
 /* Sets up the system */
@@ -68,11 +68,11 @@ static void findSomethingInteresting(void)
         SEEK_OVERRIDE,
     } type;
 
-    UDWORD	player,otherPlayer;
+    uint32_t	player,otherPlayer;
     DROID	*psDroid;
-    UDWORD	numWith;
+    uint32_t	numWith;
     BOOL	bSeekOnlyLocations;
-    UDWORD	i;
+    uint32_t	i;
     BOOL	bHaveHuman = false;
     PROPULSION_STATS	*psPropStats;
 
@@ -201,10 +201,10 @@ static void findSomethingInteresting(void)
 /* Updates the camera's point of interest if it's time to */
 void	processDemoCam( void )
 {
-    UDWORD	firstPlayer,otherPlayer;
+    uint32_t	firstPlayer,otherPlayer;
     DROID	*psDroid;
     BOOL	bSkipOrder = false;
-    UDWORD	i,numWith;
+    uint32_t	i,numWith;
 
     /* Is the demo camera actually active? */
     if(presentStatus == DC_INACTIVE)
@@ -318,11 +318,11 @@ BOOL	demoGetStatus( void )
 }
 
 // -------------------------------------------------------------------------
-DROID	*getDroidForDemo( UDWORD player )
+DROID	*getDroidForDemo( uint32_t player )
 {
-    UDWORD	i;
+    uint32_t	i;
     DROID	*psDroid;
-    UDWORD	droidIndex;
+    uint32_t	droidIndex;
 
     for(psDroid = apsDroidLists[player],i=0; psDroid; psDroid = psDroid->psNext,i++)
     {

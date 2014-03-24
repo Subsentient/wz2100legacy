@@ -81,7 +81,7 @@ extern void scriptSetTypeEquiv(TYPE_EQUIV *psTypeTab);
  *
  * \return Number of calls on the return address stack
  */
-extern UDWORD retStackCallDepth(void);
+extern uint32_t retStackCallDepth(void);
 
 
 /***********************************************************************************
@@ -104,7 +104,7 @@ extern SCRIPT_CODE *scriptCompile(PHYSFS_file *fileHandle, SCR_DEBUGTYPE debugTy
 extern void scriptFreeCode(SCRIPT_CODE *psCode);
 
 /* Lookup a script variable */
-extern BOOL scriptGetVarIndex(SCRIPT_CODE *psCode, char *pID, UDWORD *pIndex);
+extern BOOL scriptGetVarIndex(SCRIPT_CODE *psCode, char *pID, uint32_t *pIndex);
 
 /* returns true if passed INTERP_TYPE is used as a pointer in INTERP_VAL, false otherwise */
 extern BOOL scriptTypeIsPointer(INTERP_TYPE type);
@@ -115,7 +115,7 @@ extern const char *scriptFunctionToString(SCRIPT_FUNC function) WZ_DECL_PURE;
 
 /* Run a compiled script */
 extern BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType,
-                            UDWORD index, UDWORD offset);
+                            uint32_t index, uint32_t offset);
 
 
 /***********************************************************************************
@@ -127,7 +127,7 @@ extern BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType,
 extern void eventReset(void);
 
 // Initialise the create/release function array - specify the maximum value type
-extern BOOL eventInitValueFuncs(SDWORD maxType);
+extern BOOL eventInitValueFuncs(int32_t maxType);
 
 // a create function for data stored in an INTERP_VAL
 typedef BOOL (*VAL_CREATE_FUNC)(INTERP_VAL *psVal);
@@ -150,22 +150,22 @@ extern BOOL eventCopyContext(SCRIPT_CONTEXT *psContext, SCRIPT_CONTEXT **ppsNew)
 
 // Add a new object to the trigger system
 // Time is the application time at which all the triggers are to be started
-extern BOOL eventRunContext(SCRIPT_CONTEXT *psContext, UDWORD time);
+extern BOOL eventRunContext(SCRIPT_CONTEXT *psContext, uint32_t time);
 
 // Remove a context from the event system
 extern void eventRemoveContext(SCRIPT_CONTEXT *psContext);
 
 // Set a global variable value for a context
-extern BOOL eventSetContextVar(SCRIPT_CONTEXT *psContext, UDWORD index,
+extern BOOL eventSetContextVar(SCRIPT_CONTEXT *psContext, uint32_t index,
                                INTERP_VAL *data);
 
 // Get the value pointer for a variable index
-extern BOOL eventGetContextVal(SCRIPT_CONTEXT *psContext, UDWORD index,
+extern BOOL eventGetContextVal(SCRIPT_CONTEXT *psContext, uint32_t index,
                                INTERP_VAL **ppsVal);
 
 // Process all the currently active triggers
 // Time is the application time at which all the triggers are to be processed
-extern void eventProcessTriggers(UDWORD currTime);
+extern void eventProcessTriggers(uint32_t currTime);
 
 // Activate a callback trigger
 extern void eventFireCallbackTrigger(TRIGGER_TYPE callback);
@@ -177,8 +177,8 @@ extern void eventFireCallbackTrigger(TRIGGER_TYPE callback);
 
 /* Pop a number of values off the stack checking their types
  * This is used by instinct functions to get their parameters
- * The varargs part is a set of INTERP_TYPE, UDWORD * pairs.
- * The value of the parameter is stored in the DWORD pointed to by the UDWORD *
+ * The varargs part is a set of INTERP_TYPE, uint32_t * pairs.
+ * The value of the parameter is stored in the int32_t pointed to by the uint32_t *
  */
 extern BOOL stackPopParams(unsigned int numParams, ...);
 

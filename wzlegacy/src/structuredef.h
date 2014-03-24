@@ -64,10 +64,10 @@ typedef struct _flag_position
 {
     POSITION_OBJ;
     Vector3i		coords;							//the world coords of the Position
-    UBYTE		factoryInc;						//indicates whether the first, second etc factory
-    UBYTE		factoryType;					//indicates whether standard, cyborg or vtol factory
-//	UBYTE		factorySub;						//sub value. needed to order production points.
-//	UBYTE		primary;
+    uint8_t		factoryInc;						//indicates whether the first, second etc factory
+    uint8_t		factoryType;					//indicates whether standard, cyborg or vtol factory
+//	uint8_t		factorySub;						//sub value. needed to order production points.
+//	uint8_t		primary;
     struct _flag_position	*psNext;
 } FLAG_POSITION;
 
@@ -92,7 +92,7 @@ typedef enum _struct_strength
 
 #define INVALID_STRENGTH	(NUM_STRUCT_STRENGTH + 1)
 
-typedef UWORD STRUCTSTRENGTH_MODIFIER;
+typedef uint16_t STRUCTSTRENGTH_MODIFIER;
 
 //this structure is used to hold the permenant stats for each type of building
 typedef struct _structure_stats
@@ -100,41 +100,41 @@ typedef struct _structure_stats
     STATS_BASE;						/* basic stats */
     STRUCTURE_TYPE	type;				/* the type of structure */
     STRUCT_STRENGTH	strength;		/* strength against the weapon effects */
-    UDWORD		terrainType;		/*The type of terrain the structure has to be
+    uint32_t		terrainType;		/*The type of terrain the structure has to be
 									  built next to - may be none*/
-    UDWORD		baseWidth;			/*The width of the base in tiles*/
-    UDWORD		baseBreadth;		/*The breadth of the base in tiles*/
-    UDWORD		foundationType;		/*The type of foundation for the structure*/
-    UDWORD		buildPoints;		/*The number of build points required to build
+    uint32_t		baseWidth;			/*The width of the base in tiles*/
+    uint32_t		baseBreadth;		/*The breadth of the base in tiles*/
+    uint32_t		foundationType;		/*The type of foundation for the structure*/
+    uint32_t		buildPoints;		/*The number of build points required to build
 									  the structure*/
-    UDWORD		height;				/*The height above/below the terrain - negative
+    uint32_t		height;				/*The height above/below the terrain - negative
 									  values denote below the terrain*/
-    UDWORD		armourValue;		/*The armour value for the structure - can be
+    uint32_t		armourValue;		/*The armour value for the structure - can be
 									  upgraded */
-    UDWORD		bodyPoints;			/*The structure's body points - A structure goes
+    uint32_t		bodyPoints;			/*The structure's body points - A structure goes
 									  off-line when 50% of its body points are lost*/
-    UDWORD		repairSystem;		/*The repair system points are added to the body
+    uint32_t		repairSystem;		/*The repair system points are added to the body
 									  points until fully restored . The points are
 									  then added to the Armour Points*/
-    UDWORD		powerToBuild;		/*How much power the structure requires to build*/
-    UDWORD		resistance;			/*The number used to determine whether a
+    uint32_t		powerToBuild;		/*How much power the structure requires to build*/
+    uint32_t		resistance;			/*The number used to determine whether a
 									  structure can resist an enemy takeover -
 									  0 = cannot be attacked electrically*/
-    UDWORD		sizeModifier;		/*The larger the target, the easier to hit*/
+    uint32_t		sizeModifier;		/*The larger the target, the easier to hit*/
     iIMDShape	*pIMD;		/*The IMD to draw for this structure */
     iIMDShape	*pBaseIMD;	/*The base IMD to draw for this structure */
     struct ECM_STATS	*pECM;		/*Which ECM is standard for the structure -
 									  if any*/
     struct SENSOR_STATS *pSensor;	/*Which Sensor is standard for the structure -
 									  if any*/
-    UDWORD		weaponSlots;		/*Number of weapons that can be attached to the
+    uint32_t		weaponSlots;		/*Number of weapons that can be attached to the
 									  building*/
-    UDWORD		numWeaps;			/*Number of weapons for default */
+    uint32_t		numWeaps;			/*Number of weapons for default */
 
     struct WEAPON_STATS    *psWeapStat[STRUCT_MAXWEAPS];
 
-    UDWORD		numFuncs;			/*Number of functions for default*/
-    SDWORD		defaultFunc;		/*The default function*/
+    uint32_t		numFuncs;			/*Number of functions for default*/
+    int32_t		defaultFunc;		/*The default function*/
     struct _function	**asFuncList;		/*List of pointers to allowable functions -
 									  unalterable*/
 } WZ_DECL_MAY_ALIAS STRUCTURE_STATS;
@@ -153,39 +153,39 @@ typedef enum _struct_states
 typedef struct _research_facility
 {
     struct BASE_STATS	*psSubject;		/* the subject the structure is working on*/
-    UDWORD		capacity;				/* Number of upgrade modules added*/
-    UDWORD		timeStarted;			/* The time the building started on the subject*/
-    UDWORD		researchPoints;			/* Research Points produced per research cycle*/
-    UDWORD		timeToResearch;			/* Time taken to research the topic*/
+    uint32_t		capacity;				/* Number of upgrade modules added*/
+    uint32_t		timeStarted;			/* The time the building started on the subject*/
+    uint32_t		researchPoints;			/* Research Points produced per research cycle*/
+    uint32_t		timeToResearch;			/* Time taken to research the topic*/
     struct BASE_STATS	*psBestTopic;	/* The topic with the most research points
 										   that was last performed*/
-    UDWORD		powerAccrued;			/* used to keep track of power before
+    uint32_t		powerAccrued;			/* used to keep track of power before
 										   researching a topic*/
-    UDWORD		timeStartHold;		    /* The time the research facility was put on hold*/
+    uint32_t		timeStartHold;		    /* The time the research facility was put on hold*/
 
 } RESEARCH_FACILITY;
 
 typedef struct _factory
 {
 
-    UBYTE				capacity;			/* The max size of body the factory
+    uint8_t				capacity;			/* The max size of body the factory
 											   can produce*/
-    UBYTE				quantity;			/* The number of droids to produce OR for
+    uint8_t				quantity;			/* The number of droids to produce OR for
 											   selectedPlayer, how many loops to perform*/
-    UBYTE				loopsPerformed;		/* how many times the loop has been performed*/
+    uint8_t				loopsPerformed;		/* how many times the loop has been performed*/
     //struct _propulsion_types*	propulsionType;
-    //UBYTE				propulsionType;		/* The type of propulsion the facility
+    //uint8_t				propulsionType;		/* The type of propulsion the facility
     //										   can produce*/
-    UBYTE				productionOutput;	/* Droid Build Points Produced Per
+    uint8_t				productionOutput;	/* Droid Build Points Produced Per
 											   Build Cycle*/
-    UDWORD				powerAccrued;		/* used to keep track of power before building a droid*/
+    uint32_t				powerAccrued;		/* used to keep track of power before building a droid*/
     BASE_STATS			*psSubject;			/* the subject the structure is working on */
-    UDWORD				timeStarted;		/* The time the building started on the subject*/
-    UDWORD				timeToBuild;		/* Time taken to build one droid */
-    UDWORD				timeStartHold;		/* The time the factory was put on hold*/
+    uint32_t				timeStarted;		/* The time the building started on the subject*/
+    uint32_t				timeToBuild;		/* Time taken to build one droid */
+    uint32_t				timeStartHold;		/* The time the factory was put on hold*/
     FLAG_POSITION		*psAssemblyPoint;	/* Place for the new droids to assemble at */
     struct DROID		*psCommander;	    // command droid to produce droids for (if any)
-    UDWORD              secondaryOrder;     // secondary order state for all units coming out of the factory
+    uint32_t              secondaryOrder;     // secondary order state for all units coming out of the factory
     // added AB 22/04/99
 
     //these are no longer required - yipee!
@@ -197,17 +197,17 @@ typedef struct _factory
 
 typedef struct _res_extractor
 {
-    UDWORD				power;				/*The max amount of power that can be extracted*/
-    UDWORD				timeLastUpdated;	/*time the Res Extr last got points*/
+    uint32_t				power;				/*The max amount of power that can be extracted*/
+    uint32_t				timeLastUpdated;	/*time the Res Extr last got points*/
     BOOL				active;				/*indicates when the extractor is on ie digging up oil*/
     struct _structure	*psPowerGen;		/*owning power generator*/
 } RES_EXTRACTOR;
 
 typedef struct _power_gen
 {
-    UDWORD				power;				/*The max power that can be used - NOT USED 21/04/98*/
-    UDWORD				multiplier;			/*Factor to multiply output by - percentage*/
-    UDWORD				capacity;			/* Number of upgrade modules added*/
+    uint32_t				power;				/*The max power that can be used - NOT USED 21/04/98*/
+    uint32_t				multiplier;			/*Factor to multiply output by - percentage*/
+    uint32_t				capacity;			/* Number of upgrade modules added*/
 
     //struct _structure	*apResExtractors[NUM_POWER_MODULES + 1];/*pointers to the res ext
     struct _structure	*apResExtractors[NUM_POWER_MODULES];/*pointers to the res ext
@@ -216,14 +216,14 @@ typedef struct _power_gen
 
 typedef struct REPAIR_FACILITY
 {
-    UDWORD				power;				/* Power used in repairing */
-    UDWORD				timeStarted;		/* Time repair started on current object */
+    uint32_t				power;				/* Power used in repairing */
+    uint32_t				timeStarted;		/* Time repair started on current object */
     BASE_OBJECT			*psObj;				/* Object being repaired */
-    UDWORD				powerAccrued;		/* used to keep track of power before
+    uint32_t				powerAccrued;		/* used to keep track of power before
 											   repairing a droid */
     FLAG_POSITION		*psDeliveryPoint;	/* Place for the repaired droids to assemble
                                                at */
-    UDWORD              currentPtsAdded;    /* stores the amount of body points added to the unit
+    uint32_t              currentPtsAdded;    /* stores the amount of body points added to the unit
                                                that is being worked on */
 
     // The group the droids to be repaired by this facility belong to
@@ -234,10 +234,10 @@ typedef struct REPAIR_FACILITY
 
 typedef struct _rearm_pad
 {
-    UDWORD				reArmPoints;		/* rearm points per cycle				 */
-    UDWORD				timeStarted;		/* Time reArm started on current object	 */
+    uint32_t				reArmPoints;		/* rearm points per cycle				 */
+    uint32_t				timeStarted;		/* Time reArm started on current object	 */
     BASE_OBJECT			*psObj;				/* Object being rearmed		             */
-    UDWORD              timeLastUpdated;    /* Time rearm was last updated */
+    uint32_t              timeLastUpdated;    /* Time rearm was last updated */
 } REARM_PAD;
 
 typedef union
@@ -258,14 +258,14 @@ typedef struct _structure
 
     STRUCTURE_STATS	*pStructureType;		/* pointer to the structure stats for this
 											   type of building */
-    UBYTE		status;						/* defines whether the structure is being
+    uint8_t		status;						/* defines whether the structure is being
 											   built, doing nothing or performing a function*/
-    SWORD		currentBuildPts;			/* the build points currently assigned to this
+    int16_t		currentBuildPts;			/* the build points currently assigned to this
 											   structure */
-    SWORD       currentPowerAccrued;        /* the power accrued for building this structure*/
-    SWORD		resistance;					/* current resistance points
+    int16_t       currentPowerAccrued;        /* the power accrued for building this structure*/
+    int16_t		resistance;					/* current resistance points
 											   0 = cannot be attacked electrically*/
-    UDWORD		lastResistance;				/* time the resistance was last increased*/
+    uint32_t		lastResistance;				/* time the resistance was last increased*/
 
     /* The other structure data.  These are all derived from the functions
      * but stored here for easy access - will need to add more for variable stuff!
@@ -274,8 +274,8 @@ typedef struct _structure
     FUNCTIONALITY	*pFunctionality;		/* pointer to structure that contains fields
 											   necessary for functionality */
     /* The weapons on the structure */
-    UWORD		numWeaps;
-    UBYTE		targetted;
+    uint16_t		numWeaps;
+    uint8_t		targetted;
     WEAPON		asWeaps[STRUCT_MAXWEAPS];
     BASE_OBJECT	*psTarget[STRUCT_MAXWEAPS];
 
@@ -293,11 +293,11 @@ typedef struct _structure
 #define LOTS_OF	255						/*highest number the limit can be set to */
 typedef struct _structure_limits
 {
-    UBYTE		limit;				/* the number allowed to be built */
-    UBYTE		currentQuantity;	/* the number of the type currently
+    uint8_t		limit;				/* the number allowed to be built */
+    uint8_t		currentQuantity;	/* the number of the type currently
 												   built per player*/
 
-    UBYTE		globalLimit;		// multiplayer only. sets the max value selectable (limits changed by player)
+    uint8_t		globalLimit;		// multiplayer only. sets the max value selectable (limits changed by player)
 
 } STRUCTURE_LIMITS;
 
@@ -317,29 +317,29 @@ typedef struct _structure_limits
 
 typedef struct _production_run
 {
-    UBYTE						quantity;			//number to build
-    UBYTE						built;				//number built on current run
+    uint8_t						quantity;			//number to build
+    uint8_t						built;				//number built on current run
     struct _droid_template		*psTemplate;		//template to build
 } PRODUCTION_RUN;
 
 /* structure stats which can be upgraded by research*/
 typedef struct _structure_upgrade
 {
-    UWORD			armour;
-    UWORD			body;
-    UWORD			resistance;
+    uint16_t			armour;
+    uint16_t			body;
+    uint16_t			resistance;
 } STRUCTURE_UPGRADE;
 
 /* wall/Defence structure stats which can be upgraded by research*/
 typedef struct _wallDefence_upgrade
 {
-    UWORD			armour;
-    UWORD			body;
+    uint16_t			armour;
+    uint16_t			body;
 } WALLDEFENCE_UPGRADE;
 
 typedef struct _upgrade
 {
-    UWORD		modifier;		//% to increase the stat by
+    uint16_t		modifier;		//% to increase the stat by
 } UPGRADE;
 
 typedef UPGRADE		RESEARCH_UPGRADE;

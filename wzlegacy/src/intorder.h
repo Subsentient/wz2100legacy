@@ -33,7 +33,7 @@ extern "C"
     BOOL intUpdateOrder(DROID *psDroid);	// update already open order form
     BOOL intAddOrder(BASE_OBJECT *psObj);			// create and open order form
     void intRunOrder(void);
-    void intProcessOrder(UDWORD id);
+    void intProcessOrder(uint32_t id);
     void intRemoveOrder(void);
     void intRemoveOrderNoAnim(void);
     BOOL intRefreshOrder(void);

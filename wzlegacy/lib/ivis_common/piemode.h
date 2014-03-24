@@ -47,6 +47,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 extern BOOL pie_Initialise(void);
 extern void pie_ShutDown(void);
 extern void pie_ScreenFlip(int ClearMode);
-extern UDWORD	pie_GetResScalingFactor( void );
+extern uint32_t	pie_GetResScalingFactor( void );
 
 #endif

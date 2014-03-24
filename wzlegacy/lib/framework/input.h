@@ -152,7 +152,7 @@ extern void inputHandleMouseMotionEvent(SDL_MouseMotionEvent *);
 extern void inputHandleMouseButtonEvent(SDL_MouseButtonEvent *);
 
 /** Converts the key code into an ascii string. */
-extern void keyScanToString(KEY_CODE code, char *ascii, UDWORD maxStringSize);
+extern void keyScanToString(KEY_CODE code, char *ascii, uint32_t maxStringSize);
 
 /** Initialise the input module. */
 extern void inputInitialise(void);
@@ -199,7 +199,7 @@ extern bool mousePressed(MOUSE_KEY_CODE code);
 extern bool mouseReleased(MOUSE_KEY_CODE code);
 
 /** Check for a mouse drag, return the drag start coords if dragging. */
-extern bool mouseDrag(MOUSE_KEY_CODE code, UDWORD *px, UDWORD *py);
+extern bool mouseDrag(MOUSE_KEY_CODE code, uint32_t *px, uint32_t *py);
 
 /** Warps the mouse to the given position. */
 extern void SetMousePos(Uint16 x, Uint16 y);
@@ -229,7 +229,7 @@ extern void SetMousePos(Uint16 x, Uint16 y);
  * @param unicode is filled (unless NULL) with the unicode character corresponding
  * to the key press (using the user's native layout).
  */
-extern UDWORD inputGetKey(utf_32_char *unicode);
+extern uint32_t inputGetKey(utf_32_char *unicode);
 
 /** Clear the input buffer. */
 extern void inputClearBuffer(void);

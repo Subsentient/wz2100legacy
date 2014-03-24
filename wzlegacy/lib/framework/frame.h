@@ -37,7 +37,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "i18n.h"
 #include "cursors.h"
 
-extern UDWORD selectedPlayer;
+extern uint32_t selectedPlayer;
 #define MAX_PLAYERS	8	/**< Maximum number of players in the game. */
 
 /** Initialise the framework library
@@ -51,7 +51,7 @@ extern UDWORD selectedPlayer;
  *  @return true when the framework library is successfully initialised, false
  *          when a part of the initialisation failed.
  */
-extern bool frameInitialise(const char *pWindowName, UDWORD width, UDWORD height, UDWORD bitDepth, bool fullScreen, bool vsync);
+extern bool frameInitialise(const char *pWindowName, uint32_t width, uint32_t height, uint32_t bitDepth, bool fullScreen, bool vsync);
 
 extern bool selfTest;
 
@@ -89,13 +89,13 @@ extern void frameUpdate(void);
 extern void frameSetCursor(CURSOR cur);
 
 /** Returns the current frame we're on - used to establish whats on screen. */
-extern UDWORD frameGetFrameNumber(void);
+extern uint32_t frameGetFrameNumber(void);
 
 /** Return average framerate of the last seconds. */
-extern UDWORD frameGetAverageRate(void);
+extern uint32_t frameGetAverageRate(void);
 
-extern UDWORD HashString( const char *String );
-extern UDWORD HashStringIgnoreCase( const char *String );
+extern uint32_t HashString( const char *String );
+extern uint32_t HashStringIgnoreCase( const char *String );
 
 #if defined(WZ_OS_WIN)
 # include <winsock2.h> /* for struct timeval */

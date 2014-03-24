@@ -50,9 +50,9 @@ enum
 /* Storage for old viewnagles etc */
 typedef struct _warcam
 {
-    UDWORD	status;
-    UDWORD	trackClass;
-    UDWORD	lastUpdate;
+    uint32_t	status;
+    uint32_t	trackClass;
+    uint32_t	lastUpdate;
     iView	oldView;
 
     Vector3f	acceleration;
@@ -63,7 +63,7 @@ typedef struct _warcam
     Vector3f	rotVel;
     Vector3f	rotAccel;
 
-    UDWORD	oldDistance;
+    uint32_t	oldDistance;
     BASE_OBJECT *target;
 } WARCAM;
 
@@ -74,14 +74,14 @@ extern BOOL	getWarCamStatus		( void );
 extern void camToggleStatus		( void );
 extern BOOL processWarCam		( void );
 extern void	camToggleInfo		( void );
-extern void	requestRadarTrack	( SDWORD x, SDWORD y );
+extern void	requestRadarTrack	( int32_t x, int32_t y );
 extern BOOL	getRadarTrackingStatus( void );
 extern void	toggleRadarAllignment( void );
 extern void	camInformOfRotation ( Vector3i *rotation );
 extern BASE_OBJECT *camFindDroidTarget(void);
 extern DROID *getTrackingDroid( void );
-extern SDWORD	getPresAngle( void );
-extern UDWORD	getNumDroidsSelected( void );
+extern int32_t	getPresAngle( void );
+extern uint32_t	getNumDroidsSelected( void );
 extern void	camAllignWithTarget(BASE_OBJECT *psTarget);
 
 #endif // __INCLUDED_SRC_WARCAM_H__

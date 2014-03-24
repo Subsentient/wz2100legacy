@@ -145,12 +145,12 @@ static BOOL				g_bMissionResult;
 // return positions for vtols
 Vector2i asVTOLReturnPos[MAX_PLAYERS];
 
-static UBYTE   missionCountDown;
+static uint8_t   missionCountDown;
 //flag to indicate whether the coded mission countdown is played
-static UBYTE   bPlayCountDown;
+static uint8_t   bPlayCountDown;
 
 //FUNCTIONS**************
-static void addLandingLights( UDWORD x, UDWORD y);
+static void addLandingLights( uint32_t x, uint32_t y);
 static BOOL startMissionOffClear(char *pGame);
 static BOOL startMissionOffKeep(char *pGame);
 static BOOL startMissionCampaignStart(char *pGame);
@@ -178,9 +178,9 @@ static BOOL intAddMissionTimer(void);
 static void intUpdateTransporterTimer(WIDGET *psWidget, W_CONTEXT *psContext);
 static void adjustMissionPower(void);
 static void saveMissionPower(void);
-static UDWORD getHomeLandingX(void);
-static UDWORD getHomeLandingY(void);
-static void fillTimeDisplay(char	*psText, UDWORD time, BOOL bHours);
+static uint32_t getHomeLandingX(void);
+static uint32_t getHomeLandingY(void);
+static void fillTimeDisplay(char	*psText, uint32_t time, BOOL bHours);
 static void processPreviousCampDroids(void);
 static BOOL intAddTransporterTimer(void);
 static void clearCampaignUnits(void);
@@ -189,10 +189,10 @@ static void emptyTransporters(BOOL bOffWorld);
 BOOL MissionResUp	= false;
 BOOL ClosingMissionRes	= false;
 
-static SDWORD		g_iReinforceTime = 0;
+static int32_t		g_iReinforceTime = 0;
 
 /* Which campaign are we dealing with? */
-static	UDWORD	camNumber = 1;
+static	uint32_t	camNumber = 1;
 
 
 //returns true if on an off world mission
@@ -239,7 +239,7 @@ BOOL missionLimboExpand(void)
 // mission initialisation game code
 void initMission(void)
 {
-    UDWORD inc;
+    uint32_t inc;
 
     debug(LOG_SAVE, "*** Init Mission ***");
     mission.type = LDS_NONE;
@@ -297,7 +297,7 @@ void releaseMission(void)
 //called to shut down when mid-mission on an offWorld map
 BOOL missionShutDown(void)
 {
-    UDWORD		inc;
+    uint32_t		inc;
 
     debug(LOG_SAVE, "called, mission is %s",
           missionIsOffworld() ? "off-world" : "main map");
@@ -342,7 +342,7 @@ BOOL missionShutDown(void)
 /*on the PC - sets the countdown played flag*/
 void setMissionCountDown(void)
 {
-    SDWORD		timeRemaining;
+    int32_t		timeRemaining;
 
     timeRemaining = mission.time - (gameTime - mission.startTime);
     if (timeRemaining < 0)
@@ -514,7 +514,7 @@ BOOL startMission(LEVEL_TYPE missionType, char *pGame)
 
 
 // initialise the mission stuff for a save game
-BOOL startMissionSave(SDWORD missionType)
+BOOL startMissionSave(int32_t missionType)
 {
     mission.type = missionType;
 
@@ -600,36 +600,36 @@ void addTransporterTimerInterface(void)
 #define	EDGE_SIZE	1
 
 /* pick nearest map edge to point */
-void missionGetNearestCorner( UWORD iX, UWORD iY, UWORD *piOffX, UWORD *piOffY )
+void missionGetNearestCorner( uint16_t iX, uint16_t iY, uint16_t *piOffX, uint16_t *piOffY )
 {
-    UDWORD	iMidX = (scrollMinX + scrollMaxX)/2,
+    uint32_t	iMidX = (scrollMinX + scrollMaxX)/2,
             iMidY = (scrollMinY + scrollMaxY)/2;
 
     if (map_coord(iX) < iMidX)
     {
-        *piOffX = (UWORD) (world_coord(scrollMinX) + (EDGE_SIZE * TILE_UNITS));
+        *piOffX = (uint16_t) (world_coord(scrollMinX) + (EDGE_SIZE * TILE_UNITS));
     }
     else
     {
-        *piOffX = (UWORD) (world_coord(scrollMaxX) - (EDGE_SIZE * TILE_UNITS));
+        *piOffX = (uint16_t) (world_coord(scrollMaxX) - (EDGE_SIZE * TILE_UNITS));
     }
 
     if (map_coord(iY) < iMidY)
     {
-        *piOffY = (UWORD) (world_coord(scrollMinY) + (EDGE_SIZE * TILE_UNITS));
+        *piOffY = (uint16_t) (world_coord(scrollMinY) + (EDGE_SIZE * TILE_UNITS));
     }
     else
     {
-        *piOffY = (UWORD) (world_coord(scrollMaxY) - (EDGE_SIZE * TILE_UNITS));
+        *piOffY = (uint16_t) (world_coord(scrollMaxY) - (EDGE_SIZE * TILE_UNITS));
     }
 }
 
 /* fly in transporters at start of level */
-void missionFlyTransportersIn( SDWORD iPlayer, BOOL bTrackTransporter )
+void missionFlyTransportersIn( int32_t iPlayer, BOOL bTrackTransporter )
 {
     DROID	*psTransporter, *psNext;
-    UWORD	iX, iY, iZ;
-    SDWORD	iLandX, iLandY, iDx, iDy;
+    uint16_t	iX, iY, iZ;
+    int32_t	iLandX, iLandY, iDx, iDy;
     double  fR;
 
     ASSERT_OR_RETURN(, iPlayer < 8, "Flying nonexistent player %d's transporters in", iPlayer);
@@ -639,7 +639,7 @@ void missionFlyTransportersIn( SDWORD iPlayer, BOOL bTrackTransporter )
     iLandX = getLandingX(iPlayer);
     iLandY = getLandingY(iPlayer);
     missionGetTransporterEntry( iPlayer, &iX, &iY );
-    iZ = (UWORD) (map_Height( iX, iY ) + OFFSCREEN_HEIGHT);
+    iZ = (uint16_t) (map_Height( iX, iY ) + OFFSCREEN_HEIGHT);
 
     psNext = NULL;
     //get the droids for the mission
@@ -683,7 +683,7 @@ void missionFlyTransportersIn( SDWORD iPlayer, BOOL bTrackTransporter )
 
 
                 // Camera track requested and it's the selected player.
-                if ( ( bTrackTransporter == true ) && (iPlayer == (SDWORD)selectedPlayer) )
+                if ( ( bTrackTransporter == true ) && (iPlayer == (int32_t)selectedPlayer) )
                 {
                     /* deselect all droids */
                     selDroidDeselect( selectedPlayer );
@@ -718,7 +718,7 @@ void missionFlyTransportersIn( SDWORD iPlayer, BOOL bTrackTransporter )
 /* Saves the necessary data when moving from a home base Mission to an OffWorld mission */
 static void saveMissionData(void)
 {
-    UDWORD			inc;
+    uint32_t			inc;
     DROID			*psDroid;
     STRUCTURE		*psStruct, *psStructBeingBuilt;
     BOOL			bRepairExists;
@@ -852,7 +852,7 @@ static void saveMissionData(void)
 */
 void restoreMissionData(void)
 {
-    UDWORD		inc;
+    uint32_t		inc;
     BASE_OBJECT	*psObj;
 
     debug(LOG_SAVE, "called");
@@ -980,7 +980,7 @@ void saveMissionLimboData(void)
 void placeLimboDroids(void)
 {
     DROID           *psDroid, *psNext;
-    UDWORD			droidX, droidY;
+    uint32_t			droidX, droidY;
     PICKTILE		pickRes;
 
     debug(LOG_SAVE, "called");
@@ -1006,8 +1006,8 @@ void placeLimboDroids(void)
             {
                 ASSERT( false, "placeLimboUnits: Unable to find a free location" );
             }
-            psDroid->pos.x = (UWORD)world_coord(droidX);
-            psDroid->pos.y = (UWORD)world_coord(droidY);
+            psDroid->pos.x = (uint16_t)world_coord(droidX);
+            psDroid->pos.y = (uint16_t)world_coord(droidY);
             if (pickRes == HALF_FREE_TILE )
             {
                 psDroid->pos.x += TILE_UNITS;
@@ -1064,7 +1064,7 @@ void restoreMissionLimboData(void)
 next - saves out the list of droids for the selected player*/
 void saveCampaignData(void)
 {
-    UBYTE		inc;
+    uint8_t		inc;
     DROID		*psDroid, *psNext, *psSafeDroid, *psNextSafe, *psCurr, *psCurrNext;
 
     debug(LOG_SAVE, "called");
@@ -1268,7 +1268,7 @@ BOOL startMissionCampaignChange(char *pGame)
     clearCampaignUnits();
 
     // Clear out the production run between campaigns
-    changeProductionPlayer((UBYTE)selectedPlayer);
+    changeProductionPlayer((uint8_t)selectedPlayer);
 
     saveCampaignData();
 
@@ -1340,7 +1340,7 @@ static void processMission(void)
 {
     DROID			*psNext;
     DROID			*psDroid;
-    UDWORD			droidX, droidY;
+    uint32_t			droidX, droidY;
     PICKTILE		pickRes;
 
     //and the rest on the mission map  - for now?
@@ -1363,8 +1363,8 @@ static void processMission(void)
 
             pickRes = pickHalfATile(&droidX, &droidY,LOOK_FOR_EMPTY_TILE);
             ASSERT(pickRes != NO_FREE_TILE, "processMission: Unable to find a free location" );
-            x = (UWORD)world_coord(droidX);
-            y = (UWORD)world_coord(droidY);
+            x = (uint16_t)world_coord(droidX);
+            y = (uint16_t)world_coord(droidY);
             if (pickRes == HALF_FREE_TILE )
             {
                 x += TILE_UNITS;
@@ -1390,7 +1390,7 @@ static void processMission(void)
 void processMissionLimbo(void)
 {
     DROID			*psNext, *psDroid;
-    UDWORD	numDroidsAddedToLimboList=0;
+    uint32_t	numDroidsAddedToLimboList=0;
 
     //all droids (for selectedPlayer only) are placed into the limbo list
     for (psDroid = apsDroidLists[selectedPlayer]; psDroid != NULL; psDroid = psNext)
@@ -1432,7 +1432,7 @@ void processMissionLimbo(void)
 void swapMissionPointers(void)
 {
     void		*pVoid;
-    UDWORD		udwTemp, inc;
+    uint32_t		udwTemp, inc;
 
     debug(LOG_SAVE, "called");
 
@@ -1645,11 +1645,11 @@ void resetLimboMission(void)
 void aiUpdateMissionStructure(STRUCTURE *psStructure)
 {
     BASE_STATS			*pSubject = NULL;
-    UDWORD				pointsToAdd;
+    uint32_t				pointsToAdd;
     PLAYER_RESEARCH		*pPlayerRes = asPlayerResList[psStructure->player];
-    UDWORD				structureMode = 0;
+    uint32_t				structureMode = 0;
     DROID				*psNewDroid;
-    UBYTE				Quantity;
+    uint8_t				Quantity;
     FACTORY				*psFactory;
     RESEARCH_FACILITY	*psResFacility;
 #ifdef INCLUDE_FACTORYLISTS
@@ -1948,7 +1948,7 @@ void missionDroidUpdate(DROID *psDroid)
 // Reset variables in Droids such as order and position
 static void missionResetDroids(void)
 {
-    UDWORD			player;
+    uint32_t			player;
     DROID			*psDroid, *psNext;
 
     debug(LOG_SAVE, "called");
@@ -2000,7 +2000,7 @@ static void missionResetDroids(void)
             if (psStruct)
             {
                 PICKTILE	pickRes;
-                UDWORD		x, y;
+                uint32_t		x, y;
 
                 // Use factory DP if one
                 if (psFactory->psAssemblyPoint)
@@ -2039,8 +2039,8 @@ static void missionResetDroids(void)
                 {
                     if (psStruct->pStructureType->type == REF_HQ)
                     {
-                        UDWORD		x = map_coord(psStruct->pos.x);
-                        UDWORD		y = map_coord(psStruct->pos.y);
+                        uint32_t		x = map_coord(psStruct->pos.x);
+                        uint32_t		y = map_coord(psStruct->pos.y);
                         PICKTILE	pickRes = pickHalfATile(&x, &y, LOOK_FOR_EMPTY_TILE);
 
                         if (pickRes == NO_FREE_TILE )
@@ -2098,12 +2098,12 @@ static void missionResetDroids(void)
 
 /*unloads the Transporter passed into the mission at the specified x/y
 goingHome = true when returning from an off World mission*/
-void unloadTransporter(DROID *psTransporter, UDWORD x, UDWORD y, BOOL goingHome)
+void unloadTransporter(DROID *psTransporter, uint32_t x, uint32_t y, BOOL goingHome)
 {
     DROID		*psDroid, *psNext;
     DROID		**ppCurrentList;
-    UDWORD		droidX, droidY;
-    UDWORD		iX, iY;
+    uint32_t		droidX, droidY;
+    uint32_t		iX, iY;
     DROID_GROUP	*psGroup;
 
     if (goingHome)
@@ -2299,9 +2299,9 @@ BOOL intAddMissionTimer(void)
 
     sFormInit.width = iV_GetImageWidth(IntImages,IMAGE_MISSION_CLOCK);//TIMER_WIDTH;
     sFormInit.height = iV_GetImageHeight(IntImages,IMAGE_MISSION_CLOCK);//TIMER_HEIGHT;
-    sFormInit.x = (SWORD)(RADTLX + RADWIDTH - sFormInit.width);
-    sFormInit.y = (SWORD)TIMER_Y;
-    sFormInit.UserData = PACKDWORD_TRI(0,IMAGE_MISSION_CLOCK,IMAGE_MISSION_CLOCK_UP);;
+    sFormInit.x = (int16_t)(RADTLX + RADWIDTH - sFormInit.width);
+    sFormInit.y = (int16_t)TIMER_Y;
+    sFormInit.UserData = PACKint32_t_TRI(0,IMAGE_MISSION_CLOCK,IMAGE_MISSION_CLOCK_UP);;
     sFormInit.pDisplay = intDisplayMissionClock;
 
     if (!widgAddForm(psWScreen, &sFormInit))
@@ -2357,7 +2357,7 @@ BOOL intAddTransporterTimer(void)
     sFormInit.height = iV_GetImageHeight(IntImages,IMAGE_TRANSETA_UP);
     sFormInit.pTip = _("Load Transport");
     sFormInit.pDisplay = intDisplayImageHilight;
-    sFormInit.UserData = PACKDWORD_TRI(0, IMAGE_TRANSETA_DOWN, IMAGE_TRANSETA_UP);
+    sFormInit.UserData = PACKint32_t_TRI(0, IMAGE_TRANSETA_DOWN, IMAGE_TRANSETA_UP);
 
     if (!widgAddForm(psWScreen, &sFormInit))
     {
@@ -2400,30 +2400,30 @@ BOOL intAddTransporterTimer(void)
     return true;
 }
 
-void missionSetReinforcementTime( UDWORD iTime )
+void missionSetReinforcementTime( uint32_t iTime )
 {
     g_iReinforceTime = iTime;
 }
 
-UDWORD  missionGetReinforcementTime(void)
+uint32_t  missionGetReinforcementTime(void)
 {
     return g_iReinforceTime;
 }
 
 //fills in a hours(if bHours = true), minutes and seconds display for a given time in 1000th sec
-void fillTimeDisplay(char *psText, UDWORD time, BOOL bHours)
+void fillTimeDisplay(char *psText, uint32_t time, BOOL bHours)
 {
-    UDWORD		calcTime, inc = 0;
+    uint32_t		calcTime, inc = 0;
 
     //this is only for the transporter timer - never have hours!
     if (time == LZ_COMPROMISED_TIME)
     {
-        psText[inc++] = (UBYTE)('-');
-        psText[inc++] = (UBYTE)('-');
+        psText[inc++] = (uint8_t)('-');
+        psText[inc++] = (uint8_t)('-');
         //seperator
-        psText[inc++] = (UBYTE)(':');
-        psText[inc++] = (UBYTE)('-');
-        psText[inc++] = (UBYTE)('-');
+        psText[inc++] = (uint8_t)(':');
+        psText[inc++] = (uint8_t)('-');
+        psText[inc++] = (uint8_t)('-');
         //terminate the timer text
         psText[inc] = '\0';
     }
@@ -2434,23 +2434,23 @@ void fillTimeDisplay(char *psText, UDWORD time, BOOL bHours)
         {
             //hours
             calcTime = time / (60*60*GAME_TICKS_PER_SEC);
-            psText[inc++] = (UBYTE)('0'+ calcTime / 10);
-            psText[inc++] = (UBYTE)('0'+ calcTime % 10);
+            psText[inc++] = (uint8_t)('0'+ calcTime / 10);
+            psText[inc++] = (uint8_t)('0'+ calcTime % 10);
             time -= (calcTime * (60*60*GAME_TICKS_PER_SEC));
             //seperator
-            psText[inc++] = (UBYTE)(':');
+            psText[inc++] = (uint8_t)(':');
         }
         //minutes
         calcTime = time / (60*GAME_TICKS_PER_SEC);
-        psText[inc++] = (UBYTE)('0'+ calcTime / 10);
-        psText[inc++] = (UBYTE)('0'+ calcTime % 10);
+        psText[inc++] = (uint8_t)('0'+ calcTime / 10);
+        psText[inc++] = (uint8_t)('0'+ calcTime % 10);
         time -= (calcTime * (60*GAME_TICKS_PER_SEC));
         //seperator
-        psText[inc++] = (UBYTE)(':');
+        psText[inc++] = (uint8_t)(':');
         //seconds
         calcTime = time / GAME_TICKS_PER_SEC;
-        psText[inc++] = (UBYTE)('0'+ calcTime / 10);
-        psText[inc++] = (UBYTE)('0'+ calcTime % 10);
+        psText[inc++] = (uint8_t)('0'+ calcTime / 10);
+        psText[inc++] = (uint8_t)('0'+ calcTime % 10);
         //terminate the timer text
         psText[inc] = '\0';
 
@@ -2462,8 +2462,8 @@ void fillTimeDisplay(char *psText, UDWORD time, BOOL bHours)
 void intUpdateMissionTimer(WIDGET *psWidget, W_CONTEXT *psContext)
 {
     W_LABEL		*Label = (W_LABEL *)psWidget;
-    UDWORD		timeElapsed;
-    SDWORD		timeRemaining;
+    uint32_t		timeElapsed;
+    int32_t		timeRemaining;
 
     // If the cheatTime has been set, then don't want the timer to countdown until stop cheating
     if (mission.cheatTime)
@@ -2550,8 +2550,8 @@ void intUpdateTransporterTimer(WIDGET *psWidget, W_CONTEXT *psContext)
 {
     W_LABEL		*Label = (W_LABEL *)psWidget;
     DROID		*psTransporter;
-    SDWORD		timeRemaining;
-    SDWORD		ETA;
+    int32_t		timeRemaining;
+    int32_t		ETA;
 
     ETA = mission.ETA;
     if(ETA < 0)
@@ -2614,15 +2614,15 @@ void intUpdateTransporterTimer(WIDGET *psWidget, W_CONTEXT *psContext)
 
     //minutes
     /*calcTime = timeRemaining / (60*GAME_TICKS_PER_SEC);
-    Label->aText[0] = (UBYTE)('0'+ calcTime / 10);
-    Label->aText[1] = (UBYTE)('0'+ calcTime % 10);
+    Label->aText[0] = (uint8_t)('0'+ calcTime / 10);
+    Label->aText[1] = (uint8_t)('0'+ calcTime % 10);
     timeElapsed -= calcTime * (60*GAME_TICKS_PER_SEC);
     //seperator
-    Label->aText[3] = (UBYTE)(':');
+    Label->aText[3] = (uint8_t)(':');
     //seconds
     calcTime = timeRemaining / GAME_TICKS_PER_SEC;
-    Label->aText[3] = (UBYTE)('0'+ calcTime / 10);
-    Label->aText[4] = (UBYTE)('0'+ calcTime % 10);*/
+    Label->aText[3] = (uint8_t)('0'+ calcTime / 10);
+    Label->aText[4] = (uint8_t)('0'+ calcTime % 10);*/
 
     Label->style &= ~WIDG_HIDDEN;
 }
@@ -2657,7 +2657,7 @@ void intRemoveTransporterTimer(void)
 
 
 
-static void intDisplayMissionBackDrop(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+static void intDisplayMissionBackDrop(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
     scoreDataToScreen();
 }
@@ -2697,8 +2697,8 @@ static BOOL _intAddMissionResult(BOOL result, BOOL bPlaySuccess)
     sFormInit.formID		= 0;
     sFormInit.id			= IDMISSIONRES_BACKFORM;
     sFormInit.style			= WFORM_PLAIN;
-    sFormInit.x				= (SWORD)(0 + D_W);
-    sFormInit.y				= (SWORD)(0 + D_H);
+    sFormInit.x				= (int16_t)(0 + D_W);
+    sFormInit.y				= (int16_t)(0 + D_H);
     sFormInit.width			= 640;
     sFormInit.height		= 480;
     sFormInit.pDisplay		= intDisplayMissionBackDrop;
@@ -2918,7 +2918,7 @@ static void missionContineButtonPressed( void )
     }
 }
 
-void intProcessMissionResult(UDWORD id)
+void intProcessMissionResult(uint32_t id)
 {
     W_BUTINIT	sButInit;
 
@@ -2977,8 +2977,8 @@ void intProcessMissionResult(UDWORD id)
 
 /*builds a droid back at the home base whilst on a mission - stored in a list made
 available to the transporter interface*/
-DROID *buildMissionDroid(DROID_TEMPLATE *psTempl, UDWORD x, UDWORD y,
-                         UDWORD player)
+DROID *buildMissionDroid(DROID_TEMPLATE *psTempl, uint32_t x, uint32_t y,
+                         uint32_t player)
 {
     DROID		*psNewDroid;
 
@@ -3018,7 +3018,7 @@ void launchMission(void)
 
 
 //sets up the game to start a new mission
-BOOL setUpMission(UDWORD type)
+BOOL setUpMission(uint32_t type)
 {
     //close the interface
     intResetScreen(true);
@@ -3088,7 +3088,7 @@ BOOL setUpMission(UDWORD type)
 //save the power settings before loading in the new map data
 void saveMissionPower(void)
 {
-    UDWORD	inc;
+    uint32_t	inc;
 
     for (inc = 0; inc < MAX_PLAYERS; inc++)
     {
@@ -3100,7 +3100,7 @@ void saveMissionPower(void)
 //add the power from the home base to the current power levels for the mission map
 void adjustMissionPower(void)
 {
-    UDWORD	inc;
+    uint32_t	inc;
 
     for (inc = 0; inc < MAX_PLAYERS; inc++)
     {
@@ -3137,7 +3137,7 @@ void resetMissionPauseState(void)
 }
 
 //gets the coords for a no go area
-LANDING_ZONE *getLandingZone(SDWORD i)
+LANDING_ZONE *getLandingZone(int32_t i)
 {
     ASSERT( (i >= 0) && (i < MAX_NOGO_AREAS), "getLandingZone out of range." );
     return &sLandingZone[i];
@@ -3147,7 +3147,7 @@ LANDING_ZONE *getLandingZone(SDWORD i)
 have to set this up in the mission BEFORE*/
 void initNoGoAreas(void)
 {
-    UBYTE	i;
+    uint8_t	i;
 
     for (i = 0; i < MAX_NOGO_AREAS; i++)
     {
@@ -3160,7 +3160,7 @@ void initNoGoAreas(void)
 }
 
 //sets the coords for the Transporter to land (for player 0 - selectedPlayer)
-void setLandingZone(UBYTE x1, UBYTE y1, UBYTE x2, UBYTE y2)
+void setLandingZone(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
 {
     //quick check that x2 > x1 and y2 > y1
     if (x2 < x1)
@@ -3189,7 +3189,7 @@ void setLandingZone(UBYTE x1, UBYTE y1, UBYTE x2, UBYTE y2)
 }
 
 //sets the coords for a no go area
-void setNoGoArea(UBYTE x1, UBYTE y1, UBYTE x2, UBYTE y2, UBYTE area)
+void setNoGoArea(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t area)
 {
     //quick check that x2 > x1 and y2 > y1
     if (x2 < x1)
@@ -3239,7 +3239,7 @@ static inline void addLandingLight(int x, int y, LAND_LIGHT_SPEC spec, BOOL lit)
     addEffect(&pos, EFFECT_EXPLOSION, EXPLOSION_TYPE_LAND_LIGHT, false, NULL, lit);
 }
 
-static void addLandingLights( UDWORD x, UDWORD y)
+static void addLandingLights( uint32_t x, uint32_t y)
 {
     addLandingLight(x, y, LL_MIDDLE, true);                 // middle
 
@@ -3256,9 +3256,9 @@ static void addLandingLights( UDWORD x, UDWORD y)
 
 /*	checks the x,y passed in are not within the boundary of any Landing Zone
 	x and y in tile coords*/
-BOOL withinLandingZone(UDWORD x, UDWORD y)
+BOOL withinLandingZone(uint32_t x, uint32_t y)
 {
-    UDWORD		inc;
+    uint32_t		inc;
 
     ASSERT( x < mapWidth, "withinLandingZone: x coord bigger than mapWidth" );
     ASSERT( y < mapHeight, "withinLandingZone: y coord bigger than mapHeight" );
@@ -3266,8 +3266,8 @@ BOOL withinLandingZone(UDWORD x, UDWORD y)
 
     for (inc = 0; inc < MAX_NOGO_AREAS; inc++)
     {
-        if ((x >= (UDWORD)sLandingZone[inc].x1 && x <= (UDWORD)sLandingZone[inc].x2) &&
-                (y >= (UDWORD)sLandingZone[inc].y1 && y <= (UDWORD)sLandingZone[inc].y2))
+        if ((x >= (uint32_t)sLandingZone[inc].x1 && x <= (uint32_t)sLandingZone[inc].x2) &&
+                (y >= (uint32_t)sLandingZone[inc].y1 && y <= (uint32_t)sLandingZone[inc].y2))
         {
             return true;
         }
@@ -3276,23 +3276,23 @@ BOOL withinLandingZone(UDWORD x, UDWORD y)
 }
 
 //returns the x coord for where the Transporter can land (for player 0)
-UWORD getLandingX( SDWORD iPlayer )
+uint16_t getLandingX( int32_t iPlayer )
 {
     ASSERT_OR_RETURN(0, iPlayer < MAX_NOGO_AREAS, "getLandingX: player %d out of range", iPlayer);
-    return (UWORD)world_coord((sLandingZone[iPlayer].x1 + (sLandingZone[iPlayer].x2 -
+    return (uint16_t)world_coord((sLandingZone[iPlayer].x1 + (sLandingZone[iPlayer].x2 -
                                sLandingZone[iPlayer].x1)/2));
 }
 
 //returns the y coord for where the Transporter can land
-UWORD getLandingY( SDWORD iPlayer )
+uint16_t getLandingY( int32_t iPlayer )
 {
     ASSERT_OR_RETURN(0, iPlayer < MAX_NOGO_AREAS, "getLandingY: player %d out of range", iPlayer);
-    return (UWORD)world_coord((sLandingZone[iPlayer].y1 + (sLandingZone[iPlayer].y2 -
+    return (uint16_t)world_coord((sLandingZone[iPlayer].y1 + (sLandingZone[iPlayer].y2 -
                                sLandingZone[iPlayer].y1)/2));
 }
 
 //returns the x coord for where the Transporter can land back at home base
-UDWORD getHomeLandingX(void)
+uint32_t getHomeLandingX(void)
 {
     //return world_coord((mission.homeLZ.x1 + (mission.homeLZ.x2 -
     //	mission.homeLZ.x1)/2));
@@ -3300,72 +3300,72 @@ UDWORD getHomeLandingX(void)
 }
 
 //returns the y coord for where the Transporter can land back at home base
-UDWORD getHomeLandingY(void)
+uint32_t getHomeLandingY(void)
 {
     //return world_coord(mission.homeLZ.y1 + (mission.homeLZ.y2 -
     //	mission.homeLZ.y1)/2);
     return map_coord(mission.homeLZ_Y);
 }
 
-void missionSetTransporterEntry( SDWORD iPlayer, SDWORD iEntryTileX, SDWORD iEntryTileY )
+void missionSetTransporterEntry( int32_t iPlayer, int32_t iEntryTileX, int32_t iEntryTileY )
 {
     ASSERT( iPlayer<MAX_PLAYERS, "missionSetTransporterEntry: player %i too high", iPlayer );
 
     if( (iEntryTileX > scrollMinX) && (iEntryTileX < scrollMaxX) )
     {
-        mission.iTranspEntryTileX[iPlayer] = (UWORD) iEntryTileX;
+        mission.iTranspEntryTileX[iPlayer] = (uint16_t) iEntryTileX;
     }
     else
     {
         debug(LOG_SAVE, "entry point x %i outside scroll limits %i->%i", iEntryTileX, scrollMinX, scrollMaxX);
-        mission.iTranspEntryTileX[iPlayer] = (UWORD) (scrollMinX + EDGE_SIZE);
+        mission.iTranspEntryTileX[iPlayer] = (uint16_t) (scrollMinX + EDGE_SIZE);
     }
 
     if( (iEntryTileY > scrollMinY) && (iEntryTileY < scrollMaxY) )
     {
-        mission.iTranspEntryTileY[iPlayer] = (UWORD) iEntryTileY;
+        mission.iTranspEntryTileY[iPlayer] = (uint16_t) iEntryTileY;
     }
     else
     {
         debug(LOG_SAVE, "entry point y %i outside scroll limits %i->%i", iEntryTileY, scrollMinY, scrollMaxY);
-        mission.iTranspEntryTileY[iPlayer] = (UWORD) (scrollMinY + EDGE_SIZE);
+        mission.iTranspEntryTileY[iPlayer] = (uint16_t) (scrollMinY + EDGE_SIZE);
     }
 }
 
-void missionSetTransporterExit( SDWORD iPlayer, SDWORD iExitTileX, SDWORD iExitTileY )
+void missionSetTransporterExit( int32_t iPlayer, int32_t iExitTileX, int32_t iExitTileY )
 {
     ASSERT( iPlayer<MAX_PLAYERS, "missionSetTransporterExit: player %i too high", iPlayer );
 
     if( (iExitTileX > scrollMinX) && (iExitTileX < scrollMaxX) )
     {
-        mission.iTranspExitTileX[iPlayer] = (UWORD) iExitTileX;
+        mission.iTranspExitTileX[iPlayer] = (uint16_t) iExitTileX;
     }
     else
     {
         debug(LOG_SAVE, "entry point x %i outside scroll limits %i->%i", iExitTileX, scrollMinX, scrollMaxX);
-        mission.iTranspExitTileX[iPlayer] = (UWORD) (scrollMinX + EDGE_SIZE);
+        mission.iTranspExitTileX[iPlayer] = (uint16_t) (scrollMinX + EDGE_SIZE);
     }
 
     if( (iExitTileY > scrollMinY) && (iExitTileY < scrollMaxY) )
     {
-        mission.iTranspExitTileY[iPlayer] = (UWORD) iExitTileY;
+        mission.iTranspExitTileY[iPlayer] = (uint16_t) iExitTileY;
     }
     else
     {
         debug(LOG_SAVE, "entry point y %i outside scroll limits %i->%i", iExitTileY, scrollMinY, scrollMaxY);
-        mission.iTranspExitTileY[iPlayer] = (UWORD) (scrollMinY + EDGE_SIZE);
+        mission.iTranspExitTileY[iPlayer] = (uint16_t) (scrollMinY + EDGE_SIZE);
     }
 }
 
-void missionGetTransporterEntry( SDWORD iPlayer, UWORD *iX, UWORD *iY )
+void missionGetTransporterEntry( int32_t iPlayer, uint16_t *iX, uint16_t *iY )
 {
     ASSERT( iPlayer<MAX_PLAYERS, "missionGetTransporterEntry: player %i too high", iPlayer );
 
-    *iX = (UWORD) world_coord(mission.iTranspEntryTileX[iPlayer]);
-    *iY = (UWORD) world_coord(mission.iTranspEntryTileY[iPlayer]);
+    *iX = (uint16_t) world_coord(mission.iTranspEntryTileX[iPlayer]);
+    *iY = (uint16_t) world_coord(mission.iTranspEntryTileY[iPlayer]);
 }
 
-void missionGetTransporterExit( SDWORD iPlayer, UDWORD *iX, UDWORD *iY )
+void missionGetTransporterExit( int32_t iPlayer, uint32_t *iX, uint32_t *iY )
 {
     ASSERT( iPlayer<MAX_PLAYERS, "missionGetTransporterExit: player %i too high", iPlayer );
 
@@ -3386,7 +3386,7 @@ void missionTimerUpdate(void)
             //mission.type == LDS_MCLEAR || mission.type == LDS_BETWEEN))
         {
             //check if time is up
-            if ((SDWORD)(gameTime - mission.startTime) > mission.time)
+            if ((int32_t)(gameTime - mission.startTime) > mission.time)
             {
                 //the script can call the end game cos have failed!
                 eventFireCallbackTrigger((TRIGGER_TYPE)CALL_MISSION_TIME);
@@ -3402,7 +3402,7 @@ void missionDestroyObjects(void)
 {
     DROID *psDroid;
     STRUCTURE *psStruct;
-    UBYTE Player, i;
+    uint8_t Player, i;
 
     debug(LOG_SAVE, "called");
     proj_FreeAllProjectiles();
@@ -3532,7 +3532,7 @@ BOOL getDroidsToSafetyFlag(void)
 
 
 //access functions for bPlayCountDown flag - true = play coded mission count down
-void setPlayCountDown(UBYTE set)
+void setPlayCountDown(uint8_t set)
 {
     bPlayCountDown = set;
 }
@@ -3543,7 +3543,7 @@ BOOL getPlayCountDown(void)
 
 
 //checks to see if the player has any droids (except Transporters left)
-BOOL missionDroidsRemaining(UDWORD player)
+BOOL missionDroidsRemaining(uint32_t player)
 {
     DROID   *psDroid;
     BOOL    bDroidsRemaining = false;
@@ -3653,13 +3653,13 @@ void resetMissionWidgets(void)
 
 }
 
-void	setCampaignNumber( UDWORD number )
+void	setCampaignNumber( uint32_t number )
 {
     ASSERT( number<4,"Campaign Number too high!" );
     camNumber = number;
 }
 
-UDWORD	getCampaignNumber( void )
+uint32_t	getCampaignNumber( void )
 {
     return(camNumber);
 }

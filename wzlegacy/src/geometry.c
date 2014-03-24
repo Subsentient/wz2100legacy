@@ -34,12 +34,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define deg (M_PI / SIZE_SINE_TABLE)
 
 /* The arc over which bullets fly */
-static UBYTE sineHeightTable[SIZE_SINE_TABLE];
+static uint8_t sineHeightTable[SIZE_SINE_TABLE];
 
 void initBulletTable( void )
 {
-    UDWORD i;
-    UBYTE height;
+    uint32_t i;
+    uint8_t height;
 
     for (i = 0; i < SIZE_SINE_TABLE; i++)
     {
@@ -49,12 +49,12 @@ void initBulletTable( void )
 }
 
 /* Angle returned is reflected in line x=0 */
-SDWORD calcDirection(UDWORD x0, UDWORD y0, UDWORD x1, UDWORD y1)
+int32_t calcDirection(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1)
 {
     /* Watch out here - should really be y1-y0, but coordinate system is reversed in Y */
-    SDWORD	xDif = (x1-x0), yDif = (y0-y1);
+    int32_t	xDif = (x1-x0), yDif = (y0-y1);
     double	angle = atan2(yDif, xDif) * 180.0 / M_PI;
-    SDWORD	angleInt = (SDWORD) angle;
+    int32_t	angleInt = (int32_t) angle;
 
     angleInt+=90;
     if (angleInt<0)
@@ -77,14 +77,14 @@ SDWORD calcDirection(UDWORD x0, UDWORD y0, UDWORD x1, UDWORD y1)
   NB*****THIS WON'T PICK A VTOL DROID*****
 */
 
-DROID	*getNearestDroid(UDWORD x, UDWORD y, BOOL bSelected)
+DROID	*getNearestDroid(uint32_t x, uint32_t y, BOOL bSelected)
 {
     DROID	*psDroid,*psBestUnit;
-    UDWORD	xDif,yDif,dist;
-    UDWORD	bestSoFar;
+    uint32_t	xDif,yDif,dist;
+    uint32_t	bestSoFar;
 
     /* Go thru' all the droids  - how often have we seen this - a MACRO maybe? */
-    for(psDroid = apsDroidLists[selectedPlayer],psBestUnit = NULL, bestSoFar = UDWORD_MAX;
+    for(psDroid = apsDroidLists[selectedPlayer],psBestUnit = NULL, bestSoFar = uint32_t_MAX;
             psDroid; psDroid = psDroid->psNext)
     {
         if (!isVtolDroid(psDroid))
@@ -135,24 +135,24 @@ int inQuad(const Vector2i *pt, const QUAD *quad)
     return c;
 }
 
-UDWORD	adjustDirection(SDWORD present, SDWORD difference)
+uint32_t	adjustDirection(int32_t present, int32_t difference)
 {
-    SDWORD	sum;
+    int32_t	sum;
 
     sum = present+difference;
     if(sum>=0 && sum<=360)
     {
-        return(UDWORD)(sum);
+        return(uint32_t)(sum);
     }
 
     if (sum<0)
     {
-        return(UDWORD)(360+sum);
+        return(uint32_t)(360+sum);
     }
 
     if (sum>360)
     {
-        return(UDWORD)(sum-360);
+        return(uint32_t)(sum-360);
     }
     return 0;
 }
@@ -176,9 +176,9 @@ unsigned int WZ_DECL_CONST dirtyHypot(int deltaX, int deltaY)
 }
 
 //-----------------------------------------------------------------------------------
-BOOL	droidOnScreen( DROID *psDroid, SDWORD tolerance )
+BOOL	droidOnScreen( DROID *psDroid, int32_t tolerance )
 {
-    SDWORD	dX,dY;
+    int32_t	dX,dY;
 
     if (DrawnInLastFrame(psDroid->sDisplay.frameNumber)==true)
     {
@@ -186,8 +186,8 @@ BOOL	droidOnScreen( DROID *psDroid, SDWORD tolerance )
         dY = psDroid->sDisplay.screenY;
         /* Is it on screen */
         if(dX > (0-tolerance) && dY > (0-tolerance)
-                && dX < (SDWORD)(pie_GetVideoBufferWidth()+tolerance)
-                && dY < (SDWORD)(pie_GetVideoBufferHeight()+tolerance))
+                && dX < (int32_t)(pie_GetVideoBufferWidth()+tolerance)
+                && dY < (int32_t)(pie_GetVideoBufferHeight()+tolerance))
         {
             return(true);
         }

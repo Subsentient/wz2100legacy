@@ -36,18 +36,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define FRUSTRATED_TIME (1000 * 5)
 
 /* Calculates attack priority for a certain target */
-static SDWORD targetAttackWeight(BASE_OBJECT *psTarget, BASE_OBJECT *psAttacker, SDWORD weapon_slot);
+static int32_t targetAttackWeight(BASE_OBJECT *psTarget, BASE_OBJECT *psAttacker, int32_t weapon_slot);
 
 // alliances
 // players are 0-7; player 8 appears to be unused; player 9 is features
-UBYTE	alliances[MAX_PLAYERS + 2][MAX_PLAYERS + 2];
+uint8_t	alliances[MAX_PLAYERS + 2][MAX_PLAYERS + 2];
 
 
 // see if a structure has the range to fire on a target
 static BOOL aiStructHasRange(STRUCTURE *psStruct, BASE_OBJECT *psTarget, int weapon_slot)
 {
     WEAPON_STATS		*psWStats;
-    SDWORD				xdiff,ydiff, longRange;
+    int32_t				xdiff,ydiff, longRange;
 
     if (psStruct->numWeaps == 0 || psStruct->asWeaps[0].nStat == 0)
     {
@@ -57,8 +57,8 @@ static BOOL aiStructHasRange(STRUCTURE *psStruct, BASE_OBJECT *psTarget, int wea
 
     psWStats = psStruct->asWeaps[weapon_slot].nStat + asWeaponStats;
 
-    xdiff = (SDWORD)psStruct->pos.x - (SDWORD)psTarget->pos.x;
-    ydiff = (SDWORD)psStruct->pos.y - (SDWORD)psTarget->pos.y;
+    xdiff = (int32_t)psStruct->pos.x - (int32_t)psTarget->pos.x;
+    ydiff = (int32_t)psStruct->pos.y - (int32_t)psTarget->pos.y;
     longRange = proj_GetLongRange(psWStats);
     if (xdiff*xdiff + ydiff*ydiff < longRange*longRange)
     {
@@ -89,8 +89,8 @@ static BOOL aiDroidHasRange(DROID *psDroid, BASE_OBJECT *psTarget, int weapon_sl
         longRange = proj_GetLongRange(psWStats);
     }
 
-    xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psTarget->pos.x;
-    ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psTarget->pos.y;
+    xdiff = (int32_t)psDroid->pos.x - (int32_t)psTarget->pos.x;
+    ydiff = (int32_t)psDroid->pos.y - (int32_t)psTarget->pos.y;
     if (xdiff*xdiff + ydiff*ydiff < longRange*longRange)
     {
         // in range
@@ -117,7 +117,7 @@ static BOOL aiObjHasRange(BASE_OBJECT *psObj, BASE_OBJECT *psTarget, int weapon_
 /* Initialise the AI system */
 BOOL aiInitialise(void)
 {
-    SDWORD		i,j;
+    int32_t		i,j;
 
     // The +1 is for features, that are owned by player 9 for hackish reasons
     // Yes, we do mean "player 9", as in "the players are 0-7, and we skip over player 8"
@@ -200,10 +200,10 @@ BASE_OBJECT *aiSearchSensorTargets(BASE_OBJECT *psObj, int weapon_slot, WEAPON_S
 
 // Find the best nearest target for a droid
 // Returns integer representing target priority, -1 if failed
-SDWORD aiBestNearestTarget(DROID *psDroid, BASE_OBJECT **ppsObj, int weapon_slot)
+int32_t aiBestNearestTarget(DROID *psDroid, BASE_OBJECT **ppsObj, int weapon_slot)
 {
-    UDWORD				i;
-    SDWORD				bestMod = 0,newMod, failure = -1;
+    uint32_t				i;
+    int32_t				bestMod = 0,newMod, failure = -1;
     BASE_OBJECT			*psTarget = NULL, *friendlyObj, *bestTarget = NULL, *targetInQuestion, *tempTarget;
     BOOL				electronic = false;
     STRUCTURE			*targetStructure;
@@ -383,10 +383,10 @@ SDWORD aiBestNearestTarget(DROID *psDroid, BASE_OBJECT **ppsObj, int weapon_slot
 }
 
 /* Calculates attack priority for a certain target */
-static SDWORD targetAttackWeight(BASE_OBJECT *psTarget, BASE_OBJECT *psAttacker, SDWORD weapon_slot)
+static int32_t targetAttackWeight(BASE_OBJECT *psTarget, BASE_OBJECT *psAttacker, int32_t weapon_slot)
 {
-    SDWORD			targetTypeBonus=0, damageRatio=0, attackWeight=0, noTarget=-1;
-    UDWORD			weaponSlot;
+    int32_t			targetTypeBonus=0, damageRatio=0, attackWeight=0, noTarget=-1;
+    uint32_t			weaponSlot;
     DROID			*targetDroid=NULL,*psAttackerDroid=NULL,*psGroupDroid,*psDroid;
     STRUCTURE		*targetStructure=NULL;
     WEAPON_EFFECT	weaponEffect;
@@ -646,7 +646,7 @@ BOOL aiChooseTarget(BASE_OBJECT *psObj, BASE_OBJECT **ppsTarget, int weapon_slot
 {
     BASE_OBJECT		*psTarget = NULL;
     DROID			*psCommander;
-    SDWORD			curTargetWeight=-1;
+    int32_t			curTargetWeight=-1;
 
     /* Get the sensor range */
     switch (psObj->type)
@@ -752,7 +752,7 @@ BOOL aiChooseTarget(BASE_OBJECT *psObj, BASE_OBJECT **ppsTarget, int weapon_slot
         {
             BASE_OBJECT *psCurr;
 
-            gridStartIterate((SDWORD)psObj->pos.x, (SDWORD)psObj->pos.y);
+            gridStartIterate((int32_t)psObj->pos.x, (int32_t)psObj->pos.y);
             psCurr = gridIterate();
             while (psCurr != NULL)
             {
@@ -805,9 +805,9 @@ BOOL aiChooseSensorTarget(BASE_OBJECT *psObj, BASE_OBJECT **ppsTarget)
     if (radarDetector)
     {
         BASE_OBJECT	*psCurr, *psTemp = NULL;
-        int		tarDist = SDWORD_MAX;
+        int		tarDist = int32_t_MAX;
 
-        gridStartIterate((SDWORD)psObj->pos.x, (SDWORD)psObj->pos.y);
+        gridStartIterate((int32_t)psObj->pos.x, (int32_t)psObj->pos.y);
         psCurr = gridIterate();
         while (psCurr != NULL)
         {
@@ -864,9 +864,9 @@ BOOL aiChooseSensorTarget(BASE_OBJECT *psObj, BASE_OBJECT **ppsTarget)
     else	// structure
     {
         BASE_OBJECT	*psCurr, *psTemp = NULL;
-        int		tarDist = SDWORD_MAX;
+        int		tarDist = int32_t_MAX;
 
-        gridStartIterate((SDWORD)psObj->pos.x, (SDWORD)psObj->pos.y);
+        gridStartIterate((int32_t)psObj->pos.x, (int32_t)psObj->pos.y);
         psCurr = gridIterate();
         while (psCurr != NULL)
         {
@@ -1071,7 +1071,7 @@ void aiUpdateDroid(DROID *psDroid)
 BOOL validTarget(BASE_OBJECT *psObject, BASE_OBJECT *psTarget, int weapon_slot)
 {
     BOOL	bTargetInAir = false, bValidTarget = false;
-    UBYTE	surfaceToAir = 0;
+    uint8_t	surfaceToAir = 0;
 
     if (!psTarget)
     {
@@ -1167,7 +1167,7 @@ BOOL validTarget(BASE_OBJECT *psObject, BASE_OBJECT *psTarget, int weapon_slot)
 }
 
 /* Make droid/structure look for a better target */
-BOOL updateAttackTarget(BASE_OBJECT *psAttacker, SDWORD weapon_slot)
+BOOL updateAttackTarget(BASE_OBJECT *psAttacker, int32_t weapon_slot)
 {
     BASE_OBJECT		*psBetterTarget=NULL;
 

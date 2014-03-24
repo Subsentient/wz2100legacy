@@ -104,8 +104,8 @@ typedef struct _vis_save_header
 typedef struct _fx_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		entries;
+    uint32_t		version;
+    uint32_t		entries;
 
 } FX_SAVEHEADER;
 
@@ -129,29 +129,29 @@ extern BOOL loadGame(const char *pGameToLoad, BOOL keepObjects, BOOL freeMem, BO
 so can be called in levLoadData when starting a game from a load save game*/
 extern bool loadGameInit(const char *fileName);
 
-extern BOOL loadMissionExtras(const char *pGameToLoad, SWORD levelType);
+extern BOOL loadMissionExtras(const char *pGameToLoad, int16_t levelType);
 
 // load the script state given a .gam name
 extern BOOL loadScriptState(char *pFileName);
 
 /// Load the terrain types
-extern BOOL loadTerrainTypeMap(const char *pFileData, UDWORD filesize);
+extern BOOL loadTerrainTypeMap(const char *pFileData, uint32_t filesize);
 
-extern BOOL saveGame(char *aFileName, SDWORD saveType);
+extern BOOL saveGame(char *aFileName, int32_t saveType);
 
 // Get the campaign number for loadGameInit game
-extern UDWORD getCampaign(const char *fileName);
+extern uint32_t getCampaign(const char *fileName);
 
 /*calls windows find file tree*/
 extern BOOL getSaveGameName(char *pName);
 
 /*set validty keys for save game debugging*/
-extern void game_SetValidityKey(UDWORD keys);
+extern void game_SetValidityKey(uint32_t keys);
 
 /*returns the current type of save game being loaded*/
-extern UDWORD getSaveGameType(void);
+extern uint32_t getSaveGameType(void);
 
-UDWORD RemapPlayerNumber(UDWORD OldNumber);
+uint32_t RemapPlayerNumber(uint32_t OldNumber);
 
 BOOL plotStructurePreview16(char *backDropSprite, Vector2i playeridpos[]);
 #endif // __INCLUDED_SRC_GAME_H__

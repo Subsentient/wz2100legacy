@@ -61,15 +61,15 @@ typedef struct _feature_stats
     FEATURE_TYPE    subType;                ///< type of feature
 
     iIMDShape      *psImd;                  ///< Graphic for the feature
-    UWORD           baseWidth;              ///< The width of the base in tiles
-    UWORD           baseBreadth;            ///< The breadth of the base in tiles
+    uint16_t           baseWidth;              ///< The width of the base in tiles
+    uint16_t           baseBreadth;            ///< The breadth of the base in tiles
 
     BOOL            tileDraw;               ///< Whether the tile needs to be drawn
     BOOL            allowLOS;               ///< Whether the feature allows the LOS. true = can see through the feature
     BOOL            visibleAtStart;         ///< Whether the feature is visible at the start of the mission
     BOOL            damageable;             ///< Whether the feature can be destroyed
-    UDWORD		body;			///< Number of body points
-    UDWORD          armourValue;            ///< Feature armour
+    uint32_t		body;			///< Number of body points
+    uint32_t          armourValue;            ///< Feature armour
 } WZ_DECL_MAY_ALIAS FEATURE_STATS;
 
 typedef struct _feature
@@ -78,7 +78,7 @@ typedef struct _feature
     BASE_ELEMENTS(struct _feature);
 
     FEATURE_STATS  *psStats;
-    UDWORD          startTime;              ///< Time the feature was created. Valid for wrecked droids and structures.
+    uint32_t          startTime;              ///< Time the feature was created. Valid for wrecked droids and structures.
     BOOL            bTargetted;
 } WZ_DECL_MAY_ALIAS FEATURE;
 

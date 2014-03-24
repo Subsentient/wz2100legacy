@@ -57,13 +57,13 @@ typedef enum
 } AP_STATUS;
 
 static ATPART	asAtmosParts[MAX_ATMOS_PARTICLES];
-static	UDWORD	freeParticle;
-static	UDWORD	weather;
+static	uint32_t	freeParticle;
+static	uint32_t	weather;
 
 /* Setup all the particles */
 void	atmosInitSystem( void )
 {
-    UDWORD	i;
+    uint32_t	i;
 
     for(i=0; i<MAX_ATMOS_PARTICLES; i++)
     {
@@ -111,9 +111,9 @@ static void testParticleWrap(ATPART *psPart)
 /* Moves one of the particles */
 static void processParticle(ATPART *psPart)
 {
-    SDWORD	groundHeight;
+    int32_t	groundHeight;
     Vector3i pos;
-    UDWORD	x,y;
+    uint32_t	x,y;
     MAPTILE	*psTile;
 
     /* Only move if the game isn't paused */
@@ -184,8 +184,8 @@ static void processParticle(ATPART *psPart)
 /* Adds a particle to the system if it can */
 static void atmosAddParticle(Vector3i *pos, AP_TYPE type)
 {
-    UDWORD	activeCount;
-    UDWORD	i;
+    uint32_t	activeCount;
+    uint32_t	i;
 
     for(i=freeParticle,activeCount=0; (asAtmosParts[i].status==APS_ACTIVE)
             && activeCount<MAX_ATMOS_PARTICLES; i++)
@@ -212,7 +212,7 @@ static void atmosAddParticle(Vector3i *pos, AP_TYPE type)
 
 
     /* Record it's type */
-    asAtmosParts[freeParticle].type = (UBYTE)type;
+    asAtmosParts[freeParticle].type = (uint8_t)type;
 
     /* Make it active */
     asAtmosParts[freeParticle].status = APS_ACTIVE;
@@ -256,8 +256,8 @@ static void atmosAddParticle(Vector3i *pos, AP_TYPE type)
 /* Move the particles */
 void	atmosUpdateSystem( void )
 {
-    UDWORD	i;
-    UDWORD	numberToAdd;
+    uint32_t	i;
+    uint32_t	numberToAdd;
     Vector3i pos;
 
     // we don't want to do any of this while paused.
@@ -287,8 +287,8 @@ void	atmosUpdateSystem( void )
 
             /* If we've got one on the grid */
             if(pos.x>0 && pos.z>0 &&
-                    pos.x<(SDWORD)((mapWidth-1)*TILE_UNITS) &&
-                    pos.z<(SDWORD)((mapHeight-1)*TILE_UNITS) )
+                    pos.x<(int32_t)((mapWidth-1)*TILE_UNITS) &&
+                    pos.z<(int32_t)((mapHeight-1)*TILE_UNITS) )
             {
                 /* On grid, so which particle shall we add? */
                 switch(weather)
@@ -312,7 +312,7 @@ void	atmosUpdateSystem( void )
 // -----------------------------------------------------------------------------
 void	atmosDrawParticles( void )
 {
-    UDWORD	i;
+    uint32_t	i;
 
     if(weather==WT_NONE)
     {
@@ -338,15 +338,15 @@ void	atmosDrawParticles( void )
 void	renderParticle( ATPART *psPart )
 {
     Vector3i dv;
-    SDWORD x, y, z, rx, rz;
+    int32_t x, y, z, rx, rz;
 
     x = psPart->position.x;
     y = psPart->position.y;
     z = psPart->position.z;
     /* Transform it */
-    dv.x = ((UDWORD)x - player.p.x) - terrainMidX * TILE_UNITS;
-    dv.y = (UDWORD)y;
-    dv.z = terrainMidY * TILE_UNITS - ((UDWORD)z - player.p.z);
+    dv.x = ((uint32_t)x - player.p.x) - terrainMidX * TILE_UNITS;
+    dv.y = (uint32_t)y;
+    dv.z = terrainMidY * TILE_UNITS - ((uint32_t)z - player.p.z);
     iV_MatrixBegin();							/* Push the indentity matrix */
     iV_TRANSLATE(dv.x,dv.y,dv.z);
     rx = map_round(player.p.x);			/* Get the x,z translation components */

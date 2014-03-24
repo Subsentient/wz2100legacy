@@ -36,7 +36,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//*
  * - only used in the sequence video code we have not yet decided whether to port or to junk */
 
 /* Set the colour for text */
-extern void screenSetTextColour(UBYTE red, UBYTE green, UBYTE blue);
+extern void screenSetTextColour(uint8_t red, uint8_t green, uint8_t blue);
 
 /* backDrop */
 extern void screen_SetBackDropFromFile(const char *filename);

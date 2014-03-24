@@ -75,15 +75,15 @@ extern "C"
     void addTopForm(void);
     void addBottomForm(void);
     void addBackdrop(void);
-    void addTextButton(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style);
-    void addSmallTextButton(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, unsigned int style);
-    void addTextHint(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt);
-    void addText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt, UDWORD formID);
-    void addSideText(UDWORD id, UDWORD PosX, UDWORD PosY, const char *txt);
-    void addFESlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos);
-    void addFEAISlider(UDWORD id, UDWORD parent, UDWORD x, UDWORD y, UDWORD stops, UDWORD pos);
+    void addTextButton(uint32_t id, uint32_t PosX, uint32_t PosY, const char *txt, unsigned int style);
+    void addSmallTextButton(uint32_t id, uint32_t PosX, uint32_t PosY, const char *txt, unsigned int style);
+    void addTextHint(uint32_t id, uint32_t PosX, uint32_t PosY, const char *txt);
+    void addText(uint32_t id, uint32_t PosX, uint32_t PosY, const char *txt, uint32_t formID);
+    void addSideText(uint32_t id, uint32_t PosX, uint32_t PosY, const char *txt);
+    void addFESlider(uint32_t id, uint32_t parent, uint32_t x, uint32_t y, uint32_t stops, uint32_t pos);
+    void addFEAISlider(uint32_t id, uint32_t parent, uint32_t x, uint32_t y, uint32_t stops, uint32_t pos);
 
-    void displayTextOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+    void displayTextOption(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
     BOOL CancelPressed(void);
 
@@ -161,7 +161,7 @@ extern "C"
         FRONTEND_SIDETEXT4,					// side-ee-ways text
         FRONTEND_LOADCAM2,					// loading via --GAME CAM_2A
         FRONTEND_LOADCAM3,					// loading via --GAME CAM_3A
-        FRONTEND_PASSWORDFORM,
+        FRONTEND_PASint16_tFORM,
         FRONTEND_HYPERLINK,
         // begin menu
         FRONTEND_SINGLEPLAYER	= 20100,	// title screen

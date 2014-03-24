@@ -51,14 +51,14 @@ extern void setMissionCountDown(void);
 
 
 //extern BOOL startMission(MISSION_TYPE missionType, char *pGame);
-extern BOOL startMission(UDWORD missionType, char *pGame);
+extern BOOL startMission(uint32_t missionType, char *pGame);
 extern void endMission(void);
 // initialise the mission stuff for a save game
-extern BOOL startMissionSave(SDWORD missionType);
+extern BOOL startMissionSave(int32_t missionType);
 
 //sets up the game to start a new mission
 //extern BOOL setUpMission(MISSION_TYPE type);
-extern BOOL setUpMission(UDWORD type);
+extern BOOL setUpMission(uint32_t type);
 //this causes the new mission data to be loaded up
 extern void launchMission(void);
 
@@ -101,10 +101,10 @@ extern BOOL ClosingMissionRes;
 
 extern void intRemoveMissionResult			(void);
 extern void intRemoveMissionResultNoAnim	(void);
-extern void intProcessMissionResult			(UDWORD id);
+extern void intProcessMissionResult			(uint32_t id);
 extern void intRunMissionResult				(void);
 
-extern void unloadTransporter(DROID *psTransporter, UDWORD x, UDWORD y,
+extern void unloadTransporter(DROID *psTransporter, uint32_t x, uint32_t y,
                               BOOL goingHome);
 /*sets the appropriate pause states for when the interface is up but the
 game needs to be paused*/
@@ -112,9 +112,9 @@ extern void setMissionPauseState(void);
 /*resets the pause states */
 extern void resetMissionPauseState(void);
 //returns the x coord for where the Transporter can land
-extern UWORD getLandingX( SDWORD iPlayer );
+extern uint16_t getLandingX( int32_t iPlayer );
 //returns the y coord for where the Transporter can land
-extern UWORD getLandingY( SDWORD iPlayer );
+extern uint16_t getLandingY( int32_t iPlayer );
 /*checks that the timer has been set and that a Transporter exists before
 adding the timer button*/
 extern void addTransporterTimerInterface(void);
@@ -128,49 +128,49 @@ extern void intRemoveMissionTimer(void);
 
 
 //access functions for bPlayCountDown flag
-extern void setPlayCountDown(UBYTE set);
+extern void setPlayCountDown(uint8_t set);
 extern BOOL getPlayCountDown(void);
 
 
 /*	checks the x,y passed in are not within the boundary of the Landing Zone
 	x and y in tile coords */
-extern BOOL withinLandingZone(UDWORD x, UDWORD y);
+extern BOOL withinLandingZone(uint32_t x, uint32_t y);
 //sets the coords for the Transporter to land
-extern void setLandingZone(UBYTE x1, UBYTE y1, UBYTE x2, UBYTE y2);
-extern LANDING_ZONE *getLandingZone(SDWORD i);
+extern void setLandingZone(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
+extern LANDING_ZONE *getLandingZone(int32_t i);
 
 /*Initialises all the nogo areas to 0*/
 extern void initNoGoAreas(void);
 //sets the coords for a no go area
-extern void setNoGoArea(UBYTE x1, UBYTE y1, UBYTE x2, UBYTE y2, UBYTE area);
+extern void setNoGoArea(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t area);
 /* fly in transporters at start of level */
-extern void missionFlyTransportersIn( SDWORD iPlayer, BOOL bTrackTransporter );
+extern void missionFlyTransportersIn( int32_t iPlayer, BOOL bTrackTransporter );
 /* move transporter offworld */
 extern void missionMoveTransporterOffWorld( DROID *psTransporter );
 /* pick nearest map edge to point */
-extern void missionGetNearestCorner( UWORD iX, UWORD iY,
-                                     UWORD *piOffX, UWORD *piOffY );
-extern void missionSetReinforcementTime( UDWORD iTime );
-extern UDWORD  missionGetReinforcementTime(void);
+extern void missionGetNearestCorner( uint16_t iX, uint16_t iY,
+                                     uint16_t *piOffX, uint16_t *piOffY );
+extern void missionSetReinforcementTime( uint32_t iTime );
+extern uint32_t  missionGetReinforcementTime(void);
 
 /*builds a droid back at the home base whilst on a mission - stored in a list made
 available to the transporter interface*/
-extern DROID *buildMissionDroid(DROID_TEMPLATE *psTempl, UDWORD x, UDWORD y,
-                                UDWORD player);
+extern DROID *buildMissionDroid(DROID_TEMPLATE *psTempl, uint32_t x, uint32_t y,
+                                uint32_t player);
 
 //This is just a very big number - bigger than a map width/height could ever be!
 #define		INVALID_XY				(512 * 127)
 
-extern void missionSetTransporterEntry( SDWORD iPlayer, SDWORD iEntryTileX, SDWORD iEntryTileY );
-extern void missionSetTransporterExit( SDWORD iPlayer, SDWORD iExitTileX, SDWORD iExitTileY );
-extern void missionGetTransporterEntry( SDWORD iPlayer, UWORD *iX, UWORD *iY );
-extern void missionGetTransporterExit( SDWORD iPlayer, UDWORD *iX, UDWORD *iY );
+extern void missionSetTransporterEntry( int32_t iPlayer, int32_t iEntryTileX, int32_t iEntryTileY );
+extern void missionSetTransporterExit( int32_t iPlayer, int32_t iExitTileX, int32_t iExitTileY );
+extern void missionGetTransporterEntry( int32_t iPlayer, uint16_t *iX, uint16_t *iY );
+extern void missionGetTransporterExit( int32_t iPlayer, uint32_t *iX, uint32_t *iY );
 
 //access functions for droidsToSafety flag
 extern void setDroidsToSafetyFlag(BOOL set);
 extern BOOL getDroidsToSafetyFlag(void);
 //checks to see if the player has any droids (except Transporters left)
-extern BOOL missionDroidsRemaining(UDWORD player);
+extern BOOL missionDroidsRemaining(uint32_t player);
 /*called when a Transporter gets to the edge of the world and the droids are
 being flown to safety. The droids inside the Transporter are placed into the
 mission list for later use*/
@@ -181,8 +181,8 @@ extern void clearMissionWidgets(void);
 //resets if return to game after an ESC
 extern void resetMissionWidgets(void);
 
-extern UDWORD	getCampaignNumber( void );
-extern void	setCampaignNumber( UDWORD number );
+extern uint32_t	getCampaignNumber( void );
+extern void	setCampaignNumber( uint32_t number );
 extern BOOL intAddMissionResult(BOOL result, BOOL bPlaySuccess);
 // reset the vtol landing pos
 void resetVTOLLandingPos(void);

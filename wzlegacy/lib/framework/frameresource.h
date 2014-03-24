@@ -29,7 +29,7 @@ extern "C"
 #define RESTYPE_MAXCHAR		20
 
     /** Function pointer for a function that loads from a memory buffer. */
-    typedef bool (*RES_BUFFERLOAD)(const char *pBuffer, UDWORD size, void **pData);
+    typedef bool (*RES_BUFFERLOAD)(const char *pBuffer, uint32_t size, void **pData);
 
     /** Function pointer for a function that loads from a filename. */
     typedef bool (*RES_FILELOAD)(const char *pFile, void **pData);
@@ -43,11 +43,11 @@ extern "C"
     typedef struct res_data
     {
         void		*pData;				// pointer to the acutal data
-        SDWORD		blockID;			// which of the blocks is it in (so we can clear some of them...)
+        int32_t		blockID;			// which of the blocks is it in (so we can clear some of them...)
 
-        UDWORD	HashedID;				// hashed version of the name of the id
+        uint32_t	HashedID;				// hashed version of the name of the id
         struct	res_data *psNext;		// next entry - most likely to be following on!
-        UDWORD		usage; // Reference count
+        uint32_t		usage; // Reference count
 
         // ID of the resource - filename from the .wrf - e.g. "TRON.PIE"
         const char *aID;
@@ -66,7 +66,7 @@ extern "C"
 
         // we must have a pointer to the data here so that we can do a resGetData();
         RES_DATA		*psRes;		// Linked list of data items of this type
-        UDWORD	HashedType;				// hashed version of the name of the id - // a null hashedtype indicates end of list
+        uint32_t	HashedType;				// hashed version of the name of the id - // a null hashedtype indicates end of list
 
         RES_FILELOAD	fileLoad;		// This isn't really used any more ?
         struct _res_type	*psNext;
@@ -83,13 +83,13 @@ extern "C"
     extern void resShutDown(void);
 
     /** Parse the res file. */
-    bool resLoad(const char *pResFile, SDWORD blockID);
+    bool resLoad(const char *pResFile, int32_t blockID);
 
     /** Release all the resources currently loaded and the resource load functions. */
     extern void resReleaseAll(void);
 
     /** Release the data for a particular block ID. */
-    extern void resReleaseBlockData(SDWORD blockID);
+    extern void resReleaseBlockData(int32_t blockID);
 
     /** Release all the resources currently loaded but keep the resource load functions. */
     extern void resReleaseAllData(void);
@@ -106,13 +106,13 @@ extern "C"
     extern bool resLoadFile(const char *pType, const char *pFile);
 
     /** Return the resource for a type and ID */
-    extern void *resGetDataFromHash(const char *pType, UDWORD HashedID);
+    extern void *resGetDataFromHash(const char *pType, uint32_t HashedID);
     extern void *resGetData(const char *pType, const char *pID);
     extern bool resPresent(const char *pType, const char *pID);
     void resToLower(char *pStr);
 
     /** Return the HashedID string for a piece of data. */
-    extern bool resGetHashfromData(const char *pType, const void *pData, UDWORD *pHash);
+    extern bool resGetHashfromData(const char *pType, const void *pData, uint32_t *pHash);
 
     /** Retrieve the resource ID string
      *  \param type the resource type string (e.g. "IMG", "IMD", "TEXPAGE", "WAV", etc.)

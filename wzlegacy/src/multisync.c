@@ -58,14 +58,14 @@ static BOOL sendDroidCheck		(void);							//droids
 
 
 /*
-static void onscreenUpdate		(DROID *pDroid,UDWORD dam,		// the droid and its damage
-								 UWORD dir,					// direction it should facing
+static void onscreenUpdate		(DROID *pDroid,uint32_t dam,		// the droid and its damage
+								 uint16_t dir,					// direction it should facing
 								 DROID_ORDER order);			// what it should be doing
 */
 static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen);
 
 static BOOL sendPowerCheck(void);
-static UDWORD averagePing(void);
+static uint32_t averagePing(void);
 
 // ////////////////////////////////////////////////////////////////////////////
 // Defined numeric values
@@ -78,7 +78,7 @@ static UDWORD averagePing(void);
 #define POWER_FREQUENCY		MP_FPS_LOCK * 14		// how often to send power levels (About every 630ms)
 #define SCORE_FREQUENCY		MP_FPS_LOCK * 100		// how often to update global score. (About every ~4.5 secs)
 
-static UDWORD				PingSend[MAX_PLAYERS];	//stores the time the ping was called.
+static uint32_t				PingSend[MAX_PLAYERS];	//stores the time the ping was called.
 
 // ////////////////////////////////////////////////////////////////////////////
 // test traffic level.
@@ -86,7 +86,7 @@ static BOOL okToSend(void)
 {
 	// Update checks and go no further if any exceeded.
 	// removing the received check again ... add NETgetRecentBytesRecvd() to left hand side of equation if this works badly
-	if (NETgetRecentBytesSent() >= MAX_BYTESPERSEC)
+	if (NETgetRecentBytesSent() >= MAX_int8_tSPERSEC)
 	{
 		return false;
 	}
@@ -98,7 +98,7 @@ static BOOL okToSend(void)
 // Droid checking info. keep position and damage in sync.
 BOOL sendCheck(void)
 {
-	UDWORD i;
+	uint32_t i;
 
 	NETgetBytesSent();			// update stats.
 	NETgetBytesRecvd();
@@ -183,9 +183,9 @@ static DROID* pickADroid(void)
 {
 	DROID* pD = NULL;						// current droid we're checking
 	unsigned int i;
-	static UDWORD	droidnum=0;						// how far down the playerlist to go.
-	static UDWORD	player=0;						// current player we're checking
-	static UDWORD	maxtrys=0;
+	static uint32_t	droidnum=0;						// how far down the playerlist to go.
+	static uint32_t	player=0;						// current player we're checking
+	static uint32_t	maxtrys=0;
 
 	// Don't send stuff that isn't our problem
 	while (!myResponsibility(player))
@@ -255,8 +255,8 @@ static BOOL sendDroidCheck(void)
 {
 	DROID			*pD, **ppD;
 	uint8_t			i, count;
-	static UDWORD	lastSent = 0;		// Last time a struct was sent.
-	UDWORD			toSend = 6;
+	static uint32_t	lastSent = 0;		// Last time a struct was sent.
+	uint32_t			toSend = 6;
 
 	if (lastSent > gameTime)
 	{
@@ -505,8 +505,8 @@ static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
 		fabs((float)psDroid->pos.y - psDData->pos.y) > TILE_UNITS)
 	{
 		debug(LOG_SYNC, "Moving droid %d from (%u,%u) to (%u,%u) (has order %s)",
-		      (int)psDroid->id, psDroid->pos.x, psDroid->pos.y, (UDWORD)psDData->sMove.fx,
-		      (UDWORD)psDData->sMove.fy, getDroidOrderName(psDData->order));
+		      (int)psDroid->id, psDroid->pos.x, psDroid->pos.y, (uint32_t)psDData->sMove.fx,
+		      (uint32_t)psDData->sMove.fy, getDroidOrderName(psDData->order));
 	}
 
 	oldX = psDroid->pos.x;
@@ -568,11 +568,11 @@ static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
 // this func is recursive!
 static  STRUCTURE *pickAStructure(void)
 {
-	static UDWORD	player=0;					// player currently checking.
-	static UDWORD	snum=0;						// structure index for this player.
+	static uint32_t	player=0;					// player currently checking.
+	static uint32_t	snum=0;						// structure index for this player.
 	STRUCTURE		*pS=NULL;
-	static UDWORD	maxtrys = 0;				// don't loop forever if failing/.
-	UDWORD			i;
+	static uint32_t	maxtrys = 0;				// don't loop forever if failing/.
+	uint32_t			i;
 
 	if ( !myResponsibility(player) )			// dont send stuff that's not our problem.
 	{
@@ -626,7 +626,7 @@ static  STRUCTURE *pickAStructure(void)
 // Send structure information.
 static BOOL sendStructureCheck(void)
 {
-	static UDWORD	lastSent = 0;	// Last time a struct was sent
+	static uint32_t	lastSent = 0;	// Last time a struct was sent
 	STRUCTURE		*pS;
     uint8_t			capacity;
 
@@ -859,7 +859,7 @@ BOOL recvStructureCheck()
 // Power Checking. Send a power level check every now and again.
 static BOOL sendPowerCheck()
 {
-	static UDWORD	lastsent = 0;
+	static uint32_t	lastsent = 0;
 	uint8_t			player = selectedPlayer;
 	uint32_t		power = getPower(player);
 
@@ -926,7 +926,7 @@ void HandleBadParam(const char *msg, const int from, const int actual)
 // We use setMultiStats() to broadcast the score when needed.
 BOOL sendScoreCheck(void)
 {
-	static UDWORD	lastsent = 0;
+	static uint32_t	lastsent = 0;
 
 	if (lastsent > gameTime)
 	{
@@ -977,9 +977,9 @@ BOOL sendScoreCheck(void)
 // ////////////////////////////////////////////////////////////////////////
 // Pings
 
-static UDWORD averagePing(void)
+static uint32_t averagePing(void)
 {
-	UDWORD i, count = 0, total = 0;
+	uint32_t i, count = 0, total = 0;
 
 	for(i=0;i<MAX_PLAYERS;i++)
 	{
@@ -997,8 +997,8 @@ BOOL sendPing(void)
 	BOOL			isNew = true;
 	uint8_t			player = selectedPlayer;
 	int				i;
-	static UDWORD	lastPing = 0;	// Last time we sent a ping
-	static UDWORD	lastav = 0;		// Last time we updated average
+	static uint32_t	lastPing = 0;	// Last time we sent a ping
+	static uint32_t	lastav = 0;		// Last time we updated average
 
 	// Only ping every so often
 	if (lastPing > gameTime)

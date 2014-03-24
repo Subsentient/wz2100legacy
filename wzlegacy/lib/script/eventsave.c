@@ -34,23 +34,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 typedef struct _event_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
+    uint32_t		version;
 } EVENT_SAVE_HDR;
 
 
 // save the context information for the script system
-static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
+static BOOL eventSaveContext(char *pBuffer, uint32_t *pSize)
 {
-    UDWORD				size, valSize;
-    SDWORD				numVars, i, numContext;
+    uint32_t				size, valSize;
+    int32_t				numVars, i, numContext;
     SCRIPT_CONTEXT		*psCCont;
     VAL_CHUNK			*psCVals;
     INTERP_VAL			*psVal;
     SCR_VAL_SAVE		saveFunc;
     char				*pPos;
 //not hashed	char				*pScriptID;
-    UDWORD				hashedName;
-    UWORD				*pValSize = NULL;
+    uint32_t				hashedName;
+    uint16_t				*pValSize = NULL;
 
 
     size = 0;
@@ -60,9 +60,9 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
     // reserve space to store how many contexts are saved
     if (pBuffer != NULL)
     {
-        pPos += sizeof(SWORD);
+        pPos += sizeof(int16_t);
     }
-    size += sizeof(SWORD);
+    size += sizeof(int16_t);
 
     // go through the context list
     for(psCCont = psContList; psCCont != NULL; psCCont = psCCont->psNext)
@@ -83,20 +83,20 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
         {
 //not hashed			strcpy(pPos, pScriptID);
 //not hashed			pPos += strlen(pScriptID) + 1;
-            *((UDWORD *)pPos) = (UDWORD)hashedName;
-            endian_udword((UDWORD *)pPos);
-            pPos += sizeof(UDWORD);
+            *((uint32_t *)pPos) = (uint32_t)hashedName;
+            endian_udword((uint32_t *)pPos);
+            pPos += sizeof(uint32_t);
 
-            *((SWORD *)pPos) = (SWORD)numVars;
-            endian_sword((SWORD *)pPos);
-            pPos += sizeof(SWORD);
+            *((int16_t *)pPos) = (int16_t)numVars;
+            endian_sword((int16_t *)pPos);
+            pPos += sizeof(int16_t);
 
-            *pPos = (UBYTE)psCCont->release;
-            pPos += sizeof(UBYTE);
+            *pPos = (uint8_t)psCCont->release;
+            pPos += sizeof(uint8_t);
         }
 
-//not hashed		size += strlen(pScriptID) + 1 + sizeof(SWORD) + sizeof(UBYTE);
-        size += sizeof(UDWORD) + sizeof(SWORD) + sizeof(UBYTE);
+//not hashed		size += strlen(pScriptID) + 1 + sizeof(int16_t) + sizeof(uint8_t);
+        size += sizeof(uint32_t) + sizeof(int16_t) + sizeof(uint8_t);
 
         // save the context variables
         for(psCVals = psCCont->psGlobals; psCVals != NULL; psCVals = psCVals->psNext)
@@ -108,20 +108,20 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
                 // store the variable type
                 if (pBuffer != NULL)
                 {
-                    ASSERT( psVal->type < SWORD_MAX,
+                    ASSERT( psVal->type < int16_t_MAX,
                             "eventSaveContext: variable type number too big" );
 
-                    *((SWORD *)pPos) = (SWORD)psVal->type;
-                    endian_sword((SWORD *)pPos);
+                    *((int16_t *)pPos) = (int16_t)psVal->type;
+                    endian_sword((int16_t *)pPos);
 
-                    pPos += sizeof(SWORD);
+                    pPos += sizeof(int16_t);
                 }
-                size += sizeof(SWORD);
+                size += sizeof(int16_t);
 
                 // store the variable value
                 if (psVal->type == VAL_STRING)
                 {
-                    UDWORD stringLen = 0;
+                    uint32_t stringLen = 0;
 
                     if(psVal->v.sval != NULL && strlen(psVal->v.sval) > 0)
                     {
@@ -130,9 +130,9 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
 
                     if (pBuffer != NULL)
                     {
-                        *((UDWORD *)pPos) = stringLen;
-                        endian_udword((UDWORD *)pPos);
-                        pPos += sizeof(UDWORD);
+                        *((uint32_t *)pPos) = stringLen;
+                        endian_udword((uint32_t *)pPos);
+                        pPos += sizeof(uint32_t);
 
                         if(stringLen > 0)
                         {
@@ -141,7 +141,7 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
                         pPos += stringLen;
                     }
 
-                    size += sizeof(UDWORD) + stringLen;
+                    size += sizeof(uint32_t) + stringLen;
                 }
                 else if (psVal->type < VAL_USERTYPESTART)
                 {
@@ -149,13 +149,13 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
                     if (pBuffer != NULL)
                     {
                         /* FIXME: this does not work for VAL_OBJ_GETSET, VAL_FUNC_EXTERN */
-                        *((UDWORD *)pPos) = (UDWORD)psVal->v.ival;
-                        endian_udword((UDWORD *)pPos);
+                        *((uint32_t *)pPos) = (uint32_t)psVal->v.ival;
+                        endian_udword((uint32_t *)pPos);
 
-                        pPos += sizeof(UDWORD);
+                        pPos += sizeof(uint32_t);
                     }
 
-                    size += sizeof(UDWORD);
+                    size += sizeof(uint32_t);
                 }
                 else
                 {
@@ -168,10 +168,10 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
                     // reserve some space to store how many bytes the value uses
                     if (pBuffer != NULL)
                     {
-                        pValSize = (UWORD *)pPos;
-                        pPos += sizeof(UWORD);
+                        pValSize = (uint16_t *)pPos;
+                        pPos += sizeof(uint16_t);
                     }
-                    size += sizeof(UWORD);
+                    size += sizeof(uint16_t);
 
                     if (!saveFunc(psVal, pPos, &valSize))
                     {
@@ -182,8 +182,8 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
 
                     if (pBuffer != NULL)
                     {
-                        *pValSize = (UWORD)valSize;
-                        endian_uword((UWORD *)pValSize);
+                        *pValSize = (uint16_t)valSize;
+                        endian_uword((uint16_t *)pValSize);
 
                         pPos += valSize;
                     }
@@ -207,8 +207,8 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
     // actually store how many contexts have been saved
     if (pBuffer != NULL)
     {
-        *((SWORD *)pBuffer) = (SWORD)numContext;
-        endian_sword((SWORD *)pBuffer);
+        *((int16_t *)pBuffer) = (int16_t)numContext;
+        endian_sword((int16_t *)pBuffer);
     }
     *pSize = size;
 
@@ -216,16 +216,16 @@ static BOOL eventSaveContext(char *pBuffer, UDWORD *pSize)
 }
 
 // load the context information for the script system
-static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize, BOOL bHashed)
+static BOOL eventLoadContext(const int32_t version, char *pBuffer, uint32_t *pSize, BOOL bHashed)
 {
-    UDWORD				size, valSize,stringLen;
-    SDWORD				numVars, i, numContext, context;
+    uint32_t				size, valSize,stringLen;
+    int32_t				numVars, i, numContext, context;
     SCRIPT_CONTEXT		*psCCont;
     INTERP_TYPE			type;
     SCR_VAL_LOAD		loadFunc;
     char				*pPos;
     char				*pScriptID = NULL;
-    UDWORD				hashedName;
+    uint32_t				hashedName;
     SCRIPT_CODE			*psCode;
     CONTEXT_RELEASE			release;
     INTERP_VAL			*psVal, data;
@@ -234,20 +234,20 @@ static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize,
     pPos = pBuffer;
 
     // get the number of contexts in the save file
-    endian_sword((SWORD *)pPos);
-    numContext = *((SWORD *)pPos);
-    pPos += sizeof(SWORD);
-    size += sizeof(SWORD);
+    endian_sword((int16_t *)pPos);
+    numContext = *((int16_t *)pPos);
+    pPos += sizeof(int16_t);
+    size += sizeof(int16_t);
 
     // go through the contexts
     for(context=0; context < numContext; context += 1)
     {
         if(bHashed)
         {
-            endian_udword((UDWORD *)pPos);
-            hashedName = *((UDWORD *)pPos);
+            endian_udword((uint32_t *)pPos);
+            hashedName = *((uint32_t *)pPos);
             psCode = (SCRIPT_CODE *)resGetDataFromHash("SCRIPT", hashedName);
-            pPos += sizeof(UDWORD);
+            pPos += sizeof(uint32_t);
         }
         else
         {
@@ -257,19 +257,19 @@ static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize,
             pPos += strlen(pScriptID) + 1;
         }
         // check the number of variables
-        endian_sword((SWORD *)pPos);
+        endian_sword((int16_t *)pPos);
         numVars = psCode->numGlobals + psCode->arraySize;
 
-        if (numVars != *((SWORD *)pPos))
+        if (numVars != *((int16_t *)pPos))
         {
             ASSERT(false, "Context %d of %d: Number of context variables (%d) does not match the script code (%d)",
-                   context, numContext, numVars, *((SWORD *)pPos));
+                   context, numContext, numVars, *((int16_t *)pPos));
             return false;
         }
-        pPos += sizeof(SWORD);
+        pPos += sizeof(int16_t);
 
         release = (CONTEXT_RELEASE)*pPos;
-        pPos += sizeof(UBYTE);
+        pPos += sizeof(uint8_t);
 
         // create the context
         if (!eventNewContext(psCode, release, &psCCont))
@@ -278,32 +278,32 @@ static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize,
         }
 
         // bit of a hack this - note the id of the context to link it to the triggers
-        psContList->id = (SWORD)context;
+        psContList->id = (int16_t)context;
 
         if(bHashed)
         {
-            size += sizeof(UDWORD) + sizeof(SWORD) + sizeof(UBYTE);
+            size += sizeof(uint32_t) + sizeof(int16_t) + sizeof(uint8_t);
         }
         else
         {
-            size += strlen(pScriptID) + 1 + sizeof(SWORD) + sizeof(UBYTE);
+            size += strlen(pScriptID) + 1 + sizeof(int16_t) + sizeof(uint8_t);
         }
 
         // set the context variables
         for(i=0; i < numVars; i+= 1)
         {
             // get the variable type
-            endian_sword((SWORD *)pPos);
-            type = (INTERP_TYPE) *((SWORD *)pPos);
-            pPos += sizeof(SWORD);
-            size += sizeof(SWORD);
+            endian_sword((int16_t *)pPos);
+            type = (INTERP_TYPE) *((int16_t *)pPos);
+            pPos += sizeof(int16_t);
+            size += sizeof(int16_t);
 
             // get the variable value
             if (type < VAL_USERTYPESTART)
             {
                 data.type = type;
 
-                endian_udword((UDWORD *)pPos);
+                endian_udword((uint32_t *)pPos);
 
                 switch (type)
                 {
@@ -323,18 +323,18 @@ static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize,
                     case VAL_VOID:
                     case VAL_OPCODE:
                     case VAL_PKOPCODE:
-                        data.v.ival = *((UDWORD *)pPos);
-                        pPos += sizeof(UDWORD);
-                        size += sizeof(UDWORD);
+                        data.v.ival = *((uint32_t *)pPos);
+                        pPos += sizeof(uint32_t);
+                        size += sizeof(uint32_t);
                         break;
                     case VAL_STRING:
                         data.v.sval = (char *)malloc(MAXSTRLEN);
                         strcpy(data.v.sval, "\0");
 
-                        stringLen = *((UDWORD *)pPos);	//read string length
+                        stringLen = *((uint32_t *)pPos);	//read string length
 
-                        pPos += sizeof(UDWORD);
-                        size += sizeof(UDWORD);
+                        pPos += sizeof(uint32_t);
+                        size += sizeof(uint32_t);
 
                         //load string
                         if(stringLen > 0)
@@ -361,7 +361,7 @@ static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize,
                 }
 
                 // set the value in the context
-                if (!eventSetContextVar(psCCont, (UDWORD)i, &data))
+                if (!eventSetContextVar(psCCont, (uint32_t)i, &data))
                 {
                     debug( LOG_FATAL, "eventLoadContext: couldn't set variable value" );
                     abort();
@@ -376,15 +376,15 @@ static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize,
                 ASSERT( loadFunc != NULL,
                         "eventLoadContext: no load function for type %d\n", type );
 
-                endian_uword((UWORD *)pPos);
-                valSize = *((UWORD *)pPos);
+                endian_uword((uint16_t *)pPos);
+                valSize = *((uint16_t *)pPos);
 
-                pPos += sizeof(UWORD);
-                size += sizeof(UWORD);
+                pPos += sizeof(uint16_t);
+                size += sizeof(uint16_t);
 
                 // get the value pointer so that the loadFunc can write directly
                 // into the variables data space.
-                if (!eventGetContextVal(psCCont, (UDWORD)i, &psVal))
+                if (!eventGetContextVal(psCCont, (uint32_t)i, &psVal))
                 {
                     debug( LOG_FATAL, "eventLoadContext: couldn't find variable in context" );
                     abort();
@@ -410,10 +410,10 @@ static BOOL eventLoadContext(const SDWORD version, char *pBuffer, UDWORD *pSize,
 }
 
 // return the index of a context
-static BOOL eventGetContextIndex(SCRIPT_CONTEXT *psContext, SDWORD *pIndex)
+static BOOL eventGetContextIndex(SCRIPT_CONTEXT *psContext, int32_t *pIndex)
 {
     SCRIPT_CONTEXT	*psCurr;
-    SDWORD			index;
+    int32_t			index;
 
     index = 0;
     for(psCurr=psContList; psCurr!= NULL; psCurr=psCurr->psNext)
@@ -430,7 +430,7 @@ static BOOL eventGetContextIndex(SCRIPT_CONTEXT *psContext, SDWORD *pIndex)
 }
 
 // find a context from it's id number
-static BOOL eventFindContext(SDWORD id, SCRIPT_CONTEXT **ppsContext)
+static BOOL eventFindContext(int32_t id, SCRIPT_CONTEXT **ppsContext)
 {
     SCRIPT_CONTEXT	*psCurr;
 
@@ -447,12 +447,12 @@ static BOOL eventFindContext(SDWORD id, SCRIPT_CONTEXT **ppsContext)
 }
 
 // save a list of triggers
-static BOOL eventSaveTriggerList(ACTIVE_TRIGGER *psList, char *pBuffer, UDWORD *pSize)
+static BOOL eventSaveTriggerList(ACTIVE_TRIGGER *psList, char *pBuffer, uint32_t *pSize)
 {
     ACTIVE_TRIGGER		*psCurr;
-    UDWORD				size;
+    uint32_t				size;
     char				*pPos;
-    SDWORD				numTriggers, context;
+    int32_t				numTriggers, context;
 
     size = 0;
     pPos = pBuffer;
@@ -460,9 +460,9 @@ static BOOL eventSaveTriggerList(ACTIVE_TRIGGER *psList, char *pBuffer, UDWORD *
     // reserve some space for the number of triggers
     if (pBuffer != NULL)
     {
-        pPos += sizeof(SDWORD);
+        pPos += sizeof(int32_t);
     }
-    size += sizeof(SDWORD);
+    size += sizeof(int32_t);
 
     numTriggers = 0;
     for(psCurr = psList; psCurr != NULL; psCurr = psCurr->psNext)
@@ -471,38 +471,38 @@ static BOOL eventSaveTriggerList(ACTIVE_TRIGGER *psList, char *pBuffer, UDWORD *
 
         if (pBuffer != NULL)
         {
-            *((UDWORD *)pPos) = psCurr->testTime;
-            endian_udword((UDWORD *)pPos);
+            *((uint32_t *)pPos) = psCurr->testTime;
+            endian_udword((uint32_t *)pPos);
 
-            pPos += sizeof(UDWORD);
+            pPos += sizeof(uint32_t);
             if (!eventGetContextIndex(psCurr->psContext, &context))
             {
                 debug( LOG_FATAL, "eventSaveTriggerList: couldn't find context" );
                 abort();
                 return false;
             }
-            *((SWORD *)pPos) = (SWORD)context;
-            endian_sword((SWORD *)pPos);
-            pPos += sizeof(SWORD);
-            *((SWORD *)pPos) = psCurr->type;
-            endian_sword((SWORD *)pPos);
-            pPos += sizeof(SWORD);
-            *((SWORD *)pPos) = psCurr->trigger;
-            endian_sword((SWORD *)pPos);
-            pPos += sizeof(SWORD);
-            *((UWORD *)pPos) = psCurr->event;
-            endian_uword((UWORD *)pPos);
-            pPos += sizeof(UWORD);
-            *((UWORD *)pPos) = psCurr->offset;
-            endian_uword((UWORD *)pPos);
-            pPos += sizeof(UWORD);
+            *((int16_t *)pPos) = (int16_t)context;
+            endian_sword((int16_t *)pPos);
+            pPos += sizeof(int16_t);
+            *((int16_t *)pPos) = psCurr->type;
+            endian_sword((int16_t *)pPos);
+            pPos += sizeof(int16_t);
+            *((int16_t *)pPos) = psCurr->trigger;
+            endian_sword((int16_t *)pPos);
+            pPos += sizeof(int16_t);
+            *((uint16_t *)pPos) = psCurr->event;
+            endian_uword((uint16_t *)pPos);
+            pPos += sizeof(uint16_t);
+            *((uint16_t *)pPos) = psCurr->offset;
+            endian_uword((uint16_t *)pPos);
+            pPos += sizeof(uint16_t);
         }
-        size += sizeof(UDWORD) + sizeof(SWORD)*3 + sizeof(UWORD)*2;
+        size += sizeof(uint32_t) + sizeof(int16_t)*3 + sizeof(uint16_t)*2;
     }
     if (pBuffer != NULL)
     {
-        *((SDWORD *)pBuffer) = numTriggers;
-        endian_sdword((SDWORD *)pBuffer);
+        *((int32_t *)pBuffer) = numTriggers;
+        endian_sdword((int32_t *)pBuffer);
     }
 
     *pSize = size;
@@ -512,31 +512,31 @@ static BOOL eventSaveTriggerList(ACTIVE_TRIGGER *psList, char *pBuffer, UDWORD *
 
 
 // load a list of triggers
-static BOOL eventLoadTriggerList(WZ_DECL_UNUSED const SDWORD version, char *pBuffer, UDWORD *pSize)
+static BOOL eventLoadTriggerList(WZ_DECL_UNUSED const int32_t version, char *pBuffer, uint32_t *pSize)
 {
-    UDWORD				size, event, offset, time;
+    uint32_t				size, event, offset, time;
     char				*pPos;
-    SDWORD				numTriggers, context, type, trigger, i;
+    int32_t				numTriggers, context, type, trigger, i;
     SCRIPT_CONTEXT		*psContext;
 
     size = 0;
     pPos = pBuffer;
 
     // get the number of triggers
-    endian_sdword((SDWORD *)pPos);
-    numTriggers = *((SDWORD *)pPos);
-    pPos += sizeof(SDWORD);
-    size += sizeof(SDWORD);
+    endian_sdword((int32_t *)pPos);
+    numTriggers = *((int32_t *)pPos);
+    pPos += sizeof(int32_t);
+    size += sizeof(int32_t);
 
     for(i=0; i<numTriggers; i+= 1)
     {
-        endian_udword((UDWORD *)pPos);
-        time = *((UDWORD *)pPos);
-        pPos += sizeof(UDWORD);
+        endian_udword((uint32_t *)pPos);
+        time = *((uint32_t *)pPos);
+        pPos += sizeof(uint32_t);
 
-        endian_sword((SWORD *)pPos);
-        context = *((SWORD *)pPos);
-        pPos += sizeof(SWORD);
+        endian_sword((int16_t *)pPos);
+        context = *((int16_t *)pPos);
+        pPos += sizeof(int16_t);
         if (!eventFindContext(context, &psContext))
         {
             debug( LOG_FATAL, "eventLoadTriggerList: couldn't find context" );
@@ -544,23 +544,23 @@ static BOOL eventLoadTriggerList(WZ_DECL_UNUSED const SDWORD version, char *pBuf
             return false;
         }
 
-        endian_sword((SWORD *)pPos);
-        type = *((SWORD *)pPos);
-        pPos += sizeof(SWORD);
+        endian_sword((int16_t *)pPos);
+        type = *((int16_t *)pPos);
+        pPos += sizeof(int16_t);
 
-        endian_sword((SWORD *)pPos);
-        trigger = *((SWORD *)pPos);
-        pPos += sizeof(SWORD);
+        endian_sword((int16_t *)pPos);
+        trigger = *((int16_t *)pPos);
+        pPos += sizeof(int16_t);
 
-        endian_uword((UWORD *)pPos);
-        event = *((UWORD *)pPos);
-        pPos += sizeof(UWORD);
+        endian_uword((uint16_t *)pPos);
+        event = *((uint16_t *)pPos);
+        pPos += sizeof(uint16_t);
 
-        endian_uword((UWORD *)pPos);
-        offset = *((UWORD *)pPos);
-        pPos += sizeof(UWORD);
+        endian_uword((uint16_t *)pPos);
+        offset = *((uint16_t *)pPos);
+        pPos += sizeof(uint16_t);
 
-        size += sizeof(UDWORD) + sizeof(SWORD)*3 + sizeof(UWORD)*2;
+        size += sizeof(uint32_t) + sizeof(int16_t)*3 + sizeof(uint16_t)*2;
 
         if (!eventLoadTrigger(time, psContext, type, trigger, event, offset))
         {
@@ -575,9 +575,9 @@ static BOOL eventLoadTriggerList(WZ_DECL_UNUSED const SDWORD version, char *pBuf
 
 
 // Save the state of the event system
-BOOL eventSaveState(SDWORD version, char **ppBuffer, UDWORD *pFileSize)
+BOOL eventSaveState(int32_t version, char **ppBuffer, uint32_t *pFileSize)
 {
-    UDWORD			size, totalSize;
+    uint32_t			size, totalSize;
     char			*pBuffer, *pPos;
     EVENT_SAVE_HDR	*psHdr;
 
@@ -658,9 +658,9 @@ BOOL eventSaveState(SDWORD version, char **ppBuffer, UDWORD *pFileSize)
 
 
 // Load the state of the event system
-BOOL eventLoadState(char *pBuffer, UDWORD fileSize, BOOL bHashed)
+BOOL eventLoadState(char *pBuffer, uint32_t fileSize, BOOL bHashed)
 {
-    UDWORD			size, totalSize, version;
+    uint32_t			size, totalSize, version;
     char			*pPos;
     EVENT_SAVE_HDR	*psHdr;
 

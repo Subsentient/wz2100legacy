@@ -30,18 +30,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // The number of world units per grid
 #define GRID_UNITS	(GRID_SIZE * TILE_UNITS)
 
-static UDWORD	gridWidth, gridHeight;
+static uint32_t	gridWidth, gridHeight;
 
 // The map grid
 static GRID_ARRAY	*apsMapGrid[GRID_MAXAREA];
 #define GridIndex(a,b) (((b)*gridWidth) + (a))
 
 // which grid to garbage collect on next
-static SDWORD		garbageX, garbageY;
+static int32_t		garbageX, garbageY;
 
 // the current state of the iterator
 static GRID_ARRAY	*psIterateGrid;
-static SDWORD		iterateEntry;
+static int32_t		iterateEntry;
 
 // what to do when calculating the coverage of an object
 typedef enum _coverage_mode
@@ -53,9 +53,9 @@ typedef enum _coverage_mode
 // Function prototypes
 static BOOL gridIntersect(const int x1, const int y1, const int x2, const int y2,
                           const int cx, const int cy, const int Rad);
-static void	gridAddArrayObject(SDWORD x, SDWORD y, BASE_OBJECT *psObj);
-static void	gridRemoveArrayObject(SDWORD x, SDWORD y, BASE_OBJECT *psObj);
-static void	gridCompactArray(SDWORD x, SDWORD y);
+static void	gridAddArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj);
+static void	gridRemoveArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj);
+static void	gridCompactArray(int32_t x, int32_t y);
 static int      gridObjRange(const BASE_OBJECT *psObj);
 
 // initialise the grid system
@@ -99,7 +99,7 @@ void gridReset(void)
     STRUCTURE	*psStruct;
     DROID		*psDroid;
     FEATURE		*psFeature;
-    UBYTE		inc;
+    uint8_t		inc;
 
     // Setup the grid dimensions.
     gridWidth = (mapWidth+GRID_SIZE-1) / GRID_SIZE;
@@ -138,9 +138,9 @@ void gridShutDown(void)
 
 // find the grid's that are covered by the object and either
 // add or remove the object
-static void gridCalcCoverage(BASE_OBJECT *psObj, SDWORD objx, SDWORD objy, COVERAGE_MODE mode)
+static void gridCalcCoverage(BASE_OBJECT *psObj, int32_t objx, int32_t objy, COVERAGE_MODE mode)
 {
-    SDWORD	range, x,y, minx,maxx, miny,maxy;
+    int32_t	range, x,y, minx,maxx, miny,maxy;
 
     range = gridObjRange(psObj);
 
@@ -190,12 +190,12 @@ void gridAddObject(BASE_OBJECT *psObj)
 {
     ASSERT_OR_RETURN(, psObj != NULL, "Attempted to add a NULL pointer");
     ASSERT_OR_RETURN(, !isDead(psObj), "Attempted to add dead object %s(%d) to the map grid!", objInfo(psObj), (int)psObj->id);
-    gridCalcCoverage(psObj, (SDWORD)psObj->pos.x, (SDWORD)psObj->pos.y, GRID_ADDOBJECT);
+    gridCalcCoverage(psObj, (int32_t)psObj->pos.x, (int32_t)psObj->pos.y, GRID_ADDOBJECT);
 }
 
 // move an object within the grid
 // oldX,oldY are the old position of the object in world coords
-void gridMoveDroid(DROID *psDroid, SDWORD oldX, SDWORD oldY)
+void gridMoveDroid(DROID *psDroid, int32_t oldX, int32_t oldY)
 {
     if (map_coord(psDroid->pos.x) == map_coord(oldX)
             && map_coord(psDroid->pos.y) == map_coord(oldY))
@@ -212,7 +212,7 @@ void gridMoveDroid(DROID *psDroid, SDWORD oldX, SDWORD oldY)
 // remove an object from the grid system
 void gridRemoveObject(BASE_OBJECT *psObj)
 {
-    gridCalcCoverage(psObj, (SDWORD)psObj->pos.x, (SDWORD)psObj->pos.y, GRID_REMOVEOBJECT);
+    gridCalcCoverage(psObj, (int32_t)psObj->pos.x, (int32_t)psObj->pos.y, GRID_REMOVEOBJECT);
 
 #if defined(DEBUG)
     {
@@ -243,7 +243,7 @@ void gridRemoveObject(BASE_OBJECT *psObj)
 
 // initialise the grid system to start iterating through units that
 // could affect a location (x,y in world coords)
-void gridStartIterate(SDWORD x, SDWORD y)
+void gridStartIterate(int32_t x, int32_t y)
 {
     const int nx = x / GRID_UNITS;
     const int ny = y / GRID_UNITS;
@@ -317,7 +317,7 @@ void gridGarbageCollect(void)
     // integrity check the array
     {
         GRID_ARRAY	*psCurr, *psCheck;
-        SDWORD		curr, check;
+        int32_t		curr, check;
         BASE_OBJECT	*psObj;
 
         check = 0;
@@ -362,10 +362,10 @@ void gridGarbageCollect(void)
 
 
 // add an object to a grid array
-static void gridAddArrayObject(SDWORD x, SDWORD y, BASE_OBJECT *psObj)
+static void gridAddArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj)
 {
     GRID_ARRAY		*psPrev, *psCurr, *psNew;
-    SDWORD			i;
+    int32_t			i;
 
     // see if there is an empty slot in the currently allocated array
     psPrev = NULL;
@@ -408,10 +408,10 @@ static void gridAddArrayObject(SDWORD x, SDWORD y, BASE_OBJECT *psObj)
 
 
 // remove an object from a grid array
-static void gridRemoveArrayObject(SDWORD x, SDWORD y, BASE_OBJECT *psObj)
+static void gridRemoveArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj)
 {
     GRID_ARRAY		*psCurr;
-    SDWORD			i;
+    int32_t			i;
 
     for (psCurr = apsMapGrid[GridIndex(x,y)]; psCurr; psCurr = psCurr->psNext)
     {
@@ -428,10 +428,10 @@ static void gridRemoveArrayObject(SDWORD x, SDWORD y, BASE_OBJECT *psObj)
 
 
 // Compact a grid array to remove any NULL objects
-static void gridCompactArray(SDWORD x, SDWORD y)
+static void gridCompactArray(int32_t x, int32_t y)
 {
     GRID_ARRAY		*psDone, *psMove, *psPrev, *psNext;
-    SDWORD			done, move;
+    int32_t			done, move;
 
     psDone = psMove = apsMapGrid[GridIndex(x,y)];
     done = move = 0;
@@ -593,7 +593,7 @@ static BOOL gridIntersect(const int x1, const int y1, const int x2, const int y2
 static int gridObjRange(WZ_DECL_UNUSED const BASE_OBJECT *psObj)
 {
 #if 0
-    SDWORD	range;
+    int32_t	range;
 
     switch (psObj->type)
     {

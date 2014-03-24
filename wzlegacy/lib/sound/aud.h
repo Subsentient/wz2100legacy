@@ -27,10 +27,10 @@ extern "C"
 {
 #endif
 
-    void	audio_GetObjectPos( void *psObj, SDWORD *piX, SDWORD *piY,
-                                SDWORD *piZ );
-    void	audio_GetStaticPos( SDWORD iWorldX, SDWORD iWorldY,
-                                SDWORD *piX, SDWORD *piY, SDWORD *piZ );
+    void	audio_GetObjectPos( void *psObj, int32_t *piX, int32_t *piY,
+                                int32_t *piZ );
+    void	audio_GetStaticPos( int32_t iWorldX, int32_t iWorldY,
+                                int32_t *piX, int32_t *piY, int32_t *piZ );
     BOOL	audio_ObjectDead( void *psObj );
     Vector3f audio_GetPlayerPos(void);
     void audio_Get3DPlayerRotAboutVerticalAxis(float *angle);

@@ -53,7 +53,7 @@ static const float VIS_LEVEL_DEC = 50;
 static float			visLevelIncAcc, visLevelDecAcc;
 
 // integer amount to change visiblility this turn
-static SDWORD			visLevelInc, visLevelDec;
+static int32_t			visLevelInc, visLevelDec;
 
 // horrible hack because this code is full of them and I ain't rewriting it all - Per
 #define MAX_SEEN_TILES 1024
@@ -79,15 +79,15 @@ Vector2i *gWall = NULL;
 
 
 /* Variables for the visibility callback / visTilesUpdate */
-static SDWORD		rayPlayer;				// The player the ray is being cast for
-static SDWORD		startH;					// The height at the view point
-static SDWORD		currG;					// The current obscuring gradient
+static int32_t		rayPlayer;				// The player the ray is being cast for
+static int32_t		startH;					// The height at the view point
+static int32_t		currG;					// The current obscuring gradient
 
 // holds information about map tiles visible by droids
-static bool	scrTileVisible[MAX_PLAYERS][UBYTE_MAX][UBYTE_MAX] = {{{false}}};
+static bool	scrTileVisible[MAX_PLAYERS][uint8_t_MAX][uint8_t_MAX] = {{{false}}};
 
-bool scrTileIsVisible(SDWORD player, SDWORD x, SDWORD y);
-void scrResetPlayerTileVisibility(SDWORD player);
+bool scrTileIsVisible(int32_t player, int32_t x, int32_t y);
+void scrResetPlayerTileVisibility(int32_t player);
 
 // initialise the visibility stuff
 BOOL visInitialise(void)
@@ -136,7 +136,7 @@ static inline void visMarkTile(int mapX, int mapY, MAPTILE *psTile)
     bool alreadySeen = false;
     int i;
 
-    if (psTile->watchers[rayPlayer] < UBYTE_MAX && lastRecordTilePos < MAX_SEEN_TILES)
+    if (psTile->watchers[rayPlayer] < uint8_t_MAX && lastRecordTilePos < MAX_SEEN_TILES)
     {
         for (i = 0; i < lastRecordTilePos; i++)
         {
@@ -250,7 +250,7 @@ static bool rayLOSCallback(Vector3i pos, int distSq, void *data)
             MAPTILE *psTile = mapTile(tile.x, tile.y);
             if (TileHasWall(psTile) && !TileHasSmallStructure(psTile))
             {
-                help->lastHeight = 2*UBYTE_MAX * ELEVATION_SCALE;
+                help->lastHeight = 2*uint8_t_MAX * ELEVATION_SCALE;
                 help->wall = Vector2i_Init(pos.x, pos.y);
                 help->numWalls++;
             }
@@ -336,7 +336,7 @@ void visTilesUpdate(BASE_OBJECT *psObj, RAY_CALLBACK callback)
 
         // initialise the callback variables
         startH = psObj->pos.z + visObjHeight(psObj);
-        currG = -UBYTE_MAX * GRAD_MUL;
+        currG = -uint8_t_MAX * GRAD_MUL;
 
         // Cast the rays from the viewer
         rayCast(pos, dir, range, callback, NULL);
@@ -417,7 +417,7 @@ bool visibleObject(const BASE_OBJECT *psViewer, const BASE_OBJECT *psTarget, boo
                         && (cbSensorDroid(psDroid) || objRadarDetector((BASE_OBJECT *)psDroid)))
                 {
                     // if it is targetted by a counter battery sensor, it is seen
-                    return UBYTE_MAX;
+                    return uint8_t_MAX;
                 }
                 break;
             }
@@ -485,7 +485,7 @@ bool visibleObject(const BASE_OBJECT *psViewer, const BASE_OBJECT *psTarget, boo
 
     {
         // initialise the callback variables
-        VisibleObjectHelp_t help = { true, wallsBlock, distSq, pos.z + visObjHeight(psViewer), { map_coord(dest.x), map_coord(dest.y) }, 0, 0, -UBYTE_MAX *GRAD_MUL * ELEVATION_SCALE, 0, { 0, 0 } };
+        VisibleObjectHelp_t help = { true, wallsBlock, distSq, pos.z + visObjHeight(psViewer), { map_coord(dest.x), map_coord(dest.y) }, 0, 0, -uint8_t_MAX *GRAD_MUL * ELEVATION_SCALE, 0, { 0, 0 } };
         int targetGrad, top;
 
         // Cast a ray from the viewer to the target
@@ -549,7 +549,7 @@ STRUCTURE *visGetBlockingWall(const BASE_OBJECT *psViewer, const BASE_OBJECT *ps
 void processVisibility(BASE_OBJECT *psObj)
 {
     BOOL		prevVis[MAX_PLAYERS], currVis[MAX_PLAYERS];
-    SDWORD		visLevel;
+    int32_t		visLevel;
     BASE_OBJECT	*psViewer;
     MESSAGE		*psMessage;
     unsigned int player;
@@ -650,11 +650,11 @@ void processVisibility(BASE_OBJECT *psObj)
         if (player == psObj->player)
         {
             // owner can always see it fully
-            psObj->visible[player] = UBYTE_MAX;
+            psObj->visible[player] = uint8_t_MAX;
             continue;
         }
 
-        visLevel = (currVis[player] ? UBYTE_MAX : 0);
+        visLevel = (currVis[player] ? uint8_t_MAX : 0);
 
         // Droids can vanish from view, other objects will stay
         if ( (visLevel < psObj->visible[player]) &&
@@ -671,9 +671,9 @@ void processVisibility(BASE_OBJECT *psObj)
         }
         else if (visLevel > psObj->visible[player])
         {
-            if (psObj->visible[player] + visLevelInc >= UBYTE_MAX)
+            if (psObj->visible[player] + visLevelInc >= uint8_t_MAX)
             {
-                psObj->visible[player] = UBYTE_MAX;
+                psObj->visible[player] = uint8_t_MAX;
             }
             else
             {
@@ -738,10 +738,10 @@ void processVisibility(BASE_OBJECT *psObj)
     }
 }
 
-void	setUnderTilesVis(BASE_OBJECT *psObj,UDWORD player)
+void	setUnderTilesVis(BASE_OBJECT *psObj,uint32_t player)
 {
-    UDWORD		i,j;
-    UDWORD		mapX, mapY, width,breadth;
+    uint32_t		i,j;
+    uint32_t		mapX, mapY, width,breadth;
     FEATURE		*psFeature;
     STRUCTURE	*psStructure;
     FEATURE_STATS	*psStats;
@@ -820,7 +820,7 @@ bool scrRayTerrainCallback(Vector3i pos, int distSq, void *data)
     return true;
 }
 
-void scrResetPlayerTileVisibility(SDWORD player)
+void scrResetPlayerTileVisibility(int32_t player)
 {
     int	x,y;
 
@@ -834,9 +834,9 @@ void scrResetPlayerTileVisibility(SDWORD player)
     }
 }
 
-bool scrTileIsVisible(SDWORD player, SDWORD x, SDWORD y)
+bool scrTileIsVisible(int32_t player, int32_t x, int32_t y)
 {
-    ASSERT(x >= 0 && y >= 0 && x < UBYTE_MAX && y < UBYTE_MAX,
+    ASSERT(x >= 0 && y >= 0 && x < uint8_t_MAX && y < uint8_t_MAX,
            "invalid tile coordinates");
 
     return scrTileVisible[player][x][y];
@@ -872,7 +872,7 @@ bool lineOfFire(const BASE_OBJECT *psViewer, const BASE_OBJECT *psTarget, bool w
 
     // initialise the callback variables
     {
-        VisibleObjectHelp_t help = { true, wallsBlock, distSq, pos.z + visObjHeight(psViewer), { map_coord(dest.x), map_coord(dest.y) }, 0, 0, -UBYTE_MAX *GRAD_MUL * ELEVATION_SCALE, 0, { 0, 0 } };
+        VisibleObjectHelp_t help = { true, wallsBlock, distSq, pos.z + visObjHeight(psViewer), { map_coord(dest.x), map_coord(dest.y) }, 0, 0, -uint8_t_MAX *GRAD_MUL * ELEVATION_SCALE, 0, { 0, 0 } };
         int targetGrad, top;
 
         // Cast a ray from the viewer to the target

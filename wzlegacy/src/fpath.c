@@ -52,7 +52,7 @@ static volatile bool fpathQuit = false;
 
 typedef struct _jobDone
 {
-    UDWORD		droidID;	///< Unique droid ID.
+    uint32_t		droidID;	///< Unique droid ID.
     MOVE_CONTROL	sMove;		///< New movement values for the droid.
     struct _jobDone	*next;		///< Next result in the list.
     FPATH_RETVAL	retval;		///< Result value from path-finding.
@@ -235,7 +235,7 @@ void fpathUpdate(void)
 
 
 // Check if the map tile at a location blocks a droid
-BOOL fpathBaseBlockingTile(SDWORD x, SDWORD y, PROPULSION_TYPE propulsion, int player, FPATH_MOVETYPE moveType)
+BOOL fpathBaseBlockingTile(int32_t x, int32_t y, PROPULSION_TYPE propulsion, int player, FPATH_MOVETYPE moveType)
 {
     MAPTILE	*psTile;
 
@@ -294,7 +294,7 @@ BOOL fpathBaseBlockingTile(SDWORD x, SDWORD y, PROPULSION_TYPE propulsion, int p
 }
 
 // Check if the map tile at a location blocks a droid
-BOOL fpathBlockingTile(SDWORD x, SDWORD y, PROPULSION_TYPE propulsion)
+BOOL fpathBlockingTile(int32_t x, int32_t y, PROPULSION_TYPE propulsion)
 {
     return fpathBaseBlockingTile(x, y, propulsion, MAX_PLAYERS, FMT_MOVE);
 }
@@ -318,7 +318,7 @@ static inline int fpathDistToTile(int tileX, int tileY, int pointX, int pointY)
 }
 
 
-static void fpathSetMove(MOVE_CONTROL *psMoveCntl, SDWORD targetX, SDWORD targetY)
+static void fpathSetMove(MOVE_CONTROL *psMoveCntl, int32_t targetX, int32_t targetY)
 {
     psMoveCntl->asPath = realloc(psMoveCntl->asPath, sizeof(*psMoveCntl->asPath));
     psMoveCntl->DestinationX = targetX;
@@ -329,7 +329,7 @@ static void fpathSetMove(MOVE_CONTROL *psMoveCntl, SDWORD targetX, SDWORD target
 }
 
 
-void fpathSetDirectRoute(DROID *psDroid, SDWORD targetX, SDWORD targetY)
+void fpathSetDirectRoute(DROID *psDroid, int32_t targetX, int32_t targetY)
 {
     fpathSetMove(&psDroid->sMove, targetX, targetY);
 }
@@ -522,7 +522,7 @@ static FPATH_RETVAL fpathRoute(MOVE_CONTROL *psMove, int id, int startX, int sta
 
 
 // Find a route for an DROID to a location in world coordinates
-FPATH_RETVAL fpathDroidRoute(DROID *psDroid, SDWORD tX, SDWORD tY)
+FPATH_RETVAL fpathDroidRoute(DROID *psDroid, int32_t tX, int32_t tY)
 {
     PROPULSION_STATS	*psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
     FPATH_MOVETYPE		moveType = isHumanPlayer(psDroid->player) ? FMT_MOVE : FMT_ATTACK;
@@ -540,7 +540,7 @@ FPATH_RETVAL fpathDroidRoute(DROID *psDroid, SDWORD tX, SDWORD tY)
     if (psDroid->sMove.Status != MOVEWAITROUTE && fpathBlockingTile(map_coord(tX), map_coord(tY), psPropStats->propulsionType))
     {
         // find the nearest non blocking tile to the DROID
-        int minDist = SDWORD_MAX;
+        int minDist = int32_t_MAX;
         int nearestDir = NUM_DIR;
         int dir;
 

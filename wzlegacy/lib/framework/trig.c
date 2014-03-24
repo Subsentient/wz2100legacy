@@ -84,7 +84,7 @@ float trigCos(int angle)
 
 float trigInvSin(float val)
 {
-    SDWORD index = (val+1) * (TRIG_ACCURACY-1) / 2;
+    int32_t index = (val+1) * (TRIG_ACCURACY-1) / 2;
 
     return aInvSin[index & TRIG_ACCMASK];
 }
@@ -92,7 +92,7 @@ float trigInvSin(float val)
 
 float trigInvCos(float val)
 {
-    SDWORD index = (val+1) * (TRIG_ACCURACY-1) / 2;
+    int32_t index = (val+1) * (TRIG_ACCURACY-1) / 2;
 
     return aInvCos[index & TRIG_ACCMASK];
 }

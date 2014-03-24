@@ -113,14 +113,14 @@ void actionSanity(DROID *psDroid);
 extern void actionDroid(DROID *psDroid, DROID_ACTION action);
 
 /** Give a droid an action with a location target. */
-extern void actionDroidLoc(DROID *psDroid, DROID_ACTION action, UDWORD x, UDWORD y);
+extern void actionDroidLoc(DROID *psDroid, DROID_ACTION action, uint32_t x, uint32_t y);
 
 /** Give a droid an action with an object target. */
 extern void actionDroidObj(DROID *psDroid, DROID_ACTION action, BASE_OBJECT *psObj);
 
 /** Give a droid an action with an object target and a location. */
 void actionDroidObjLoc(DROID *psDroid, DROID_ACTION action,
-                       BASE_OBJECT *psObj, UDWORD x, UDWORD y);
+                       BASE_OBJECT *psObj, uint32_t x, uint32_t y);
 
 /** Rotate turret toward  target return True if locked on (Droid and Structure). */
 BOOL actionTargetTurret(BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, WEAPON *psWeapon);
@@ -141,10 +141,10 @@ extern BOOL actionInsideMinRange(DROID *psDroid, BASE_OBJECT *psObj, WEAPON_STAT
 BOOL actionVisibleTarget(DROID *psDroid, BASE_OBJECT *psTarget, int weapon_slot);
 
 /** Check whether a droid is in the neighboring tile to a build position. */
-BOOL actionReachedBuildPos(DROID *psDroid, SDWORD x, SDWORD y, BASE_STATS *psStats);
+BOOL actionReachedBuildPos(DROID *psDroid, int32_t x, int32_t y, BASE_STATS *psStats);
 
 /** Check if a droid is on the foundations of a new building. */
-BOOL actionDroidOnBuildPos(DROID *psDroid, SDWORD x, SDWORD y, BASE_STATS *psStats);
+BOOL actionDroidOnBuildPos(DROID *psDroid, int32_t x, int32_t y, BASE_STATS *psStats);
 
 /** Send the vtol droid back to the nearest rearming pad - if there is one, otherwise return to base. */
 extern void moveToRearm(DROID *psDroid);
@@ -168,10 +168,10 @@ typedef bool (*tileMatchFunction)(int x, int y, void *matchState);
 bool spiralSearch(int startX, int startY, int max_radius, tileMatchFunction match, void *matchState);
 
 /** Choose a landing position for a VTOL when it goes to rearm. */
-bool actionVTOLLandingPos(const DROID *psDroid, UDWORD *px, UDWORD *py);
+bool actionVTOLLandingPos(const DROID *psDroid, uint32_t *px, uint32_t *py);
 
 /** Try to find a better target. */
-extern BOOL updateAttackTarget(BASE_OBJECT *psAttacker, SDWORD weapon_slot);
+extern BOOL updateAttackTarget(BASE_OBJECT *psAttacker, int32_t weapon_slot);
 
 /** How many frames to skip before updating naybors. */
 #define NAYBOR_SKIP_FRAMES 8

@@ -46,7 +46,7 @@ typedef struct _keyMapping
     void (*function)(void);
     BOOL		active;
     KEY_STATUS	status;
-    UDWORD		lastCalled;
+    uint32_t		lastCalled;
     KEY_CODE	metaKeyCode;
     KEY_CODE	altMetaKeyCode;
     KEY_CODE	subKeyCode;
@@ -64,7 +64,7 @@ extern KEY_MAPPING *keyFindMapping	( KEY_CODE metaCode, KEY_CODE subCode );
 extern void	keyClearMappings		( void );
 extern void	keyProcessMappings		( BOOL bExclude );
 extern void	keyInitMappings			( BOOL bForceDefaults );
-extern UDWORD	getNumMappings		( void );
+extern uint32_t	getNumMappings		( void );
 extern KEY_CODE	getLastSubKey		( void );
 extern KEY_CODE	getLastMetaKey		( void );
 extern KEY_MAPPING	*getLastMapping	( void );
@@ -84,9 +84,9 @@ extern	KEY_MAPPING	*getKeyMapFromName(char *pName);
 
 extern KEY_CODE	getQwertyKey		( void );
 
-extern UDWORD	getMarkerX				( KEY_CODE code );
-extern UDWORD	getMarkerY				( KEY_CODE code );
-extern SDWORD	getMarkerSpin			( KEY_CODE code );
+extern uint32_t	getMarkerX				( KEY_CODE code );
+extern uint32_t	getMarkerY				( KEY_CODE code );
+extern int32_t	getMarkerSpin			( KEY_CODE code );
 
 // for keymap editor.
 typedef void (*_keymapsave)(void);

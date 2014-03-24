@@ -42,7 +42,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "visibility.h"
 
 #ifdef DEBUG
-static SDWORD factoryDeliveryPointCheck[MAX_PLAYERS][NUM_FLAG_TYPES][MAX_FACTORY];
+static int32_t factoryDeliveryPointCheck[MAX_PLAYERS][NUM_FLAG_TYPES][MAX_FACTORY];
 #endif
 
 // the initial value for the object ID
@@ -51,7 +51,7 @@ static SDWORD factoryDeliveryPointCheck[MAX_PLAYERS][NUM_FLAG_TYPES][MAX_FACTORY
 /* The id number for the next object allocated
  * Each object will have a unique id number irrespective of type
  */
-UDWORD	objID;
+uint32_t	objID;
 
 /* The lists of objects allocated */
 DROID			*apsDroidLists[MAX_PLAYERS];
@@ -201,7 +201,7 @@ void objmemUpdate(void)
 
 /* Creating a new object
  */
-static inline BASE_OBJECT *createObject(UDWORD player, OBJECT_TYPE objType)
+static inline BASE_OBJECT *createObject(uint32_t player, OBJECT_TYPE objType)
 {
     BASE_OBJECT *newObject;
 
@@ -235,7 +235,7 @@ static inline BASE_OBJECT *createObject(UDWORD player, OBJECT_TYPE objType)
     newObject->type = objType;
     newObject->id = (objID << 3) | player;
     objID++;
-    newObject->player = (UBYTE)player;
+    newObject->player = (uint8_t)player;
     newObject->died = 0;
     newObject->psNextFunc = NULL;
     newObject->numWatchedTiles = 0;
@@ -376,7 +376,7 @@ static inline void removeObjectFromFuncList(BASE_OBJECT *list[], BASE_OBJECT *ob
     object->psNextFunc = NULL;
 }
 
-static inline BASE_OBJECT *findObjectInList(BASE_OBJECT list[], UDWORD idNum)
+static inline BASE_OBJECT *findObjectInList(BASE_OBJECT list[], uint32_t idNum)
 {
     BASE_OBJECT *psCurr;
     for(psCurr = list; psCurr != NULL; psCurr = psCurr->psNext)
@@ -395,7 +395,7 @@ typedef void (*OBJECT_DESTRUCTOR)(BASE_OBJECT *);
 
 static inline void releaseAllObjectsInList(BASE_OBJECT *list[], OBJECT_DESTRUCTOR objectDestructor)
 {
-    UDWORD i;
+    uint32_t i;
     BASE_OBJECT *psCurr, *psNext;
 
     // Iterate through all players' object lists
@@ -427,7 +427,7 @@ static inline void releaseAllObjectsInList(BASE_OBJECT *list[], OBJECT_DESTRUCTO
 /***************************  DROID  *********************************/
 
 /* Create a new droid */
-DROID *createDroid(UDWORD player)
+DROID *createDroid(uint32_t player)
 {
     return (DROID *)createObject(player, OBJ_DROID);
 }
@@ -542,7 +542,7 @@ void freeAllLimboDroids(void)
 /**************************  STRUCTURE  *******************************/
 
 /* Create a new structure */
-STRUCTURE *createStruct(UDWORD player)
+STRUCTURE *createStruct(uint32_t player)
 {
     return (STRUCTURE *)createObject(player, OBJ_STRUCTURE);
 }
@@ -668,7 +668,7 @@ void freeAllFeatures(void)
 /**************************  FLAG_POSITION ********************************/
 
 /* Create a new Flag Position */
-BOOL createFlagPosition(FLAG_POSITION **ppsNew, UDWORD player)
+BOOL createFlagPosition(FLAG_POSITION **ppsNew, uint32_t player)
 {
     ASSERT_OR_RETURN(false, player<MAX_PLAYERS, "invalid player number");
 
@@ -730,7 +730,7 @@ void removeFlagPosition(FLAG_POSITION *psDel)
 void freeAllFlagPositions(void)
 {
     FLAG_POSITION	*psNext;
-    SDWORD			player;
+    int32_t			player;
 
     for(player=0; player<MAX_PLAYERS; player++)
     {
@@ -749,7 +749,7 @@ void freeAllFlagPositions(void)
 void checkFactoryFlags(void)
 {
     FLAG_POSITION	*psFlag;
-    SDWORD			player, type, factory;
+    int32_t			player, type, factory;
 
     //clear the check array
     for(player=0; player<MAX_PLAYERS; player++)
@@ -788,10 +788,10 @@ void checkFactoryFlags(void)
 /**************************  OBJECT ACCESS FUNCTIONALITY ********************************/
 
 // Find a base object from it's id
-BASE_OBJECT *getBaseObjFromId(UDWORD id)
+BASE_OBJECT *getBaseObjFromId(uint32_t id)
 {
     unsigned int i;
-    UDWORD			player;
+    uint32_t			player;
     BASE_OBJECT		*psObj;
     DROID			*psTrans;
 
@@ -872,10 +872,10 @@ BASE_OBJECT *getBaseObjFromId(UDWORD id)
     return NULL;
 }
 
-UDWORD getRepairIdFromFlag(FLAG_POSITION *psFlag)
+uint32_t getRepairIdFromFlag(FLAG_POSITION *psFlag)
 {
     unsigned int i;
-    UDWORD			player;
+    uint32_t			player;
     STRUCTURE		*psObj;
     REPAIR_FACILITY	*psRepair;
 
@@ -917,12 +917,12 @@ UDWORD getRepairIdFromFlag(FLAG_POSITION *psFlag)
     }
     ASSERT(!"unable to find repair id for FLAG_POSITION", "getRepairIdFromFlag() failed");
 
-    return UDWORD_MAX;
+    return uint32_t_MAX;
 }
 
 
 // check a base object exists for an ID
-BOOL checkValidId(UDWORD id)
+BOOL checkValidId(uint32_t id)
 {
     return getBaseObjFromId(id) != NULL;
 }
@@ -932,7 +932,7 @@ BOOL checkValidId(UDWORD id)
 #ifdef DEBUG
 static void objListIntegCheck(void)
 {
-    SDWORD			player;
+    int32_t			player;
     BASE_OBJECT		*psCurr;
 
     for(player = 0; player <MAX_PLAYERS; player += 1)
@@ -940,7 +940,7 @@ static void objListIntegCheck(void)
         for(psCurr = (BASE_OBJECT *)apsDroidLists[player]; psCurr; psCurr=psCurr->psNext)
         {
             ASSERT( psCurr->type == OBJ_DROID &&
-                    (SDWORD)psCurr->player == player,
+                    (int32_t)psCurr->player == player,
                     "misplaced object in the droid list for player %d",
                     player );
         }
@@ -950,7 +950,7 @@ static void objListIntegCheck(void)
         for(psCurr = (BASE_OBJECT *)apsStructLists[player]; psCurr; psCurr=psCurr->psNext)
         {
             ASSERT( psCurr->type == OBJ_STRUCTURE &&
-                    (SDWORD)psCurr->player == player,
+                    (int32_t)psCurr->player == player,
                     "objListIntegCheck: misplaced %s(%p) in the structure list for player %d, is owned by %d",
                     objInfo(psCurr), psCurr, player, (int)psCurr->player);
         }

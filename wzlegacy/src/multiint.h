@@ -28,7 +28,7 @@ extern void setLobbyError(LOBBY_ERROR_TYPES error_type);
 
 extern	void	runConnectionScreen		(void);
 extern	BOOL	startConnectionScreen	(void);
-extern	void	intProcessConnection	(UDWORD id);
+extern	void	intProcessConnection	(uint32_t id);
 
 extern	void	runGameFind				(void);
 extern	void	startGameFind			(void);
@@ -39,12 +39,12 @@ extern	void	runMultiOptions			(void);
 extern	BOOL	startMultiOptions		(BOOL bReenter);
 extern	void	frontendMultiMessages	(void);
 
-extern BOOL addMultiBut(W_SCREEN *screen, UDWORD formid, UDWORD id, UDWORD x, UDWORD y, UDWORD width, UDWORD height, const char *tipres, UDWORD norm, UDWORD down, UDWORD hi);
+extern BOOL addMultiBut(W_SCREEN *screen, uint32_t formid, uint32_t id, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const char *tipres, uint32_t norm, uint32_t down, uint32_t hi);
 
 extern	char	sPlayer[128];
 
 void	kickPlayer(uint32_t player_id, const char *reason, LOBBY_ERROR_TYPES type);
-UDWORD	addPlayerBox(BOOL);			// players (mid) box
+uint32_t	addPlayerBox(BOOL);			// players (mid) box
 void loadMapPreview(bool hideInterface);
 
 
@@ -64,7 +64,7 @@ void loadMapPreview(bool hideInterface);
 #define CON_SETTINGSWIDTH	200
 #define CON_SETTINGSHEIGHT	100
 
-#define CON_PASSWORD_LABEL	10132
+#define CON_PASint16_t_LABEL	10132
 
 #define CON_OK				10101
 #define CON_OKX				CON_SETTINGSWIDTH-MULTIOP_OKW*2-13
@@ -83,15 +83,15 @@ void loadMapPreview(bool hideInterface);
 #define CON_IP_CANCEL		10134
 
 //for clients
-#define CON_PASSWORD		10139
-#define CON_PASSWORDX		20
-#define CON_PASSWORDY		110
-#define CON_PASSWORDYES		10141
-#define CON_PASSWORDNO		10142
+#define CON_PASint16_t		10139
+#define CON_PASint16_tX		20
+#define CON_PASint16_tY		110
+#define CON_PASint16_tYES		10141
+#define CON_PASint16_tNO		10142
 // for hosts
-#define CON_H_PASSWORD		10140
-#define CON_H_PASSWORDX		MCOL2
-#define CON_H_PASSWORDY		MROW10 +31
+#define CON_H_PASint16_t		10140
+#define CON_H_PASint16_tX		MCOL2
+#define CON_H_PASint16_tY		MROW10 +31
 
 
 
@@ -288,9 +288,9 @@ void loadMapPreview(bool hideInterface);
 #define MULTIOP_MAP_PREVIEW 920000
 #define MULTIOP_MAP_BUT		920002
 
-#define MULTIOP_PASSWORD	920010
-#define MULTIOP_PASSWORD_BUT 920012
-#define MULTIOP_PASSWORD_EDIT 920013
+#define MULTIOP_PASint16_t	920010
+#define MULTIOP_PASint16_t_BUT 920012
+#define MULTIOP_PASint16_t_EDIT 920013
 
 #define MULTIOP_NO_SOMETHING            10331  // Up to 10340 reserved for future use.
 #define MULTIOP_NO_SOMETHINGX           3

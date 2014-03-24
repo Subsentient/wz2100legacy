@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//** \f
 
 typedef struct
 {
-    SDWORD a, b, c,  d, e, f,  g, h, i,  j, k, l;
+    int32_t a, b, c,  d, e, f,  g, h, i,  j, k, l;
 } SDMATRIX;
 static SDMATRIX	aMatrixStack[MATRIX_MAX];
 static SDMATRIX *psMatrix = &aMatrixStack[0];
@@ -46,11 +46,11 @@ BOOL drawing_interface = true;
 
 // We use FP12_MULTIPLIER => This matrix should be float instead
 static SDMATRIX _MATRIX_ID = {FP12_MULTIPLIER, 0, 0, 0, FP12_MULTIPLIER, 0, 0, 0, FP12_MULTIPLIER, 0L, 0L, 0L};
-static SDWORD _MATRIX_INDEX;
+static int32_t _MATRIX_INDEX;
 
 //*************************************************************************
 
-SDWORD aSinTable[SC_TABLESIZE + (SC_TABLESIZE/4)];
+int32_t aSinTable[SC_TABLESIZE + (SC_TABLESIZE/4)];
 
 //*************************************************************************
 //*** reset transformation matrix stack and make current identity
@@ -131,7 +131,7 @@ void pie_TRANSLATE(int x, int y, int z)
 //******
 void pie_MatScale( unsigned int percent )
 {
-    SDWORD scaleFactor = percent * ONE_PERCENT;
+    int32_t scaleFactor = percent * ONE_PERCENT;
 
     if (percent == 100)
     {

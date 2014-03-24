@@ -25,17 +25,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 	Pumpkin Studios, EIDOS Interactive.
 */
 
-extern UBYTE PlayerColour[MAX_PLAYERS];
+extern uint8_t PlayerColour[MAX_PLAYERS];
 extern void initPlayerColours(void);
-extern BOOL setPlayerColour(UDWORD player, UDWORD col);
-extern UBYTE getPlayerColour(UDWORD pl);
+extern BOOL setPlayerColour(uint32_t player, uint32_t col);
+extern uint8_t getPlayerColour(uint32_t pl);
 
-extern UDWORD getComponentDroidRadius(DROID *psDroid);
-extern UDWORD getComponentDroidTemplateRadius(DROID_TEMPLATE *psDroid);
-extern UDWORD getComponentRadius(BASE_STATS *psComponent);
-extern UDWORD getResearchRadius(BASE_STATS *Stat);
-extern UDWORD getStructureSize(STRUCTURE *psStructure);
-extern UDWORD getStructureStatSize(STRUCTURE_STATS *Stats);
+extern uint32_t getComponentDroidRadius(DROID *psDroid);
+extern uint32_t getComponentDroidTemplateRadius(DROID_TEMPLATE *psDroid);
+extern uint32_t getComponentRadius(BASE_STATS *psComponent);
+extern uint32_t getResearchRadius(BASE_STATS *Stat);
+extern uint32_t getStructureSize(STRUCTURE *psStructure);
+extern uint32_t getStructureStatSize(STRUCTURE_STATS *Stats);
 
 #define OBJECT_RADIUS				(128)
 #define COMPONENT_RADIUS			(64)
@@ -49,15 +49,15 @@ extern UDWORD getStructureStatSize(STRUCTURE_STATS *Stats);
 #define LARGE_STRUCT_SCALE			(25)
 
 #define TOWER_HEIGHT    100
-extern UDWORD getStructureStatHeight(STRUCTURE_STATS *psStat);
+extern uint32_t getStructureStatHeight(STRUCTURE_STATS *psStat);
 
-extern void displayIMDButton(iIMDShape *IMDShape, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale);
-extern void displayStructureButton(STRUCTURE *psStructure, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale);
-extern void displayStructureStatButton(STRUCTURE_STATS *Stats, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale);
-extern void displayComponentButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale);
-extern void displayResearchButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale);
-extern void displayComponentButtonTemplate(DROID_TEMPLATE *psTemplate, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale);
-extern void displayComponentButtonObject(DROID *psDroid, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale);
+extern void displayIMDButton(iIMDShape *IMDShape, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale);
+extern void displayStructureButton(STRUCTURE *psStructure, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale);
+extern void displayStructureStatButton(STRUCTURE_STATS *Stats, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale);
+extern void displayComponentButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale);
+extern void displayResearchButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale);
+extern void displayComponentButtonTemplate(DROID_TEMPLATE *psTemplate, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale);
+extern void displayComponentButtonObject(DROID *psDroid, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale);
 extern void	displayComponentObject(BASE_OBJECT *psObj);
 
 extern void	compPersonToBits(DROID *psDroid);
@@ -97,7 +97,7 @@ extern void	compPersonToBits(DROID *psDroid);
 
 /* Don't know what these might be? */
 extern void	updateLightLevels(void);
-extern SDWORD	rescaleButtonObject(SDWORD radius, SDWORD baseScale,SDWORD baseRadius);
+extern int32_t	rescaleButtonObject(int32_t radius, int32_t baseScale,int32_t baseRadius);
 
 extern void	destroyFXDroid(DROID	*psDroid);
 

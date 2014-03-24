@@ -25,18 +25,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 /***************************************************************************/
 
-static UDWORD HashTest(intptr_t iKey1, intptr_t iKey2)
+static uint32_t HashTest(intptr_t iKey1, intptr_t iKey2)
 {
-    return (UDWORD) iKey1 + iKey2;
+    return (uint32_t) iKey1 + iKey2;
 }
 
 /***************************************************************************/
 
 BOOL
-hashTable_Create( HASHTABLE **ppsTable, UDWORD udwTableSize,
-                  UDWORD udwInitElements, UDWORD udwExtElements, UDWORD udwElementSize )
+hashTable_Create( HASHTABLE **ppsTable, uint32_t udwTableSize,
+                  uint32_t udwInitElements, uint32_t udwExtElements, uint32_t udwElementSize )
 {
-    UDWORD			udwSize;
+    uint32_t			udwSize;
 
     /* allocate and init table */
 
@@ -87,7 +87,7 @@ void
 hashTable_Clear( HASHTABLE *psTable )
 {
     HASHNODE	*psNode, *psNodeTmp;
-    UDWORD		i;
+    uint32_t		i;
 
     ASSERT( psTable != NULL,
             "hashTable_Destroy: table pointer invalid\n" );
@@ -176,7 +176,7 @@ hashTable_GetElement( HASHTABLE *psTable )
 
 /***************************************************************************/
 
-static UDWORD hashTable_GetHashKey(HASHTABLE *psTable, intptr_t iKey1, intptr_t iKey2)
+static uint32_t hashTable_GetHashKey(HASHTABLE *psTable, intptr_t iKey1, intptr_t iKey2)
 {
     ASSERT( psTable != NULL,
             "hashTable_GetFirst: hash table pointer invalid\n" );
@@ -189,7 +189,7 @@ static UDWORD hashTable_GetHashKey(HASHTABLE *psTable, intptr_t iKey1, intptr_t 
 
 void hashTable_InsertElement(HASHTABLE *psTable, void *psElement, intptr_t iKey1, intptr_t iKey2)
 {
-    UDWORD		udwHashIndex;
+    uint32_t		udwHashIndex;
     HASHNODE	*psNode;
 
     ASSERT( psTable != NULL,
@@ -223,7 +223,7 @@ void hashTable_InsertElement(HASHTABLE *psTable, void *psElement, intptr_t iKey1
 
 void *hashTable_FindElement(HASHTABLE *psTable, intptr_t iKey1, intptr_t iKey2)
 {
-    UDWORD		udwHashIndex;
+    uint32_t		udwHashIndex;
     HASHNODE	*psNode;
 
     ASSERT( psTable != NULL,
@@ -292,7 +292,7 @@ hashTable_SetNextNode( HASHTABLE *psTable, BOOL bMoveToNextNode )
 BOOL
 hashTable_RemoveElement(HASHTABLE *psTable, void *psElement, intptr_t iKey1, intptr_t iKey2)
 {
-    UDWORD		udwHashIndex;
+    uint32_t		udwHashIndex;
     HASHNODE	*psNode, *psPrev;
 
     ASSERT( psTable != NULL,

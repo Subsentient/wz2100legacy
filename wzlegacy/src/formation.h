@@ -36,7 +36,7 @@ extern void formationShutDown(void);
 
 // Create a new formation
 extern BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
-                         SDWORD x, SDWORD y, SDWORD dir);
+                         int32_t x, int32_t y, int32_t dir);
 
 // Try and find a formation near to a location
 extern FORMATION *formationFind(int x, int y);
@@ -55,11 +55,11 @@ extern void formationReorder(FORMATION *psFormation);
 
 // get a target position to move into a formation
 extern BOOL formationGetPos(FORMATION *psFormation, DROID *psDroid,
-                            SDWORD *pX, SDWORD *pY, BOOL bCheckLOS);
+                            int32_t *pX, int32_t *pY, BOOL bCheckLOS);
 
 // See if a unit is a member of a formation (i.e. it has a position assigned)
 extern BOOL formationMember(FORMATION *psFormation, const DROID *psDroid);
 
-extern SDWORD formationGetSpeed( FORMATION *psFormation );
+extern int32_t formationGetSpeed( FORMATION *psFormation );
 
 #endif // __INCLUDED_SRC_FORMATION_H__

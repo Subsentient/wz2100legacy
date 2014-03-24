@@ -42,14 +42,14 @@ typedef struct
 
 typedef struct
 {
-    UBYTE		id;
-    UBYTE		limit;
+    uint8_t		id;
+    uint8_t		limit;
 } MULTISTRUCTLIMITS;
 
 // info used inside games.
 typedef struct
 {
-    UDWORD				PingTimes[MAX_PLAYERS];				// store for pings.
+    uint32_t				PingTimes[MAX_PLAYERS];				// store for pings.
     BOOL				localOptionsReceived;				// used to show if we have game options yet..
     BOOL				localJoiningInProgress;				// used before we know our player number.
     BOOL				JoiningInProgress[MAX_PLAYERS];
@@ -57,11 +57,11 @@ typedef struct
     BOOL				bHostSetup;
     int32_t				TimeEveryoneIsInGame;
     bool				isAllPlayersDataOK;
-    UDWORD				startTime;
-    UDWORD				numStructureLimits;					// number of limits
+    uint32_t				startTime;
+    uint32_t				numStructureLimits;					// number of limits
     MULTISTRUCTLIMITS	*pStructureLimits;					// limits chunk.
     uint8_t                         flags;  ///< Bitmask, shows which structures are disabled.
-    UDWORD		skScores[MAX_PLAYERS][2];			// score+kills for local skirmish players.
+    uint32_t		skScores[MAX_PLAYERS][2];			// score+kills for local skirmish players.
     char		phrases[5][255];					// 5 favourite text messages.
 } MULTIPLAYERINGAME;
 
@@ -73,20 +73,20 @@ extern MULTIPLAYERINGAME	ingame;						// the game description.
 
 extern BOOL					bMultiPlayer;				// true when more than 1 player.
 extern BOOL					bMultiMessages;				// == bMultiPlayer unless multi messages are disabled
-extern UDWORD				selectedPlayer;
+extern uint32_t				selectedPlayer;
 extern BOOL					openchannels[MAX_PLAYERS];
-extern UBYTE				bDisplayMultiJoiningStatus;	// draw load progress?
+extern uint8_t				bDisplayMultiJoiningStatus;	// draw load progress?
 
 // ////////////////////////////////////////////////////////////////////////////
 // defines
 
-// NOTE: MaxMsgSize is currently set to 16K.  When MAX_BYTESPERSEC has been reached (sent + recv!), then we do NOT
+// NOTE: MaxMsgSize is currently set to 16K.  When MAX_int8_tSPERSEC has been reached (sent + recv!), then we do NOT
 //       do the sync code checks anymore(!), needless to say, this can and does cause issues.
 // FIXME: We should define this externally so people with dial-up modems can configure this
 // FIXME: Use possible compression on the packets.
 // NOTE: Remember, we (now) allow 150 units max * 7 (1 human, 6 AI possible for Host) to send to the other player.
 
-#define MAX_BYTESPERSEC			14336
+#define MAX_int8_tSPERSEC			14336
 
 #define ANYPLAYER				99
 #define ONEPLAYER				98
@@ -117,20 +117,20 @@ extern UBYTE				bDisplayMultiJoiningStatus;	// draw load progress?
 #define MAX_KICK_REASON			80			// max array size for the reason your kicking someone
 // functions
 
-extern WZ_DECL_WARN_UNUSED_RESULT BASE_OBJECT		*IdToPointer(UDWORD id,UDWORD player);
-extern WZ_DECL_WARN_UNUSED_RESULT STRUCTURE		*IdToStruct(UDWORD id,UDWORD player);
-extern WZ_DECL_WARN_UNUSED_RESULT BOOL			IdToDroid(UDWORD id, UDWORD player, DROID **psDroid);
-extern WZ_DECL_WARN_UNUSED_RESULT FEATURE		*IdToFeature(UDWORD id,UDWORD player);
-extern WZ_DECL_WARN_UNUSED_RESULT DROID_TEMPLATE	*IdToTemplate(UDWORD tempId,UDWORD player);
+extern WZ_DECL_WARN_UNUSED_RESULT BASE_OBJECT		*IdToPointer(uint32_t id,uint32_t player);
+extern WZ_DECL_WARN_UNUSED_RESULT STRUCTURE		*IdToStruct(uint32_t id,uint32_t player);
+extern WZ_DECL_WARN_UNUSED_RESULT BOOL			IdToDroid(uint32_t id, uint32_t player, DROID **psDroid);
+extern WZ_DECL_WARN_UNUSED_RESULT FEATURE		*IdToFeature(uint32_t id,uint32_t player);
+extern WZ_DECL_WARN_UNUSED_RESULT DROID_TEMPLATE	*IdToTemplate(uint32_t tempId,uint32_t player);
 
 extern const char *getPlayerName(unsigned int player);
-extern BOOL setPlayerName		(UDWORD player, const char *sName);
+extern BOOL setPlayerName		(uint32_t player, const char *sName);
 extern const char *getPlayerColourName(unsigned int player);
-extern BOOL isHumanPlayer		(UDWORD player);				//to tell if the player is a computer or not.
-extern BOOL myResponsibility	(UDWORD player);
-extern BOOL responsibleFor		(UDWORD player, UDWORD playerinquestion);
-extern UDWORD whosResponsible	(UDWORD player);
-extern Vector3i cameraToHome		(UDWORD player,BOOL scroll);
+extern BOOL isHumanPlayer		(uint32_t player);				//to tell if the player is a computer or not.
+extern BOOL myResponsibility	(uint32_t player);
+extern BOOL responsibleFor		(uint32_t player, uint32_t playerinquestion);
+extern uint32_t whosResponsible	(uint32_t player);
+extern Vector3i cameraToHome		(uint32_t player,BOOL scroll);
 extern char		playerName[MAX_PLAYERS][MAX_STR_LENGTH];	//Array to store all player names (humans and AIs)
 
 extern BOOL	multiPlayerLoop		(void);							// for loop.c
@@ -138,10 +138,10 @@ extern BOOL	multiPlayerLoop		(void);							// for loop.c
 extern BOOL recvMessage			(void);
 extern BOOL sendTemplate		(DROID_TEMPLATE *t);
 extern BOOL SendDestroyTemplate (DROID_TEMPLATE *t);
-extern BOOL SendResearch		(UBYTE player,UDWORD index);
+extern BOOL SendResearch		(uint8_t player,uint32_t index);
 extern BOOL SendDestroyFeature  (FEATURE *pF);					// send a destruct feature message.
 extern BOOL sendTextMessage		(const char *pStr,BOOL cast);		// send a text message
-extern BOOL sendAIMessage		(char *pStr, UDWORD player, UDWORD to);	//send AI message
+extern BOOL sendAIMessage		(char *pStr, uint32_t player, uint32_t to);	//send AI message
 extern short parseConsoleCommands(const char *InBuffer, short IsGameConsole); //Handle commands processed.
 void printConsoleNameChange(const char *oldName, const char *newName);  ///< Print message to console saying a name changed.
 
@@ -157,7 +157,7 @@ extern BOOL multiplayerWinSequence(BOOL firstCall);
 extern BOOL	sendBuildStarted	(STRUCTURE *psStruct, DROID *psDroid);
 extern BOOL SendDestroyStructure(STRUCTURE *s);
 extern BOOL	SendBuildFinished	(STRUCTURE *psStruct);
-extern BOOL sendLasSat			(UBYTE player, STRUCTURE *psStruct, BASE_OBJECT *psObj);
+extern BOOL sendLasSat			(uint8_t player, STRUCTURE *psStruct, BASE_OBJECT *psObj);
 
 
 // droids . multibot
@@ -167,7 +167,7 @@ extern BOOL SendDemolishFinished(STRUCTURE *psS,DROID *psD);
 extern BOOL SendDroidInfo		(const DROID *psDroid, DROID_ORDER order, uint32_t x, uint32_t y, const BASE_OBJECT *psObj);
 extern BOOL SendDroidMove		(const DROID *psDroid, uint32_t x, uint32_t y, BOOL formation);
 extern BOOL SendGroupOrderSelected(uint8_t player, uint32_t x, uint32_t y, const BASE_OBJECT *psObj, BOOL altOrder);
-extern BOOL SendCmdGroup		(DROID_GROUP *psGroup, UWORD x, UWORD y, BASE_OBJECT *psObj);
+extern BOOL SendCmdGroup		(DROID_GROUP *psGroup, uint16_t x, uint16_t y, BASE_OBJECT *psObj);
 
 extern BOOL SendGroupOrderGroup(const DROID_GROUP *psGroup, DROID_ORDER order, uint32_t x, uint32_t y, const BASE_OBJECT *psObj);
 
@@ -184,11 +184,11 @@ extern BOOL multiShutdown		(void);
 extern BOOL sendLeavingMsg		(void);
 
 extern BOOL hostCampaign		(char *sGame, char *sPlayer);
-extern BOOL joinCampaign		(UDWORD gameNumber, char *playername);
+extern BOOL joinCampaign		(uint32_t gameNumber, char *playername);
 extern void	playerResponding	(void);
 extern BOOL multiGameInit		(void);
 extern BOOL multiGameShutdown	(void);
-extern BOOL addTemplate			(UDWORD	player,DROID_TEMPLATE *psNew);
+extern BOOL addTemplate			(uint32_t	player,DROID_TEMPLATE *psNew);
 extern BOOL addTemplateToList(DROID_TEMPLATE *psNew, DROID_TEMPLATE **ppList);
 
 // syncing.
@@ -198,19 +198,19 @@ extern BOOL sendPing			(void);							// allow game to request pings.
 extern void HandleBadParam(const char *msg, const int from, const int actual);
 extern BOOL ForceDroidSync(const DROID *droidToSend);
 // multijoin
-extern BOOL sendReseachStatus	(STRUCTURE *psBuilding ,UDWORD index, UBYTE player, BOOL bStart);
+extern BOOL sendReseachStatus	(STRUCTURE *psBuilding ,uint32_t index, uint8_t player, BOOL bStart);
 
-extern void displayAIMessage	(char *pStr, SDWORD from, SDWORD to); //make AI process a message
+extern void displayAIMessage	(char *pStr, int32_t from, int32_t to); //make AI process a message
 
 
 /* for multiplayer message stack */
-extern  UDWORD	msgStackPush(SDWORD CBtype, SDWORD plFrom, SDWORD plTo, const char *tStr, SDWORD x, SDWORD y, DROID *psDroid);
+extern  uint32_t	msgStackPush(int32_t CBtype, int32_t plFrom, int32_t plTo, const char *tStr, int32_t x, int32_t y, DROID *psDroid);
 extern	BOOL	isMsgStackEmpty(void);
-extern	BOOL	msgStackGetFrom(SDWORD  *psVal);
-extern	BOOL	msgStackGetTo(SDWORD  *psVal);
+extern	BOOL	msgStackGetFrom(int32_t  *psVal);
+extern	BOOL	msgStackGetTo(int32_t  *psVal);
 extern	BOOL	msgStackGetMsg(char  *psVal);
 extern	BOOL	msgStackPop(void);
-extern	SDWORD	msgStackGetCount(void);
+extern	int32_t	msgStackGetCount(void);
 extern	void	msgStackReset(void);
 extern BOOL msgStackGetDroid(DROID **ppsDroid);
 

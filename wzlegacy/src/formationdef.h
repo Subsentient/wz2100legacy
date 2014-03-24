@@ -33,41 +33,41 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // (cuts down the memory use over proper pointers)
 typedef struct _f_line
 {
-    SWORD		xoffset,yoffset;	// position relative to center
-    SWORD		dir;				// orientation of line
-    SBYTE		member;				// first member in the 'linked list' of members
+    int16_t		xoffset,yoffset;	// position relative to center
+    int16_t		dir;				// orientation of line
+    int8_t		member;				// first member in the 'linked list' of members
 } F_LINE;
 
 // information about a formation member
 typedef struct _f_member
 {
-    SBYTE			line;			// which line this member is on
-    SBYTE			next;			// the next member on this line
-    SWORD			dist;			// distance along the line
+    int8_t			line;			// which line this member is on
+    int8_t			next;			// the next member on this line
+    int16_t			dist;			// distance along the line
     DROID                   *psDroid;               // the member unit
 } F_MEMBER;
 
 // information about a formation
 typedef struct _formation
 {
-    SWORD		refCount;	// number of units using the formation
+    int16_t		refCount;	// number of units using the formation
 
-    SWORD		size;	// maximum length of the lines
-    SWORD		rankDist;	// seperation between the ranks
-    SWORD		dir;	// direction of the formation
-    SDWORD		x,y;	// position of the front of the formation
+    int16_t		size;	// maximum length of the lines
+    int16_t		rankDist;	// seperation between the ranks
+    int16_t		dir;	// direction of the formation
+    int32_t		x,y;	// position of the front of the formation
 
     // the lines that make up a formation
     F_LINE		asLines[F_MAXLINES];
-    SWORD		numLines;
-    UBYTE		maxRank;
+    int16_t		numLines;
+    uint8_t		maxRank;
 
     // the units that have a position allocated in the formation
-    SBYTE		free;
+    int8_t		free;
     F_MEMBER	asMembers[F_MAXMEMBERS];
 
     // formation speed (currently speed of slowest member) - GJ - sorry.
-    UDWORD		iSpeed;
+    uint32_t		iSpeed;
 
     struct _formation	*psNext;
 } FORMATION;

@@ -134,7 +134,7 @@ static BOOL InitialiseGlobals(void)
 static BOOL loadLevFile(const char *filename, searchPathMode datadir)
 {
     char *pBuffer;
-    UDWORD size;
+    uint32_t size;
 
     debug( LOG_WZ, "Loading lev file: %s\n", filename );
 
@@ -1077,7 +1077,7 @@ BOOL stageTwoShutDown(void)
 BOOL stageThreeInitialise(void)
 {
     STRUCTURE *psStr;
-    UDWORD i;
+    uint32_t i;
     DROID		*psDroid;
 
     debug(LOG_WZ, "== stageThreeInitalise ==");
@@ -1302,6 +1302,6 @@ static void	initMiscVars(void)
     radarOnScreen = true;
     enableConsoleDisplay(true);
 
-    setSelectedGroup(UBYTE_MAX);
+    setSelectedGroup(uint8_t_MAX);
     processDebugMappings(false);
 }

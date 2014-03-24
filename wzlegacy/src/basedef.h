@@ -39,7 +39,7 @@ typedef enum _object_type
 
 typedef struct _tilePos
 {
-    UBYTE x, y;
+    uint8_t x, y;
 } TILEPOS;
 
 /*
@@ -53,33 +53,33 @@ typedef struct _tilePos
 
 #define BASE_ELEMENTS1(pointerType) \
 	OBJECT_TYPE     type;                           /**< The type of object */ \
-	UDWORD          id;                             /**< ID number of the object */ \
+	uint32_t          id;                             /**< ID number of the object */ \
 	Vector3uw       pos;                            /**< Position of the object */ \
 	float           direction;                      /**< Object's yaw +ve rotation around up-axis */ \
-	SWORD           pitch;                          /**< Object's pitch +ve rotation around right-axis (nose up/down) */ \
-	SWORD           roll                            /**< Object's roll +ve rotation around forward-axis (left wing up/down) */
+	int16_t           pitch;                          /**< Object's pitch +ve rotation around right-axis (nose up/down) */ \
+	int16_t           roll                            /**< Object's roll +ve rotation around forward-axis (left wing up/down) */
 
 #define BASE_ELEMENTS2(pointerType) \
 	SCREEN_DISP_DATA    sDisplay;                   /**< screen coordinate details */ \
-	UBYTE               player;                     /**< Which player the object belongs to */ \
-	UBYTE               group;                      /**< Which group selection is the droid currently in? */ \
-	UBYTE               selected;                   /**< Whether the object is selected (might want this elsewhere) */ \
-	UBYTE               cluster;                    /**< Which cluster the object is a member of */ \
-	UBYTE               visible[MAX_PLAYERS];       /**< Whether object is visible to specific player */ \
-	UDWORD              died;                       /**< When an object was destroyed, if 0 still alive */ \
-	UDWORD              lastEmission;               /**< When did it last puff out smoke? */ \
-	UDWORD              lastHitWeapon;		/**< The weapon that last hit it */ \
-	UDWORD              timeLastHit;		/**< The time the structure was last attacked */ \
-	UDWORD              body;			/**< Hit points with lame name */ \
+	uint8_t               player;                     /**< Which player the object belongs to */ \
+	uint8_t               group;                      /**< Which group selection is the droid currently in? */ \
+	uint8_t               selected;                   /**< Whether the object is selected (might want this elsewhere) */ \
+	uint8_t               cluster;                    /**< Which cluster the object is a member of */ \
+	uint8_t               visible[MAX_PLAYERS];       /**< Whether object is visible to specific player */ \
+	uint32_t              died;                       /**< When an object was destroyed, if 0 still alive */ \
+	uint32_t              lastEmission;               /**< When did it last puff out smoke? */ \
+	uint32_t              lastHitWeapon;		/**< The weapon that last hit it */ \
+	uint32_t              timeLastHit;		/**< The time the structure was last attacked */ \
+	uint32_t              body;			/**< Hit points with lame name */ \
 	BOOL                inFire;                     /**< true if the object is in a fire */ \
-	UDWORD              burnStart;                  /**< When the object entered the fire */ \
-	UDWORD              burnDamage;                 /**< How much damage has been done since the object entered the fire */ \
-	SDWORD              sensorPower;		/**< Active sensor power */ \
-	SDWORD              sensorRange;		/**< Range of sensor */ \
-	SDWORD              ECMMod;			/**< Ability to conceal oneself from sensors */ \
-	UWORD               numWatchedTiles;		/**< Number of watched tiles, zero for features */ \
+	uint32_t              burnStart;                  /**< When the object entered the fire */ \
+	uint32_t              burnDamage;                 /**< How much damage has been done since the object entered the fire */ \
+	int32_t              sensorPower;		/**< Active sensor power */ \
+	int32_t              sensorRange;		/**< Range of sensor */ \
+	int32_t              ECMMod;			/**< Ability to conceal oneself from sensors */ \
+	uint16_t               numWatchedTiles;		/**< Number of watched tiles, zero for features */ \
 	TILEPOS             *watchedTiles;		/**< Variable size array of watched tiles, NULL for features */ \
-	UDWORD              armour[NUM_HIT_SIDES][WC_NUM_WEAPON_CLASSES]
+	uint32_t              armour[NUM_HIT_SIDES][WC_NUM_WEAPON_CLASSES]
 
 #define NEXTOBJ(pointerType) \
 	pointerType     *psNext;			/**< Pointer to the next object in the object list */ \

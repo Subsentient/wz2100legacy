@@ -68,10 +68,10 @@ static int D_H2 = 0;	// Text height offset
 typedef struct
 {
     char pText[MAX_STR_LENGTH];
-    UDWORD x;
-    UDWORD y;
-    UDWORD startFrame;
-    UDWORD endFrame;
+    uint32_t x;
+    uint32_t y;
+    uint32_t startFrame;
+    uint32_t endFrame;
     BOOL	bSubtitle;
 } SEQTEXT;
 
@@ -80,7 +80,7 @@ typedef struct
     const char	*pSeq;						//name of the sequence to play
     const char	*pAudio;					//name of the wav to play
     BOOL		bSeqLoop;					//loop this sequence
-    SDWORD		currentText;				//cuurent number of text messages for this seq
+    int32_t		currentText;				//cuurent number of text messages for this seq
     SEQTEXT		aText[MAX_TEXT_OVERLAYS];	//text data to display for this sequence
 } SEQLIST;
 /***************************************************************************/
@@ -96,8 +96,8 @@ static BOOL bSeqPlaying = false;
 static const char aHardPath[] = "sequences/";
 static char aVideoName[MAX_STR_LENGTH];
 static SEQLIST aSeqList[MAX_SEQ_LIST];
-static SDWORD currentSeq = -1;
-static SDWORD currentPlaySeq = -1;
+static int32_t currentSeq = -1;
+static int32_t currentPlaySeq = -1;
 
 /***************************************************************************/
 /*
@@ -397,11 +397,11 @@ BOOL seq_StopFullScreenVideo(void)
 }
 
 // add a string at x,y or add string below last line if x and y are 0
-BOOL seq_AddTextForVideo(const char *pText, SDWORD xOffset, SDWORD yOffset, SDWORD startFrame, SDWORD endFrame, SEQ_TEXT_POSITIONING textJustification)
+BOOL seq_AddTextForVideo(const char *pText, int32_t xOffset, int32_t yOffset, int32_t startFrame, int32_t endFrame, SEQ_TEXT_POSITIONING textJustification)
 {
-    SDWORD sourceLength, currentLength;
+    int32_t sourceLength, currentLength;
     char *currentText;
-    static SDWORD lastX;
+    static int32_t lastX;
     // make sure we take xOffset into account, we don't always start at 0
     const unsigned int buffer_width = pie_GetVideoBufferWidth() - xOffset;
 
@@ -502,8 +502,8 @@ static BOOL seq_AddTextFromFile(const char *pTextName, SEQ_TEXT_POSITIONING text
 {
     char aTextName[MAX_STR_LENGTH];
     char *pTextBuffer, *pCurrentLine, *pText;
-    UDWORD fileSize;
-    SDWORD xOffset, yOffset, startFrame, endFrame;
+    uint32_t fileSize;
+    int32_t xOffset, yOffset, startFrame, endFrame;
     const char *seps = "\n";
 
     // NOTE: The original game never had a fullscreen mode for FMVs on >640x480 screens.
@@ -537,7 +537,7 @@ static BOOL seq_AddTextFromFile(const char *pTextName, SEQ_TEXT_POSITIONING text
                 ASSERT(pText != NULL, "error parsing text file");
                 if (pText != NULL)
                 {
-                    *pText = (UBYTE)0;
+                    *pText = (uint8_t)0;
                 }
                 pText = strchr(pCurrentLine,'"');
                 ASSERT(pText != NULL, "error parsing text file");

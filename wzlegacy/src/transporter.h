@@ -38,7 +38,7 @@ extern BOOL intAddTransporter(DROID *psSelected, BOOL offWorld);
 extern void intRemoveTrans(void);
 extern void intRemoveTransNoAnim(void);
 /* Process return codes from the Transporter Screen*/
-extern void intProcessTransporter(UDWORD id);
+extern void intProcessTransporter(uint32_t id);
 
 /*Adds a droid to the transporter, removing it from the world*/
 extern void transporterAddDroid(DROID *psTransporter, DROID *psDroidToAdd);
@@ -46,7 +46,7 @@ extern void transporterAddDroid(DROID *psTransporter, DROID *psDroidToAdd);
 extern BOOL checkTransporterSpace(DROID *psTransporter, DROID *psAssigned);
 /*calculates how much space is remaining on the transporter - allows droids to take
 up different amount depending on their body size - currently all are set to one!*/
-extern UDWORD calcRemainingCapacity(DROID *psTransporter);
+extern uint32_t calcRemainingCapacity(DROID *psTransporter);
 
 extern bool transporterIsEmpty(const DROID *psTransporter);
 
@@ -70,7 +70,7 @@ extern void intRemoveTransporterLaunch(void);
 //process the launch transporter button click
 extern void processLaunchTransporter(void);
 
-extern SDWORD	bobTransporterHeight( void );
+extern int32_t	bobTransporterHeight( void );
 
 /*This is used to display the transporter button and capacity when at the home base ONLY*/
 extern BOOL intAddTransporterLaunch(DROID *psDroid);
@@ -88,13 +88,13 @@ extern DROID *transporterGetScriptCurrent( void );
 extern void resetTransporter(void);
 
 /* get time transporter launch button was pressed */
-extern UDWORD transporterGetLaunchTime( void );
+extern uint32_t transporterGetLaunchTime( void );
 
 /*set the time for the Launch*/
-extern void transporterSetLaunchTime(UDWORD time);
+extern void transporterSetLaunchTime(uint32_t time);
 
-extern void flashMissionButton(UDWORD buttonID);
-extern void stopMissionButtonFlash(UDWORD buttonID);
+extern void flashMissionButton(uint32_t buttonID);
+extern void stopMissionButtonFlash(uint32_t buttonID);
 /*checks the order of the droid to see if its currenly flying*/
 extern BOOL transporterFlying(DROID *psTransporter);
 //initialise the flag to indicate the first transporter has arrived - set in startMission()

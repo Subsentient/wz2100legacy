@@ -64,38 +64,38 @@ static void setMatrix(Vector3i *Position, Vector3i *Rotation, BOOL RotXYZ);
 static void displayCompObj(BASE_OBJECT *psObj, BOOL bButton);
 static iIMDShape *getLeftPropulsionIMD(DROID *psDroid);
 static iIMDShape *getRightPropulsionIMD(DROID *psDroid);
-static UDWORD getStructureHeight(STRUCTURE *psStructure);
+static uint32_t getStructureHeight(STRUCTURE *psStructure);
 
 static BOOL		leftFirst;
-static SDWORD		droidLightLevel = 224;
-static UDWORD		lightInterval = 15;
-static UDWORD		lightLastChanged;
-SDWORD		lightSpeed=2;
-extern UDWORD selectedPlayer;
+static int32_t		droidLightLevel = 224;
+static uint32_t		lightInterval = 15;
+static uint32_t		lightLastChanged;
+int32_t		lightSpeed=2;
+extern uint32_t selectedPlayer;
 
-UBYTE		PlayerColour[MAX_PLAYERS] = {0,1,2,3,4,5,6,7};
+uint8_t		PlayerColour[MAX_PLAYERS] = {0,1,2,3,4,5,6,7};
 
 // Colour Lookups
 // use col = MAX_PLAYERS for anycolour (see multiint.c)
-BOOL setPlayerColour(UDWORD player, UDWORD col)
+BOOL setPlayerColour(uint32_t player, uint32_t col)
 {
     if(player >MAX_PLAYERS || col >MAX_PLAYERS)
     {
         debug(LOG_ERROR, "wrong values");
         return false;
     }
-    PlayerColour[(UBYTE)player] = (UBYTE)col;
+    PlayerColour[(uint8_t)player] = (uint8_t)col;
     return true;
 }
 
-UBYTE getPlayerColour(UDWORD pl)
+uint8_t getPlayerColour(uint32_t pl)
 {
     return PlayerColour[pl];
 }
 
 void initPlayerColours(void)
 {
-    UBYTE i;
+    uint8_t i;
     for(i=0; i<MAX_PLAYERS; i++)
     {
         PlayerColour[i] = i;
@@ -153,23 +153,23 @@ static void unsetMatrix(void)
 }
 
 
-UDWORD getComponentDroidRadius(WZ_DECL_UNUSED DROID *psDroid)
+uint32_t getComponentDroidRadius(WZ_DECL_UNUSED DROID *psDroid)
 {
     return 100;
 }
 
 
-UDWORD getComponentDroidTemplateRadius(WZ_DECL_UNUSED DROID_TEMPLATE *psDroid)
+uint32_t getComponentDroidTemplateRadius(WZ_DECL_UNUSED DROID_TEMPLATE *psDroid)
 {
     return 100;
 }
 
 
-UDWORD getComponentRadius(BASE_STATS *psComponent)
+uint32_t getComponentRadius(BASE_STATS *psComponent)
 {
     iIMDShape *ComponentIMD = NULL;
     iIMDShape *MountIMD = NULL;
-    SDWORD compID;
+    int32_t compID;
 
     compID = StatIsComponent(psComponent);
     if (compID > 0)
@@ -193,7 +193,7 @@ UDWORD getComponentRadius(BASE_STATS *psComponent)
 }
 
 
-UDWORD getResearchRadius(BASE_STATS *Stat)
+uint32_t getResearchRadius(BASE_STATS *Stat)
 {
     iIMDShape *ResearchIMD = ((RESEARCH *)Stat)->pIMD;
 
@@ -208,9 +208,9 @@ UDWORD getResearchRadius(BASE_STATS *Stat)
 }
 
 
-UDWORD getStructureSize(STRUCTURE *psStructure)
+uint32_t getStructureSize(STRUCTURE *psStructure)
 {
-    UDWORD size;
+    uint32_t size;
     //radius based on base plate size
 
     size = psStructure->pStructureType->baseWidth;
@@ -221,9 +221,9 @@ UDWORD getStructureSize(STRUCTURE *psStructure)
     return (size);
 }
 
-UDWORD getStructureStatSize(STRUCTURE_STATS *Stats)
+uint32_t getStructureStatSize(STRUCTURE_STATS *Stats)
 {
-    UDWORD size;
+    uint32_t size;
     //radius based on base plate size
 
     size = Stats->baseWidth;
@@ -234,12 +234,12 @@ UDWORD getStructureStatSize(STRUCTURE_STATS *Stats)
     return (size);
 }
 
-UDWORD getStructureHeight(STRUCTURE *psStructure)
+uint32_t getStructureHeight(STRUCTURE *psStructure)
 {
     return (getStructureStatHeight(psStructure->pStructureType));
 }
 
-UDWORD getStructureStatHeight(STRUCTURE_STATS *psStat)
+uint32_t getStructureStatHeight(STRUCTURE_STATS *psStat)
 {
     if (psStat->pIMD)
     {
@@ -250,7 +250,7 @@ UDWORD getStructureStatHeight(STRUCTURE_STATS *psStat)
 }
 
 
-void displayIMDButton(iIMDShape *IMDShape, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale)
+void displayIMDButton(iIMDShape *IMDShape, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale)
 {
     setMatrix(Position, Rotation, RotXYZ);
     pie_MatScale(scale);
@@ -262,12 +262,12 @@ void displayIMDButton(iIMDShape *IMDShape, Vector3i *Rotation, Vector3i *Positio
 
 
 //changed it to loop thru and draw all weapons
-void displayStructureButton(STRUCTURE *psStructure, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale)
+void displayStructureButton(STRUCTURE *psStructure, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale)
 {
     iIMDShape *baseImd,*strImd;//*mountImd,*weaponImd;
     iIMDShape *mountImd[STRUCT_MAXWEAPS];
     iIMDShape *weaponImd[STRUCT_MAXWEAPS];
-    UDWORD			nWeaponStat;
+    uint32_t			nWeaponStat;
     int		i;
 
     /*HACK HACK HACK!
@@ -375,7 +375,7 @@ void displayStructureButton(STRUCTURE *psStructure, Vector3i *Rotation, Vector3i
                 {
                     iV_MatrixBegin();
                     iV_TRANSLATE(strImd->connectors[i].x,strImd->connectors[i].z,strImd->connectors[i].y);
-                    pie_MatRotY(DEG(-((SDWORD)psStructure->asWeaps[i].rotation)));
+                    pie_MatRotY(DEG(-((int32_t)psStructure->asWeaps[i].rotation)));
                     if (mountImd[i] != NULL)
                     {
                         pie_Draw3DShape(mountImd[i], 0, getPlayerColour(selectedPlayer), WZCOL_WHITE, WZCOL_BLACK, pie_BUTTON, 0);
@@ -394,7 +394,7 @@ void displayStructureButton(STRUCTURE *psStructure, Vector3i *Rotation, Vector3i
             {
                 iV_MatrixBegin();
                 iV_TRANSLATE(strImd->connectors->x,strImd->connectors->z,strImd->connectors->y);
-                pie_MatRotY(DEG(-((SDWORD)psStructure->asWeaps[0].rotation)));
+                pie_MatRotY(DEG(-((int32_t)psStructure->asWeaps[0].rotation)));
                 if (mountImd[0] != NULL)
                 {
                     pie_Draw3DShape(mountImd[0], 0, getPlayerColour(selectedPlayer), WZCOL_WHITE, WZCOL_BLACK, pie_BUTTON, 0);
@@ -413,12 +413,12 @@ void displayStructureButton(STRUCTURE *psStructure, Vector3i *Rotation, Vector3i
     unsetMatrix();
 }
 
-void displayStructureStatButton(STRUCTURE_STATS *Stats, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale)
+void displayStructureStatButton(STRUCTURE_STATS *Stats, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale)
 {
     iIMDShape		*baseImd,*strImd;//*mountImd,*weaponImd;
     iIMDShape *mountImd[STRUCT_MAXWEAPS];
     iIMDShape *weaponImd[STRUCT_MAXWEAPS];
-    UBYTE	i;
+    uint8_t	i;
 
     /*HACK HACK HACK!
     if its a 'tall thin (ie tower)' structure stat with something on the top - offset the
@@ -575,11 +575,11 @@ void displayStructureStatButton(STRUCTURE_STATS *Stats, Vector3i *Rotation, Vect
 // Render a component given a BASE_STATS structure.
 //
 void displayComponentButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Position,
-                            BOOL RotXYZ, SDWORD scale)
+                            BOOL RotXYZ, int32_t scale)
 {
     iIMDShape *ComponentIMD = NULL;
     iIMDShape *MountIMD = NULL;
-    SDWORD compID;
+    int32_t compID;
 
     setMatrix(Position, Rotation, RotXYZ);
     pie_MatScale(scale);
@@ -618,7 +618,7 @@ void displayComponentButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Posi
 
 // Render a research item given a BASE_STATS structure.
 //
-void displayResearchButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale)
+void displayResearchButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale)
 {
     iIMDShape *ResearchIMD = ((RESEARCH *)Stat)->pIMD;
     iIMDShape *MountIMD = ((RESEARCH *)Stat)->pIMD2;
@@ -646,10 +646,10 @@ void displayResearchButton(BASE_STATS *Stat, Vector3i *Rotation, Vector3i *Posit
 
 // Render a composite droid given a DROID_TEMPLATE structure.
 //
-void displayComponentButtonTemplate(DROID_TEMPLATE *psTemplate, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale)
+void displayComponentButtonTemplate(DROID_TEMPLATE *psTemplate, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale)
 {
     static DROID Droid;	// Made static to reduce stack usage.
-    SDWORD difference;
+    int32_t difference;
 
     /* init to NULL */
     memset( &Droid, 0, sizeof(DROID) );
@@ -671,7 +671,7 @@ void displayComponentButtonTemplate(DROID_TEMPLATE *psTemplate, Vector3i *Rotati
     }
 
     droidSetBits(psTemplate,&Droid);
-    Droid.player = (UBYTE)selectedPlayer;
+    Droid.player = (uint8_t)selectedPlayer;
 
     Droid.pos.x = Droid.pos.y = Droid.pos.z = 0;
 
@@ -685,9 +685,9 @@ void displayComponentButtonTemplate(DROID_TEMPLATE *psTemplate, Vector3i *Rotati
 
 // Render a composite droid given a DROID structure.
 //
-void displayComponentButtonObject(DROID *psDroid, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, SDWORD scale)
+void displayComponentButtonObject(DROID *psDroid, Vector3i *Rotation, Vector3i *Position, BOOL RotXYZ, int32_t scale)
 {
-    SDWORD		difference;
+    int32_t		difference;
 
     setMatrix(Position, Rotation, RotXYZ);
     pie_MatScale(scale);
@@ -720,13 +720,13 @@ void displayComponentObject(BASE_OBJECT *psObj)
     DROID		*psDroid = (DROID *)psObj;
     Vector3i	position, rotation;
     Sint32		xShift,zShift;
-    UDWORD		worldAngle;
-    SDWORD		difference;
-    SDWORD		frame;
-    UDWORD	tileX,tileY;
+    uint32_t		worldAngle;
+    int32_t		difference;
+    int32_t		frame;
+    uint32_t	tileX,tileY;
     MAPTILE	*psTile;
 
-    worldAngle = (UDWORD)(player.r.y / DEG_1) % 360;
+    worldAngle = (uint32_t)(player.r.y / DEG_1) % 360;
     difference = worldAngle - psObj->direction;
 
     if((difference>0 && difference <180) || difference<-180)
@@ -759,7 +759,7 @@ void displayComponentObject(BASE_OBJECT *psObj)
     }
 
     /* Get all the pitch,roll,yaw info */
-    rotation.y = -(SDWORD)psDroid->direction;
+    rotation.y = -(int32_t)psDroid->direction;
     rotation.x = psDroid->pitch;
     rotation.z = psDroid->roll;
 
@@ -789,7 +789,7 @@ void displayComponentObject(BASE_OBJECT *psObj)
         addEffect(&position,EFFECT_EXPLOSION,EXPLOSION_TYPE_PLASMA,false,NULL,0);
     }
 
-    if ((psDroid->visible[selectedPlayer] == UBYTE_MAX) || demoGetStatus())
+    if ((psDroid->visible[selectedPlayer] == uint8_t_MAX) || demoGetStatus())
     {
         //ingame not button object
         //should render 3 mounted weapons now
@@ -824,14 +824,14 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
 {
     DROID				*psDroid;
     iIMDShape			*psShape, *psJet, *psShapeTemp = NULL;
-    SDWORD				iConnector;
+    int32_t				iConnector;
     PROPULSION_STATS	*psPropStats;
-    SDWORD				frame;
-    SDWORD				pieFlag, iPieData;
+    int32_t				frame;
+    int32_t				pieFlag, iPieData;
     PIELIGHT			brightness;
     const PIELIGHT			specular = WZCOL_BLACK;
-    UDWORD				colour;
-    UBYTE	i;
+    uint32_t				colour;
+    uint8_t	i;
 
     /* Cast the droid pointer */
     psDroid = (DROID *)psObj;
@@ -1030,7 +1030,7 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
 
                                 if ( psDroid->asWeaps[i].rotation )
                                 {
-                                    pie_MatRotY(DEG( (-(SDWORD)psDroid->asWeaps[i].rotation)) );
+                                    pie_MatRotY(DEG( (-(int32_t)psDroid->asWeaps[i].rotation)) );
                                 }
 
 
@@ -1145,7 +1145,7 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
 
                     if(psDroid->asWeaps[0].rotation)
                     {
-                        pie_MatRotY(DEG( (-(SDWORD)(psDroid->asWeaps[0].rotation)) ));
+                        pie_MatRotY(DEG( (-(int32_t)(psDroid->asWeaps[0].rotation)) ));
                     }
                     psShape = SENSOR_MOUNT_IMD(psDroid,psDroid->player);
                     /* Draw it */
@@ -1183,7 +1183,7 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
 
                     if(psDroid->asWeaps[0].rotation)
                     {
-                        pie_MatRotY(DEG( (-(SDWORD)(psDroid->asWeaps[0].rotation)) ));
+                        pie_MatRotY(DEG( (-(int32_t)(psDroid->asWeaps[0].rotation)) ));
                     }
                     psShape = CONSTRUCT_MOUNT_IMD(psDroid,psDroid->player);
                     /* Draw it */
@@ -1228,7 +1228,7 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
 
                     if(psDroid->asWeaps[0].rotation)
                     {
-                        pie_MatRotY(DEG( (-(SDWORD)(psDroid->asWeaps[0].rotation)) ));
+                        pie_MatRotY(DEG( (-(int32_t)(psDroid->asWeaps[0].rotation)) ));
                     }
                     psShape = ECM_MOUNT_IMD(psDroid,psDroid->player);
                     /* Draw it */
@@ -1265,7 +1265,7 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
 
                     if(psDroid->asWeaps[0].rotation)
                     {
-                        pie_MatRotY(DEG( (-(SDWORD)(psDroid->asWeaps[0].rotation)) ));
+                        pie_MatRotY(DEG( (-(int32_t)(psDroid->asWeaps[0].rotation)) ));
                     }
                     psShape = REPAIR_MOUNT_IMD(psDroid,psDroid->player);
                     /* Draw it */
@@ -1299,11 +1299,11 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
                             psShape = getImdFromIndex(MI_FLAME);
 
                             /* Rotate for droid */
-                            pie_MatRotY( DEG( (SDWORD)psDroid->direction ) );
+                            pie_MatRotY( DEG( (int32_t)psDroid->direction ) );
                             pie_MatRotX( DEG( -psDroid->pitch ) );
                             pie_MatRotZ( DEG( -psDroid->roll ) );
                             //rotate Y
-                            pie_MatRotY(DEG( -( (-(SDWORD)(psDroid->asWeaps[0].rotation)) ) ));
+                            pie_MatRotY(DEG( -( (-(int32_t)(psDroid->asWeaps[0].rotation)) ) ));
 
                             iV_MatrixRotateY(-player.r.y);
                             iV_MatrixRotateX(-player.r.x);
@@ -1353,9 +1353,9 @@ void displayCompObj(BASE_OBJECT *psObj, BOOL bButton)
 
 void destroyFXDroid(DROID	*psDroid)
 {
-    UDWORD	i;
+    uint32_t	i;
     iIMDShape	*psImd = NULL;
-    SDWORD	widthScatter, breadthScatter, heightScatter;
+    int32_t	widthScatter, breadthScatter, heightScatter;
     Vector3i pos;
 
     widthScatter = TILE_UNITS/4;
@@ -1441,7 +1441,7 @@ void	compPersonToBits(DROID *psDroid)
 {
     Vector3i position;	//,rotation,velocity;
     iIMDShape	*headImd, *legsImd, *armImd, *bodyImd;
-    UDWORD		col;
+    uint32_t		col;
 
     if(!psDroid->visible[selectedPlayer])
     {
@@ -1481,7 +1481,7 @@ void	compPersonToBits(DROID *psDroid)
 
 iIMDShape *getLeftPropulsionIMD(DROID *psDroid)
 {
-    UDWORD			bodyStat, propStat;
+    uint32_t			bodyStat, propStat;
     iIMDShape		**imd;
 
     bodyStat = psDroid->asBits[COMP_BODY].nStat;
@@ -1496,7 +1496,7 @@ iIMDShape *getLeftPropulsionIMD(DROID *psDroid)
 
 iIMDShape *getRightPropulsionIMD(DROID *psDroid)
 {
-    UDWORD			bodyStat, propStat;
+    uint32_t			bodyStat, propStat;
     iIMDShape		**imd;
 
     bodyStat = psDroid->asBits[COMP_BODY].nStat;
@@ -1509,9 +1509,9 @@ iIMDShape *getRightPropulsionIMD(DROID *psDroid)
 }
 
 
-SDWORD	rescaleButtonObject(SDWORD radius, SDWORD baseScale,SDWORD baseRadius)
+int32_t	rescaleButtonObject(int32_t radius, int32_t baseScale,int32_t baseRadius)
 {
-    SDWORD newScale;
+    int32_t newScale;
     newScale = 100 * baseRadius;
     newScale /= radius;
     if(baseScale > 0)

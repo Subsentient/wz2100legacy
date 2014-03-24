@@ -47,7 +47,7 @@ typedef struct _iSurface
     int ypshift;
     iClip clip;
 
-    UBYTE *buffer;
+    uint8_t *buffer;
 
     int width;
     int height;

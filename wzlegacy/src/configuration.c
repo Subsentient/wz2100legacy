@@ -55,14 +55,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define SP_FRAME_LIMIT 60
 
 // current frame limit for single player modes
-static SDWORD	spFrameLimit = SP_FRAME_LIMIT;
+static int32_t	spFrameLimit = SP_FRAME_LIMIT;
 
-static void setSinglePlayerFrameLimit(SDWORD limit)
+static void setSinglePlayerFrameLimit(int32_t limit)
 {
     spFrameLimit = limit;
 }
 
-static SDWORD getSinglePlayerFrameLimit(void)
+static int32_t getSinglePlayerFrameLimit(void)
 {
     return spFrameLimit;
 }
@@ -517,7 +517,7 @@ BOOL loadConfig(void)
     //type
     if(getWarzoneKeyNumeric("type", &val))
     {
-        game.type =(UBYTE)val;
+        game.type =(uint8_t)val;
     }
     else
     {
@@ -528,7 +528,7 @@ BOOL loadConfig(void)
     //base
     if(getWarzoneKeyNumeric("base", &val))
     {
-        game.base =(UBYTE)val;
+        game.base =(uint8_t)val;
     }
     else
     {
@@ -539,7 +539,7 @@ BOOL loadConfig(void)
     //alliance
     if(getWarzoneKeyNumeric("alliance", &val))
     {
-        game.alliance =(UBYTE)val;
+        game.alliance =(uint8_t)val;
     }
     else
     {
@@ -573,7 +573,7 @@ BOOL loadConfig(void)
     else
     {
         bEnemyAllyRadarColor = false;
-        setWarzoneKeyNumeric("radarObjectMode", (SDWORD)bEnemyAllyRadarColor);
+        setWarzoneKeyNumeric("radarObjectMode", (int32_t)bEnemyAllyRadarColor);
     }
 
     // mini-map terrain mode
@@ -619,7 +619,7 @@ BOOL loadConfig(void)
 
 BOOL loadRenderMode(void)
 {
-    SDWORD val;
+    int32_t val;
     bool bad_resolution = false;
     short DefaultResWidth = 800, DefaultResHeight = 600;
 
@@ -744,23 +744,23 @@ BOOL saveConfig(void)
         setDifficultyLevel(DL_NORMAL);
     }
     setWarzoneKeyNumeric("debugmode", bAllowDebugMode);
-    setWarzoneKeyNumeric("framerate", (SDWORD)getFramerateLimit());
-    setWarzoneKeyNumeric("showFPS", (SDWORD)showFPS);
-	setWarzoneKeyNumeric("showTicker", (SDWORD)showTicker);
-    setWarzoneKeyNumeric("scroll",(SDWORD)scroll_speed_accel);		// scroll
+    setWarzoneKeyNumeric("framerate", (int32_t)getFramerateLimit());
+    setWarzoneKeyNumeric("showFPS", (int32_t)showFPS);
+	setWarzoneKeyNumeric("showTicker", (int32_t)showTicker);
+    setWarzoneKeyNumeric("scroll",(int32_t)scroll_speed_accel);		// scroll
     setWarzoneKeyNumeric("difficulty", getDifficultyLevel());		// level
-    setWarzoneKeyNumeric("visfog",(SDWORD)(!war_GetFog()));			// fogtype
-    setWarzoneKeyNumeric("shake",(SDWORD)(getShakeStatus()));		// screenshake
-    setWarzoneKeyNumeric("mouseflip",(SDWORD)(getInvertMouseStatus()));	// flipmouse
-    setWarzoneKeyNumeric("RightClickOrders",(SDWORD)(getRightClickOrders()));
-    setWarzoneKeyNumeric("MiddleClickRotate",(SDWORD)(getMiddleClickRotate()));
-    setWarzoneKeyNumeric("shadows",(SDWORD)(getDrawShadows()));	// shadows
-    setWarzoneKeyNumeric("sound", (SDWORD)war_getSoundEnabled());
-    setWarzoneKeyNumeric("FMVmode",(SDWORD)(war_GetFMVmode()));		// sequences
-    setWarzoneKeyNumeric("scanlines", (SDWORD)war_getScanlineMode());
-    setWarzoneKeyNumeric("subtitles",(SDWORD)(seq_GetSubtitles()));		// subtitles
-    setWarzoneKeyNumeric("radarObjectMode",(SDWORD)bEnemyAllyRadarColor);    // enemy/allies radar view
-    setWarzoneKeyNumeric("radarTerrainMode",(SDWORD)radarDrawMode);
+    setWarzoneKeyNumeric("visfog",(int32_t)(!war_GetFog()));			// fogtype
+    setWarzoneKeyNumeric("shake",(int32_t)(getShakeStatus()));		// screenshake
+    setWarzoneKeyNumeric("mouseflip",(int32_t)(getInvertMouseStatus()));	// flipmouse
+    setWarzoneKeyNumeric("RightClickOrders",(int32_t)(getRightClickOrders()));
+    setWarzoneKeyNumeric("MiddleClickRotate",(int32_t)(getMiddleClickRotate()));
+    setWarzoneKeyNumeric("shadows",(int32_t)(getDrawShadows()));	// shadows
+    setWarzoneKeyNumeric("sound", (int32_t)war_getSoundEnabled());
+    setWarzoneKeyNumeric("FMVmode",(int32_t)(war_GetFMVmode()));		// sequences
+    setWarzoneKeyNumeric("scanlines", (int32_t)war_getScanlineMode());
+    setWarzoneKeyNumeric("subtitles",(int32_t)(seq_GetSubtitles()));		// subtitles
+    setWarzoneKeyNumeric("radarObjectMode",(int32_t)bEnemyAllyRadarColor);    // enemy/allies radar view
+    setWarzoneKeyNumeric("radarTerrainMode",(int32_t)radarDrawMode);
     setWarzoneKeyNumeric("trapCursor", war_GetTrapCursor());
     setWarzoneKeyNumeric("vsync", war_GetVsync());
     setWarzoneKeyNumeric("textureSize", getTextureSize());
@@ -774,7 +774,7 @@ BOOL saveConfig(void)
 
     if(!bMultiPlayer)
     {
-        setWarzoneKeyNumeric("colour",(SDWORD)getPlayerColour(0));			// favourite colour.
+        setWarzoneKeyNumeric("colour",(int32_t)getPlayerColour(0));			// favourite colour.
     }
     else
     {
@@ -899,19 +899,19 @@ BOOL reloadMPConfig(void)
     //type
     if(getWarzoneKeyNumeric("type", &val))
     {
-        game.type =(UBYTE)val;
+        game.type =(uint8_t)val;
     }
 
     //base
     if(getWarzoneKeyNumeric("base", &val))
     {
-        game.base =(UBYTE)val;
+        game.base =(uint8_t)val;
     }
 
     //alliance
     if(getWarzoneKeyNumeric("alliance", &val))
     {
-        game.alliance =(UBYTE)val;
+        game.alliance =(uint8_t)val;
     }
 
     return closeWarzoneKey();

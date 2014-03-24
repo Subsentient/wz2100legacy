@@ -129,8 +129,8 @@ static unsigned int masterserver_port = 0, gameserver_port = 0;
 
 // ////////////////////////////////////////////////////////////////////////
 // Function prototypes
-static void NETplayerLeaving(UDWORD player);		// Cleanup sockets on player leaving (nicely)
-static void NETplayerDropped(UDWORD player);		// Broadcast NET_PLAYER_DROPPED & cleanup
+static void NETplayerLeaving(uint32_t player);		// Cleanup sockets on player leaving (nicely)
+static void NETplayerDropped(uint32_t player);		// Broadcast NET_PLAYER_DROPPED & cleanup
 static void NETallowJoining(void);
 static bool onBanList(const char *ip);
 static void addToBanList(const char *ip, const char *name);
@@ -145,10 +145,10 @@ SYNC_COUNTER sync_counter;		// keeps track on how well we are in sync
 
 typedef struct		// data regarding the last one second or so.
 {
-    UDWORD		bytesRecvd;
-    UDWORD		bytesSent;	// number of bytes sent in about 1 sec.
-    UDWORD		packetsSent;
-    UDWORD		packetsRecvd;
+    uint32_t		bytesRecvd;
+    uint32_t		bytesSent;	// number of bytes sent in about 1 sec.
+    uint32_t		packetsSent;
+    uint32_t		packetsRecvd;
 } NETSTATS;
 
 typedef struct
@@ -1693,7 +1693,7 @@ static void NETplayerClientDisconnect(uint32_t index)
  *       message), we clean up the socket that we used.
  * \param index
  */
-static void NETplayerLeaving(UDWORD index)
+static void NETplayerLeaving(uint32_t index)
 {
     if (NetPlay.isHost && (NetPlay.bComms && connected_bsocket[index]->socket))
     {
@@ -1721,7 +1721,7 @@ static void NETplayerLeaving(UDWORD index)
  *       message.
  * \param index
  */
-static void NETplayerDropped(UDWORD index)
+static void NETplayerDropped(uint32_t index)
 {
     uint32_t id = index;
 
@@ -1740,7 +1740,7 @@ static void NETplayerDropped(UDWORD index)
  * @note Cleanup for when a player is kicked.
  * \param index
  */
-void NETplayerKicked(UDWORD index)
+void NETplayerKicked(uint32_t index)
 {
     // kicking a player counts as "leaving nicely", since "nicely" in this case
     // simply means "there wasn't a connection error."
@@ -1757,7 +1757,7 @@ void NETplayerKicked(UDWORD index)
 
 // ////////////////////////////////////////////////////////////////////////
 // rename the local player
-BOOL NETchangePlayerName(UDWORD index, char *newName)
+BOOL NETchangePlayerName(uint32_t index, char *newName)
 {
     if(!NetPlay.bComms)
     {
@@ -1782,7 +1782,7 @@ BOOL NETchangePlayerName(UDWORD index, char *newName)
 
 // ////////////////////////////////////////////////////////////////////////
 // return one of the four user flags in the current sessiondescription.
-SDWORD NETgetGameFlags(UDWORD flag)
+int32_t NETgetGameFlags(uint32_t flag)
 {
     if (flag < 1 || flag > 4)
     {
@@ -1814,7 +1814,7 @@ static void NETsendGameFlags(void)
 
 // ////////////////////////////////////////////////////////////////////////
 // Set a game flag
-BOOL NETsetGameFlags(UDWORD flag, SDWORD value)
+BOOL NETsetGameFlags(uint32_t flag, int32_t value)
 {
     if(!NetPlay.bComms)
     {
@@ -2236,7 +2236,7 @@ void NETdiscoverUPnPDevices(void)
 // setup stuff
 int NETinit(BOOL bFirstCall)
 {
-    UDWORD i;
+    uint32_t i;
 
     debug(LOG_NET, "NETinit");
     NETlogEntry("NETinit!", SYNC_FLAG, selectedPlayer);
@@ -2248,7 +2248,7 @@ int NETinit(BOOL bFirstCall)
 #if defined(WZ_OS_WIN)
         {
             static WSADATA stuff;
-            WORD ver_required = (2 << 8) + 2;
+            int16_t ver_required = (2 << 8) + 2;
             if (WSAStartup(ver_required, &stuff) != 0)
             {
                 debug(LOG_ERROR, "Failed to initialize Winsock: %s", strSockError(getSockErr()));
@@ -2264,7 +2264,7 @@ int NETinit(BOOL bFirstCall)
         }
 
         // Determine major Windows version
-        major_windows_version = LOBYTE(LOWORD(GetVersion()));
+        major_windows_version = LOint8_t(LOint16_t(GetVersion()));
 #endif
 
         for(i = 0; i < MAX_PLAYERS; i++)
@@ -2408,12 +2408,12 @@ int NETclose(void)
 
 // ////////////////////////////////////////////////////////////////////////
 // return bytes of data sent recently.
-UDWORD NETgetBytesSent(void)
+uint32_t NETgetBytesSent(void)
 {
-    static UDWORD	lastsec=0;
-    static UDWORD	timy=0;
+    static uint32_t	lastsec=0;
+    static uint32_t	timy=0;
 
-    if(  (UDWORD)clock() > (timy+CLOCKS_PER_SEC) )
+    if(  (uint32_t)clock() > (timy+CLOCKS_PER_SEC) )
     {
         timy = clock();
         lastsec = nStats.bytesSent;
@@ -2423,17 +2423,17 @@ UDWORD NETgetBytesSent(void)
     return lastsec;
 }
 
-UDWORD NETgetRecentBytesSent(void)
+uint32_t NETgetRecentBytesSent(void)
 {
     return nStats.bytesSent;
 }
 
 
-UDWORD NETgetBytesRecvd(void)
+uint32_t NETgetBytesRecvd(void)
 {
-    static UDWORD	lastsec=0;
-    static UDWORD	timy=0;
-    if(  (UDWORD)clock() > (timy+CLOCKS_PER_SEC) )
+    static uint32_t	lastsec=0;
+    static uint32_t	timy=0;
+    if(  (uint32_t)clock() > (timy+CLOCKS_PER_SEC) )
     {
         timy = clock();
         lastsec = nStats.bytesRecvd;
@@ -2442,19 +2442,19 @@ UDWORD NETgetBytesRecvd(void)
     return lastsec;
 }
 
-UDWORD NETgetRecentBytesRecvd(void)
+uint32_t NETgetRecentBytesRecvd(void)
 {
     return nStats.bytesRecvd;
 }
 
 
 //return number of packets sent last sec.
-UDWORD NETgetPacketsSent(void)
+uint32_t NETgetPacketsSent(void)
 {
-    static UDWORD	lastsec=0;
-    static UDWORD	timy=0;
+    static uint32_t	lastsec=0;
+    static uint32_t	timy=0;
 
-    if(  (UDWORD)clock() > (timy+CLOCKS_PER_SEC) )
+    if(  (uint32_t)clock() > (timy+CLOCKS_PER_SEC) )
     {
         timy = clock();
         lastsec = nStats.packetsSent;
@@ -2465,17 +2465,17 @@ UDWORD NETgetPacketsSent(void)
 }
 
 
-UDWORD NETgetRecentPacketsSent(void)
+uint32_t NETgetRecentPacketsSent(void)
 {
     return nStats.packetsSent;
 }
 
 
-UDWORD NETgetPacketsRecvd(void)
+uint32_t NETgetPacketsRecvd(void)
 {
-    static UDWORD	lastsec=0;
-    static UDWORD	timy=0;
-    if(  (UDWORD)clock() > (timy+CLOCKS_PER_SEC) )
+    static uint32_t	lastsec=0;
+    static uint32_t	timy=0;
+    if(  (uint32_t)clock() > (timy+CLOCKS_PER_SEC) )
     {
         timy = clock();
         lastsec = nStats.packetsRecvd;
@@ -2487,7 +2487,7 @@ UDWORD NETgetPacketsRecvd(void)
 
 // ////////////////////////////////////////////////////////////////////////
 // Send a message to a player, option to guarantee message
-BOOL NETsend(NETMSG *msg, UDWORD player)
+BOOL NETsend(NETMSG *msg, uint32_t player)
 {
     int size;
     ssize_t result = 0;
@@ -3129,7 +3129,7 @@ BOOL NETsetupTCPIP(const char *machine)
 *         NET_BUFFER_SIZE is at 16k.  (also remember text chat, plus all the other cruff)
 */
 #define MAX_FILE_TRANSFER_PACKET 2048
-UBYTE NETsendFile(char *fileName, UDWORD player)
+uint8_t NETsendFile(char *fileName, uint32_t player)
 {
     uint32_t        bytesToRead = 0;
     uint8_t		sendto = 0;
@@ -3170,7 +3170,7 @@ UBYTE NETsendFile(char *fileName, UDWORD player)
 
 /* @TODO more error checking (?) different file types (?) */
 // recv file. it returns % of the file so far recvd.
-UBYTE NETrecvFile(void)
+uint8_t NETrecvFile(void)
 {
     uint32_t        bytesToRead = 0;
     int32_t		fileSize = 0, currPos = 0;
@@ -3516,7 +3516,7 @@ void NETregisterServer(int state)
 static void NETallowJoining(void)
 {
     unsigned int i;
-    UDWORD numgames = htonl(1);	// always 1 on normal server
+    uint32_t numgames = htonl(1);	// always 1 on normal server
     char buffer[5];
     ssize_t recv_result = 0;
 
@@ -3714,7 +3714,7 @@ static void NETallowJoining(void)
                     else if (NetPlay.GamePassworded && strcmp(NetPlay.gamePassword, GamePassword) != 0)
                     {
                         // Wrong password. Reject.
-                        rejected = (uint8_t)ERROR_WRONGPASSWORD;
+                        rejected = (uint8_t)ERROR_WRONGPASint16_t;
                     }
                     else if (NetPlay.playercount > gamestruct.desc.dwMaxPlayers)
                     {
@@ -3792,8 +3792,8 @@ static void NETallowJoining(void)
 }
 
 BOOL NEThostGame(const char *SessionName, const char *PlayerName,
-                 SDWORD one, SDWORD two, SDWORD three, SDWORD four,
-                 UDWORD plyrs)	// # of players.
+                 int32_t one, int32_t two, int32_t three, int32_t four,
+                 uint32_t plyrs)	// # of players.
 {
     unsigned int i;
 
@@ -4067,7 +4067,7 @@ BOOL NETfindGame(void)
 // ////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////
 // Functions used to setup and join games.
-BOOL NETjoinGame(UDWORD gameNumber, const char *playername)
+BOOL NETjoinGame(uint32_t gameNumber, const char *playername)
 {
     struct addrinfo *cur = NULL;
     struct addrinfo *hosts = NULL;

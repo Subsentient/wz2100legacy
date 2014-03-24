@@ -44,12 +44,12 @@ typedef struct _warzoneGlobals
     FMV_MODE	FMVmode;
     SCANLINE_MODE scanlines;
     BOOL		bFog;
-    SWORD		effectsLevel;
+    int16_t		effectsLevel;
     BOOL		Fullscreen;
     BOOL		soundEnabled;
     BOOL		trapCursor;
-    UDWORD		width;
-    UDWORD		height;
+    uint32_t		width;
+    uint32_t		height;
     bool		vsync;
     bool            pauseOnFocusLoss;
     bool            ColouredCursor;
@@ -154,22 +154,22 @@ bool war_GetTextureCompression(void)
 	}
 }
 
-void war_SetWidth(UDWORD width)
+void war_SetWidth(uint32_t width)
 {
     warGlobs.width = width;
 }
 
-UDWORD war_GetWidth(void)
+uint32_t war_GetWidth(void)
 {
     return warGlobs.width;
 }
 
-void war_SetHeight(UDWORD height)
+void war_SetHeight(uint32_t height)
 {
     warGlobs.height = height;
 }
 
-UDWORD war_GetHeight(void)
+uint32_t war_GetHeight(void)
 {
     return warGlobs.height;
 }

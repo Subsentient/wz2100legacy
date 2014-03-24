@@ -32,16 +32,16 @@ BOOL gwInitialise(void);
 void gwShutDown(void);
 
 // Add a gateway to the system
-BOOL gwNewGateway(SDWORD x1, SDWORD y1, SDWORD x2, SDWORD y2);
+BOOL gwNewGateway(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 
 // Release a gateway
 void gwFreeGateway(GATEWAY *psDel);
 
 // load a gateway list
-BOOL gwLoadGateways(char *pFileBuffer, UDWORD fileSize);
+BOOL gwLoadGateways(char *pFileBuffer, uint32_t fileSize);
 
 // Get number of gateways.
-UDWORD gwNumGateways(void);
+uint32_t gwNumGateways(void);
 
 // Get the gateway list.
 GATEWAY *gwGetGateways(void);

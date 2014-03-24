@@ -64,7 +64,7 @@ enum
 
 /* The store for the research stats */
 extern		RESEARCH				*asResearch;
-extern		UDWORD					numResearch;
+extern		uint32_t					numResearch;
 
 //List of pointers to arrays of PLAYER_RESEARCH[numResearch] for each player
 extern PLAYER_RESEARCH		*asPlayerResList[MAX_PLAYERS];
@@ -72,34 +72,34 @@ extern PLAYER_RESEARCH		*asPlayerResList[MAX_PLAYERS];
 //used for Callbacks to say which topic was last researched
 extern RESEARCH				*psCBLastResearch;
 extern STRUCTURE			*psCBLastResStructure;
-extern SDWORD				CBResFacilityOwner;
+extern int32_t				CBResFacilityOwner;
 
 /* Default level of sensor, repair and ECM */
-extern UDWORD	aDefaultSensor[MAX_PLAYERS];
-extern UDWORD	aDefaultECM[MAX_PLAYERS];
-extern UDWORD	aDefaultRepair[MAX_PLAYERS];
+extern uint32_t	aDefaultSensor[MAX_PLAYERS];
+extern uint32_t	aDefaultECM[MAX_PLAYERS];
+extern uint32_t	aDefaultRepair[MAX_PLAYERS];
 
 //extern BOOL loadResearch(void);
-extern BOOL loadResearch(const char *pResearchData, UDWORD bufferSize);
+extern BOOL loadResearch(const char *pResearchData, uint32_t bufferSize);
 //Load the pre-requisites for a research list
-extern BOOL loadResearchPR(const char *pPRData, UDWORD bufferSize);
+extern BOOL loadResearchPR(const char *pPRData, uint32_t bufferSize);
 //Load the artefacts for a research list
-extern BOOL loadResearchArtefacts(const char *pArteData, UDWORD bufferSize, UDWORD listNumber);
+extern BOOL loadResearchArtefacts(const char *pArteData, uint32_t bufferSize, uint32_t listNumber);
 //Load the pre-requisites for a research list
-extern BOOL loadResearchFunctions(const char *pFunctionData, UDWORD bufferSize);
+extern BOOL loadResearchFunctions(const char *pFunctionData, uint32_t bufferSize);
 //Load the Structures for a research list
-extern BOOL loadResearchStructures(const char *pStructData, UDWORD bufferSize, UDWORD listNumber);
+extern BOOL loadResearchStructures(const char *pStructData, uint32_t bufferSize, uint32_t listNumber);
 
 /*function to check what can be researched for a particular player at any one
   instant. Returns the number to research*/
-//extern UBYTE fillResearchList(UBYTE *plist, UDWORD playerID, UWORD topic,
-//							   UWORD limit);
-//needs to be UWORD sized for Patches
-extern UWORD fillResearchList(UWORD *plist, UDWORD playerID, UWORD topic,
-                              UWORD limit);
+//extern uint8_t fillResearchList(uint8_t *plist, uint32_t playerID, uint16_t topic,
+//							   uint16_t limit);
+//needs to be uint16_t sized for Patches
+extern uint16_t fillResearchList(uint16_t *plist, uint32_t playerID, uint16_t topic,
+                              uint16_t limit);
 
 /* process the results of a completed research topic */
-extern void researchResult(UDWORD researchIndex, UBYTE player, BOOL bDisplay, STRUCTURE *psResearchFacility);
+extern void researchResult(uint32_t researchIndex, uint8_t player, BOOL bDisplay, STRUCTURE *psResearchFacility);
 
 //this just inits all the research arrays
 extern BOOL ResearchShutDown(void);
@@ -118,17 +118,17 @@ extern RESEARCH *getResearchForMsg(struct _viewdata *pViewData);
 
 /* Sets the 'possible' flag for a player's research so the topic will appear in
 the research list next time the Research Facilty is selected */
-extern BOOL enableResearch(RESEARCH *psResearch, UDWORD player);
+extern BOOL enableResearch(RESEARCH *psResearch, uint32_t player);
 
 /*find the last research topic of importance that the losing player did and
 'give' the results to the reward player*/
-extern void researchReward(UBYTE losingPlayer, UBYTE rewardPlayer);
+extern void researchReward(uint8_t losingPlayer, uint8_t rewardPlayer);
 
 /*check to see if any research has been completed that enables self repair*/
-extern BOOL selfRepairEnabled(UBYTE player);
+extern BOOL selfRepairEnabled(uint8_t player);
 
-extern SDWORD	mapRIDToIcon( UDWORD rid );
-extern SDWORD	mapIconToRID(UDWORD iconID);
+extern int32_t	mapRIDToIcon( uint32_t rid );
+extern int32_t	mapIconToRID(uint32_t iconID);
 extern BOOL checkResearchStats(void);
 
 /*puts research facility on hold*/
@@ -139,9 +139,9 @@ extern void releaseResearch(STRUCTURE *psBuilding);
 /*checks the stat to see if its of type wall or defence*/
 extern BOOL wallDefenceStruct(STRUCTURE_STATS *psStats);
 
-extern void enableSelfRepair(UBYTE player);
+extern void enableSelfRepair(uint8_t player);
 
-void CancelAllResearch(UDWORD pl);
+void CancelAllResearch(uint32_t pl);
 
 extern BOOL researchInitVars(void);
 

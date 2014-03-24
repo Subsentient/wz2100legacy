@@ -37,7 +37,7 @@ struct _widget;
 struct _w_context;
 
 /* The display function prototype */
-typedef void (*WIDGET_DISPLAY)(struct _widget *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+typedef void (*WIDGET_DISPLAY)(struct _widget *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 /* The optional user callback function */
 typedef void (*WIDGET_CALLBACK)(struct _widget *psWidget, struct _w_context *psContext);
@@ -46,17 +46,17 @@ typedef void (*WIDGET_AUDIOCALLBACK)(int AudioID);
 
 /* The common widget data */
 #define WIDGET_BASE \
-	UDWORD			formID;			/* ID of the widgets base form. */ \
-	UDWORD			id;				/* The user set ID number for the widget */ \
+	uint32_t			formID;			/* ID of the widgets base form. */ \
+	uint32_t			id;				/* The user set ID number for the widget */ \
 									/* This is returned when e.g. a button is pressed */ \
 	WIDGET_TYPE		type;			/* The widget type */ \
-	UDWORD			style;			/* The style of the widget */ \
-	SWORD			x,y;			/* The location of the widget */ \
-	UWORD			width,height;	/* The size of the widget */ \
+	uint32_t			style;			/* The style of the widget */ \
+	int16_t			x,y;			/* The location of the widget */ \
+	uint16_t			width,height;	/* The size of the widget */ \
 	WIDGET_DISPLAY	display;		/* Display the widget */\
 	WIDGET_CALLBACK	callback;		/* User callback (if any) */\
 	void			*pUserData;		/* Pointer to a user data block (if any) */\
-	UDWORD			UserData;		/* User data (if any) */\
+	uint32_t			UserData;		/* User data (if any) */\
 	\
 	struct _widget	*psNext			/* Pointer to the next widget in the screen list */
 
@@ -95,8 +95,8 @@ typedef struct _w_context
 {
     W_SCREEN	*psScreen;			// Parent screen of the widget
     struct _w_form	*psForm;			// Parent form of the widget
-    SDWORD		xOffset,yOffset;	// Screen offset of the parent form
-    SDWORD		mx,my;				// mouse position on the form
+    int32_t		xOffset,yOffset;	// Screen offset of the parent form
+    int32_t		mx,my;				// mouse position on the form
 } W_CONTEXT;
 
 #endif // __INCLUDED_LIB_WIDGET_WIDGBASE_H__

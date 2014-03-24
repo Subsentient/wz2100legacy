@@ -51,7 +51,7 @@ BOOL rotateRadar; ///< Rotate the radar?
 
 static PIELIGHT		colRadarAlly, colRadarMe, colRadarEnemy;
 static PIELIGHT		tileColours[MAX_TILES];
-static UDWORD		*radarBuffer = NULL;
+static uint32_t		*radarBuffer = NULL;
 
 PIELIGHT clanColours[MAX_PLAYERS]=
 {
@@ -80,10 +80,10 @@ static PIELIGHT flashColours[MAX_PLAYERS]=
     {{254,37,37,200}}		// Player 7
 };
 
-static SDWORD radarWidth, radarHeight, radarCenterX, radarCenterY, radarTexWidth, radarTexHeight;
+static int32_t radarWidth, radarHeight, radarCenterX, radarCenterY, radarTexWidth, radarTexHeight;
 static uint8_t RadarZoom;
 static float RadarZoomMultiplier = 1.0f;
-static UDWORD radarBufferSize = 0;
+static uint32_t radarBufferSize = 0;
 static int frameSkip = 0;
 
 static void DrawRadarTiles(void);
@@ -141,7 +141,7 @@ BOOL resizeRadar(void)
     }
     radarTexWidth = scrollMaxX - scrollMinX;
     radarTexHeight = scrollMaxY - scrollMinY;
-    radarBufferSize = radarTexWidth * radarTexHeight * sizeof(UDWORD);
+    radarBufferSize = radarTexWidth * radarTexHeight * sizeof(uint32_t);
     radarBuffer = malloc(radarBufferSize);
     if (radarBuffer == NULL)
     {
@@ -392,7 +392,7 @@ static PIELIGHT appliedRadarColour(RADAR_DRAW_MODE radarDrawMode, MAPTILE *WTile
 /** Draw the map tiles on the radar. */
 static void DrawRadarTiles(void)
 {
-    SDWORD	x, y;
+    int32_t	x, y;
 
     for (x = scrollMinX; x < scrollMaxX; x++)
     {
@@ -410,7 +410,7 @@ static void DrawRadarTiles(void)
 /** Draw the droids and structure positions on the radar. */
 static void DrawRadarObjects(void)
 {
-    UBYTE				clan;
+    uint8_t				clan;
     PIELIGHT			playerCol;
     PIELIGHT			flashCol;
     int				x, y;
@@ -547,15 +547,15 @@ static void RotateVector2D(Vector3i *Vector, Vector3i *TVector, Vector3i *Pos, i
     }
 }
 
-static SDWORD getDistanceAdjust( void )
+static int32_t getDistanceAdjust( void )
 {
-    UDWORD	origDistance = MAXDISTANCE;
-    SDWORD	dif = MAX(origDistance - getViewDistance(), 0);
+    uint32_t	origDistance = MAXDISTANCE;
+    int32_t	dif = MAX(origDistance - getViewDistance(), 0);
 
     return dif / 100;
 }
 
-static SDWORD getLengthAdjust( void )
+static int32_t getLengthAdjust( void )
 {
     const int pitch = 360 - (player.r.x/DEG_1);
 
@@ -608,16 +608,16 @@ static void drawViewingWindow(float radarX, float radarY, int x, int y, float pi
         case 1:
         case 2:
             // white
-            colour.byte.r = UBYTE_MAX;
-            colour.byte.g = UBYTE_MAX;
-            colour.byte.b = UBYTE_MAX;
+            colour.byte.r = uint8_t_MAX;
+            colour.byte.g = uint8_t_MAX;
+            colour.byte.b = uint8_t_MAX;
             colour.byte.a = 0x3f;
             break;
         case 3:
             // greenish
             colour.byte.r = 0x3f;
             colour.byte.a = 0x3f;
-            colour.byte.g = UBYTE_MAX;
+            colour.byte.g = uint8_t_MAX;
             colour.byte.b = 0x3f;
         default:
             // black
@@ -660,7 +660,7 @@ BOOL CoordInRadar(int x,int y)
     return true;
 }
 
-void radarColour(UDWORD tileNumber, uint8_t r, uint8_t g, uint8_t b)
+void radarColour(uint32_t tileNumber, uint8_t r, uint8_t g, uint8_t b)
 {
     tileColours[tileNumber].byte.r = r;
     tileColours[tileNumber].byte.g = g;

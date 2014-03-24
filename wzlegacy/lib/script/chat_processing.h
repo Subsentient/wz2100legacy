@@ -41,14 +41,14 @@ typedef struct _chat_command_data
 {
     const char	*pCmdDescription;				/* String representing a certain command */
     BOOL		bPlayerAddressed[MAX_PLAYERS];	/* Flag to indicate whether a command was addressed to a certain player */
-    SDWORD		numCmdParams;					/* Number of extracted parameters associated with each command */
+    int32_t		numCmdParams;					/* Number of extracted parameters associated with each command */
     INTERP_VAL	parameter[MAX_CHAT_CMD_PARAMS];	/* Parameters extracted from text - to be used with scripts */
 } CHAT_CMD_DATA;
 
 typedef struct _chat_command
 {
     char			lastMessage[MAXSTRLEN];			/* Parse the same mesage only once - in case more than one player is trying to parse */
-    SDWORD			numCommands;					/* Total number of commands in chat message */
+    int32_t			numCommands;					/* Total number of commands in chat message */
     CHAT_CMD_DATA	cmdData[MAX_CHAT_COMMANDS];		/* Holds information for each recognized command */
 } CHAT_MSG;
 
@@ -60,9 +60,9 @@ extern CHAT_MSG chat_msg;
 extern void chatGetErrorData(int *pLine, char **ppText);
 
 /* Set the current input buffer for the lexer */
-extern void chatSetInputBuffer(char *pBuffer, UDWORD size);
+extern void chatSetInputBuffer(char *pBuffer, uint32_t size);
 
 // Load message
-extern BOOL chatLoad(char *pData, UDWORD size);
+extern BOOL chatLoad(char *pData, uint32_t size);
 
 #endif

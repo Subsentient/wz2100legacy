@@ -86,11 +86,11 @@ typedef struct _maptile
 {
     uint8_t			tileInfoBits;
     uint8_t			tileVisBits;	// COMPRESSED - bit per player
-    UBYTE			height;			// The height at the top left of the tile
-    UBYTE			illumination;	// How bright is this tile?
-    UBYTE			radarIllumination; // Tile Illumination inverted to show proper heights on minimap.
-    UWORD			texture;		// Which graphics texture is on this tile
-    UBYTE			watchers[MAX_PLAYERS];		// player sees through fog of war here with this many objects
+    uint8_t			height;			// The height at the top left of the tile
+    uint8_t			illumination;	// How bright is this tile?
+    uint8_t			radarIllumination; // Tile Illumination inverted to show proper heights on minimap.
+    uint16_t			texture;		// Which graphics texture is on this tile
+    uint8_t			watchers[MAX_PLAYERS];		// player sees through fog of war here with this many objects
     float			level;
     BASE_OBJECT		*psObject;		// Any object sitting on the location (e.g. building)
     PIELIGHT		colour;
@@ -199,7 +199,7 @@ static inline bool TileHasSmallStructure(const MAPTILE *tile)
 /* Arbitrary maximum number of terrain textures - used in look up table for terrain type */
 #define MAX_TILE_TEXTURES	255
 
-extern UBYTE terrainTypes[MAX_TILE_TEXTURES];
+extern uint8_t terrainTypes[MAX_TILE_TEXTURES];
 
 static inline unsigned char terrainType(const MAPTILE *tile)
 {
@@ -217,7 +217,7 @@ static inline unsigned char terrainType(const MAPTILE *tile)
 #define TILE_MIN_HEIGHT 0
 
 /* The size and contents of the map */
-extern UDWORD	mapWidth, mapHeight;
+extern uint32_t	mapWidth, mapHeight;
 extern MAPTILE *psMapTiles;
 
 /*
@@ -268,16 +268,16 @@ static inline void clip_world_offmap(int *worldX, int *worldY)
 extern BOOL mapShutdown(void);
 
 /* Create a new map of a specified size */
-extern BOOL mapNew(UDWORD width, UDWORD height);
+extern BOOL mapNew(uint32_t width, uint32_t height);
 
 /* Load the map data */
-extern BOOL mapLoad(char *pFileData, UDWORD fileSize);
+extern BOOL mapLoad(char *pFileData, uint32_t fileSize);
 
 /* Save the map data */
-extern BOOL mapSave(char **ppFileData, UDWORD *pFileSize);
+extern BOOL mapSave(char **ppFileData, uint32_t *pFileSize);
 
 /* Return a pointer to the tile structure at x,y */
-static inline WZ_DECL_PURE MAPTILE *mapTile(SDWORD x, SDWORD y)
+static inline WZ_DECL_PURE MAPTILE *mapTile(int32_t x, int32_t y)
 {
     // Clamp x and y values to actual ones
     // Give one tile worth of leeway before asserting, for units/transporters coming in from off-map.
@@ -294,42 +294,42 @@ static inline WZ_DECL_PURE MAPTILE *mapTile(SDWORD x, SDWORD y)
 }
 
 /* Return height of tile at x,y */
-static inline WZ_DECL_PURE SWORD map_TileHeight(UDWORD x, UDWORD y)
+static inline WZ_DECL_PURE int16_t map_TileHeight(uint32_t x, uint32_t y)
 {
     if ( x >= mapWidth || y >= mapHeight )
     {
         return 0;
     }
-    return (SWORD)(psMapTiles[x + (y * mapWidth)].height * ELEVATION_SCALE);
+    return (int16_t)(psMapTiles[x + (y * mapWidth)].height * ELEVATION_SCALE);
 }
 
 /*sets the tile height */
-static inline void setTileHeight(UDWORD x, UDWORD y, UDWORD height)
+static inline void setTileHeight(uint32_t x, uint32_t y, uint32_t height)
 {
     ASSERT_OR_RETURN( , x < mapWidth, "x coordinate %u bigger than map width %u", x, mapWidth);
     ASSERT_OR_RETURN( , y < mapHeight, "y coordinate %u bigger than map height %u", y, mapHeight);
 
-    psMapTiles[x + (y * mapWidth)].height = (UBYTE) (height / ELEVATION_SCALE);
+    psMapTiles[x + (y * mapWidth)].height = (uint8_t) (height / ELEVATION_SCALE);
 }
 
 /* Return whether a tile coordinate is on the map */
-static inline BOOL tileOnMap(SDWORD x, SDWORD y)
+static inline BOOL tileOnMap(int32_t x, int32_t y)
 {
-    return (x >= 0) && (x < (SDWORD)mapWidth) && (y >= 0) && (y < (SDWORD)mapHeight);
+    return (x >= 0) && (x < (int32_t)mapWidth) && (y >= 0) && (y < (int32_t)mapHeight);
 }
 
 /* Return true if a tile is not too near the map edge and not outside of the map */
-static inline BOOL tileInsideBuildRange(SDWORD x, SDWORD y)
+static inline BOOL tileInsideBuildRange(int32_t x, int32_t y)
 {
-    return (x >= TOO_NEAR_EDGE) && (x < ((SDWORD)mapWidth - TOO_NEAR_EDGE)) &&
-           (y >= TOO_NEAR_EDGE) && (y < ((SDWORD)mapHeight - TOO_NEAR_EDGE));
+    return (x >= TOO_NEAR_EDGE) && (x < ((int32_t)mapWidth - TOO_NEAR_EDGE)) &&
+           (y >= TOO_NEAR_EDGE) && (y < ((int32_t)mapHeight - TOO_NEAR_EDGE));
 }
 
 /* Return whether a world coordinate is on the map */
 static inline BOOL worldOnMap(int x, int y)
 {
-    return (x >= 0) && (x < ((SDWORD)mapWidth << TILE_SHIFT)) &&
-           (y >= 0) && (y < ((SDWORD)mapHeight << TILE_SHIFT));
+    return (x >= 0) && (x < ((int32_t)mapWidth << TILE_SHIFT)) &&
+           (y >= 0) && (y < ((int32_t)mapHeight << TILE_SHIFT));
 }
 
 
@@ -357,27 +357,27 @@ static inline bool worldOnMap3f(Vector3f pos)
 /* Store a map coordinate and it's associated tile */
 typedef struct _tile_coord
 {
-    UDWORD	x,y;
+    uint32_t	x,y;
     MAPTILE	*psTile;
 } TILE_COORD;
 
 /* Return height of x,y */
-extern SWORD map_Height(int x, int y);
+extern int16_t map_Height(int x, int y);
 
 /* returns true if object is above ground */
 extern BOOL mapObjIsAboveGround( BASE_OBJECT *psObj );
 
 /* returns the max and min height of a tile by looking at the four corners
    in tile coords */
-extern void getTileMaxMin(UDWORD x, UDWORD y, UDWORD *pMax, UDWORD *pMin);
+extern void getTileMaxMin(uint32_t x, uint32_t y, uint32_t *pMax, uint32_t *pMin);
 
-UDWORD GetHeightOfMap(void);
-UDWORD GetWidthOfMap(void);
+uint32_t GetHeightOfMap(void);
+uint32_t GetWidthOfMap(void);
 extern bool readVisibilityData(const char *fileName);
 extern bool	writeVisibilityData(const char *fileName);
 
 //scroll min and max values
-extern SDWORD		scrollMinX, scrollMaxX, scrollMinY, scrollMaxY;
+extern int32_t		scrollMinX, scrollMaxX, scrollMinY, scrollMaxY;
 
 void mapFloodFillContinents(void);
 

@@ -70,8 +70,8 @@ typedef struct _seq_display
 {
     char		sequenceName[MAX_STR_LENGTH];
 
-    UBYTE		flag;			//flag data to control video playback 1 = loop till audio finish
-    UBYTE		numText;		//the number of textmessages associated with
+    uint8_t		flag;			//flag data to control video playback 1 = loop till audio finish
+    uint8_t		numText;		//the number of textmessages associated with
     //this sequence
     const char    **ppTextMsg;	//Pointer to text messages - if any
     char		*pAudio;		/*name of audio track to play (for this seq)*/
@@ -80,27 +80,27 @@ typedef struct _seq_display
 //info required to view a flic in Intelligence Screen
 typedef struct _view_replay
 {
-    UBYTE		numSeq;
+    uint8_t		numSeq;
     SEQ_DISPLAY *pSeqList;
 } VIEW_REPLAY;
 
 // info required to view a proximity message
 typedef struct _view_proximity
 {
-    UDWORD		x;			//world coords for position of Proximity message
-    UDWORD		y;
-    UDWORD		z;
+    uint32_t		x;			//world coords for position of Proximity message
+    uint32_t		y;
+    uint32_t		z;
     PROX_TYPE	proxType;
-    SDWORD		audioID;	/*ID of the audio track to play - if any */
-    SDWORD		sender;		//user who sent this msg
-    SDWORD		timeAdded;	//remember when was added, so can remove after certain period of time
+    int32_t		audioID;	/*ID of the audio track to play - if any */
+    int32_t		sender;		//user who sent this msg
+    int32_t		timeAdded;	//remember when was added, so can remove after certain period of time
 } VIEW_PROXIMITY;
 
 typedef struct _viewdata
 {
     char		*pName;		//name ID of the message - used for loading in and identifying
     VIEW_TYPE	type;		//the type of view
-    UBYTE		numText;	//the number of textmessages associated with this data
+    uint8_t		numText;	//the number of textmessages associated with this data
     const char    **ppTextMsg;	//Pointer to text messages - if any
     void		*pData;		/*the data required to view - either a
 							  VIEW_RESEARCH, VIEW_PROXIMITY or VIEW_REPLAY*/
@@ -118,10 +118,10 @@ typedef enum _msg_data_type
 typedef struct _message
 {
     MESSAGE_TYPE	type;					//The type of message
-    UDWORD			id;						//ID number of the message
+    uint32_t			id;						//ID number of the message
     MSG_VIEWDATA	*pViewData;				//Pointer to view data - if any - should be some!
     BOOL			read;					//flag to indicate whether message has been read
-    UDWORD			player;					//which player this message belongs to
+    uint32_t			player;					//which player this message belongs to
     MSG_DATA_TYPE	dataType;				//stores actual type of data pViewData points to
     //only relevant for messages of type MSG_PROXIMITY
 
@@ -133,16 +133,16 @@ typedef struct _proximity_display
 {
     POSITION_OBJ;
     MESSAGE			*psMessage;				//message associated with this 'button'
-    UDWORD			timeLastDrawn;			//stores the time the 'button' was last drawn for animation
-    UDWORD			strobe;					//id of image last used
-    UDWORD			buttonID;				//id of the button for the interface
+    uint32_t			timeLastDrawn;			//stores the time the 'button' was last drawn for animation
+    uint32_t			strobe;					//id of image last used
+    uint32_t			buttonID;				//id of the button for the interface
     struct _proximity_display	*psNext;	//pointer to the next in the list
 } PROXIMITY_DISPLAY;
 
 typedef struct _viewData_list
 {
     VIEWDATA				*psViewData;	//array of data
-    UBYTE					numViewData;	//number in array
+    uint8_t					numViewData;	//number in array
     struct _viewData_list	*psNext;		//next array of data
 } VIEWDATA_LIST;
 

@@ -22,13 +22,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 #include "droiddef.h"
 
-extern BOOL intDisplayMultiJoiningStatus(UBYTE joinCount);
-extern BOOL MultiPlayerLeave			(UDWORD playerIndex);						// A player has left the game.
-extern BOOL MultiPlayerJoin				(UDWORD playerIndex);						// A Player has joined the game.
-extern void setupNewPlayer				(UDWORD player);		// stuff to do when player joins.
-extern void clearPlayer					(UDWORD player, BOOL quietly);// wipe a player off the face of the earth.
+extern BOOL intDisplayMultiJoiningStatus(uint8_t joinCount);
+extern BOOL MultiPlayerLeave			(uint32_t playerIndex);						// A player has left the game.
+extern BOOL MultiPlayerJoin				(uint32_t playerIndex);						// A Player has joined the game.
+extern void setupNewPlayer				(uint32_t player);		// stuff to do when player joins.
+extern void clearPlayer					(uint32_t player, BOOL quietly);// wipe a player off the face of the earth.
 //extern BOOL ProcessDroidOrders			(void);
-//extern UDWORD							arenaPlayersReceived;
+//extern uint32_t							arenaPlayersReceived;
 
 typedef struct
 {

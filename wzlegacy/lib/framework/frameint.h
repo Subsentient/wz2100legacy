@@ -40,9 +40,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 
 /* Initialise the double buffered display */
-extern bool screenInitialise(UDWORD		width,			// Display width
-                             UDWORD		height,			// Display height
-                             UDWORD		bitDepth,		// Display bit depth
+extern bool screenInitialise(uint32_t		width,			// Display width
+                             uint32_t		height,			// Display height
+                             uint32_t		bitDepth,		// Display bit depth
                              bool		fullScreen,		// Whether to start windowed
                              // or full screen
                              bool		vsync);
@@ -56,9 +56,9 @@ extern void screenShutDown(void);
 extern void inputNewFrame(void);
 
 /* The Current screen size and bit depth */
-extern UDWORD		screenWidth;
-extern UDWORD		screenHeight;
-extern UDWORD		screenDepth;
+extern uint32_t		screenWidth;
+extern uint32_t		screenHeight;
+extern uint32_t		screenDepth;
 
 #endif
 

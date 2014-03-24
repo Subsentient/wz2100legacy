@@ -161,8 +161,8 @@ file:			all_messages
 						++numData;
 					}
 
-					ASSERT(numData <= UBYTE_MAX, "loadViewData: Didn't expect %d (or more) viewData messages (got %u)!", UBYTE_MAX, numData);
-					if (numData > UBYTE_MAX)
+					ASSERT(numData <= uint8_t_MAX, "loadViewData: Didn't expect %d (or more) viewData messages (got %u)!", uint8_t_MAX, numData);
+					if (numData > uint8_t_MAX)
 					{
 						freeViewDataMessageList($1);
 						YYABORT;

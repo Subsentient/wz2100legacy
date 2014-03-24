@@ -209,7 +209,7 @@ typedef union YYSTYPE
 	/* Types returned by the lexer */
 	BOOL			bval;
 	float			fval;
-	SDWORD			ival;
+	int32_t			ival;
 	char			*sval;
 	INTERP_TYPE		tval;
 	STORAGE_TYPE	stype;
@@ -228,7 +228,7 @@ typedef union YYSTYPE
 	PARAM_BLOCK		*pblock;
 	PARAM_DECL		*pdecl;
 	TRIGGER_DECL	*tdecl;
-	UDWORD			integer_val;
+	uint32_t			integer_val;
 	VAR_DECL		*vdecl;
 	VAR_IDENT_DECL	*videcl;
 

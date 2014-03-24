@@ -42,7 +42,7 @@ extern void objmemShutdown(void);
 extern void objmemUpdate(void);
 
 /* Create a new droid */
-extern DROID *createDroid(UDWORD player);
+extern DROID *createDroid(uint32_t player);
 
 /* add the droid to the Droid Lists */
 extern void addDroid(DROID *psDroidToAdd, DROID *pList[MAX_PLAYERS]);
@@ -63,7 +63,7 @@ extern void freeAllMissionDroids(void);
 extern void freeAllLimboDroids(void);
 
 /* Create a new structure */
-extern STRUCTURE *createStruct(UDWORD player);
+extern STRUCTURE *createStruct(uint32_t player);
 
 /* add the structure to the Structure Lists */
 extern void addStructure(STRUCTURE *psStructToAdd);
@@ -91,7 +91,7 @@ void killFeature(FEATURE *psDel);
 extern void freeAllFeatures(void);
 
 /* Create a new Flag Position */
-extern BOOL createFlagPosition(FLAG_POSITION **ppsNew, UDWORD player);
+extern BOOL createFlagPosition(FLAG_POSITION **ppsNew, uint32_t player);
 /* add the Flag Position to the Flag Position Lists */
 extern void addFlagPosition(FLAG_POSITION *psFlagPosToAdd);
 /* Remove a Flag Position from the Lists */
@@ -101,10 +101,10 @@ extern void freeAllFlagPositions(void);
 extern void freeAllAssemblyPoints(void);
 
 // Find a base object from it's id
-extern BASE_OBJECT *getBaseObjFromId(UDWORD id);
-extern BOOL checkValidId(UDWORD id);
+extern BASE_OBJECT *getBaseObjFromId(uint32_t id);
+extern BOOL checkValidId(uint32_t id);
 
-extern UDWORD getRepairIdFromFlag(FLAG_POSITION *psFlag);
+extern uint32_t getRepairIdFromFlag(FLAG_POSITION *psFlag);
 
 void objCount(int *droids, int *structures, int *features);
 

@@ -86,7 +86,7 @@ static MISC_IMD	miscImds[] =
 // Load up all the imds into an array
 static BOOL multiLoadMiscImds( void )
 {
-    UDWORD	i=0;
+    uint32_t	i=0;
     BOOL	bMoreToProcess=true;
     char	name[15];	// hopefully!
 
@@ -114,7 +114,7 @@ static BOOL multiLoadMiscImds( void )
 }
 // -------------------------------------------------------------------------------
 // Returns a pointer to the imd from a #define number passed in - see above
-iIMDShape	*getImdFromIndex(UDWORD	index)
+iIMDShape	*getImdFromIndex(uint32_t	index)
 {
     ASSERT( index<MI_TOO_MANY,"Out of range index in getImdFromIndex" );
 
@@ -162,7 +162,7 @@ BOOL	initMiscImds( void )
     char		cybName[] = "MICNUM0.pie";
     char		vtolName[] = "MIVNUM0.pie";
     char		pieNum[2];
-    UDWORD		i;
+    uint32_t		i;
 
     /* Do the new loading system */
     multiLoadMiscImds();

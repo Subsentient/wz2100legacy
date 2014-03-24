@@ -24,10 +24,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define _evntsave_h
 
 // Save the state of the event system
-extern BOOL eventSaveState(SDWORD version, char **ppBuffer, UDWORD *pFileSize);
+extern BOOL eventSaveState(int32_t version, char **ppBuffer, uint32_t *pFileSize);
 
 // Load the state of the event system
-extern BOOL eventLoadState(char *pBuffer, UDWORD fileSize, BOOL bHashed);
+extern BOOL eventLoadState(char *pBuffer, uint32_t fileSize, BOOL bHashed);
 
 #endif
 

@@ -24,14 +24,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "stringdef.h"
 
 // requester
-extern void		addMultiRequest(const char *searchDir, const char *fileExtension, UDWORD id,UBYTE mapCam, UBYTE numPlayers);
+extern void		addMultiRequest(const char *searchDir, const char *fileExtension, uint32_t id,uint8_t mapCam, uint8_t numPlayers);
 extern BOOL		multiRequestUp;
 extern W_SCREEN *psRScreen;			// requester stuff.
-extern BOOL		runMultiRequester(UDWORD id,UDWORD *contextmode, char *chosen,UDWORD *chosenValue, short *isHoverPreview);
-extern void		displayRequestOption(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+extern BOOL		runMultiRequester(uint32_t id,uint32_t *contextmode, char *chosen,uint32_t *chosenValue, short *isHoverPreview);
+extern void		displayRequestOption(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 // multimenu
-extern void		intProcessMultiMenu		(UDWORD id);
+extern void		intProcessMultiMenu		(uint32_t id);
 extern BOOL		intRunMultiMenu			(void);
 extern BOOL		intCloseMultiMenu		(void);
 extern void		intCloseMultiMenuNoAnim	(void);
@@ -39,7 +39,7 @@ extern BOOL		intAddMultiMenu			(void);
 
 extern BOOL		addDebugMenu			(BOOL bAdd);
 extern void		intCloseDebugMenuNoAnim	(void);
-extern void		setDebugMenuEntry(char *entry, SDWORD index);
+extern void		setDebugMenuEntry(char *entry, int32_t index);
 extern bool autoCompleteName(const char *InStream, char *OutStream);
 
 extern BOOL		MultiMenuUp;
@@ -47,8 +47,8 @@ extern BOOL		ClosingMultiMenu;
 
 extern BOOL		DebugMenuUp;
 
-extern UDWORD		current_numplayers;
-extern UDWORD		current_tech;
+extern uint32_t		current_numplayers;
+extern uint32_t		current_tech;
 
 #define MULTIMENU				10600
 #define MULTIMENU_FORM			MULTIMENU

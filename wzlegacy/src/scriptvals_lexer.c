@@ -584,7 +584,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 /* Store for any string values */
 static char aText[TEXT_BUFFERS][YYLMAX];
-static UDWORD currText=0;
+static uint32_t currText=0;
 
 #include "lib/framework/lexer_input.h"
 
@@ -976,7 +976,7 @@ YY_RULE_SETUP
 #line 116 "scriptvals_lexer.l"
 {
 								INTERP_TYPE type;
-								UDWORD		index;
+								uint32_t		index;
 
 								/* See if this is a variable id or a type */
 								if (scrvLookUpType(scrv_text, &type))

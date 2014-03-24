@@ -52,14 +52,14 @@ typedef	struct mission_data
 // Could use widgets, but hey.....
 typedef	struct	_stat_bar
 {
-    UDWORD	topX,topY;		// Obvious
-    UDWORD	width,height;	// Height down screen and width _unfilled_
-    UDWORD	percent;		// What percentage full is it?
-    UDWORD	stringID;		// String resource name to stick next to it.
-    UDWORD	queTime;		// How many game ticks before it's active?
+    uint32_t	topX,topY;		// Obvious
+    uint32_t	width,height;	// Height down screen and width _unfilled_
+    uint32_t	percent;		// What percentage full is it?
+    uint32_t	stringID;		// String resource name to stick next to it.
+    uint32_t	queTime;		// How many game ticks before it's active?
     BOOL	bQueued;		// Already fired off?
     BOOL	bActive;		// Is this one active?
-    UDWORD	number;			// %d string for the associated text string.
+    uint32_t	number;			// %d string for the associated text string.
 } STAT_BAR;
 
 enum
@@ -89,8 +89,8 @@ extern BOOL	scoreInitSystem			( void );
 extern void	scoreUpdateVar			( DATA_INDEX var );
 extern void	scoreDataToConsole		( void );
 extern void	scoreDataToScreen		( void );
-extern void constructTime			( char *psText, UDWORD hours, UDWORD minutes, UDWORD seconds );
-extern void	getAsciiTime			( char *psText, UDWORD time );
+extern void constructTime			( char *psText, uint32_t hours, uint32_t minutes, uint32_t seconds );
+extern void	getAsciiTime			( char *psText, uint32_t time );
 extern bool readScoreData			( const char *fileName );
 extern bool writeScoreData			( const char *fileName );
 

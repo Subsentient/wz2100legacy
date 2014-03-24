@@ -242,7 +242,7 @@ void recvOptions()
 BOOL hostCampaign(char *sGame, char *sPlayer)
 {
     PLAYERSTATS playerStats;
-    UDWORD		i;
+    uint32_t		i;
 
     debug(LOG_WZ, "Hosting campaign: '%s', player: '%s'", sGame, sPlayer);
 
@@ -288,7 +288,7 @@ BOOL hostCampaign(char *sGame, char *sPlayer)
 // ////////////////////////////////////////////////////////////////////////////
 // Join Campaign
 
-BOOL joinCampaign(UDWORD gameNumber, char *sPlayer)
+BOOL joinCampaign(uint32_t gameNumber, char *sPlayer)
 {
     PLAYERSTATS	playerStats;
 
@@ -374,7 +374,7 @@ BOOL addTemplateToList(DROID_TEMPLATE *psNew, DROID_TEMPLATE **ppList)
 
 // ////////////////////////////////////////////////////////////////////////////
 // copy templates from one player to another.
-BOOL addTemplate(UDWORD player, DROID_TEMPLATE *psNew)
+BOOL addTemplate(uint32_t player, DROID_TEMPLATE *psNew)
 {
     return addTemplateToList(psNew, &apsDroidTemplates[player]);
 }
@@ -390,7 +390,7 @@ BOOL multiTemplateSetup(void)
 
 // ////////////////////////////////////////////////////////////////////////////
 // remove structures from map before campaign play.
-static BOOL cleanMap(UDWORD player)
+static BOOL cleanMap(uint32_t player)
 {
     DROID		*psD,*psD2;
     STRUCTURE	*psStruct;
@@ -459,10 +459,10 @@ static BOOL cleanMap(UDWORD player)
                             if(((FACTORY *)psStruct->pFunctionality)->capacity != 0)
                             {
                                 ((FACTORY *)psStruct->pFunctionality)->capacity = 0;
-                                ((FACTORY *)psStruct->pFunctionality)->productionOutput = (UBYTE)((PRODUCTION_FUNCTION *)psStruct->pStructureType->asFuncList[0])->productionOutput;
+                                ((FACTORY *)psStruct->pFunctionality)->productionOutput = (uint8_t)((PRODUCTION_FUNCTION *)psStruct->pStructureType->asFuncList[0])->productionOutput;
 
                                 psStruct->sDisplay.imd	= psStruct->pStructureType->pIMD;
-                                psStruct->body			= (UWORD)(structureBody(psStruct));
+                                psStruct->body			= (uint16_t)(structureBody(psStruct));
 
                             }
                             psStruct				= psStruct->psNext;
@@ -484,7 +484,7 @@ static BOOL cleanMap(UDWORD player)
                                 ((RESEARCH_FACILITY *)psStruct->pFunctionality)->capacity = 0;
                                 ((RESEARCH_FACILITY *)psStruct->pFunctionality)->researchPoints = ((RESEARCH_FUNCTION *)psStruct->pStructureType->asFuncList[0])->researchPoints;
                                 psStruct->sDisplay.imd	= psStruct->pStructureType->pIMD;
-                                psStruct->body			= (UWORD)(structureBody(psStruct));
+                                psStruct->body			= (uint16_t)(structureBody(psStruct));
                             }
                             psStruct=psStruct->psNext;
                         }
@@ -499,7 +499,7 @@ static BOOL cleanMap(UDWORD player)
                             ((POWER_GEN *)psStruct->pFunctionality)->multiplier += ((POWER_GEN_FUNCTION *)psStruct->pStructureType->asFuncList[0])->powerMultiplier;
 
                             psStruct->sDisplay.imd	= psStruct->pStructureType->pIMD;
-                            psStruct->body			= (UWORD)(structureBody(psStruct));
+                            psStruct->body			= (uint16_t)(structureBody(psStruct));
                         }
                         structurePowerUpgrade(psStruct);
                         psStruct=psStruct->psNext;
@@ -534,7 +534,7 @@ static BOOL cleanMap(UDWORD player)
 // setup a campaign game
 static BOOL campInit(void)
 {
-    UDWORD			player;
+    uint32_t			player;
 
     // If this is from a savegame, stop here!
     if((getSaveGameType() == GTYPE_SAVE_START)
@@ -597,7 +597,7 @@ void playerResponding(void)
 //called when the game finally gets fired up.
 BOOL multiGameInit(void)
 {
-    UDWORD player;
+    uint32_t player;
 
     for (player = 0; player < MAX_PLAYERS; player++)
     {

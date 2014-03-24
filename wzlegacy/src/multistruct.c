@@ -94,7 +94,7 @@ BOOL recvBuildStarted()
 {
     STRUCTURE_STATS *psStats;
     DROID			*psDroid;
-    UDWORD			actionX,actionY;
+    uint32_t			actionX,actionY;
     unsigned int typeIndex;
     uint8_t			player;
     uint16_t		x, y, z;
@@ -362,7 +362,7 @@ BOOL recvDestroyStructure()
 // ////////////////////////////////////////////////////////////////////////////
 //lassat is firing
 
-BOOL sendLasSat(UBYTE player, STRUCTURE *psStruct, BASE_OBJECT *psObj)
+BOOL sendLasSat(uint8_t player, STRUCTURE *psStruct, BASE_OBJECT *psObj)
 {
     NETbeginEncode(NET_LASSAT, NET_ALL_PLAYERS);
 
@@ -378,7 +378,7 @@ BOOL sendLasSat(UBYTE player, STRUCTURE *psStruct, BASE_OBJECT *psObj)
 BOOL recvLasSat()
 {
     BASE_OBJECT	*psObj;
-    UBYTE		player,targetplayer;
+    uint8_t		player,targetplayer;
     STRUCTURE	*psStruct;
     uint32_t	id,targetid;
 

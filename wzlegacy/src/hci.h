@@ -174,23 +174,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define STAT_TABFORMY		18	// Offset of the tab form within the main form.
 
 
-// 2 16 bit values packed into a DWORD.
-#define PACKDWORD(a,b)	( ( (a)<<16 ) | (b) )
-#define UNPACKDWORD_HI(a) ( (a)>>16 )
-#define UNPACKDWORD_LOW(a) ( (a) & 0xffff)
+// 2 16 bit values packed into a int32_t.
+#define PACKint32_t(a,b)	( ( (a)<<16 ) | (b) )
+#define UNPACKint32_t_HI(a) ( (a)>>16 )
+#define UNPACKint32_t_LOW(a) ( (a) & 0xffff)
 
-// 3 10 bit values packed into a DWORD.
-#define PACKDWORD_TRI(a,b,c) ( (((a) & 0x3ff) << 20) | (((b) & 0x3ff) << 10) | ((c) & 0x3ff) )
-#define UNPACKDWORD_TRI_A(a) ( ((a)>>20) & 0x3ff )
-#define UNPACKDWORD_TRI_B(a) ( ((a)>>10) & 0x3ff )
-#define UNPACKDWORD_TRI_C(a) ( (a) & 0x3ff)
+// 3 10 bit values packed into a int32_t.
+#define PACKint32_t_TRI(a,b,c) ( (((a) & 0x3ff) << 20) | (((b) & 0x3ff) << 10) | ((c) & 0x3ff) )
+#define UNPACKint32_t_TRI_A(a) ( ((a)>>20) & 0x3ff )
+#define UNPACKint32_t_TRI_B(a) ( ((a)>>10) & 0x3ff )
+#define UNPACKint32_t_TRI_C(a) ( (a) & 0x3ff)
 
-// 4 8 bit values packed into a DWORD.
-#define PACKDWORD_QUAD(a,b,c,d) ( (((a) & 0xff) << 24) | (((b) & 0xff) << 16) | (((c) & 0xff) << 8) | ((d) & 0xff)  )
-#define UNPACKDWORD_QUAD_A(a) ( ((a)>>24) & 0xff )
-#define UNPACKDWORD_QUAD_B(a) ( ((a)>>16) & 0xff )
-#define UNPACKDWORD_QUAD_C(a) ( ((a)>>8) & 0xff )
-#define UNPACKDWORD_QUAD_D(a) ( (a) & 0xff)
+// 4 8 bit values packed into a int32_t.
+#define PACKint32_t_QUAD(a,b,c,d) ( (((a) & 0xff) << 24) | (((b) & 0xff) << 16) | (((c) & 0xff) << 8) | ((d) & 0xff)  )
+#define UNPACKint32_t_QUAD_A(a) ( ((a)>>24) & 0xff )
+#define UNPACKint32_t_QUAD_B(a) ( ((a)>>16) & 0xff )
+#define UNPACKint32_t_QUAD_C(a) ( ((a)>>8) & 0xff )
+#define UNPACKint32_t_QUAD_D(a) ( (a) & 0xff)
 
 
 //#define BUILDPOINTS_STRUCTDIV 1
@@ -278,10 +278,10 @@ extern INTMODE intMode;
 extern W_SCREEN		*psWScreen;
 
 // The last widget ID from widgRunScreen
-extern UDWORD			intLastWidget;
+extern uint32_t			intLastWidget;
 
 /* The button ID of the objects stat when the stat screen is displayed */
-extern UDWORD			objStatID;
+extern uint32_t			objStatID;
 
 /* The current template for the design screen to start with*/
 extern DROID_TEMPLATE	*psCurrTemplate;
@@ -343,10 +343,10 @@ extern BOOL intAddReticule(void);
 extern void intRemoveReticule(void);
 
 /* Set the map view point to the world coordinates x,y */
-extern void intSetMapPos(UDWORD x, UDWORD y);
+extern void intSetMapPos(uint32_t x, uint32_t y);
 
 /* Set the map view point to the world coordinates x,y */
-extern void intSetMapPos(UDWORD x, UDWORD y);
+extern void intSetMapPos(uint32_t x, uint32_t y);
 
 /* Tell the interface when an object is created
  * - it may have to be added to a screen
@@ -374,14 +374,14 @@ extern BOOL intBuildMode(void);
 // add the construction interface if a constructor droid is selected
 void intCommanderSelected(DROID *psDroid);
 
-extern UWORD numForms(UDWORD total, UDWORD perForm);
+extern uint16_t numForms(uint32_t total, uint32_t perForm);
 
 //sets up the Intelligence Screen as far as the interface is concerned
 //extern void addIntelScreen(BOOL playImmediate);
 extern void addIntelScreen(void);
 
 // update shadow...
-extern void intSetShadowPower(UDWORD quantity);
+extern void intSetShadowPower(uint32_t quantity);
 
 /* Reset the widget screen to just the reticule */
 extern void intResetScreen(BOOL NoAnim);
@@ -405,10 +405,10 @@ extern STRUCTURE *interfaceStructList(void);
 extern void addTransporterInterface(DROID *psSelected, BOOL onMission);
 
 /*causes a reticule button to start flashing*/
-extern void flashReticuleButton(UDWORD buttonID);
+extern void flashReticuleButton(uint32_t buttonID);
 
 // stop a reticule button flashing
-extern void stopReticuleButtonFlash(UDWORD buttonID);
+extern void stopReticuleButtonFlash(uint32_t buttonID);
 
 //toggles the Power Bar display on and off
 extern void togglePowerBar(void);
@@ -423,25 +423,25 @@ extern void intShowPowerBar(void);
 extern void forceHidePowerBar(void);
 
 /* Add the Proximity message buttons */
-extern BOOL intAddProximityButton(PROXIMITY_DISPLAY *psProxDisp, UDWORD inc);
+extern BOOL intAddProximityButton(PROXIMITY_DISPLAY *psProxDisp, uint32_t inc);
 
 /*Remove a Proximity Button - when the message is deleted*/
 extern void intRemoveProximityButton(PROXIMITY_DISPLAY *psProxDisp);
 
 /* Allows us to fool the widgets with a keypress */
-void	setKeyButtonMapping( UDWORD	val );
+void	setKeyButtonMapping( uint32_t	val );
 
 
 
 STRUCTURE *intFindAStructure(void);
-STRUCTURE *intGotoNextStructureType(UDWORD structType,BOOL JumpTo,BOOL CancelDrive);
-DROID *intGotoNextDroidType(DROID *CurrDroid,UDWORD droidType,BOOL AllowGroup);
+STRUCTURE *intGotoNextStructureType(uint32_t structType,BOOL JumpTo,BOOL CancelDrive);
+DROID *intGotoNextDroidType(DROID *CurrDroid,uint32_t droidType,BOOL AllowGroup);
 
 /*Checks to see if there are any research topics to do and flashes the button*/
 extern void intCheckResearchButton(void);
 
 // see if a reticule button is enabled
-extern BOOL intCheckReticuleButEnabled(UDWORD id);
+extern BOOL intCheckReticuleButEnabled(uint32_t id);
 
 //access function for selected object in the interface
 extern BASE_OBJECT *getCurrentSelected(void);

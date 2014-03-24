@@ -49,18 +49,18 @@ static CONSOLE_MESSAGE	consoleStorage[MAX_CONSOLE_MESSAGES];
 
 /** Maximum drop */
 #define	MAX_DROP	32
-static UDWORD	history[MAX_DROP];
+static uint32_t	history[MAX_DROP];
 
 /** Pointer to linked list of active messages - points to elements of the array history */
 static CONSOLE_MESSAGE	*consoleMessages;
 
 /** Where in the array are we - it's cyclic */
-static UDWORD	messageIndex;
+static uint32_t	messageIndex;
 
 /** How many lines in the console history */
-static UDWORD	consoleDrop = MAX_DROP;
+static uint32_t	consoleDrop = MAX_DROP;
 
-static	UDWORD	maxDrop;
+static	uint32_t	maxDrop;
 
 #define DROP_DROPPING	1
 #define DROP_CLOSING	2
@@ -69,15 +69,15 @@ static	UDWORD	maxDrop;
 #define DROP_STEP_INTERVAL	(15)
 
 /** Console history state */
-static UDWORD	dropState;
+static uint32_t	dropState;
 
 /** How many messages are presently active? */
-static UDWORD	numActiveMessages;
+static uint32_t	numActiveMessages;
 
 /** How long do messages last for? */
-static UDWORD	messageDuration;
+static uint32_t	messageDuration;
 
-static UDWORD	lastDropChange = 0;
+static uint32_t	lastDropChange = 0;
 
 /** Is there a box under the console text? */
 static BOOL		bTextBoxActive;
@@ -86,7 +86,7 @@ static BOOL		bTextBoxActive;
 static BOOL		bConsoleDisplayEnabled;
 
 /** How many lines are displayed? */
-static UDWORD	consoleVisibleLines;
+static uint32_t	consoleVisibleLines;
 
 /** Whether new messages are allowed to be added */
 static int allowNewMessages;
@@ -94,7 +94,7 @@ static int allowNewMessages;
 /** What's the default justification? */
 static CONSOLE_TEXT_JUSTIFICATION	defJustification;
 
-static UDWORD	messageId;	// unique ID
+static uint32_t	messageId;	// unique ID
 
 /// Global string for new console messages.
 char ConsoleString[MAX_CONSOLE_TMP_STRING_LENGTH];
@@ -102,12 +102,12 @@ char ConsoleString[MAX_CONSOLE_TMP_STRING_LENGTH];
 
 /* MODULE CONSOLE PROTOTYPES */
 void	consolePrintf				( char *layout, ... );
-void	setConsoleSizePos			( UDWORD x, UDWORD y, UDWORD width );
-BOOL	addConsoleMessage			( const char *messageText, CONSOLE_TEXT_JUSTIFICATION jusType, SDWORD player );
+void	setConsoleSizePos			( uint32_t x, uint32_t y, uint32_t width );
+BOOL	addConsoleMessage			( const char *messageText, CONSOLE_TEXT_JUSTIFICATION jusType, int32_t player );
 void	updateConsoleMessages		( void );
 void	displayConsoleMessages		( void );
 void	initConsoleMessages			( void );
-void	setConsoleMessageDuration	( UDWORD time );
+void	setConsoleMessageDuration	( uint32_t time );
 void	removeTopConsoleMessage		( void );
 void	flushConsoleMessages		( void );
 void	setConsoleBackdropStatus	( BOOL state );
@@ -116,11 +116,11 @@ BOOL	getConsoleDisplayStatus		( void );
 void	setDefaultConsoleJust		( CONSOLE_TEXT_JUSTIFICATION defJ );
 void	setConsolePermanence		( BOOL state, BOOL bClearOld );
 BOOL	mouseOverConsoleBox			( void );
-void	setConsoleLineInfo			( UDWORD vis );
-UDWORD	getConsoleLineInfo			( void );
+void	setConsoleLineInfo			( uint32_t vis );
+uint32_t	getConsoleLineInfo			( void );
 void	permitNewConsoleMessages	( BOOL allow);
 int		displayOldMessages			( void );
-void	setConsoleTextColor			( SDWORD player );
+void	setConsoleTextColor			( int32_t player );
 
 /** Sets the system up */
 void	initConsoleMessages( void )
@@ -205,7 +205,7 @@ void	toggleConsoleDrop( void )
 
 /** Add a string to the console. */
 static BOOL _addConsoleMessage(const char *messageText, CONSOLE_TEXT_JUSTIFICATION jusType,
-                               SDWORD player)
+                               int32_t player)
 {
     int textLength;
     CONSOLE_MESSAGE	*psMessage;
@@ -305,13 +305,13 @@ static BOOL _addConsoleMessage(const char *messageText, CONSOLE_TEXT_JUSTIFICATI
 
 /// Wrapper for _addConsoleMessage
 BOOL addConsoleMessage(const char *messageText, CONSOLE_TEXT_JUSTIFICATION jusType,
-                       SDWORD player)
+                       int32_t player)
 {
     return _addConsoleMessage(messageText, jusType, player);
 }
 
 /// \return The number of console messages currently active
-UDWORD	getNumberConsoleMessages( void )
+uint32_t	getNumberConsoleMessages( void )
 {
     return(numActiveMessages);
 }
@@ -381,7 +381,7 @@ void	updateConsoleMessages( void )
 /**
 	Specify how long messages will stay on screen.
 */
-void	setConsoleMessageDuration(UDWORD time)
+void	setConsoleMessageDuration(uint32_t time)
 {
     messageDuration = time;
 }
@@ -422,7 +422,7 @@ void	flushConsoleMessages( void )
 }
 
 /** Sets console text color depending on message type */
-void setConsoleTextColor(SDWORD player)
+void setConsoleTextColor(int32_t player)
 {
     // System messages
     if(player == SYSTEM_MESSAGE)
@@ -710,7 +710,7 @@ void	setDefaultConsoleJust(CONSOLE_TEXT_JUSTIFICATION defJ)
 }
 
 /** Allows positioning of the console on screen */
-void	setConsoleSizePos(UDWORD x, UDWORD y, UDWORD width)
+void	setConsoleSizePos(uint32_t x, uint32_t y, uint32_t width)
 {
     mainConsole.topX = x;
     mainConsole.topY = y;
@@ -746,10 +746,10 @@ void	setConsolePermanence(BOOL state, BOOL bClearOld)
 BOOL	mouseOverConsoleBox( void )
 {
     if	(
-        ((UDWORD)mouseX() > mainConsole.topX)	// condition 1
-        && ((UDWORD)mouseY() > mainConsole.topY)	// condition 2
-        && ((UDWORD)mouseX() < mainConsole.topX + mainConsole.width)	//condition 3
-        && ((UDWORD)mouseY() < (mainConsole.topY + iV_GetTextLineSize()*numActiveMessages))	//condition 4
+        ((uint32_t)mouseX() > mainConsole.topX)	// condition 1
+        && ((uint32_t)mouseY() > mainConsole.topY)	// condition 2
+        && ((uint32_t)mouseX() < mainConsole.topX + mainConsole.width)	//condition 3
+        && ((uint32_t)mouseY() < (mainConsole.topY + iV_GetTextLineSize()*numActiveMessages))	//condition 4
     )
     {
         return(true);
@@ -761,14 +761,14 @@ BOOL	mouseOverConsoleBox( void )
 }
 
 /** Sets up how many lines are allowed and how many are visible */
-void	setConsoleLineInfo(UDWORD vis)
+void	setConsoleLineInfo(uint32_t vis)
 {
     ASSERT( vis<=MAX_CONSOLE_MESSAGES,"Request for more visible lines in the console than exist" );
     consoleVisibleLines = vis;
 }
 
 /** get how many lines are allowed and how many are visible */
-UDWORD getConsoleLineInfo(void)
+uint32_t getConsoleLineInfo(void)
 {
     return consoleVisibleLines;
 }

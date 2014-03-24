@@ -762,7 +762,7 @@ extern int chat_lex_destroy(void);
 static const char *pInputBuffer = NULL;
 static const char *pEndBuffer = NULL;
 
-static SDWORD playerIndex;
+static int32_t playerIndex;
 
 #undef YY_INPUT
 #define YY_INPUT(buf,result,max_size) \
@@ -1480,8 +1480,8 @@ YY_RULE_SETUP
 
 							}
 	YY_BREAK
-/* [^ \t\n\<\>\[\]\(\)]+		{ return T_WORD; } */
-/* [^ \t\n]+					{ console( "matched 'T_WORD'"); return T_WORD; } */
+/* [^ \t\n\<\>\[\]\(\)]+		{ return T_int16_t; } */
+/* [^ \t\n]+					{ console( "matched 'T_int16_t'"); return T_int16_t; } */
 /* Skip white space */
 case 84:
 /* rule 84 can match eol */
@@ -2466,7 +2466,7 @@ void chat_free (void * ptr )
 
 
 /* Set the current input buffer for the lexer */
-void chatSetInputBuffer(char *pBuffer, UDWORD size)
+void chatSetInputBuffer(char *pBuffer, uint32_t size)
 {
 	pInputBuffer = pBuffer;
 	pEndBuffer = pBuffer + size;

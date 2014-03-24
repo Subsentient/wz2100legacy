@@ -56,16 +56,16 @@ typedef struct
 // Frame definition structure.
 typedef struct
 {
-    SWORD OffsetX0,OffsetY0;	//< Offset top left of frame.
-    SWORD OffsetX1,OffsetY1;	//< Offset bottom right of frame.
-    SWORD TopLeft;			//< Image indecies for the corners ( -1 = don't draw).
-    SWORD TopRight;
-    SWORD BottomLeft;
-    SWORD BottomRight;
-    SWORD TopEdge,TopType;		//< Image indecies for the edges ( -1 = don't draw). Type ie FR_SOLID or FR_KEYED.
-    SWORD RightEdge,RightType;
-    SWORD BottomEdge,BottomType;
-    SWORD LeftEdge,LeftType;
+    int16_t OffsetX0,OffsetY0;	//< Offset top left of frame.
+    int16_t OffsetX1,OffsetY1;	//< Offset bottom right of frame.
+    int16_t TopLeft;			//< Image indecies for the corners ( -1 = don't draw).
+    int16_t TopRight;
+    int16_t BottomLeft;
+    int16_t BottomRight;
+    int16_t TopEdge,TopType;		//< Image indecies for the edges ( -1 = don't draw). Type ie FR_SOLID or FR_KEYED.
+    int16_t RightEdge,RightType;
+    int16_t BottomEdge,BottomType;
+    int16_t LeftEdge,LeftType;
     FRAMERECT FRect[5];		//< Fill rectangles.
 } IMAGEFRAME;
 
@@ -182,17 +182,17 @@ BOOL imageInitBitmaps(void)
 
 // Render a window frame.
 //
-static void RenderWindow(FRAMETYPE frame, UDWORD x, UDWORD y, UDWORD Width, UDWORD Height, BOOL Opaque)
+static void RenderWindow(FRAMETYPE frame, uint32_t x, uint32_t y, uint32_t Width, uint32_t Height, BOOL Opaque)
 {
-    SWORD WTopRight = 0;
-    SWORD WTopLeft = 0;
-    SWORD WBottomRight = 0;
-    SWORD WBottomLeft = 0;
-    SWORD HTopRight = 0;
-    SWORD HTopLeft = 0;
-    SWORD HBottomRight = 0;
-    SWORD HBottomLeft = 0;
-    UWORD RectI;
+    int16_t WTopRight = 0;
+    int16_t WTopLeft = 0;
+    int16_t WBottomRight = 0;
+    int16_t WBottomLeft = 0;
+    int16_t HTopRight = 0;
+    int16_t HTopLeft = 0;
+    int16_t HBottomRight = 0;
+    int16_t HBottomLeft = 0;
+    uint16_t RectI;
     FRAMERECT *Rect;
     BOOL Masked = false;
     IMAGEFRAME *Frame;
@@ -328,29 +328,29 @@ static void RenderWindow(FRAMETYPE frame, UDWORD x, UDWORD y, UDWORD Width, UDWO
 
     if(Frame->TopLeft >= 0)
     {
-        WTopLeft = (SWORD)iV_GetImageWidth(IntImages,Frame->TopLeft);
-        HTopLeft = (SWORD)iV_GetImageHeight(IntImages,Frame->TopLeft);
+        WTopLeft = (int16_t)iV_GetImageWidth(IntImages,Frame->TopLeft);
+        HTopLeft = (int16_t)iV_GetImageHeight(IntImages,Frame->TopLeft);
         iV_DrawImage(IntImages,Frame->TopLeft,x,y);
     }
 
     if(Frame->TopRight >= 0)
     {
-        WTopRight = (SWORD)iV_GetImageWidth(IntImages,Frame->TopRight);
-        HTopRight = (SWORD)iV_GetImageHeight(IntImages,Frame->TopRight);
+        WTopRight = (int16_t)iV_GetImageWidth(IntImages,Frame->TopRight);
+        HTopRight = (int16_t)iV_GetImageHeight(IntImages,Frame->TopRight);
         iV_DrawImage(IntImages,Frame->TopRight,x+Width-WTopRight, y);
     }
 
     if(Frame->BottomRight >= 0)
     {
-        WBottomRight = (SWORD)iV_GetImageWidth(IntImages,Frame->BottomRight);
-        HBottomRight = (SWORD)iV_GetImageHeight(IntImages,Frame->BottomRight);
+        WBottomRight = (int16_t)iV_GetImageWidth(IntImages,Frame->BottomRight);
+        HBottomRight = (int16_t)iV_GetImageHeight(IntImages,Frame->BottomRight);
         iV_DrawImage(IntImages,Frame->BottomRight,x+Width-WBottomRight,y+Height-HBottomRight);
     }
 
     if(Frame->BottomLeft >= 0)
     {
-        WBottomLeft = (SWORD)iV_GetImageWidth(IntImages,Frame->BottomLeft);
-        HBottomLeft = (SWORD)iV_GetImageHeight(IntImages,Frame->BottomLeft);
+        WBottomLeft = (int16_t)iV_GetImageWidth(IntImages,Frame->BottomLeft);
+        HBottomLeft = (int16_t)iV_GetImageHeight(IntImages,Frame->BottomLeft);
         iV_DrawImage(IntImages,Frame->BottomLeft,x,y+Height-HBottomLeft);
     }
 
@@ -383,7 +383,7 @@ static void RenderWindow(FRAMETYPE frame, UDWORD x, UDWORD y, UDWORD Width, UDWO
     }
 }
 
-void RenderWindowFrame(FRAMETYPE frame, UDWORD x, UDWORD y, UDWORD Width, UDWORD Height)
+void RenderWindowFrame(FRAMETYPE frame, uint32_t x, uint32_t y, uint32_t Width, uint32_t Height)
 {
     RenderWindow(frame, x, y, Width, Height, false);
 }

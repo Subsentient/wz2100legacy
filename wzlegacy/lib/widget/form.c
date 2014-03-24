@@ -36,10 +36,10 @@ static inline void formFreeTips(W_TABFORM *psForm);
 /* Store the position of a tab */
 typedef struct _tab_pos
 {
-    SDWORD		index;
-    SDWORD		x,y;
-    UDWORD		width,height;
-    SDWORD		TabMultiplier;			//Added to keep track of tab scroll
+    int32_t		index;
+    int32_t		x,y;
+    uint32_t		width,height;
+    int32_t		TabMultiplier;			//Added to keep track of tab scroll
 } TAB_POS;
 
 /* Set default colours for a form */
@@ -214,7 +214,7 @@ static void formFreeClickable(W_CLICKFORM *psWidget)
 static W_TABFORM *formCreateTabbed(const W_FORMINIT *psInit)
 {
     W_TABFORM *psWidget;
-    UDWORD		major,minor;
+    uint32_t		major,minor;
     W_MAJORTAB	*psMajor;
 
     if (psInit->numMajor == 0)
@@ -468,9 +468,9 @@ BOOL formAddWidget(W_FORM *psForm, WIDGET *psWidget, W_INIT *psInit)
 
 
 /* Get the button state of a click form */
-UDWORD formGetClickState(W_CLICKFORM *psForm)
+uint32_t formGetClickState(W_CLICKFORM *psForm)
 {
-    UDWORD State = 0;
+    uint32_t State = 0;
 
     if (psForm->state & WCLICK_GREY)
     {
@@ -492,7 +492,7 @@ UDWORD formGetClickState(W_CLICKFORM *psForm)
 
 
 /* Set the button state of a click form */
-void formSetClickState(W_CLICKFORM *psForm, UDWORD state)
+void formSetClickState(W_CLICKFORM *psForm, uint32_t state)
 {
     ASSERT( !((state & WBUT_LOCK) && (state & WBUT_CLICKLOCK)),
             "widgSetButtonState: Cannot have WBUT_LOCK and WBUT_CLICKLOCK" );
@@ -595,7 +595,7 @@ WIDGET *formGetAllWidgets(W_FORMGETALL *psCtrl)
 }
 
 
-static W_TABFORM *widgGetTabbedFormById(W_SCREEN *const psScreen, const UDWORD id)
+static W_TABFORM *widgGetTabbedFormById(W_SCREEN *const psScreen, const uint32_t id)
 {
     W_TABFORM *const psForm = (W_TABFORM *)widgGetFromID(psScreen, id);
 
@@ -611,7 +611,7 @@ static W_TABFORM *widgGetTabbedFormById(W_SCREEN *const psScreen, const UDWORD i
 
 
 /* Set the current tabs for a tab form */
-void widgSetTabs(W_SCREEN *psScreen, UDWORD id, UWORD major, UWORD minor)
+void widgSetTabs(W_SCREEN *psScreen, uint32_t id, uint16_t major, uint16_t minor)
 {
     W_TABFORM *const psForm = widgGetTabbedFormById(psScreen, id);
 
@@ -640,7 +640,7 @@ void widgSetTabs(W_SCREEN *psScreen, UDWORD id, UWORD major, UWORD minor)
     psForm->asMajor[major].lastMinor = minor;
 }
 
-int widgGetNumTabMajor(W_SCREEN *psScreen, UDWORD id)
+int widgGetNumTabMajor(W_SCREEN *psScreen, uint32_t id)
 {
     W_TABFORM *const psForm = widgGetTabbedFormById(psScreen, id);
 
@@ -654,7 +654,7 @@ int widgGetNumTabMajor(W_SCREEN *psScreen, UDWORD id)
 }
 
 
-int widgGetNumTabMinor(W_SCREEN *psScreen, UDWORD id, UWORD pMajor)
+int widgGetNumTabMinor(W_SCREEN *psScreen, uint32_t id, uint16_t pMajor)
 {
     W_TABFORM *const psForm = widgGetTabbedFormById(psScreen, id);
 
@@ -669,7 +669,7 @@ int widgGetNumTabMinor(W_SCREEN *psScreen, UDWORD id, UWORD pMajor)
 
 
 /* Get the current tabs for a tab form */
-void widgGetTabs(W_SCREEN *psScreen, UDWORD id, UWORD *pMajor, UWORD *pMinor)
+void widgGetTabs(W_SCREEN *psScreen, uint32_t id, uint16_t *pMajor, uint16_t *pMinor)
 {
     W_TABFORM	*psForm;
 
@@ -691,8 +691,8 @@ void widgGetTabs(W_SCREEN *psScreen, UDWORD id, UWORD *pMajor, UWORD *pMinor)
 
 
 /* Set a colour on a form */
-void widgSetColour(W_SCREEN *psScreen, UDWORD id, UDWORD colour,
-                   UBYTE red, UBYTE green, UBYTE blue)
+void widgSetColour(W_SCREEN *psScreen, uint32_t id, uint32_t colour,
+                   uint8_t red, uint8_t green, uint8_t blue)
 {
     W_TABFORM	*psForm;
 
@@ -715,7 +715,7 @@ void widgSetColour(W_SCREEN *psScreen, UDWORD id, UDWORD colour,
 
 
 /* Return the origin on the form from which button locations are calculated */
-void formGetOrigin(W_FORM *psWidget, SDWORD *pXOrigin, SDWORD *pYOrigin)
+void formGetOrigin(W_FORM *psWidget, int32_t *pXOrigin, int32_t *pYOrigin)
 {
     W_TABFORM	*psTabForm;
 
@@ -781,7 +781,7 @@ void formInitialise(W_FORM *psWidget)
 {
     W_TABFORM	*psTabForm;
     W_CLICKFORM	*psClickForm;
-    UDWORD i;
+    uint32_t i;
 
     if (psWidget->style & WFORM_TABBED)
     {
@@ -790,7 +790,7 @@ void formInitialise(W_FORM *psWidget)
         psTabForm = (W_TABFORM *)psWidget;
         psTabForm->majorT = 0;
         psTabForm->minorT = 0;
-        psTabForm->tabHiLite = (UWORD)(-1);
+        psTabForm->tabHiLite = (uint16_t)(-1);
         for (i=0; i<psTabForm->numMajor; i++)
         {
             psTabForm->asMajor[i].lastMinor = 0;
@@ -818,12 +818,12 @@ void formInitialise(W_FORM *psWidget)
 // routine if we ever use it.
 // Choose a horizontal tab from a coordinate
 static BOOL formPickHTab(TAB_POS *psTabPos,
-                         SDWORD x0, SDWORD y0,
-                         UDWORD width, UDWORD height, UDWORD gap,
-                         UDWORD number, SDWORD fx, SDWORD fy)
+                         int32_t x0, int32_t y0,
+                         uint32_t width, uint32_t height, uint32_t gap,
+                         uint32_t number, int32_t fx, int32_t fy)
 {
-    SDWORD	x, y1;
-    UDWORD	i;
+    int32_t	x, y1;
+    uint32_t	i;
 
 #if NO_DISPLAY_SINGLE_TABS
     if (number == 1)
@@ -861,8 +861,8 @@ static BOOL formPickHTab(TAB_POS *psTabPos,
 
     for (i=0; i < number; i++)
     {
-//		if (fx >= x && fx <= x + (SDWORD)(width - gap) &&
-        if (fx >= x && fx <= x + (SDWORD)(width) &&
+//		if (fx >= x && fx <= x + (int32_t)(width - gap) &&
+        if (fx >= x && fx <= x + (int32_t)(width) &&
                 fy >= y0 && fy <= y1)
         {
             // found a tab under the coordinate
@@ -893,12 +893,12 @@ static BOOL formPickHTab(TAB_POS *psTabPos,
 // NOTE: This routine is NOT modified to use the tab scroll buttons.
 // Choose a vertical tab from a coordinate
 static BOOL formPickVTab(TAB_POS *psTabPos,
-                         SDWORD x0, SDWORD y0,
-                         UDWORD width, UDWORD height, UDWORD gap,
-                         UDWORD number, SDWORD fx, SDWORD fy)
+                         int32_t x0, int32_t y0,
+                         uint32_t width, uint32_t height, uint32_t gap,
+                         uint32_t number, int32_t fx, int32_t fy)
 {
-    SDWORD	x1, y;
-    UDWORD	i;
+    int32_t	x1, y;
+    uint32_t	i;
 
 #if NO_DISPLAY_SINGLE_TABS
     if (number == 1)
@@ -913,8 +913,8 @@ static BOOL formPickVTab(TAB_POS *psTabPos,
     for (i=0; i < number; i++)
     {
         if (fx >= x0 && fx <= x1 &&
-                fy >= y && fy <= y + (SDWORD)(height))
-//			fy >= y && fy <= y + (SDWORD)(height - gap))
+                fy >= y && fy <= y + (int32_t)(height))
+//			fy >= y && fy <= y + (int32_t)(height - gap))
         {
             /* found a tab under the coordinate */
             psTabPos->index = i;
@@ -934,13 +934,13 @@ static BOOL formPickVTab(TAB_POS *psTabPos,
 
 
 /* Find which tab is under a form coordinate */
-static BOOL formPickTab(W_TABFORM *psForm, UDWORD fx, UDWORD fy,
+static BOOL formPickTab(W_TABFORM *psForm, uint32_t fx, uint32_t fy,
                         TAB_POS *psTabPos)
 {
-    SDWORD		x0,y0, x1,y1;
+    int32_t		x0,y0, x1,y1;
     W_MAJORTAB	*psMajor;
-    SDWORD	xOffset,yOffset;
-    SDWORD	xOffset2,yOffset2;
+    int32_t	xOffset,yOffset;
+    int32_t	xOffset2,yOffset2;
 
     /* Get the basic position of the form */
     x0 = 0;
@@ -1111,12 +1111,12 @@ static BOOL formPickTab(W_TABFORM *psForm, UDWORD fx, UDWORD fy,
     return false;
 }
 
-extern UDWORD gameTime2;
+extern uint32_t gameTime2;
 
 /* Run a form widget */
 void formRun(W_FORM *psWidget, W_CONTEXT *psContext)
 {
-    SDWORD		mx,my;
+    int32_t		mx,my;
     TAB_POS		sTabPos;
     char		*pTip;
     W_TABFORM	*psTabForm;
@@ -1149,10 +1149,10 @@ void formRun(W_FORM *psWidget, W_CONTEXT *psContext)
         {
             if (formPickTab(psTabForm, mx,my, &sTabPos))
             {
-                if (psTabForm->tabHiLite != (UWORD)sTabPos.index)
+                if (psTabForm->tabHiLite != (uint16_t)sTabPos.index)
                 {
                     /* Got a new tab - start the tool tip if there is one */
-                    psTabForm->tabHiLite = (UWORD)sTabPos.index;
+                    psTabForm->tabHiLite = (uint16_t)sTabPos.index;
                     if (sTabPos.index >= psTabForm->numMajor)
                     {
                         pTip = psTabForm->asMajor[psTabForm->majorT].
@@ -1183,7 +1183,7 @@ void formRun(W_FORM *psWidget, W_CONTEXT *psContext)
                 /* No tab - clear the tool tip */
                 tipStop((WIDGET *)psWidget);
                 /* And clear the hilite */
-                psTabForm->tabHiLite = (UWORD)(-1);
+                psTabForm->tabHiLite = (uint16_t)(-1);
             }
         }
     }
@@ -1210,7 +1210,7 @@ void formClearFlash(W_FORM *psWidget)
 
 
 /* Respond to a mouse click */
-void formClicked(W_FORM *psWidget, UDWORD key)
+void formClicked(W_FORM *psWidget, uint32_t key)
 {
     W_CLICKFORM		*psClickForm;
 
@@ -1243,7 +1243,7 @@ void formClicked(W_FORM *psWidget, UDWORD key)
 
 
 /* Respond to a mouse form up */
-void formReleased(W_FORM *psWidget, UDWORD key, W_CONTEXT *psContext)
+void formReleased(W_FORM *psWidget, uint32_t key, W_CONTEXT *psContext)
 {
     W_TABFORM	*psTabForm;
     W_CLICKFORM	*psClickForm;
@@ -1258,7 +1258,7 @@ void formReleased(W_FORM *psWidget, UDWORD key, W_CONTEXT *psContext)
             if (sTabPos.index >= psTabForm->numMajor)
             {
                 /* Clicked on a minor tab */
-                psTabForm->minorT = (UWORD)(sTabPos.index - psTabForm->numMajor);
+                psTabForm->minorT = (uint16_t)(sTabPos.index - psTabForm->numMajor);
                 psTabForm->asMajor[psTabForm->majorT].lastMinor = psTabForm->minorT;
                 widgSetReturn(psContext->psScreen, (WIDGET *)psWidget);
             }
@@ -1267,7 +1267,7 @@ void formReleased(W_FORM *psWidget, UDWORD key, W_CONTEXT *psContext)
                 /* Clicked on a major tab */
                 ASSERT(psTabForm->majorT < psTabForm->numMajor,
                        "formReleased: invalid major id %u >= max %u", sTabPos.index, psTabForm->numMajor);
-                psTabForm->majorT = (UWORD)sTabPos.index;
+                psTabForm->majorT = (uint16_t)sTabPos.index;
                 psTabForm->minorT = psTabForm->asMajor[sTabPos.index].lastMinor;
                 widgSetReturn(psContext->psScreen, (WIDGET *)psWidget);
             }
@@ -1328,7 +1328,7 @@ void formHiLiteLost(W_FORM *psWidget, W_CONTEXT *psContext)
     }
     if (psWidget->style & WFORM_TABBED)
     {
-        ((W_TABFORM *)psWidget)->tabHiLite = (UWORD)(-1);
+        ((W_TABFORM *)psWidget)->tabHiLite = (uint16_t)(-1);
     }
     if (psWidget->style & WFORM_CLICKABLE)
     {
@@ -1339,9 +1339,9 @@ void formHiLiteLost(W_FORM *psWidget, W_CONTEXT *psContext)
 }
 
 /* Display a form */
-void formDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void formDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD	x0,y0,x1,y1;
+    uint32_t	x0,y0,x1,y1;
 
     if (!(psWidget->style & WFORM_INVISIBLE))
     {
@@ -1360,9 +1360,9 @@ void formDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pCo
 
 
 /* Display a clickable form */
-void formDisplayClickable(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void formDisplayClickable(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD			x0,y0,x1,y1;
+    uint32_t			x0,y0,x1,y1;
     W_CLICKFORM		*psForm;
 
     psForm = (W_CLICKFORM *)psWidget;
@@ -1395,13 +1395,13 @@ void formDisplayClickable(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIEL
 
 
 /* Draw top tabs */
-static void formDisplayTTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
-                             UDWORD width, UDWORD height,
-                             UDWORD number, UDWORD selected, UDWORD hilite,
-                             PIELIGHT *pColours,UDWORD TabType,UDWORD TabGap)
+static void formDisplayTTabs(W_TABFORM *psForm,int32_t x0, int32_t y0,
+                             uint32_t width, uint32_t height,
+                             uint32_t number, uint32_t selected, uint32_t hilite,
+                             PIELIGHT *pColours,uint32_t TabType,uint32_t TabGap)
 {
-    SDWORD	x,x1, y1;
-    UDWORD	i, drawnumber;
+    int32_t	x,x1, y1;
+    uint32_t	i, drawnumber;
 
 #if NO_DISPLAY_SINGLE_TABS
     if (number == 1)
@@ -1479,13 +1479,13 @@ static void formDisplayTTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
 
 
 /* Draw bottom tabs */
-static void formDisplayBTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
-                             UDWORD width, UDWORD height,
-                             UDWORD number, UDWORD selected, UDWORD hilite,
-                             PIELIGHT *pColours,UDWORD TabType,UDWORD TabGap)
+static void formDisplayBTabs(W_TABFORM *psForm,int32_t x0, int32_t y0,
+                             uint32_t width, uint32_t height,
+                             uint32_t number, uint32_t selected, uint32_t hilite,
+                             PIELIGHT *pColours,uint32_t TabType,uint32_t TabGap)
 {
-    SDWORD	x,x1, y1;
-    UDWORD	i;
+    int32_t	x,x1, y1;
+    uint32_t	i;
 
 #if NO_DISPLAY_SINGLE_TABS
     if (number == 1)
@@ -1539,13 +1539,13 @@ static void formDisplayBTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
 
 
 /* Draw left tabs */
-static void formDisplayLTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
-                             UDWORD width, UDWORD height,
-                             UDWORD number, UDWORD selected, UDWORD hilite,
-                             PIELIGHT *pColours,UDWORD TabType,UDWORD TabGap)
+static void formDisplayLTabs(W_TABFORM *psForm,int32_t x0, int32_t y0,
+                             uint32_t width, uint32_t height,
+                             uint32_t number, uint32_t selected, uint32_t hilite,
+                             PIELIGHT *pColours,uint32_t TabType,uint32_t TabGap)
 {
-    SDWORD	x1, y,y1;
-    UDWORD	i;
+    int32_t	x1, y,y1;
+    uint32_t	i;
 
 #if NO_DISPLAY_SINGLE_TABS
     if (number == 1)
@@ -1598,13 +1598,13 @@ static void formDisplayLTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
 
 
 /* Draw right tabs */
-static void formDisplayRTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
-                             UDWORD width, UDWORD height,
-                             UDWORD number, UDWORD selected, UDWORD hilite,
-                             PIELIGHT *pColours,UDWORD TabType,UDWORD TabGap)
+static void formDisplayRTabs(W_TABFORM *psForm,int32_t x0, int32_t y0,
+                             uint32_t width, uint32_t height,
+                             uint32_t number, uint32_t selected, uint32_t hilite,
+                             PIELIGHT *pColours,uint32_t TabType,uint32_t TabGap)
 {
-    SDWORD	x1, y,y1;
-    UDWORD	i;
+    int32_t	x1, y,y1;
+    uint32_t	i;
 
 #if NO_DISPLAY_SINGLE_TABS
     if (number == 1)
@@ -1657,9 +1657,9 @@ static void formDisplayRTabs(W_TABFORM *psForm,SDWORD x0, SDWORD y0,
 
 
 /* Display a tabbed form */
-void formDisplayTabbed(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void formDisplayTabbed(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD		x0,y0,x1,y1;
+    uint32_t		x0,y0,x1,y1;
     W_TABFORM	*psForm;
     W_MAJORTAB	*psMajor;
 

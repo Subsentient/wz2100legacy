@@ -160,7 +160,7 @@ void pie_UniTransBoxFill(float x0, float y0, float x1, float y1, PIELIGHT light)
 
 /***************************************************************************/
 
-void pie_ImageFileID(IMAGEFILE *ImageFile, UWORD ID, int x, int y)
+void pie_ImageFileID(IMAGEFILE *ImageFile, uint16_t ID, int x, int y)
 {
     IMAGEDEF *Image;
     PIEIMAGE pieImage;
@@ -185,10 +185,10 @@ void pie_ImageFileID(IMAGEFILE *ImageFile, UWORD ID, int x, int y)
     pie_DrawImage(&pieImage, &dest);
 }
 
-void pie_ImageFileIDTile(IMAGEFILE *ImageFile, UWORD ID, int x, int y, int Width, int Height)
+void pie_ImageFileIDTile(IMAGEFILE *ImageFile, uint16_t ID, int x, int y, int Width, int Height)
 {
     IMAGEDEF *Image;
-    SDWORD hRep, hRemainder, vRep, vRemainder;
+    int32_t hRep, hRemainder, vRep, vRemainder;
     PIEIMAGE pieImage;
     PIERECT dest;
 
@@ -285,7 +285,7 @@ BOOL pie_ShutdownRadar(void)
 }
 
 /** Store radar texture with given width and height. */
-void pie_DownLoadRadar(UDWORD *buffer, int width, int height, bool filter)
+void pie_DownLoadRadar(uint32_t *buffer, int width, int height, bool filter)
 {
     int w = 1, h = 1;
     char *black;

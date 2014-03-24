@@ -34,7 +34,7 @@ x coordinate that is greater than mapWidth implies that the highlight
 is invalid (not currently being used)
 */
 
-UDWORD	buildState = BUILD3D_NONE;
+uint32_t	buildState = BUILD3D_NONE;
 BUILDDETAILS	sBuildDetails;
 HIGHLIGHT		buildSite;
 int brushSize = 1;
@@ -86,9 +86,9 @@ void lowerTile(int tile3dX, int tile3dY)
 }
 
 /* Ensures any adjustment to tile elevation is within allowed ranges */
-void	adjustTileHeight(MAPTILE *psTile, SDWORD adjust)
+void	adjustTileHeight(MAPTILE *psTile, int32_t adjust)
 {
-    SDWORD	newHeight;
+    int32_t	newHeight;
 
     newHeight = psTile->height + adjust;
     if (newHeight>=MIN_TILE_HEIGHT && newHeight<=MAX_TILE_HEIGHT)
@@ -97,7 +97,7 @@ void	adjustTileHeight(MAPTILE *psTile, SDWORD adjust)
     }
 }
 
-BOOL	inHighlight(UDWORD realX, UDWORD realY)
+BOOL	inHighlight(uint32_t realX, uint32_t realY)
 {
     BOOL	retVal = false;
 
@@ -171,7 +171,7 @@ void	kill3DBuilding		( void )
 //
 BOOL process3DBuilding(void)
 {
-    UDWORD	bX,bY;
+    uint32_t	bX,bY;
 
     //if not trying to build ignore
     if (buildState == BUILD3D_NONE)
@@ -218,7 +218,7 @@ BOOL process3DBuilding(void)
     {
         bX = mouseTileX;
     }
-    if(mouseTileX > (SDWORD)(mapWidth-3))
+    if(mouseTileX > (int32_t)(mapWidth-3))
     {
         bX = mapWidth-3;
     }
@@ -235,7 +235,7 @@ BOOL process3DBuilding(void)
     {
         bY = mouseTileY;
     }
-    if(mouseTileY > (SDWORD)(mapHeight-3))
+    if(mouseTileY > (int32_t)(mapHeight-3))
     {
         bY = mapHeight-3;
     }
@@ -244,10 +244,10 @@ BOOL process3DBuilding(void)
         bY = mouseTileY;
     }
 
-    sBuildDetails.x = buildSite.xTL = (UWORD)bX;
-    sBuildDetails.y = buildSite.yTL = (UWORD)bY;
-    buildSite.xBR = (UWORD)(buildSite.xTL+sBuildDetails.width-1);
-    buildSite.yBR = (UWORD)(buildSite.yTL+sBuildDetails.height-1);
+    sBuildDetails.x = buildSite.xTL = (uint16_t)bX;
+    sBuildDetails.y = buildSite.yTL = (uint16_t)bY;
+    buildSite.xBR = (uint16_t)(buildSite.xTL+sBuildDetails.width-1);
+    buildSite.yBR = (uint16_t)(buildSite.yTL+sBuildDetails.height-1);
 
     if( (buildState == BUILD3D_FINISHED) && (sBuildDetails.CallBack != NULL) )
     {
@@ -266,7 +266,7 @@ BOOL process3DBuilding(void)
 
 
 /* See if a structure location has been found */
-BOOL found3DBuilding(UDWORD *x, UDWORD *y)
+BOOL found3DBuilding(uint32_t *x, uint32_t *y)
 {
     if (buildState != BUILD3D_FINISHED || x == NULL || y == NULL)
     {
@@ -297,7 +297,7 @@ BOOL found3DBuilding(UDWORD *x, UDWORD *y)
 }
 
 /* See if a second position for a build has been found */
-BOOL found3DBuildLocTwo(UDWORD *px1, UDWORD *py1, UDWORD *px2, UDWORD *py2)
+BOOL found3DBuildLocTwo(uint32_t *px1, uint32_t *py1, uint32_t *px2, uint32_t *py2)
 {
     if ( (((STRUCTURE_STATS *)sBuildDetails.psStats)->type != REF_WALL &&
             ((STRUCTURE_STATS *)sBuildDetails.psStats)->type != REF_DEFENSE &&

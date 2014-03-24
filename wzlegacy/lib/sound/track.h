@@ -51,7 +51,7 @@ extern "C"
 
     typedef struct AUDIO_SAMPLE
     {
-        SDWORD                  iTrack;         // ID number identifying a specific sound; currently (r1182) mapped in audio_id.c
+        int32_t                  iTrack;         // ID number identifying a specific sound; currently (r1182) mapped in audio_id.c
 #ifndef WZ_NOSOUND
         ALuint                  iSample;        // OpenAL name of the sound source
 #ifdef DEBUG	// only used for debugging
@@ -60,7 +60,7 @@ extern "C"
         char				filename[256];	// actual filename of sample
 #endif
 #endif
-        SDWORD                  x, y, z;
+        int32_t                  x, y, z;
         float                   fVol;           // computed volume of sample
         BOOL                    bFinishedPlaying;
         AUDIO_CALLBACK          pCallback;
@@ -72,11 +72,11 @@ extern "C"
     typedef struct TRACK
     {
         BOOL            bLoop;
-        SDWORD          iVol;
-        SDWORD          iAudibleRadius;
-        SDWORD          iTime;                  // duration in milliseconds
-        UDWORD          iTimeLastFinished;      // time last finished in ms
-        UDWORD          iNumPlaying;
+        int32_t          iVol;
+        int32_t          iAudibleRadius;
+        int32_t          iTime;                  // duration in milliseconds
+        uint32_t          iTimeLastFinished;      // time last finished in ms
+        uint32_t          iNumPlaying;
 #ifndef WZ_NOSOUND
         ALuint          iBufferName;            // OpenAL name of the buffer
 #endif
@@ -98,33 +98,33 @@ extern "C"
     void	sound_UpdateSample( AUDIO_SAMPLE *psSample );
     void	sound_CheckAllUnloaded( void );
     void sound_RemoveActiveSample( AUDIO_SAMPLE *psSample );
-    BOOL	sound_CheckTrack( SDWORD iTrack );
+    BOOL	sound_CheckTrack( int32_t iTrack );
 
-    SDWORD	sound_GetTrackTime( SDWORD iTrack );
-    SDWORD	sound_GetTrackAudibleRadius( SDWORD iTrack );
-    SDWORD	sound_GetTrackVolume( SDWORD iTrack );
-    const char 	*sound_GetTrackName( SDWORD iTrack );
+    int32_t	sound_GetTrackTime( int32_t iTrack );
+    int32_t	sound_GetTrackAudibleRadius( int32_t iTrack );
+    int32_t	sound_GetTrackVolume( int32_t iTrack );
+    const char 	*sound_GetTrackName( int32_t iTrack );
 
-    BOOL	sound_TrackLooped( SDWORD iTrack );
+    BOOL	sound_TrackLooped( int32_t iTrack );
     void	sound_SetCallbackFunction( void *fn );
 
     BOOL	sound_Play2DTrack( AUDIO_SAMPLE *psSample, BOOL bQueued );
     BOOL	sound_Play3DTrack( AUDIO_SAMPLE *psSample );
-    void	sound_PlayWithCallback( AUDIO_SAMPLE *psSample, SDWORD iCurTime, AUDIO_CALLBACK pDoneFunc );
+    void	sound_PlayWithCallback( AUDIO_SAMPLE *psSample, int32_t iCurTime, AUDIO_CALLBACK pDoneFunc );
     void	sound_FinishedCallback( AUDIO_SAMPLE *psSample );
 
     BOOL	sound_GetSystemActive( void );
-    SDWORD	sound_GetTrackID( TRACK *psTrack );
-    SDWORD	sound_GetAvailableID( void );
-    SDWORD	sound_GetNumPlaying( SDWORD iTrack );
+    int32_t	sound_GetTrackID( TRACK *psTrack );
+    int32_t	sound_GetAvailableID( void );
+    int32_t	sound_GetNumPlaying( int32_t iTrack );
 
-    SDWORD	sound_GetGlobalVolume( void );
-    void	sound_SetGlobalVolume( SDWORD iVol );
+    int32_t	sound_GetGlobalVolume( void );
+    void	sound_SetGlobalVolume( int32_t iVol );
 
     void	sound_SetStoppedCallback( AUDIO_CALLBACK pStopTrackCallback );
 
-    UDWORD	sound_GetTrackTimeLastFinished( SDWORD iTrack );
-    void	sound_SetTrackTimeLastFinished( SDWORD iTrack, UDWORD iTime );
+    uint32_t	sound_GetTrackTimeLastFinished( int32_t iTrack );
+    void	sound_SetTrackTimeLastFinished( int32_t iTrack, uint32_t iTime );
 
     extern BOOL sound_isStreamPlaying(AUDIO_STREAM *stream);
     extern void sound_StopStream(AUDIO_STREAM *stream);

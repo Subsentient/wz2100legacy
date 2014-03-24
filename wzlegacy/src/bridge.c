@@ -46,12 +46,12 @@ and end points. We can also check other stuff here like what it's going
 over. Also, it has to be between a minimum and maximum length and
 one of the axes must share the same values.
 */
-BOOL	bridgeValid(UDWORD startX,UDWORD startY, UDWORD endX, UDWORD endY)
+BOOL	bridgeValid(uint32_t startX,uint32_t startY, uint32_t endX, uint32_t endY)
 {
     BOOL	xBridge, yBridge;
-    UDWORD	bridgeLength;
-    UDWORD	startHeight,endHeight,sectionHeight;
-    UDWORD	i;
+    uint32_t	bridgeLength;
+    uint32_t	startHeight,endHeight,sectionHeight;
+    uint32_t	i;
 
     /* Establish axes allignment */
     xBridge = ( (startX == endX) ? true : false );
@@ -110,8 +110,8 @@ BOOL	bridgeValid(UDWORD startX,UDWORD startY, UDWORD endX, UDWORD endY)
 */
 BOOL	renderBridgeSection(STRUCTURE *psStructure)
 {
-    SDWORD			structX,structY,structZ;
-    SDWORD			rx,rz;
+    int32_t			structX,structY,structZ;
+    int32_t			rx,rz;
     //iIMDShape		*imd;
     Vector3i dv;
 
@@ -156,10 +156,10 @@ BOOL	renderBridgeSection(STRUCTURE *psStructure)
 	what you need to alter start and end terrain heights by to establish to
 	connection.
 */
-void	getBridgeInfo(UDWORD startX,UDWORD startY,UDWORD endX, UDWORD endY, BRIDGE_INFO *info)
+void	getBridgeInfo(uint32_t startX,uint32_t startY,uint32_t endX, uint32_t endY, BRIDGE_INFO *info)
 {
     BOOL	xBridge,yBridge;
-    UDWORD	startHeight,endHeight;
+    uint32_t	startHeight,endHeight;
     BOOL	startHigher;
 
     /* Copy over the location coordinates */
@@ -234,10 +234,10 @@ void	getBridgeInfo(UDWORD startX,UDWORD startY,UDWORD endX, UDWORD endY, BRIDGE_
     }
 }
 
-void testBuildBridge(UDWORD startX, UDWORD startY, UDWORD endX, UDWORD endY)
+void testBuildBridge(uint32_t startX, uint32_t startY, uint32_t endX, uint32_t endY)
 {
     BRIDGE_INFO	bridge;
-    UDWORD	i;
+    uint32_t	i;
     Vector3i dv;
 
     if(bridgeValid(startX,startY,endX,endY))

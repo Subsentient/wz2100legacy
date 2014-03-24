@@ -47,12 +47,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 // The stores for the research stats
 RESEARCH                *asResearch;
-UDWORD					numResearch;
+uint32_t					numResearch;
 
 //used for Callbacks to say which topic was last researched
 RESEARCH                *psCBLastResearch;
 STRUCTURE				*psCBLastResStructure;
-SDWORD					CBResFacilityOwner;
+int32_t					CBResFacilityOwner;
 
 //research is now loaded per campaign - this hopefully is the max there will be in any one campaign!
 #define MAX_RESEARCH        (450 + 50)
@@ -68,38 +68,38 @@ SDWORD					CBResFacilityOwner;
 #define MAX_RESEARCH_ARTE_RES       (125 + 50)
 
 //need corresponding arrays for the above
-static UWORD            *pResearchPR;
-static UWORD            *pResearchStructPR;
+static uint16_t            *pResearchPR;
+static uint16_t            *pResearchStructPR;
 static FUNCTION        **pResearchFunc;
-static UWORD            *pResearchStructRed;
+static uint16_t            *pResearchStructRed;
 static COMPONENT_STATS **pResearchArteRed;
-static UWORD            *pResearchStructRes;
+static uint16_t            *pResearchStructRes;
 static COMPONENT_STATS **pResearchArteRes;
 static COMPONENT_STATS **pResearchArteRep;
 
-static UWORD numResearchPR;
-static UWORD numResearchStructPR;
-static UWORD numResearchFunc;
-static UWORD numResearchStructRed;
-static UBYTE numResearchArteRed;
-static UWORD numResearchStructRes;
-static UBYTE numResearchArteRes;
-static UBYTE numResearchArteRep;
+static uint16_t numResearchPR;
+static uint16_t numResearchStructPR;
+static uint16_t numResearchFunc;
+static uint16_t numResearchStructRed;
+static uint8_t numResearchArteRed;
+static uint16_t numResearchStructRes;
+static uint8_t numResearchArteRes;
+static uint8_t numResearchArteRep;
 
 //List of pointers to arrays of PLAYER_RESEARCH[numResearch] for each player
 PLAYER_RESEARCH		*asPlayerResList[MAX_PLAYERS];
 
 /* Default level of sensor, Repair and ECM */
-UDWORD					aDefaultSensor[MAX_PLAYERS];
-UDWORD					aDefaultECM[MAX_PLAYERS];
-UDWORD					aDefaultRepair[MAX_PLAYERS];
+uint32_t					aDefaultSensor[MAX_PLAYERS];
+uint32_t					aDefaultECM[MAX_PLAYERS];
+uint32_t					aDefaultRepair[MAX_PLAYERS];
 
 //set the iconID based on the name read in in the stats
-static UWORD setIconID(char *pIconName, char *pName);
+static uint16_t setIconID(char *pIconName, char *pName);
 static COMPONENT_STATS *getComponentDetails(char *pName, char *pCompName);
 static void replaceComponent(COMPONENT_STATS *pNewComponent, COMPONENT_STATS *pOldComponent,
-                             UBYTE player);
-static BOOL checkResearchName(RESEARCH *psRes, UDWORD numStats);
+                             uint8_t player);
+static BOOL checkResearchName(RESEARCH *psRes, uint32_t numStats);
 
 static const char *getResearchName(RESEARCH *pResearch)
 {
@@ -107,15 +107,15 @@ static const char *getResearchName(RESEARCH *pResearch)
 }
 
 //flag that indicates whether the player can self repair
-static UBYTE bSelfRepair[MAX_PLAYERS];
-static void replaceDroidComponent(DROID *pList, UDWORD oldType, UDWORD oldCompInc,
-                                  UDWORD newCompInc);
-static void replaceStructureComponent(STRUCTURE *pList, UDWORD oldType, UDWORD oldCompInc,
-                                      UDWORD newCompInc, UBYTE player);
-static void switchComponent(DROID *psDroid,UDWORD oldType, UDWORD oldCompInc,
-                            UDWORD newCompInc);
-static void replaceTransDroidComponents(DROID *psTransporter, UDWORD oldType,
-                                        UDWORD oldCompInc, UDWORD newCompInc);
+static uint8_t bSelfRepair[MAX_PLAYERS];
+static void replaceDroidComponent(DROID *pList, uint32_t oldType, uint32_t oldCompInc,
+                                  uint32_t newCompInc);
+static void replaceStructureComponent(STRUCTURE *pList, uint32_t oldType, uint32_t oldCompInc,
+                                      uint32_t newCompInc, uint8_t player);
+static void switchComponent(DROID *psDroid,uint32_t oldType, uint32_t oldCompInc,
+                            uint32_t newCompInc);
+static void replaceTransDroidComponents(DROID *psTransporter, uint32_t oldType,
+                                        uint32_t oldCompInc, uint32_t newCompInc);
 
 
 BOOL researchInitVars(void)
@@ -153,23 +153,23 @@ BOOL researchInitVars(void)
     numResearch = 0;
 
     // and deal with all the other arrays for research
-    pResearchPR = (UWORD *) malloc(sizeof(UWORD) * MAX_RESEARCH_PR);
+    pResearchPR = (uint16_t *) malloc(sizeof(uint16_t) * MAX_RESEARCH_PR);
     if (pResearchPR == NULL)
     {
         debug( LOG_FATAL, "Research Stats - Out of memory" );
         abort();
         return false;
     }
-    memset(pResearchPR, 0, (MAX_RESEARCH_PR * sizeof(UWORD)));
+    memset(pResearchPR, 0, (MAX_RESEARCH_PR * sizeof(uint16_t)));
 
-    pResearchStructPR = (UWORD *) malloc(sizeof(UWORD) * MAX_RESEARCH_STRUCT_PR);
+    pResearchStructPR = (uint16_t *) malloc(sizeof(uint16_t) * MAX_RESEARCH_STRUCT_PR);
     if (pResearchStructPR == NULL)
     {
         debug( LOG_FATAL, "Research Stats - Out of memory" );
         abort();
         return false;
     }
-    memset(pResearchStructPR, 0, (MAX_RESEARCH_STRUCT_PR * sizeof(UWORD)));
+    memset(pResearchStructPR, 0, (MAX_RESEARCH_STRUCT_PR * sizeof(uint16_t)));
 
     pResearchFunc = (FUNCTION **) malloc(sizeof(FUNCTION *) * MAX_RESEARCH_FUNC);
     if (pResearchFunc == NULL)
@@ -180,14 +180,14 @@ BOOL researchInitVars(void)
     }
     memset(pResearchFunc, 0, (MAX_RESEARCH_FUNC * sizeof(FUNCTION *)));
 
-    pResearchStructRed = (UWORD *) malloc(sizeof(UWORD) * MAX_RESEARCH_STRUCT_RED);
+    pResearchStructRed = (uint16_t *) malloc(sizeof(uint16_t) * MAX_RESEARCH_STRUCT_RED);
     if (pResearchStructRed == NULL)
     {
         debug( LOG_FATAL, "Research Stats - Out of memory" );
         abort();
         return false;
     }
-    memset(pResearchStructRed, 0, (MAX_RESEARCH_STRUCT_RED * sizeof(UWORD)));
+    memset(pResearchStructRed, 0, (MAX_RESEARCH_STRUCT_RED * sizeof(uint16_t)));
 
     pResearchArteRed = (COMPONENT_STATS **) malloc(sizeof(COMPONENT_STATS *) * MAX_RESEARCH_ARTE_RED);
     if (pResearchArteRed == NULL)
@@ -198,14 +198,14 @@ BOOL researchInitVars(void)
     }
     memset(pResearchArteRed, 0, (MAX_RESEARCH_ARTE_RED * sizeof(COMPONENT_STATS *)));
 
-    pResearchStructRes = (UWORD *) malloc(sizeof(UWORD) * MAX_RESEARCH_STRUCT_RES);
+    pResearchStructRes = (uint16_t *) malloc(sizeof(uint16_t) * MAX_RESEARCH_STRUCT_RES);
     if (pResearchStructRes == NULL)
     {
         debug( LOG_FATAL, "Research Stats - Out of memory" );
         abort();
         return false;
     }
-    memset(pResearchStructRes, 0, (MAX_RESEARCH_STRUCT_RES * sizeof(UWORD)));
+    memset(pResearchStructRes, 0, (MAX_RESEARCH_STRUCT_RES * sizeof(uint16_t)));
 
     pResearchArteRes = (COMPONENT_STATS **) malloc(sizeof(COMPONENT_STATS *) * MAX_RESEARCH_ARTE_RES);
     if (pResearchArteRes == NULL)
@@ -235,13 +235,13 @@ BOOL researchInitVars(void)
 
 
 /*Load the research stats from the file exported from Access*/
-BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
+BOOL loadResearch(const char *pResearchData, uint32_t bufferSize)
 {
     unsigned int researchCount = numCR(pResearchData, bufferSize);
     RESEARCH *pResearch;
     COMPONENT_STATS *psComp;
-    SDWORD structID;
-    UDWORD i, keyTopic, techCode, resPoints;
+    int32_t structID;
+    uint32_t i, keyTopic, techCode, resPoints;
     char ResearchName[MAX_STR_LENGTH];
     char msgName[MAX_STR_LENGTH], iconID[MAX_STR_LENGTH];
     char imdName[MAX_STR_LENGTH], imdName2[MAX_STR_LENGTH];
@@ -319,13 +319,13 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
         compType[0] = '\0';
 
         {
-            UDWORD numPRRequired;
-            UDWORD numFunctions;
-            UDWORD numStructures;
-            UDWORD numRedStructs;
-            UDWORD numStructResults;
-            UDWORD numRedArtefacts;
-            UDWORD numArteResults;
+            uint32_t numPRRequired;
+            uint32_t numFunctions;
+            uint32_t numStructures;
+            uint32_t numRedStructs;
+            uint32_t numStructResults;
+            uint32_t numRedArtefacts;
+            uint32_t numArteResults;
 
             sscanf(pResearchData,"%d,%255[^,'\r\n],%255[^,'\r\n],%255[^,'\r\n],%255[^,'\r\n],%255[^,'\r\n], \
 			       %255[^,'\r\n],%255[^,'\r\n],%d,%d,%d,%d,%d,%d,%d,%d,%d",
@@ -336,13 +336,13 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
                    &numRedStructs, &numStructResults,
                    &numRedArtefacts, &numArteResults);
 
-            pResearch->numPRRequired = (UBYTE)numPRRequired;
-            pResearch->numFunctions = (UBYTE)numFunctions;
-            pResearch->numStructures = (UBYTE)numStructures;
-            pResearch->numRedStructs = (UBYTE)numRedStructs;
-            pResearch->numStructResults = (UBYTE)numStructResults;
-            pResearch->numRedArtefacts = (UBYTE)numRedArtefacts;
-            pResearch->numArteResults = (UBYTE)numArteResults;
+            pResearch->numPRRequired = (uint8_t)numPRRequired;
+            pResearch->numFunctions = (uint8_t)numFunctions;
+            pResearch->numStructures = (uint8_t)numStructures;
+            pResearch->numRedStructs = (uint8_t)numRedStructs;
+            pResearch->numStructResults = (uint8_t)numStructResults;
+            pResearch->numRedArtefacts = (uint8_t)numRedArtefacts;
+            pResearch->numArteResults = (uint8_t)numArteResults;
         }
 
         //set keytopic flag
@@ -473,7 +473,7 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
             pResearch->pRedArtefacts = pResearchArteRed + numResearchArteRed;
 
             //keep track on how many are being allocated
-            numResearchArteRed = (UBYTE)(numResearchArteRed + pResearch->numRedArtefacts);
+            numResearchArteRed = (uint8_t)(numResearchArteRed + pResearch->numRedArtefacts);
         }
         //results
         if (pResearch->numArteResults > 0)
@@ -489,7 +489,7 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
             pResearch->pArtefactResults = pResearchArteRes + numResearchArteRes;
 
             //keep track on how many are being allocated
-            numResearchArteRes = (UBYTE)(numResearchArteRes + pResearch->numArteResults);
+            numResearchArteRes = (uint8_t)(numResearchArteRes + pResearch->numArteResults);
         }
 
         //replacements
@@ -506,7 +506,7 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
             pResearch->pReplacedArtefacts = pResearchArteRep + numResearchArteRep;
 
             //keep track on how many are being allocated
-            numResearchArteRep = (UBYTE)(numResearchArteRep + pResearch->numArteResults);
+            numResearchArteRep = (uint8_t)(numResearchArteRep + pResearch->numArteResults);
         }
 
         //allocate storage for the functions
@@ -540,7 +540,7 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
             pResearch->pPRList = pResearchPR + numResearchPR;
 
             //keep track on how many are being allocated
-            numResearchPR = (UWORD)(numResearchPR + pResearch->numPRRequired);
+            numResearchPR = (uint16_t)(numResearchPR + pResearch->numPRRequired);
         }
 
         //allocate storage for the structures
@@ -558,7 +558,7 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
             pResearch->pStructList = pResearchStructPR + numResearchStructPR;
 
             //keep track on how many are being allocated
-            numResearchStructPR = (UBYTE)(numResearchStructPR + pResearch->numStructures);
+            numResearchStructPR = (uint8_t)(numResearchStructPR + pResearch->numStructures);
         }
 
         // Redundancies
@@ -574,7 +574,7 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
             pResearch->pRedStructs = pResearchStructRed + numResearchStructRed;
 
             //keep track on how many are being allocated
-            numResearchStructRed = (UBYTE)(numResearchStructRed + pResearch->numRedStructs);
+            numResearchStructRed = (uint8_t)(numResearchStructRed + pResearch->numRedStructs);
         }
         //results
         if (pResearch->numStructResults > 0)
@@ -590,17 +590,17 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
             pResearch->pStructureResults = pResearchStructRes + numResearchStructRes;
 
             //keep track on how many are being allocated
-            numResearchStructRes = (UBYTE)(numResearchStructRes + pResearch->numStructResults);
+            numResearchStructRes = (uint8_t)(numResearchStructRes + pResearch->numStructResults);
         }
 
         //set the researchPoints
-        if (resPoints > UWORD_MAX)
+        if (resPoints > uint16_t_MAX)
         {
             ASSERT(false, "Research Points too high for research topic - %s ", getResearchName(pResearch) );
 
             return false;
         }
-        pResearch->researchPoints = (UWORD)resPoints;
+        pResearch->researchPoints = (uint16_t)resPoints;
 
         //set the research power
         pResearch->researchPower = pResearch->researchPoints / RESEARCH_FACTOR;
@@ -620,12 +620,12 @@ BOOL loadResearch(const char *pResearchData, UDWORD bufferSize)
 
 
 //Load the pre-requisites for a research list
-BOOL loadResearchPR(const char *pPRData, UDWORD bufferSize)
+BOOL loadResearchPR(const char *pPRData, uint32_t bufferSize)
 {
     const unsigned int NumToAlloc = numCR(pPRData, bufferSize);
     unsigned int i = 0;
     char				ResearchName[MAX_STR_LENGTH], PRName[MAX_STR_LENGTH];
-    UWORD				incR, incPR;
+    uint16_t				incR, incPR;
     RESEARCH			*pResearch = asResearch, *pPRResearch = asResearch;
     BOOL				recFound;
 
@@ -654,7 +654,7 @@ BOOL loadResearchPR(const char *pPRData, UDWORD bufferSize)
                     {
                         //check not allocating more than allowed
                         if ((pResearch[incR].storeCount + 1) >
-                                (SDWORD)pResearch[incR].numPRRequired)
+                                (int32_t)pResearch[incR].numPRRequired)
                         {
                             ASSERT(false, "Trying to allocate more pre-requisites than allowed for research %s", ResearchName );
 
@@ -704,7 +704,7 @@ BOOL loadResearchPR(const char *pPRData, UDWORD bufferSize)
 }
 
 //Load the artefacts for a research list
-BOOL loadResearchArtefacts(const char *pArteData, UDWORD bufferSize, UDWORD listNumber)
+BOOL loadResearchArtefacts(const char *pArteData, uint32_t bufferSize, uint32_t listNumber)
 {
     const unsigned int NumToAlloc = numCR(pArteData, bufferSize);
     unsigned int i = 0;
@@ -712,8 +712,8 @@ BOOL loadResearchArtefacts(const char *pArteData, UDWORD bufferSize, UDWORD list
                         TypeName[MAX_STR_LENGTH];
     RESEARCH			*pResearch = asResearch;
     COMPONENT_STATS		*pArtefact;
-    UDWORD				newType;
-    UBYTE				maxArtefacts;
+    uint32_t				newType;
+    uint8_t				maxArtefacts;
 
     //initialise the storage flags
     for (i = 0; i < numResearch; i++)
@@ -847,16 +847,16 @@ BOOL loadResearchArtefacts(const char *pArteData, UDWORD bufferSize, UDWORD list
 }
 
 //Load the Structures for a research list
-BOOL loadResearchStructures(const char *pStructData, UDWORD bufferSize,UDWORD listNumber)
+BOOL loadResearchStructures(const char *pStructData, uint32_t bufferSize,uint32_t listNumber)
 {
     const unsigned int NumToAlloc = numCR(pStructData, bufferSize);
     unsigned int i = 0;
     char				ResearchName[MAX_STR_LENGTH], StructureName[MAX_STR_LENGTH];
-    UWORD				incR, incS;
+    uint16_t				incR, incS;
     RESEARCH			*pResearch = asResearch;
     STRUCTURE_STATS		*pStructure = asStructureStats;
     BOOL				recFound;
-    UDWORD				numToFind;
+    uint32_t				numToFind;
 
     //initialise the storage flags
     for (i = 0; i < numResearch; i++)
@@ -937,7 +937,7 @@ BOOL loadResearchStructures(const char *pStructData, UDWORD bufferSize,UDWORD li
                         recFound = true;
                         //check not allocating more than allowed
                         if (pResearch[incR].storeCount >
-                                (SDWORD)numToFind)
+                                (int32_t)numToFind)
                         {
                             debug( LOG_FATAL, "Trying to allocate more Structures than allowed for research %s", getResearchName(pResearch) );
                             abort();
@@ -984,12 +984,12 @@ BOOL loadResearchStructures(const char *pStructData, UDWORD bufferSize,UDWORD li
 }
 
 //Load the pre-requisites for a research list
-BOOL loadResearchFunctions(const char *pFunctionData, UDWORD bufferSize)
+BOOL loadResearchFunctions(const char *pFunctionData, uint32_t bufferSize)
 {
     const unsigned int NumToAlloc = numCR(pFunctionData, bufferSize);
     unsigned int i = 0;
     char				ResearchName[MAX_STR_LENGTH], FunctionName[MAX_STR_LENGTH];
-    UDWORD				incR, incF;
+    uint32_t				incR, incF;
     RESEARCH			*pResearch = asResearch;
     FUNCTION			**pFunction = asFunctions;
     BOOL				recFound;
@@ -1032,7 +1032,7 @@ BOOL loadResearchFunctions(const char *pFunctionData, UDWORD bufferSize)
                         recFound = true;
                         //check not allocating more than allowed
                         if (pResearch[incR].storeCount >
-                                (SDWORD)pResearch[incR].numFunctions)
+                                (int32_t)pResearch[incR].numFunctions)
                         {
                             debug( LOG_FATAL, "Trying to allocate more Functions than allowed for research %s", ResearchName );
                             abort();
@@ -1092,15 +1092,15 @@ There can only be 'limit' number of entries
 'topic' is the currently researched topic
 */
 // NOTE by AJL may 99 - skirmish now has it's own version of this, skTopicAvail.
-UWORD fillResearchList(UWORD *plist, UDWORD playerID, UWORD topic, UWORD limit)
+uint16_t fillResearchList(uint16_t *plist, uint32_t playerID, uint16_t topic, uint16_t limit)
 {
-    UWORD				inc, count=0;
-    UDWORD				incPR, incS;
+    uint16_t				inc, count=0;
+    uint32_t				incPR, incS;
     PLAYER_RESEARCH		*pPlayerRes = asPlayerResList[playerID];
     BOOL				bPRFound, bStructFound;
 
-    ASSERT( numResearch < UWORD_MAX,
-            "fillResearchList: only using a UWORD for storage - need more!" );
+    ASSERT( numResearch < uint16_t_MAX,
+            "fillResearchList: only using a uint16_t for storage - need more!" );
     for (inc=0; inc < numResearch; inc++)
     {
         //if the inc matches the 'topic' - automatically add to the list
@@ -1191,15 +1191,15 @@ add_research: //if passed all the tests - add it to the list
 }
 
 /* process the results of a completed research topic */
-void researchResult(UDWORD researchIndex, UBYTE player, BOOL bDisplay,
+void researchResult(uint32_t researchIndex, uint8_t player, BOOL bDisplay,
                     STRUCTURE *psResearchFacility)
 {
     RESEARCH					*pResearch = asResearch + researchIndex;
-    UDWORD						type, inc;//, upgrade;
+    uint32_t						type, inc;//, upgrade;
     STRUCTURE					*psCurr;
     DROID						*psDroid;
     FUNCTION					*pFunction;
-    UDWORD						compInc;
+    uint32_t						compInc;
     MESSAGE						*pMessage;
     PLAYER_RESEARCH				*pPlayerRes = asPlayerResList[player];
     //the message gets sent to console
@@ -1840,7 +1840,7 @@ void researchResult(UDWORD researchIndex, UBYTE player, BOOL bDisplay,
     //only check if selectedPlayer has done the research
     if (player == selectedPlayer)
     {
-        UDWORD    vtolCompInc;
+        uint32_t    vtolCompInc;
 
         compInc = vtolCompInc =0;
         for (inc = 0; inc < numWeaponStats; inc++)
@@ -1879,7 +1879,7 @@ void researchResult(UDWORD researchIndex, UBYTE player, BOOL bDisplay,
 /*This function is called when the research files are reloaded*/
 BOOL ResearchShutDown(void)
 {
-    UBYTE   i;
+    uint8_t   i;
 
     memset(asResearch, 0, (MAX_RESEARCH * sizeof(RESEARCH)));
 
@@ -1889,13 +1889,13 @@ BOOL ResearchShutDown(void)
     }
 
     //and init all the other arrays used
-    memset(pResearchPR, 0, (MAX_RESEARCH_PR * sizeof(UWORD)));
-    //memset(pResearchPR, 0, (MAX_RESEARCH_PR * sizeof(UBYTE)));
-    memset(pResearchStructPR, 0, (MAX_RESEARCH_STRUCT_PR * sizeof(UWORD)));
+    memset(pResearchPR, 0, (MAX_RESEARCH_PR * sizeof(uint16_t)));
+    //memset(pResearchPR, 0, (MAX_RESEARCH_PR * sizeof(uint8_t)));
+    memset(pResearchStructPR, 0, (MAX_RESEARCH_STRUCT_PR * sizeof(uint16_t)));
     memset(pResearchFunc, 0, (MAX_RESEARCH_FUNC * sizeof(FUNCTION *)));
-    memset(pResearchStructRed, 0, (MAX_RESEARCH_STRUCT_RED * sizeof(UWORD)));
+    memset(pResearchStructRed, 0, (MAX_RESEARCH_STRUCT_RED * sizeof(uint16_t)));
     memset(pResearchArteRed, 0, (MAX_RESEARCH_ARTE_RED * sizeof(COMPONENT_STATS *)));
-    memset(pResearchStructRes, 0, (MAX_RESEARCH_STRUCT_RES * sizeof(UWORD)));
+    memset(pResearchStructRes, 0, (MAX_RESEARCH_STRUCT_RES * sizeof(uint16_t)));
     memset(pResearchArteRes, 0, (MAX_RESEARCH_ARTE_RES * sizeof(COMPONENT_STATS *)));
     memset(pResearchArteRep, 0, (MAX_RESEARCH_ARTE_RES * sizeof(COMPONENT_STATS *)));
 
@@ -1993,7 +1993,7 @@ void releaseResearch(STRUCTURE *psBuilding)
 	Cancel All Research for player 0
 
 */
-void CancelAllResearch(UDWORD pl)
+void CancelAllResearch(uint32_t pl)
 {
     STRUCTURE	*psCurr;
 
@@ -2018,7 +2018,7 @@ void CancelAllResearch(UDWORD pl)
    points accquired */
 void cancelResearch(STRUCTURE *psBuilding)
 {
-    UDWORD              topicInc;
+    uint32_t              topicInc;
     PLAYER_RESEARCH	    *pPlayerRes;
     RESEARCH_FACILITY	*psResFac;
 
@@ -2076,7 +2076,7 @@ void cancelResearch(STRUCTURE *psBuilding)
 /* For a given view data get the research this is related to */
 RESEARCH *getResearchForMsg(VIEWDATA *pViewData)
 {
-    UDWORD		inc;
+    uint32_t		inc;
     RESEARCH	*psResearch;
 
     for (inc = 0; inc < numResearch; inc++)
@@ -2092,7 +2092,7 @@ RESEARCH *getResearchForMsg(VIEWDATA *pViewData)
 }
 
 //set the iconID based on the name read in in the stats
-static UWORD setIconID(char *pIconName, char *pName)
+static uint16_t setIconID(char *pIconName, char *pName)
 {
     //compare the names with those created in 'Framer'
     if (!strcmp(pIconName, "IMAGE_ROCKET"))
@@ -2197,7 +2197,7 @@ static UWORD setIconID(char *pIconName, char *pName)
 }
 
 
-SDWORD	mapRIDToIcon( UDWORD rid )
+int32_t	mapRIDToIcon( uint32_t rid )
 {
     switch(rid)
     {
@@ -2269,7 +2269,7 @@ SDWORD	mapRIDToIcon( UDWORD rid )
     }
 }
 
-SDWORD	mapIconToRID(UDWORD iconID)
+int32_t	mapIconToRID(uint32_t iconID)
 {
     switch(iconID)
     {
@@ -2342,7 +2342,7 @@ SDWORD	mapIconToRID(UDWORD iconID)
 /* returns a pointer to a component based on the name - used to load in the research */
 COMPONENT_STATS *getComponentDetails(char *pName, char *pCompName)
 {
-    UDWORD stat, size, quantity, inc;
+    uint32_t stat, size, quantity, inc;
     COMPONENT_STATS		*pArtefact;
 
     stat = componentType(pName);
@@ -2454,10 +2454,10 @@ RESEARCH *getResearch(const char *pName, BOOL resName)
 /* looks through the players lists of structures and droids to see if any are using
  the old component - if any then replaces them with the new component */
 static void replaceComponent(COMPONENT_STATS *pNewComponent, COMPONENT_STATS *pOldComponent,
-                             UBYTE player)
+                             uint8_t player)
 {
     DROID_TEMPLATE	*psTemplates;
-    UDWORD			inc, oldType, newType, oldCompInc, newCompInc;
+    uint32_t			inc, oldType, newType, oldCompInc, newCompInc;
 
     //get the type and index of the old component
     oldType = statType(pOldComponent->ref);
@@ -2489,7 +2489,7 @@ static void replaceComponent(COMPONENT_STATS *pNewComponent, COMPONENT_STATS *pO
             case COMP_ECM:
             case COMP_SENSOR:
             case COMP_CONSTRUCT:
-                if (psTemplates->asParts[oldType] == (SDWORD)oldCompInc)
+                if (psTemplates->asParts[oldType] == (int32_t)oldCompInc)
                 {
                     psTemplates->asParts[oldType] = newCompInc;
                 }
@@ -2517,9 +2517,9 @@ static void replaceComponent(COMPONENT_STATS *pNewComponent, COMPONENT_STATS *pO
 
 /*Looks through all the currently allocated stats to check the name is not
 a duplicate*/
-static BOOL checkResearchName(RESEARCH *psResearch, UDWORD numStats)
+static BOOL checkResearchName(RESEARCH *psResearch, uint32_t numStats)
 {
-    UDWORD inc;
+    uint32_t inc;
 
 
     char *pName=psResearch->pName;
@@ -2539,9 +2539,9 @@ static BOOL checkResearchName(RESEARCH *psResearch, UDWORD numStats)
 
 /* Sets the 'possible' flag for a player's research so the topic will appear in
 the research list next time the Research Facilty is selected */
-BOOL enableResearch(RESEARCH *psResearch, UDWORD player)
+BOOL enableResearch(RESEARCH *psResearch, uint32_t player)
 {
-    UDWORD				inc;
+    uint32_t				inc;
     PLAYER_RESEARCH		*pPlayerRes = asPlayerResList[player];
     STRUCTURE			*psStruct;
     BOOL				resFree = false;
@@ -2581,9 +2581,9 @@ BOOL enableResearch(RESEARCH *psResearch, UDWORD player)
 
 /*find the last research topic of importance that the losing player did and
 'give' the results to the reward player*/
-void researchReward(UBYTE losingPlayer, UBYTE rewardPlayer)
+void researchReward(uint8_t losingPlayer, uint8_t rewardPlayer)
 {
-    UDWORD				topicIndex, researchPoints, rewardID;
+    uint32_t				topicIndex, researchPoints, rewardID;
     STRUCTURE			*psStruct;
     RESEARCH_FACILITY	*psFacility;
 
@@ -2632,7 +2632,7 @@ void researchReward(UBYTE losingPlayer, UBYTE rewardPlayer)
 all research parts have been loaded*/
 BOOL checkResearchStats(void)
 {
-    UDWORD resInc, inc;
+    uint32_t resInc, inc;
     for (resInc = 0; resInc < numResearch; resInc++)
     {
         if (asResearch[resInc].numPRRequired == 0)
@@ -2794,13 +2794,13 @@ BOOL checkResearchStats(void)
 }
 
 /*flag self repair so droids can start when idle*/
-void enableSelfRepair(UBYTE player)
+void enableSelfRepair(uint8_t player)
 {
     bSelfRepair[player] = true;
 }
 
 /*check to see if any research has been completed that enables self repair*/
-BOOL selfRepairEnabled(UBYTE player)
+BOOL selfRepairEnabled(uint8_t player)
 {
     if (bSelfRepair[player])
     {
@@ -2829,8 +2829,8 @@ BOOL wallDefenceStruct(STRUCTURE_STATS *psStats)
 }
 
 /*for a given list of droids, replace the old component if exists*/
-void replaceDroidComponent(DROID *pList, UDWORD oldType, UDWORD oldCompInc,
-                           UDWORD newCompInc)
+void replaceDroidComponent(DROID *pList, uint32_t oldType, uint32_t oldCompInc,
+                           uint32_t newCompInc)
 {
     DROID   *psDroid;
 
@@ -2847,8 +2847,8 @@ void replaceDroidComponent(DROID *pList, UDWORD oldType, UDWORD oldCompInc,
 }
 
 /*replaces any components necessary for units that are inside a transporter*/
-void replaceTransDroidComponents(DROID *psTransporter, UDWORD oldType,
-                                 UDWORD oldCompInc, UDWORD newCompInc)
+void replaceTransDroidComponents(DROID *psTransporter, uint32_t oldType,
+                                 uint32_t oldCompInc, uint32_t newCompInc)
 {
     DROID       *psCurr;
 
@@ -2865,8 +2865,8 @@ void replaceTransDroidComponents(DROID *psTransporter, UDWORD oldType,
     }
 }
 
-void replaceStructureComponent(STRUCTURE *pList, UDWORD oldType, UDWORD oldCompInc,
-                               UDWORD newCompInc, UBYTE player)
+void replaceStructureComponent(STRUCTURE *pList, uint32_t oldType, uint32_t oldCompInc,
+                               uint32_t newCompInc, uint8_t player)
 {
     STRUCTURE   *psStructure;
     int			inc;
@@ -2885,15 +2885,15 @@ void replaceStructureComponent(STRUCTURE *pList, UDWORD oldType, UDWORD oldCompI
             case COMP_ECM:
                 if (psStructure->pStructureType->pECM == (asECMStats + oldCompInc))
                 {
-                    psStructure->ECMMod = (UWORD)(asECMStats + newCompInc)->power;
+                    psStructure->ECMMod = (uint16_t)(asECMStats + newCompInc)->power;
                 }
                 break;
             case COMP_SENSOR:
                 if (psStructure->pStructureType->pSensor == (asSensorStats + oldCompInc))
                 {
-                    psStructure->sensorPower = (UWORD)sensorPower(asSensorStats +
+                    psStructure->sensorPower = (uint16_t)sensorPower(asSensorStats +
                                                newCompInc,player);
-                    psStructure->sensorRange = (UWORD)sensorRange(asSensorStats +
+                    psStructure->sensorRange = (uint16_t)sensorRange(asSensorStats +
                                                newCompInc,player);
                 }
                 break;
@@ -2917,8 +2917,8 @@ void replaceStructureComponent(STRUCTURE *pList, UDWORD oldType, UDWORD oldCompI
 }
 
 /*swaps the old component for the new one for a specific droid*/
-static void switchComponent(DROID *psDroid, UDWORD oldType, UDWORD oldCompInc,
-                            UDWORD newCompInc)
+static void switchComponent(DROID *psDroid, uint32_t oldType, uint32_t oldCompInc,
+                            uint32_t newCompInc)
 {
     ASSERT(psDroid != NULL, "switchComponent:invalid droid pointer");
 
@@ -2933,7 +2933,7 @@ static void switchComponent(DROID *psDroid, UDWORD oldType, UDWORD oldCompInc,
         case COMP_CONSTRUCT:
             if (psDroid->asBits[oldType].nStat == oldCompInc)
             {
-                psDroid->asBits[oldType].nStat = (UBYTE)newCompInc;
+                psDroid->asBits[oldType].nStat = (uint8_t)newCompInc;
             }
             break;
         case COMP_WEAPON:

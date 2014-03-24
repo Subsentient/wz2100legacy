@@ -51,7 +51,7 @@ static const int UNALLOCATED_OBJECT = -1;
 static INTERP_VAL	scrFunctionResult;	//function return value to be pushed to stack
 
 // Get values from a base object
-BOOL scrBaseObjGet(UDWORD index)
+BOOL scrBaseObjGet(uint32_t index)
 {
     INTERP_TYPE		type = 0;
     BASE_OBJECT		*psObj;
@@ -83,27 +83,27 @@ BOOL scrBaseObjGet(UDWORD index)
     {
         case OBJID_POSX:
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)psObj->pos.x;
+            scrFunctionResult.v.ival = (int32_t)psObj->pos.x;
             break;
         case OBJID_POSY:
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)psObj->pos.y;
+            scrFunctionResult.v.ival = (int32_t)psObj->pos.y;
             break;
         case OBJID_POSZ:
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)psObj->pos.z;
+            scrFunctionResult.v.ival = (int32_t)psObj->pos.z;
             break;
         case OBJID_ID:
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)psObj->id;
+            scrFunctionResult.v.ival = (int32_t)psObj->id;
             break;
         case OBJID_PLAYER:
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)psObj->player;
+            scrFunctionResult.v.ival = (int32_t)psObj->player;
             break;
         case OBJID_TYPE:
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)psObj->type;
+            scrFunctionResult.v.ival = (int32_t)psObj->type;
             break;
         case OBJID_ORDER:
             if (psObj->type != OBJ_DROID)
@@ -112,7 +112,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->order;
+            scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->order;
             if (scrFunctionResult.v.ival == DORDER_GUARD && ((DROID *)psObj)->psTarget == NULL)
             {
                 scrFunctionResult.v.ival = DORDER_NONE;
@@ -126,7 +126,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->action;
+            scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->action;
             break;
             //new member variable - if droid is selected (humans only)
         case OBJID_SELECTED:
@@ -136,7 +136,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = VAL_BOOL;
-            scrFunctionResult.v.bval = (SDWORD)((DROID *)psObj)->selected;
+            scrFunctionResult.v.bval = (int32_t)((DROID *)psObj)->selected;
             break;
 
         case OBJID_STRUCTSTATTYPE:
@@ -159,7 +159,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->orderX;
+            scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->orderX;
             break;
         case OBJID_ORDERY:
             if (psObj->type != OBJ_DROID)
@@ -168,7 +168,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->orderY;
+            scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->orderY;
             break;
         case OBJID_DROIDTYPE:
             if (psObj->type != OBJ_DROID)
@@ -177,7 +177,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = VAL_INT;
-            scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->droidType;
+            scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->droidType;
             break;
         case OBJID_CLUSTERID:
             if (psObj->type == OBJ_FEATURE)
@@ -225,7 +225,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = (INTERP_TYPE)ST_BODY;
-            scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->asBits[COMP_BODY].nStat;
+            scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->asBits[COMP_BODY].nStat;
             break;
         case OBJID_PROPULSION:
             if (psObj->type != OBJ_DROID)
@@ -234,7 +234,7 @@ BOOL scrBaseObjGet(UDWORD index)
                 return false;
             }
             type = (INTERP_TYPE)ST_PROPULSION;
-            scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->asBits[COMP_PROPULSION].nStat;
+            scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->asBits[COMP_PROPULSION].nStat;
             break;
         case OBJID_WEAPON:		//TODO: only returns first weapon now
             type = (INTERP_TYPE)ST_WEAPON;
@@ -247,7 +247,7 @@ BOOL scrBaseObjGet(UDWORD index)
                     }
                     else
                     {
-                        scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->asWeaps[0].nStat;
+                        scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->asWeaps[0].nStat;
                     }
                     break;
                 case OBJ_STRUCTURE:
@@ -257,7 +257,7 @@ BOOL scrBaseObjGet(UDWORD index)
                     }
                     else
                     {
-                        scrFunctionResult.v.ival = (SDWORD)((STRUCTURE *)psObj)->asWeaps[0].nStat;
+                        scrFunctionResult.v.ival = (int32_t)((STRUCTURE *)psObj)->asWeaps[0].nStat;
                     }
                     break;
                 default:		//only droids and structures can have a weapon
@@ -278,7 +278,7 @@ BOOL scrBaseObjGet(UDWORD index)
             else if (psObj->type == OBJ_DROID)
             {
                 type = (INTERP_TYPE)ST_STRUCTURESTAT;
-                scrFunctionResult.v.ival = (SDWORD)((STRUCTURE_STATS *)(((DROID *)psObj)->psTarStats) - asStructureStats);
+                scrFunctionResult.v.ival = (int32_t)((STRUCTURE_STATS *)(((DROID *)psObj)->psTarStats) - asStructureStats);
             }
             else		//Nothing else supported
             {
@@ -325,15 +325,15 @@ BOOL scrBaseObjGet(UDWORD index)
             switch (psObj->type)
             {
                 case OBJ_DROID:
-                    scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->body;
+                    scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->body;
                     break;
 
                 case OBJ_STRUCTURE:
-                    scrFunctionResult.v.ival = (SDWORD)((STRUCTURE *)psObj)->body;
+                    scrFunctionResult.v.ival = (int32_t)((STRUCTURE *)psObj)->body;
                     break;
 
                 case OBJ_FEATURE:
-                    scrFunctionResult.v.ival = (SDWORD)((FEATURE *)psObj)->body;
+                    scrFunctionResult.v.ival = (int32_t)((FEATURE *)psObj)->body;
                     break;
 
                 default:
@@ -349,11 +349,11 @@ BOOL scrBaseObjGet(UDWORD index)
             switch (psObj->type)
             {
                 case OBJ_DROID:
-                    scrFunctionResult.v.ival = (SDWORD)((DROID *)psObj)->originalBody;
+                    scrFunctionResult.v.ival = (int32_t)((DROID *)psObj)->originalBody;
                     break;
 
                 case OBJ_STRUCTURE:
-                    scrFunctionResult.v.ival = (SDWORD)structureBody((STRUCTURE *)psObj);
+                    scrFunctionResult.v.ival = (int32_t)structureBody((STRUCTURE *)psObj);
                     break;
 
                 case OBJ_FEATURE:
@@ -465,13 +465,13 @@ BOOL scrObjToFeature(void)
 
 // cache all the possible values for the last group to try
 // to speed up access
-static SDWORD		lgX,lgY, lgMembers, lgHealth;
+static int32_t		lgX,lgY, lgMembers, lgHealth;
 
 // Get values from a weapon
-BOOL scrWeaponObjGet(UDWORD index)
+BOOL scrWeaponObjGet(uint32_t index)
 {
     INTERP_TYPE		type;
-    SDWORD			weapIndex;
+    int32_t			weapIndex;
 
     if (!stackPopParams(1, ST_WEAPON, &weapIndex))
     {
@@ -551,7 +551,7 @@ BOOL scrWeaponObjGet(UDWORD index)
 }
 
 // Get values from a group
-BOOL scrGroupObjGet(UDWORD index)
+BOOL scrGroupObjGet(uint32_t index)
 {
     INTERP_TYPE		type;
     DROID_GROUP		*psGroup;
@@ -570,7 +570,7 @@ BOOL scrGroupObjGet(UDWORD index)
             for(psCurr = psGroup->psList; psCurr; psCurr = psCurr->psGrpNext)
             {
                 lgMembers += 1;
-                lgX += (SDWORD)psCurr->pos.x;
+                lgX += (int32_t)psCurr->pos.x;
             }
 
             if (lgMembers > 0)
@@ -586,7 +586,7 @@ BOOL scrGroupObjGet(UDWORD index)
             for(psCurr = psGroup->psList; psCurr; psCurr = psCurr->psGrpNext)
             {
                 lgMembers += 1;
-                lgY += (SDWORD)psCurr->pos.y;
+                lgY += (int32_t)psCurr->pos.y;
             }
 
             if (lgMembers > 0)
@@ -613,7 +613,7 @@ BOOL scrGroupObjGet(UDWORD index)
             for(psCurr = psGroup->psList; psCurr; psCurr = psCurr->psGrpNext)
             {
                 lgMembers += 1;
-                lgHealth += (SDWORD)((100 * psCurr->body)/psCurr->originalBody);
+                lgHealth += (int32_t)((100 * psCurr->body)/psCurr->originalBody);
             }
 
             if (lgMembers > 0)
@@ -648,7 +648,7 @@ BOOL scrGroupObjGet(UDWORD index)
 
 
 // get the name from a stat pointer
-static char *scrGetStatName(INTERP_TYPE type, UDWORD data)
+static char *scrGetStatName(INTERP_TYPE type, uint32_t data)
 {
     char	*pName = NULL;
 
@@ -733,7 +733,7 @@ static char *scrGetStatName(INTERP_TYPE type, UDWORD data)
 
 // default value save routine
 //TODO: use union
-BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize)
+BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, uint32_t *pSize)
 {
     VIEWDATA	*psIntMessage;
     const char	*pName;
@@ -772,15 +772,15 @@ BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize)
             {
                 if (psVal->v.oval == NULL || ((BASE_OBJECT *)psVal->v.oval)->died > 1 || !getBaseObjFromId(((BASE_OBJECT *)psVal->v.oval)->id))
                 {
-                    *((UDWORD *)pBuffer) = UDWORD_MAX;
+                    *((uint32_t *)pBuffer) = uint32_t_MAX;
                 }
                 else
                 {
-                    *((UDWORD *)pBuffer) = ((BASE_OBJECT *)psVal->v.oval)->id;
+                    *((uint32_t *)pBuffer) = ((BASE_OBJECT *)psVal->v.oval)->id;
                 }
-                endian_udword((UDWORD *)pBuffer);
+                endian_udword((uint32_t *)pBuffer);
             }
-            *pSize = sizeof(UDWORD);
+            *pSize = sizeof(uint32_t);
             break;
         case ST_BASESTATS:
         case ST_COMPONENT:
@@ -813,15 +813,15 @@ BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize)
             {
                 if (psVal->v.oval == NULL)
                 {
-                    *((UDWORD *)pBuffer) = UDWORD_MAX;
+                    *((uint32_t *)pBuffer) = uint32_t_MAX;
                 }
                 else
                 {
-                    *((UDWORD *)pBuffer) = ((DROID_TEMPLATE *)psVal->v.oval)->multiPlayerID;
+                    *((uint32_t *)pBuffer) = ((DROID_TEMPLATE *)psVal->v.oval)->multiPlayerID;
                 }
-                endian_udword((UDWORD *)pBuffer);
+                endian_udword((uint32_t *)pBuffer);
             }
-            *pSize = sizeof(UDWORD);
+            *pSize = sizeof(uint32_t);
             break;
         case ST_TEXTSTRING:
             {
@@ -884,49 +884,49 @@ BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize)
                 {
                     pPos = pBuffer;
 
-                    *((SDWORD *)pPos) = members;
-                    endian_sdword((SDWORD *)pPos);
-                    pPos += sizeof(SDWORD);
+                    *((int32_t *)pPos) = members;
+                    endian_sdword((int32_t *)pPos);
+                    pPos += sizeof(int32_t);
 
                     if (psGroup)
                     {
                         // store the run data
-                        *((SDWORD *)pPos) = psGroup->sRunData.sPos.x;
-                        endian_sdword((SDWORD *)pPos);
-                        pPos += sizeof(SDWORD);
-                        *((SDWORD *)pPos) = psGroup->sRunData.sPos.y;
-                        endian_sdword((SDWORD *)pPos);
-                        pPos += sizeof(SDWORD);
-                        *((SDWORD *)pPos) = psGroup->sRunData.forceLevel;
-                        endian_sdword((SDWORD *)pPos);
-                        pPos += sizeof(SDWORD);
-                        *((SDWORD *)pPos) = psGroup->sRunData.leadership;
-                        endian_sdword((SDWORD *)pPos);
-                        pPos += sizeof(SDWORD);
-                        *((SDWORD *)pPos) = psGroup->sRunData.healthLevel;
-                        endian_sdword((SDWORD *)pPos);
-                        pPos += sizeof(SDWORD);
+                        *((int32_t *)pPos) = psGroup->sRunData.sPos.x;
+                        endian_sdword((int32_t *)pPos);
+                        pPos += sizeof(int32_t);
+                        *((int32_t *)pPos) = psGroup->sRunData.sPos.y;
+                        endian_sdword((int32_t *)pPos);
+                        pPos += sizeof(int32_t);
+                        *((int32_t *)pPos) = psGroup->sRunData.forceLevel;
+                        endian_sdword((int32_t *)pPos);
+                        pPos += sizeof(int32_t);
+                        *((int32_t *)pPos) = psGroup->sRunData.leadership;
+                        endian_sdword((int32_t *)pPos);
+                        pPos += sizeof(int32_t);
+                        *((int32_t *)pPos) = psGroup->sRunData.healthLevel;
+                        endian_sdword((int32_t *)pPos);
+                        pPos += sizeof(int32_t);
 
                         // now store the droids
                         for (psCDroid = psGroup->psList; psCDroid; psCDroid = psCDroid->psGrpNext)
                         {
                             checkValidId(psCDroid->id);
 
-                            *((UDWORD *)pPos) = psCDroid->id;
-                            endian_udword((UDWORD *)pPos);
+                            *((uint32_t *)pPos) = psCDroid->id;
+                            endian_udword((uint32_t *)pPos);
 
-                            pPos += sizeof(UDWORD);
+                            pPos += sizeof(uint32_t);
                         }
                     }
                 }
 
                 if (!psGroup)
                 {
-                    *pSize = sizeof(SDWORD);
+                    *pSize = sizeof(int32_t);
                 }
                 else
                 {
-                    *pSize = sizeof(SDWORD) + sizeof(UDWORD) * members + sizeof(SDWORD) * 5;	// members + runData
+                    *pSize = sizeof(int32_t) + sizeof(uint32_t) * members + sizeof(int32_t) * 5;	// members + runData
                 }
                 break;
             }
@@ -934,7 +934,7 @@ BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize)
             if(psVal->v.ival)
             {
                 // can also return NULL
-                pName = sound_GetTrackName((UDWORD)psVal->v.ival);
+                pName = sound_GetTrackName((uint32_t)psVal->v.ival);
             }
             else
             {
@@ -957,10 +957,10 @@ BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize)
             // just save the variable contents directly
             if (pBuffer)
             {
-                *((UDWORD *)pBuffer) = psVal->v.ival;
-                endian_udword((UDWORD *)pBuffer);
+                *((uint32_t *)pBuffer) = psVal->v.ival;
+                endian_udword((uint32_t *)pBuffer);
             }
-            *pSize = sizeof(UDWORD);
+            *pSize = sizeof(uint32_t);
             break;
         default:
             ASSERT( false, "scrValDefSave: unknown script variable type for save" );
@@ -970,12 +970,12 @@ BOOL scrValDefSave(INTERP_VAL *psVal, char *pBuffer, UDWORD *pSize)
 }
 
 /// default value load routine
-BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size)
+BOOL scrValDefLoad(int32_t version, INTERP_VAL *psVal, char *pBuffer, uint32_t size)
 {
     char			*pPos;
     DROID			*psCDroid;
-    SDWORD			index, members, savedMembers;
-    UDWORD			id;
+    int32_t			index, members, savedMembers;
+    uint32_t			id;
     LEVEL_DATASET	*psLevel;
     DROID_GROUP		*psGroup = NULL;
     const char              *pName;
@@ -1002,10 +1002,10 @@ BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size
         case ST_DROID:
         case ST_STRUCTURE:
         case ST_FEATURE:
-            id = *((UDWORD *)pBuffer);
+            id = *((uint32_t *)pBuffer);
             endian_udword(&id);
 
-            if (id == UDWORD_MAX)
+            if (id == uint32_t_MAX)
             {
                 psVal->v.oval = NULL;
             }
@@ -1123,10 +1123,10 @@ BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size
             psVal->v.ival = index;
             break;
         case ST_TEMPLATE:
-            id = *((UDWORD *)pBuffer);
+            id = *((uint32_t *)pBuffer);
             endian_udword(&id);
 
-            if (id == UDWORD_MAX)
+            if (id == uint32_t_MAX)
             {
                 psVal->v.oval = NULL;
             }
@@ -1143,16 +1143,16 @@ BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size
         case ST_TEXTSTRING:
             if (version < 4)
             {
-                if (size != sizeof(UDWORD))
+                if (size != sizeof(uint32_t))
                 {
-                    debug(LOG_ERROR, "Data size is too small, %u is expected, but %u is provided", (unsigned int)(sizeof(UDWORD)), (unsigned int)size);
+                    debug(LOG_ERROR, "Data size is too small, %u is expected, but %u is provided", (unsigned int)(sizeof(uint32_t)), (unsigned int)size);
                     return false;
                 }
 
-                id = *((UDWORD *)pBuffer);
+                id = *((uint32_t *)pBuffer);
                 endian_udword(&id);
 
-                if (id == UDWORD_MAX)
+                if (id == uint32_t_MAX)
                 {
                     psVal->v.sval = NULL;
                 }
@@ -1280,27 +1280,27 @@ BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size
 
             if (version < 2)
             {
-                members = size / sizeof(UDWORD);
+                members = size / sizeof(uint32_t);
             }
             else if (version < 3)
             {
-                members = (size - sizeof(SDWORD)*4) / sizeof(UDWORD);
+                members = (size - sizeof(int32_t)*4) / sizeof(uint32_t);
             }
             else
             {
-                members = (size - sizeof(SDWORD)*6) / sizeof(UDWORD);
+                members = (size - sizeof(int32_t)*6) / sizeof(uint32_t);
 
                 // get saved group member count/nullpointer flag
-                endian_sdword((SDWORD *)pPos);
-                bObjectDefined = ( *((SDWORD *)pPos) != UNALLOCATED_OBJECT );
+                endian_sdword((int32_t *)pPos);
+                bObjectDefined = ( *((int32_t *)pPos) != UNALLOCATED_OBJECT );
 
                 if(bObjectDefined)
                 {
-                    savedMembers = *((SDWORD *)pPos);	// get number of saved group members
+                    savedMembers = *((int32_t *)pPos);	// get number of saved group members
 
                     ASSERT(savedMembers == members, "scrValDefLoad: calculated and saved group member count did not match." );
                 }
-                pPos += sizeof(SDWORD);
+                pPos += sizeof(int32_t);
             }
 
             // make sure group was allocated when it was saved (relevant starting from version 3)
@@ -1310,31 +1310,31 @@ BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size
                 {
                     // load the retreat data
                     psGroup = (DROID_GROUP *)(psVal->v.oval);
-                    endian_sdword((SDWORD *)pPos);
-                    psGroup->sRunData.sPos.x = *((SDWORD *)pPos);
-                    pPos += sizeof(SDWORD);
-                    endian_sdword((SDWORD *)pPos);
-                    psGroup->sRunData.sPos.y = *((SDWORD *)pPos);
-                    pPos += sizeof(SDWORD);
-                    endian_sdword((SDWORD *)pPos);
-                    psGroup->sRunData.forceLevel = (UBYTE)(*((SDWORD *)pPos));
-                    pPos += sizeof(SDWORD);
-                    endian_sdword((SDWORD *)pPos);
-                    psGroup->sRunData.leadership = (UBYTE)(*((SDWORD *)pPos));
-                    pPos += sizeof(SDWORD);
+                    endian_sdword((int32_t *)pPos);
+                    psGroup->sRunData.sPos.x = *((int32_t *)pPos);
+                    pPos += sizeof(int32_t);
+                    endian_sdword((int32_t *)pPos);
+                    psGroup->sRunData.sPos.y = *((int32_t *)pPos);
+                    pPos += sizeof(int32_t);
+                    endian_sdword((int32_t *)pPos);
+                    psGroup->sRunData.forceLevel = (uint8_t)(*((int32_t *)pPos));
+                    pPos += sizeof(int32_t);
+                    endian_sdword((int32_t *)pPos);
+                    psGroup->sRunData.leadership = (uint8_t)(*((int32_t *)pPos));
+                    pPos += sizeof(int32_t);
                 }
                 if (version >= 3)
                 {
-                    endian_sdword((SDWORD *)pPos);
-                    psGroup->sRunData.healthLevel = (UBYTE)(*((SDWORD *)pPos));
-                    pPos += sizeof(SDWORD);
+                    endian_sdword((int32_t *)pPos);
+                    psGroup->sRunData.healthLevel = (uint8_t)(*((int32_t *)pPos));
+                    pPos += sizeof(int32_t);
                 }
 
                 // load the droids
                 while (members > 0)
                 {
-                    endian_udword((UDWORD *)pPos);
-                    id = *((UDWORD *) pPos);
+                    endian_udword((uint32_t *)pPos);
+                    id = *((uint32_t *) pPos);
                     psCDroid = (DROID *)getBaseObjFromId(id);
                     if (!psCDroid)
                     {
@@ -1344,13 +1344,13 @@ BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size
                     {
                         grpJoin((DROID_GROUP *)(psVal->v.oval), psCDroid);
                     }
-                    pPos += sizeof(UDWORD);
+                    pPos += sizeof(uint32_t);
                     members -= 1;
                 }
             }
             else		// a group var was unallocated during saving
             {
-                pPos += sizeof(UWORD);
+                pPos += sizeof(uint16_t);
             }
             break;
         case ST_SOUND:
@@ -1382,7 +1382,7 @@ BOOL scrValDefLoad(SDWORD version, INTERP_VAL *psVal, char *pBuffer, UDWORD size
         case ST_DROIDID:
         default:
             // just set the contents directly
-            psVal->v.ival = *((SDWORD *)pBuffer);
+            psVal->v.ival = *((int32_t *)pBuffer);
             endian_sdword(&psVal->v.ival);
             break;
     }

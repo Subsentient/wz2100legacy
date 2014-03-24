@@ -56,9 +56,9 @@ static SCRIPT_CONTEXT	*psCurrContext;
 static ARRAY_INDEXES	sCurrArrayIndexes;
 
 // check that an array index is valid
-static BOOL scrvCheckArrayIndex(SDWORD base, ARRAY_INDEXES *psIndexes, UDWORD *pIndex)
+static BOOL scrvCheckArrayIndex(int32_t base, ARRAY_INDEXES *psIndexes, uint32_t *pIndex)
 {
-	SDWORD	i, size;
+	int32_t	i, size;
 
 	if (!psCurrScript || psCurrScript->psDebug == NULL)
 	{
@@ -110,8 +110,8 @@ static BOOL scrvCheckArrayIndex(SDWORD base, ARRAY_INDEXES *psIndexes, UDWORD *p
 	BOOL			bval;
 	INTERP_TYPE		tval;
 	char			*sval;
-	UDWORD			vindex;
-	SDWORD			ival;
+	uint32_t			vindex;
+	int32_t			ival;
 	VAR_INIT		sInit;
 	ARRAY_INDEXES	*arrayIndex;
 }
@@ -229,7 +229,7 @@ var_init:		var_entry TYPE var_value
 				{
 					INTERP_VAL		data;	/* structure to to hold all types */
 					BASE_OBJECT *psObj;
-					SDWORD   compIndex;
+					int32_t   compIndex;
 
 					/* set type */
 					data.type = $2;
@@ -251,10 +251,10 @@ var_init:		var_entry TYPE var_value
 							yyerror("Typemismatch for variable %d", $1);
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)$3.index);
+						psObj = getBaseObjFromId((uint32_t)$3.index);
 						if (!psObj)
 						{
-							yyerror("Droid id %d not found", (UDWORD)$3.index);
+							yyerror("Droid id %d not found", (uint32_t)$3.index);
 							YYABORT;
 						}
 
@@ -262,7 +262,7 @@ var_init:		var_entry TYPE var_value
 
 						if (psObj->type != OBJ_DROID)
 						{
-							yyerror("Object id %d is not a droid", (UDWORD)$3.index);
+							yyerror("Object id %d is not a droid", (uint32_t)$3.index);
 							YYABORT;
 						}
 						else
@@ -281,10 +281,10 @@ var_init:		var_entry TYPE var_value
 							yyerror("Typemismatch for variable %d", $1);
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)$3.index);
+						psObj = getBaseObjFromId((uint32_t)$3.index);
 						if (!psObj)
 						{
-							yyerror("Structure id %d not found", (UDWORD)$3.index);
+							yyerror("Structure id %d not found", (uint32_t)$3.index);
 							YYABORT;
 						}
 
@@ -292,7 +292,7 @@ var_init:		var_entry TYPE var_value
 
 						if (psObj->type != OBJ_STRUCTURE)
 						{
-							yyerror("Object id %d is not a structure", (UDWORD)$3.index);
+							yyerror("Object id %d is not a structure", (uint32_t)$3.index);
 							YYABORT;
 						}
 						else
@@ -310,10 +310,10 @@ var_init:		var_entry TYPE var_value
 							yyerror("Typemismatch for variable %d", $1);
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)$3.index);
+						psObj = getBaseObjFromId((uint32_t)$3.index);
 						if (!psObj)
 						{
-							yyerror("Feature id %d not found", (UDWORD)$3.index);
+							yyerror("Feature id %d not found", (uint32_t)$3.index);
 							YYABORT;
 						}
 
@@ -321,7 +321,7 @@ var_init:		var_entry TYPE var_value
 
 						if (psObj->type != OBJ_FEATURE)
 						{
-							yyerror("Object id %d is not a feature", (UDWORD)$3.index);
+							yyerror("Object id %d is not a feature", (uint32_t)$3.index);
 							YYABORT;
 						}
 						else
@@ -548,16 +548,16 @@ var_init:		var_entry TYPE var_value
 							yyerror("Typemismatch for variable %d", $1);
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)$3.index);
+						psObj = getBaseObjFromId((uint32_t)$3.index);
 						if (!psObj)
 						{
-							yyerror("Structure id %d not found", (UDWORD)$3.index);
+							yyerror("Structure id %d not found", (uint32_t)$3.index);
 							YYABORT;
 						}
 						data.v.ival = $3.index;	/* store structure id */
 						if (psObj->type != OBJ_STRUCTURE)
 						{
-							yyerror("Object id %d is not a structure", (UDWORD)$3.index);
+							yyerror("Object id %d is not a structure", (uint32_t)$3.index);
 							YYABORT;
 						}
 						else
@@ -575,16 +575,16 @@ var_init:		var_entry TYPE var_value
 							yyerror("Typemismatch for variable %d", $1);
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)$3.index);
+						psObj = getBaseObjFromId((uint32_t)$3.index);
 						if (!psObj)
 						{
-							yyerror("Droid id %d not found", (UDWORD)$3.index);
+							yyerror("Droid id %d not found", (uint32_t)$3.index);
 							YYABORT;
 						}
 						data.v.ival = $3.index;	/* store id*/
 						if (psObj->type != OBJ_DROID)
 						{
-							yyerror("Object id %d is not a droid", (UDWORD)$3.index);
+							yyerror("Object id %d is not a droid", (uint32_t)$3.index);
 							YYABORT;
 						}
 						else
@@ -746,7 +746,7 @@ var_entry:		VAR
 				}
 			|	ARRAY array_index_list
 				{
-					UDWORD	index;
+					uint32_t	index;
 
 					if (!scrvCheckArrayIndex($1, $2, &index))
 					{
@@ -795,9 +795,9 @@ BOOL scrvLookUpType(const char *pIdent, INTERP_TYPE *pType)
 
 
 // Lookup a variable identifier
-BOOL scrvLookUpVar(const char *pIdent, UDWORD *pIndex)
+BOOL scrvLookUpVar(const char *pIdent, uint32_t *pIndex)
 {
-	UDWORD	i;
+	uint32_t	i;
 
 	if (!psCurrScript || psCurrScript->psDebug == NULL)
 	{
@@ -819,9 +819,9 @@ BOOL scrvLookUpVar(const char *pIdent, UDWORD *pIndex)
 
 
 // Lookup an array identifier
-BOOL scrvLookUpArray(const char *pIdent, UDWORD *pIndex)
+BOOL scrvLookUpArray(const char *pIdent, uint32_t *pIndex)
 {
-	UDWORD	i;
+	uint32_t	i;
 
 	if (!psCurrScript || psCurrScript->psDebug == NULL)
 	{

@@ -22,8 +22,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _gateway
 {
-    UBYTE			x1,y1, x2,y2;
-    UBYTE			flags;		// open or closed node
+    uint8_t			x1,y1, x2,y2;
+    uint8_t			flags;		// open or closed node
     struct _gateway		*psNext;
 } GATEWAY;
 

@@ -33,39 +33,39 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 
 // Indirect the cluster ID to an actual cluster number
-UBYTE	aClusterMap[CLUSTER_MAX];
+uint8_t	aClusterMap[CLUSTER_MAX];
 
 // flag to note when a cluster needs the cluster empty callback
-static UBYTE aClusterEmpty[CLUSTER_MAX];
+static uint8_t aClusterEmpty[CLUSTER_MAX];
 
 // number of droids in a cluster
-static UWORD aClusterUsage[CLUSTER_MAX];
+static uint16_t aClusterUsage[CLUSTER_MAX];
 
 // whether a cluster can be seen by a player
-static UBYTE aClusterVisibility[CLUSTER_MAX];
+static uint8_t aClusterVisibility[CLUSTER_MAX];
 
 // when a cluster was last attacked
-static UDWORD aClusterAttacked[CLUSTER_MAX];
+static uint32_t aClusterAttacked[CLUSTER_MAX];
 
 // information about the cluster
-UBYTE	aClusterInfo[CLUSTER_MAX];
+uint8_t	aClusterInfo[CLUSTER_MAX];
 
 // initialise the cluster system
 void clustInitialise(void)
 {
     DROID		*psDroid;
     STRUCTURE	*psStruct;
-    SDWORD		player;
+    int32_t		player;
 
-    ASSERT( CLUSTER_MAX <= UBYTE_MAX,
+    ASSERT( CLUSTER_MAX <= uint8_t_MAX,
             "clustInitialse: invalid CLUSTER_MAX, this is a BUILD error" );
 
-    memset(aClusterMap, 0, sizeof(UBYTE) * CLUSTER_MAX);
-    memset(aClusterEmpty, 0, sizeof(UBYTE) * CLUSTER_MAX);
-    memset(aClusterUsage, 0, sizeof(UWORD) * CLUSTER_MAX);
-    memset(aClusterVisibility, 0, sizeof(UBYTE) * CLUSTER_MAX);
-    memset(aClusterAttacked, 0, sizeof(UDWORD) * CLUSTER_MAX);
-    memset(aClusterInfo, 0, sizeof(UBYTE) * CLUSTER_MAX);
+    memset(aClusterMap, 0, sizeof(uint8_t) * CLUSTER_MAX);
+    memset(aClusterEmpty, 0, sizeof(uint8_t) * CLUSTER_MAX);
+    memset(aClusterUsage, 0, sizeof(uint16_t) * CLUSTER_MAX);
+    memset(aClusterVisibility, 0, sizeof(uint8_t) * CLUSTER_MAX);
+    memset(aClusterAttacked, 0, sizeof(uint32_t) * CLUSTER_MAX);
+    memset(aClusterInfo, 0, sizeof(uint8_t) * CLUSTER_MAX);
 
     for(player=0; player<MAX_PLAYERS; player++)
     {
@@ -92,7 +92,7 @@ void clustInitialise(void)
 // update routine for the cluster system
 void clusterUpdate(void)
 {
-    SDWORD	i;
+    int32_t	i;
 
     for(i=1; i< CLUSTER_MAX; i++)
     {
@@ -107,7 +107,7 @@ void clusterUpdate(void)
 
 
 // update all objects from a list belonging to a specific cluster
-void clustUpdateCluster(BASE_OBJECT *psList, SDWORD cluster)
+void clustUpdateCluster(BASE_OBJECT *psList, int32_t cluster)
 {
     BASE_OBJECT		*psCurr;
 
@@ -128,7 +128,7 @@ void clustUpdateCluster(BASE_OBJECT *psList, SDWORD cluster)
 // remove an object from the cluster system
 void clustRemoveObject(BASE_OBJECT *psObj)
 {
-    SDWORD i;
+    int32_t i;
 
     ASSERT( psObj->cluster < CLUSTER_MAX,
             "clustRemoveObject: invalid cluster number" );
@@ -170,16 +170,16 @@ void clustRemoveObject(BASE_OBJECT *psObj)
 
 
 // tell a droid to join a cluster
-static void clustAddDroid(DROID *psDroid, SDWORD cluster)
+static void clustAddDroid(DROID *psDroid, int32_t cluster)
 {
     DROID	*psCurr;
-    SDWORD	xdiff, ydiff;
-    SDWORD	player;
+    int32_t	xdiff, ydiff;
+    int32_t	player;
 
     clustRemoveObject((BASE_OBJECT *)psDroid);
 
     aClusterUsage[cluster] += 1;
-    psDroid->cluster = (UBYTE)cluster;
+    psDroid->cluster = (uint8_t)cluster;
     for(player=0; player<MAX_PLAYERS; player++)
     {
         if (psDroid->visible[player])
@@ -190,13 +190,13 @@ static void clustAddDroid(DROID *psDroid, SDWORD cluster)
 
     for(psCurr = apsDroidLists[psDroid->player]; psCurr; psCurr=psCurr->psNext)
     {
-        if (psCurr->cluster == (UBYTE)cluster)
+        if (psCurr->cluster == (uint8_t)cluster)
         {
             continue;
         }
 
-        xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psCurr->pos.x;
-        ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psCurr->pos.y;
+        xdiff = (int32_t)psDroid->pos.x - (int32_t)psCurr->pos.x;
+        ydiff = (int32_t)psDroid->pos.y - (int32_t)psCurr->pos.y;
         if (xdiff*xdiff + ydiff*ydiff < CLUSTER_DIST*CLUSTER_DIST)
         {
             clustAddDroid(psCurr, cluster);
@@ -209,15 +209,15 @@ static void clustAddDroid(DROID *psDroid, SDWORD cluster)
 void clustNewDroid(DROID *psDroid)
 {
     DROID	*psCurr;
-    SDWORD	xdiff, ydiff;
+    int32_t	xdiff, ydiff;
 
     psDroid->cluster = 0;
     for(psCurr = apsDroidLists[psDroid->player]; psCurr; psCurr=psCurr->psNext)
     {
         if (psCurr->cluster != 0)
         {
-            xdiff = (SDWORD)psDroid->pos.x - (SDWORD)psCurr->pos.x;
-            ydiff = (SDWORD)psDroid->pos.y - (SDWORD)psCurr->pos.y;
+            xdiff = (int32_t)psDroid->pos.x - (int32_t)psCurr->pos.x;
+            ydiff = (int32_t)psDroid->pos.y - (int32_t)psCurr->pos.y;
             if (xdiff*xdiff + ydiff*ydiff < CLUSTER_DIST*CLUSTER_DIST)
             {
                 clustAddDroid(psDroid, psCurr->cluster);
@@ -229,16 +229,16 @@ void clustNewDroid(DROID *psDroid)
 
 
 // tell a structure to join a cluster
-static void clustAddStruct(STRUCTURE *psStruct, SDWORD cluster)
+static void clustAddStruct(STRUCTURE *psStruct, int32_t cluster)
 {
     STRUCTURE	*psCurr;
-    SDWORD		xdiff, ydiff;
-    SDWORD		player;
+    int32_t		xdiff, ydiff;
+    int32_t		player;
 
     clustRemoveObject((BASE_OBJECT *)psStruct);
 
     aClusterUsage[cluster] += 1;
-    psStruct->cluster = (UBYTE)cluster;
+    psStruct->cluster = (uint8_t)cluster;
     for(player=0; player<MAX_PLAYERS; player++)
     {
         if (psStruct->visible[player])
@@ -249,13 +249,13 @@ static void clustAddStruct(STRUCTURE *psStruct, SDWORD cluster)
 
     for(psCurr = apsStructLists[psStruct->player]; psCurr; psCurr=psCurr->psNext)
     {
-        if (psCurr->cluster == (UBYTE)cluster)
+        if (psCurr->cluster == (uint8_t)cluster)
         {
             continue;
         }
 
-        xdiff = (SDWORD)psStruct->pos.x - (SDWORD)psCurr->pos.x;
-        ydiff = (SDWORD)psStruct->pos.y - (SDWORD)psCurr->pos.y;
+        xdiff = (int32_t)psStruct->pos.x - (int32_t)psCurr->pos.x;
+        ydiff = (int32_t)psStruct->pos.y - (int32_t)psCurr->pos.y;
         if (xdiff*xdiff + ydiff*ydiff < CLUSTER_DIST*CLUSTER_DIST)
         {
             clustAddStruct(psCurr, cluster);
@@ -268,15 +268,15 @@ static void clustAddStruct(STRUCTURE *psStruct, SDWORD cluster)
 void clustNewStruct(STRUCTURE *psStruct)
 {
     STRUCTURE	*psCurr;
-    SDWORD		xdiff, ydiff;
+    int32_t		xdiff, ydiff;
 
     psStruct->cluster = 0;
     for(psCurr = apsStructLists[psStruct->player]; psCurr; psCurr=psCurr->psNext)
     {
         if (psCurr->cluster != 0)
         {
-            xdiff = (SDWORD)psStruct->pos.x - (SDWORD)psCurr->pos.x;
-            ydiff = (SDWORD)psStruct->pos.y - (SDWORD)psCurr->pos.y;
+            xdiff = (int32_t)psStruct->pos.x - (int32_t)psCurr->pos.x;
+            ydiff = (int32_t)psStruct->pos.y - (int32_t)psCurr->pos.y;
             if (xdiff*xdiff + ydiff*ydiff < CLUSTER_DIST*CLUSTER_DIST)
             {
                 psStruct->cluster = psCurr->cluster;
@@ -291,9 +291,9 @@ void clustNewStruct(STRUCTURE *psStruct)
 
 
 // find an unused cluster number for a droid
-static SDWORD clustFindUnused(void)
+static int32_t clustFindUnused(void)
 {
-    SDWORD	cluster;
+    int32_t	cluster;
 
     for(cluster = 1; cluster < CLUSTER_MAX; cluster ++)
     {
@@ -310,9 +310,9 @@ static SDWORD clustFindUnused(void)
 // update the cluster information for an object
 void clustUpdateObject(BASE_OBJECT *psObj)
 {
-    SDWORD	newCluster, oldCluster, i;
+    int32_t	newCluster, oldCluster, i;
     BOOL	found;
-    SDWORD	player;
+    int32_t	player;
 
     newCluster = clustFindUnused();
     oldCluster = psObj->cluster;
@@ -330,7 +330,7 @@ void clustUpdateObject(BASE_OBJECT *psObj)
             if (aClusterMap[i] == oldCluster)
             {
                 // found the old cluster - change it to the new one
-                aClusterMap[i] = (UBYTE)newCluster;
+                aClusterMap[i] = (uint8_t)newCluster;
                 aClusterAttacked[newCluster] = aClusterAttacked[oldCluster];
 //				aClusterVisibility[newCluster] = aClusterVisibility[oldCluster];
                 aClusterVisibility[newCluster] = 0;
@@ -355,14 +355,14 @@ void clustUpdateObject(BASE_OBJECT *psObj)
             if (aClusterMap[i] == 0)
             {
                 // found a free cluster
-                aClusterMap[i] = (UBYTE)newCluster;
+                aClusterMap[i] = (uint8_t)newCluster;
                 break;
             }
         }
     }
 
     // store the information about this cluster
-    aClusterInfo[newCluster] = (UBYTE)(psObj->player & CLUSTER_PLAYER_MASK);
+    aClusterInfo[newCluster] = (uint8_t)(psObj->player & CLUSTER_PLAYER_MASK);
     switch (psObj->type)
     {
         case OBJ_DROID:
@@ -381,9 +381,9 @@ void clustUpdateObject(BASE_OBJECT *psObj)
 
 
 // get the cluster ID for a droid
-SDWORD clustGetClusterID(BASE_OBJECT *psObj)
+int32_t clustGetClusterID(BASE_OBJECT *psObj)
 {
-    SDWORD	cluster;
+    int32_t	cluster;
 
     if (psObj->cluster == 0)
     {
@@ -403,13 +403,13 @@ SDWORD clustGetClusterID(BASE_OBJECT *psObj)
 
 
 // variables for the cluster iteration
-static SDWORD		iterateClusterID;
+static int32_t		iterateClusterID;
 static BASE_OBJECT	*psIterateList, *psIterateObj;
 
 // initialise iterating a cluster
-void clustInitIterate(SDWORD clusterID)
+void clustInitIterate(int32_t clusterID)
 {
-    SDWORD		player, cluster;
+    int32_t		player, cluster;
 
     iterateClusterID = clusterID;
     cluster = aClusterMap[clusterID];
@@ -431,7 +431,7 @@ void clustInitIterate(SDWORD clusterID)
 BASE_OBJECT *clustIterate(void)
 {
     BASE_OBJECT	*psStart;
-    SDWORD		cluster;
+    int32_t		cluster;
 
     cluster = aClusterMap[iterateClusterID];
 
@@ -458,12 +458,12 @@ BASE_OBJECT *clustIterate(void)
 }
 
 // find the center of a cluster
-// NOTE: Unused! void clustGetCenter(BASE_OBJECT *psObj, SDWORD *px, SDWORD *py)
-void clustGetCenter(BASE_OBJECT *psObj, SDWORD *px, SDWORD *py)
+// NOTE: Unused! void clustGetCenter(BASE_OBJECT *psObj, int32_t *px, int32_t *py)
+void clustGetCenter(BASE_OBJECT *psObj, int32_t *px, int32_t *py)
 {
     BASE_OBJECT		*psList;
     BASE_OBJECT		*psCurr;
-    SDWORD			averagex, averagey, num;
+    int32_t			averagex, averagey, num;
 
     switch (psObj->type)
     {
@@ -486,8 +486,8 @@ void clustGetCenter(BASE_OBJECT *psObj, SDWORD *px, SDWORD *py)
     {
         if (psCurr->cluster == psObj->cluster)
         {
-            averagex += (SDWORD)psCurr->pos.x;
-            averagey += (SDWORD)psCurr->pos.y;
+            averagex += (int32_t)psCurr->pos.x;
+            averagey += (int32_t)psCurr->pos.y;
             num += 1;
         }
     }
@@ -499,8 +499,8 @@ void clustGetCenter(BASE_OBJECT *psObj, SDWORD *px, SDWORD *py)
     }
     else
     {
-        *px = (SDWORD)psObj->pos.x;
-        *py = (SDWORD)psObj->pos.y;
+        *px = (int32_t)psObj->pos.x;
+        *py = (int32_t)psObj->pos.y;
     }
 }
 
@@ -508,12 +508,12 @@ void clustGetCenter(BASE_OBJECT *psObj, SDWORD *px, SDWORD *py)
 // tell the cluster system that an objects visibility has changed
 void clustObjectSeen(BASE_OBJECT *psObj, BASE_OBJECT *psViewer)
 {
-    SDWORD	player;
+    int32_t	player;
 
     for(player=0; player<MAX_PLAYERS; player++)
     {
-        ASSERT(psObj->cluster != (UBYTE)~0, "object not in a cluster");
-        if ( (player != (SDWORD)psObj->player) &&
+        ASSERT(psObj->cluster != (uint8_t)~0, "object not in a cluster");
+        if ( (player != (int32_t)psObj->player) &&
                 psObj->visible[player] &&
                 !(aClusterVisibility[psObj->cluster] & (1 << player)))
         {
@@ -579,9 +579,9 @@ void clustObjectAttacked(BASE_OBJECT *psObj)
 
 
 // reset the visibility for all clusters for a particular player
-void clustResetVisibility(SDWORD player)
+void clustResetVisibility(int32_t player)
 {
-    SDWORD	i;
+    int32_t	i;
 
     for(i=0; i<CLUSTER_MAX; i++)
     {

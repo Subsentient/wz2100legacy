@@ -35,26 +35,26 @@ GATEWAY		*psGateways;
 /*                   Gateway data access functions                                                    */
 
 // get the size of the map
-static SDWORD gwMapWidth(void)
+static int32_t gwMapWidth(void)
 {
-    return (SDWORD)mapWidth;
+    return (int32_t)mapWidth;
 }
 
-static SDWORD gwMapHeight(void)
+static int32_t gwMapHeight(void)
 {
-    return (SDWORD)mapHeight;
+    return (int32_t)mapHeight;
 }
 
 // set the gateway flag on a tile
-static void gwSetGatewayFlag(SDWORD x, SDWORD y)
+static void gwSetGatewayFlag(int32_t x, int32_t y)
 {
-    mapTile((UDWORD)x,(UDWORD)y)->tileInfoBits |= BITS_GATEWAY;
+    mapTile((uint32_t)x,(uint32_t)y)->tileInfoBits |= BITS_GATEWAY;
 }
 
 // clear the gateway flag on a tile
-static void gwClearGatewayFlag(SDWORD x, SDWORD y)
+static void gwClearGatewayFlag(int32_t x, int32_t y)
 {
-    mapTile((UDWORD)x,(UDWORD)y)->tileInfoBits &= ~BITS_GATEWAY;
+    mapTile((uint32_t)x,(uint32_t)y)->tileInfoBits &= ~BITS_GATEWAY;
 }
 
 
@@ -87,10 +87,10 @@ void gwShutDown(void)
 
 
 // Add a gateway to the system
-BOOL gwNewGateway(SDWORD x1, SDWORD y1, SDWORD x2, SDWORD y2)
+BOOL gwNewGateway(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
 {
     GATEWAY		*psNew;
-    SDWORD		pos, temp;
+    int32_t		pos, temp;
 
     if ((x1 < 0) || (x1 >= gwMapWidth())  ||
             (y1 < 0) || (y1 >= gwMapHeight()) ||
@@ -127,10 +127,10 @@ BOOL gwNewGateway(SDWORD x1, SDWORD y1, SDWORD x2, SDWORD y2)
     }
 
     // initialise the gateway
-    psNew->x1 = (UBYTE)x1;
-    psNew->y1 = (UBYTE)y1;
-    psNew->x2 = (UBYTE)x2;
-    psNew->y2 = (UBYTE)y2;
+    psNew->x1 = (uint8_t)x1;
+    psNew->y1 = (uint8_t)y1;
+    psNew->x2 = (uint8_t)x2;
+    psNew->y2 = (uint8_t)y2;
     psNew->flags = 0;
 
     // add the gateway to the list
@@ -160,10 +160,10 @@ BOOL gwNewGateway(SDWORD x1, SDWORD y1, SDWORD x2, SDWORD y2)
 
 
 // Return the number of gateways.
-UDWORD gwNumGateways(void)
+uint32_t gwNumGateways(void)
 {
     GATEWAY		*psCurr;
-    UDWORD NumGateways = 0;
+    uint32_t NumGateways = 0;
 
     for(psCurr = psGateways; psCurr; psCurr = psCurr->psNext)
     {
@@ -183,7 +183,7 @@ GATEWAY *gwGetGateways(void)
 // Release a gateway
 void gwFreeGateway(GATEWAY *psDel)
 {
-    SDWORD	pos;
+    int32_t	pos;
 
     LIST_REMOVE(psGateways, psDel, GATEWAY);
 
@@ -214,9 +214,9 @@ void gwFreeGateway(GATEWAY *psDel)
 
 
 // load a gateway list
-BOOL gwLoadGateways(char *pFileBuffer, UDWORD fileSize)
+BOOL gwLoadGateways(char *pFileBuffer, uint32_t fileSize)
 {
-    SDWORD	numGW, x1,y1, x2,y2;
+    int32_t	numGW, x1,y1, x2,y2;
     char	*pPos;
 
     // get the number of gateways

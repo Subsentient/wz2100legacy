@@ -114,9 +114,9 @@ static SCRIPT_CONTEXT	*psCurrContext;
 static ARRAY_INDEXES	sCurrArrayIndexes;
 
 // check that an array index is valid
-static BOOL scrvCheckArrayIndex(SDWORD base, ARRAY_INDEXES *psIndexes, UDWORD *pIndex)
+static BOOL scrvCheckArrayIndex(int32_t base, ARRAY_INDEXES *psIndexes, uint32_t *pIndex)
 {
-	SDWORD	i, size;
+	int32_t	i, size;
 
 	if (!psCurrScript || psCurrScript->psDebug == NULL)
 	{
@@ -231,8 +231,8 @@ typedef union YYSTYPE
 	BOOL			bval;
 	INTERP_TYPE		tval;
 	char			*sval;
-	UDWORD			vindex;
-	SDWORD			ival;
+	uint32_t			vindex;
+	int32_t			ival;
 	VAR_INIT		sInit;
 	ARRAY_INDEXES	*arrayIndex;
 
@@ -439,7 +439,7 @@ union yyalloc
 
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
-# define YYSTACK_BYTES(N) \
+# define YYSTACK_int8_tS(N) \
      ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
       + YYSTACK_GAP_MAXIMUM)
 
@@ -914,7 +914,7 @@ int yydebug;
    if the built-in stack extension method is used).
 
    Do not make this value too large; the results are undefined if
-   YYSTACK_ALLOC_MAXIMUM < YYSTACK_BYTES (YYMAXDEPTH)
+   YYSTACK_ALLOC_MAXIMUM < YYSTACK_int8_tS (YYMAXDEPTH)
    evaluated with infinite-precision integer arithmetic.  */
 
 #ifndef YYMAXDEPTH
@@ -1348,7 +1348,7 @@ yyparse ()
       {
 	yytype_int16 *yyss1 = yyss;
 	union yyalloc *yyptr =
-	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
+	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_int8_tS (yystacksize));
 	if (! yyptr)
 	  goto yyexhaustedlab;
 	YYSTACK_RELOCATE (yyss_alloc, yyss);
@@ -1568,7 +1568,7 @@ yyreduce:
     {
 					INTERP_VAL		data;	/* structure to to hold all types */
 					BASE_OBJECT *psObj;
-					SDWORD   compIndex;
+					int32_t   compIndex;
 
 					/* set type */
 					data.type = (yyvsp[(2) - (3)].tval);
@@ -1590,10 +1590,10 @@ yyreduce:
 							yyerror("Typemismatch for variable %d", (yyvsp[(1) - (3)].vindex));
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)(yyvsp[(3) - (3)].sInit).index);
+						psObj = getBaseObjFromId((uint32_t)(yyvsp[(3) - (3)].sInit).index);
 						if (!psObj)
 						{
-							yyerror("Droid id %d not found", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Droid id %d not found", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 
@@ -1601,7 +1601,7 @@ yyreduce:
 
 						if (psObj->type != OBJ_DROID)
 						{
-							yyerror("Object id %d is not a droid", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Object id %d is not a droid", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 						else
@@ -1620,10 +1620,10 @@ yyreduce:
 							yyerror("Typemismatch for variable %d", (yyvsp[(1) - (3)].vindex));
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)(yyvsp[(3) - (3)].sInit).index);
+						psObj = getBaseObjFromId((uint32_t)(yyvsp[(3) - (3)].sInit).index);
 						if (!psObj)
 						{
-							yyerror("Structure id %d not found", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Structure id %d not found", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 
@@ -1631,7 +1631,7 @@ yyreduce:
 
 						if (psObj->type != OBJ_STRUCTURE)
 						{
-							yyerror("Object id %d is not a structure", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Object id %d is not a structure", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 						else
@@ -1649,10 +1649,10 @@ yyreduce:
 							yyerror("Typemismatch for variable %d", (yyvsp[(1) - (3)].vindex));
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)(yyvsp[(3) - (3)].sInit).index);
+						psObj = getBaseObjFromId((uint32_t)(yyvsp[(3) - (3)].sInit).index);
 						if (!psObj)
 						{
-							yyerror("Feature id %d not found", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Feature id %d not found", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 
@@ -1660,7 +1660,7 @@ yyreduce:
 
 						if (psObj->type != OBJ_FEATURE)
 						{
-							yyerror("Object id %d is not a feature", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Object id %d is not a feature", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 						else
@@ -1887,16 +1887,16 @@ yyreduce:
 							yyerror("Typemismatch for variable %d", (yyvsp[(1) - (3)].vindex));
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)(yyvsp[(3) - (3)].sInit).index);
+						psObj = getBaseObjFromId((uint32_t)(yyvsp[(3) - (3)].sInit).index);
 						if (!psObj)
 						{
-							yyerror("Structure id %d not found", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Structure id %d not found", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 						data.v.ival = (yyvsp[(3) - (3)].sInit).index;	/* store structure id */
 						if (psObj->type != OBJ_STRUCTURE)
 						{
-							yyerror("Object id %d is not a structure", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Object id %d is not a structure", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 						else
@@ -1914,16 +1914,16 @@ yyreduce:
 							yyerror("Typemismatch for variable %d", (yyvsp[(1) - (3)].vindex));
 							YYABORT;
 						}
-						psObj = getBaseObjFromId((UDWORD)(yyvsp[(3) - (3)].sInit).index);
+						psObj = getBaseObjFromId((uint32_t)(yyvsp[(3) - (3)].sInit).index);
 						if (!psObj)
 						{
-							yyerror("Droid id %d not found", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Droid id %d not found", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 						data.v.ival = (yyvsp[(3) - (3)].sInit).index;	/* store id*/
 						if (psObj->type != OBJ_DROID)
 						{
-							yyerror("Object id %d is not a droid", (UDWORD)(yyvsp[(3) - (3)].sInit).index);
+							yyerror("Object id %d is not a droid", (uint32_t)(yyvsp[(3) - (3)].sInit).index);
 							YYABORT;
 						}
 						else
@@ -2098,7 +2098,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 748 "scriptvals_parser.y"
     {
-					UDWORD	index;
+					uint32_t	index;
 
 					if (!scrvCheckArrayIndex((yyvsp[(1) - (2)].vindex), (yyvsp[(2) - (2)].arrayIndex), &index))
 					{
@@ -2392,9 +2392,9 @@ BOOL scrvLookUpType(const char *pIdent, INTERP_TYPE *pType)
 
 
 // Lookup a variable identifier
-BOOL scrvLookUpVar(const char *pIdent, UDWORD *pIndex)
+BOOL scrvLookUpVar(const char *pIdent, uint32_t *pIndex)
 {
-	UDWORD	i;
+	uint32_t	i;
 
 	if (!psCurrScript || psCurrScript->psDebug == NULL)
 	{
@@ -2416,9 +2416,9 @@ BOOL scrvLookUpVar(const char *pIdent, UDWORD *pIndex)
 
 
 // Lookup an array identifier
-BOOL scrvLookUpArray(const char *pIdent, UDWORD *pIndex)
+BOOL scrvLookUpArray(const char *pIdent, uint32_t *pIndex)
 {
-	UDWORD	i;
+	uint32_t	i;
 
 	if (!psCurrScript || psCurrScript->psDebug == NULL)
 	{

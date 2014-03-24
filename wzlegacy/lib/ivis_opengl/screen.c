@@ -45,9 +45,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//*
 #include "src/levels.h"
 
 /* The Current screen size and bit depth */
-UDWORD		screenWidth = 0;
-UDWORD		screenHeight = 0;
-UDWORD		screenDepth = 0;
+uint32_t		screenWidth = 0;
+uint32_t		screenHeight = 0;
+uint32_t		screenDepth = 0;
 
 /* global used to indicate preferred internal OpenGL format */
 int wz_texture_compression;
@@ -65,9 +65,9 @@ static char mapname[256];
 
 /* Initialise the double buffered display */
 bool screenInitialise(
-    UDWORD		width,		// Display width
-    UDWORD		height,		// Display height
-    UDWORD		bitDepth,	// Display bit depth
+    uint32_t		width,		// Display width
+    uint32_t		height,		// Display height
+    uint32_t		bitDepth,	// Display bit depth
     bool		fullScreen,	// Whether to start windowed
     // or full screen
     bool		vsync)		// If to sync to vblank or not

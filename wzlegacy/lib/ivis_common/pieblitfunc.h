@@ -60,15 +60,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 extern void pie_Line(int x0, int y0, int x1, int y1, PIELIGHT colour);
 extern void pie_Box(int x0,int y0, int x1, int y1, PIELIGHT colour);
 extern void pie_BoxFill(int x0,int y0, int x1, int y1, PIELIGHT colour);
-extern void pie_ImageFileID(IMAGEFILE *ImageFile, UWORD ID, int x, int y);
-extern void pie_ImageFileIDTile(IMAGEFILE *ImageFile, UWORD ID, int x, int y, int Width, int Height);
+extern void pie_ImageFileID(IMAGEFILE *ImageFile, uint16_t ID, int x, int y);
+extern void pie_ImageFileIDTile(IMAGEFILE *ImageFile, uint16_t ID, int x, int y, int Width, int Height);
 
 extern void pie_TransBoxFill(float x0, float y0, float x1, float y1);
 extern void pie_UniTransBoxFill(float x0, float y0, float x1, float y1, PIELIGHT colour);
 
 extern BOOL pie_InitRadar(void);
 extern BOOL pie_ShutdownRadar(void);
-extern void pie_DownLoadRadar(UDWORD *buffer, int width, int height, bool filter);
+extern void pie_DownLoadRadar(uint32_t *buffer, int width, int height, bool filter);
 extern void pie_RenderRadar(int x, int y, int width, int height);
 
 extern void pie_UploadDisplayBuffer(void);

@@ -219,7 +219,7 @@ void kf_ToggleSensorDisplay( void )
 /* Halves all the heights of the map tiles */
 void	kf_HalveHeights( void )
 {
-    UDWORD	i,j;
+    uint32_t	i,j;
     MAPTILE	*psTile;
 
     for (i=0; i < mapWidth; i++)
@@ -990,8 +990,8 @@ void	kf_RotateRight( void )
 void	kf_PitchBack( void )
 {
 //#ifdef ALEXM
-//SDWORD	pitch;
-//SDWORD	angConcern;
+//int32_t	pitch;
+//int32_t	angConcern;
 //#endif
 
     float pitchAmount = timeAdjustedIncrement(MAP_PITCH_RATE, false);
@@ -1055,7 +1055,7 @@ void	kf_ShowMappings( void )
 /*If this is performed twice then it changes the productionPlayer*/
 void	kf_SelectPlayer( void )
 {
-    UDWORD	playerNumber, prevPlayer;
+    uint32_t	playerNumber, prevPlayer;
 
 #ifndef DEBUG
     // Bail out if we're running a _true_ multiplayer game (to prevent MP
@@ -1083,13 +1083,13 @@ void	kf_SelectPlayer( void )
 
     if (prevPlayer == selectedPlayer)
     {
-        changeProductionPlayer((UBYTE)selectedPlayer);
+        changeProductionPlayer((uint8_t)selectedPlayer);
     }
 }
 // --------------------------------------------------------------------------
 
 /* Selects the player's groups 1..9 */
-void	kf_SelectGrouping( UDWORD	groupNumber)
+void	kf_SelectGrouping( uint32_t	groupNumber)
 {
     BOOL	bAlreadySelected;
     DROID	*psDroid;
@@ -1159,7 +1159,7 @@ DEFINE_NUMED_KF(9)
 // --------------------------------------------------------------------------
 void	kf_SelectMoveGrouping( void )
 {
-    UDWORD	groupNumber;
+    uint32_t	groupNumber;
 
 
     groupNumber = (getLastSubKey()-KEY_1) + 1;
@@ -1462,7 +1462,7 @@ void	kf_TogglePauseMode( void )
 // finish all the research for the selected player
 void	kf_FinishAllResearch(void)
 {
-    UDWORD	j;
+    uint32_t	j;
     const char *cmsg;
 
 #ifndef DEBUG
@@ -1599,7 +1599,7 @@ void	kf_ToggleProximitys( void )
 void	kf_JumpToResourceExtractor( void )
 {
     STRUCTURE	*psStruct;
-    SDWORD	xJump,yJump;
+    int32_t	xJump,yJump;
 
     psStruct = getRExtractor(psOldRE);
     if(psStruct)
@@ -1818,7 +1818,7 @@ void	kf_MovePause( void )
 // --------------------------------------------------------------------------
 void	kf_MoveToLastMessagePos( void )
 {
-    SDWORD	iX, iY, iZ;
+    int32_t	iX, iY, iZ;
 
     if (!audio_GetPreviousQueueTrackPos( &iX, &iY, &iZ ))
     {
@@ -1877,7 +1877,7 @@ void	kf_SelectNextCyborgFactory(void)
 
 void	kf_KillEnemy( void )
 {
-    UDWORD		player;
+    uint32_t		player;
     DROID		*psCDroid,*psNDroid;
     STRUCTURE	*psCStruct, *psNStruct;
     const char *cmsg;
@@ -1992,7 +1992,7 @@ void kf_ShowGridInfo(void)
 // Chat message. NOTE THIS FUNCTION CAN DISABLE ALL OTHER KEYPRESSES
 void kf_SendTextMessage(void)
 {
-    UDWORD	ch;
+    uint32_t	ch;
     char tmp[MAX_CONSOLE_STRING_LENGTH + 100];
     utf_32_char unicode;
 
@@ -2431,7 +2431,7 @@ void	kf_TriggerRayCast( void )
 
     if(found)
     {
-//		getBlockHeightDirToEdgeOfGrid(UDWORD x, UDWORD y, UBYTE direction, UDWORD *height, UDWORD *dist)
+//		getBlockHeightDirToEdgeOfGrid(uint32_t x, uint32_t y, uint8_t direction, uint32_t *height, uint32_t *dist)
 //		getBlockHeightDirToEdgeOfGrid(psOther->pos.x,psOther->pos.y,psOther->direction,&height,&dist);
 //		getBlockHeightDirToEdgeOfGrid(mouseTileX*TILE_UNITS,mouseTileY*TILE_UNITS,getTestAngle(),&height,&dist);
     }
@@ -2449,7 +2449,7 @@ void	kf_CentreOnBase( void )
 {
     STRUCTURE	*psStruct;
     BOOL		bGotHQ;
-    UDWORD		xJump = 0, yJump = 0;
+    uint32_t		xJump = 0, yJump = 0;
 
     /* Got through our buildings */
     for(psStruct = apsStructLists[selectedPlayer],bGotHQ = false;	// start
@@ -2753,9 +2753,9 @@ void kf_ToggleRadarTerrain(void)
 void	kf_AddHelpBlip( void )
 {
     int		worldX, worldY;
-    UDWORD	i;
+    uint32_t	i;
     char	tempStr[255];
-    SDWORD	x,y;
+    int32_t	x,y;
     BOOL	mOverR=false;
 
     /* not needed in campaign */

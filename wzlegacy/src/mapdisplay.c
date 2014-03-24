@@ -35,15 +35,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* renders the Research IMDs into the surface - used by message display in
 Intelligence Map */
 void renderResearchToBuffer(RESEARCH *psResearch,
-                            UDWORD OriginX, UDWORD OriginY)
+                            uint32_t OriginX, uint32_t OriginY)
 {
-    UDWORD   angle = 0;
+    uint32_t   angle = 0;
 
     BASE_STATS      *psResGraphic;
-    UDWORD          compID, IMDType;
+    uint32_t          compID, IMDType;
     Vector3i Rotation,Position;
-    UDWORD          basePlateSize, Radius;
-    SDWORD          scale = 0;
+    uint32_t          basePlateSize, Radius;
+    int32_t          scale = 0;
 
     // Set identity (present) context
     pie_MatBegin();

@@ -144,9 +144,9 @@ void scriptFreeCode(SCRIPT_CODE *psCode)
 
 
 /* Lookup a script variable */
-BOOL scriptGetVarIndex(SCRIPT_CODE *psCode, char *pID, UDWORD *pIndex)
+BOOL scriptGetVarIndex(SCRIPT_CODE *psCode, char *pID, uint32_t *pIndex)
 {
-    UDWORD	index;
+    uint32_t	index;
 
     if (!psCode->psVarDebug)
     {
@@ -167,7 +167,7 @@ BOOL scriptGetVarIndex(SCRIPT_CODE *psCode, char *pID, UDWORD *pIndex)
 
 /* returns true if passed INTERP_TYPE is used as a pointer in INTERP_VAL, false otherwise.
    all types are listed explicitly, with asserts/warnings for invalid/unrecognised types, as
-   getting this wrong will cause segfaults if sizeof(void*) != sizeof(SDWORD) (eg. amd64). a lot of
+   getting this wrong will cause segfaults if sizeof(void*) != sizeof(int32_t) (eg. amd64). a lot of
    these aren't currently checked for, but it's a lot clearer what's going on if they're all here */
 BOOL scriptTypeIsPointer(INTERP_TYPE type)
 {

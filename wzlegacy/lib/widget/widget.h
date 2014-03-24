@@ -96,18 +96,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 /* Basic initialisation entries common to all widgets */
 #define WINIT_BASE \
-	UDWORD				formID;			/* ID number of form to put widget on */ \
+	uint32_t				formID;			/* ID number of form to put widget on */ \
 										/* ID == 0 specifies the default form for the screen */ \
-	UWORD				majorID,minorID;	/* Which major and minor tab to put the widget */ \
+	uint16_t				majorID,minorID;	/* Which major and minor tab to put the widget */ \
 										/* on for a tabbed form */ \
-	UDWORD				id;				/* Unique id number (chosen by user) */ \
-	UDWORD				style;			/* widget style */ \
-	SWORD				x,y;			/* screen location */ \
-	UWORD				width,height;	/* widget size */\
+	uint32_t				id;				/* Unique id number (chosen by user) */ \
+	uint32_t				style;			/* widget style */ \
+	int16_t				x,y;			/* screen location */ \
+	uint16_t				width,height;	/* widget size */\
 	WIDGET_DISPLAY		pDisplay;		/* Optional display function */\
 	WIDGET_CALLBACK		pCallback;		/* Optional callback function */\
 	void				*pUserData;		/* Optional user data pointer */\
-	UDWORD				UserData		/* User data (if any) */
+	uint32_t				UserData		/* User data (if any) */
 
 /** The basic initialisation structure */
 typedef struct
@@ -144,8 +144,8 @@ typedef struct
 #define TAB_MINOR 0	// Tab types passed into tab display callbacks.
 #define TAB_MAJOR 1
 
-typedef void (*TAB_DISPLAY)(WIDGET *psWidget, UDWORD TabType, UDWORD Position, UDWORD Number, BOOL Selected, BOOL Hilight, UDWORD x, UDWORD y, UDWORD Width, UDWORD Height);
-typedef void (*FONT_DISPLAY)(UDWORD x, UDWORD y, char *String);
+typedef void (*TAB_DISPLAY)(WIDGET *psWidget, uint32_t TabType, uint32_t Position, uint32_t Number, BOOL Selected, BOOL Hilight, uint32_t x, uint32_t y, uint32_t Width, uint32_t Height);
+typedef void (*FONT_DISPLAY)(uint32_t x, uint32_t y, char *String);
 
 /** Form initialisation structure */
 typedef struct
@@ -155,20 +155,20 @@ typedef struct
 
     /* Data for a tabbed form */
     BOOL			disableChildren;
-    UWORD			majorPos, minorPos;		// Position of the tabs on the form
-    UWORD			majorSize, minorSize;		// Size of the tabs (in pixels)
-    SWORD			majorOffset, minorOffset;	// Tab start offset.
-    SWORD			tabVertOffset;			///< Tab form overlap offset.
-    SWORD			tabHorzOffset;			///< Tab form overlap offset.
-    UWORD			tabMajorThickness;		///< The thickness of the tabs
-    UWORD			tabMinorThickness;		///< The thickness of the tabs
-    UWORD			tabMajorGap;			///< The space between tabs
-    UWORD			tabMinorGap;			///< The space between tabs
-    UWORD			numStats;			///< Number of "stats" (items) in list
-    UWORD			numButtons;			///< Number of buttons per form
-    UWORD			numMajor;			///< Number of major tabs
-    UWORD			aNumMinors[WFORM_MAXMAJOR];	///< Number of minor tabs for each major
-    SWORD			TabMultiplier;			///< Used to tell system we got lots of (virtual) tabs to display
+    uint16_t			majorPos, minorPos;		// Position of the tabs on the form
+    uint16_t			majorSize, minorSize;		// Size of the tabs (in pixels)
+    int16_t			majorOffset, minorOffset;	// Tab start offset.
+    int16_t			tabVertOffset;			///< Tab form overlap offset.
+    int16_t			tabHorzOffset;			///< Tab form overlap offset.
+    uint16_t			tabMajorThickness;		///< The thickness of the tabs
+    uint16_t			tabMinorThickness;		///< The thickness of the tabs
+    uint16_t			tabMajorGap;			///< The space between tabs
+    uint16_t			tabMinorGap;			///< The space between tabs
+    uint16_t			numStats;			///< Number of "stats" (items) in list
+    uint16_t			numButtons;			///< Number of buttons per form
+    uint16_t			numMajor;			///< Number of major tabs
+    uint16_t			aNumMinors[WFORM_MAXMAJOR];	///< Number of minor tabs for each major
+    int16_t			TabMultiplier;			///< Used to tell system we got lots of (virtual) tabs to display
     const char		*pTip;				///< Tool tip for the form itself
     char			*apMajorTips[WFORM_MAXMAJOR];	///< Tool tips for the major tabs
     char			*apMinorTips[WFORM_MAXMAJOR][WFORM_MAXMINOR];	///< Tool tips for the minor tabs
@@ -222,10 +222,10 @@ typedef struct
     /* The basic init entries */
     WINIT_BASE;
 
-    UWORD		orientation;		///< Orientation of the bar on the widget
-    UWORD		size;			///< Initial percentage of the graph that is filled
-    UWORD		minorSize;		///< Percentage of second bar graph if there is one
-    UWORD		iRange;			///< Maximum range
+    uint16_t		orientation;		///< Orientation of the bar on the widget
+    uint16_t		size;			///< Initial percentage of the graph that is filled
+    uint16_t		minorSize;		///< Percentage of second bar graph if there is one
+    uint16_t		iRange;			///< Maximum range
     int             denominator;            ///< Denominator, 1 by default.
     int             precision;              ///< Number of places after the decimal point to display, 0 by default.
     PIELIGHT	sCol;			///< Bar colour
@@ -246,10 +246,10 @@ typedef struct
     /* The basic init entries */
     WINIT_BASE;
 
-    UWORD		orientation;		///< Orientation of the slider
-    UWORD		numStops;		///< Number of stops on the slider
-    UWORD		barSize;		///< Size of the bar
-    UWORD		pos;			///< Initial position of the slider bar
+    uint16_t		orientation;		///< Orientation of the slider
+    uint16_t		numStops;		///< Number of stops on the slider
+    uint16_t		barSize;		///< Size of the bar
+    uint16_t		pos;			///< Initial position of the slider bar
     const char	*pTip;			///< Tip string
 } W_SLDINIT;
 
@@ -298,73 +298,73 @@ extern BOOL widgAddBarGraph(W_SCREEN *psScreen, const W_BARINIT *psInit);
 extern BOOL widgAddSlider(W_SCREEN *psScreen, const W_SLDINIT *psInit);
 
 /** Delete a widget from the screen */
-extern void widgDelete(W_SCREEN *psScreen, UDWORD id);
+extern void widgDelete(W_SCREEN *psScreen, uint32_t id);
 
 /** Hide a widget */
-extern void widgHide(W_SCREEN *psScreen, UDWORD id);
+extern void widgHide(W_SCREEN *psScreen, uint32_t id);
 
 /** Reveal a widget */
-extern void widgReveal(W_SCREEN *psScreen, UDWORD id);
+extern void widgReveal(W_SCREEN *psScreen, uint32_t id);
 
 /** Return a pointer to a buffer containing the current string of a widget if any.
  * This will always return a valid string pointer.
  * NOTE: The string must be copied out of the buffer
  */
-extern const char *widgGetString(W_SCREEN *psScreen, UDWORD id);
+extern const char *widgGetString(W_SCREEN *psScreen, uint32_t id);
 
 /** Set the text in a widget */
-extern void widgSetString(W_SCREEN *psScreen, UDWORD id, const char *pText);
+extern void widgSetString(W_SCREEN *psScreen, uint32_t id, const char *pText);
 
 /** Set the current tabs for a tab form */
-extern void widgSetTabs(W_SCREEN *psScreen, UDWORD id, UWORD major, UWORD minor);
+extern void widgSetTabs(W_SCREEN *psScreen, uint32_t id, uint16_t major, uint16_t minor);
 
 /** Get the current tabs for a tab form */
-extern void widgGetTabs(W_SCREEN *psScreen, UDWORD id, UWORD *pMajor, UWORD *pMinor);
+extern void widgGetTabs(W_SCREEN *psScreen, uint32_t id, uint16_t *pMajor, uint16_t *pMinor);
 
 /** Get the number of major tab in a tab form. */
-int widgGetNumTabMajor(W_SCREEN *psScreen, UDWORD id);
+int widgGetNumTabMajor(W_SCREEN *psScreen, uint32_t id);
 
 /** Get the number of minor tabs in a tab form. */
-int widgGetNumTabMinor(W_SCREEN *psScreen, UDWORD id, UWORD pMajor);
+int widgGetNumTabMinor(W_SCREEN *psScreen, uint32_t id, uint16_t pMajor);
 
 /** Get the current position of a widget */
-extern void widgGetPos(W_SCREEN *psScreen, UDWORD id, SWORD *pX, SWORD *pY);
+extern void widgGetPos(W_SCREEN *psScreen, uint32_t id, int16_t *pX, int16_t *pY);
 
 /** Get the current position of a slider bar */
-extern UDWORD widgGetSliderPos(W_SCREEN *psScreen, UDWORD id);
+extern uint32_t widgGetSliderPos(W_SCREEN *psScreen, uint32_t id);
 
 /** Set the current position of a slider bar */
-extern void widgSetSliderPos(W_SCREEN *psScreen, UDWORD id, UWORD pos);
+extern void widgSetSliderPos(W_SCREEN *psScreen, uint32_t id, uint16_t pos);
 
 /** Set the current size of a bar graph */
-extern void widgSetBarSize(W_SCREEN *psScreen, UDWORD id, UDWORD size);
+extern void widgSetBarSize(W_SCREEN *psScreen, uint32_t id, uint32_t size);
 
 /** Set the current size of a minor bar on a double graph */
-extern void widgSetMinorBarSize(W_SCREEN *psScreen, UDWORD id, UDWORD size);
+extern void widgSetMinorBarSize(W_SCREEN *psScreen, uint32_t id, uint32_t size);
 
 /** Return the ID of the widget the mouse was over this frame */
-extern UDWORD widgGetMouseOver(W_SCREEN *psScreen);
+extern uint32_t widgGetMouseOver(W_SCREEN *psScreen);
 
 /** Return the user data for a widget */
-extern void *widgGetUserData(W_SCREEN *psScreen, UDWORD id);
+extern void *widgGetUserData(W_SCREEN *psScreen, uint32_t id);
 
 /** Set the user data for a widget */
-extern void widgSetUserData(W_SCREEN *psScreen, UDWORD id, void *UserData);
+extern void widgSetUserData(W_SCREEN *psScreen, uint32_t id, void *UserData);
 
 /** Return the user data for a widget */
-extern UDWORD widgGetUserData2(W_SCREEN *psScreen, UDWORD id);
+extern uint32_t widgGetUserData2(W_SCREEN *psScreen, uint32_t id);
 
 /** Set the user data for a widget */
-extern void widgSetUserData2(W_SCREEN *psScreen, UDWORD id,UDWORD UserData);
+extern void widgSetUserData2(W_SCREEN *psScreen, uint32_t id,uint32_t UserData);
 
 /** Return the user data for the returned widget */
 extern void *widgGetLastUserData(W_SCREEN *psScreen);
 
 /** Get widget structure */
-extern WIDGET *widgGetFromID(W_SCREEN *psScreen, UDWORD id);
+extern WIDGET *widgGetFromID(W_SCREEN *psScreen, uint32_t id);
 
 /** Set tip string for a widget */
-extern void widgSetTip(W_SCREEN *psScreen, UDWORD id, const char *pTip);
+extern void widgSetTip(W_SCREEN *psScreen, uint32_t id, const char *pTip);
 extern void widgSetTipText(WIDGET *psWidget, const char *pTip);
 
 /** Colour numbers */
@@ -383,8 +383,8 @@ enum _w_colour
 };
 
 /** Set a colour on a form */
-extern void widgSetColour(W_SCREEN *psScreen, UDWORD id, UDWORD colour,
-                          UBYTE red, UBYTE green, UBYTE blue);
+extern void widgSetColour(W_SCREEN *psScreen, uint32_t id, uint32_t colour,
+                          uint8_t red, uint8_t green, uint8_t blue);
 
 /** Set the global toop tip text colour. */
 extern void widgSetTipColour(PIELIGHT colour);
@@ -395,14 +395,14 @@ extern void widgSetTipColour(PIELIGHT colour);
 #define WBUT_CLICKLOCK	0x0004		///< Fix a button down but it is still clickable
 #define WBUT_FLASH	0x0008		///< Make a button flash.
 
-extern void widgSetButtonFlash(W_SCREEN *psScreen, UDWORD id);
-extern void widgClearButtonFlash(W_SCREEN *psScreen, UDWORD id);
+extern void widgSetButtonFlash(W_SCREEN *psScreen, uint32_t id);
+extern void widgClearButtonFlash(W_SCREEN *psScreen, uint32_t id);
 
 /** Get a button or clickable form's state */
-extern UDWORD widgGetButtonState(W_SCREEN *psScreen, UDWORD id);
+extern uint32_t widgGetButtonState(W_SCREEN *psScreen, uint32_t id);
 
 /** Set a button or clickable form's state */
-extern void widgSetButtonState(W_SCREEN *psScreen, UDWORD id, UDWORD state);
+extern void widgSetButtonState(W_SCREEN *psScreen, uint32_t id, uint32_t state);
 
 
 /* The keys that can be used to press a button */
@@ -411,7 +411,7 @@ extern void widgSetButtonState(W_SCREEN *psScreen, UDWORD id, UDWORD state);
 #define WKEY_SECONDARY		2
 
 /** Return which key was used to press the last returned widget */
-extern UDWORD widgGetButtonKey(W_SCREEN *psScreen);
+extern uint32_t widgGetButtonKey(W_SCREEN *psScreen);
 
 /** Initialise the set of widgets that make up a screen.
  * Call this once before calling widgRunScreen and widgDisplayScreen.
@@ -428,7 +428,7 @@ extern void widgEndScreen(W_SCREEN *psScreen);
 /** Execute a set of widgets for one cycle.
  * Return the id of the widget that was activated, or 0 for none.
  */
-extern UDWORD widgRunScreen(W_SCREEN *psScreen);
+extern uint32_t widgRunScreen(W_SCREEN *psScreen);
 
 /** Display the screen's widgets in their current state
  * (Call after calling widgRunScreen, this allows the input
@@ -438,16 +438,16 @@ extern void widgDisplayScreen(W_SCREEN *psScreen);
 
 
 /** Set the current audio callback function and audio id's. */
-extern void WidgSetAudio(WIDGET_AUDIOCALLBACK Callback,SWORD HilightID,SWORD ClickedID);
+extern void WidgSetAudio(WIDGET_AUDIOCALLBACK Callback,int16_t HilightID,int16_t ClickedID);
 
 /** Get pointer to current audio callback function. */
 extern WIDGET_AUDIOCALLBACK WidgGetAudioCallback(void);
 
 /** Get current audio ID for hilight. */
-extern SWORD WidgGetHilightAudioID(void);
+extern int16_t WidgGetHilightAudioID(void);
 
 /** Get current audio ID for clicked. */
-extern SWORD WidgGetClickedAudioID(void);
+extern int16_t WidgGetClickedAudioID(void);
 
 /** Enable or disable all sliders. */
 extern void sliderEnableDrag(BOOL Enable);

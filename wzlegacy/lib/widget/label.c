@@ -98,9 +98,9 @@ void labelFree(W_LABEL *psWidget)
 
 
 /* label display function */
-void labelDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void labelDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    SDWORD		fx,fy, fw;
+    int32_t		fx,fy, fw;
     W_LABEL		*psLabel;
     enum iV_fonts FontID;
 

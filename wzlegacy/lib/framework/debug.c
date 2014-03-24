@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define MAX_LEN_LOG_LINE 512
 
 char last_called_script_event[MAX_EVENT_NAME_LEN];
-UDWORD traceID = -1;
+uint32_t traceID = -1;
 
 static debug_callback *callbackRegistry = NULL;
 bool enabled_debug[LOG_LAST]; // global

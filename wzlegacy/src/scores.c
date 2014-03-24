@@ -188,7 +188,7 @@ STAT_BAR	infoBars[]=
 };
 
 // --------------------------------------------------------------------
-void	constructTime(char *psText, UDWORD hours, UDWORD minutes, UDWORD seconds);
+void	constructTime(char *psText, uint32_t hours, uint32_t minutes, uint32_t seconds);
 void	drawDroidBars( void );
 void	drawUnitBars( void );
 void	drawStatBars( void );
@@ -198,7 +198,7 @@ void	dispAdditionalInfo( void );
 
 /* The present mission data */
 static	MISSION_DATA	missionData;
-static	UDWORD	dispST;
+static	uint32_t	dispST;
 static	BOOL	bDispStarted = false;
 static	char	text[255];
 static	char	text2[255];
@@ -280,10 +280,10 @@ void	scoreDataToScreen(void)
 
 // --------------------------------------------------------------------
 /* Builds an ascii string for the passed in components 04:02:23 for example */
-void	constructTime(char *psText, UDWORD hours, UDWORD minutes, UDWORD seconds)
+void	constructTime(char *psText, uint32_t hours, uint32_t minutes, uint32_t seconds)
 {
-    UDWORD	index;
-    UDWORD	div;
+    uint32_t	index;
+    uint32_t	div;
 
     index = 0;
     // Hours do not have trailing zeros
@@ -292,49 +292,49 @@ void	constructTime(char *psText, UDWORD hours, UDWORD minutes, UDWORD seconds)
         if(hours<10)
         {
             // Less than 10 hours
-            psText[index++] = (UBYTE)('0'+ hours%10);
+            psText[index++] = (uint8_t)('0'+ hours%10);
         }
         else if(hours<100)
         {
             // Over ten hours
-            psText[index++] = (UBYTE)('0'+ hours/10);
-            psText[index++] = (UBYTE)('0'+ hours%10);
+            psText[index++] = (uint8_t)('0'+ hours/10);
+            psText[index++] = (uint8_t)('0'+ hours%10);
         }
         else
         {
             // Over 100 hours - go outside people!!!!
             // build hours
-            psText[index++] = (UBYTE)('0' + (hours/100));		// hmmmmmm....
+            psText[index++] = (uint8_t)('0' + (hours/100));		// hmmmmmm....
             div = hours/100;
-            psText[index++] = (UBYTE)('0' + (hours-(div*100))/10);	// nice
-            psText[index++] = (UBYTE)('0' + hours%10);
+            psText[index++] = (uint8_t)('0' + (hours-(div*100))/10);	// nice
+            psText[index++] = (uint8_t)('0' + hours%10);
 
         }
         // Put in the hrs/mins separator - only for non-zero hours
-        psText[index++] = (UBYTE)(':');
+        psText[index++] = (uint8_t)(':');
     }
 
 
     // put in the minutes
-    psText[index++] = (UBYTE)('0' + minutes/10);
-    psText[index++] = (UBYTE)('0' + minutes%10);
+    psText[index++] = (uint8_t)('0' + minutes/10);
+    psText[index++] = (uint8_t)('0' + minutes%10);
 
     // mins/secs separator
-    psText[index++] = (UBYTE)(':');
+    psText[index++] = (uint8_t)(':');
 
 
     // Put in the seconds
-    psText[index++] = (UBYTE)('0' + seconds/10);
-    psText[index++] = (UBYTE)('0' + seconds%10);
+    psText[index++] = (uint8_t)('0' + seconds/10);
+    psText[index++] = (uint8_t)('0' + seconds%10);
 
     // terminate the string
     psText[index] = '\0';
 }
 // --------------------------------------------------------------------
 /* Builds an ascii string for the passed in time */
-void	getAsciiTime( char *psText, UDWORD time )
+void	getAsciiTime( char *psText, uint32_t time )
 {
-    UDWORD	hours,minutes,seconds;
+    uint32_t	hours,minutes,seconds;
 
     getTimeComponents(time,&hours,&minutes,&seconds);
     constructTime(psText,hours,minutes,seconds);
@@ -344,10 +344,10 @@ void	getAsciiTime( char *psText, UDWORD time )
 // -----------------------------------------------------------------------------------
 void	drawStatBars( void )
 {
-    UDWORD	index;
+    uint32_t	index;
     BOOL	bMoreBars;
-    UDWORD	x,y;
-    UDWORD	width,height;
+    uint32_t	x,y;
+    uint32_t	width,height;
 
     if(!bDispStarted)
     {
@@ -420,7 +420,7 @@ void	drawStatBars( void )
             /* If we're beyond STAT_ROOKIE, then we're on rankings */
             if(index>=STAT_GREEN && index <= STAT_ACE)
             {
-                iV_DrawImage(IntImages,(UWORD)(IMAGE_LEV_0 + (index - STAT_GREEN)),x-8,y+2);
+                iV_DrawImage(IntImages,(uint16_t)(IMAGE_LEV_0 + (index - STAT_GREEN)),x-8,y+2);
             }
 
 
@@ -468,11 +468,11 @@ void	dispAdditionalInfo( void )
 // -----------------------------------------------------------------------------------
 void	fillUpStats( void )
 {
-    UDWORD	i;
-    UDWORD	maxi,num;
+    uint32_t	i;
+    uint32_t	maxi,num;
     float	scaleFactor;
-    UDWORD	length;
-    UDWORD	numUnits;
+    uint32_t	length;
+    uint32_t	numUnits;
     DROID	*psDroid;
 
     /* Do rankings first cos they're easier */

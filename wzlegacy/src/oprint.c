@@ -183,9 +183,9 @@ static void printWeaponInfo(const WEAPON_STATS *psStats)
                              psStats->shortRange, proj_GetLongRange(psStats), psStats->minRange,
                              proj_Direct(psStats) ? "direct" : "indirect",
                              //psStats->shortHit, psStats->longHit, psStats->firePause, psStats->damage));
-                             weaponShortHit(psStats,(UBYTE)selectedPlayer), weaponLongHit(psStats,
-                                     (UBYTE)selectedPlayer), weaponFirePause(psStats,(UBYTE)selectedPlayer),
-                             weaponDamage(psStats, (UBYTE)selectedPlayer)));
+                             weaponShortHit(psStats,(uint8_t)selectedPlayer), weaponLongHit(psStats,
+                                     (uint8_t)selectedPlayer), weaponFirePause(psStats,(uint8_t)selectedPlayer),
+                             weaponDamage(psStats, (uint8_t)selectedPlayer)));
     CONPRINTF(ConsoleString,(ConsoleString,"   rad %d radHt %d radDam %d\n"
                              "   inTime %d inDam %d inRad %d\n",
                              psStats->radius, psStats->radiusHit, psStats->radiusDamage,

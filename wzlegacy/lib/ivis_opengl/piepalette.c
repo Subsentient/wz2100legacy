@@ -22,11 +22,11 @@ PIELIGHT psPalette[WZCOL_MAX];
 void pal_Init(void)
 {
     // TODO: Read these from file so that mod-makers can change them
-    WZCOL_WHITE = pal_Colour(UBYTE_MAX, UBYTE_MAX, UBYTE_MAX);
+    WZCOL_WHITE = pal_Colour(uint8_t_MAX, uint8_t_MAX, uint8_t_MAX);
     WZCOL_BLACK = pal_Colour(1, 1, 1);
-    WZCOL_GREEN = pal_Colour(0, UBYTE_MAX, 0);
-    WZCOL_RED = pal_Colour(UBYTE_MAX, 0, 0);
-    WZCOL_YELLOW = pal_Colour(UBYTE_MAX, UBYTE_MAX, 0);
+    WZCOL_GREEN = pal_Colour(0, uint8_t_MAX, 0);
+    WZCOL_RED = pal_Colour(uint8_t_MAX, 0, 0);
+    WZCOL_YELLOW = pal_Colour(uint8_t_MAX, uint8_t_MAX, 0);
 
     WZCOL_RELOAD_BAR	= WZCOL_WHITE;
     WZCOL_RELOAD_BACKGROUND	= WZCOL_BLACK;
@@ -51,14 +51,14 @@ void pal_Init(void)
     WZCOL_MENU_SEPARATOR = pal_Colour(0x64, 0x64, 0xa0);
 
     WZCOL_TEXT_BRIGHT = WZCOL_WHITE;
-    WZCOL_TEXT_MEDIUM.byte.r = 0.627451f * UBYTE_MAX;
-    WZCOL_TEXT_MEDIUM.byte.g = 0.627451f * UBYTE_MAX;
-    WZCOL_TEXT_MEDIUM.byte.b = UBYTE_MAX;
-    WZCOL_TEXT_MEDIUM.byte.a = UBYTE_MAX;
-    WZCOL_TEXT_DARK.byte.r = 0.376471f * UBYTE_MAX;
-    WZCOL_TEXT_DARK.byte.g = 0.376471f * UBYTE_MAX;
-    WZCOL_TEXT_DARK.byte.b = UBYTE_MAX;
-    WZCOL_TEXT_DARK.byte.a = UBYTE_MAX;
+    WZCOL_TEXT_MEDIUM.byte.r = 0.627451f * uint8_t_MAX;
+    WZCOL_TEXT_MEDIUM.byte.g = 0.627451f * uint8_t_MAX;
+    WZCOL_TEXT_MEDIUM.byte.b = uint8_t_MAX;
+    WZCOL_TEXT_MEDIUM.byte.a = uint8_t_MAX;
+    WZCOL_TEXT_DARK.byte.r = 0.376471f * uint8_t_MAX;
+    WZCOL_TEXT_DARK.byte.g = 0.376471f * uint8_t_MAX;
+    WZCOL_TEXT_DARK.byte.b = uint8_t_MAX;
+    WZCOL_TEXT_DARK.byte.a = uint8_t_MAX;
 
     WZCOL_SCORE_BOX_BORDER = WZCOL_BLACK;
     WZCOL_SCORE_BOX = pal_Colour(0, 0, 88);

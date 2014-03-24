@@ -51,7 +51,7 @@ bool selfTest = false;
  *	Player globals
  */
 
-UDWORD		selectedPlayer = 0; 	/**< Current player */
+uint32_t		selectedPlayer = 0; 	/**< Current player */
 
 
 /************************************************************************************
@@ -95,7 +95,7 @@ int getFramerateLimit(void)
 /* InitFrameStuff - needs to be called once before frame loop commences */
 static void InitFrameStuff( void )
 {
-    UDWORD i;
+    uint32_t i;
 
     for (i=0; i<TIMESPAN; i++)
     {
@@ -131,9 +131,9 @@ static void MaintainFrameStuff( void )
 }
 
 
-UDWORD frameGetAverageRate(void)
+uint32_t frameGetAverageRate(void)
 {
-    SDWORD averageFrames = 0, i = 0;
+    int32_t averageFrames = 0, i = 0;
     for ( i = 0; i < TIMESPAN; i++ )
     {
         averageFrames += FrameCounts[i];
@@ -144,7 +144,7 @@ UDWORD frameGetAverageRate(void)
 }
 
 
-UDWORD	frameGetFrameNumber(void)
+uint32_t	frameGetFrameNumber(void)
 {
     return curFrames;
 }
@@ -214,13 +214,13 @@ static void freeCursors(void)
  */
 bool frameInitialise(
     const char *pWindowName,// The text to appear in the window title bar
-    UDWORD width,			// The display width
-    UDWORD height,			// The display height
-    UDWORD bitDepth,		// The display bit depth
+    uint32_t width,			// The display width
+    uint32_t height,			// The display height
+    uint32_t bitDepth,		// The display bit depth
     bool fullScreen,		// Whether to start full screen or windowed
     bool vsync)				// If to sync to vblank or not
 {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+#if SDL_int8_tORDER == SDL_BIG_ENDIAN
     uint32_t rmask = 0xff000000;
     uint32_t gmask = 0x00ff0000;
     uint32_t bmask = 0x0000ff00;
@@ -348,7 +348,7 @@ PHYSFS_file *openLoadFile(const char *fileName, bool hard_fail)
 
   If hard_fail is true, we will assert and report on failures.
 ***************************************************************************/
-static bool loadFile2(const char *pFileName, char **ppFileData, UDWORD *pFileSize,
+static bool loadFile2(const char *pFileName, char **ppFileData, uint32_t *pFileSize,
                       bool AllocateMem, bool hard_fail)
 {
     PHYSFS_file *pfile;
@@ -448,7 +448,7 @@ PHYSFS_file *openSaveFile(const char *fileName)
 /***************************************************************************
 	Save the data in the buffer into the given file.
 ***************************************************************************/
-bool saveFile(const char *pFileName, const char *pFileData, UDWORD fileSize)
+bool saveFile(const char *pFileName, const char *pFileData, uint32_t fileSize)
 {
     PHYSFS_file *pfile;
     PHYSFS_uint32 size = fileSize;
@@ -490,20 +490,20 @@ bool saveFile(const char *pFileName, const char *pFileData, UDWORD fileSize)
     return true;
 }
 
-bool loadFile(const char *pFileName, char **ppFileData, UDWORD *pFileSize)
+bool loadFile(const char *pFileName, char **ppFileData, uint32_t *pFileSize)
 {
     return loadFile2(pFileName, ppFileData, pFileSize, true, true);
 }
 
 // load a file from disk into a fixed memory buffer
-bool loadFileToBuffer(const char *pFileName, char *pFileBuffer, UDWORD bufferSize, UDWORD *pSize)
+bool loadFileToBuffer(const char *pFileName, char *pFileBuffer, uint32_t bufferSize, uint32_t *pSize)
 {
     *pSize = bufferSize;
     return loadFile2(pFileName, &pFileBuffer, pSize, false, true);
 }
 
 // as above but returns quietly if no file found
-bool loadFileToBufferNoError(const char *pFileName, char *pFileBuffer, UDWORD bufferSize, UDWORD *pSize)
+bool loadFileToBufferNoError(const char *pFileName, char *pFileBuffer, uint32_t bufferSize, uint32_t *pSize)
 {
     *pSize = bufferSize;
     return loadFile2(pFileName, &pFileBuffer, pSize, false, false);
@@ -512,9 +512,9 @@ bool loadFileToBufferNoError(const char *pFileName, char *pFileBuffer, UDWORD bu
 
 /* next four used in HashPJW */
 #define	BITS_IN_int		32
-#define	THREE_QUARTERS	((UDWORD) ((BITS_IN_int * 3) / 4))
-#define	ONE_EIGHTH		((UDWORD) (BITS_IN_int / 8))
-#define	HIGH_BITS		( ~((UDWORD)(~0) >> ONE_EIGHTH ))
+#define	THREE_QUARTERS	((uint32_t) ((BITS_IN_int * 3) / 4))
+#define	ONE_EIGHTH		((uint32_t) (BITS_IN_int / 8))
+#define	HIGH_BITS		( ~((uint32_t)(~0) >> ONE_EIGHTH ))
 
 
 /***************************************************************************/
@@ -527,9 +527,9 @@ bool loadFileToBufferNoError(const char *pFileName, char *pFileBuffer, UDWORD bu
  * Accepts string and returns hashed integer.
  */
 /***************************************************************************/
-UDWORD HashString( const char *c )
+uint32_t HashString( const char *c )
 {
-    UDWORD	iHashValue;
+    uint32_t	iHashValue;
 
     assert(c != NULL);
     assert(*c != 0x0);
@@ -567,9 +567,9 @@ static inline char upcaseASCII(char c)
     }
 }
 
-UDWORD HashStringIgnoreCase( const char *c )
+uint32_t HashStringIgnoreCase( const char *c )
 {
-    UDWORD	iHashValue;
+    uint32_t	iHashValue;
 
     assert(c != NULL);
     assert(*c != 0x0);

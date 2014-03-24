@@ -46,23 +46,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include <ctype.h>
 
 /* Basic numeric types */
-typedef uint8_t  UBYTE;
-typedef int8_t   SBYTE;
-typedef uint16_t UWORD;
-typedef int16_t  SWORD;
-typedef uint32_t UDWORD;
-typedef int32_t  SDWORD;
+typedef uint8_t  uint8_t;
+typedef int8_t   int8_t;
+typedef uint16_t uint16_t;
+typedef int16_t  int16_t;
+typedef uint32_t uint32_t;
+typedef int32_t  int32_t;
 
 /* Numeric size defines */
-#define UBYTE_MAX	UINT8_MAX
-#define SBYTE_MIN	INT8_MIN
-#define SBYTE_MAX	INT8_MAX
-#define UWORD_MAX	UINT16_MAX
-#define SWORD_MIN	INT16_MIN
-#define SWORD_MAX	INT16_MAX
-#define UDWORD_MAX	UINT32_MAX
-#define SDWORD_MIN	INT32_MIN
-#define SDWORD_MAX	INT32_MAX
+#define uint8_t_MAX	UINT8_MAX
+#define int8_t_MIN	INT8_MIN
+#define int8_t_MAX	INT8_MAX
+#define uint16_t_MAX	UINT16_MAX
+#define int16_t_MIN	INT16_MIN
+#define int16_t_MAX	INT16_MAX
+#define uint32_t_MAX	UINT32_MAX
+#define int32_t_MIN	INT32_MIN
+#define int32_t_MAX	INT32_MAX
 
 // If we are C99 compatible, the "bool" macro will be defined in <stdbool.h> (as _Bool)
 // C++ comes with an integrated bool type

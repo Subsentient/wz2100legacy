@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "scripttabs.h"
 
 
-static UDWORD asciiKeyCodeToTable( KEY_CODE code );
+static uint32_t asciiKeyCodeToTable( KEY_CODE code );
 
 // ----------------------------------------------------------------------------------
 KEY_MAPPING	*keyGetMappingFromFunction(void	*function)
@@ -66,8 +66,8 @@ KEY_MAPPING	*keyGetMappingFromFunction(void	*function)
 typedef	struct	_keymap_Marker
 {
     KEY_MAPPING	*psMapping;
-    UDWORD	xPos,yPos;
-    SDWORD	spin;
+    uint32_t	xPos,yPos;
+    int32_t	spin;
 } KEYMAP_MARKER;
 static	KEYMAP_MARKER	qwertyKeyMappings[NUM_QWERTY_KEYS];
 
@@ -80,7 +80,7 @@ static	BOOL			bDoingDebugMappings = false;
 KEY_MAPPING	*keyMappings;
 
 /* Holds number of active mappings */
-UDWORD	numActiveMappings;
+uint32_t	numActiveMappings;
 
 /* Last meta and sub key that were recorded */
 static KEY_CODE	lastMetaKey,lastSubKey;
@@ -264,7 +264,7 @@ _keymapsave keyMapSaveTable[] =
 */
 void	keyInitMappings( BOOL bForceDefaults )
 {
-    UDWORD	i;
+    uint32_t	i;
     keyMappings = NULL;
     numActiveMappings = 0;
     bKeyProcessing = true;
@@ -661,7 +661,7 @@ BOOL	keyRemoveMappingPt(KEY_MAPPING *psToRemove)
 
 // ----------------------------------------------------------------------------------
 /* Just returns how many are active */
-UDWORD	getNumMappings( void )
+uint32_t	getNumMappings( void )
 {
     return(numActiveMappings);
 }
@@ -672,7 +672,7 @@ UDWORD	getNumMappings( void )
 static BOOL checkQwertyKeys( void )
 {
     KEY_CODE qKey;
-    UDWORD tableEntry;
+    uint32_t tableEntry;
     BOOL aquired = false;
 
     /* Are we trying to make a new map marker? */
@@ -711,7 +711,7 @@ void	keyProcessMappings( BOOL bExclude )
 {
     KEY_MAPPING	*keyToProcess;
     BOOL		bMetaKeyDown;
-    SDWORD		i;
+    int32_t		i;
 
     /* Bomb out if there are none */
     if(!keyMappings || !numActiveMappings || !bKeyProcessing)
@@ -981,7 +981,7 @@ void	keySetMappingStatus(KEY_MAPPING *psMapping, BOOL state)
 /* Returns the key code of the first ascii key that its finds has been PRESSED */
 KEY_CODE	getQwertyKey( void )
 {
-    UDWORD	i;
+    uint32_t	i;
 
     for(i = KEY_Q; i <= KEY_P; i++)
     {
@@ -1013,7 +1013,7 @@ KEY_CODE	getQwertyKey( void )
 /*	Returns the number (0 to 26) of a key on the keyboard
 	from it's keycode. Q is zero, through to M being 25
 */
-UDWORD	asciiKeyCodeToTable(KEY_CODE code)
+uint32_t	asciiKeyCodeToTable(KEY_CODE code)
 {
     if( code >= KEY_Q && code<=KEY_P )
     {
@@ -1033,27 +1033,27 @@ UDWORD	asciiKeyCodeToTable(KEY_CODE code)
 
 // ----------------------------------------------------------------------------------
 /* Returns the map X position associated with the passed in keycode */
-UDWORD	getMarkerX( KEY_CODE code )
+uint32_t	getMarkerX( KEY_CODE code )
 {
-    UDWORD	entry;
+    uint32_t	entry;
     entry = asciiKeyCodeToTable(code);
     return(qwertyKeyMappings[entry].xPos);
 }
 
 // ----------------------------------------------------------------------------------
 /* Returns the map Y position associated with the passed in keycode */
-UDWORD	getMarkerY( KEY_CODE code )
+uint32_t	getMarkerY( KEY_CODE code )
 {
-    UDWORD	entry;
+    uint32_t	entry;
     entry = asciiKeyCodeToTable(code);
     return(qwertyKeyMappings[entry].yPos);
 }
 
 // ----------------------------------------------------------------------------------
 /* Returns the map Y rotation associated with the passed in keycode */
-SDWORD	getMarkerSpin( KEY_CODE code )
+int32_t	getMarkerSpin( KEY_CODE code )
 {
-    UDWORD	entry;
+    uint32_t	entry;
     entry = asciiKeyCodeToTable(code);
     return(qwertyKeyMappings[entry].spin);
 }

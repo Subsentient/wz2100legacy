@@ -55,7 +55,7 @@ extern void gridAddObject(BASE_OBJECT *psObj);
 
 // move a DROID within the grid
 // oldX,oldY are the old position of the object in world coords
-extern void gridMoveDroid(DROID *psDroid, SDWORD oldX, SDWORD oldY);
+extern void gridMoveDroid(DROID *psDroid, int32_t oldX, int32_t oldY);
 
 // remove an object from the grid system
 extern void gridRemoveObject(BASE_OBJECT *psObj);
@@ -68,7 +68,7 @@ extern void gridDisplayCoverage(BASE_OBJECT *psObj);
 
 // initialise the grid system to start iterating through units that
 // could affect a location (x,y in world coords)
-extern void gridStartIterate(SDWORD x, SDWORD y);
+extern void gridStartIterate(int32_t x, int32_t y);
 
 // get the next object that could affect a location,
 // should only be called after gridStartIterate

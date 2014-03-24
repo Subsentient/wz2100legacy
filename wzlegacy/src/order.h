@@ -159,10 +159,10 @@ BOOL validOrderForLoc(DROID_ORDER order);
 BOOL validOrderForObj(DROID_ORDER order);
 
 /* Give a droid an order with a location target */
-extern void orderDroidLoc(DROID *psDroid, DROID_ORDER order, UDWORD x, UDWORD y);
+extern void orderDroidLoc(DROID *psDroid, DROID_ORDER order, uint32_t x, uint32_t y);
 
 /* Get the state of a droid order with a location */
-extern BOOL orderStateLoc(DROID *psDroid, DROID_ORDER order, UDWORD *pX, UDWORD *pY);
+extern BOOL orderStateLoc(DROID *psDroid, DROID_ORDER order, uint32_t *pX, uint32_t *pY);
 
 /* Give a droid an order with an object target */
 extern void orderDroidObj(DROID *psDroid, DROID_ORDER order, BASE_OBJECT *psObj);
@@ -172,25 +172,25 @@ extern BASE_OBJECT *orderStateObj(DROID *psDroid, DROID_ORDER order);
 
 /* Give a droid an order with a location and a stat */
 extern void orderDroidStatsLoc(DROID *psDroid, DROID_ORDER order,
-                               BASE_STATS *psStats, UDWORD x, UDWORD y);
+                               BASE_STATS *psStats, uint32_t x, uint32_t y);
 
 /* Get the state of a droid order with a location and a stat */
 extern BOOL orderStateStatsLoc(DROID *psDroid, DROID_ORDER order,
-                               BASE_STATS **ppsStats, UDWORD *pX, UDWORD *pY);
+                               BASE_STATS **ppsStats, uint32_t *pX, uint32_t *pY);
 
 /* Give a droid an order with a location and a stat */
 extern void orderDroidStatsTwoLoc(DROID *psDroid, DROID_ORDER order,
-                                  BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2);
+                                  BASE_STATS *psStats, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
 
-extern void orderDroidStatsTwoLocAdd(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2);
+extern void orderDroidStatsTwoLocAdd(DROID *psDroid, DROID_ORDER order, BASE_STATS *psStats, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
 
 /* Give selected droids an order with a location target */
 // Only called from UI.
 extern void orderSelectedLoc(uint32_t player, uint32_t x, uint32_t y, bool add);
 
 /* Give selected droids an order with an object target */
-extern void orderSelectedObj(UDWORD player, BASE_OBJECT *psObj);
-extern void orderSelectedObjAdd(UDWORD player, BASE_OBJECT *psObj, BOOL add);
+extern void orderSelectedObj(uint32_t player, BASE_OBJECT *psObj);
+extern void orderSelectedObjAdd(uint32_t player, BASE_OBJECT *psObj, BOOL add);
 
 // add an order to a droids order list
 extern void orderDroidAdd(DROID *psDroid, struct _droid_order_data *psOrder);
@@ -198,16 +198,16 @@ extern void orderDroidAdd(DROID *psDroid, struct _droid_order_data *psOrder);
 extern BOOL orderDroidList(DROID *psDroid);
 
 /* order all selected droids with a location and a stat */
-void orderSelectedStatsLoc(UDWORD player, DROID_ORDER order,
-                           BASE_STATS *psStats, UDWORD x, UDWORD y, BOOL add);
+void orderSelectedStatsLoc(uint32_t player, DROID_ORDER order,
+                           BASE_STATS *psStats, uint32_t x, uint32_t y, BOOL add);
 
 /* add an order with a location and a stat to the droids order list*/
 extern void orderDroidStatsLocAdd(DROID *psDroid, DROID_ORDER order,
-                                  BASE_STATS *psStats, UDWORD x, UDWORD y);
+                                  BASE_STATS *psStats, uint32_t x, uint32_t y);
 
 /* order all selected droids with two a locations and a stat */
-void orderSelectedStatsTwoLoc(UDWORD player, DROID_ORDER order,
-                              BASE_STATS *psStats, UDWORD x1, UDWORD y1, UDWORD x2, UDWORD y2, BOOL add);
+void orderSelectedStatsTwoLoc(uint32_t player, DROID_ORDER order,
+                              BASE_STATS *psStats, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, BOOL add);
 
 // see if a droid supports a secondary order
 extern BOOL secondarySupported(DROID *psDroid, SECONDARY_ORDER sec);
@@ -222,10 +222,10 @@ extern BOOL secondarySetState(DROID *psDroid, SECONDARY_ORDER sec, SECONDARY_STA
 extern void secondaryCheckDamageLevel(DROID *psDroid);
 
 // make all the members of a numeric group have the same secondary states
-extern void secondarySetAverageGroupState(UDWORD player, UDWORD group);
+extern void secondarySetAverageGroupState(uint32_t player, uint32_t group);
 
 // do a moral check for a player
-extern void orderMoralCheck(UDWORD player);
+extern void orderMoralCheck(uint32_t player);
 
 // do a moral check for a group
 extern void orderGroupMoralCheck(struct _droid_group *psGroup);
@@ -248,14 +248,14 @@ extern BOOL setFactoryState(STRUCTURE *psStruct, SECONDARY_ORDER sec, SECONDARY_
 extern BOOL getFactoryState(STRUCTURE *psStruct, SECONDARY_ORDER sec, SECONDARY_STATE *pState);
 
 //lasSat structure can select a target
-extern void orderStructureObj(UDWORD player, BASE_OBJECT *psObj);
+extern void orderStructureObj(uint32_t player, BASE_OBJECT *psObj);
 
 //controls for order queue lists
 extern ORDER_LIST *OrderList_Add(DROID *psDroid);
 extern void OrderList_Delete(DROID *psDroid, ORDER_LIST *delOrder);
 extern void OrderList_Shutdown(DROID *psDroid);
 
-extern DROID_ORDER chooseOrderLoc(DROID *psDroid, UDWORD x,UDWORD y, BOOL altOrder);
+extern DROID_ORDER chooseOrderLoc(DROID *psDroid, uint32_t x,uint32_t y, BOOL altOrder);
 extern DROID_ORDER chooseOrderObj(DROID *psDroid, BASE_OBJECT *psObj, BOOL altOrder);
 
 #endif // __INCLUDED_SRC_ORDER_H__

@@ -48,8 +48,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 static struct
 {
     BASEANIM                *psAnimList;
-    UWORD                   uwCurObj;
-    UWORD			uwCurState;
+    uint16_t                   uwCurObj;
+    uint16_t			uwCurState;
 }
 g_animGlobals;
 
@@ -122,15 +122,15 @@ BOOL anim_Shutdown()
     return true;
 }
 
-static void anim_InitBaseMembers(BASEANIM *psAnim, UWORD uwStates, UWORD uwFrameRate,
-                                 UWORD uwObj, ANIM_MODE ubType, UWORD uwID)
+static void anim_InitBaseMembers(BASEANIM *psAnim, uint16_t uwStates, uint16_t uwFrameRate,
+                                 uint16_t uwObj, ANIM_MODE ubType, uint16_t uwID)
 {
     psAnim->uwStates    = uwStates;
     psAnim->uwFrameRate = uwFrameRate;
     psAnim->uwObj       = uwObj;
     psAnim->ubType      = ubType;
     psAnim->uwID        = uwID;
-    psAnim->uwAnimTime  = (UWORD) (uwStates*1000 / psAnim->uwFrameRate);
+    psAnim->uwAnimTime  = (uint16_t) (uwStates*1000 / psAnim->uwFrameRate);
 
     /* allocate frames */
     psAnim->psStates = (ANIM_STATE *)malloc( uwObj*psAnim->uwStates*sizeof(ANIM_STATE) );
@@ -139,12 +139,12 @@ static void anim_InitBaseMembers(BASEANIM *psAnim, UWORD uwStates, UWORD uwFrame
 /**
  *	Create animation for a model. Called from animation script.
  */
-BOOL anim_Create3D(char szPieFileName[], UWORD uwStates, UWORD uwFrameRate, UWORD uwObj,
-                   ANIM_MODE ubType, UWORD uwID)
+BOOL anim_Create3D(char szPieFileName[], uint16_t uwStates, uint16_t uwFrameRate, uint16_t uwObj,
+                   ANIM_MODE ubType, uint16_t uwID)
 {
     ANIM3D		*psAnim3D;
     iIMDShape	*psFrames;
-    UWORD		uwFrames, i;
+    uint16_t		uwFrames, i;
 
     /* allocate anim */
     if ( (psAnim3D = (ANIM3D *)malloc(sizeof(ANIM3D))) == NULL )
@@ -231,7 +231,7 @@ BOOL anim_AddFrameToAnim(int iFrame, Vector3i vecPos, Vector3i vecRot, Vector3i 
 {
     ANIM_STATE	*psState;
     BASEANIM	*psAnim;
-    UWORD		uwState;
+    uint16_t		uwState;
 
     /* get pointer to current anim */
     psAnim = g_animGlobals.psAnimList;
@@ -250,7 +250,7 @@ BOOL anim_AddFrameToAnim(int iFrame, Vector3i vecPos, Vector3i vecRot, Vector3i 
     psState = &psAnim->psStates[uwState];
 
     /* set state pointer */
-    psState->uwFrame = (UWORD) iFrame;
+    psState->uwFrame = (uint16_t) iFrame;
 
     psState->vecPos.x = vecPos.x;
     psState->vecPos.y = vecPos.y;
@@ -273,7 +273,7 @@ BOOL anim_AddFrameToAnim(int iFrame, Vector3i vecPos, Vector3i vecRot, Vector3i 
 
 /***************************************************************************/
 
-BASEANIM *anim_GetAnim(UWORD uwAnimID)
+BASEANIM *anim_GetAnim(uint16_t uwAnimID)
 {
     BASEANIM	*psAnim;
 
@@ -289,7 +289,7 @@ BASEANIM *anim_GetAnim(UWORD uwAnimID)
 
 /***************************************************************************/
 
-void anim_SetVals(char szFileName[], UWORD uwAnimID)
+void anim_SetVals(char szFileName[], uint16_t uwAnimID)
 {
     /* get track pointer from resource */
     BASEANIM	*psAnim = (BASEANIM *)resGetData( "ANI", szFileName );
@@ -322,7 +322,7 @@ BASEANIM *anim_LoadFromFile(PHYSFS_file *fileHandle)
 
 /***************************************************************************/
 
-UWORD anim_GetAnimID(char *szName)
+uint16_t anim_GetAnimID(char *szName)
 {
     BASEANIM	*psAnim;
     char		*cPos = strstr( szName, ".ani" );
@@ -353,7 +353,7 @@ UWORD anim_GetAnimID(char *szName)
 
 /***************************************************************************/
 
-iIMDShape *anim_GetShapeFromID(UWORD uwID)
+iIMDShape *anim_GetShapeFromID(uint16_t uwID)
 {
     BASEANIM	*psAnim = g_animGlobals.psAnimList;
 
@@ -379,11 +379,11 @@ iIMDShape *anim_GetShapeFromID(UWORD uwID)
 
 /***************************************************************************/
 
-UWORD anim_GetFrame3D(ANIM3D *psAnim, UWORD uwObj, UDWORD udwGameTime, UDWORD udwStartTime,
-                      UDWORD udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot, Vector3i *psVecScale)
+uint16_t anim_GetFrame3D(ANIM3D *psAnim, uint16_t uwObj, uint32_t udwGameTime, uint32_t udwStartTime,
+                      uint32_t udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot, Vector3i *psVecScale)
 {
-    SDWORD		dwTime;
-    UWORD		uwState, uwFrame;
+    int32_t		dwTime;
+    uint16_t		uwState, uwFrame;
     ANIM_STATE	*psState;
 
     /* calculate current anim frame */

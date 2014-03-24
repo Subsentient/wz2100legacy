@@ -447,12 +447,12 @@ static int ExtentsEndY;
  *                  FTEXT_LEFTJUSTIFY, FTEXT_CENTRE or FTEXT_RIGHTJUSTIFY.
  *  @return the Y coordinate for the next text line.
  */
-int iV_DrawFormattedText(const char *String, UDWORD x, UDWORD y, UDWORD Width, UDWORD Justify)
+int iV_DrawFormattedText(const char *String, uint32_t x, uint32_t y, uint32_t Width, uint32_t Justify)
 {
     int i;
     int jx = x;		// Default to left justify.
     int jy = y;
-    UDWORD WWidth;
+    uint32_t WWidth;
     int TWidth;
 
     const char *curChar = String;

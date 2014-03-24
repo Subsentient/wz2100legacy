@@ -70,16 +70,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct
 {
-    UBYTE r, g, b, a;
-} PIELIGHTBYTES;
+    uint8_t r, g, b, a;
+} PIELIGHTint8_tS;
 
 /** Our basic colour type. Use whenever you want to define a colour.
  *  Set bytes separetely, and do not assume a byte order between the components. */
 typedef union
 {
-    PIELIGHTBYTES byte;
-    UDWORD rgba;
-    UBYTE vector[4];
+    PIELIGHTint8_tS byte;
+    uint32_t rgba;
+    uint8_t vector[4];
 } PIELIGHT;
 
 typedef struct
@@ -92,12 +92,12 @@ typedef struct
 
 typedef struct
 {
-    SWORD x, y, w, h;
+    int16_t x, y, w, h;
 } PIERECT;				/**< Screen rectangle. */
 typedef struct
 {
-    SDWORD texPage;
-    SWORD tu, tv, tw, th;
+    int32_t texPage;
+    int16_t tu, tv, tw, th;
 } PIEIMAGE;	/**< An area of texture. */
 
 /***************************************************************************/

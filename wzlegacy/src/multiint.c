@@ -133,7 +133,7 @@ extern char	MultiPlayersPath[PATH_MAX];
 extern char VersionString[80];		// from netplay.c
 extern BOOL bSendingMap;			// used to indicate we are sending a map
 
-extern void intDisplayTemplateButton(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+extern void intDisplayTemplateButton(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 extern void NETsetGamePassword(const char *password);	// in netplay.c
 extern void NETresetGamePassword(void);					// in netplay.c
 extern void NETGameLocked(bool flag);					// in netplay.c
@@ -150,13 +150,13 @@ static int					colourChooserUp = -1;
 static int					teamChooserUp = -1;
 static short AddedSlots = 0; //For slot controls.
 static BOOL				SettingsUp		= false;
-static UBYTE				InitialProto	= 0;
+static uint8_t				InitialProto	= 0;
 static W_SCREEN				*psConScreen;
-static SDWORD				dwSelectedGame	=0;						//player[] and games[] indexes
-static UDWORD				gameNumber;								// index to games icons
+static int32_t				dwSelectedGame	=0;						//player[] and games[] indexes
+static uint32_t				gameNumber;								// index to games icons
 static BOOL					safeSearch		= false;				// allow auto game finding.
 static bool disableLobbyRefresh = false;	// if we allow lobby to be refreshed or not.
-static UDWORD hideTime=0;
+static uint32_t hideTime=0;
 static bool EnablePasswordPrompt = false;	// if we need the password prompt
 extern int NET_PlayerConnectionStatus;		// from src/display3d.c
 LOBBY_ERROR_TYPES LobbyError = ERROR_NOERROR;
@@ -167,19 +167,19 @@ static char tooltipbuffer[MaxGames][1024]; /*Too big, but it prevents crashes.*/
 // Function protos
 
 // widget functions
-static BOOL addMultiEditBox(UDWORD formid, UDWORD id, UDWORD x, UDWORD y, const char *tip, char tipres[128], UDWORD icon, UDWORD iconhi, UDWORD iconid);
-static void addBlueForm					(UDWORD parent,UDWORD id, const char *txt,UDWORD x,UDWORD y,UDWORD w,UDWORD h);
-static void drawReadyButton(UDWORD player);
-static void displayPasswordEditBox(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours);
+static BOOL addMultiEditBox(uint32_t formid, uint32_t id, uint32_t x, uint32_t y, const char *tip, char tipres[128], uint32_t icon, uint32_t iconhi, uint32_t iconid);
+static void addBlueForm					(uint32_t parent,uint32_t id, const char *txt,uint32_t x,uint32_t y,uint32_t w,uint32_t h);
+static void drawReadyButton(uint32_t player);
+static void displayPasswordEditBox(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours);
 
 // Drawing Functions
-void		displayChatEdit				(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-void		displayMultiBut				(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-void		intDisplayFeBox				(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-void		displayRemoteGame			(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-void		displayPlayer				(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-void		displayTeamChooser			(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
-void		displayMultiEditBox			(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours);
+void		displayChatEdit				(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+void		displayMultiBut				(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+void		intDisplayFeBox				(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+void		displayRemoteGame			(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+void		displayPlayer				(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+void		displayTeamChooser			(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
+void		displayMultiEditBox			(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 void		setLockedTeamsMode			(void);
 
 // find games
@@ -198,25 +198,25 @@ BOOL		startConnectionScreen	(void);
 
 // Game option functions
 static	void	addGameOptions		(BOOL bRedo);				// options (rhs) boxV
-UDWORD	addPlayerBox		(BOOL);				// players (mid) box
+uint32_t	addPlayerBox		(BOOL);				// players (mid) box
 static	void	addChatBox			(void);
 static	void	disableMultiButs	(void);
-static	void	processMultiopWidgets(UDWORD);
+static	void	processMultiopWidgets(uint32_t);
 static	void	SendFireUp			(void);
 
 void			runMultiOptions		(void);
 BOOL			startMultiOptions	(BOOL);
 void			frontendMultiMessages(void);
 
-static	UDWORD	bestPlayer			(UDWORD);
+static	uint32_t	bestPlayer			(uint32_t);
 static	void	decideWRF			(void);
 
 static void		closeColourChooser	(void);
 static void		closeTeamChooser	(void);
-static BOOL		SendColourRequest	(UBYTE player, UBYTE col);
-static BOOL		SendPositionRequest	(UBYTE player, UBYTE chosenPlayer);
-static BOOL		safeToUseColour		(UDWORD player,UDWORD col);
-static BOOL		changeReadyStatus	(UBYTE player, BOOL bReady);
+static BOOL		SendColourRequest	(uint8_t player, uint8_t col);
+static BOOL		SendPositionRequest	(uint8_t player, uint8_t chosenPlayer);
+static BOOL		safeToUseColour		(uint32_t player,uint32_t col);
+static BOOL		changeReadyStatus	(uint8_t player, BOOL bReady);
 void			resetReadyStatus	(bool bSendOptions);
 void			initTeams( void );
 static	void stopJoining(void);
@@ -251,15 +251,15 @@ static int guessMapTilesetType(void)
 void loadMapPreview(bool hideInterface)
 {
     static char aFileName[256];
-    UDWORD			fileSize;
+    uint32_t			fileSize;
     char			*pFileData = NULL;
     LEVEL_DATASET	*psLevel = NULL;
     PIELIGHT		plCliffL, plCliffH, plWater, plRoadL, plRoadH, plGroundL, plGroundH;
 
-    UDWORD			x, y, height;
-    UBYTE			col;
+    uint32_t			x, y, height;
+    uint8_t			col;
     MAPTILE			*psTile,*WTile;
-    UDWORD oursize;
+    uint32_t oursize;
     Vector2i playerpos[MAX_PLAYERS];	// Will hold player positions
     char  *ptr = NULL, *imageData = NULL;
 
@@ -478,7 +478,7 @@ static BOOL OptionsInet(void)			//internet options
     sEdInit.height = CON_NAMEBOXHEIGHT;
     sEdInit.pText = "";									//_("IP Address or Machine Name");
     sEdInit.FontID = font_regular;
-//	sEdInit.pUserData = (void*)PACKDWORD_TRI(0,IMAGE_DES_EDITBOXLEFTH , IMAGE_DES_EDITBOXLEFT);
+//	sEdInit.pUserData = (void*)PACKint32_t_TRI(0,IMAGE_DES_EDITBOXLEFTH , IMAGE_DES_EDITBOXLEFT);
 //	sEdInit.pBoxDisplay = intDisplayButtonHilight;
     sEdInit.pBoxDisplay = intDisplayEditBox;
     if (!widgAddEditBox(psConScreen, &sEdInit))
@@ -527,7 +527,7 @@ BOOL startConnectionScreen(void)
 
 void runConnectionScreen(void )
 {
-    UDWORD id;
+    uint32_t id;
     static char addr[128];
 
     if(SettingsUp == true)
@@ -616,7 +616,7 @@ void setLobbyError (LOBBY_ERROR_TYPES error_type)
 
 static void addGames(void)
 {
-    UDWORD i, gcount=0;
+    uint32_t i, gcount=0;
     W_BUTINIT	sButInit;
     static const char *wrongVersionTip = " (Incompatible Version)";
     static const char *badModTip = "(Incompatible mods)";
@@ -744,7 +744,7 @@ static void addGames(void)
                 txt = _("Host couldn't send file?");
                 debug(LOG_POPUP, "Warzone couldn't complete a file request.\n\nPossibly, Host's file is incorrect. Check your logs for more details.");
                 break;
-            case ERROR_WRONGPASSWORD:
+            case ERROR_WRONGPASint16_t:
                 txt = _("Incorrect Password!");
                 break;
             case ERROR_HOSTDROPPED:
@@ -785,8 +785,8 @@ static void removeGames(void)
 
 void runGameFind(void )
 {
-    UDWORD id;
-    static UDWORD lastupdate=0;
+    uint32_t id;
+    static uint32_t lastupdate=0;
     static char game_password[64];		// check if StringSize is available
 
     if (lastupdate > gameTime)
@@ -816,9 +816,9 @@ void runGameFind(void )
         NETfindGame();								// find games synchronously
         addGames();										//redraw list.
     }
-    if (id == CON_PASSWORD)
+    if (id == CON_PASint16_t)
     {
-        sstrcpy(game_password, widgGetString(psWScreen, CON_PASSWORD));
+        sstrcpy(game_password, widgGetString(psWScreen, CON_PASint16_t));
         NETsetGamePassword(game_password);
     }
 
@@ -867,7 +867,7 @@ void runGameFind(void )
         }
 
     }
-    else if (id == CON_PASSWORDYES)
+    else if (id == CON_PASint16_tYES)
     {
         ingame.localOptionsReceived = false;			// note we are awaiting options
         sstrcpy(game.name, NetPlay.games[gameNumber].name);		// store name
@@ -885,7 +885,7 @@ void runGameFind(void )
             hidePasswordForm();
         }
     }
-    else if (id == CON_PASSWORDNO)
+    else if (id == CON_PASint16_tNO)
     {
         hidePasswordForm();
     }
@@ -906,20 +906,20 @@ FAIL:
 }
 
 // Used to draw the password box for the lobby screen
-static void displayPasswordEditBox(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void displayPasswordEditBox(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
-    UDWORD	w = psWidget->width;
-    UDWORD  h = psWidget->height;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
+    uint32_t	w = psWidget->width;
+    uint32_t  h = psWidget->height;
 
     pie_BoxFill(x, y, x + w, y + h, WZCOL_MENU_BORDER);
     pie_BoxFill(x + 1, y + 1, x + w - 1, y + h - 1, WZCOL_MENU_BACKGROUND);
 }
 
-static void showPasswordLabel( WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
+static void showPasswordLabel( WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, WZ_DECL_UNUSED PIELIGHT *pColours)
 {
-    SDWORD	fx,fy;
+    int32_t	fx,fy;
     W_LABEL	*psLab;
 
     psLab = (W_LABEL *)psWidget;
@@ -979,7 +979,7 @@ void startGameFind(void)
     // password label.
     memset(&sLabInit, 0, sizeof(W_LABINIT));
     sLabInit.formID = FRONTEND_BACKDROP;
-    sLabInit.id		= CON_PASSWORD_LABEL;
+    sLabInit.id		= CON_PASint16_t_LABEL;
     sLabInit.style	= WLAB_ALIGNCENTRE;
     sLabInit.x		= 180;
     sLabInit.y		= 195;
@@ -993,7 +993,7 @@ void startGameFind(void)
     // and finally draw the password entry box
     memset(&sEdInit, 0, sizeof(W_EDBINIT));
     sEdInit.formID = FRONTEND_BACKDROP;
-    sEdInit.id = CON_PASSWORD;
+    sEdInit.id = CON_PASint16_t;
     sEdInit.style = WEDB_PLAIN;
     sEdInit.x = 180;
     sEdInit.y = 200;
@@ -1005,15 +1005,15 @@ void startGameFind(void)
 
     widgAddEditBox(psWScreen, &sEdInit);
 
-    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASSWORDYES,230,225,MULTIOP_OKW,MULTIOP_OKH,
+    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASint16_tYES,230,225,MULTIOP_OKW,MULTIOP_OKH,
                 _("OK"),IMAGE_OK,IMAGE_OK,true);
-    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASSWORDNO,280,225,MULTIOP_OKW,MULTIOP_OKH,
+    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASint16_tNO,280,225,MULTIOP_OKW,MULTIOP_OKH,
                 _("Cancel"),IMAGE_NO,IMAGE_NO,true);
 
     // draws the background of the password box
     memset(&sFormInit, 0, sizeof(W_FORMINIT));
     sFormInit.formID = FRONTEND_BACKDROP;
-    sFormInit.id = FRONTEND_PASSWORDFORM;
+    sFormInit.id = FRONTEND_PASint16_tFORM;
     sFormInit.style = WFORM_PLAIN;
     sFormInit.x = FRONTEND_BOTFORMX;
     sFormInit.y = 160;
@@ -1024,11 +1024,11 @@ void startGameFind(void)
 
     widgAddForm(psWScreen, &sFormInit);
 
-    widgHide(psWScreen, FRONTEND_PASSWORDFORM);
-    widgHide(psWScreen, CON_PASSWORD_LABEL);
-    widgHide(psWScreen, CON_PASSWORD);
-    widgHide(psWScreen, CON_PASSWORDYES);
-    widgHide(psWScreen, CON_PASSWORDNO);
+    widgHide(psWScreen, FRONTEND_PASint16_tFORM);
+    widgHide(psWScreen, CON_PASint16_t_LABEL);
+    widgHide(psWScreen, CON_PASint16_t);
+    widgHide(psWScreen, CON_PASint16_tYES);
+    widgHide(psWScreen, CON_PASint16_tNO);
 
     EnablePasswordPrompt = false;
 }
@@ -1037,11 +1037,11 @@ static void hidePasswordForm(void)
 {
     EnablePasswordPrompt = false;
 
-    widgHide(psWScreen, FRONTEND_PASSWORDFORM);
-    widgHide(psWScreen, CON_PASSWORD_LABEL);
-    widgHide(psWScreen, CON_PASSWORD);
-    widgHide(psWScreen, CON_PASSWORDYES);
-    widgHide(psWScreen, CON_PASSWORDNO);
+    widgHide(psWScreen, FRONTEND_PASint16_tFORM);
+    widgHide(psWScreen, CON_PASint16_t_LABEL);
+    widgHide(psWScreen, CON_PASint16_t);
+    widgHide(psWScreen, CON_PASint16_tYES);
+    widgHide(psWScreen, CON_PASint16_tNO);
 
     widgReveal(psWScreen, FRONTEND_SIDETEXT);
     widgReveal(psWScreen, FRONTEND_BOTFORM);
@@ -1063,11 +1063,11 @@ static void showPasswordForm(void)
     widgHide(psWScreen, MULTIOP_REFRESH);
     removeGames();
 
-    widgReveal(psWScreen, FRONTEND_PASSWORDFORM);
-    widgReveal(psWScreen, CON_PASSWORD_LABEL);
-    widgReveal(psWScreen, CON_PASSWORD);
-    widgReveal(psWScreen, CON_PASSWORDYES);
-    widgReveal(psWScreen, CON_PASSWORDNO);
+    widgReveal(psWScreen, FRONTEND_PASint16_tFORM);
+    widgReveal(psWScreen, CON_PASint16_t_LABEL);
+    widgReveal(psWScreen, CON_PASint16_t);
+    widgReveal(psWScreen, CON_PASint16_tYES);
+    widgReveal(psWScreen, CON_PASint16_tNO);
 
     // auto click in the password box
     sContext.psScreen	= psWScreen;
@@ -1076,7 +1076,7 @@ static void showPasswordForm(void)
     sContext.yOffset	= 0;
     sContext.mx			= 0;
     sContext.my			= 0;
-    editBoxClicked((W_EDITBOX *)widgGetFromID(psWScreen,CON_PASSWORD), &sContext);
+    editBoxClicked((W_EDITBOX *)widgGetFromID(psWScreen,CON_PASint16_t), &sContext);
 }
 
 
@@ -1085,7 +1085,7 @@ static void showPasswordForm(void)
 
 // ////////////////////////////////////////////////////////////////////////////
 
-static void addBlueForm(UDWORD parent,UDWORD id, const char *txt,UDWORD x,UDWORD y,UDWORD w,UDWORD h)
+static void addBlueForm(uint32_t parent,uint32_t id, const char *txt,uint32_t x,uint32_t y,uint32_t w,uint32_t h)
 {
     W_FORMINIT	sFormInit;
     W_LABINIT	sLabInit;
@@ -1093,11 +1093,11 @@ static void addBlueForm(UDWORD parent,UDWORD id, const char *txt,UDWORD x,UDWORD
     memset(&sFormInit, 0, sizeof(W_FORMINIT));				// draw options box.
     sFormInit.formID= parent;
     sFormInit.id	= id;
-    sFormInit.x		=(UWORD) x;
-    sFormInit.y		=(UWORD) y;
+    sFormInit.x		=(uint16_t) x;
+    sFormInit.y		=(uint16_t) y;
     sFormInit.style = WFORM_PLAIN;
-    sFormInit.width = (UWORD)w;//190;
-    sFormInit.height= (UWORD)h;//27;
+    sFormInit.width = (uint16_t)w;//190;
+    sFormInit.height= (uint16_t)h;//27;
     sFormInit.pDisplay =  intDisplayFeBox;
     widgAddForm(psWScreen, &sFormInit);
 
@@ -1198,12 +1198,12 @@ static void addGameOptions(BOOL bRedo)
         widgSetButtonState(psWScreen, MULTIOP_MAP_ICON, WBUT_DISABLE);
     }
     // password box
-    addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT  , MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE , MULTIOP_PASSWORD_BUT);
+    addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASint16_t_EDIT  , MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE , MULTIOP_PASint16_t_BUT);
     // disable for one-player skirmish
     if (!NetPlay.bComms)
     {
-        widgDelete(psWScreen, MULTIOP_PASSWORD_EDIT);
-        widgDelete(psWScreen, MULTIOP_PASSWORD_BUT);
+        widgDelete(psWScreen, MULTIOP_PASint16_t_EDIT);
+        widgDelete(psWScreen, MULTIOP_PASint16_t_BUT);
     }
     // buttons.
 
@@ -1472,9 +1472,9 @@ static void addGameOptions(BOOL bRedo)
 // ////////////////////////////////////////////////////////////////////////////
 // Colour functions
 
-static BOOL safeToUseColour(UDWORD player,UDWORD col)
+static BOOL safeToUseColour(uint32_t player,uint32_t col)
 {
-    UDWORD i;
+    uint32_t i;
 
     // if already using it, or we're the host
     if( col == getPlayerColour(player) || NetPlay.isHost )
@@ -1495,9 +1495,9 @@ static BOOL safeToUseColour(UDWORD player,UDWORD col)
     return true;
 }
 
-static void addColourChooser(UDWORD player)
+static void addColourChooser(uint32_t player)
 {
-    UDWORD i;
+    uint32_t i;
 
     // delete that players box,
     widgDelete(psWScreen,MULTIOP_PLAYER_START+player);
@@ -1576,7 +1576,7 @@ static void closeColourChooser(void)
     widgDelete(psWScreen,MULTIOP_COLCHOOSER_FORM);
 }
 
-static void changeTeam(UBYTE player, UBYTE team)
+static void changeTeam(uint8_t player, uint8_t team)
 {
     NetPlay.players[player].team = team;
     debug(LOG_WZ, "set %d as new team for player %d", team, player);
@@ -1584,7 +1584,7 @@ static void changeTeam(UBYTE player, UBYTE team)
     netPlayersUpdated = true;
 }
 
-static BOOL SendTeamRequest(UBYTE player, UBYTE chosenTeam)
+static BOOL SendTeamRequest(uint8_t player, uint8_t chosenTeam)
 {
     if(NetPlay.isHost)			// do or request the change.
     {
@@ -1605,7 +1605,7 @@ static BOOL SendTeamRequest(UBYTE player, UBYTE chosenTeam)
 
 BOOL recvTeamRequest()
 {
-    UBYTE	player, team;
+    uint8_t	player, team;
 
     if (!NetPlay.isHost || !bHosted)  // Only host should act, and only if the game hasn't started yet.
     {
@@ -1642,7 +1642,7 @@ BOOL recvTeamRequest()
     return true;
 }
 
-static BOOL SendReadyRequest(UBYTE player, BOOL bReady)
+static BOOL SendReadyRequest(uint8_t player, BOOL bReady)
 {
     if(NetPlay.isHost)			// do or request the change.
     {
@@ -1660,7 +1660,7 @@ static BOOL SendReadyRequest(UBYTE player, BOOL bReady)
 
 BOOL recvReadyRequest()
 {
-    UBYTE	player;
+    uint8_t	player;
     BOOL	bReady;
 
     if (!NetPlay.isHost || !bHosted)  // Only host should act, and only if the game hasn't started yet.
@@ -1697,7 +1697,7 @@ BOOL recvReadyRequest()
     return changeReadyStatus(player, bReady);
 }
 
-static BOOL changeReadyStatus(UBYTE player, BOOL bReady)
+static BOOL changeReadyStatus(uint8_t player, BOOL bReady)
 {
     drawReadyButton(player);
     NetPlay.players[player].ready = bReady;
@@ -1707,7 +1707,7 @@ static BOOL changeReadyStatus(UBYTE player, BOOL bReady)
     return true;
 }
 
-static BOOL changePosition(UBYTE player, UBYTE position)
+static BOOL changePosition(uint8_t player, uint8_t position)
 {
     int i;
 
@@ -1737,7 +1737,7 @@ static BOOL changePosition(UBYTE player, UBYTE position)
     return false;
 }
 
-static BOOL changeColour(UBYTE player, UBYTE col)
+static BOOL changeColour(uint8_t player, uint8_t col)
 {
     int i;
 
@@ -1770,7 +1770,7 @@ static BOOL changeColour(UBYTE player, UBYTE col)
     return false;
 }
 
-static BOOL SendColourRequest(UBYTE player, UBYTE col)
+static BOOL SendColourRequest(uint8_t player, uint8_t col)
 {
     if(NetPlay.isHost)			// do or request the change
     {
@@ -1787,7 +1787,7 @@ static BOOL SendColourRequest(UBYTE player, UBYTE col)
     return true;
 }
 
-static BOOL SendPositionRequest(UBYTE player, UBYTE position)
+static BOOL SendPositionRequest(uint8_t player, uint8_t position)
 {
     if(NetPlay.isHost)			// do or request the change
     {
@@ -1807,7 +1807,7 @@ static BOOL SendPositionRequest(UBYTE player, UBYTE position)
 
 BOOL recvColourRequest()
 {
-    UBYTE	player, col;
+    uint8_t	player, col;
 
     if (!NetPlay.isHost || !bHosted)  // Only host should act, and only if the game hasn't started yet.
     {
@@ -1840,7 +1840,7 @@ BOOL recvColourRequest()
 
 BOOL recvPositionRequest()
 {
-    UBYTE	player, position;
+    uint8_t	player, position;
 
     if (!NetPlay.isHost || !bHosted)  // Only host should act, and only if the game hasn't started yet.
     {
@@ -1877,11 +1877,11 @@ BOOL recvPositionRequest()
  * Opens a menu for a player to choose a team
  * 'player' is a player id of the player who will get a new team assigned
  */
-static void addTeamChooser(UDWORD player)
+static void addTeamChooser(uint32_t player)
 {
-    UDWORD i;
+    uint32_t i;
     int disallow = ANYENTRY;
-    SDWORD inSlot[MAX_PLAYERS] = {0};
+    int32_t inSlot[MAX_PLAYERS] = {0};
 
     debug(LOG_NET, "Opened team chooser for %d, current team: %d", player, NetPlay.players[player].team);
 
@@ -1961,7 +1961,7 @@ static void closeTeamChooser(void)
     widgDelete(psWScreen,MULTIOP_TEAMCHOOSER_FORM);	//only once!
 }
 
-static void drawReadyButton(UDWORD player)
+static void drawReadyButton(uint32_t player)
 {
     // delete 'ready' botton form
     widgDelete(psWScreen, MULTIOP_READY_FORM_ID + player);
@@ -1969,7 +1969,7 @@ static void drawReadyButton(UDWORD player)
     // add form to hold 'ready' botton
     addBlueForm(MULTIOP_PLAYERS,MULTIOP_READY_FORM_ID + player,"",
                 8 + MULTIOP_PLAYERWIDTH - MULTIOP_READY_WIDTH,
-                (UWORD)(( (MULTIOP_PLAYERHEIGHT+5)*NetPlay.players[player].position)+4),
+                (uint16_t)(( (MULTIOP_PLAYERHEIGHT+5)*NetPlay.players[player].position)+4),
                 MULTIOP_READY_WIDTH,MULTIOP_READY_HEIGHT);
 
     // draw 'ready' button
@@ -1998,11 +1998,11 @@ static bool canChooseTeamFor(int i)
 // ////////////////////////////////////////////////////////////////////////////
 // box for players.
 
-UDWORD addPlayerBox(BOOL players)
+uint32_t addPlayerBox(BOOL players)
 {
     W_FORMINIT		sFormInit;
     W_BUTINIT		sButInit;
-    UDWORD			i=0;
+    uint32_t			i=0;
 
     // if background isn't there, then return since were not ready to draw the box yet!
     if(widgGetFromID(psWScreen,FRONTEND_BACKDROP) == NULL)
@@ -2073,7 +2073,7 @@ UDWORD addPlayerBox(BOOL players)
                 sButInit.id = MULTIOP_TEAMS_START+i;
                 sButInit.style = WBUT_PLAIN;
                 sButInit.x = 7;
-                sButInit.y = (UWORD)(( (MULTIOP_TEAMSHEIGHT+5)*NetPlay.players[i].position)+4);
+                sButInit.y = (uint16_t)(( (MULTIOP_TEAMSHEIGHT+5)*NetPlay.players[i].position)+4);
                 sButInit.width = MULTIOP_TEAMSWIDTH;
                 sButInit.height = MULTIOP_TEAMSHEIGHT;
                 if (canChooseTeamFor(i))
@@ -2113,7 +2113,7 @@ UDWORD addPlayerBox(BOOL players)
                 sButInit.id = MULTIOP_PLAYER_START+i;
                 sButInit.style = WBUT_PLAIN;
                 sButInit.x = 7 + MULTIOP_TEAMSWIDTH;
-                sButInit.y = (UWORD)(( (MULTIOP_PLAYERHEIGHT+5)*NetPlay.players[i].position)+4);
+                sButInit.y = (uint16_t)(( (MULTIOP_PLAYERHEIGHT+5)*NetPlay.players[i].position)+4);
                 sButInit.width = MULTIOP_PLAYERWIDTH - MULTIOP_TEAMSWIDTH - MULTIOP_READY_WIDTH;
                 sButInit.height = MULTIOP_PLAYERHEIGHT;
                 if (selectedPlayer == i)
@@ -2144,7 +2144,7 @@ UDWORD addPlayerBox(BOOL players)
                 sFormInit.id = MULTIOP_PLAYER_START+i;
                 sFormInit.style = WBUT_PLAIN;
                 sFormInit.x = 7 + MULTIOP_TEAMSWIDTH;
-                sFormInit.y = (UWORD)(( (MULTIOP_PLAYERHEIGHT+5)*NetPlay.players[i].position)+4);
+                sFormInit.y = (uint16_t)(( (MULTIOP_PLAYERHEIGHT+5)*NetPlay.players[i].position)+4);
                 sFormInit.width = MULTIOP_PLAYERWIDTH - MULTIOP_TEAMSWIDTH + 1;
                 sFormInit.height = MULTIOP_PLAYERHEIGHT;
                 if (NetPlay.isHost && !challengeActive)
@@ -2159,7 +2159,7 @@ UDWORD addPlayerBox(BOOL players)
                 sFormInit.UserData = i;
                 widgAddForm(psWScreen, &sFormInit);
                 addFEAISlider(MULTIOP_SKSLIDE+i,sFormInit.id, 35,9, DIFF_SLIDER_STOPS,
-                              (game.skDiff[i] <= DIFF_SLIDER_STOPS ? game.skDiff[i] : DIFF_SLIDER_STOPS / 2));	//set to 50% (value of UBYTE_MAX == human player)
+                              (game.skDiff[i] <= DIFF_SLIDER_STOPS ? game.skDiff[i] : DIFF_SLIDER_STOPS / 2));	//set to 50% (value of uint8_t_MAX == human player)
             }
         }
     }
@@ -2278,14 +2278,14 @@ static void disableMultiButs(void)
     {
         // force the state down if a locked game
         // FIXME: It don't seem to be locking it into the 2nd state?
-        widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_LOCK);
+        widgSetButtonState(psWScreen, MULTIOP_PASint16_t_BUT, WBUT_LOCK);
     }
     
     if (!NetPlay.isHost)
     {
 		/*Don't let clients think that they can change the password if not the host.*/
-		widgDelete(psWScreen, MULTIOP_PASSWORD_BUT);
-		widgDelete(psWScreen, MULTIOP_PASSWORD_EDIT);
+		widgDelete(psWScreen, MULTIOP_PASint16_t_BUT);
+		widgDelete(psWScreen, MULTIOP_PASint16_t_EDIT);
 		
         if( game.fog)
         {
@@ -2431,7 +2431,7 @@ static void stopJoining(void)
  * Process click events on the multiplayer/skirmish options screen
  * 'id' is id of the button that was pressed
  */
-static void processMultiopWidgets(UDWORD id)
+static void processMultiopWidgets(uint32_t id)
 {
     PLAYERSTATS playerStats;
 
@@ -2732,28 +2732,28 @@ static void processMultiopWidgets(UDWORD id)
                 }
                 break;
                 
-			case MULTIOP_PASSWORD_BUT:
+			case MULTIOP_PASint16_t_BUT:
 			{
 				char game_password[64];
 				char buf[256];
 				int32_t result = 0;
 
-				result = widgGetButtonState(psWScreen, MULTIOP_PASSWORD_BUT);
+				result = widgGetButtonState(psWScreen, MULTIOP_PASint16_t_BUT);
 				debug(LOG_NET, "Password button hit, %d", result);
 				if (result == 0)
 				{
-					sstrcpy(game_password, widgGetString(psWScreen, MULTIOP_PASSWORD_EDIT));
+					sstrcpy(game_password, widgGetString(psWScreen, MULTIOP_PASint16_t_EDIT));
 					NETsetGamePassword(game_password);
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_CLICKLOCK);
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
+					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_BUT, WBUT_CLICKLOCK);
+					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_EDIT, WEDBS_DISABLE);
 					// say password is now required to join games?
 					ssprintf(buf, _("*** password [%s] is now required! ***"), NetPlay.gamePassword);
 					NETGameLocked(true);
 				}
 				else
 				{
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT , 0);
-					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, 0);
+					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_BUT , 0);
+					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_EDIT, 0);
 					ssprintf(buf, _("*** password is NOT required! ***"));
 					NETresetGamePassword();
 					NETGameLocked(false);
@@ -2852,7 +2852,7 @@ static void processMultiopWidgets(UDWORD id)
 
             disableMultiButs();
 
-            addPlayerBox(!ingame.bHostSetup || bHosted);	//to make sure host can't skip player selection menu (sets game.skdiff to UBYTE_MAX for humans)
+            addPlayerBox(!ingame.bHostSetup || bHosted);	//to make sure host can't skip player selection menu (sets game.skdiff to uint8_t_MAX for humans)
             break;
 
         case MULTIOP_CHATEDIT:
@@ -3001,7 +3001,7 @@ static void processMultiopWidgets(UDWORD id)
 
         resetReadyStatus(false);		// will reset only locally if not a host
 
-        SendTeamRequest(teamChooserUp, (UBYTE)id - MULTIOP_TEAMCHOOSER);
+        SendTeamRequest(teamChooserUp, (uint8_t)id - MULTIOP_TEAMCHOOSER);
 
         debug(LOG_WZ, "Changed team for player %d to %d", teamChooserUp, NetPlay.players[teamChooserUp].team);
 
@@ -3022,7 +3022,7 @@ static void processMultiopWidgets(UDWORD id)
     // 'ready' button
     if((id >= MULTIOP_READY_START) && (id <= MULTIOP_READY_END))	// clicked on a player
     {
-        UBYTE player = (UBYTE)(id-MULTIOP_READY_START);
+        uint8_t player = (uint8_t)(id-MULTIOP_READY_START);
 
         if (player == selectedPlayer)
         {
@@ -3071,12 +3071,12 @@ static void processMultiopWidgets(UDWORD id)
 
     if((id >= MULTIOP_SKSLIDE) && (id <=MULTIOP_SKSLIDE_END) && !challengeActive) // choseskirmish difficulty.
     {
-        UDWORD newValue, oldValue;
+        uint32_t newValue, oldValue;
 
         newValue = widgGetSliderPos(psWScreen,id);
-        oldValue = (UDWORD)game.skDiff[id-MULTIOP_SKSLIDE];
+        oldValue = (uint32_t)game.skDiff[id-MULTIOP_SKSLIDE];
 
-        game.skDiff[id-MULTIOP_SKSLIDE] = (UBYTE)newValue;
+        game.skDiff[id-MULTIOP_SKSLIDE] = (uint8_t)newValue;
 
         //Show/hide team chooser if player was enabled/disabled
         if((oldValue == 0 && newValue > 0) || (oldValue > 0 && newValue == 0) )
@@ -3445,8 +3445,8 @@ void frontendMultiMessages(void)
 
 void runMultiOptions(void)
 {
-    static UDWORD	lastrefresh = 0;
-    UDWORD			id, value, i;
+    static uint32_t	lastrefresh = 0;
+    uint32_t			id, value, i;
     char			sTemp[128], OldMap[256];
     PLAYERSTATS		playerStats;
     W_CONTEXT		context;
@@ -3675,7 +3675,7 @@ void runMultiOptions(void)
 BOOL startMultiOptions(BOOL bReenter)
 {
     PLAYERSTATS		nullStats;
-    UBYTE i;
+    uint8_t i;
 
     netPlayersUpdated = true;
 
@@ -3796,10 +3796,10 @@ BOOL startMultiOptions(BOOL bReenter)
 /////////////////////////////////////////////////////////////////////////////////////////
 // Drawing functions
 
-void displayChatEdit(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void displayChatEdit(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD x = xOffset+psWidget->x;
-    UDWORD y = yOffset+psWidget->y -4;			// 4 is the magic number.
+    uint32_t x = xOffset+psWidget->x;
+    uint32_t y = yOffset+psWidget->y -4;			// 4 is the magic number.
 
     // draws the line at the bottom of the multiplayer join dialog separating the chat
     // box from the input box
@@ -3810,11 +3810,11 @@ void displayChatEdit(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT 
 
 
 // ////////////////////////////////////////////////////////////////////////////
-void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void displayRemoteGame(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD x = xOffset+psWidget->x;
-    UDWORD y = yOffset+psWidget->y;
-    UDWORD	i = psWidget->UserData;
+    uint32_t x = xOffset+psWidget->x;
+    uint32_t y = yOffset+psWidget->y;
+    uint32_t	i = psWidget->UserData;
     char	tmp[8], gamename[StringSize], infoBuffer[3][512];
     unsigned int ping;
 
@@ -3931,10 +3931,10 @@ void displayRemoteGame(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGH
 
 
 // ////////////////////////////////////////////////////////////////////////////
-static UDWORD bestPlayer(UDWORD player)
+static uint32_t bestPlayer(uint32_t player)
 {
 
-    UDWORD i, myscore,  score, count=1;
+    uint32_t i, myscore,  score, count=1;
 
     myscore =  getMultiStats(player).totalScore;
 
@@ -3954,11 +3954,11 @@ static UDWORD bestPlayer(UDWORD player)
     return count;
 }
 
-void displayTeamChooser(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void displayTeamChooser(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD		x = xOffset+psWidget->x;
-    UDWORD		y = yOffset+psWidget->y;
-    UDWORD		i = psWidget->UserData;
+    uint32_t		x = xOffset+psWidget->x;
+    uint32_t		y = yOffset+psWidget->y;
+    uint32_t		i = psWidget->UserData;
 
     ASSERT(i < MAX_PLAYERS && NetPlay.players[i].team >= 0 && NetPlay.players[i].team < MAX_PLAYERS, "Team index out of bounds" );
 
@@ -3969,11 +3969,11 @@ void displayTeamChooser(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIG
 }
 
 // ////////////////////////////////////////////////////////////////////////////
-void displayPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void displayPlayer(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD		x = xOffset+psWidget->x;
-    UDWORD		y = yOffset+psWidget->y;
-    UDWORD		j = psWidget->UserData, eval;
+    uint32_t		x = xOffset+psWidget->x;
+    uint32_t		y = yOffset+psWidget->y;
+    uint32_t		j = psWidget->UserData, eval;
     PLAYERSTATS stat;
 
     //bluboxes.
@@ -4155,7 +4155,7 @@ void displayPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *p
                 }
             }
         }
-        game.skDiff[j] = UBYTE_MAX;	// set AI difficulty to 0xFF (i.e. not an AI)
+        game.skDiff[j] = uint8_t_MAX;	// set AI difficulty to 0xFF (i.e. not an AI)
     }
     else
     {
@@ -4237,12 +4237,12 @@ void displayPlayer(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *p
 
 // ////////////////////////////////////////////////////////////////////////////
 // Display blue box
-void intDisplayFeBox(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void intDisplayFeBox(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
-    UDWORD	w = psWidget->width;
-    UDWORD	h = psWidget->height;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
+    uint32_t	w = psWidget->width;
+    uint32_t	h = psWidget->height;
 
     drawBlueBox(x,y,w,h);
 
@@ -4250,10 +4250,10 @@ void intDisplayFeBox(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT 
 
 // ////////////////////////////////////////////////////////////////////////////
 // Display edit box
-void displayMultiEditBox(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void displayMultiEditBox(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
 
     drawBlueBox(x,y,psWidget->width,psWidget->height);
 
@@ -4271,17 +4271,17 @@ void displayMultiEditBox(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELI
 
 // ////////////////////////////////////////////////////////////////////////////
 // Display one of two images depending on if the widget is hilighted by the mouse.
-void displayMultiBut(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void displayMultiBut(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    UDWORD	x = xOffset+psWidget->x;
-    UDWORD	y = yOffset+psWidget->y;
+    uint32_t	x = xOffset+psWidget->x;
+    uint32_t	y = yOffset+psWidget->y;
     BOOL	Hilight = false;
-    UDWORD	Down = 0;
-    UDWORD	Grey = 0;
-    UWORD	im_norm = UNPACKDWORD_TRI_A((UDWORD)psWidget->UserData);
-    UWORD	im_down = UNPACKDWORD_TRI_B((UDWORD)psWidget->UserData);
-    UWORD	im_hili = UNPACKDWORD_TRI_C((UDWORD)psWidget->UserData);
-    UWORD	hiToUse = im_hili;
+    uint32_t	Down = 0;
+    uint32_t	Grey = 0;
+    uint16_t	im_norm = UNPACKint32_t_TRI_A((uint32_t)psWidget->UserData);
+    uint16_t	im_down = UNPACKint32_t_TRI_B((uint32_t)psWidget->UserData);
+    uint16_t	im_hili = UNPACKint32_t_TRI_C((uint32_t)psWidget->UserData);
+    uint16_t	hiToUse = im_hili;
 
     // FIXME: This seems to be a way to conserve space, so you can use a
     // transparent icon with these edit boxes.
@@ -4387,7 +4387,7 @@ void displayMultiBut(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT 
 /////////////////////////////////////////////////////////////////////////////////////////
 // common widgets
 
-static BOOL addMultiEditBox(UDWORD formid, UDWORD id, UDWORD x, UDWORD y, const char *tip, char tipres[128], UDWORD icon, UDWORD iconhi, UDWORD iconid)
+static BOOL addMultiEditBox(uint32_t formid, uint32_t id, uint32_t x, uint32_t y, const char *tip, char tipres[128], uint32_t icon, uint32_t iconhi, uint32_t iconid)
 {
     W_EDBINIT		sEdInit;
 
@@ -4413,7 +4413,7 @@ static BOOL addMultiEditBox(UDWORD formid, UDWORD id, UDWORD x, UDWORD y, const 
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-BOOL addMultiBut(W_SCREEN *screen, UDWORD formid, UDWORD id, UDWORD x, UDWORD y, UDWORD width, UDWORD height, const char *tipres, UDWORD norm, UDWORD down, UDWORD hi)
+BOOL addMultiBut(W_SCREEN *screen, uint32_t formid, uint32_t id, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const char *tipres, uint32_t norm, uint32_t down, uint32_t hi)
 {
     W_BUTINIT		sButInit;
 
@@ -4428,7 +4428,7 @@ BOOL addMultiBut(W_SCREEN *screen, UDWORD formid, UDWORD id, UDWORD x, UDWORD y,
     sButInit.pTip = tipres;
     sButInit.FontID = font_regular;
     sButInit.pDisplay = displayMultiBut;
-    sButInit.UserData = PACKDWORD_TRI(norm, down, hi);
+    sButInit.UserData = PACKint32_t_TRI(norm, down, hi);
 
     return widgAddButton(screen, &sButInit);
 }

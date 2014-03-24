@@ -38,13 +38,13 @@ typedef struct
 
 BOOL saveMultiStats(const char *sFName, const char *sPlayerName, const PLAYERSTATS *playerStats);	// to disk
 BOOL loadMultiStats(char *sPlayerName, PLAYERSTATS *playerStats);					// form disk
-PLAYERSTATS getMultiStats(UDWORD player);									// get from net
-BOOL setMultiStats(SDWORD player, PLAYERSTATS plStats,BOOL bLocal);			// send to net.
-void updateMultiStatsDamage(UDWORD attacker, UDWORD defender, UDWORD inflicted);
+PLAYERSTATS getMultiStats(uint32_t player);									// get from net
+BOOL setMultiStats(int32_t player, PLAYERSTATS plStats,BOOL bLocal);			// send to net.
+void updateMultiStatsDamage(uint32_t attacker, uint32_t defender, uint32_t inflicted);
 void updateMultiStatsGames(void);
 void updateMultiStatsWins(void);
 void updateMultiStatsLoses(void);
-void updateMultiStatsKills(BASE_OBJECT *psKilled,UDWORD player);
+void updateMultiStatsKills(BASE_OBJECT *psKilled,uint32_t player);
 void recvMultiStats(void);
 
 #endif // __INCLUDED_SRC_MULTISTATS_H__

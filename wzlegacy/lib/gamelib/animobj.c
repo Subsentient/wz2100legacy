@@ -57,7 +57,7 @@ static	ANIMOBJDIEDTESTFUNC g_pDiedFunc = NULL;
 /***************************************************************************/
 /* local functions */
 
-static UDWORD		animObj_HashFunction(intptr_t iKey1, intptr_t iKey2);
+static uint32_t		animObj_HashFunction(intptr_t iKey1, intptr_t iKey2);
 static void		animObj_HashFreeElementFunc( void *psElement );
 
 /***************************************************************************/
@@ -69,7 +69,7 @@ static void		animObj_HashFreeElementFunc( void *psElement );
 BOOL
 animObj_Init( ANIMOBJDIEDTESTFUNC pDiedFunc )
 {
-    SDWORD	iSize = sizeof(ANIM_OBJECT);
+    int32_t	iSize = sizeof(ANIM_OBJECT);
 
     /* allocate hashtable */
     hashTable_Create( &g_pAnimObjTable, ANIM_HASH_TABLE_SIZE,
@@ -114,7 +114,7 @@ animObj_SetDoneFunc( ANIM_OBJECT *psObj, ANIMOBJDONEFUNC pDoneFunc )
  */
 /***************************************************************************/
 
-static UDWORD
+static uint32_t
 animObj_HashFunction(intptr_t iKey1, intptr_t iKey2)
 {
     return (iKey1 + iKey2)%ANIM_HASH_TABLE_SIZE;
@@ -139,7 +139,7 @@ void
 animObj_Update( void )
 {
     ANIM_OBJECT	*psObj;
-    SDWORD		dwTime;
+    int32_t		dwTime;
     BOOL		bRemove;
 
     psObj = (ANIM_OBJECT *)hashTable_GetFirst( g_pAnimObjTable );
@@ -196,11 +196,11 @@ animObj_Update( void )
 
 ANIM_OBJECT *
 animObj_Add( void *pParentObj, int iAnimID,
-             UDWORD udwStartDelay, UWORD uwCycles )
+             uint32_t udwStartDelay, uint16_t uwCycles )
 {
     ANIM_OBJECT		*psObj;
-    BASEANIM		*psAnim = anim_GetAnim( (UWORD) iAnimID );
-    UWORD			i, uwObj;
+    BASEANIM		*psAnim = anim_GetAnim( (uint16_t) iAnimID );
+    uint16_t			i, uwObj;
 
     ASSERT( psAnim != NULL,
             "anim_AddAnimObject: anim id %i not found\n", iAnimID );
@@ -215,7 +215,7 @@ animObj_Add( void *pParentObj, int iAnimID,
     }
 
     /* init object */
-    psObj->uwID           = (UWORD) iAnimID;
+    psObj->uwID           = (uint16_t) iAnimID;
     psObj->psAnim         = (ANIM3D *) psAnim;
     psObj->udwStartTime   = gameTime;
     psObj->udwStartDelay  = udwStartDelay;

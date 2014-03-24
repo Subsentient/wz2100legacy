@@ -142,28 +142,28 @@ typedef struct	_effect_def
 
 /* Maximum number of effects in the world - need to investigate what this should be */
 /* EXTERNAL REFERENCES */
-extern void	effectGiveAuxVar		( UDWORD var); // naughty
-extern void	effectGiveAuxVarSec		( UDWORD var); // and so's this
+extern void	effectGiveAuxVar		( uint32_t var); // naughty
+extern void	effectGiveAuxVarSec		( uint32_t var); // and so's this
 
 extern void	initEffectsSystem		( void );
 extern void	processEffects			( void );
 extern void	addEffect				( Vector3i *pos, EFFECT_GROUP group,
                                       EFFECT_TYPE type, BOOL specified, iIMDShape *imd, int lit );
 extern void	addMultiEffect			( Vector3i *basePos, Vector3i *scatter,EFFECT_GROUP group,
-                                      EFFECT_TYPE type,BOOL specified, iIMDShape *imd, UDWORD number, BOOL lit, UDWORD size );
+                                      EFFECT_TYPE type,BOOL specified, iIMDShape *imd, uint32_t number, BOOL lit, uint32_t size );
 
 extern void	renderEffect			( EFFECT *psEffect );
 extern void	effectResetUpdates		( void );
-extern UDWORD	getNumActiveEffects		( void );
-extern UDWORD	getMissCount( void );
-extern	UDWORD	getNumSkippedEffects(void);
-extern	UDWORD	getNumEvenEffects(void);
+extern uint32_t	getNumActiveEffects		( void );
+extern uint32_t	getMissCount( void );
+extern	uint32_t	getNumSkippedEffects(void);
+extern	uint32_t	getNumEvenEffects(void);
 
-extern void	initPerimeterSmoke			( iIMDShape *pImd, UDWORD x, UDWORD y, UDWORD z);
+extern void	initPerimeterSmoke			( iIMDShape *pImd, uint32_t x, uint32_t y, uint32_t z);
 
 extern bool readFXData(const char *fileName);
 extern bool	writeFXData(const char *fileName);
-extern	void	effectSetSize(UDWORD size);
+extern	void	effectSetSize(uint32_t size);
 extern void	effectSetLandLightSpec(LAND_LIGHT_SPEC spec);
 
 #endif // __INCLUDED_SRC_EFFECTS_H__

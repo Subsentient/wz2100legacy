@@ -83,8 +83,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define MAX_SAVE_NAME_SIZE_V19	40
 #define MAX_SAVE_NAME_SIZE	60
 
-#define NULL_ID UDWORD_MAX
-#define MAX_BODY			SWORD_MAX
+#define NULL_ID uint32_t_MAX
+#define MAX_BODY			int16_t_MAX
 #define SAVEKEY_ONMISSION	0x100
 
 /*!
@@ -168,101 +168,101 @@ static bool deserializeSaveGameHeader(PHYSFS_file *fileHandle, GAME_SAVEHEADER *
 typedef struct _droid_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		quantity;
+    uint32_t		version;
+    uint32_t		quantity;
 } DROID_SAVEHEADER;
 
 typedef struct _struct_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		quantity;
+    uint32_t		version;
+    uint32_t		quantity;
 } STRUCT_SAVEHEADER;
 
 typedef struct _template_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		quantity;
+    uint32_t		version;
+    uint32_t		quantity;
 } TEMPLATE_SAVEHEADER;
 
 typedef struct _feature_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		quantity;
+    uint32_t		version;
+    uint32_t		quantity;
 } FEATURE_SAVEHEADER;
 
 /* Structure definitions for loading and saving map data */
 typedef struct
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } TILETYPE_SAVEHEADER;
 
 /* Structure definitions for loading and saving map data */
 typedef struct _compList_save_header
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } COMPLIST_SAVEHEADER;
 
 /* Structure definitions for loading and saving map data */
 typedef struct _structList_save_header
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } STRUCTLIST_SAVEHEADER;
 
 typedef struct _research_save_header
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } RESEARCH_SAVEHEADER;
 
 typedef struct _message_save_header
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } MESSAGE_SAVEHEADER;
 
 typedef struct _proximity_save_header
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } PROXIMITY_SAVEHEADER;
 
 typedef struct _flag_save_header
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } FLAG_SAVEHEADER;
 
 typedef struct _production_save_header
 {
     char aFileType[4];
-    UDWORD version;
+    uint32_t version;
 } PRODUCTION_SAVEHEADER;
 
 typedef struct _structLimits_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		quantity;
+    uint32_t		version;
+    uint32_t		quantity;
 } STRUCTLIMITS_SAVEHEADER;
 
 typedef struct _command_save_header
 {
     char aFileType[4];
-    UDWORD version;
-    UDWORD quantity;
+    uint32_t version;
+    uint32_t quantity;
 } COMMAND_SAVEHEADER;
 
 /* Sanity check definitions for the save struct file sizes */
@@ -289,23 +289,23 @@ typedef struct _command_save_header
 
 #define OBJECT_SAVE_V19 \
 	char				name[MAX_SAVE_NAME_SIZE_V19]; \
-	UDWORD				id; \
-	UDWORD				x,y,z; \
-	UDWORD				direction; \
-	UDWORD				player; \
+	uint32_t				id; \
+	uint32_t				x,y,z; \
+	uint32_t				direction; \
+	uint32_t				player; \
 	BOOL				inFire; \
-	UDWORD				burnStart; \
-	UDWORD				burnDamage
+	uint32_t				burnStart; \
+	uint32_t				burnDamage
 
 #define OBJECT_SAVE_V20 \
 	char				name[MAX_SAVE_NAME_SIZE]; \
-	UDWORD				id; \
-	UDWORD				x,y,z; \
-	UDWORD				direction; \
-	UDWORD				player; \
+	uint32_t				id; \
+	uint32_t				x,y,z; \
+	uint32_t				direction; \
+	uint32_t				player; \
 	BOOL				inFire; \
-	UDWORD				burnStart; \
-	UDWORD				burnDamage
+	uint32_t				burnStart; \
+	uint32_t				burnDamage
 
 
 typedef struct _save_component_v19
@@ -321,17 +321,17 @@ typedef struct _save_component
 typedef struct _save_weapon_v19
 {
     char				name[MAX_SAVE_NAME_SIZE_V19];
-    UDWORD				hitPoints;  // UNUSED: only here to keep struct size intact
-    UDWORD				ammo;
-    UDWORD				lastFired;
+    uint32_t				hitPoints;  // UNUSED: only here to keep struct size intact
+    uint32_t				ammo;
+    uint32_t				lastFired;
 } SAVE_WEAPON_V19;
 
 typedef struct _save_weapon
 {
     char				name[MAX_SAVE_NAME_SIZE];
-    UDWORD				hitPoints;  // UNUSED: only here to keep struct size intact
-    UDWORD				ammo;
-    UDWORD				lastFired;
+    uint32_t				hitPoints;  // UNUSED: only here to keep struct size intact
+    uint32_t				ammo;
+    uint32_t				lastFired;
 } SAVE_WEAPON;
 
 typedef struct _savePower
@@ -1656,33 +1656,33 @@ static bool deserializeSaveGameData(PHYSFS_file *fileHandle, SAVE_GAME *serializ
 
 typedef struct _path_point
 {
-    UBYTE           x,y;
+    uint8_t           x,y;
 } PATH_POINT;
 
 #define TRAVELSIZE	100
 
 typedef struct _save_move_control
 {
-    UBYTE	Status;						// Inactive, Navigating or moving point to point status
-    UBYTE	Position;	   				// Position in asPath
-    UBYTE	numPoints;					// number of points in asPath
+    uint8_t	Status;						// Inactive, Navigating or moving point to point status
+    uint8_t	Position;	   				// Position in asPath
+    uint8_t	numPoints;					// number of points in asPath
     PATH_POINT	asPath[TRAVELSIZE];		// Pointer to list of block X,Y coordinates.
-    SDWORD	DestinationX;				// DestinationX,Y should match objects current X,Y
-    SDWORD	DestinationY;				//		location for this movement to be complete.
-    SDWORD	srcX,srcY,targetX,targetY;
+    int32_t	DestinationX;				// DestinationX,Y should match objects current X,Y
+    int32_t	DestinationY;				//		location for this movement to be complete.
+    int32_t	srcX,srcY,targetX,targetY;
     float	fx,fy;						// droid location as a fract
     float	speed;						// Speed of motion
-    SWORD	boundX,boundY;				// Vector for the end of path boundary
-    SWORD	moveDir;						// direction of motion (not the direction the droid is facing)
-    SWORD	bumpDir;					// direction at last bump
-    UDWORD	bumpTime;					// time of first bump with something
-    UWORD	lastBump;					// time of last bump with a droid - relative to bumpTime
-    UWORD	pauseTime;					// when MOVEPAUSE started - relative to bumpTime
-    UWORD	bumpX,bumpY;				// position of last bump
-    UDWORD	shuffleStart;				// when a shuffle started
+    int16_t	boundX,boundY;				// Vector for the end of path boundary
+    int16_t	moveDir;						// direction of motion (not the direction the droid is facing)
+    int16_t	bumpDir;					// direction at last bump
+    uint32_t	bumpTime;					// time of first bump with something
+    uint16_t	lastBump;					// time of last bump with a droid - relative to bumpTime
+    uint16_t	pauseTime;					// when MOVEPAUSE started - relative to bumpTime
+    uint16_t	bumpX,bumpY;				// position of last bump
+    uint32_t	shuffleStart;				// when a shuffle started
     BOOL	isInFormation;                          // Indicates wether this droid is a member of a formation
-    SWORD	iVertSpeed;
-    UDWORD	iAttackRuns[DROID_MAXWEAPS];
+    int16_t	iVertSpeed;
+    uint32_t	iAttackRuns[DROID_MAXWEAPS];
     float   fz;
 } SAVE_MOVE_CONTROL;
 
@@ -1690,12 +1690,12 @@ typedef struct _save_move_control
 #define DROID_SAVE_V9		\
 	OBJECT_SAVE_V19;			\
 	SAVE_COMPONENT_V19	asBits[DROID_MAXCOMP]; \
-	UDWORD		body;		\
-	UBYTE		droidType;	\
-	UDWORD		saveType;	\
-	UDWORD		numWeaps;	\
+	uint32_t		body;		\
+	uint8_t		droidType;	\
+	uint32_t		saveType;	\
+	uint32_t		numWeaps;	\
 	SAVE_WEAPON_V19	asWeaps[TEMP_DROID_MAXPROGS];	\
-	UDWORD		numKills
+	uint32_t		numKills
 
 typedef struct _save_droid_v9
 {
@@ -1706,14 +1706,14 @@ typedef struct _save_droid_v9
 #define DROID_SAVE_V11		\
 	OBJECT_SAVE_V19;			\
 	SAVE_COMPONENT_V19	asBits[DROID_MAXCOMP]; \
-	UDWORD		body;		\
-	UBYTE		droidType;	\
-	UBYTE		saveType;	\
-	UDWORD		numWeaps;	\
+	uint32_t		body;		\
+	uint8_t		droidType;	\
+	uint8_t		saveType;	\
+	uint32_t		numWeaps;	\
 	SAVE_WEAPON_V19	asWeaps[TEMP_DROID_MAXPROGS];	\
-	UDWORD		numKills;	\
-	UWORD	turretRotation;	\
-	UWORD	turretPitch
+	uint32_t		numKills;	\
+	uint16_t	turretRotation;	\
+	uint16_t	turretPitch
 
 typedef struct _save_droid_v11
 {
@@ -1722,20 +1722,20 @@ typedef struct _save_droid_v11
 
 #define DROID_SAVE_V12		\
 	DROID_SAVE_V9;			\
-	UWORD	turretRotation;	\
-	UWORD	turretPitch;	\
-	SDWORD	order;			\
-	UWORD	orderX,orderY;	\
-	UWORD	orderX2,orderY2;\
-	UDWORD	timeLastHit;	\
-	UDWORD	targetID;		\
-	UDWORD	secondaryOrder;	\
-	SDWORD	action;			\
-	UDWORD	actionX,actionY;\
-	UDWORD	actionTargetID;	\
-	UDWORD	actionStarted;	\
-	UDWORD	actionPoints;	\
-	UWORD	actionHeight
+	uint16_t	turretRotation;	\
+	uint16_t	turretPitch;	\
+	int32_t	order;			\
+	uint16_t	orderX,orderY;	\
+	uint16_t	orderX2,orderY2;\
+	uint32_t	timeLastHit;	\
+	uint32_t	targetID;		\
+	uint32_t	secondaryOrder;	\
+	int32_t	action;			\
+	uint32_t	actionX,actionY;\
+	uint32_t	actionTargetID;	\
+	uint32_t	actionStarted;	\
+	uint32_t	actionPoints;	\
+	uint16_t	actionHeight
 
 typedef struct _save_droid_v12
 {
@@ -1745,13 +1745,13 @@ typedef struct _save_droid_v12
 #define DROID_SAVE_V14		\
 	DROID_SAVE_V12;			\
 	char	tarStatName[MAX_GAME_STR_SIZE];\
-    UDWORD	baseStructID;	\
-	UBYTE	group;			\
-	UBYTE	selected;		\
-	UBYTE	cluster_unused;		\
-	UBYTE	visible[MAX_PLAYERS];\
-	UDWORD	died;			\
-	UDWORD	lastEmission
+    uint32_t	baseStructID;	\
+	uint8_t	group;			\
+	uint8_t	selected;		\
+	uint8_t	cluster_unused;		\
+	uint8_t	visible[MAX_PLAYERS];\
+	uint32_t	died;			\
+	uint32_t	lastEmission
 
 typedef struct _save_droid_v14
 {
@@ -1762,13 +1762,13 @@ typedef struct _save_droid_v14
 #define DROID_SAVE_V18		\
 	DROID_SAVE_V12;			\
 	char	tarStatName[MAX_SAVE_NAME_SIZE_V19];\
-    UDWORD	baseStructID;	\
-	UBYTE	group;			\
-	UBYTE	selected;		\
-	UBYTE	cluster_unused;		\
-	UBYTE	visible[MAX_PLAYERS];\
-	UDWORD	died;			\
-	UDWORD	lastEmission
+    uint32_t	baseStructID;	\
+	uint8_t	group;			\
+	uint8_t	selected;		\
+	uint8_t	cluster_unused;		\
+	uint8_t	visible[MAX_PLAYERS];\
+	uint32_t	died;			\
+	uint32_t	lastEmission
 
 typedef struct _save_droid_v18
 {
@@ -1779,34 +1779,34 @@ typedef struct _save_droid_v18
 #define DROID_SAVE_V20		\
 	OBJECT_SAVE_V20;			\
 	SAVE_COMPONENT	asBits[DROID_MAXCOMP]; \
-	UDWORD		body;		\
-	UBYTE		droidType;	\
-	UDWORD		saveType;	\
-	UDWORD		numWeaps;	\
+	uint32_t		body;		\
+	uint8_t		droidType;	\
+	uint32_t		saveType;	\
+	uint32_t		numWeaps;	\
 	SAVE_WEAPON	asWeaps[TEMP_DROID_MAXPROGS];	\
-	UDWORD		numKills;	\
-	UWORD	turretRotation;	\
-	UWORD	turretPitch;	\
-	SDWORD	order;			\
-	UWORD	orderX,orderY;	\
-	UWORD	orderX2,orderY2;\
-	UDWORD	timeLastHit;	\
-	UDWORD	targetID;		\
-	UDWORD	secondaryOrder;	\
-	SDWORD	action;			\
-	UDWORD	actionX,actionY;\
-	UDWORD	actionTargetID;	\
-	UDWORD	actionStarted;	\
-	UDWORD	actionPoints;	\
-	UWORD	actionHeight;	\
+	uint32_t		numKills;	\
+	uint16_t	turretRotation;	\
+	uint16_t	turretPitch;	\
+	int32_t	order;			\
+	uint16_t	orderX,orderY;	\
+	uint16_t	orderX2,orderY2;\
+	uint32_t	timeLastHit;	\
+	uint32_t	targetID;		\
+	uint32_t	secondaryOrder;	\
+	int32_t	action;			\
+	uint32_t	actionX,actionY;\
+	uint32_t	actionTargetID;	\
+	uint32_t	actionStarted;	\
+	uint32_t	actionPoints;	\
+	uint16_t	actionHeight;	\
 	char	tarStatName[MAX_SAVE_NAME_SIZE];\
-    UDWORD	baseStructID;	\
-	UBYTE	group;			\
-	UBYTE	selected;		\
-	UBYTE	cluster_unused;		\
-	UBYTE	visible[MAX_PLAYERS];\
-	UDWORD	died;			\
-	UDWORD	lastEmission
+    uint32_t	baseStructID;	\
+	uint8_t	group;			\
+	uint8_t	selected;		\
+	uint8_t	cluster_unused;		\
+	uint8_t	visible[MAX_PLAYERS];\
+	uint32_t	died;			\
+	uint32_t	lastEmission
 
 typedef struct _save_droid_v20
 {
@@ -1815,7 +1815,7 @@ typedef struct _save_droid_v20
 
 #define DROID_SAVE_V21		\
 	DROID_SAVE_V20;			\
-	UDWORD	commandId
+	uint32_t	commandId
 
 typedef struct _save_droid_v21
 {
@@ -1824,11 +1824,11 @@ typedef struct _save_droid_v21
 
 #define DROID_SAVE_V24		\
 	DROID_SAVE_V21;			\
-	SDWORD	resistance;		\
+	int32_t	resistance;		\
 	SAVE_MOVE_CONTROL	sMove;	\
-	SWORD		formationDir;	\
-	SDWORD		formationX;	\
-	SDWORD		formationY
+	int16_t		formationDir;	\
+	int32_t		formationX;	\
+	int32_t		formationY
 
 typedef struct _save_droid_v24
 {
@@ -1839,40 +1839,40 @@ typedef struct _save_droid_v24
 #define DROID_SAVE_V99		\
 	OBJECT_SAVE_V20;			\
 	SAVE_COMPONENT	asBits[DROID_MAXCOMP]; \
-	UDWORD		body;		\
-	UBYTE		droidType;	\
-	UDWORD		saveType;	\
-	UDWORD		numWeaps;	\
+	uint32_t		body;		\
+	uint8_t		droidType;	\
+	uint32_t		saveType;	\
+	uint32_t		numWeaps;	\
 	SAVE_WEAPON	asWeaps[TEMP_DROID_MAXPROGS];	\
-	UDWORD		numKills;	\
-	UWORD	turretRotation[DROID_MAXWEAPS];	\
-	UWORD	turretPitch[DROID_MAXWEAPS];	\
-	SDWORD	order;			\
-	UWORD	orderX,orderY;	\
-	UWORD	orderX2,orderY2;\
-	UDWORD	timeLastHit;	\
-	UDWORD	targetID;		\
-	UDWORD	secondaryOrder;	\
-	SDWORD	action;			\
-	UDWORD	actionX,actionY;\
-	UDWORD	actionTargetID;	\
-	UDWORD	actionStarted;	\
-	UDWORD	actionPoints;	\
-	UWORD	actionHeight;	\
+	uint32_t		numKills;	\
+	uint16_t	turretRotation[DROID_MAXWEAPS];	\
+	uint16_t	turretPitch[DROID_MAXWEAPS];	\
+	int32_t	order;			\
+	uint16_t	orderX,orderY;	\
+	uint16_t	orderX2,orderY2;\
+	uint32_t	timeLastHit;	\
+	uint32_t	targetID;		\
+	uint32_t	secondaryOrder;	\
+	int32_t	action;			\
+	uint32_t	actionX,actionY;\
+	uint32_t	actionTargetID;	\
+	uint32_t	actionStarted;	\
+	uint32_t	actionPoints;	\
+	uint16_t	actionHeight;	\
 	char	tarStatName[MAX_SAVE_NAME_SIZE];\
-	UDWORD	baseStructID;	\
-	UBYTE	group;			\
-	UBYTE	selected;		\
-	UBYTE	cluster_unused;		\
-	UBYTE	visible[MAX_PLAYERS];\
-	UDWORD	died;			\
-	UDWORD	lastEmission;         \
-	UDWORD	commandId;            \
-	SDWORD	resistance;           \
+	uint32_t	baseStructID;	\
+	uint8_t	group;			\
+	uint8_t	selected;		\
+	uint8_t	cluster_unused;		\
+	uint8_t	visible[MAX_PLAYERS];\
+	uint32_t	died;			\
+	uint32_t	lastEmission;         \
+	uint32_t	commandId;            \
+	int32_t	resistance;           \
 	SAVE_MOVE_CONTROL	sMove; \
-	SWORD	formationDir;         \
-	SDWORD	formationX;           \
-	SDWORD	formationY
+	int16_t	formationDir;         \
+	int32_t	formationX;           \
+	int32_t	formationY
 
 typedef struct _save_droid_v99
 {
@@ -1889,8 +1889,8 @@ typedef struct _save_droid
 typedef struct _droidinit_save_header
 {
     char		aFileType[4];
-    UDWORD		version;
-    UDWORD		quantity;
+    uint32_t		version;
+    uint32_t		quantity;
 } DROIDINIT_SAVEHEADER;
 
 typedef struct _save_droidinit
@@ -1904,17 +1904,17 @@ typedef struct _save_droidinit
 
 #define STRUCTURE_SAVE_V2 \
 	OBJECT_SAVE_V19; \
-	UBYTE				status; \
-	SDWORD				currentBuildPts; \
-	UDWORD				body; \
-	UDWORD				armour; \
-	UDWORD				resistance; \
-	UDWORD				dummy1; \
-	UDWORD				subjectInc;  /*research inc or factory prod id*/\
-	UDWORD				timeStarted; \
-	UDWORD				output; \
-	UDWORD				capacity; \
-	UDWORD				quantity
+	uint8_t				status; \
+	int32_t				currentBuildPts; \
+	uint32_t				body; \
+	uint32_t				armour; \
+	uint32_t				resistance; \
+	uint32_t				dummy1; \
+	uint32_t				subjectInc;  /*research inc or factory prod id*/\
+	uint32_t				timeStarted; \
+	uint32_t				output; \
+	uint32_t				capacity; \
+	uint32_t				quantity
 
 typedef struct _save_structure_v2
 {
@@ -1923,13 +1923,13 @@ typedef struct _save_structure_v2
 
 #define STRUCTURE_SAVE_V12 \
 	STRUCTURE_SAVE_V2; \
-	UDWORD				factoryInc;			\
-	UBYTE				loopsPerformed;		\
-	UDWORD				powerAccrued;		\
-	UDWORD				dummy2;			\
-	UDWORD				droidTimeStarted;	\
-	UDWORD				timeToBuild;		\
-	UDWORD				timeStartHold
+	uint32_t				factoryInc;			\
+	uint8_t				loopsPerformed;		\
+	uint32_t				powerAccrued;		\
+	uint32_t				dummy2;			\
+	uint32_t				droidTimeStarted;	\
+	uint32_t				timeToBuild;		\
+	uint32_t				timeStartHold
 
 typedef struct _save_structure_v12
 {
@@ -1938,7 +1938,7 @@ typedef struct _save_structure_v12
 
 #define STRUCTURE_SAVE_V14 \
 	STRUCTURE_SAVE_V12; \
-	UBYTE	visible[MAX_PLAYERS]
+	uint8_t	visible[MAX_PLAYERS]
 
 typedef struct _save_structure_v14
 {
@@ -1956,7 +1956,7 @@ typedef struct _save_structure_v15
 
 #define STRUCTURE_SAVE_V17 \
 	STRUCTURE_SAVE_V15;\
-	SWORD				currentPowerAccrued
+	int16_t				currentPowerAccrued
 
 typedef struct _save_structure_v17
 {
@@ -1965,27 +1965,27 @@ typedef struct _save_structure_v17
 
 #define STRUCTURE_SAVE_V20 \
 	OBJECT_SAVE_V20; \
-	UBYTE				status; \
-	SDWORD				currentBuildPts; \
-	UDWORD				body; \
-	UDWORD				armour; \
-	UDWORD				resistance; \
-	UDWORD				dummy1; \
-	UDWORD				subjectInc;  /*research inc or factory prod id*/\
-	UDWORD				timeStarted; \
-	UDWORD				output; \
-	UDWORD				capacity; \
-	UDWORD				quantity; \
-	UDWORD				factoryInc;			\
-	UBYTE				loopsPerformed;		\
-	UDWORD				powerAccrued;		\
-	UDWORD				dummy2;			\
-	UDWORD				droidTimeStarted;	\
-	UDWORD				timeToBuild;		\
-	UDWORD				timeStartHold; \
-	UBYTE				visible[MAX_PLAYERS]; \
+	uint8_t				status; \
+	int32_t				currentBuildPts; \
+	uint32_t				body; \
+	uint32_t				armour; \
+	uint32_t				resistance; \
+	uint32_t				dummy1; \
+	uint32_t				subjectInc;  /*research inc or factory prod id*/\
+	uint32_t				timeStarted; \
+	uint32_t				output; \
+	uint32_t				capacity; \
+	uint32_t				quantity; \
+	uint32_t				factoryInc;			\
+	uint8_t				loopsPerformed;		\
+	uint32_t				powerAccrued;		\
+	uint32_t				dummy2;			\
+	uint32_t				droidTimeStarted;	\
+	uint32_t				timeToBuild;		\
+	uint32_t				timeStartHold; \
+	uint8_t				visible[MAX_PLAYERS]; \
 	char				researchName[MAX_SAVE_NAME_SIZE]; \
-	SWORD				currentPowerAccrued
+	int16_t				currentPowerAccrued
 
 typedef struct _save_structure_v20
 {
@@ -1994,7 +1994,7 @@ typedef struct _save_structure_v20
 
 #define STRUCTURE_SAVE_V21 \
 	STRUCTURE_SAVE_V20; \
-	UDWORD				commandId
+	uint32_t				commandId
 
 typedef struct _save_structure_v21
 {
@@ -2011,35 +2011,35 @@ typedef struct _save_structure
 // multiPlayerID for templates needs to be saved - 29/10/98
 #define TEMPLATE_SAVE_V2 \
 	char				name[MAX_SAVE_NAME_SIZE_V19]; \
-	UDWORD				ref; \
-	UDWORD				player; \
-	UBYTE				droidType; \
+	uint32_t				ref; \
+	uint32_t				player; \
+	uint8_t				droidType; \
 	char				asParts[DROID_MAXCOMP][MAX_SAVE_NAME_SIZE_V19]; \
-	UDWORD				numWeaps; \
+	uint32_t				numWeaps; \
 	char				asWeaps[TEMP_DROID_MAXPROGS][MAX_SAVE_NAME_SIZE_V19]; \
-	UDWORD				numProgs; \
+	uint32_t				numProgs; \
 	char				asProgs[TEMP_DROID_MAXPROGS][MAX_SAVE_NAME_SIZE_V19]
 
 // multiPlayerID for templates needs to be saved - 29/10/98
 #define TEMPLATE_SAVE_V14 \
 	char				name[MAX_SAVE_NAME_SIZE_V19]; \
-	UDWORD				ref; \
-	UDWORD				player; \
-	UBYTE				droidType; \
+	uint32_t				ref; \
+	uint32_t				player; \
+	uint8_t				droidType; \
 	char				asParts[DROID_MAXCOMP][MAX_SAVE_NAME_SIZE_V19]; \
-	UDWORD				numWeaps; \
+	uint32_t				numWeaps; \
 	char				asWeaps[TEMP_DROID_MAXPROGS][MAX_SAVE_NAME_SIZE_V19]; \
-	UDWORD				multiPlayerID
+	uint32_t				multiPlayerID
 
 #define TEMPLATE_SAVE_V20 \
 	char				name[MAX_SAVE_NAME_SIZE]; \
-	UDWORD				ref; \
-	UDWORD				player; \
-	UBYTE				droidType; \
+	uint32_t				ref; \
+	uint32_t				player; \
+	uint8_t				droidType; \
 	char				asParts[DROID_MAXCOMP][MAX_SAVE_NAME_SIZE]; \
-	UDWORD				numWeaps; \
+	uint32_t				numWeaps; \
 	char				asWeaps[TEMP_DROID_MAXPROGS][MAX_SAVE_NAME_SIZE]; \
-	UDWORD				multiPlayerID
+	uint32_t				multiPlayerID
 
 
 
@@ -2074,7 +2074,7 @@ typedef struct _save_feature_v2
 
 #define FEATURE_SAVE_V14 \
 	FEATURE_SAVE_V2; \
-	UBYTE	visible[MAX_PLAYERS]
+	uint8_t	visible[MAX_PLAYERS]
 
 typedef struct _save_feature_v14
 {
@@ -2083,7 +2083,7 @@ typedef struct _save_feature_v14
 
 #define FEATURE_SAVE_V20 \
 	OBJECT_SAVE_V20; \
-	UBYTE	visible[MAX_PLAYERS]
+	uint8_t	visible[MAX_PLAYERS]
 
 typedef struct _save_feature_v20
 {
@@ -2098,15 +2098,15 @@ typedef struct _save_feature
 
 #define COMPLIST_SAVE_V6 \
 	char				name[MAX_SAVE_NAME_SIZE_V19]; \
-	UBYTE				type; \
-	UBYTE				state; \
-	UBYTE				player
+	uint8_t				type; \
+	uint8_t				state; \
+	uint8_t				player
 
 #define COMPLIST_SAVE_V20 \
 	char				name[MAX_SAVE_NAME_SIZE]; \
-	UBYTE				type; \
-	UBYTE				state; \
-	UBYTE				player
+	uint8_t				type; \
+	uint8_t				state; \
+	uint8_t				player
 
 
 typedef struct _save_compList_v6
@@ -2130,13 +2130,13 @@ typedef struct _save_compList
 
 #define STRUCTLIST_SAVE_V6 \
 	char				name[MAX_SAVE_NAME_SIZE_V19]; \
-	UBYTE				state; \
-	UBYTE				player
+	uint8_t				state; \
+	uint8_t				player
 
 #define STRUCTLIST_SAVE_V20 \
 	char				name[MAX_SAVE_NAME_SIZE]; \
-	UBYTE				state; \
-	UBYTE				player
+	uint8_t				state; \
+	uint8_t				player
 
 typedef struct _save_structList_v6
 {
@@ -2156,15 +2156,15 @@ typedef struct _save_structList
 
 #define RESEARCH_SAVE_V8 \
 	char				name[MAX_SAVE_NAME_SIZE_V19]; \
-	UBYTE				possible[MAX_PLAYERS]; \
-	UBYTE				researched[MAX_PLAYERS]; \
-	UDWORD				currentPoints[MAX_PLAYERS]
+	uint8_t				possible[MAX_PLAYERS]; \
+	uint8_t				researched[MAX_PLAYERS]; \
+	uint32_t				currentPoints[MAX_PLAYERS]
 
 #define RESEARCH_SAVE_V20 \
 	char				name[MAX_SAVE_NAME_SIZE]; \
-	UBYTE				possible[MAX_PLAYERS]; \
-	UBYTE				researched[MAX_PLAYERS]; \
-	UDWORD				currentPoints[MAX_PLAYERS]
+	uint8_t				possible[MAX_PLAYERS]; \
+	uint8_t				researched[MAX_PLAYERS]; \
+	uint32_t				currentPoints[MAX_PLAYERS]
 
 
 typedef struct _save_research_v8
@@ -2187,9 +2187,9 @@ typedef struct _save_message
     MESSAGE_TYPE	type;			//The type of message
     BOOL			bObj;
     char			name[MAX_GAME_STR_SIZE];
-    UDWORD			objId;					//Id for Proximity messages!
+    uint32_t			objId;					//Id for Proximity messages!
     BOOL			read;					//flag to indicate whether message has been read
-    UDWORD			player;					//which player this message belongs to
+    uint32_t			player;					//which player this message belongs to
 
 } SAVE_MESSAGE;
 
@@ -2198,59 +2198,59 @@ typedef struct _save_message_v36
     MESSAGE_TYPE	type;			//The type of message
     BOOL			bObj;
     char			name[MAX_GAME_STR_SIZE];
-    UDWORD			objId;					//Id for Proximity messages!
+    uint32_t			objId;					//Id for Proximity messages!
     BOOL			read;					//flag to indicate whether message has been read
-    UDWORD			player;					//which player this message belongs to
+    uint32_t			player;					//which player this message belongs to
     MSG_DATA_TYPE	dataType;				//actual type of pViewData
-    UDWORD			locX,locY;
-    SDWORD			sender;					//sender of the message
+    uint32_t			locX,locY;
+    int32_t			sender;					//sender of the message
 } SAVE_MESSAGE_36;
 
 typedef struct _save_flag_v18
 {
     POSITION_TYPE	type;				/*the type of position obj - FlagPos or ProxDisp*/
-    UDWORD			frameNumber;		/*when the Position was last drawn*/
-    UDWORD			screenX;			/*screen coords and radius of Position imd */
-    UDWORD			screenY;
-    UDWORD			screenR;
-    UDWORD			player;				/*which player the Position belongs to*/
+    uint32_t			frameNumber;		/*when the Position was last drawn*/
+    uint32_t			screenX;			/*screen coords and radius of Position imd */
+    uint32_t			screenY;
+    uint32_t			screenR;
+    uint32_t			player;				/*which player the Position belongs to*/
     BOOL			selected;			/*flag to indicate whether the Position */
     Vector3i		coords;							//the world coords of the Position
-    UBYTE		factoryInc;						//indicates whether the first, second etc factory
-    UBYTE		factoryType;					//indicates whether standard, cyborg or vtol factory
-    UBYTE		dummyNOTUSED;						//sub value. needed to order production points.
-    UBYTE		dummyNOTUSED2;
+    uint8_t		factoryInc;						//indicates whether the first, second etc factory
+    uint8_t		factoryType;					//indicates whether standard, cyborg or vtol factory
+    uint8_t		dummyNOTUSED;						//sub value. needed to order production points.
+    uint8_t		dummyNOTUSED2;
 } SAVE_FLAG_V18;
 
 typedef struct _save_flag
 {
     POSITION_TYPE	type;				/*the type of position obj - FlagPos or ProxDisp*/
-    UDWORD			frameNumber;		/*when the Position was last drawn*/
-    UDWORD			screenX;			/*screen coords and radius of Position imd */
-    UDWORD			screenY;
-    UDWORD			screenR;
-    UDWORD			player;				/*which player the Position belongs to*/
+    uint32_t			frameNumber;		/*when the Position was last drawn*/
+    uint32_t			screenX;			/*screen coords and radius of Position imd */
+    uint32_t			screenY;
+    uint32_t			screenR;
+    uint32_t			player;				/*which player the Position belongs to*/
     BOOL			selected;			/*flag to indicate whether the Position */
     Vector3i		coords;							//the world coords of the Position
-    UBYTE		factoryInc;						//indicates whether the first, second etc factory
-    UBYTE		factoryType;					//indicates whether standard, cyborg or vtol factory
-    UBYTE		dummyNOTUSED;						//sub value. needed to order production points.
-    UBYTE		dummyNOTUSED2;
-    UDWORD		repairId;
+    uint8_t		factoryInc;						//indicates whether the first, second etc factory
+    uint8_t		factoryType;					//indicates whether standard, cyborg or vtol factory
+    uint8_t		dummyNOTUSED;						//sub value. needed to order production points.
+    uint8_t		dummyNOTUSED2;
+    uint32_t		repairId;
 } SAVE_FLAG;
 
 //PRODUCTION_RUN		asProductionRun[NUM_FACTORY_TYPES][MAX_FACTORY][MAX_PROD_RUN];
 typedef struct _save_production
 {
-    UBYTE						quantity;			//number to build
-    UBYTE						built;				//number built on current run
-    UDWORD						multiPlayerID;		//template to build
+    uint8_t						quantity;			//number to build
+    uint8_t						built;				//number built on current run
+    uint32_t						multiPlayerID;		//template to build
 } SAVE_PRODUCTION;
 
 #define STRUCTLIMITS_SAVE_V2 \
 	char				name[MAX_SAVE_NAME_SIZE_V19]; \
-	UBYTE				limit; \
-	UBYTE				player
+	uint8_t				limit; \
+	uint8_t				player
 
 typedef struct _save_structLimits_v2
 {
@@ -2259,8 +2259,8 @@ typedef struct _save_structLimits_v2
 
 #define STRUCTLIMITS_SAVE_V20 \
 	char				name[MAX_SAVE_NAME_SIZE]; \
-	UBYTE				limit; \
-	UBYTE				player
+	uint8_t				limit; \
+	uint8_t				player
 
 typedef struct _save_structLimits_v20
 {
@@ -2274,7 +2274,7 @@ typedef struct _save_structLimits
 
 
 #define COMMAND_SAVE_V20 \
-	UDWORD				droidID
+	uint32_t				droidID
 
 typedef struct _save_command_v20
 {
@@ -2299,24 +2299,24 @@ typedef enum _droid_save_type
  *	Local Variables
  */
 /***************************************************************************/
-extern	UDWORD				objID;					// unique ID creation thing..
+extern	uint32_t				objID;					// unique ID creation thing..
 
-static UDWORD			saveGameVersion = 0;
+static uint32_t			saveGameVersion = 0;
 static BOOL				saveGameOnMission = false;
 static SAVE_GAME		saveGameData;
-static UDWORD			oldestSaveGameVersion = CURRENT_VERSION_NUM;
-static UDWORD			validityKey = 0;
+static uint32_t			oldestSaveGameVersion = CURRENT_VERSION_NUM;
+static uint32_t			validityKey = 0;
 
-static UDWORD	savedGameTime;
-static UDWORD	savedObjId;
+static uint32_t	savedGameTime;
+static uint32_t	savedObjId;
 
-//static UDWORD			HashedName;
+//static uint32_t			HashedName;
 //static STRUCTURE *psStructList;
 //static FEATURE *psFeatureList;
 //static FLAG_POSITION **ppsCurrentFlagPosLists;
-static SDWORD	startX, startY;
-static UDWORD   width, height;
-static UDWORD	gameType;
+static int32_t	startX, startY;
+static uint32_t   width, height;
+static uint32_t	gameType;
 static BOOL IsScenario;
 /***************************************************************************/
 /*
@@ -2325,70 +2325,70 @@ static BOOL IsScenario;
 /***************************************************************************/
 static bool gameLoadV7(PHYSFS_file *fileHandle);
 static bool gameLoadV(PHYSFS_file *fileHandle, unsigned int version);
-static bool writeGameFile(const char *fileName, SDWORD saveType);
+static bool writeGameFile(const char *fileName, int32_t saveType);
 static bool writeMapFile(const char *fileName);
 
-static BOOL loadSaveDroidInitV2(char *pFileData, UDWORD filesize,UDWORD quantity);
+static BOOL loadSaveDroidInitV2(char *pFileData, uint32_t filesize,uint32_t quantity);
 
-static BOOL loadSaveDroidInit(char *pFileData, UDWORD filesize);
+static BOOL loadSaveDroidInit(char *pFileData, uint32_t filesize);
 
-static BOOL loadSaveDroid(char *pFileData, UDWORD filesize, DROID **ppsCurrentDroidLists);
-static BOOL loadSaveDroidV11(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD version, DROID **ppsCurrentDroidLists);
-static BOOL loadSaveDroidV19(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD version, DROID **ppsCurrentDroidLists);
-static BOOL loadSaveDroidV(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD version, DROID **ppsCurrentDroidLists);
+static BOOL loadSaveDroid(char *pFileData, uint32_t filesize, DROID **ppsCurrentDroidLists);
+static BOOL loadSaveDroidV11(char *pFileData, uint32_t filesize, uint32_t numDroids, uint32_t version, DROID **ppsCurrentDroidLists);
+static BOOL loadSaveDroidV19(char *pFileData, uint32_t filesize, uint32_t numDroids, uint32_t version, DROID **ppsCurrentDroidLists);
+static BOOL loadSaveDroidV(char *pFileData, uint32_t filesize, uint32_t numDroids, uint32_t version, DROID **ppsCurrentDroidLists);
 static BOOL loadDroidSetPointers(void);
 static BOOL writeDroidFile(char *pFileName, DROID **ppsCurrentDroidLists);
 
-static BOOL loadSaveStructure(char *pFileData, UDWORD filesize);
-static BOOL loadSaveStructureV7(char *pFileData, UDWORD filesize, UDWORD numStructures);
-static BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures, UDWORD version);
-static BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, UDWORD version);
+static BOOL loadSaveStructure(char *pFileData, uint32_t filesize);
+static BOOL loadSaveStructureV7(char *pFileData, uint32_t filesize, uint32_t numStructures);
+static BOOL loadSaveStructureV19(char *pFileData, uint32_t filesize, uint32_t numStructures, uint32_t version);
+static BOOL loadSaveStructureV(char *pFileData, uint32_t filesize, uint32_t numStructures, uint32_t version);
 static BOOL loadStructSetPointers(void);
 static BOOL writeStructFile(char *pFileName);
 
-static BOOL loadSaveTemplate(char *pFileData, UDWORD filesize);
-static BOOL loadSaveTemplateV7(char *pFileData, UDWORD filesize, UDWORD numTemplates);
-static BOOL loadSaveTemplateV14(char *pFileData, UDWORD filesize, UDWORD numTemplates);
-static BOOL loadSaveTemplateV(char *pFileData, UDWORD filesize, UDWORD numTemplates);
+static BOOL loadSaveTemplate(char *pFileData, uint32_t filesize);
+static BOOL loadSaveTemplateV7(char *pFileData, uint32_t filesize, uint32_t numTemplates);
+static BOOL loadSaveTemplateV14(char *pFileData, uint32_t filesize, uint32_t numTemplates);
+static BOOL loadSaveTemplateV(char *pFileData, uint32_t filesize, uint32_t numTemplates);
 static BOOL writeTemplateFile(char *pFileName);
 
-static BOOL loadSaveFeature(char *pFileData, UDWORD filesize);
-static BOOL loadSaveFeatureV14(char *pFileData, UDWORD filesize, UDWORD numFeatures, UDWORD version);
-static BOOL loadSaveFeatureV(char *pFileData, UDWORD filesize, UDWORD numFeatures, UDWORD version);
+static BOOL loadSaveFeature(char *pFileData, uint32_t filesize);
+static BOOL loadSaveFeatureV14(char *pFileData, uint32_t filesize, uint32_t numFeatures, uint32_t version);
+static BOOL loadSaveFeatureV(char *pFileData, uint32_t filesize, uint32_t numFeatures, uint32_t version);
 static BOOL writeFeatureFile(char *pFileName);
 
 static BOOL writeTerrainTypeMapFile(char *pFileName);
 
-static BOOL loadSaveCompList(char *pFileData, UDWORD filesize);
-static BOOL loadSaveCompListV9(char *pFileData, UDWORD filesize, UDWORD numRecords, UDWORD version);
-static BOOL loadSaveCompListV(char *pFileData, UDWORD filesize, UDWORD numRecords, UDWORD version);
+static BOOL loadSaveCompList(char *pFileData, uint32_t filesize);
+static BOOL loadSaveCompListV9(char *pFileData, uint32_t filesize, uint32_t numRecords, uint32_t version);
+static BOOL loadSaveCompListV(char *pFileData, uint32_t filesize, uint32_t numRecords, uint32_t version);
 static BOOL writeCompListFile(char *pFileName);
 
-static BOOL loadSaveStructTypeList(char *pFileData, UDWORD filesize);
-static BOOL loadSaveStructTypeListV7(char *pFileData, UDWORD filesize, UDWORD numRecords);
-static BOOL loadSaveStructTypeListV(char *pFileData, UDWORD filesize, UDWORD numRecords);
+static BOOL loadSaveStructTypeList(char *pFileData, uint32_t filesize);
+static BOOL loadSaveStructTypeListV7(char *pFileData, uint32_t filesize, uint32_t numRecords);
+static BOOL loadSaveStructTypeListV(char *pFileData, uint32_t filesize, uint32_t numRecords);
 static BOOL writeStructTypeListFile(char *pFileName);
 
-static BOOL loadSaveResearch(char *pFileData, UDWORD filesize);
-static BOOL loadSaveResearchV8(char *pFileData, UDWORD filesize, UDWORD numRecords);
-static BOOL loadSaveResearchV(char *pFileData, UDWORD filesize, UDWORD numRecords);
+static BOOL loadSaveResearch(char *pFileData, uint32_t filesize);
+static BOOL loadSaveResearchV8(char *pFileData, uint32_t filesize, uint32_t numRecords);
+static BOOL loadSaveResearchV(char *pFileData, uint32_t filesize, uint32_t numRecords);
 static BOOL writeResearchFile(char *pFileName);
 
-static BOOL loadSaveMessage(char *pFileData, UDWORD filesize, SWORD levelType);
-static BOOL loadSaveMessage36(char *pFileData, UDWORD filesize, UDWORD numMessages, UDWORD version, SWORD levelType);
+static BOOL loadSaveMessage(char *pFileData, uint32_t filesize, int16_t levelType);
+static BOOL loadSaveMessage36(char *pFileData, uint32_t filesize, uint32_t numMessages, uint32_t version, int16_t levelType);
 static BOOL writeMessageFile(char *pFileName);
 
-static BOOL loadSaveFlag(char *pFileData, UDWORD filesize);
-static BOOL loadSaveFlagV(char *pFileData, UDWORD filesize, UDWORD numFlags, UDWORD version);
+static BOOL loadSaveFlag(char *pFileData, uint32_t filesize);
+static BOOL loadSaveFlagV(char *pFileData, uint32_t filesize, uint32_t numFlags, uint32_t version);
 static BOOL writeFlagFile(char *pFileName);
 
-static BOOL loadSaveProduction(char *pFileData, UDWORD filesize);
-static BOOL loadSaveProductionV(char *pFileData, UDWORD filesize, UDWORD version);
+static BOOL loadSaveProduction(char *pFileData, uint32_t filesize);
+static BOOL loadSaveProductionV(char *pFileData, uint32_t filesize, uint32_t version);
 static BOOL writeProductionFile(char *pFileName);
 
-static BOOL loadSaveStructLimits(char *pFileData, UDWORD filesize);
-static BOOL loadSaveStructLimitsV19(char *pFileData, UDWORD filesize, UDWORD numLimits);
-static BOOL loadSaveStructLimitsV(char *pFileData, UDWORD filesize, UDWORD numLimits);
+static BOOL loadSaveStructLimits(char *pFileData, uint32_t filesize);
+static BOOL loadSaveStructLimitsV19(char *pFileData, uint32_t filesize, uint32_t numLimits);
+static BOOL loadSaveStructLimitsV(char *pFileData, uint32_t filesize, uint32_t numLimits);
 static BOOL writeStructLimitsFile(char *pFileName);
 
 static BOOL readFiresupportDesignators(char *pFileName);
@@ -2396,7 +2396,7 @@ static BOOL writeFiresupportDesignators(char *pFileName);
 
 static BOOL writeScriptState(char *pFileName);
 
-static BOOL getNameFromComp(UDWORD compType, char *pDest, UDWORD compIndex);
+static BOOL getNameFromComp(uint32_t compType, char *pDest, uint32_t compIndex);
 
 //adjust the name depending on type of save game and whether resourceNames are used
 static BOOL getSaveObjectName(char *pName);
@@ -2443,10 +2443,10 @@ bool loadGameInit(const char *fileName)
 //
 // if it is a level loaded up from CD then UserSaveGame will by false
 // UserSaveGame ... Extra stuff to load after scripts
-BOOL loadMissionExtras(const char *pGameToLoad, SWORD levelType)
+BOOL loadMissionExtras(const char *pGameToLoad, int16_t levelType)
 {
     char			aFileName[256];
-    UDWORD			fileExten, fileSize;
+    uint32_t			fileExten, fileSize;
     char			*pFileData = NULL;
 
     strcpy(aFileName, pGameToLoad);
@@ -2504,11 +2504,11 @@ static void sanityUpdate(void)
 BOOL loadGame(const char *pGameToLoad, BOOL keepObjects, BOOL freeMem, BOOL UserSaveGame)
 {
     char			aFileName[256];
-    UDWORD			fileExten, fileSize, pl;
+    uint32_t			fileExten, fileSize, pl;
     char			*pFileData = NULL;
-    UDWORD			player, inc, i, j;
+    uint32_t			player, inc, i, j;
     DROID           *psCurr;
-    UWORD           missionScrollMinX = 0, missionScrollMinY = 0,
+    uint16_t           missionScrollMinX = 0, missionScrollMinY = 0,
                     missionScrollMaxX = 0, missionScrollMaxY = 0;
 
     /* Stop the game clock */
@@ -2629,7 +2629,7 @@ BOOL loadGame(const char *pGameToLoad, BOOL keepObjects, BOOL freeMem, BOOL User
                 if (aDefaultRepair[player] != 0
                         && asRepairStats[aDefaultRepair[player]].location == LOC_DEFAULT)
                 {
-                    enableSelfRepair((UBYTE)player);
+                    enableSelfRepair((uint8_t)player);
                 }
                 mission.iTranspEntryTileX[player]	= saveGameData.iTranspEntryTileX[player];
                 mission.iTranspEntryTileY[player]	= saveGameData.iTranspEntryTileY[player];
@@ -2786,7 +2786,7 @@ BOOL loadGame(const char *pGameToLoad, BOOL keepObjects, BOOL freeMem, BOOL User
             for (i = 0; i < MAX_PLAYERS; i++)
             {
                 strcpy((NetPlay.players[i]).name, ((saveGameData.sNetPlay).players[i]).name);
-                if ((saveGameData.sGame).skDiff[i] == UBYTE_MAX || (game.type == CAMPAIGN && i == 0))
+                if ((saveGameData.sGame).skDiff[i] == uint8_t_MAX || (game.type == CAMPAIGN && i == 0))
                 {
                     (NetPlay.players[i]).allocated = true;
                 }
@@ -2927,10 +2927,10 @@ BOOL loadGame(const char *pGameToLoad, BOOL keepObjects, BOOL freeMem, BOOL User
         //the scroll limits for the mission map have already been written
         if (saveGameVersion >= VERSION_29)
         {
-            missionScrollMinX = (UWORD)mission.scrollMinX;
-            missionScrollMinY = (UWORD)mission.scrollMinY;
-            missionScrollMaxX = (UWORD)mission.scrollMaxX;
-            missionScrollMaxY = (UWORD)mission.scrollMaxY;
+            missionScrollMinX = (uint16_t)mission.scrollMinX;
+            missionScrollMinY = (uint16_t)mission.scrollMinY;
+            missionScrollMaxX = (uint16_t)mission.scrollMaxX;
+            missionScrollMaxY = (uint16_t)mission.scrollMaxY;
         }
 
         //load the map and the droids then swap pointers
@@ -3112,7 +3112,7 @@ BOOL loadGame(const char *pGameToLoad, BOOL keepObjects, BOOL freeMem, BOOL User
         for (inc = 0; inc < MAX_NOGO_AREAS; inc++)
         {
             setNoGoArea(saveGameData.sLandingZone[inc].x1, saveGameData.sLandingZone[inc].y1,
-                        saveGameData.sLandingZone[inc].x2, saveGameData.sLandingZone[inc].y2, (UBYTE)inc);
+                        saveGameData.sLandingZone[inc].x2, saveGameData.sLandingZone[inc].y2, (uint8_t)inc);
         }
     }
 
@@ -3670,9 +3670,9 @@ error:
 // -----------------------------------------------------------------------------------------
 
 // Modified by AlexL , now takes a filename, with no popup....
-BOOL saveGame(char *aFileName, SDWORD saveType)
+BOOL saveGame(char *aFileName, int32_t saveType)
 {
-    UDWORD			fileExtension;
+    uint32_t			fileExtension;
     DROID			*psDroid, *psNext;
     char			CurrentFileName[PATH_MAX] = {'\0'};
 
@@ -4006,7 +4006,7 @@ error:
 static bool writeMapFile(const char *fileName)
 {
     char *pFileData = NULL;
-    UDWORD fileSize;
+    uint32_t fileSize;
 
     /* Get the save data */
     bool status = mapSave(&pFileData, &fileSize);
@@ -4099,7 +4099,7 @@ static bool gameLoad(const char *fileName)
 }
 
 // Fix endianness of a savegame
-static void endian_SaveGameV(SAVE_GAME *psSaveGame, UDWORD version)
+static void endian_SaveGameV(SAVE_GAME *psSaveGame, uint32_t version)
 {
     unsigned int i, j;
     /* SAVE_GAME is GAME_SAVE_V33 */
@@ -4261,7 +4261,7 @@ static void endian_SaveGameV(SAVE_GAME *psSaveGame, UDWORD version)
 
 // -----------------------------------------------------------------------------------------
 // Get campaign number stuff is not needed in this form on the PSX (thank you very much)
-static UDWORD getCampaignV(PHYSFS_file *fileHandle, unsigned int version)
+static uint32_t getCampaignV(PHYSFS_file *fileHandle, unsigned int version)
 {
     SAVE_GAME_V14 saveGame;
 
@@ -4307,7 +4307,7 @@ static UDWORD getCampaignV(PHYSFS_file *fileHandle, unsigned int version)
 // -----------------------------------------------------------------------------------------
 // Returns the campaign number  --- apparently this is does alot less than it look like
 /// it now does even less than it looks like on the psx ... cause its pc only
-UDWORD getCampaign(const char *fileName)
+uint32_t getCampaign(const char *fileName)
 {
     GAME_SAVEHEADER fileHeader;
 
@@ -4366,7 +4366,7 @@ UDWORD getCampaign(const char *fileName)
     // dont check skirmish saves.
     if (fileHeader.version <= CURRENT_VERSION_NUM)
     {
-        UDWORD retVal = getCampaignV(fileHandle, fileHeader.version);
+        uint32_t retVal = getCampaignV(fileHandle, fileHeader.version);
         PHYSFS_close(fileHandle);
         return retVal;
     }
@@ -4383,7 +4383,7 @@ UDWORD getCampaign(const char *fileName)
 }
 
 // -----------------------------------------------------------------------------------------
-void game_SetValidityKey(UDWORD keys)
+void game_SetValidityKey(uint32_t keys)
 {
     validityKey = validityKey|keys;
     return;
@@ -4464,7 +4464,7 @@ bool gameLoadV(PHYSFS_file *fileHandle, unsigned int version)
 {
     unsigned int i, j;
     static	SAVE_POWER	powerSaved[MAX_PLAYERS];
-    UDWORD			player;
+    uint32_t			player;
     char			date[MAX_STR_LENGTH];
 
     debug(LOG_WZ, "gameLoadV: version %u", version);
@@ -4963,7 +4963,7 @@ bool gameLoadV(PHYSFS_file *fileHandle, unsigned int version)
             for (i = 0; i < MAX_PLAYERS; i++)
             {
                 strcpy((NetPlay.players[i]).name, ((saveGameData.sNetPlay).players[i]).name);
-                if ((saveGameData.sGame).skDiff[i] == UBYTE_MAX || (game.type == CAMPAIGN && i == 0))
+                if ((saveGameData.sGame).skDiff[i] == uint8_t_MAX || (game.type == CAMPAIGN && i == 0))
                 {
                     (NetPlay.players[i]).allocated = true;
                 }
@@ -5019,7 +5019,7 @@ bool gameLoadV(PHYSFS_file *fileHandle, unsigned int version)
 /*
 Writes the game specifics to a file
 */
-static bool writeGameFile(const char *fileName, SDWORD saveType)
+static bool writeGameFile(const char *fileName, int32_t saveType)
 {
     GAME_SAVEHEADER fileHeader;
     SAVE_GAME       saveGame;
@@ -5102,10 +5102,10 @@ static bool writeGameFile(const char *fileName, SDWORD saveType)
     saveGame.missionHomeLZ_Y =		mission.homeLZ_Y;
     saveGame.missionPlayerX =		mission.playerX;
     saveGame.missionPlayerY =		mission.playerY;
-    saveGame.missionScrollMinX =     (UWORD)mission.scrollMinX;
-    saveGame.missionScrollMinY =     (UWORD)mission.scrollMinY;
-    saveGame.missionScrollMaxX =     (UWORD)mission.scrollMaxX;
-    saveGame.missionScrollMaxY =     (UWORD)mission.scrollMaxY;
+    saveGame.missionScrollMinX =     (uint16_t)mission.scrollMinX;
+    saveGame.missionScrollMinY =     (uint16_t)mission.scrollMinY;
+    saveGame.missionScrollMaxX =     (uint16_t)mission.scrollMaxX;
+    saveGame.missionScrollMaxY =     (uint16_t)mission.scrollMaxY;
 
     saveGame.offWorldKeepLists = offWorldKeepLists;
     saveGame.RubbleTile	= getRubbleTileNum();
@@ -5163,11 +5163,11 @@ static bool writeGameFile(const char *fileName, SDWORD saveType)
     {
         saveGame.playerColour[i] = getPlayerColour(i);
     }
-    saveGame.radarZoom = (UBYTE)GetRadarZoom();
+    saveGame.radarZoom = (uint8_t)GetRadarZoom();
 
 
     //version 20
-    saveGame.bDroidsToSafetyFlag = (UBYTE)getDroidsToSafetyFlag();
+    saveGame.bDroidsToSafetyFlag = (uint8_t)getDroidsToSafetyFlag();
     for (i = 0; i < MAX_PLAYERS; i++)
     {
         memcpy(&saveGame.asVTOLReturnPos[i], &asVTOLReturnPos[i], sizeof(Vector2i));
@@ -5181,15 +5181,15 @@ static bool writeGameFile(const char *fileName, SDWORD saveType)
 
     //version 24
     saveGame.reinforceTime = missionGetReinforcementTime();
-    saveGame.bPlayCountDown = (UBYTE)getPlayCountDown();
-    saveGame.bPlayerHasWon =  (UBYTE)testPlayerHasWon();
-    saveGame.bPlayerHasLost = (UBYTE)testPlayerHasLost();
+    saveGame.bPlayCountDown = (uint8_t)getPlayCountDown();
+    saveGame.bPlayerHasWon =  (uint8_t)testPlayerHasWon();
+    saveGame.bPlayerHasLost = (uint8_t)testPlayerHasLost();
 
     //version 30
     saveGame.scrGameLevel = scrGameLevel;
-    saveGame.bExtraFailFlag = (UBYTE)bExtraFailFlag;
-    saveGame.bExtraVictoryFlag = (UBYTE)bExtraVictoryFlag;
-    saveGame.bTrackTransporter = (UBYTE)bTrackTransporter;
+    saveGame.bExtraFailFlag = (uint8_t)bExtraFailFlag;
+    saveGame.bExtraVictoryFlag = (uint8_t)bExtraVictoryFlag;
+    saveGame.bTrackTransporter = (uint8_t)bTrackTransporter;
 
 
     // version 33
@@ -5225,7 +5225,7 @@ static bool writeGameFile(const char *fileName, SDWORD saveType)
 // Process the droid initialisation file (dinit.bjo). Creates droids for
 // the scenario being loaded. This is *NEVER* called for a user save game
 //
-BOOL loadSaveDroidInit(char *pFileData, UDWORD filesize)
+BOOL loadSaveDroidInit(char *pFileData, uint32_t filesize)
 {
     DROIDINIT_SAVEHEADER		*psHeader;
 
@@ -5273,13 +5273,13 @@ BOOL loadSaveDroidInit(char *pFileData, UDWORD filesize)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveDroidInitV2(char *pFileData, UDWORD filesize,UDWORD quantity)
+BOOL loadSaveDroidInitV2(char *pFileData, uint32_t filesize,uint32_t quantity)
 {
     SAVE_DROIDINIT *pDroidInit;
     DROID_TEMPLATE *psTemplate;
     DROID *psDroid;
-    UDWORD i;
-    UDWORD NumberOfSkippedDroids = 0;
+    uint32_t i;
+    uint32_t NumberOfSkippedDroids = 0;
 
     pDroidInit = (SAVE_DROIDINIT *)pFileData;
 
@@ -5337,7 +5337,7 @@ BOOL loadSaveDroidInitV2(char *pFileData, UDWORD filesize,UDWORD quantity)
 
 // -----------------------------------------------------------------------------------------
 // Remaps old player number based on position on map to new owner
-UDWORD RemapPlayerNumber(UDWORD OldNumber)
+uint32_t RemapPlayerNumber(uint32_t OldNumber)
 {
     int i;
 
@@ -5359,7 +5359,7 @@ UDWORD RemapPlayerNumber(UDWORD OldNumber)
 
 // -----------------------------------------------------------------------------------------
 /*This is *ALWAYS* called by a User Save Game */
-BOOL loadSaveDroid(char *pFileData, UDWORD filesize, DROID **ppsCurrentDroidLists)
+BOOL loadSaveDroid(char *pFileData, uint32_t filesize, DROID **ppsCurrentDroidLists)
 {
     DROID_SAVEHEADER		*psHeader;
 
@@ -5425,9 +5425,9 @@ static DROID *buildDroidFromSaveDroidV11(SAVE_DROID_V11 *psSaveDroid)
     DROID_TEMPLATE			*psTemplate, sTemplate;
     DROID					*psDroid;
     BOOL					found;
-    UDWORD					i;
-    SDWORD					compInc;
-    UDWORD					burnTime;
+    uint32_t					i;
+    int32_t					compInc;
+    uint32_t					burnTime;
 
     psTemplate = &sTemplate;
 
@@ -5450,7 +5450,7 @@ static DROID *buildDroidFromSaveDroidV11(SAVE_DROID_V11 *psSaveDroid)
             found = false;
             break;//continue;
         }
-        psTemplate->asParts[i] = (UDWORD)compInc;
+        psTemplate->asParts[i] = (uint32_t)compInc;
     }
     if (!found)
     {
@@ -5520,15 +5520,15 @@ static DROID *buildDroidFromSaveDroidV11(SAVE_DROID_V11 *psSaveDroid)
 }
 
 // -----------------------------------------------------------------------------------------
-static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, UDWORD version)
+static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, uint32_t version)
 {
     DROID_TEMPLATE			*psTemplate, sTemplate;
     DROID					*psDroid;
     SAVE_DROID_V14			*psSaveDroidV14;
     BOOL					found;
-    UDWORD					i, id;
-    SDWORD					compInc;
-    UDWORD					burnTime;
+    uint32_t					i, id;
+    int32_t					compInc;
+    uint32_t					burnTime;
 
     psTemplate = &sTemplate;
 
@@ -5554,7 +5554,7 @@ static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, UDWORD ver
             found = false;
             break;//continue;
         }
-        psTemplate->asParts[i] = (UDWORD)compInc;
+        psTemplate->asParts[i] = (uint32_t)compInc;
     }
     ASSERT_OR_RETURN(NULL, found, "Failed to find weapon");
     psTemplate->numWeaps = psSaveDroid->numWeaps;
@@ -5646,13 +5646,13 @@ static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, UDWORD ver
         psDroid->orderY2				= psSaveDroid->orderY2;
         psDroid->timeLastHit			= psSaveDroid->timeLastHit;
         //rebuild the object pointer from the ID
-        FIXME_CAST_ASSIGN(UDWORD, psDroid->psTarget, psSaveDroid->targetID);
+        FIXME_CAST_ASSIGN(uint32_t, psDroid->psTarget, psSaveDroid->targetID);
         psDroid->secondaryOrder		= psSaveDroid->secondaryOrder;
         psDroid->action				= psSaveDroid->action;
         psDroid->actionX				= psSaveDroid->actionX;
         psDroid->actionY				= psSaveDroid->actionY;
         //rebuild the object pointer from the ID
-        FIXME_CAST_ASSIGN(UDWORD, psDroid->psActionTarget[0], psSaveDroid->actionTargetID);
+        FIXME_CAST_ASSIGN(uint32_t, psDroid->psActionTarget[0], psSaveDroid->actionTargetID);
         psDroid->actionStarted		= psSaveDroid->actionStarted;
         psDroid->actionPoints		= psSaveDroid->actionPoints;
         //added for V14
@@ -5674,7 +5674,7 @@ static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, UDWORD ver
         else
         {
             id = getStructStatFromName(psSaveDroidV14->tarStatName);
-            if (id != (UDWORD)-1)
+            if (id != (uint32_t)-1)
             {
                 psDroid->psTarStats = (BASE_STATS *)&asStructureStats[id];
             }
@@ -5687,7 +5687,7 @@ static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, UDWORD ver
         }
 //warning V14 - v17 only
         //rebuild the object pointer from the ID
-        FIXME_CAST_ASSIGN(UDWORD, psDroid->psBaseStruct, psSaveDroidV14->baseStructID);
+        FIXME_CAST_ASSIGN(uint32_t, psDroid->psBaseStruct, psSaveDroidV14->baseStructID);
         psDroid->group = psSaveDroidV14->group;
         psDroid->selected = psSaveDroidV14->selected;
 //20feb		psDroid->cluster = psSaveDroidV14->cluster;
@@ -5710,7 +5710,7 @@ static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, UDWORD ver
         else
         {
             id = getStructStatFromName(psSaveDroid->tarStatName);
-            if (id != (UDWORD)-1)
+            if (id != (uint32_t)-1)
             {
                 psDroid->psTarStats = (BASE_STATS *)&asStructureStats[id];
             }
@@ -5721,7 +5721,7 @@ static DROID *buildDroidFromSaveDroidV19(SAVE_DROID_V18 *psSaveDroid, UDWORD ver
             }
         }
         //rebuild the object pointer from the ID
-        FIXME_CAST_ASSIGN(UDWORD, psDroid->psBaseStruct, psSaveDroid->baseStructID);
+        FIXME_CAST_ASSIGN(uint32_t, psDroid->psBaseStruct, psSaveDroid->baseStructID);
         psDroid->group = psSaveDroid->group;
         psDroid->selected = psSaveDroid->selected;
 //20feb		psDroid->cluster = psSaveDroid->cluster;
@@ -5743,14 +5743,14 @@ static void SaveDroidMoveControl(SAVE_DROID *const psSaveDroid, DROID const *con
     // Had to disable this one -- cannot figure out where it gets set wrong! - Per
     // ASSERT(droidOnMap(psDroid), "saved droid standing or moving off the map");
 
-    // Copy over the endian neutral stuff (all UBYTE)
+    // Copy over the endian neutral stuff (all uint8_t)
     psSaveDroid->sMove.Status    = psDroid->sMove.Status;
     psSaveDroid->sMove.Position  = psDroid->sMove.Position;
     psSaveDroid->sMove.numPoints = MIN(psDroid->sMove.numPoints, TRAVELSIZE);
     memcpy(&psSaveDroid->sMove.asPath, psDroid->sMove.asPath,
            MIN(sizeof(psSaveDroid->sMove.asPath), sizeof(*psDroid->sMove.asPath) * psDroid->sMove.numPoints));
 
-    // Little endian SDWORDs
+    // Little endian int32_ts
     psSaveDroid->sMove.DestinationX = PHYSFS_swapSLE32(psDroid->sMove.DestinationX);
     psSaveDroid->sMove.DestinationY = PHYSFS_swapSLE32(psDroid->sMove.DestinationY);
     psSaveDroid->sMove.srcX         = PHYSFS_swapSLE32(psDroid->sMove.srcX);
@@ -5765,23 +5765,23 @@ static void SaveDroidMoveControl(SAVE_DROID *const psSaveDroid, DROID const *con
     psSaveDroid->sMove.moveDir      = PHYSFS_swapSLE32(psDroid->sMove.moveDir);
     psSaveDroid->sMove.fz           = PHYSFS_swapSLE32(psDroid->sMove.fz);
 
-    // Little endian SWORDs
+    // Little endian int16_ts
     psSaveDroid->sMove.boundX       = PHYSFS_swapSLE16(psDroid->sMove.boundX);
     psSaveDroid->sMove.boundY       = PHYSFS_swapSLE16(psDroid->sMove.boundY);
     psSaveDroid->sMove.bumpDir      = PHYSFS_swapSLE16(psDroid->sMove.bumpDir);
     psSaveDroid->sMove.iVertSpeed   = PHYSFS_swapSLE16(psDroid->sMove.iVertSpeed);
 
-    // Little endian UDWORDs
+    // Little endian uint32_ts
     psSaveDroid->sMove.bumpTime     = PHYSFS_swapULE32(psDroid->sMove.bumpTime);
     psSaveDroid->sMove.shuffleStart = PHYSFS_swapULE32(psDroid->sMove.shuffleStart);
 
-    // Array of little endian UDWORDS
+    // Array of little endian uint32_tS
     for (i = 0; i < sizeof(psDroid->sMove.iAttackRuns) / sizeof(psDroid->sMove.iAttackRuns[0]); ++i)
     {
         psSaveDroid->sMove.iAttackRuns[i] = PHYSFS_swapULE32(psDroid->sMove.iAttackRuns[i]);
     }
 
-    // Little endian UWORDs
+    // Little endian uint16_ts
     psSaveDroid->sMove.lastBump     = PHYSFS_swapULE16(psDroid->sMove.lastBump);
     psSaveDroid->sMove.pauseTime    = PHYSFS_swapULE16(psDroid->sMove.pauseTime);
     psSaveDroid->sMove.bumpX        = PHYSFS_swapULE16(psDroid->sMove.bumpX);
@@ -5811,14 +5811,14 @@ static void LoadDroidMoveControl(DROID *const psDroid, SAVE_DROID const *const p
 {
     unsigned int i;
 
-    // Copy over the endian neutral stuff (all UBYTE)
+    // Copy over the endian neutral stuff (all uint8_t)
     psDroid->sMove.Status      = psSaveDroid->sMove.Status;
     psDroid->sMove.Position    = psSaveDroid->sMove.Position;
     psDroid->sMove.numPoints   = psSaveDroid->sMove.numPoints;
     psDroid->sMove.asPath      = malloc(sizeof(*psDroid->sMove.asPath) * psDroid->sMove.numPoints);
     memcpy(psDroid->sMove.asPath, &psSaveDroid->sMove.asPath, sizeof(*psDroid->sMove.asPath) * psDroid->sMove.numPoints);
 
-    // Little endian SDWORDs
+    // Little endian int32_ts
     psDroid->sMove.DestinationX = PHYSFS_swapSLE32(psSaveDroid->sMove.DestinationX);
     psDroid->sMove.DestinationY = PHYSFS_swapSLE32(psSaveDroid->sMove.DestinationY);
     psDroid->sMove.srcX         = PHYSFS_swapSLE32(psSaveDroid->sMove.srcX);
@@ -5843,23 +5843,23 @@ static void LoadDroidMoveControl(DROID *const psDroid, SAVE_DROID const *const p
     }
     ASSERT(droidOnMap(psDroid), "loaded droid standing or moving off the map");
 
-    // Little endian SWORDs
+    // Little endian int16_ts
     psDroid->sMove.boundX       = PHYSFS_swapSLE16(psSaveDroid->sMove.boundX);
     psDroid->sMove.boundY       = PHYSFS_swapSLE16(psSaveDroid->sMove.boundY);
     psDroid->sMove.bumpDir      = PHYSFS_swapSLE16(psSaveDroid->sMove.bumpDir);
     psDroid->sMove.iVertSpeed   = PHYSFS_swapSLE16(psSaveDroid->sMove.iVertSpeed);
 
-    // Little endian UDWORDs
+    // Little endian uint32_ts
     psDroid->sMove.bumpTime     = PHYSFS_swapULE32(psSaveDroid->sMove.bumpTime);
     psDroid->sMove.shuffleStart = PHYSFS_swapULE32(psSaveDroid->sMove.shuffleStart);
 
-    // Array of little endian UDWORDS
+    // Array of little endian uint32_tS
     for (i = 0; i < sizeof(psSaveDroid->sMove.iAttackRuns) / sizeof(psSaveDroid->sMove.iAttackRuns[0]); ++i)
     {
         psDroid->sMove.iAttackRuns[i] = PHYSFS_swapULE32(psSaveDroid->sMove.iAttackRuns[i]);
     }
 
-    // Little endian UWORDs
+    // Little endian uint16_ts
     psDroid->sMove.lastBump     = PHYSFS_swapULE16(psSaveDroid->sMove.lastBump);
     psDroid->sMove.pauseTime    = PHYSFS_swapULE16(psSaveDroid->sMove.pauseTime);
     psDroid->sMove.bumpX        = PHYSFS_swapULE16(psSaveDroid->sMove.bumpX);
@@ -5880,7 +5880,7 @@ static void LoadDroidMoveControl(DROID *const psDroid, SAVE_DROID const *const p
         {
             // no formation so create a new one
             if (formationNew(&psDroid->sMove.psFormation, FT_LINE, psSaveDroid->formationX, psSaveDroid->formationY,
-                             (SDWORD)psSaveDroid->formationDir))
+                             (int32_t)psSaveDroid->formationDir))
             {
                 formationJoin(psDroid->sMove.psFormation, psDroid);
             }
@@ -5898,14 +5898,14 @@ static void LoadDroidMoveControl(DROID *const psDroid, SAVE_DROID const *const p
 
 // -----------------------------------------------------------------------------------------
 //version 20 + after names change
-static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
+static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, uint32_t version)
 {
     DROID_TEMPLATE			*psTemplate, sTemplate;
     DROID					*psDroid;
     BOOL					found;
-    UDWORD					i, id;
-    SDWORD					compInc;
-    UDWORD					burnTime;
+    uint32_t					i, id;
+    int32_t					compInc;
+    uint32_t					burnTime;
 
 //	version;
 
@@ -5947,7 +5947,7 @@ static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
             found = false;
             break;//continue;
         }
-        psTemplate->asParts[i] = (UDWORD)compInc;
+        psTemplate->asParts[i] = (uint32_t)compInc;
     }
     ASSERT_OR_RETURN(NULL, found, "Failed to find weapon");
     psTemplate->numWeaps = psSaveDroid->numWeaps;
@@ -6048,13 +6048,13 @@ static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
     psDroid->orderY2				= psSaveDroid->orderY2;
     psDroid->timeLastHit			= psSaveDroid->timeLastHit;
     //rebuild the object pointer from the ID
-    FIXME_CAST_ASSIGN(UDWORD, psDroid->psTarget, psSaveDroid->targetID);
+    FIXME_CAST_ASSIGN(uint32_t, psDroid->psTarget, psSaveDroid->targetID);
     psDroid->secondaryOrder		= psSaveDroid->secondaryOrder;
     psDroid->action				= psSaveDroid->action;
     psDroid->actionX				= psSaveDroid->actionX;
     psDroid->actionY				= psSaveDroid->actionY;
     //rebuild the object pointer from the ID
-    FIXME_CAST_ASSIGN(UDWORD, psDroid->psActionTarget[0], psSaveDroid->actionTargetID);
+    FIXME_CAST_ASSIGN(uint32_t, psDroid->psActionTarget[0], psSaveDroid->actionTargetID);
     psDroid->actionStarted		= psSaveDroid->actionStarted;
     psDroid->actionPoints		= psSaveDroid->actionPoints;
     //added for V14
@@ -6068,7 +6068,7 @@ static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
     else
     {
         id = getStructStatFromName(psSaveDroid->tarStatName);
-        if (id != (UDWORD)-1)
+        if (id != (uint32_t)-1)
         {
             psDroid->psTarStats = (BASE_STATS *)&asStructureStats[id];
         }
@@ -6079,7 +6079,7 @@ static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
         }
     }
     //rebuild the object pointer from the ID
-    FIXME_CAST_ASSIGN(UDWORD, psDroid->psBaseStruct, psSaveDroid->baseStructID);
+    FIXME_CAST_ASSIGN(uint32_t, psDroid->psBaseStruct, psSaveDroid->baseStructID);
     psDroid->group = psSaveDroid->group;
     psDroid->selected = psSaveDroid->selected;
 //20feb	psDroid->cluster = psSaveDroid->cluster;
@@ -6096,8 +6096,8 @@ static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
                 (psDroid->droidType != DROID_COMMAND) )
         {
             //rebuild group from command id in loadDroidSetPointers
-            FIXME_CAST_ASSIGN(UDWORD, psDroid->psGroup, psSaveDroid->commandId);
-            FIXME_CAST_ASSIGN(UDWORD, psDroid->psGrpNext, NULL_ID);
+            FIXME_CAST_ASSIGN(uint32_t, psDroid->psGroup, psSaveDroid->commandId);
+            FIXME_CAST_ASSIGN(uint32_t, psDroid->psGrpNext, NULL_ID);
         }
     }
     else
@@ -6113,7 +6113,7 @@ static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
 
     if (version >= VERSION_24)//version 24
     {
-        psDroid->resistance = (SWORD)psSaveDroid->resistance;
+        psDroid->resistance = (int16_t)psSaveDroid->resistance;
         LoadDroidMoveControl(psDroid, psSaveDroid);
     }
     return psDroid;
@@ -6123,7 +6123,7 @@ static DROID *buildDroidFromSaveDroid(SAVE_DROID *psSaveDroid, UDWORD version)
 // -----------------------------------------------------------------------------------------
 static BOOL loadDroidSetPointers(void)
 {
-    UDWORD		player,list;
+    uint32_t		player,list;
     DROID		*psDroid, *psCommander;
     DROID		**ppsDroidLists[3], *psNext;
 
@@ -6139,9 +6139,9 @@ static BOOL loadDroidSetPointers(void)
             psDroid=(DROID *)ppsDroidLists[list][player];
             while (psDroid)
             {
-                UDWORD id;
+                uint32_t id;
                 //Target rebuild the object pointer from the ID
-                FIXME_CAST_ASSIGN(UDWORD, id, psDroid->psTarget);
+                FIXME_CAST_ASSIGN(uint32_t, id, psDroid->psTarget);
                 if (id != NULL_ID)
                 {
                     setSaveDroidTarget(psDroid, getBaseObjFromId(id));
@@ -6156,7 +6156,7 @@ static BOOL loadDroidSetPointers(void)
                     setSaveDroidTarget(psDroid, NULL);
                 }
                 //ActionTarget rebuild the object pointer from the ID
-                FIXME_CAST_ASSIGN(UDWORD, id, psDroid->psActionTarget[0]);
+                FIXME_CAST_ASSIGN(uint32_t, id, psDroid->psActionTarget[0]);
                 if (id != NULL_ID)
                 {
                     setSaveDroidActionTarget(psDroid, getBaseObjFromId(id), 0);
@@ -6171,7 +6171,7 @@ static BOOL loadDroidSetPointers(void)
                     setSaveDroidActionTarget(psDroid, NULL, 0);
                 }
                 //BaseStruct rebuild the object pointer from the ID
-                FIXME_CAST_ASSIGN(UDWORD, id, psDroid->psBaseStruct);
+                FIXME_CAST_ASSIGN(uint32_t, id, psDroid->psBaseStruct);
                 if (id != NULL_ID)
                 {
                     setSaveDroidBase(psDroid, (STRUCTURE *)getBaseObjFromId(id));
@@ -6187,12 +6187,12 @@ static BOOL loadDroidSetPointers(void)
                 }
                 if (saveGameVersion > VERSION_20)
                 {
-                    UDWORD _tmpid;
+                    uint32_t _tmpid;
                     //rebuild group for droids in command group from the commander ID
-                    FIXME_CAST_ASSIGN(UDWORD, id, psDroid->psGrpNext);
+                    FIXME_CAST_ASSIGN(uint32_t, id, psDroid->psGrpNext);
                     if (id == NULL_ID)
                     {
-                        FIXME_CAST_ASSIGN(UDWORD, _tmpid, psDroid->psGroup);
+                        FIXME_CAST_ASSIGN(uint32_t, _tmpid, psDroid->psGroup);
                         psDroid->psGroup = NULL;
                         psDroid->psGrpNext = NULL;
                         if (_tmpid != NULL_ID)
@@ -6225,7 +6225,7 @@ static BOOL loadDroidSetPointers(void)
 
                     for (psCargo = psNext->psGroup->psList; psCargo; psCargo = psTemp)
                     {
-                        UDWORD i;
+                        uint32_t i;
 
                         psTemp = psCargo->psGrpNext;
                         setSaveDroidTarget(psCargo, NULL);
@@ -6246,17 +6246,17 @@ static BOOL loadDroidSetPointers(void)
 
 // -----------------------------------------------------------------------------------------
 /* code specific to version 11 of a save droid */
-BOOL loadSaveDroidV11(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD version, DROID **ppsCurrentDroidLists)
+BOOL loadSaveDroidV11(char *pFileData, uint32_t filesize, uint32_t numDroids, uint32_t version, DROID **ppsCurrentDroidLists)
 {
     SAVE_DROID_V11				*psSaveDroid, sSaveDroid;
 //	DROID_TEMPLATE			*psTemplate, sTemplate;
     DROID					*psDroid;
     DROID_GROUP				*psCurrentTransGroup;
-    UDWORD					count;
-    UDWORD					NumberOfSkippedDroids=0;
-    UDWORD					sizeOfSaveDroid = 0;
+    uint32_t					count;
+    uint32_t					NumberOfSkippedDroids=0;
+    uint32_t					sizeOfSaveDroid = 0;
     DROID_GROUP				*psGrp;
-    UBYTE	i;
+    uint8_t	i;
 
     psCurrentTransGroup = NULL;
 
@@ -6372,17 +6372,17 @@ BOOL loadSaveDroidV11(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD
 
 // -----------------------------------------------------------------------------------------
 /* code specific all versions upto from 12 to 19*/
-BOOL loadSaveDroidV19(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD version, DROID **ppsCurrentDroidLists)
+BOOL loadSaveDroidV19(char *pFileData, uint32_t filesize, uint32_t numDroids, uint32_t version, DROID **ppsCurrentDroidLists)
 {
     SAVE_DROID_V18				*psSaveDroid, sSaveDroid;
 //	DROID_TEMPLATE			*psTemplate, sTemplate;
     DROID					*psDroid;
     DROID_GROUP				*psCurrentTransGroup;
-    UDWORD					count;
-    UDWORD					NumberOfSkippedDroids=0;
-    UDWORD					sizeOfSaveDroid = 0;
+    uint32_t					count;
+    uint32_t					NumberOfSkippedDroids=0;
+    uint32_t					sizeOfSaveDroid = 0;
     DROID_GROUP				*psGrp;
-    UBYTE	i;
+    uint8_t	i;
 
     psCurrentTransGroup = NULL;
 
@@ -6529,17 +6529,17 @@ BOOL loadSaveDroidV19(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD
 
 // -----------------------------------------------------------------------------------------
 /* code for all versions after save name change v19*/
-BOOL loadSaveDroidV(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD version, DROID **ppsCurrentDroidLists)
+BOOL loadSaveDroidV(char *pFileData, uint32_t filesize, uint32_t numDroids, uint32_t version, DROID **ppsCurrentDroidLists)
 {
     SAVE_DROID				sSaveDroid, *psSaveDroid = &sSaveDroid;
 //	DROID_TEMPLATE			*psTemplate, sTemplate;
     DROID					*psDroid;
     DROID_GROUP				*psCurrentTransGroup = NULL;
-    UDWORD					count;
-    UDWORD					NumberOfSkippedDroids=0;
-    UDWORD					sizeOfSaveDroid = 0;
+    uint32_t					count;
+    uint32_t					NumberOfSkippedDroids=0;
+    uint32_t					sizeOfSaveDroid = 0;
 //	DROID_GROUP				*psGrp;
-    UBYTE	i;
+    uint8_t	i;
 
     debug(LOG_SAVE, "fileversion is %u ", version);
 
@@ -6696,7 +6696,7 @@ BOOL loadSaveDroidV(char *pFileData, UDWORD filesize, UDWORD numDroids, UDWORD v
 // -----------------------------------------------------------------------------------------
 static BOOL buildSaveDroidFromDroid(SAVE_DROID *psSaveDroid, DROID *psCurr, DROID_SAVE_TYPE saveType)
 {
-    UDWORD				i;
+    uint32_t				i;
 
     /*want to store the resource ID string for compatibilty with
     different versions of save game - NOT HAPPENING - the name saved is
@@ -6742,7 +6742,7 @@ static BOOL buildSaveDroidFromDroid(SAVE_DROID *psSaveDroid, DROID *psCurr, DROI
 
 
     //save out experience level
-    psSaveDroid->numKills	= (UDWORD) (psCurr->experience + .5);
+    psSaveDroid->numKills	= (uint32_t) (psCurr->experience + .5);
     //version 11
     //Watermelon:endian_udword for new save format
     for(i = 0; i < psCurr->numWeaps; i++)
@@ -6793,8 +6793,8 @@ static BOOL buildSaveDroidFromDroid(SAVE_DROID *psSaveDroid, DROID *psCurr, DROI
     psSaveDroid->baseStructID = NULL_ID;
     if ((psCurr->psBaseStruct != NULL))
     {
-        UDWORD _tmpid;
-        FIXME_CAST_ASSIGN(UDWORD, _tmpid, psCurr->psBaseStruct);
+        uint32_t _tmpid;
+        FIXME_CAST_ASSIGN(uint32_t, _tmpid, psCurr->psBaseStruct);
         if (_tmpid != NULL_ID && psCurr->psBaseStruct->died <= 1 && checkValidId(psCurr->psBaseStruct->id))
         {
             psSaveDroid->baseStructID = psCurr->psBaseStruct->id;
@@ -6838,8 +6838,8 @@ static BOOL buildSaveDroidFromDroid(SAVE_DROID *psSaveDroid, DROID *psCurr, DROI
     psSaveDroid->inFire = psCurr->inFire;
     psSaveDroid->burnStart = psCurr->burnStart;
     psSaveDroid->burnDamage = psCurr->burnDamage;
-    psSaveDroid->droidType = (UBYTE)psCurr->droidType;
-    psSaveDroid->saveType = (UBYTE)saveType;//identifies special load cases
+    psSaveDroid->droidType = (uint8_t)psCurr->droidType;
+    psSaveDroid->saveType = (uint8_t)saveType;//identifies special load cases
 
     /* SAVE_DROID is DROID_SAVE_V24 */
     /* DROID_SAVE_V24 includes DROID_SAVE_V21 */
@@ -6904,7 +6904,7 @@ Writes the linked list of droids for each player to a file
 BOOL writeDroidFile(char *pFileName, DROID **ppsCurrentDroidLists)
 {
     char *pFileData = NULL;
-    UDWORD				fileSize, player, totalDroids=0;
+    uint32_t				fileSize, player, totalDroids=0;
     DROID				*psCurr;
     DROID				*psTrans;
     DROID_SAVEHEADER	*psHeader;
@@ -7018,7 +7018,7 @@ BOOL writeDroidFile(char *pFileName, DROID **ppsCurrentDroidLists)
 
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveStructure(char *pFileData, UDWORD filesize)
+BOOL loadSaveStructure(char *pFileData, uint32_t filesize)
 {
     STRUCT_SAVEHEADER		*psHeader;
 
@@ -7081,16 +7081,16 @@ BOOL loadSaveStructure(char *pFileData, UDWORD filesize)
 
 // -----------------------------------------------------------------------------------------
 /* code specific to version 7 of a save structure */
-BOOL loadSaveStructureV7(char *pFileData, UDWORD filesize, UDWORD numStructures)
+BOOL loadSaveStructureV7(char *pFileData, uint32_t filesize, uint32_t numStructures)
 {
     SAVE_STRUCTURE_V2		*psSaveStructure, sSaveStructure;
     STRUCTURE				*psStructure;
     REPAIR_FACILITY			*psRepair;
     STRUCTURE_STATS			*psStats = NULL;
-    UDWORD					count, statInc;
+    uint32_t					count, statInc;
     BOOL					found;
-    UDWORD					NumberOfSkippedStructures=0;
-    UDWORD					burnTime;
+    uint32_t					NumberOfSkippedStructures=0;
+    uint32_t					burnTime;
 
     psSaveStructure = &sSaveStructure;
 
@@ -7217,7 +7217,7 @@ BOOL loadSaveStructureV7(char *pFileData, UDWORD filesize, UDWORD numStructures)
             //copy the values across
             psStructure->id = psSaveStructure->id;
             //are these going to ever change from the values set up with?
-//			psStructure->pos.z = (UWORD)psSaveStructure->pos.z;
+//			psStructure->pos.z = (uint16_t)psSaveStructure->pos.z;
             psStructure->direction = psSaveStructure->direction;
         }
 
@@ -7239,7 +7239,7 @@ BOOL loadSaveStructureV7(char *pFileData, UDWORD filesize, UDWORD numStructures)
             continue;
         }
 
-        psStructure->currentBuildPts = (SWORD)psSaveStructure->currentBuildPts;
+        psStructure->currentBuildPts = (int16_t)psSaveStructure->currentBuildPts;
 //		psStructure->body = psSaveStructure->body;
 //		psStructure->armour = psSaveStructure->armour;
 //		psStructure->resistance = psSaveStructure->resistance;
@@ -7248,7 +7248,7 @@ BOOL loadSaveStructureV7(char *pFileData, UDWORD filesize, UDWORD numStructures)
         {
             case REF_FACTORY:
                 //NOT DONE AT PRESENT
-                ((FACTORY *)psStructure->pFunctionality)->capacity = (UBYTE)psSaveStructure->
+                ((FACTORY *)psStructure->pFunctionality)->capacity = (uint8_t)psSaveStructure->
                         capacity;
                 //((FACTORY *)psStructure->pFunctionality)->productionOutput = psSaveStructure->
                 //	output;
@@ -7273,7 +7273,7 @@ BOOL loadSaveStructureV7(char *pFileData, UDWORD filesize, UDWORD numStructures)
                 ((RESEARCH_FACILITY *)psStructure->pFunctionality)->researchPoints =
                     psSaveStructure->output;
                 ((RESEARCH_FACILITY *)psStructure->pFunctionality)->timeStarted = (psSaveStructure->timeStarted);
-                if (psSaveStructure->subjectInc != (UDWORD)-1)
+                if (psSaveStructure->subjectInc != (uint32_t)-1)
                 {
                     ((RESEARCH_FACILITY *)psStructure->pFunctionality)->psSubject = (BASE_STATS *)
                             (asResearch + psSaveStructure->subjectInc);
@@ -7312,9 +7312,9 @@ BOOL loadSaveStructureV7(char *pFileData, UDWORD filesize, UDWORD numStructures)
 
 // -----------------------------------------------------------------------------------------
 //return id of a research topic based on the name
-static UDWORD getResearchIdFromName(char *pName)
+static uint32_t getResearchIdFromName(char *pName)
 {
-    UDWORD inc;
+    uint32_t inc;
 
 
     for (inc=0; inc < numResearch; inc++)
@@ -7334,7 +7334,7 @@ static UDWORD getResearchIdFromName(char *pName)
 
 // -----------------------------------------------------------------------------------------
 /* code for version upto 19of a save structure */
-BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures, UDWORD version)
+BOOL loadSaveStructureV19(char *pFileData, uint32_t filesize, uint32_t numStructures, uint32_t version)
 {
     SAVE_STRUCTURE_V17			*psSaveStructure, sSaveStructure;
     STRUCTURE				*psStructure;
@@ -7343,14 +7343,14 @@ BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures
     REPAIR_FACILITY			*psRepair;
     STRUCTURE_STATS			*psStats = NULL;
     STRUCTURE_STATS			*psModule;
-    UDWORD					capacity;
-    UDWORD					count, statInc;
+    uint32_t					capacity;
+    uint32_t					count, statInc;
     BOOL					found;
-    UDWORD					NumberOfSkippedStructures=0;
-    UDWORD					burnTime;
-    UDWORD					i;
-    UDWORD					sizeOfSaveStruture;
-    UDWORD					researchId;
+    uint32_t					NumberOfSkippedStructures=0;
+    uint32_t					burnTime;
+    uint32_t					i;
+    uint32_t					sizeOfSaveStruture;
+    uint32_t					researchId;
 
     if (version < VERSION_12)
     {
@@ -7503,7 +7503,7 @@ BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures
             //copy the values across
             psStructure->id = psSaveStructure->id;
             //are these going to ever change from the values set up with?
-//			psStructure->pos.z = (UWORD)psSaveStructure->pos.z;
+//			psStructure->pos.z = (uint16_t)psSaveStructure->pos.z;
             psStructure->direction = psSaveStructure->direction;
         }
 
@@ -7533,19 +7533,19 @@ BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures
 
         if (version <= VERSION_16)
         {
-            if (psSaveStructure->currentBuildPts > SWORD_MAX)//old MAX_BODY
+            if (psSaveStructure->currentBuildPts > int16_t_MAX)//old MAX_BODY
             {
-                psSaveStructure->currentBuildPts = SWORD_MAX;
+                psSaveStructure->currentBuildPts = int16_t_MAX;
             }
-            psStructure->currentBuildPts = (SWORD)psSaveStructure->currentBuildPts;
+            psStructure->currentBuildPts = (int16_t)psSaveStructure->currentBuildPts;
             psStructure->currentPowerAccrued = 0;
         }
         else
         {
-            psStructure->currentBuildPts = (SWORD)psSaveStructure->currentBuildPts;
+            psStructure->currentBuildPts = (int16_t)psSaveStructure->currentBuildPts;
             psStructure->currentPowerAccrued = psSaveStructure->currentPowerAccrued;
         }
-//		psStructure->repair = (UWORD)psSaveStructure->repair;
+//		psStructure->repair = (uint16_t)psSaveStructure->repair;
         switch (psStructure->pStructureType->type)
         {
             case REF_FACTORY:
@@ -7555,10 +7555,10 @@ BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures
                 if (version >= VERSION_12)
                 {
                     psFactory = ((FACTORY *)psStructure->pFunctionality);
-                    psFactory->capacity = 0;//capacity reset during module build (UBYTE)psSaveStructure->capacity;
+                    psFactory->capacity = 0;//capacity reset during module build (uint8_t)psSaveStructure->capacity;
                     //this is set up during module build - if the stats have changed it will also set up with the latest value
-                    //psFactory->productionOutput = (UBYTE)psSaveStructure->output;
-                    psFactory->quantity = (UBYTE)psSaveStructure->quantity;
+                    //psFactory->productionOutput = (uint8_t)psSaveStructure->output;
+                    psFactory->quantity = (uint8_t)psSaveStructure->quantity;
                     psFactory->timeStarted = psSaveStructure->droidTimeStarted;
                     psFactory->powerAccrued = psSaveStructure->powerAccrued;
                     psFactory->timeToBuild = psSaveStructure->timeToBuild;
@@ -7584,7 +7584,7 @@ BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures
                     //if factory reset the delivery points
                     //this trashes the flag pos pointer but flag pos list is cleared when flags load
                     //assemblyCheck
-                    FIXME_CAST_ASSIGN(UDWORD, psFactory->psAssemblyPoint, psSaveStructure->factoryInc);
+                    FIXME_CAST_ASSIGN(uint32_t, psFactory->psAssemblyPoint, psSaveStructure->factoryInc);
                     //if factory was building find the template from the unique ID
                     if (psSaveStructure->subjectInc == NULL_ID)
                     {
@@ -7722,16 +7722,16 @@ BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures
                 break;
         }
         //get the base body points
-        psStructure->body = (UWORD)structureBody(psStructure);
+        psStructure->body = (uint16_t)structureBody(psStructure);
         if (psSaveStructure->body < psStructure->body)
         {
-            psStructure->body = (UWORD)psSaveStructure->body;
+            psStructure->body = (uint16_t)psSaveStructure->body;
         }
         //set the build status from the build points
-        psStructure->currentBuildPts = (SWORD)psStructure->pStructureType->buildPoints;
+        psStructure->currentBuildPts = (int16_t)psStructure->pStructureType->buildPoints;
         if (psSaveStructure->currentBuildPts < psStructure->currentBuildPts)
         {
-            psStructure->currentBuildPts = (SWORD)psSaveStructure->currentBuildPts;
+            psStructure->currentBuildPts = (int16_t)psSaveStructure->currentBuildPts;
             psStructure->status = SS_BEING_BUILT;
         }
         else
@@ -7782,7 +7782,7 @@ BOOL loadSaveStructureV19(char *pFileData, UDWORD filesize, UDWORD numStructures
 
 // -----------------------------------------------------------------------------------------
 /* code for versions after version 20 of a save structure */
-BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, UDWORD version)
+BOOL loadSaveStructureV(char *pFileData, uint32_t filesize, uint32_t numStructures, uint32_t version)
 {
     SAVE_STRUCTURE			*psSaveStructure, sSaveStructure;
     STRUCTURE				*psStructure;
@@ -7792,14 +7792,14 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
     REARM_PAD				*psReArmPad;
     STRUCTURE_STATS			*psStats = NULL;
     STRUCTURE_STATS			*psModule;
-    UDWORD					capacity;
-    UDWORD					count, statInc;
+    uint32_t					capacity;
+    uint32_t					count, statInc;
     BOOL					found;
-    UDWORD					NumberOfSkippedStructures=0;
-    UDWORD					burnTime;
-    UDWORD					i;
-    UDWORD					sizeOfSaveStructure = 0;
-    UDWORD					researchId;
+    uint32_t					NumberOfSkippedStructures=0;
+    uint32_t					burnTime;
+    uint32_t					i;
+    uint32_t					sizeOfSaveStructure = 0;
+    uint32_t					researchId;
 
     debug(LOG_SAVE, "fileversion is %u ", version);
 
@@ -7942,7 +7942,7 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
             //copy the values across
             psStructure->id = psSaveStructure->id;
             //are these going to ever change from the values set up with?
-//			psStructure->pos.z = (UWORD)psSaveStructure->pos.z;
+//			psStructure->pos.z = (uint16_t)psSaveStructure->pos.z;
             psStructure->direction = psSaveStructure->direction;
         }
 
@@ -7968,13 +7968,13 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
             continue;
         }
 
-        psStructure->currentBuildPts = (SWORD)psSaveStructure->currentBuildPts;
+        psStructure->currentBuildPts = (int16_t)psSaveStructure->currentBuildPts;
         psStructure->currentPowerAccrued = psSaveStructure->currentPowerAccrued;
-        psStructure->resistance = (SWORD)psSaveStructure->resistance;
+        psStructure->resistance = (int16_t)psSaveStructure->resistance;
         //armour not ever adjusted...
 
 
-//		psStructure->repair = (UWORD)psSaveStructure->repair;
+//		psStructure->repair = (uint16_t)psSaveStructure->repair;
         switch (psStructure->pStructureType->type)
         {
             case REF_FACTORY:
@@ -7982,10 +7982,10 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
             case REF_CYBORG_FACTORY:
                 //if factory save the current build info
                 psFactory = ((FACTORY *)psStructure->pFunctionality);
-                psFactory->capacity = 0;//capacity reset during module build (UBYTE)psSaveStructure->capacity;
+                psFactory->capacity = 0;//capacity reset during module build (uint8_t)psSaveStructure->capacity;
                 //this is set up during module build - if the stats have changed it will also set up with the latest value
-                //psFactory->productionOutput = (UBYTE)psSaveStructure->output;
-                psFactory->quantity = (UBYTE)psSaveStructure->quantity;
+                //psFactory->productionOutput = (uint8_t)psSaveStructure->output;
+                psFactory->quantity = (uint8_t)psSaveStructure->quantity;
                 psFactory->timeStarted = psSaveStructure->droidTimeStarted;
                 psFactory->powerAccrued = psSaveStructure->powerAccrued;
                 psFactory->timeToBuild = psSaveStructure->timeToBuild;
@@ -8010,7 +8010,7 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
                 //if factory reset the delivery points
                 //this trashes the flag pos pointer but flag pos list is cleared when flags load
                 //assemblyCheck
-                FIXME_CAST_ASSIGN(UDWORD, psFactory->psAssemblyPoint, psSaveStructure->factoryInc);
+                FIXME_CAST_ASSIGN(uint32_t, psFactory->psAssemblyPoint, psSaveStructure->factoryInc);
                 //if factory was building find the template from the unique ID
                 if (psSaveStructure->subjectInc == NULL_ID)
                 {
@@ -8032,7 +8032,7 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
                 if (version >= VERSION_21)//version 21
                 {
                     //reset command id in loadStructSetPointers
-                    FIXME_CAST_ASSIGN(UDWORD, psFactory->psCommander, psSaveStructure->commandId);
+                    FIXME_CAST_ASSIGN(uint32_t, psFactory->psCommander, psSaveStructure->commandId);
                 }
                 //secondary order added - AB 22/04/99
                 if (version >= VERSION_32)
@@ -8116,7 +8116,7 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
                 //assemblyCheck
                 psRepair->psDeliveryPoint = NULL;
                 //if  repair facility was  repairing find the object later
-                FIXME_CAST_ASSIGN(UDWORD, psRepair->psObj, psSaveStructure->subjectInc);
+                FIXME_CAST_ASSIGN(uint32_t, psRepair->psObj, psSaveStructure->subjectInc);
                 if (version < VERSION_27)
                 {
                     psRepair->currentPtsAdded = 0;
@@ -8133,7 +8133,7 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
                     psReArmPad->reArmPoints = psSaveStructure->output;//set in build structure ?
                     psReArmPad->timeStarted = psSaveStructure->droidTimeStarted;
                     //if  ReArm Pad was  rearming find the object later
-                    FIXME_CAST_ASSIGN(UDWORD, psReArmPad->psObj, psSaveStructure->subjectInc);
+                    FIXME_CAST_ASSIGN(uint32_t, psReArmPad->psObj, psSaveStructure->subjectInc);
                     if (version < VERSION_28)
                     {
                         psReArmPad->timeLastUpdated = 0;
@@ -8153,17 +8153,17 @@ BOOL loadSaveStructureV(char *pFileData, UDWORD filesize, UDWORD numStructures, 
                 break;
         }
         //get the base body points
-        psStructure->body = (UWORD)structureBody(psStructure);
+        psStructure->body = (uint16_t)structureBody(psStructure);
         if (psSaveStructure->body < psStructure->body)
         {
-            psStructure->body = (UWORD)psSaveStructure->body;
+            psStructure->body = (uint16_t)psSaveStructure->body;
         }
         //set the build status from the build points
         psStructure->currentPowerAccrued = psSaveStructure->currentPowerAccrued;//22feb
-        psStructure->currentBuildPts = (SWORD)psStructure->pStructureType->buildPoints;
+        psStructure->currentBuildPts = (int16_t)psStructure->pStructureType->buildPoints;
         if (psSaveStructure->currentBuildPts < psStructure->currentBuildPts)
         {
-            psStructure->currentBuildPts = (SWORD)psSaveStructure->currentBuildPts;
+            psStructure->currentBuildPts = (int16_t)psSaveStructure->currentBuildPts;
             psStructure->status = SS_BEING_BUILT;
         }
         else
@@ -8218,7 +8218,7 @@ Writes the linked list of structure for each player to a file
 BOOL writeStructFile(char *pFileName)
 {
     char *pFileData = NULL;
-    UDWORD				fileSize, player, i, totalStructs=0;
+    uint32_t				fileSize, player, i, totalStructs=0;
     STRUCTURE			*psCurr;
     DROID_TEMPLATE		*psSubjectTemplate;
     FACTORY				*psFactory;
@@ -8227,7 +8227,7 @@ BOOL writeStructFile(char *pFileName)
     STRUCT_SAVEHEADER *psHeader;
     SAVE_STRUCTURE		*psSaveStruct;
     FLAG_POSITION		*psFlag;
-    UDWORD				researchId;
+    uint32_t				researchId;
     BOOL status = true;
 
     //total all the structures in the world
@@ -8302,7 +8302,7 @@ BOOL writeStructFile(char *pFileName)
                 psSaveStruct->body = psCurr->body;
             }
             //check if buildpts at max
-            if (psCurr->currentBuildPts >= (SWORD)psCurr->pStructureType->buildPoints)
+            if (psCurr->currentBuildPts >= (int16_t)psCurr->pStructureType->buildPoints)
             {
                 psSaveStruct->currentBuildPts = MAX_BODY;
             }
@@ -8498,7 +8498,7 @@ BOOL writeStructFile(char *pFileName)
 // -----------------------------------------------------------------------------------------
 BOOL loadStructSetPointers(void)
 {
-    UDWORD		player,list;
+    uint32_t		player,list;
     FACTORY		*psFactory;
     REPAIR_FACILITY	*psRepair;
     REARM_PAD	*psReArmPad;
@@ -8518,14 +8518,14 @@ BOOL loadStructSetPointers(void)
             {
                 if (psStruct->pFunctionality)
                 {
-                    UDWORD _tmpid;
+                    uint32_t _tmpid;
                     switch (psStruct->pStructureType->type)
                     {
                         case REF_FACTORY:
                         case REF_CYBORG_FACTORY:
                         case REF_VTOL_FACTORY:
                             psFactory = ((FACTORY *)psStruct->pFunctionality);
-                            FIXME_CAST_ASSIGN(UDWORD, _tmpid, psFactory->psCommander);
+                            FIXME_CAST_ASSIGN(uint32_t, _tmpid, psFactory->psCommander);
                             //there is a commander then has been temporarily removed
                             //so put it back
                             if (_tmpid != NULL_ID)
@@ -8558,7 +8558,7 @@ BOOL loadStructSetPointers(void)
                             break;
                         case REF_REPAIR_FACILITY:
                             psRepair = ((REPAIR_FACILITY *)psStruct->pFunctionality);
-                            FIXME_CAST_ASSIGN(UDWORD, _tmpid, psRepair->psObj);
+                            FIXME_CAST_ASSIGN(uint32_t, _tmpid, psRepair->psObj);
                             if (_tmpid == NULL_ID)
                             {
                                 psRepair->psObj = NULL;
@@ -8586,7 +8586,7 @@ BOOL loadStructSetPointers(void)
                             psReArmPad = ((REARM_PAD *)psStruct->pFunctionality);
                             if (saveGameVersion >= VERSION_26)//version 26
                             {
-                                FIXME_CAST_ASSIGN(UDWORD, _tmpid, psReArmPad->psObj)
+                                FIXME_CAST_ASSIGN(uint32_t, _tmpid, psReArmPad->psObj)
                                 if (_tmpid == NULL_ID)
                                 {
                                     psReArmPad->psObj = NULL;
@@ -8612,7 +8612,7 @@ BOOL loadStructSetPointers(void)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveFeature(char *pFileData, UDWORD filesize)
+BOOL loadSaveFeature(char *pFileData, uint32_t filesize)
 {
     FEATURE_SAVEHEADER		*psHeader;
 
@@ -8668,14 +8668,14 @@ BOOL loadSaveFeature(char *pFileData, UDWORD filesize)
 
 // -----------------------------------------------------------------------------------------
 /* code for all version 8 - 14 save features */
-BOOL loadSaveFeatureV14(char *pFileData, UDWORD filesize, UDWORD numFeatures, UDWORD version)
+BOOL loadSaveFeatureV14(char *pFileData, uint32_t filesize, uint32_t numFeatures, uint32_t version)
 {
     SAVE_FEATURE_V14			*psSaveFeature;
     FEATURE					*pFeature;
-    UDWORD					count, i, statInc;
+    uint32_t					count, i, statInc;
     FEATURE_STATS			*psStats = NULL;
     BOOL					found;
-    UDWORD					sizeOfSaveFeature;
+    uint32_t					sizeOfSaveFeature;
 
     if (version < VERSION_14)
     {
@@ -8774,14 +8774,14 @@ BOOL loadSaveFeatureV14(char *pFileData, UDWORD filesize, UDWORD numFeatures, UD
 
 // -----------------------------------------------------------------------------------------
 /* code for all post version 7 save features */
-BOOL loadSaveFeatureV(char *pFileData, UDWORD filesize, UDWORD numFeatures, UDWORD version)
+BOOL loadSaveFeatureV(char *pFileData, uint32_t filesize, uint32_t numFeatures, uint32_t version)
 {
     SAVE_FEATURE			*psSaveFeature;
     FEATURE					*pFeature;
-    UDWORD					count, i, statInc;
+    uint32_t					count, i, statInc;
     FEATURE_STATS			*psStats = NULL;
     BOOL					found;
-    UDWORD					sizeOfSaveFeature;
+    uint32_t					sizeOfSaveFeature;
 
 //	version;
 
@@ -8873,7 +8873,7 @@ Writes the linked list of features to a file
 BOOL writeFeatureFile(char *pFileName)
 {
     char *pFileData = NULL;
-    UDWORD				fileSize, i, totalFeatures=0;
+    uint32_t				fileSize, i, totalFeatures=0;
     FEATURE				*psCurr;
     FEATURE_SAVEHEADER	*psHeader;
     SAVE_FEATURE		*psSaveFeature;
@@ -8963,7 +8963,7 @@ BOOL writeFeatureFile(char *pFileName)
 
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveTemplate(char *pFileData, UDWORD filesize)
+BOOL loadSaveTemplate(char *pFileData, uint32_t filesize)
 {
     TEMPLATE_SAVEHEADER		*psHeader;
 
@@ -9024,12 +9024,12 @@ BOOL loadSaveTemplate(char *pFileData, UDWORD filesize)
 
 // -----------------------------------------------------------------------------------------
 /* code specific to version 7 of a save template */
-BOOL loadSaveTemplateV7(char *pFileData, UDWORD filesize, UDWORD numTemplates)
+BOOL loadSaveTemplateV7(char *pFileData, uint32_t filesize, uint32_t numTemplates)
 {
     SAVE_TEMPLATE_V2		*psSaveTemplate, sSaveTemplate;
     DROID_TEMPLATE			*psTemplate;
-    UDWORD					count, i;
-    SDWORD					compInc;
+    uint32_t					count, i;
+    int32_t					compInc;
     BOOL					found;
 
     psSaveTemplate = &sSaveTemplate;
@@ -9095,7 +9095,7 @@ BOOL loadSaveTemplateV7(char *pFileData, UDWORD filesize, UDWORD numTemplates)
                 //continue;
                 break;
             }
-            psTemplate->asParts[i] = (UDWORD)compInc;
+            psTemplate->asParts[i] = (uint32_t)compInc;
         }
         if (!found)
         {
@@ -9119,7 +9119,7 @@ BOOL loadSaveTemplateV7(char *pFileData, UDWORD filesize, UDWORD numTemplates)
                 //continue;
                 break;
             }
-            psTemplate->asWeaps[i] = (UDWORD)compInc;
+            psTemplate->asWeaps[i] = (uint32_t)compInc;
         }
         if (!found)
         {
@@ -9150,12 +9150,12 @@ error:
 
 // -----------------------------------------------------------------------------------------
 /* none specific version of a save template */
-BOOL loadSaveTemplateV14(char *pFileData, UDWORD filesize, UDWORD numTemplates)
+BOOL loadSaveTemplateV14(char *pFileData, uint32_t filesize, uint32_t numTemplates)
 {
     SAVE_TEMPLATE_V14			*psSaveTemplate, sSaveTemplate;
     DROID_TEMPLATE			*psTemplate, *psDestTemplate;
-    UDWORD					count, i;
-    SDWORD					compInc;
+    uint32_t					count, i;
+    int32_t					compInc;
     BOOL					found;
 
     psSaveTemplate = &sSaveTemplate;
@@ -9223,7 +9223,7 @@ BOOL loadSaveTemplateV14(char *pFileData, UDWORD filesize, UDWORD numTemplates)
                 //continue;
                 break;
             }
-            psTemplate->asParts[i] = (UDWORD)compInc;
+            psTemplate->asParts[i] = (uint32_t)compInc;
         }
         if (!found)
         {
@@ -9246,7 +9246,7 @@ BOOL loadSaveTemplateV14(char *pFileData, UDWORD filesize, UDWORD numTemplates)
                 //continue;
                 break;
             }
-            psTemplate->asWeaps[i] = (UDWORD)compInc;
+            psTemplate->asWeaps[i] = (uint32_t)compInc;
         }
         if (!found)
         {
@@ -9303,12 +9303,12 @@ error:
 
 // -----------------------------------------------------------------------------------------
 /* none specific version of a save template */
-BOOL loadSaveTemplateV(char *pFileData, UDWORD filesize, UDWORD numTemplates)
+BOOL loadSaveTemplateV(char *pFileData, uint32_t filesize, uint32_t numTemplates)
 {
     SAVE_TEMPLATE			*psSaveTemplate, sSaveTemplate;
     DROID_TEMPLATE			*psTemplate, *psDestTemplate;
-    UDWORD					count, i;
-    SDWORD					compInc;
+    uint32_t					count, i;
+    int32_t					compInc;
     BOOL					found;
 
     psSaveTemplate = &sSaveTemplate;
@@ -9394,7 +9394,7 @@ BOOL loadSaveTemplateV(char *pFileData, UDWORD filesize, UDWORD numTemplates)
                 //continue;
                 break;
             }
-            psTemplate->asParts[i] = (UDWORD)compInc;
+            psTemplate->asParts[i] = (uint32_t)compInc;
         }
         if (!found)
         {
@@ -9418,7 +9418,7 @@ BOOL loadSaveTemplateV(char *pFileData, UDWORD filesize, UDWORD numTemplates)
                 //continue;
                 break;
             }
-            psTemplate->asWeaps[i] = (UDWORD)compInc;
+            psTemplate->asWeaps[i] = (uint32_t)compInc;
         }
         if (!found)
         {
@@ -9476,11 +9476,11 @@ Writes the linked list of templates for each player to a file
 BOOL writeTemplateFile(char *pFileName)
 {
     char *pFileData = NULL;
-    UDWORD				fileSize, player, totalTemplates=0;
+    uint32_t				fileSize, player, totalTemplates=0;
     DROID_TEMPLATE		*psCurr;
     TEMPLATE_SAVEHEADER	*psHeader;
     SAVE_TEMPLATE		*psSaveTemplate;
-    UDWORD				i;
+    uint32_t				i;
     BOOL status = true;
 
     //total all the droids in the world
@@ -9522,7 +9522,7 @@ BOOL writeTemplateFile(char *pFileName)
 
             psSaveTemplate->ref = psCurr->ref;
             psSaveTemplate->player = player;
-            psSaveTemplate->droidType = (UBYTE)psCurr->droidType;
+            psSaveTemplate->droidType = (uint8_t)psCurr->droidType;
             psSaveTemplate->multiPlayerID = psCurr->multiPlayerID;
 
             // not interested in first comp - COMP_UNKNOWN
@@ -9577,11 +9577,11 @@ BOOL writeTemplateFile(char *pFileName)
 
 // -----------------------------------------------------------------------------------------
 // load up a terrain tile type map file
-BOOL loadTerrainTypeMap(const char *pFileData, UDWORD filesize)
+BOOL loadTerrainTypeMap(const char *pFileData, uint32_t filesize)
 {
     TILETYPE_SAVEHEADER	*psHeader;
-    UDWORD				i;
-    UWORD				*pType;
+    uint32_t				i;
+    uint16_t				*pType;
 
     if (filesize < TILETYPE_HEADER_SIZE)
     {
@@ -9607,7 +9607,7 @@ BOOL loadTerrainTypeMap(const char *pFileData, UDWORD filesize)
     memset(terrainTypes, 0, sizeof(terrainTypes));
 
     // Load the terrain type mapping
-    pType = (UWORD *)(pFileData + TILETYPE_HEADER_SIZE);
+    pType = (uint16_t *)(pFileData + TILETYPE_HEADER_SIZE);
     endian_uword(pType);
     if (psHeader->quantity >= MAX_TILE_TEXTURES)
     {
@@ -9623,7 +9623,7 @@ BOOL loadTerrainTypeMap(const char *pFileData, UDWORD filesize)
             return false;
         }
 
-        terrainTypes[i] = (UBYTE)*pType;
+        terrainTypes[i] = (uint8_t)*pType;
         pType++;
         endian_uword(pType);
     }
@@ -9637,11 +9637,11 @@ static BOOL writeTerrainTypeMapFile(char *pFileName)
 {
     TILETYPE_SAVEHEADER		*psHeader;
     char *pFileData;
-    UDWORD					fileSize, i;
-    UWORD					*pType;
+    uint32_t					fileSize, i;
+    uint16_t					*pType;
 
     // Calculate the file size
-    fileSize = TILETYPE_HEADER_SIZE + sizeof(UWORD) * MAX_TILE_TEXTURES;
+    fileSize = TILETYPE_HEADER_SIZE + sizeof(uint16_t) * MAX_TILE_TEXTURES;
     pFileData = (char *)malloc(fileSize);
     if (!pFileData)
     {
@@ -9659,7 +9659,7 @@ static BOOL writeTerrainTypeMapFile(char *pFileName)
     psHeader->version = CURRENT_VERSION_NUM;
     psHeader->quantity = MAX_TILE_TEXTURES;
 
-    pType = (UWORD *)(pFileData + TILETYPE_HEADER_SIZE);
+    pType = (uint16_t *)(pFileData + TILETYPE_HEADER_SIZE);
     for(i=0; i<MAX_TILE_TEXTURES; i++)
     {
         *pType = terrainTypes[i];
@@ -9682,7 +9682,7 @@ static BOOL writeTerrainTypeMapFile(char *pFileName)
 
 // -----------------------------------------------------------------------------------------
 // load up component list file
-BOOL loadSaveCompList(char *pFileData, UDWORD filesize)
+BOOL loadSaveCompList(char *pFileData, uint32_t filesize)
 {
     COMPLIST_SAVEHEADER		*psHeader;
 
@@ -9736,11 +9736,11 @@ BOOL loadSaveCompList(char *pFileData, UDWORD filesize)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveCompListV9(char *pFileData, UDWORD filesize, UDWORD numRecords, UDWORD version)
+BOOL loadSaveCompListV9(char *pFileData, uint32_t filesize, uint32_t numRecords, uint32_t version)
 {
     SAVE_COMPLIST_V6		*psSaveCompList;
-    UDWORD				i;
-    SDWORD				compInc;
+    uint32_t				i;
+    int32_t				compInc;
 
     if ((sizeof(SAVE_COMPLIST_V6) * numRecords + COMPLIST_HEADER_SIZE) >
             filesize)
@@ -9803,11 +9803,11 @@ BOOL loadSaveCompListV9(char *pFileData, UDWORD filesize, UDWORD numRecords, UDW
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveCompListV(char *pFileData, UDWORD filesize, UDWORD numRecords, UDWORD version)
+BOOL loadSaveCompListV(char *pFileData, uint32_t filesize, uint32_t numRecords, uint32_t version)
 {
     SAVE_COMPLIST		*psSaveCompList;
-    UDWORD				i;
-    SDWORD				compInc;
+    uint32_t				i;
+    int32_t				compInc;
 
     if ((sizeof(SAVE_COMPLIST) * numRecords + COMPLIST_HEADER_SIZE) >
             filesize)
@@ -9861,7 +9861,7 @@ static BOOL writeCompListFile(char *pFileName)
     COMPLIST_SAVEHEADER		*psHeader;
     char *pFileData;
     SAVE_COMPLIST			*psSaveCompList;
-    UDWORD					fileSize, totalComp, player, i;
+    uint32_t					fileSize, totalComp, player, i;
     COMPONENT_STATS			*psStats;
 
     // Calculate the file size
@@ -9898,7 +9898,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_BODY;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_BODY][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9909,7 +9909,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_WEAPON;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_WEAPON][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9920,7 +9920,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_CONSTRUCT;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_CONSTRUCT][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9931,7 +9931,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_ECM;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_ECM][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9942,7 +9942,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_PROPULSION;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_PROPULSION][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9953,7 +9953,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_SENSOR;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_SENSOR][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9964,7 +9964,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_REPAIRUNIT;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_REPAIRUNIT][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9975,7 +9975,7 @@ static BOOL writeCompListFile(char *pFileName)
             strcpy(psSaveCompList->name, psStats->pName);
 
             psSaveCompList->type = COMP_BRAIN;
-            psSaveCompList->player = (UBYTE)player;
+            psSaveCompList->player = (uint8_t)player;
             psSaveCompList->state = apCompLists[player][COMP_BRAIN][i];
             psSaveCompList = (SAVE_COMPLIST *)((char *)psSaveCompList + sizeof(SAVE_COMPLIST));
         }
@@ -9996,7 +9996,7 @@ static BOOL writeCompListFile(char *pFileName)
 
 // -----------------------------------------------------------------------------------------
 // load up structure type list file
-BOOL loadSaveStructTypeList(char *pFileData, UDWORD filesize)
+BOOL loadSaveStructTypeList(char *pFileData, uint32_t filesize)
 {
     STRUCTLIST_SAVEHEADER		*psHeader;
 
@@ -10050,10 +10050,10 @@ BOOL loadSaveStructTypeList(char *pFileData, UDWORD filesize)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveStructTypeListV7(char *pFileData, UDWORD filesize, UDWORD numRecords)
+BOOL loadSaveStructTypeListV7(char *pFileData, uint32_t filesize, uint32_t numRecords)
 {
     SAVE_STRUCTLIST_V6		*psSaveStructList;
-    UDWORD				i, statInc;
+    uint32_t				i, statInc;
     STRUCTURE_STATS		*psStats;
     BOOL				found;
 
@@ -10109,10 +10109,10 @@ BOOL loadSaveStructTypeListV7(char *pFileData, UDWORD filesize, UDWORD numRecord
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveStructTypeListV(char *pFileData, UDWORD filesize, UDWORD numRecords)
+BOOL loadSaveStructTypeListV(char *pFileData, uint32_t filesize, uint32_t numRecords)
 {
     SAVE_STRUCTLIST		*psSaveStructList;
-    UDWORD				i, statInc;
+    uint32_t				i, statInc;
     STRUCTURE_STATS		*psStats;
     BOOL				found;
 
@@ -10174,7 +10174,7 @@ static BOOL writeStructTypeListFile(char *pFileName)
     STRUCTLIST_SAVEHEADER	*psHeader;
     SAVE_STRUCTLIST			*psSaveStructList;
     char *pFileData;
-    UDWORD					fileSize, player, i;
+    uint32_t					fileSize, player, i;
     STRUCTURE_STATS			*psStats;
 
     // Calculate the file size
@@ -10209,7 +10209,7 @@ static BOOL writeStructTypeListFile(char *pFileName)
 
             strcpy(psSaveStructList->name, psStats->pName);
             psSaveStructList->state = apStructTypeLists[player][i];
-            psSaveStructList->player = (UBYTE)player;
+            psSaveStructList->player = (uint8_t)player;
             psSaveStructList = (SAVE_STRUCTLIST *)((char *)psSaveStructList +
                                                    sizeof(SAVE_STRUCTLIST));
         }
@@ -10231,7 +10231,7 @@ static BOOL writeStructTypeListFile(char *pFileName)
 
 // -----------------------------------------------------------------------------------------
 // load up saved research file
-BOOL loadSaveResearch(char *pFileData, UDWORD filesize)
+BOOL loadSaveResearch(char *pFileData, uint32_t filesize)
 {
     RESEARCH_SAVEHEADER		*psHeader;
 
@@ -10285,13 +10285,13 @@ BOOL loadSaveResearch(char *pFileData, UDWORD filesize)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveResearchV8(char *pFileData, UDWORD filesize, UDWORD numRecords)
+BOOL loadSaveResearchV8(char *pFileData, uint32_t filesize, uint32_t numRecords)
 {
     SAVE_RESEARCH_V8		*psSaveResearch;
-    UDWORD				i, statInc;
+    uint32_t				i, statInc;
     RESEARCH			*psStats;
     BOOL				found;
-    UBYTE				playerInc;
+    uint8_t				playerInc;
 
     if ((sizeof(SAVE_RESEARCH_V8) * numRecords + RESEARCH_HEADER_SIZE) >
             filesize)
@@ -10351,7 +10351,7 @@ BOOL loadSaveResearchV8(char *pFileData, UDWORD filesize, UDWORD numRecords)
             psPlRes=&asPlayerResList[playerInc][statInc];
 
             // Copy the research status
-            psPlRes->ResearchStatus=	(UBYTE)(psSaveResearch->researched[playerInc] & RESBITS);
+            psPlRes->ResearchStatus=	(uint8_t)(psSaveResearch->researched[playerInc] & RESBITS);
 
             if (psSaveResearch->possible[playerInc]!=0)
             {
@@ -10373,13 +10373,13 @@ BOOL loadSaveResearchV8(char *pFileData, UDWORD filesize, UDWORD numRecords)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveResearchV(char *pFileData, UDWORD filesize, UDWORD numRecords)
+BOOL loadSaveResearchV(char *pFileData, uint32_t filesize, uint32_t numRecords)
 {
     SAVE_RESEARCH		*psSaveResearch;
-    UDWORD				i, statInc;
+    uint32_t				i, statInc;
     RESEARCH			*psStats;
     BOOL				found;
-    UBYTE				playerInc;
+    uint8_t				playerInc;
 
     if ((sizeof(SAVE_RESEARCH) * numRecords + RESEARCH_HEADER_SIZE) >
             filesize)
@@ -10431,7 +10431,7 @@ BOOL loadSaveResearchV(char *pFileData, UDWORD filesize, UDWORD numRecords)
             psPlRes=&asPlayerResList[playerInc][statInc];
 
             // Copy the research status
-            psPlRes->ResearchStatus=	(UBYTE)(psSaveResearch->researched[playerInc] & RESBITS);
+            psPlRes->ResearchStatus=	(uint8_t)(psSaveResearch->researched[playerInc] & RESBITS);
 
             if (psSaveResearch->possible[playerInc]!=0)
             {
@@ -10460,7 +10460,7 @@ static BOOL writeResearchFile(char *pFileName)
     RESEARCH_SAVEHEADER		*psHeader;
     SAVE_RESEARCH			*psSaveResearch;
     char *pFileData;
-    UDWORD					fileSize, player, i;
+    uint32_t					fileSize, player, i;
     RESEARCH				*psStats;
 
     // Calculate the file size
@@ -10499,7 +10499,7 @@ static BOOL writeResearchFile(char *pFileName)
         for (player = 0; player < MAX_PLAYERS; player++)
         {
             psSaveResearch->possible[player] = IsResearchPossible(&asPlayerResList[player][i]);
-            psSaveResearch->researched[player] = (UBYTE)(asPlayerResList[player][i].ResearchStatus&RESBITS);
+            psSaveResearch->researched[player] = (uint8_t)(asPlayerResList[player][i].ResearchStatus&RESBITS);
             psSaveResearch->currentPoints[player] = asPlayerResList[player][i].currentPoints;
         }
 
@@ -10524,7 +10524,7 @@ static BOOL writeResearchFile(char *pFileName)
 
 // -----------------------------------------------------------------------------------------
 // load up saved message file
-BOOL loadSaveMessage(char *pFileData, UDWORD filesize, SWORD levelType)
+BOOL loadSaveMessage(char *pFileData, uint32_t filesize, int16_t levelType)
 {
     MESSAGE_SAVEHEADER		*psHeader;
 
@@ -10561,11 +10561,11 @@ BOOL loadSaveMessage(char *pFileData, UDWORD filesize, SWORD levelType)
     return true;
 }
 
-BOOL loadSaveMessage36(char *pFileData, UDWORD filesize, UDWORD numMessages, UDWORD version, SWORD levelType)
+BOOL loadSaveMessage36(char *pFileData, uint32_t filesize, uint32_t numMessages, uint32_t version, int16_t levelType)
 {
     SAVE_MESSAGE_36	*psSaveMessage;
     MESSAGE			*psMessage;
-    UDWORD			i, height;
+    uint32_t			i, height;
 
     // Only clear the messages if its a mid save game
     if (gameType == GTYPE_SAVE_MIDMISSION)
@@ -10594,8 +10594,8 @@ BOOL loadSaveMessage36(char *pFileData, UDWORD filesize, UDWORD numMessages, UDW
         psSaveMessage = (SAVE_MESSAGE_36 *) pFileData;
 
         /* SAVE_MESSAGE_36 */
-        endian_sdword((SDWORD *)&psSaveMessage->type);	/* FIXME: enum may not be this type! */
-        endian_sdword((SDWORD *)&psSaveMessage->dataType);
+        endian_sdword((int32_t *)&psSaveMessage->type);	/* FIXME: enum may not be this type! */
+        endian_sdword((int32_t *)&psSaveMessage->dataType);
         endian_udword(&psSaveMessage->objId);
         endian_udword(&psSaveMessage->player);
 
@@ -10629,8 +10629,8 @@ BOOL loadSaveMessage36(char *pFileData, UDWORD filesize, UDWORD numMessages, UDW
                     {
                         if (psSaveMessage->dataType == MSG_DATA_BEACON)
                         {
-                            UDWORD locX, locY;
-                            SDWORD sender;
+                            uint32_t locX, locY;
+                            int32_t sender;
 
                             endian_udword(&psSaveMessage->locX);
                             locX = psSaveMessage->locX;
@@ -10719,11 +10719,11 @@ static BOOL writeMessageFile(char *pFileName)
     MESSAGE_SAVEHEADER		*psHeader;
     SAVE_MESSAGE_36			*psSaveMessage;
     char *pFileData;
-    UDWORD					fileSize, player;
+    uint32_t					fileSize, player;
     MESSAGE					*psMessage;
     PROXIMITY_DISPLAY		*psProx;
     BASE_OBJECT				*psObj;
-    UDWORD					numMessages = 0;
+    uint32_t					numMessages = 0;
     VIEWDATA				*pViewData;
 
     // Calculate the file size
@@ -10820,8 +10820,8 @@ static BOOL writeMessageFile(char *pFileName)
             psSaveMessage->read = psMessage->read;			//flag to indicate whether message has been read
             psSaveMessage->player = psMessage->player;		//which player this message belongs to
 
-            endian_sdword((SDWORD *)&psSaveMessage->type); /* FIXME: enum may be different type! */
-            endian_sdword((SDWORD *)&psSaveMessage->dataType);
+            endian_sdword((int32_t *)&psSaveMessage->type); /* FIXME: enum may be different type! */
+            endian_sdword((int32_t *)&psSaveMessage->dataType);
             endian_udword(&psSaveMessage->objId);
             endian_udword(&psSaveMessage->player);
 
@@ -10844,7 +10844,7 @@ static BOOL writeMessageFile(char *pFileName)
 
 // -----------------------------------------------------------------------------------------
 // load up saved flag file
-BOOL loadSaveFlag(char *pFileData, UDWORD filesize)
+BOOL loadSaveFlag(char *pFileData, uint32_t filesize)
 {
     FLAG_SAVEHEADER		*psHeader;
 
@@ -10874,14 +10874,14 @@ BOOL loadSaveFlag(char *pFileData, UDWORD filesize)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveFlagV(char *pFileData, UDWORD filesize, UDWORD numflags, UDWORD version)
+BOOL loadSaveFlagV(char *pFileData, uint32_t filesize, uint32_t numflags, uint32_t version)
 {
     SAVE_FLAG		*psSaveflag;
     FLAG_POSITION	*psflag;
-    UDWORD			i;
+    uint32_t			i;
     STRUCTURE		*psStruct;
-    UDWORD			factoryToFind = 0;
-    UDWORD			sizeOfSaveFlag;
+    uint32_t			factoryToFind = 0;
+    uint32_t			sizeOfSaveFlag;
 
     //clear any flags put in during level loads
     freeAllFlagPositions();
@@ -10911,7 +10911,7 @@ BOOL loadSaveFlagV(char *pFileData, UDWORD filesize, UDWORD numflags, UDWORD ver
         psSaveflag = (SAVE_FLAG *) pFileData;
 
         /* SAVE_FLAG */
-        endian_sdword((SDWORD *) &psSaveflag->type); /* FIXME: enum may not be this type! */
+        endian_sdword((int32_t *) &psSaveflag->type); /* FIXME: enum may not be this type! */
         endian_udword(&psSaveflag->frameNumber);
         endian_udword(&psSaveflag->screenX);
         endian_udword(&psSaveflag->screenY);
@@ -10986,7 +10986,7 @@ BOOL loadSaveFlagV(char *pFileData, UDWORD filesize, UDWORD numflags, UDWORD ver
                 {
                     if (psStruct->pStructureType->type == factoryToFind)
                     {
-                        if ((UDWORD)((FACTORY *)psStruct->pFunctionality)->psAssemblyPoint == psflag->factoryInc)
+                        if ((uint32_t)((FACTORY *)psStruct->pFunctionality)->psAssemblyPoint == psflag->factoryInc)
                         {
                             //this is the one so set it
                             ((FACTORY *)psStruct->pFunctionality)->psAssemblyPoint = psflag;
@@ -11020,9 +11020,9 @@ static BOOL writeFlagFile(char *pFileName)
     STRUCTURE			*psStruct;
     FACTORY				*psFactory;
     char				*pFileData;
-    UDWORD				fileSize, player;
+    uint32_t				fileSize, player;
     FLAG_POSITION		*psflag;
-    UDWORD				numflags = 0;
+    uint32_t				numflags = 0;
 
 
     // Calculate the file size
@@ -11111,7 +11111,7 @@ static BOOL writeFlagFile(char *pFileName)
             }
 
             /* SAVE_FLAG */
-            endian_sdword((SDWORD *)&psSaveflag->type); /* FIXME: enum may be different type! */
+            endian_sdword((int32_t *)&psSaveflag->type); /* FIXME: enum may be different type! */
             endian_udword(&psSaveflag->frameNumber);
             endian_udword(&psSaveflag->screenX);
             endian_udword(&psSaveflag->screenY);
@@ -11162,7 +11162,7 @@ static BOOL writeFlagFile(char *pFileName)
                                 }
 
                                 /* SAVE_FLAG */
-                                endian_sdword((SDWORD *)&psSaveflag->type); /* FIXME: enum may be different type! */
+                                endian_sdword((int32_t *)&psSaveflag->type); /* FIXME: enum may be different type! */
                                 endian_udword(&psSaveflag->frameNumber);
                                 endian_udword(&psSaveflag->screenX);
                                 endian_udword(&psSaveflag->screenY);
@@ -11198,7 +11198,7 @@ static BOOL writeFlagFile(char *pFileName)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveProduction(char *pFileData, UDWORD filesize)
+BOOL loadSaveProduction(char *pFileData, uint32_t filesize)
 {
     PRODUCTION_SAVEHEADER		*psHeader;
 
@@ -11227,11 +11227,11 @@ BOOL loadSaveProduction(char *pFileData, UDWORD filesize)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveProductionV(char *pFileData, UDWORD filesize, UDWORD version)
+BOOL loadSaveProductionV(char *pFileData, uint32_t filesize, uint32_t version)
 {
     SAVE_PRODUCTION	*psSaveProduction;
     PRODUCTION_RUN	*psCurrentProd;
-    UDWORD			factoryType,factoryNum,runNum;
+    uint32_t			factoryType,factoryNum,runNum;
 
     //check file
     if ((sizeof(SAVE_PRODUCTION) * NUM_FACTORY_TYPES * MAX_FACTORY * MAX_PROD_RUN + PRODUCTION_HEADER_SIZE) >
@@ -11280,9 +11280,9 @@ static BOOL writeProductionFile(char *pFileName)
     PRODUCTION_SAVEHEADER	*psHeader;
     SAVE_PRODUCTION			*psSaveProduction;
     char				*pFileData;
-    UDWORD				fileSize;
+    uint32_t				fileSize;
     PRODUCTION_RUN	*psCurrentProd;
-    UDWORD				factoryType,factoryNum,runNum;
+    uint32_t				factoryType,factoryNum,runNum;
 
     fileSize = PRODUCTION_HEADER_SIZE + (sizeof(SAVE_PRODUCTION) *
                                          NUM_FACTORY_TYPES * MAX_FACTORY * MAX_PROD_RUN);
@@ -11342,7 +11342,7 @@ static BOOL writeProductionFile(char *pFileName)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveStructLimits(char *pFileData, UDWORD filesize)
+BOOL loadSaveStructLimits(char *pFileData, uint32_t filesize)
 {
     STRUCTLIMITS_SAVEHEADER		*psHeader;
 
@@ -11390,10 +11390,10 @@ BOOL loadSaveStructLimits(char *pFileData, UDWORD filesize)
 
 // -----------------------------------------------------------------------------------------
 /* code specific to version 2 of saveStructLimits */
-BOOL loadSaveStructLimitsV19(char *pFileData, UDWORD filesize, UDWORD numLimits)
+BOOL loadSaveStructLimitsV19(char *pFileData, uint32_t filesize, uint32_t numLimits)
 {
     SAVE_STRUCTLIMITS_V2	*psSaveLimits;
-    UDWORD					count, statInc;
+    uint32_t					count, statInc;
     BOOL					found;
     STRUCTURE_STATS			*psStats;
     int SkippedRecords=0;
@@ -11462,10 +11462,10 @@ BOOL loadSaveStructLimitsV19(char *pFileData, UDWORD filesize, UDWORD numLimits)
 }
 
 // -----------------------------------------------------------------------------------------
-BOOL loadSaveStructLimitsV(char *pFileData, UDWORD filesize, UDWORD numLimits)
+BOOL loadSaveStructLimitsV(char *pFileData, uint32_t filesize, uint32_t numLimits)
 {
     SAVE_STRUCTLIMITS		*psSaveLimits;
-    UDWORD					count, statInc;
+    uint32_t					count, statInc;
     BOOL					found;
     STRUCTURE_STATS			*psStats;
     int SkippedRecords=0;
@@ -11540,7 +11540,7 @@ Writes the list of structure limits to a file
 BOOL writeStructLimitsFile(char *pFileName)
 {
     char *pFileData = NULL;
-    UDWORD						fileSize, totalLimits=0, i, player;
+    uint32_t						fileSize, totalLimits=0, i, player;
     STRUCTLIMITS_SAVEHEADER		*psHeader;
     SAVE_STRUCTLIMITS			*psSaveLimit;
     STRUCTURE_STATS				*psStructStats;
@@ -11577,7 +11577,7 @@ BOOL writeStructLimitsFile(char *pFileName)
         {
             strcpy(psSaveLimit->name, psStructStats->pName);
             psSaveLimit->limit = asStructLimits[player][i].limit;
-            psSaveLimit->player = (UBYTE)player;
+            psSaveLimit->player = (uint8_t)player;
             psSaveLimit = (SAVE_STRUCTLIMITS *)((char *)psSaveLimit + sizeof(SAVE_STRUCTLIMITS));
         }
     }
@@ -11683,7 +11683,7 @@ static BOOL	writeScriptState(char *pFileName)
     static const int32_t current_event_version = 4;
 
     char	*pBuffer;
-    UDWORD	fileSize;
+    uint32_t	fileSize;
 
     if (!eventSaveState(current_event_version, &pBuffer, &fileSize))
     {
@@ -11703,7 +11703,7 @@ static BOOL	writeScriptState(char *pFileName)
 BOOL loadScriptState(char *pFileName)
 {
     char	*pFileData;
-    UDWORD	fileSize;
+    uint32_t	fileSize;
     BOOL bHashed = false;
 
     // change the file extension
@@ -11750,12 +11750,12 @@ static void setMapScroll(void)
     scrollMaxX = startX + width;
     scrollMaxY = startY + height;
     //check not going beyond width/height of map
-    if (scrollMaxX > (SDWORD)mapWidth)
+    if (scrollMaxX > (int32_t)mapWidth)
     {
         scrollMaxX = mapWidth;
         debug( LOG_NEVER, "scrollMaxX was too big It has been set to map width" );
     }
-    if (scrollMaxY > (SDWORD)mapHeight)
+    if (scrollMaxY > (int32_t)mapHeight)
     {
         scrollMaxY = mapHeight;
         debug( LOG_NEVER, "scrollMaxY was too big It has been set to map height" );
@@ -11771,7 +11771,7 @@ BOOL getSaveObjectName(char *pName)
 
 // -----------------------------------------------------------------------------------------
 /*returns the current type of save game being loaded*/
-UDWORD getSaveGameType(void)
+uint32_t getSaveGameType(void)
 {
     return gameType;
 }
@@ -11779,7 +11779,7 @@ UDWORD getSaveGameType(void)
 
 // -----------------------------------------------------------------------------------------
 //copies a Stat name into a destination string for a given stat type and index
-static BOOL getNameFromComp(UDWORD compType, char *pDest, UDWORD compIndex)
+static BOOL getNameFromComp(uint32_t compType, char *pDest, uint32_t compIndex)
 {
     BASE_STATS	*psStats;
 
@@ -11841,8 +11841,8 @@ static void plotFeature(char *backDropSprite)
 	SAVE_FEATURE_V2	*psSaveFeature;
 	PIELIGHT colour = WZCOL_BLACK;
 	LEVEL_DATASET *psLevel;
-	UDWORD xx, yy, count, fileSize;
-	UDWORD sizeOfSaveFeature = 0;
+	uint32_t xx, yy, count, fileSize;
+	uint32_t sizeOfSaveFeature = 0;
 	char *pFileData = NULL;
 	char aFileName[256];
 
@@ -11934,8 +11934,8 @@ BOOL plotStructurePreview16(char *backDropSprite, Vector2i playeridpos[])
 
     STRUCT_SAVEHEADER *psHeader;
     char aFileName[256];
-    UDWORD xx, yy, count, fileSize, sizeOfSaveStructure = sizeof(SAVE_STRUCTURE);
-    UDWORD playerid = 0;
+    uint32_t xx, yy, count, fileSize, sizeOfSaveStructure = sizeof(SAVE_STRUCTURE);
+    uint32_t playerid = 0;
     char *pFileData = NULL;
     LEVEL_DATASET *psLevel;
     PIELIGHT color = WZCOL_BLACK ;

@@ -36,15 +36,15 @@ extern "C"
 
     typedef struct
     {
-        SWORD MajorUp;			//< Index of image to use for tab not pressed.
-        SWORD MajorDown;		//< Index of image to use for tab pressed.
-        SWORD MajorHilight;		//< Index of image to use for tab hilighted by mouse.
-        SWORD MajorSelected;		//< Index of image to use for tab selected (same as pressed).
+        int16_t MajorUp;			//< Index of image to use for tab not pressed.
+        int16_t MajorDown;		//< Index of image to use for tab pressed.
+        int16_t MajorHilight;		//< Index of image to use for tab hilighted by mouse.
+        int16_t MajorSelected;		//< Index of image to use for tab selected (same as pressed).
 
-        SWORD MinorUp;			//< As above but for minor tabs.
-        SWORD MinorDown;
-        SWORD MinorHilight;
-        SWORD MinorSelected;
+        int16_t MinorUp;			//< As above but for minor tabs.
+        int16_t MinorDown;
+        int16_t MinorHilight;
+        int16_t MinorSelected;
     } TABDEF;
 
     extern IMAGEFILE *IntImages;	//< All the 2d graphics for the user interface.
@@ -56,7 +56,7 @@ extern "C"
     BOOL imageInitBitmaps(void);
 
     /** Draws a transparent window. */
-    void RenderWindowFrame(FRAMETYPE frame, UDWORD x, UDWORD y, UDWORD Width, UDWORD Height);
+    void RenderWindowFrame(FRAMETYPE frame, uint32_t x, uint32_t y, uint32_t Width, uint32_t Height);
 
 #ifdef __cplusplus
 }

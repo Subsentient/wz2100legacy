@@ -142,7 +142,7 @@ void sliderInitialise(W_SLIDER *psWidget)
 
 
 /* Get the current position of a slider bar */
-UDWORD widgGetSliderPos(W_SCREEN *psScreen, UDWORD id)
+uint32_t widgGetSliderPos(W_SCREEN *psScreen, uint32_t id)
 {
     WIDGET	*psWidget;
 
@@ -158,7 +158,7 @@ UDWORD widgGetSliderPos(W_SCREEN *psScreen, UDWORD id)
 }
 
 /* Set the current position of a slider bar */
-void widgSetSliderPos(W_SCREEN *psScreen, UDWORD id, UWORD pos)
+void widgSetSliderPos(W_SCREEN *psScreen, uint32_t id, uint16_t pos)
 {
     WIDGET	*psWidget;
 
@@ -179,20 +179,20 @@ void widgSetSliderPos(W_SCREEN *psScreen, UDWORD id, UWORD pos)
 }
 
 /* Return the current position of the slider bar on the widget */
-static void sliderGetBarBox(W_SLIDER *psSlider, SWORD *pX, SWORD *pY,
-                            UWORD *pWidth, UWORD *pHeight)
+static void sliderGetBarBox(W_SLIDER *psSlider, int16_t *pX, int16_t *pY,
+                            uint16_t *pWidth, uint16_t *pHeight)
 {
     switch (psSlider->orientation)
     {
         case WSLD_LEFT:
-            *pX = (SWORD)((psSlider->width - psSlider->barSize)
+            *pX = (int16_t)((psSlider->width - psSlider->barSize)
                           * psSlider->pos / psSlider->numStops);
             *pY = 0;
             *pWidth = psSlider->barSize;
             *pHeight = psSlider->height;
             break;
         case WSLD_RIGHT:
-            *pX = (SWORD)(psSlider->width - psSlider->barSize
+            *pX = (int16_t)(psSlider->width - psSlider->barSize
                           - (psSlider->width - psSlider->barSize)
                           * psSlider->pos / psSlider->numStops);
             *pY = 0;
@@ -201,14 +201,14 @@ static void sliderGetBarBox(W_SLIDER *psSlider, SWORD *pX, SWORD *pY,
             break;
         case WSLD_TOP:
             *pX = 0;
-            *pY = (SWORD)((psSlider->height - psSlider->barSize)
+            *pY = (int16_t)((psSlider->height - psSlider->barSize)
                           * psSlider->pos / psSlider->numStops);
             *pWidth = psSlider->width;
             *pHeight = psSlider->barSize;
             break;
         case WSLD_BOTTOM:
             *pX = 0;
-            *pY = (SWORD)(psSlider->height - psSlider->barSize
+            *pY = (int16_t)(psSlider->height - psSlider->barSize
                           - (psSlider->height - psSlider->barSize)
                           * psSlider->pos / psSlider->numStops);
             *pWidth = psSlider->width;
@@ -221,8 +221,8 @@ static void sliderGetBarBox(W_SLIDER *psSlider, SWORD *pX, SWORD *pY,
 /* Run a slider widget */
 void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
 {
-    SDWORD  mx,my;
-    UDWORD	stopSize;
+    int32_t  mx,my;
+    uint32_t	stopSize;
 
     if ((psWidget->state & SLD_DRAG) && !mouseDown(MOUSE_LMB))
     {
@@ -253,7 +253,7 @@ void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
                 {
                     /* Mouse is in the middle of the slider, calculate which stop */
                     stopSize = (psWidget->width - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (UWORD)((mx + stopSize/2 - psWidget->barSize/2)
+                    psWidget->pos = (uint16_t)((mx + stopSize/2 - psWidget->barSize/2)
                                             * psWidget->numStops
                                             / (psWidget->width - psWidget->barSize));
                 }
@@ -271,7 +271,7 @@ void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
                 {
                     /* Mouse is in the middle of the slider, calculate which stop */
                     stopSize = (psWidget->width - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (UWORD)(psWidget->numStops
+                    psWidget->pos = (uint16_t)(psWidget->numStops
                                             - (mx + stopSize/2 - psWidget->barSize/2)
                                             * psWidget->numStops
                                             / (psWidget->width - psWidget->barSize));
@@ -290,7 +290,7 @@ void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
                 {
                     /* Mouse is in the middle of the slider, calculate which stop */
                     stopSize = (psWidget->height - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (UWORD)((my + stopSize/2 - psWidget->barSize/2)
+                    psWidget->pos = (uint16_t)((my + stopSize/2 - psWidget->barSize/2)
                                             * psWidget->numStops
                                             / (psWidget->height - psWidget->barSize));
                 }
@@ -308,7 +308,7 @@ void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
                 {
                     /* Mouse is in the middle of the slider, calculate which stop */
                     stopSize = (psWidget->height - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (UWORD)(psWidget->numStops
+                    psWidget->pos = (uint16_t)(psWidget->numStops
                                             - (my + stopSize/2 - psWidget->barSize/2)
                                             * psWidget->numStops
                                             / (psWidget->height - psWidget->barSize));
@@ -323,9 +323,9 @@ void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
 void sliderClicked(W_SLIDER *psWidget, W_CONTEXT *psContext)
 {
 #if 0
-    SWORD	x,y;
-    UWORD	width,height;
-    SDWORD	mx,my;
+    int16_t	x,y;
+    uint16_t	width,height;
+    int32_t	mx,my;
 
     /* Get the slider position */
     sliderGetBarBox(psWidget, &x,&y, &width,&height);
@@ -368,11 +368,11 @@ void sliderHiLiteLost(W_SLIDER *psWidget)
 }
 
 /* The slider display function */
-void sliderDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *pColours)
+void sliderDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
     W_SLIDER	*psSlider;
-    SWORD		x0,y0, x1,y1;
-    UWORD		width = 0, height = 0;
+    int16_t		x0,y0, x1,y1;
+    uint16_t		width = 0, height = 0;
 
     psSlider = (W_SLIDER *)psWidget;
 
@@ -381,18 +381,18 @@ void sliderDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *p
         case WSLD_LEFT:
         case WSLD_RIGHT:
             /* Draw the line */
-            x0 = (SWORD)(psSlider->x + xOffset + psSlider->barSize/(SWORD)2);
-            y0 = (SWORD)(psSlider->y + yOffset + psSlider->height/(SWORD)2);
-            x1 = (SWORD)(x0 + psSlider->width - psSlider->barSize);
+            x0 = (int16_t)(psSlider->x + xOffset + psSlider->barSize/(int16_t)2);
+            y0 = (int16_t)(psSlider->y + yOffset + psSlider->height/(int16_t)2);
+            x1 = (int16_t)(x0 + psSlider->width - psSlider->barSize);
             iV_Line(x0,y0, x1,y0, pColours[WCOL_DARK]);
             iV_Line(x0,y0+1, x1,y0+1, pColours[WCOL_LIGHT]);
 
             /* Now Draw the bar */
             sliderGetBarBox(psSlider, &x0,&y0, &width,&height);
-            x0 = (SWORD)(x0 + psSlider->x + xOffset);
-            y0 = (SWORD)(y0 + psSlider->y + yOffset);
-            x1 = (SWORD)(x0 + width);
-            y1 = (SWORD)(y0 + height);
+            x0 = (int16_t)(x0 + psSlider->x + xOffset);
+            y0 = (int16_t)(y0 + psSlider->y + yOffset);
+            x1 = (int16_t)(x0 + width);
+            y1 = (int16_t)(y0 + height);
             pie_BoxFill(x0, y0, x1, y1, pColours[WCOL_BKGRND]);
             iV_Line(x0,y0, x1,y0, pColours[WCOL_LIGHT]);
             iV_Line(x0,y0, x0,y1, pColours[WCOL_LIGHT]);
@@ -402,18 +402,18 @@ void sliderDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *p
         case WSLD_TOP:
         case WSLD_BOTTOM:
             /* Draw the line */
-            x0 = (SWORD)(psSlider->x + xOffset + psSlider->width/(SWORD)2);
-            y0 = (SWORD)(psSlider->y + yOffset + psSlider->barSize/(SWORD)2);
-            y1 = (SWORD)(y0 + psSlider->height - psSlider->barSize);
+            x0 = (int16_t)(psSlider->x + xOffset + psSlider->width/(int16_t)2);
+            y0 = (int16_t)(psSlider->y + yOffset + psSlider->barSize/(int16_t)2);
+            y1 = (int16_t)(y0 + psSlider->height - psSlider->barSize);
             iV_Line(x0,y0, x0,y1, pColours[WCOL_DARK]);
             iV_Line(x0+1,y0, x0+1,y1, pColours[WCOL_LIGHT]);
 
             /* Now Draw the bar */
             sliderGetBarBox(psSlider, &x0,&y0, &width,&height);
-            x0 = (SWORD)(x0 + psSlider->x + xOffset);
-            y0 = (SWORD)(y0 + psSlider->y + yOffset);
-            x1 = (SWORD)(x0 + width);
-            y1 = (SWORD)(y0 + height);
+            x0 = (int16_t)(x0 + psSlider->x + xOffset);
+            y0 = (int16_t)(y0 + psSlider->y + yOffset);
+            x1 = (int16_t)(x0 + width);
+            y1 = (int16_t)(y0 + height);
             pie_BoxFill(x0, y0, x1, y1, pColours[WCOL_BKGRND]);
             iV_Line(x0,y0, x1,y0, pColours[WCOL_LIGHT]);
             iV_Line(x0,y0, x0,y1, pColours[WCOL_LIGHT]);
@@ -424,10 +424,10 @@ void sliderDisplay(WIDGET *psWidget, UDWORD xOffset, UDWORD yOffset, PIELIGHT *p
 
     if (psSlider->state & SLD_HILITE)
     {
-        x0 = (SWORD)(psWidget->x + xOffset - 2);
-        y0 = (SWORD)(psWidget->y + yOffset - 2);
-        x1 = (SWORD)(x0 + psWidget->width + 4);
-        y1 = (SWORD)(y0 + psWidget->height + 4);
+        x0 = (int16_t)(psWidget->x + xOffset - 2);
+        y0 = (int16_t)(psWidget->y + yOffset - 2);
+        x1 = (int16_t)(x0 + psWidget->width + 4);
+        y1 = (int16_t)(y0 + psWidget->height + 4);
         iV_Line(x0,y0, x1,y0, pColours[WCOL_HILITE]);
         iV_Line(x1,y0, x1,y1, pColours[WCOL_HILITE]);
         iV_Line(x0,y1, x1,y1, pColours[WCOL_HILITE]);

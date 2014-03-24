@@ -57,7 +57,7 @@ extern int chat_lex_destroy(void);
 static const char *pInputBuffer = NULL;
 static const char *pEndBuffer = NULL;
 
-static SDWORD playerIndex;
+static int32_t playerIndex;
 
 #undef YY_INPUT
 #define YY_INPUT(buf,result,max_size) \
@@ -180,8 +180,8 @@ static SDWORD playerIndex;
 
 							}
 
-	/* [^ \t\n\<\>\[\]\(\)]+		{ return T_WORD; } */
-	/* [^ \t\n]+					{ console( "matched 'T_WORD'"); return T_WORD; } */
+	/* [^ \t\n\<\>\[\]\(\)]+		{ return T_int16_t; } */
+	/* [^ \t\n]+					{ console( "matched 'T_int16_t'"); return T_int16_t; } */
 
 
 	/* Skip white space */
@@ -194,7 +194,7 @@ static SDWORD playerIndex;
 %%
 
 /* Set the current input buffer for the lexer */
-void chatSetInputBuffer(char *pBuffer, UDWORD size)
+void chatSetInputBuffer(char *pBuffer, uint32_t size)
 {
 	pInputBuffer = pBuffer;
 	pEndBuffer = pBuffer + size;

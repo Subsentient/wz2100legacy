@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 extern void widgSetReturn(W_SCREEN *psScreen, WIDGET *psWidget);
 
 /* Find a widget in a screen from its ID number */
-extern WIDGET *widgGetFromID(W_SCREEN *psScreen, UDWORD id);
+extern WIDGET *widgGetFromID(W_SCREEN *psScreen, uint32_t id);
 
 /* Release a list of widgets */
 extern void widgReleaseWidgetList(WIDGET *psWidgets);

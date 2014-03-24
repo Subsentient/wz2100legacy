@@ -138,14 +138,14 @@ static void pie_Draw3DShape2(iIMDShape *shape, int frame, PIELIGHT colour, WZ_DE
         //Assume also translucent
         pie_SetFogStatus(false);
         pie_SetRendMode(REND_ADDITIVE_TEX);
-        colour.byte.a = (UBYTE)pieFlagData;
+        colour.byte.a = (uint8_t)pieFlagData;
         light = false;
     }
     else if (pieFlag & pie_TRANSLUCENT)
     {
         pie_SetFogStatus(false);
         pie_SetRendMode(REND_ALPHA_TEX);
-        colour.byte.a = (UBYTE)pieFlagData;
+        colour.byte.a = (uint8_t)pieFlagData;
         light = false;
     }
     else

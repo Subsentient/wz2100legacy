@@ -43,10 +43,10 @@ static void chat_store_command(const char *command);
 static BOOL chat_store_parameter(INTERP_VAL *parameter);
 
 // Store players that were addressed in a command
-static void chat_store_player(SDWORD cmdIndex, SDWORD playerIndex);
+static void chat_store_player(int32_t cmdIndex, int32_t playerIndex);
 
 // Reset a command
-static void chat_reset_command(SDWORD cmdIndex);
+static void chat_reset_command(int32_t cmdIndex);
 
 // Information extracted from message and available for scripts
 //static int					numMsgParams=0;		//number of parameters currently extracted/stored
@@ -55,7 +55,7 @@ static void chat_reset_command(SDWORD cmdIndex);
 /* Store command parameter extracted from the message */
 static BOOL chat_store_parameter(INTERP_VAL *cmdParam)
 {
-	SDWORD	numCmdParams, numCommands;
+	int32_t	numCmdParams, numCommands;
 
 	//console("chat_store_parameter: new parameter");
 
@@ -89,7 +89,7 @@ static BOOL chat_store_parameter(INTERP_VAL *cmdParam)
 // Store extracted command for use in scripts
 static void chat_store_command(const char *command)
 {
-	SDWORD	numCmdParams, numCommands;
+	int32_t	numCmdParams, numCommands;
 
 	//console("chat_store_command: new command: %s", command);
 
@@ -117,9 +117,9 @@ static void chat_store_command(const char *command)
 }
 
 // Store players that were addressed in a command
-static void chat_store_player(SDWORD cmdIndex, SDWORD playerIndex)
+static void chat_store_player(int32_t cmdIndex, int32_t playerIndex)
 {
-	SDWORD i;
+	int32_t i;
 
 	//console("chat_store_player: player %d addressd in command %d", playerIndex, cmdIndex);
 
@@ -149,9 +149,9 @@ static void chat_store_player(SDWORD cmdIndex, SDWORD playerIndex)
 	}
 }
 
-static void chat_reset_command(SDWORD cmdIndex)
+static void chat_reset_command(int32_t cmdIndex)
 {
-	SDWORD i;
+	int32_t i;
 
 	ASSERT(cmdIndex >= 0 && cmdIndex < MAX_CHAT_COMMANDS,
 		"chat_reset_command: command index out of bounds: %d", cmdIndex);
@@ -172,7 +172,7 @@ static void yyerror(const char* msg);
 
 %union {
 	BOOL				bval;
-	SDWORD			ival;
+	int32_t			ival;
 }
 
 	/* Start symbol */
@@ -184,7 +184,7 @@ static void yyerror(const char* msg);
 %token SQ_BRACKET_OPEN
 %token SQ_BRACKET_CLOSE
 %token PIPE
-%token T_WORD
+%token T_int16_t
 
 %token R_POSSESSION
 %token _T_QM
@@ -716,9 +716,9 @@ R_WAIT_FOR_ME:								_T_WAIT R_EOD				/* wait */
 %%
 
 /* Initialize Bison and start chat processing */
-BOOL chatLoad(char *pData, UDWORD size)
+BOOL chatLoad(char *pData, uint32_t size)
 {
-	SDWORD	cmdIndex,parseResult;
+	int32_t	cmdIndex,parseResult;
 
 	/* Don't parse the same message again for a different player */
 	if(strcmp(pData, &(chat_msg.lastMessage[0])) == 0)	//just parsed this message for some other player

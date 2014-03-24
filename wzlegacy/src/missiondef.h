@@ -47,20 +47,20 @@ typedef struct _landing_zone
 typedef struct _mission
 {
     //MISSION_TYPE		type;							//defines which start and end functions to use
-    UDWORD				type;							//defines which start and end functions to use - see levels_type in levels.h
+    uint32_t				type;							//defines which start and end functions to use - see levels_type in levels.h
     MAPTILE				*psMapTiles;					//the original mapTiles
-    UDWORD				mapWidth;						//the original mapWidth
-    UDWORD				mapHeight;						//the original mapHeight
+    uint32_t				mapWidth;						//the original mapWidth
+    uint32_t				mapHeight;						//the original mapHeight
     struct _gateway		*psGateways;					//the gateway list
-    UBYTE				**apRLEZones;					//the RLE map zones
-    SDWORD				gwNumZones;						//the number of map zones
-    UBYTE				*aNumEquiv;						//zone equivalence data
-    UBYTE				**apEquivZones;
-    UBYTE				*aZoneReachable;
-    UDWORD				scrollMinX;						//scroll coords for original map
-    UDWORD				scrollMinY;
-    UDWORD				scrollMaxX;
-    UDWORD				scrollMaxY;
+    uint8_t				**apRLEZones;					//the RLE map zones
+    int32_t				gwNumZones;						//the number of map zones
+    uint8_t				*aNumEquiv;						//zone equivalence data
+    uint8_t				**apEquivZones;
+    uint8_t				*aZoneReachable;
+    uint32_t				scrollMinX;						//scroll coords for original map
+    uint32_t				scrollMinY;
+    uint32_t				scrollMaxX;
+    uint32_t				scrollMaxY;
     STRUCTURE					*apsStructLists[MAX_PLAYERS];	//original object lists
     DROID						*apsDroidLists[MAX_PLAYERS];
     FEATURE						*apsFeatureLists[MAX_PLAYERS];
@@ -69,24 +69,24 @@ typedef struct _mission
     FLAG_POSITION				*apsFlagPosLists[MAX_PLAYERS];
     PLAYER_POWER				asPower[MAX_PLAYERS];
 
-    UDWORD				startTime;			//time the mission started
-    SDWORD				time;				//how long the mission can last
+    uint32_t				startTime;			//time the mission started
+    int32_t				time;				//how long the mission can last
     // < 0 = no limit
-    SDWORD				ETA;				//time taken for reinforcements to arrive
+    int32_t				ETA;				//time taken for reinforcements to arrive
     // < 0 = none allowed
-    UDWORD				cheatTime;			//time the cheating started (mission time-wise!)
+    uint32_t				cheatTime;			//time the cheating started (mission time-wise!)
 
     //LANDING_ZONE		homeLZ;
-    UWORD               homeLZ_X;           //selectedPlayer's LZ x and y
-    UWORD               homeLZ_Y;
-    SDWORD				playerX;			//original view position
-    SDWORD				playerY;
+    uint16_t               homeLZ_X;           //selectedPlayer's LZ x and y
+    uint16_t               homeLZ_Y;
+    int32_t				playerX;			//original view position
+    int32_t				playerY;
 
     /* transporter entry/exit tiles */
-    UWORD				iTranspEntryTileX[MAX_PLAYERS];
-    UWORD				iTranspEntryTileY[MAX_PLAYERS];
-    UWORD				iTranspExitTileX[MAX_PLAYERS];
-    UWORD				iTranspExitTileY[MAX_PLAYERS];
+    uint16_t				iTranspEntryTileX[MAX_PLAYERS];
+    uint16_t				iTranspEntryTileY[MAX_PLAYERS];
+    uint16_t				iTranspExitTileX[MAX_PLAYERS];
+    uint16_t				iTranspExitTileY[MAX_PLAYERS];
 
 } MISSION;
 

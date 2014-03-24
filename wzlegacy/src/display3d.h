@@ -50,15 +50,15 @@ extern bool showORDERS;
 extern bool showLevelName;
 extern bool showTicker;
 
-extern void	setViewAngle(SDWORD angle);
-extern UDWORD getViewDistance(void);
-extern void	setViewDistance(UDWORD dist);
+extern void	setViewAngle(int32_t angle);
+extern uint32_t getViewDistance(void);
+extern void	setViewDistance(uint32_t dist);
 extern BOOL	radarOnScreen;
 extern bool rangeOnScreen; // Added to get sensor/gun range on screen.  -Q 5-10-05
-extern void	scaleMatrix( UDWORD percent );
-extern void setViewPos( UDWORD x, UDWORD y, BOOL Pan);
-extern void getPlayerPos(SDWORD *px, SDWORD *py);
-extern void setPlayerPos(SDWORD x, SDWORD y);
+extern void	scaleMatrix( uint32_t percent );
+extern void setViewPos( uint32_t x, uint32_t y, BOOL Pan);
+extern void getPlayerPos(int32_t *px, int32_t *py);
+extern void setPlayerPos(int32_t x, int32_t y);
 extern void disp3d_setView(iView *newView);
 extern void disp3d_resetView(void);
 extern void disp3d_getView(iView *newView);
@@ -88,7 +88,7 @@ extern void renderShadow( DROID *psDroid, iIMDShape *psShadowIMD );
 extern PIELIGHT getTileColour(int x, int y);
 extern void setTileColour(int x, int y, PIELIGHT colour);
 
-extern BOOL	clipXY ( SDWORD x, SDWORD y);
+extern BOOL	clipXY ( int32_t x, int32_t y);
 
 extern BOOL init3DView(void);
 extern void initViewPosition(void);
@@ -97,21 +97,21 @@ extern BOOL selectAttempt;
 extern BOOL draggingTile;
 extern iIMDShape *g_imd;
 extern BOOL	droidSelected;
-extern UDWORD terrainMidX,terrainMidY;
+extern uint32_t terrainMidX,terrainMidY;
 
-extern SDWORD scrollSpeed;
+extern int32_t scrollSpeed;
 //extern void	assignSensorTarget( DROID *psDroid );
 extern void assignSensorTarget( BASE_OBJECT *psObj );
 extern void assignDestTarget( void );
-extern UDWORD getWaterTileNum( void);
-extern void setUnderwaterTile(UDWORD num);
-extern UDWORD getRubbleTileNum( void );
-extern void setRubbleTile(UDWORD num);
+extern uint32_t getWaterTileNum( void);
+extern void setUnderwaterTile(uint32_t num);
+extern uint32_t getRubbleTileNum( void );
+extern void setRubbleTile(uint32_t num);
 
-extern SDWORD	getCentreX( void );
-extern SDWORD	getCentreZ( void );
+extern int32_t	getCentreX( void );
+extern int32_t	getCentreZ( void );
 
-extern SDWORD mouseTileX, mouseTileY;
+extern int32_t mouseTileX, mouseTileY;
 
 extern BOOL bRender3DOnly;
 extern BOOL showGateways;
@@ -119,10 +119,10 @@ extern BOOL showPath;
 extern Vector2i visibleTiles;
 
 /*returns the graphic ID for a droid rank*/
-extern UDWORD  getDroidRankGraphic(DROID *psDroid);
+extern uint32_t  getDroidRankGraphic(DROID *psDroid);
 
 /* Visualize radius at position */
-extern void showRangeAtPos(SDWORD centerX, SDWORD centerY, SDWORD radius);
+extern void showRangeAtPos(int32_t centerX, int32_t centerY, int32_t radius);
 
 #define	BASE_MUZZLE_FLASH_DURATION	(GAME_TICKS_PER_SEC/10)
 #define	EFFECT_MUZZLE_ADDITIVE		128
@@ -132,8 +132,8 @@ extern void showRangeAtPos(SDWORD centerX, SDWORD centerY, SDWORD radius);
 #define BAR_DOT		2
 #define BAR_NONE	3
 
-extern UWORD barMode;
-extern UDWORD geoOffset;
+extern uint16_t barMode;
+extern uint32_t geoOffset;
 
 extern bool CauseCrash;
 

@@ -43,8 +43,8 @@ extern "C"
 
     AUDIO_STREAM *sound_PlayStream(PHYSFS_file *PHYSFS_fileHandle, float volume, void (*onFinished)(void *), void *user_data);
 
-    void	sound_SetSampleFreq( AUDIO_SAMPLE *psSample, SDWORD iFreq );
-    void	sound_SetSampleVol( AUDIO_SAMPLE *psSample, SDWORD iVol,
+    void	sound_SetSampleFreq( AUDIO_SAMPLE *psSample, int32_t iFreq );
+    void	sound_SetSampleVol( AUDIO_SAMPLE *psSample, int32_t iVol,
                                 BOOL bScale3D );
 
     int		sound_GetNumSamples( void );
@@ -56,10 +56,10 @@ extern "C"
     void sound_SetPlayerOrientation(float angle);
     void	sound_SetObjectPosition( AUDIO_SAMPLE *psSample );
 
-    void 	*sound_GetObject( SDWORD iSample );
-    void	sound_SetObject( SDWORD iSample, void *pObj );
+    void 	*sound_GetObject( int32_t iSample );
+    void	sound_SetObject( int32_t iSample, void *pObj );
 
-    void	sound_SetCallback( SDWORD iSample, AUDIO_CALLBACK pCallBack );
+    void	sound_SetCallback( int32_t iSample, AUDIO_CALLBACK pCallBack );
 
     void	sound_PauseAll( void );
     void	sound_ResumeAll( void );
@@ -67,7 +67,7 @@ extern "C"
     void	sound_Update( void );
     unsigned int sound_GetActiveSamplesCount(void);
 
-    UDWORD	sound_GetGameTime( void );
+    uint32_t	sound_GetGameTime( void );
 
 #if defined(__cplusplus)
 }

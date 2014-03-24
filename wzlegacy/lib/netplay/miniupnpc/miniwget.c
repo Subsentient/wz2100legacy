@@ -139,10 +139,10 @@ miniwget2(const char *url, const char *host,
 #ifndef WIN32
             inet_ntop(AF_INET, &saddr.sin_addr, addr_str, addr_str_len);
 #else
-            /* using INT WINAPI WSAAddressToStringA(LPSOCKADDR, DWORD, LPWSAPROTOCOL_INFOA, LPSTR, LPDWORD);
+            /* using INT WINAPI WSAAddressToStringA(LPSOCKADDR, int32_t, LPWSAPROTOCOL_INFOA, LPSTR, LPint32_t);
              * But his function make a string with the port :  nn.nn.nn.nn:port */
             /*		if(WSAAddressToStringA((SOCKADDR *)&saddr, sizeof(saddr),
-                                        NULL, addr_str, (DWORD *)&addr_str_len))
+                                        NULL, addr_str, (int32_t *)&addr_str_len))
             		{
             		    printf("WSAAddressToStringA() failed : %d\n", WSAGetLastError());
             		}*/

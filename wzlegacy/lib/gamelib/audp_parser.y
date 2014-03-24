@@ -143,8 +143,8 @@ anim_config:			QTEXT INTEGER
 						;
 
 	/*
-	 * anim_Create3D( char szAniFileName[], char szPieFileName[], UWORD uwFrames,
-	 *					UWORD uwFrameRate, UWORD uwNumObj, char cType, UWORD uwID )
+	 * anim_Create3D( char szAniFileName[], char szPieFileName[], uint16_t uwFrames,
+	 *					uint16_t uwFrameRate, uint16_t uwNumObj, char cType, uint16_t uwID )
 	 */
 
 anim_trans:				ANIM3DTRANS QTEXT INTEGER INTEGER INTEGER

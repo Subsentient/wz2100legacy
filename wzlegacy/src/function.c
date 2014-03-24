@@ -35,14 +35,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 //holder for all functions
 FUNCTION **asFunctions;
-UDWORD numFunctions;
+uint32_t numFunctions;
 
 
 typedef BOOL (*LoadFunction)(const char *pData);
 
 
 /*Returns the Function type based on the string - used for reading in data */
-static UDWORD functionType(const char *pType)
+static uint32_t functionType(const char *pType)
 {
     if (!strcmp(pType, "Production"))
     {
@@ -149,7 +149,7 @@ static BOOL loadProduction(const char *pData)
     PRODUCTION_FUNCTION	*psFunction;
     //PROPULSION_TYPE propType;
     char					functionName[MAX_STR_LENGTH], bodySize[MAX_STR_LENGTH];
-    UDWORD					productionOutput;
+    uint32_t					productionOutput;
     //char					propulsionType[MAX_STR_LENGTH];
     //PROPULSION_TYPES*		pPropulsionType;
     //allocate storage
@@ -219,10 +219,10 @@ static BOOL loadProduction(const char *pData)
         return false;
     }
 
-    //check prod output < UWORD_MAX
-    if (productionOutput < UWORD_MAX)
+    //check prod output < uint16_t_MAX
+    if (productionOutput < uint16_t_MAX)
     {
-        psFunction->productionOutput = (UWORD)productionOutput;
+        psFunction->productionOutput = (uint16_t)productionOutput;
     }
     else
     {
@@ -239,8 +239,8 @@ static BOOL loadProductionUpgradeFunction(const char *pData)
 {
     PRODUCTION_UPGRADE_FUNCTION	*psFunction;
     char							functionName[MAX_STR_LENGTH];
-    UDWORD							factory, cyborg, vtol;
-    UDWORD outputModifier;
+    uint32_t							factory, cyborg, vtol;
+    uint32_t outputModifier;
 
     //allocate storage
     psFunction = (PRODUCTION_UPGRADE_FUNCTION *)malloc(sizeof
@@ -268,7 +268,7 @@ static BOOL loadProductionUpgradeFunction(const char *pData)
            &cyborg, &vtol,&outputModifier);
 
 
-    psFunction->outputModifier=(UBYTE)outputModifier;
+    psFunction->outputModifier=(uint8_t)outputModifier;
     //allocate storage for the name
     storeName((FUNCTION *)psFunction, functionName);
 
@@ -373,10 +373,10 @@ static BOOL loadReArmFunction(const char *pData)
 
 
 //generic load function for upgrade type
-static BOOL loadUpgradeFunction(const char *pData, UBYTE type)
+static BOOL loadUpgradeFunction(const char *pData, uint8_t type)
 {
     char						functionName[MAX_STR_LENGTH];
-    UDWORD						modifier;
+    uint32_t						modifier;
     UPGRADE_FUNCTION			*psFunction;
 
     //allocate storage
@@ -405,14 +405,14 @@ static BOOL loadUpgradeFunction(const char *pData, UBYTE type)
     //allocate storage for the name
     storeName((FUNCTION *)psFunction, functionName);
 
-    if (modifier > UWORD_MAX)
+    if (modifier > uint16_t_MAX)
     {
         ASSERT( false, "loadUpgradeFunction: modifier too great for %s", functionName );
         return false;
     }
 
     //store the % upgrade
-    psFunction->upgradePoints = (UWORD)modifier;
+    psFunction->upgradePoints = (uint16_t)modifier;
 
     return true;
 }
@@ -459,7 +459,7 @@ static BOOL loadDroidBodyUpgradeFunction(const char *pData)
 {
     DROIDBODY_UPGRADE_FUNCTION		*psFunction;
     char							functionName[MAX_STR_LENGTH];
-    UDWORD							modifier, armourKinetic, armourHeat,
+    uint32_t							modifier, armourKinetic, armourHeat,
                                     body, droid, cyborg;
 
     //allocate storage
@@ -490,8 +490,8 @@ static BOOL loadDroidBodyUpgradeFunction(const char *pData)
     //allocate storage for the name
     storeName((FUNCTION *)psFunction, functionName);
 
-    if (modifier > UWORD_MAX || armourKinetic > UWORD_MAX ||
-            armourHeat > UWORD_MAX || body > UWORD_MAX)
+    if (modifier > uint16_t_MAX || armourKinetic > uint16_t_MAX ||
+            armourHeat > uint16_t_MAX || body > uint16_t_MAX)
     {
         ASSERT( false,
                 "loadUnitBodyUpgradeFunction: one or more modifiers too great" );
@@ -499,10 +499,10 @@ static BOOL loadDroidBodyUpgradeFunction(const char *pData)
     }
 
     //store the % upgrades
-    psFunction->upgradePoints = (UWORD)modifier;
-    psFunction->body = (UWORD)body;
-    psFunction->armourValue[WC_KINETIC] = (UWORD)armourKinetic;
-    psFunction->armourValue[WC_HEAT] = (UWORD)armourHeat;
+    psFunction->upgradePoints = (uint16_t)modifier;
+    psFunction->body = (uint16_t)body;
+    psFunction->armourValue[WC_KINETIC] = (uint16_t)armourKinetic;
+    psFunction->armourValue[WC_HEAT] = (uint16_t)armourHeat;
     if (droid)
     {
         psFunction->droid = true;
@@ -527,7 +527,7 @@ static BOOL loadDroidSensorUpgradeFunction(const char *pData)
 {
     DROIDSENSOR_UPGRADE_FUNCTION	*psFunction;
     char							functionName[MAX_STR_LENGTH];
-    UDWORD							modifier, range;
+    uint32_t							modifier, range;
 
     //allocate storage
     psFunction = (DROIDSENSOR_UPGRADE_FUNCTION *)malloc(
@@ -556,7 +556,7 @@ static BOOL loadDroidSensorUpgradeFunction(const char *pData)
     //allocate storage for the name
     storeName((FUNCTION *)psFunction, functionName);
 
-    if (modifier > UWORD_MAX || range > UWORD_MAX)
+    if (modifier > uint16_t_MAX || range > uint16_t_MAX)
     {
         ASSERT( false,
                 "loadUnitSensorUpgradeFunction: one or more modifiers too great" );
@@ -564,8 +564,8 @@ static BOOL loadDroidSensorUpgradeFunction(const char *pData)
     }
 
     //store the % upgrades
-    psFunction->upgradePoints = (UWORD)modifier;
-    psFunction->range = (UWORD)range;
+    psFunction->upgradePoints = (uint16_t)modifier;
+    psFunction->range = (uint16_t)range;
 
     return true;
 }
@@ -575,7 +575,7 @@ static BOOL loadWeaponUpgradeFunction(const char *pData)
     WEAPON_UPGRADE_FUNCTION	*psFunction;
     char						functionName[MAX_STR_LENGTH],
                                 weaponSubClass[MAX_STR_LENGTH];
-    UDWORD						firePause, shortHit, longHit, damage,
+    uint32_t						firePause, shortHit, longHit, damage,
                                 radiusDamage, incenDamage, radiusHit;
 
     //allocate storage
@@ -613,14 +613,14 @@ static BOOL loadWeaponUpgradeFunction(const char *pData)
         return false;
     }
 
-    //check none of the %increases are over UBYTE max
-    if (firePause > UBYTE_MAX ||
-            shortHit > UWORD_MAX ||
-            longHit > UWORD_MAX ||
-            damage > UWORD_MAX ||
-            radiusDamage > UWORD_MAX ||
-            incenDamage > UWORD_MAX ||
-            radiusHit > UWORD_MAX)
+    //check none of the %increases are over uint8_t max
+    if (firePause > uint8_t_MAX ||
+            shortHit > uint16_t_MAX ||
+            longHit > uint16_t_MAX ||
+            damage > uint16_t_MAX ||
+            radiusDamage > uint16_t_MAX ||
+            incenDamage > uint16_t_MAX ||
+            radiusHit > uint16_t_MAX)
     {
         debug( LOG_ERROR, "A percentage increase for Weapon Upgrade function is too large" );
 
@@ -628,13 +628,13 @@ static BOOL loadWeaponUpgradeFunction(const char *pData)
     }
 
     //copy the data across
-    psFunction->firePause = (UBYTE)firePause;
-    psFunction->shortHit = (UWORD)shortHit;
-    psFunction->longHit = (UWORD)longHit;
-    psFunction->damage = (UWORD)damage;
-    psFunction->radiusDamage = (UWORD)radiusDamage;
-    psFunction->incenDamage = (UWORD)incenDamage;
-    psFunction->radiusHit = (UWORD)radiusHit;
+    psFunction->firePause = (uint8_t)firePause;
+    psFunction->shortHit = (uint16_t)shortHit;
+    psFunction->longHit = (uint16_t)longHit;
+    psFunction->damage = (uint16_t)damage;
+    psFunction->radiusDamage = (uint16_t)radiusDamage;
+    psFunction->incenDamage = (uint16_t)incenDamage;
+    psFunction->radiusHit = (uint16_t)radiusHit;
 
     //increment the number of upgrades
     //numWeaponUpgrades++;
@@ -646,7 +646,7 @@ static BOOL loadStructureUpgradeFunction(const char *pData)
 {
     STRUCTURE_UPGRADE_FUNCTION  *psFunction;
     char						functionName[MAX_STR_LENGTH];
-    UDWORD						armour, body, resistance;
+    uint32_t						armour, body, resistance;
 
     //allocate storage
     psFunction = (STRUCTURE_UPGRADE_FUNCTION *)malloc(sizeof
@@ -675,10 +675,10 @@ static BOOL loadStructureUpgradeFunction(const char *pData)
     //allocate storage for the name
     storeName((FUNCTION *)psFunction, functionName);
 
-    //check none of the %increases are over UWORD max
-    if (armour > UWORD_MAX ||
-            body > UWORD_MAX ||
-            resistance > UWORD_MAX)
+    //check none of the %increases are over uint16_t max
+    if (armour > uint16_t_MAX ||
+            body > uint16_t_MAX ||
+            resistance > uint16_t_MAX)
     {
         debug( LOG_ERROR, "A percentage increase for Structure Upgrade function is too large" );
 
@@ -686,9 +686,9 @@ static BOOL loadStructureUpgradeFunction(const char *pData)
     }
 
     //copy the data across
-    psFunction->armour = (UWORD)armour;
-    psFunction->body = (UWORD)body;
-    psFunction->resistance = (UWORD)resistance;
+    psFunction->armour = (uint16_t)armour;
+    psFunction->body = (uint16_t)body;
+    psFunction->resistance = (uint16_t)resistance;
 
     return true;
 }
@@ -697,7 +697,7 @@ static BOOL loadWallDefenceUpgradeFunction(const char *pData)
 {
     WALLDEFENCE_UPGRADE_FUNCTION  *psFunction;
     char						functionName[MAX_STR_LENGTH];
-    UDWORD						armour, body;
+    uint32_t						armour, body;
 
     //allocate storage
     psFunction = (WALLDEFENCE_UPGRADE_FUNCTION *)malloc(sizeof
@@ -726,9 +726,9 @@ static BOOL loadWallDefenceUpgradeFunction(const char *pData)
     //allocate storage for the name
     storeName((FUNCTION *)psFunction, functionName);
 
-    //check none of the %increases are over UWORD max
-    if (armour > UWORD_MAX ||
-            body > UWORD_MAX)
+    //check none of the %increases are over uint16_t max
+    if (armour > uint16_t_MAX ||
+            body > uint16_t_MAX)
     {
         debug( LOG_ERROR, "A percentage increase for WallDefence Upgrade function is too large" );
 
@@ -736,8 +736,8 @@ static BOOL loadWallDefenceUpgradeFunction(const char *pData)
     }
 
     //copy the data across
-    psFunction->armour = (UWORD)armour;
-    psFunction->body = (UWORD)body;
+    psFunction->armour = (uint16_t)armour;
+    psFunction->body = (uint16_t)body;
 
     return true;
 }
@@ -865,7 +865,7 @@ static BOOL loadRepairDroidFunction(const char *pData)
 static BOOL loadWallFunction(const char *pData)
 {
     WALL_FUNCTION			*psFunction;
-//	UDWORD					i;
+//	uint32_t					i;
     char					functionName[MAX_STR_LENGTH];
     char					structureName[MAX_STR_LENGTH];
 //	STRUCTURE_STATS			*pStructStat;
@@ -911,7 +911,7 @@ static BOOL loadWallFunction(const char *pData)
     return true;
 }
 
-void productionUpgrade(FUNCTION *pFunction, UBYTE player)
+void productionUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     PRODUCTION_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -947,7 +947,7 @@ void productionUpgrade(FUNCTION *pFunction, UBYTE player)
     }
 }
 
-void researchUpgrade(FUNCTION *pFunction, UBYTE player)
+void researchUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     RESEARCH_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -960,7 +960,7 @@ void researchUpgrade(FUNCTION *pFunction, UBYTE player)
     }
 }
 
-void repairFacUpgrade(FUNCTION *pFunction, UBYTE player)
+void repairFacUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     REPAIR_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -973,7 +973,7 @@ void repairFacUpgrade(FUNCTION *pFunction, UBYTE player)
     }
 }
 
-void powerUpgrade(FUNCTION *pFunction, UBYTE player)
+void powerUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     POWER_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -986,7 +986,7 @@ void powerUpgrade(FUNCTION *pFunction, UBYTE player)
     }
 }
 
-void reArmUpgrade(FUNCTION *pFunction, UBYTE player)
+void reArmUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     REARM_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1001,7 +1001,7 @@ void reArmUpgrade(FUNCTION *pFunction, UBYTE player)
 
 void structureBodyUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding)
 {
-    UWORD	increase, prevBaseBody, newBaseBody;
+    uint16_t	increase, prevBaseBody, newBaseBody;
 
     switch(psBuilding->pStructureType->type)
     {
@@ -1016,22 +1016,22 @@ void structureBodyUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding)
             break;
     }
 
-    prevBaseBody = (UWORD)structureBody(psBuilding);
-    //newBaseBody = (UWORD)(psBuilding->pStructureType->bodyPoints + (psBuilding->
+    prevBaseBody = (uint16_t)structureBody(psBuilding);
+    //newBaseBody = (uint16_t)(psBuilding->pStructureType->bodyPoints + (psBuilding->
     //	pStructureType->bodyPoints * increase) / 100);
-    newBaseBody = (UWORD)(structureBaseBody(psBuilding) +
+    newBaseBody = (uint16_t)(structureBaseBody(psBuilding) +
                           (structureBaseBody(psBuilding) * increase) / 100);
 
     if (newBaseBody > prevBaseBody)
     {
-        psBuilding->body = (UWORD)((psBuilding->body * newBaseBody) / prevBaseBody);
+        psBuilding->body = (uint16_t)((psBuilding->body * newBaseBody) / prevBaseBody);
         //psBuilding->baseBodyPoints = newBaseBody;
     }
 }
 
 void structureArmourUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding)
 {
-    UWORD	increase, prevBaseArmour, newBaseArmour, i, j;
+    uint16_t	increase, prevBaseArmour, newBaseArmour, i, j;
 
     switch(psBuilding->pStructureType->type)
     {
@@ -1046,8 +1046,8 @@ void structureArmourUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding)
             break;
     }
 
-    prevBaseArmour = (UWORD)structureArmour(psBuilding->pStructureType, psBuilding->player);
-    newBaseArmour = (UWORD)(psBuilding->pStructureType->armourValue + (psBuilding->
+    prevBaseArmour = (uint16_t)structureArmour(psBuilding->pStructureType, psBuilding->player);
+    newBaseArmour = (uint16_t)(psBuilding->pStructureType->armourValue + (psBuilding->
                             pStructureType->armourValue * increase) / 100);
 
     if (newBaseArmour > prevBaseArmour)
@@ -1057,7 +1057,7 @@ void structureArmourUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding)
         {
             for (j = 0; j < WC_NUM_WEAPON_CLASSES; j++)
             {
-                psBuilding->armour[i][j] = (UWORD)((psBuilding->armour[i][j] * newBaseArmour) / prevBaseArmour);
+                psBuilding->armour[i][j] = (uint16_t)((psBuilding->armour[i][j] * newBaseArmour) / prevBaseArmour);
             }
         }
     }
@@ -1065,18 +1065,18 @@ void structureArmourUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding)
 
 void structureResistanceUpgrade(FUNCTION *pFunction, STRUCTURE *psBuilding)
 {
-    UWORD	increase, prevBaseResistance, newBaseResistance;
+    uint16_t	increase, prevBaseResistance, newBaseResistance;
 
     increase = ((STRUCTURE_UPGRADE_FUNCTION *)pFunction)->resistance;
 
-    prevBaseResistance = (UWORD)structureResistance(psBuilding->pStructureType,
+    prevBaseResistance = (uint16_t)structureResistance(psBuilding->pStructureType,
                          psBuilding->player);
-    newBaseResistance = (UWORD)(psBuilding->pStructureType->resistance + (psBuilding
+    newBaseResistance = (uint16_t)(psBuilding->pStructureType->resistance + (psBuilding
                                 ->pStructureType->resistance * increase) / 100);
 
     if (newBaseResistance > prevBaseResistance)
     {
-        psBuilding->resistance = (UWORD)((psBuilding->resistance * newBaseResistance) /
+        psBuilding->resistance = (uint16_t)((psBuilding->resistance * newBaseResistance) /
                                          prevBaseResistance);
     }
 }
@@ -1085,7 +1085,7 @@ void structureProductionUpgrade(STRUCTURE *psBuilding)
 {
     FACTORY						*pFact;
     PRODUCTION_FUNCTION			*pFactFunc;
-    UDWORD						type, baseOutput, i;
+    uint32_t						type, baseOutput, i;
     STRUCTURE_STATS             *psStat;
 
     switch(psBuilding->pStructureType->type)
@@ -1124,7 +1124,7 @@ void structureProductionUpgrade(STRUCTURE *psBuilding)
         }
     }
 
-    pFact->productionOutput = (UBYTE)(baseOutput + (pFactFunc->productionOutput *
+    pFact->productionOutput = (uint8_t)(baseOutput + (pFactFunc->productionOutput *
                                       asProductionUpgrade[psBuilding->player][type].modifier) / 100);
 }
 
@@ -1132,7 +1132,7 @@ void structureResearchUpgrade(STRUCTURE *psBuilding)
 {
     RESEARCH_FACILITY			*pRes = &psBuilding->pFunctionality->researchFacility;
     RESEARCH_FUNCTION			*pResFunc;
-    UDWORD                       baseOutput;
+    uint32_t                       baseOutput;
     STRUCTURE_STATS             *psStat;
 
     //upgrade the research points
@@ -1176,7 +1176,7 @@ void structurePowerUpgrade(STRUCTURE *psBuilding)
 {
     POWER_GEN		*pPowerGen = &psBuilding->pFunctionality->powerGenerator;
     POWER_GEN_FUNCTION	*pPGFunc = (POWER_GEN_FUNCTION *)psBuilding->pStructureType->asFuncList[0];
-    UDWORD			multiplier;
+    uint32_t			multiplier;
     STRUCTURE_STATS		*psStat;
 
     ASSERT(pPowerGen != NULL, "Invalid Power Gen pointer");
@@ -1216,17 +1216,17 @@ void structureSensorUpgrade(STRUCTURE *psBuilding)
     //reallocate the sensor range and power since the upgrade
     if (psBuilding->pStructureType->pSensor)
     {
-        psBuilding->sensorRange = (UWORD)sensorRange(psBuilding->pStructureType->
+        psBuilding->sensorRange = (uint16_t)sensorRange(psBuilding->pStructureType->
                                   pSensor, psBuilding->player);
-        psBuilding->sensorPower = (UWORD)sensorPower(psBuilding->pStructureType->
+        psBuilding->sensorPower = (uint16_t)sensorPower(psBuilding->pStructureType->
                                   pSensor, psBuilding->player);
     }
     else
     {
         //give them the default sensor for droids if not
-        psBuilding->sensorRange = (UWORD)sensorRange(asSensorStats +
+        psBuilding->sensorRange = (uint16_t)sensorRange(asSensorStats +
                                   aDefaultSensor[psBuilding->player], psBuilding->player);
-        psBuilding->sensorPower = (UWORD)sensorPower(asSensorStats +
+        psBuilding->sensorPower = (uint16_t)sensorPower(asSensorStats +
                                   aDefaultSensor[psBuilding->player], psBuilding->player);
     }
 }
@@ -1236,7 +1236,7 @@ void structureECMUpgrade(STRUCTURE *psBuilding)
     //reallocate the sensor range and power since the upgrade
     if (psBuilding->pStructureType->pECM)
     {
-        psBuilding->ECMMod = (UWORD)ecmPower(psBuilding->pStructureType->pECM, psBuilding->player);
+        psBuilding->ECMMod = (uint16_t)ecmPower(psBuilding->pStructureType->pECM, psBuilding->player);
     }
     else
     {
@@ -1262,7 +1262,7 @@ void droidECMUpgrade(DROID *psDroid)
 
 void droidBodyUpgrade(FUNCTION *pFunction, DROID *psDroid)
 {
-    UDWORD	increase, prevBaseBody, newBaseBody, base;
+    uint32_t	increase, prevBaseBody, newBaseBody, base;
     DROID   *psCurr;
 
     increase = ((DROIDBODY_UPGRADE_FUNCTION *)pFunction)->body;
@@ -1291,7 +1291,7 @@ void droidBodyUpgrade(FUNCTION *pFunction, DROID *psDroid)
 }
 
 //upgrade the weapon stats for the correct subclass
-void weaponUpgrade(FUNCTION *pFunction, UBYTE player)
+void weaponUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     WEAPON_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1334,7 +1334,7 @@ void weaponUpgrade(FUNCTION *pFunction, UBYTE player)
 }
 
 //upgrade the sensor stats
-void sensorUpgrade(FUNCTION *pFunction, UBYTE player)
+void sensorUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     DROIDSENSOR_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1352,7 +1352,7 @@ void sensorUpgrade(FUNCTION *pFunction, UBYTE player)
 }
 
 //upgrade the repair stats
-void repairUpgrade(FUNCTION *pFunction, UBYTE player)
+void repairUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     DROIDREPAIR_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1366,7 +1366,7 @@ void repairUpgrade(FUNCTION *pFunction, UBYTE player)
 }
 
 //upgrade the repair stats
-void ecmUpgrade(FUNCTION *pFunction, UBYTE player)
+void ecmUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     DROIDECM_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1380,7 +1380,7 @@ void ecmUpgrade(FUNCTION *pFunction, UBYTE player)
 }
 
 //upgrade the repair stats
-void constructorUpgrade(FUNCTION *pFunction, UBYTE player)
+void constructorUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     DROIDCONSTR_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1394,10 +1394,10 @@ void constructorUpgrade(FUNCTION *pFunction, UBYTE player)
 }
 
 //upgrade the body stats
-void bodyUpgrade(FUNCTION *pFunction, UBYTE player)
+void bodyUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     DROIDBODY_UPGRADE_FUNCTION		*pUpgrade;
-    UBYTE							inc;
+    uint8_t							inc;
 
     pUpgrade = (DROIDBODY_UPGRADE_FUNCTION *)pFunction;
 
@@ -1453,7 +1453,7 @@ void bodyUpgrade(FUNCTION *pFunction, UBYTE player)
 }
 
 //upgrade the structure stats for the correct player
-void structureUpgrade(FUNCTION *pFunction, UBYTE player)
+void structureUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     STRUCTURE_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1475,7 +1475,7 @@ void structureUpgrade(FUNCTION *pFunction, UBYTE player)
 }
 
 //upgrade the wall/Defence structure stats for the correct player
-void wallDefenceUpgrade(FUNCTION *pFunction, UBYTE player)
+void wallDefenceUpgrade(FUNCTION *pFunction, uint8_t player)
 {
     WALLDEFENCE_UPGRADE_FUNCTION		*pUpgrade;
 
@@ -1515,7 +1515,7 @@ void upgradeTransporterDroids(DROID *psTransporter,
 
 BOOL FunctionShutDown(void)
 {
-    UDWORD		inc;//, player;
+    uint32_t		inc;//, player;
     FUNCTION	*pFunction, **pStartList = asFunctions;
 
     for (inc=0; inc < numFunctions; inc++)
@@ -1530,7 +1530,7 @@ BOOL FunctionShutDown(void)
     return true;
 }
 
-BOOL loadFunctionStats(const char *pFunctionData, UDWORD bufferSize)
+BOOL loadFunctionStats(const char *pFunctionData, uint32_t bufferSize)
 {
     //array of functions pointers for each load function
     static const LoadFunction pLoadFunction[NUMFUNCTIONS] =
@@ -1558,7 +1558,7 @@ BOOL loadFunctionStats(const char *pFunctionData, UDWORD bufferSize)
     };
 
     const unsigned int totalFunctions = numCR(pFunctionData, bufferSize);
-    UDWORD		i, type;
+    uint32_t		i, type;
     char		FunctionType[MAX_STR_LENGTH];
     FUNCTION	**pStartList;
 

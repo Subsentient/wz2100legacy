@@ -26,11 +26,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define MAXSTRLEN 255
 #endif
 
-extern SDWORD ConsolePlayer;
-extern SDWORD MultiMsgPlayerTo;
-extern SDWORD MultiMsgPlayerFrom;
-extern SDWORD beaconX;
-extern SDWORD beaconY;
+extern int32_t ConsolePlayer;
+extern int32_t MultiMsgPlayerTo;
+extern int32_t MultiMsgPlayerFrom;
+extern int32_t beaconX;
+extern int32_t beaconY;
 extern char ConsoleMsg[MAXSTRLEN];	//Last console message
 extern char MultiplayMsg[MAXSTRLEN];	//Last multiplayer message
 extern STRUCTURE	*psScrCBNewStruct;		//for scrCBStructBuilt callback
@@ -42,11 +42,11 @@ extern DROID		*psScrCBDroidTaken;
 extern DROID		*psScrCBNewDroid;
 extern STRUCTURE	*psScrCBNewDroidFact;
 extern DROID		*psScrCBOrderDroid;
-extern SDWORD		psScrCBOrder;
+extern int32_t		psScrCBOrder;
 
 //Script key event callback
-extern SDWORD		cbPressedMetaKey;
-extern SDWORD		cbPressedKey;
+extern int32_t		cbPressedMetaKey;
+extern int32_t		cbPressedKey;
 
 // deal with unit takover(2)
 extern BOOL scrCBDroidTaken(void);
@@ -115,7 +115,7 @@ extern BOOL scrCBTransporterOffMap(void);
 extern BOOL scrCBTransporterLanded(void);
 
 // tell the scripts when a cluster is no longer valid
-extern SDWORD	scrCBEmptyClusterID;
+extern int32_t	scrCBEmptyClusterID;
 extern BOOL scrCBClusterEmpty( void );
 
 // note when a vtol has finished returning to base - used to vanish
@@ -131,10 +131,10 @@ extern BOOL scrCBPlayerLeft(void);
 
 // alliance offered.
 extern BOOL scrCBAllianceOffer(void);
-extern UDWORD	CBallFrom,CBallTo;
+extern uint32_t	CBallFrom,CBallTo;
 
 // player number that left the game
-extern UDWORD	CBPlayerLeft;
+extern uint32_t	CBPlayerLeft;
 
 //Console callback
 extern BOOL scrCallConsole(void);

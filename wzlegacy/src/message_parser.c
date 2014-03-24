@@ -416,7 +416,7 @@ union yyalloc
 
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
-# define YYSTACK_BYTES(N) \
+# define YYSTACK_int8_tS(N) \
      ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
       + YYSTACK_GAP_MAXIMUM)
 
@@ -929,7 +929,7 @@ int yydebug;
    if the built-in stack extension method is used).
 
    Do not make this value too large; the results are undefined if
-   YYSTACK_ALLOC_MAXIMUM < YYSTACK_BYTES (YYMAXDEPTH)
+   YYSTACK_ALLOC_MAXIMUM < YYSTACK_int8_tS (YYMAXDEPTH)
    evaluated with infinite-precision integer arithmetic.  */
 
 #ifndef YYMAXDEPTH
@@ -1572,7 +1572,7 @@ yysetstate:
         {
             yytype_int16 *yyss1 = yyss;
             union yyalloc *yyptr =
-                        (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
+                        (union yyalloc *) YYSTACK_ALLOC (YYSTACK_int8_tS (yystacksize));
             if (! yyptr)
         {
                 goto yyexhaustedlab;
@@ -1728,8 +1728,8 @@ yyreduce:
                     ++numData;
                 }
 
-                ASSERT(numData <= UBYTE_MAX, "loadViewData: Didn't expect %d (or more) viewData messages (got %u)!", UBYTE_MAX, numData);
-                if (numData > UBYTE_MAX)
+                ASSERT(numData <= uint8_t_MAX, "loadViewData: Didn't expect %d (or more) viewData messages (got %u)!", uint8_t_MAX, numData);
+                if (numData > uint8_t_MAX)
                 {
                     freeViewDataMessageList((yyvsp[(1) - (1)].viewdatamsg));
                     YYABORT;

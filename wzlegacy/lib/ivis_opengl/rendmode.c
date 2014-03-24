@@ -30,7 +30,7 @@ iSurface	*psRendSurface;
 //*
 //******
 
-iSurface *iV_SurfaceCreate(Uint32 flags, int width, int height, int xp, int yp, UBYTE *buffer)
+iSurface *iV_SurfaceCreate(Uint32 flags, int width, int height, int xp, int yp, uint8_t *buffer)
 {
     iSurface *s = malloc(sizeof(iSurface));
 

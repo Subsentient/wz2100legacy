@@ -72,14 +72,14 @@ extern BOOL		multiRequestUp;
 // ////////////////////////////////////////////////////////////////////////////
 // Local Functions
 
-static void resetMultiVisibility(UDWORD player);
+static void resetMultiVisibility(uint32_t player);
 
 // ////////////////////////////////////////////////////////////////////////////
 // Wait For Players
 
-BOOL intDisplayMultiJoiningStatus(UBYTE joinCount)
+BOOL intDisplayMultiJoiningStatus(uint8_t joinCount)
 {
-    UDWORD			x,y,w,h;
+    uint32_t			x,y,w,h;
     char			sTmp[6];
 
     w = RET_FORMWIDTH;
@@ -111,9 +111,9 @@ BOOL intDisplayMultiJoiningStatus(UBYTE joinCount)
 ** @param player -- the one we need to clear
 ** @param quietly -- true means without any visible effects
 */
-void clearPlayer(UDWORD player,BOOL quietly)
+void clearPlayer(uint32_t player,BOOL quietly)
 {
-    UDWORD			i;
+    uint32_t			i;
     STRUCTURE		*psStruct,*psNext;
 
     debug(LOG_NET, "R.I.P. %s (%u). quietly is %s", getPlayerName(player), player, quietly ? "true":"false");
@@ -165,9 +165,9 @@ void clearPlayer(UDWORD player,BOOL quietly)
 }
 
 // Reset visibilty, so a new player can't see the old stuff!!
-static void resetMultiVisibility(UDWORD player)
+static void resetMultiVisibility(uint32_t player)
 {
-    UDWORD		owned;
+    uint32_t		owned;
     DROID		*pDroid;
     STRUCTURE	*pStruct;
 
@@ -194,7 +194,7 @@ static void resetMultiVisibility(UDWORD player)
 
 // ////////////////////////////////////////////////////////////////////////////
 // A remote player has left the game
-BOOL MultiPlayerLeave(UDWORD playerIndex)
+BOOL MultiPlayerLeave(uint32_t playerIndex)
 {
     char	buf[255] = {'\0'};
 
@@ -244,7 +244,7 @@ BOOL MultiPlayerLeave(UDWORD playerIndex)
 
 // ////////////////////////////////////////////////////////////////////////////
 // A Remote Player has joined the game.
-BOOL MultiPlayerJoin(UDWORD playerIndex)
+BOOL MultiPlayerJoin(uint32_t playerIndex)
 {
     if(widgGetFromID(psWScreen,IDRET_FORM))	// if ingame.
     {
@@ -382,9 +382,9 @@ bool recvDataCheck(void)
 }
 // ////////////////////////////////////////////////////////////////////////////
 // Setup Stuff for a new player.
-void setupNewPlayer(UDWORD player)
+void setupNewPlayer(uint32_t player)
 {
-    UDWORD i;
+    uint32_t i;
     char buf[255];
 
     ingame.PingTimes[player] = 0;					// Reset ping time

@@ -669,7 +669,7 @@ iIMDShape *iV_ProcessIMD( const char **ppFileData, const char *FileDataEnd )
     char buffer[PATH_MAX], texfile[PATH_MAX];
     int cnt, nlevels;
     iIMDShape *shape, *psShape;
-    UDWORD level;
+    uint32_t level;
     Sint32 imd_version;
     Uint32 imd_flags; // FIXME UNUSED
     BOOL bTextured = false;

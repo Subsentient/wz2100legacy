@@ -35,11 +35,11 @@ typedef struct PROJECTILE
     /* Use only simple object elements */
     SIMPLE_ELEMENTS( struct PROJECTILE );
 
-    UBYTE           state;                  ///< current projectile state
+    uint8_t           state;                  ///< current projectile state
 
-    UBYTE           player;                 ///< needed because damange and radDamage vary from base stat per player because of upgrades
+    uint8_t           player;                 ///< needed because damange and radDamage vary from base stat per player because of upgrades
 
-    UBYTE           bVisible;               ///< whether the selected player should see the projectile
+    uint8_t           bVisible;               ///< whether the selected player should see the projectile
 
     WEAPON_STATS   *psWStats;               ///< firing weapon stats
 
@@ -48,13 +48,13 @@ typedef struct PROJECTILE
     BASE_OBJECT   **psDamaged;              ///< the targets that have already been dealt damage to (don't damage the same target twice)
     unsigned        psNumDamaged;
 
-    UDWORD          startX, startY;         ///< Where projectile started
-    UDWORD          tarX, tarY;             ///< The target coordinates
-    SDWORD          vXY, vZ;                ///< axis velocities
-    UDWORD          srcHeight;              ///< Height of origin
-    SDWORD          altChange;              ///< Change in altitude
-    UDWORD          born;
-    UDWORD          died;
+    uint32_t          startX, startY;         ///< Where projectile started
+    uint32_t          tarX, tarY;             ///< The target coordinates
+    int32_t          vXY, vZ;                ///< axis velocities
+    uint32_t          srcHeight;              ///< Height of origin
+    int32_t          altChange;              ///< Change in altitude
+    uint32_t          born;
+    uint32_t          died;
 } PROJECTILE;
 
 #endif // __INCLUDED_PROJECTILEDEF_H__

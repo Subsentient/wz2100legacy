@@ -25,7 +25,7 @@ extern BOOL intAddInGameOptions			(void);
 extern BOOL intCloseInGameOptions		(BOOL bPutUpLoadSave, BOOL bResetMissionWidgets);
 extern void intCloseInGameOptionsNoAnim	(BOOL bResetMissionWidgets);
 extern BOOL intRunInGameOptions			(void);
-extern void intProcessInGameOptions		(UDWORD);
+extern void intProcessInGameOptions		(uint32_t);
 extern void intAddInGamePopup(void);
 
 // status bools.

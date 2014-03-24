@@ -20,9 +20,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "lib/framework/types.h"
 #include "basedef.h"
 
-extern void	avInformOfChange(SDWORD x, SDWORD y);
+extern void	avInformOfChange(int32_t x, int32_t y);
 extern void	avUpdateTiles( void );
-extern UDWORD avGetObjLightLevel( BASE_OBJECT *psObj, UDWORD origLevel);
+extern uint32_t avGetObjLightLevel( BASE_OBJECT *psObj, uint32_t origLevel);
 extern void	setRevealStatus( BOOL val );
 extern BOOL	getRevealStatus( void );
 extern void	preProcessVisibility( void );

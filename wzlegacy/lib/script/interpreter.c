@@ -38,7 +38,7 @@ static INTERP_VAL	*varEnvironment[MAX_FUNC_CALLS];		//environments for local var
 
 typedef struct
 {
-    UDWORD CallerIndex;
+    uint32_t CallerIndex;
     INTERP_VAL *ReturnAddress;
 } ReturnAddressStack_t;
 
@@ -68,7 +68,7 @@ static inline BOOL retStackIsFull(void);
  * \param ReturnAddress Address to return to
  * \return False on failure (stack full)
  */
-static BOOL retStackPush(UDWORD CallerIndex, INTERP_VAL *ReturnAddress);
+static BOOL retStackPush(uint32_t CallerIndex, INTERP_VAL *ReturnAddress);
 
 /**
  * Pop an address/event pair from the return address stack
@@ -77,18 +77,18 @@ static BOOL retStackPush(UDWORD CallerIndex, INTERP_VAL *ReturnAddress);
  * \param ReturnAddress Address to return to
  * \return False on failure (stack empty)
  */
-static BOOL retStackPop(UDWORD *CallerIndex, INTERP_VAL **ReturnAddress);
+static BOOL retStackPop(uint32_t *CallerIndex, INTERP_VAL **ReturnAddress);
 
 /* Creates a new local var environment for a new function call */
-static inline void createVarEnvironment(SCRIPT_CONTEXT *psContext, UDWORD eventIndex);
+static inline void createVarEnvironment(SCRIPT_CONTEXT *psContext, uint32_t eventIndex);
 
 /* Destroy all created variable environments */
 static void cleanupVarEnvironments(void);
 
-static inline void destroyVarEnvironment(SCRIPT_CONTEXT *psContext, UDWORD envIndex, UDWORD eventIndex);
+static inline void destroyVarEnvironment(SCRIPT_CONTEXT *psContext, uint32_t envIndex, uint32_t eventIndex);
 
 /* The size of each opcode */
-SDWORD aOpSize[] =
+int32_t aOpSize[] =
 {
     2,	// OP_PUSH | type, value
     2,	// OP_PUSHREF | type, value
@@ -186,7 +186,7 @@ BOOL interpProcessorActive(void)
 }
 
 /* Find the value store for a global variable */
-static inline INTERP_VAL *interpGetVarData(VAL_CHUNK *psGlobals, UDWORD index)
+static inline INTERP_VAL *interpGetVarData(VAL_CHUNK *psGlobals, uint32_t index)
 {
     VAL_CHUNK	*psChunk;
 
@@ -204,12 +204,12 @@ static inline INTERP_VAL *interpGetVarData(VAL_CHUNK *psGlobals, UDWORD index)
 // get the array data for an array operation
 static BOOL interpGetArrayVarData(INTERP_VAL **pip, VAL_CHUNK *psGlobals, SCRIPT_CODE *psProg, INTERP_VAL **ppsVal)
 {
-    SDWORD		i, dimensions, vals[VAR_MAX_DIMENSIONS];
-    UBYTE		*elements; //[VAR_MAX_DIMENSIONS]
-    SDWORD		size, val;//, elementDWords;
-//	UBYTE		*pElem;
+    int32_t		i, dimensions, vals[VAR_MAX_DIMENSIONS];
+    uint8_t		*elements; //[VAR_MAX_DIMENSIONS]
+    int32_t		size, val;//, elementDWords;
+//	uint8_t		*pElem;
     INTERP_VAL	*InstrPointer = *pip;
-    UDWORD		base, index;
+    uint32_t		base, index;
 
     // get the base index of the array
     base = InstrPointer->v.ival & ARRAY_BASE_MASK;
@@ -291,22 +291,22 @@ BOOL interpInitialise(void)
 }
 
 /* Run a compiled script */
-BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType, UDWORD index, UDWORD offset)
+BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType, uint32_t index, uint32_t offset)
 {
-    UDWORD			data;
+    uint32_t			data;
     OPCODE			opcode;
     INTERP_VAL		sVal, *psVar,*InstrPointer;
     VAL_CHUNK		*psGlobals;
-    UDWORD			numGlobals = 0;
+    uint32_t			numGlobals = 0;
     INTERP_VAL		*pCodeStart, *pCodeEnd, *pCodeBase;
     SCRIPT_FUNC		scriptFunc = 0;
     SCRIPT_VARFUNC	scriptVarFunc = 0;
     SCRIPT_CODE		*psProg;
-    SDWORD			instructionCount = 0;
+    int32_t			instructionCount = 0;
 
-    UDWORD			CurEvent = 0;
+    uint32_t			CurEvent = 0;
     BOOL			bStop = false, bEvent = false;
-    UDWORD			callDepth = 0;
+    uint32_t			callDepth = 0;
     BOOL			bTraceOn=false;		//enable to debug function/event calls
 
     ASSERT( psContext != NULL,
@@ -431,7 +431,7 @@ BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType, UDWORD i
 
             TRCPRINTF( "%-6d  ", (int)(InstrPointer - psProg->pCode) );
             opcode = (OPCODE)(InstrPointer->v.ival >> OPCODE_SHIFT);			//get opcode
-            data = (SDWORD)(InstrPointer->v.ival & OPCODE_DATAMASK);		//get data - only used with packed opcodes
+            data = (int32_t)(InstrPointer->v.ival & OPCODE_DATAMASK);		//get data - only used with packed opcodes
             switch (opcode)
             {
                     /* Custom function call */
@@ -719,7 +719,7 @@ BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType, UDWORD i
                             "wrong value type passed for OP_JUMPFALSE: %d", InstrPointer->type);
 
                     TRCPRINTF( "JUMPFALSE   %d (%d)",
-                               (SWORD)data, (int)(InstrPointer - psProg->pCode + (SWORD)data) );
+                               (int16_t)data, (int)(InstrPointer - psProg->pCode + (int16_t)data) );
 
                     if (!stackPop(&sVal))
                     {
@@ -730,7 +730,7 @@ BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType, UDWORD i
                     {
                         // Do the jump
                         TRCPRINTF( " - done -\n" );
-                        InstrPointer += (SWORD)data;
+                        InstrPointer += (int16_t)data;
                         if (InstrPointer < pCodeStart || InstrPointer > pCodeEnd)
                         {
                             debug( LOG_ERROR, "interpRunScript: jump out of range" );
@@ -748,9 +748,9 @@ BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType, UDWORD i
                             "wrong value type passed for OP_JUMP: %d", InstrPointer->type);
 
                     TRCPRINTF( "JUMP        %d (%d)\n",
-                               (SWORD)data, (int)(InstrPointer - psProg->pCode + (SWORD)data) );
+                               (int16_t)data, (int)(InstrPointer - psProg->pCode + (int16_t)data) );
                     // Do the jump
-                    InstrPointer += (SWORD)data;
+                    InstrPointer += (int16_t)data;
                     if (InstrPointer < pCodeStart || InstrPointer > pCodeEnd)
                     {
                         debug( LOG_ERROR, "interpRunScript: jump out of range" );
@@ -812,7 +812,7 @@ BOOL interpRunScript(SCRIPT_CONTEXT *psContext, INTERP_RUNTYPE runType, UDWORD i
 
                     InstrPointer += aOpSize[opcode];
                     // tell the event system to reschedule this event
-                    if (!eventAddPauseTrigger(psContext, index, (UDWORD)(InstrPointer - pCodeBase), data))	//only original caller can be paused since we pass index and not CurEvent (not sure if that's what we want)
+                    if (!eventAddPauseTrigger(psContext, index, (uint32_t)(InstrPointer - pCodeBase), data))	//only original caller can be paused since we pass index and not CurEvent (not sure if that's what we want)
                     {
                         debug( LOG_ERROR, "interpRunScript: could not add pause trigger" );
                         goto exit_with_error;
@@ -958,7 +958,7 @@ exit_with_error:
 void scriptSetTypeEquiv(TYPE_EQUIV *psTypeTab)
 {
 #ifdef DEBUG
-    SDWORD		i;
+    int32_t		i;
 
     for(i=0; psTypeTab[i].base != 0; i++)
     {
@@ -1048,10 +1048,10 @@ BOOL interpTraceOff(void)
 
 /* Call stack stuff */
 static ReturnAddressStack_t retStack[MAX_FUNC_CALLS]; // Primitive stack of return addresses
-static SDWORD retStackPos = -1; // Current Position, always points to the last valid element
+static int32_t retStackPos = -1; // Current Position, always points to the last valid element
 
 
-UDWORD retStackCallDepth(void)
+uint32_t retStackCallDepth(void)
 {
     ASSERT(retStackPos + 1 >= 0 && retStackPos + 1 < MAX_FUNC_CALLS,
            "retStackCallDepth: wrong call depth: %d", retStackPos + 1);
@@ -1086,7 +1086,7 @@ static inline BOOL retStackIsFull(void)
 }
 
 
-static BOOL retStackPush(UDWORD CallerIndex, INTERP_VAL *ReturnAddress)
+static BOOL retStackPush(uint32_t CallerIndex, INTERP_VAL *ReturnAddress)
 {
     if (retStackIsFull())
     {
@@ -1104,7 +1104,7 @@ static BOOL retStackPush(UDWORD CallerIndex, INTERP_VAL *ReturnAddress)
 }
 
 
-static BOOL retStackPop(UDWORD *CallerIndex, INTERP_VAL **ReturnAddress)
+static BOOL retStackPop(uint32_t *CallerIndex, INTERP_VAL **ReturnAddress)
 {
     if (retStackIsEmpty())
     {
@@ -1125,7 +1125,7 @@ static BOOL retStackPop(UDWORD *CallerIndex, INTERP_VAL **ReturnAddress)
 /* Output script call stack trace */
 void scrOutputCallTrace(code_part part)
 {
-    SDWORD i;
+    int32_t i;
     const char *pEvent;
 
     debug(part, " *** Script call trace: ***");
@@ -1166,10 +1166,10 @@ void scrOutputCallTrace(code_part part)
 }
 
 /* create a new local var environment for a new function call */
-static inline void createVarEnvironment(SCRIPT_CONTEXT *psContext, UDWORD eventIndex)
+static inline void createVarEnvironment(SCRIPT_CONTEXT *psContext, uint32_t eventIndex)
 {
-    UDWORD i, callDepth = retStackCallDepth();
-    UDWORD numEventVars = psContext->psCode->numLocalVars[eventIndex];
+    uint32_t i, callDepth = retStackCallDepth();
+    uint32_t numEventVars = psContext->psCode->numLocalVars[eventIndex];
 
     if (numEventVars > 0)
     {
@@ -1195,10 +1195,10 @@ static inline void createVarEnvironment(SCRIPT_CONTEXT *psContext, UDWORD eventI
     }
 }
 
-static inline void destroyVarEnvironment(SCRIPT_CONTEXT *psContext, UDWORD envIndex, UDWORD eventIndex)
+static inline void destroyVarEnvironment(SCRIPT_CONTEXT *psContext, uint32_t envIndex, uint32_t eventIndex)
 {
-    UDWORD i;
-    UDWORD numEventVars = 0;
+    uint32_t i;
+    uint32_t numEventVars = 0;
 
     if(psContext != NULL)
     {
@@ -1225,7 +1225,7 @@ static inline void destroyVarEnvironment(SCRIPT_CONTEXT *psContext, UDWORD envIn
 /* Destroy all created variable environments */
 static void cleanupVarEnvironments(void)
 {
-    UDWORD i;
+    uint32_t i;
 
     for (i = 0; i < retStackCallDepth(); i++)
     {

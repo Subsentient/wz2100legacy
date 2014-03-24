@@ -45,28 +45,28 @@ BOOL allocPlayerPower(void);
 void clearPlayerPower(void);
 
 /** Check the available power. */
-BOOL checkPower(UDWORD player, UDWORD quantity);
+BOOL checkPower(uint32_t player, uint32_t quantity);
 
 /** Subtract the power required. */
-BOOL usePower(UDWORD player, UDWORD quantity);
+BOOL usePower(uint32_t player, uint32_t quantity);
 
 /** Return the power when a structure/droid is deliberately destroyed. */
-void addPower(UDWORD player, UDWORD quantity);
+void addPower(uint32_t player, uint32_t quantity);
 
 /** Update current power based on what was extracted during the last cycle and what Power Generators exist. */
-void updatePlayerPower(UDWORD player);
+void updatePlayerPower(uint32_t player);
 
 /** Used in multiplayer to force power levels. */
-void setPower(UDWORD player, UDWORD avail);
+void setPower(uint32_t player, uint32_t avail);
 
 /** Get the amount of power current held by the given player. */
-UDWORD getPower(UDWORD player);
+uint32_t getPower(uint32_t player);
 
 /** Resets the power levels for all players when power is turned back on. */
 void powerCalc(BOOL on);
 
 /** Sets the initial value for the power. */
-void setPlayerPower(UDWORD power, UDWORD player);
+void setPlayerPower(uint32_t power, uint32_t player);
 
 /** Temp function to give all players some power when a new game has been loaded. */
 void newGameInitPower(void);

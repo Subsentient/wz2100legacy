@@ -41,7 +41,7 @@ typedef struct _val_chunk
 /* One chunk of event links for a script context */
 typedef struct _link_chunk
 {
-    SWORD			aLinks[CONTEXT_LINKS];
+    int16_t			aLinks[CONTEXT_LINKS];
 
     struct _link_chunk *psNext;
 } LINK_CHUNK;
@@ -59,9 +59,9 @@ typedef struct _script_context
 {
     SCRIPT_CODE		*psCode;		// The actual script to run
     VAL_CHUNK		*psGlobals;		// The objects copy of the global variables
-    SDWORD			triggerCount;	// Number of currently active triggers
+    int32_t			triggerCount;	// Number of currently active triggers
     CONTEXT_RELEASE		release;		// Whether to release the context when there are no triggers
-    SWORD			id;
+    int16_t			id;
 
     struct _script_context *psNext;
 } SCRIPT_CONTEXT;
@@ -73,12 +73,12 @@ typedef struct _script_context
  */
 typedef struct _active_trigger
 {
-    UDWORD				testTime;
+    uint32_t				testTime;
     SCRIPT_CONTEXT		*psContext;
-    SWORD				type;			// enum - TRIGGER_TYPE
-    SWORD				trigger;
-    UWORD				event;
-    UWORD				offset;
+    int16_t				type;			// enum - TRIGGER_TYPE
+    int16_t				trigger;
+    uint16_t				event;
+    uint16_t				offset;
     BOOL				deactivated;	// Whether the trigger is marked for deletion
     struct _active_trigger *psNext;
 } ACTIVE_TRIGGER;
@@ -140,18 +140,18 @@ extern BOOL eventInitialise(void);
 extern void eventShutDown(void);
 
 // add a TR_PAUSE trigger to the event system.
-extern BOOL eventAddPauseTrigger(SCRIPT_CONTEXT *psContext, UDWORD event, UDWORD offset,
-                                 UDWORD time);
+extern BOOL eventAddPauseTrigger(SCRIPT_CONTEXT *psContext, uint32_t event, uint32_t offset,
+                                 uint32_t time);
 
 // Load a trigger into the system from a save game
-extern BOOL eventLoadTrigger(UDWORD time, SCRIPT_CONTEXT *psContext,
-                             SDWORD type, SDWORD trigger, UDWORD event, UDWORD offset);
+extern BOOL eventLoadTrigger(uint32_t time, SCRIPT_CONTEXT *psContext,
+                             int32_t type, int32_t trigger, uint32_t event, uint32_t offset);
 
 //resets the event timer - updateTime
-extern void eventTimeReset(UDWORD initTime);
+extern void eventTimeReset(uint32_t initTime);
 
-extern const char *eventGetEventID(SCRIPT_CODE *psCode, SDWORD event);
-extern const char *eventGetTriggerID(SCRIPT_CODE *psCode, SDWORD trigger);
+extern const char *eventGetEventID(SCRIPT_CODE *psCode, int32_t event);
+extern const char *eventGetTriggerID(SCRIPT_CODE *psCode, int32_t trigger);
 
 #endif
 
