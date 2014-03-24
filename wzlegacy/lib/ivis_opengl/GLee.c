@@ -19849,7 +19849,7 @@ GLEEPFNWGLQUERYGENLOCKMAXSOURCEDELAYI3DPROC GLeeFuncPtr_wglQueryGenlockMaxSource
 #ifdef __GLEE_WGL_I3D_image_buffer
 #ifndef GLEE_C_DEFINED_wglCreateImageBufferI3D
 #define GLEE_C_DEFINED_wglCreateImageBufferI3D
-LPVOID __stdcall GLee_Lazy_wglCreateImageBufferI3D(HDC hDC, int32_t dwSize, UINT uFlags)
+LPVOID __stdcall GLee_Lazy_wglCreateImageBufferI3D(HDC hDC, DWORD dwSize, UINT uFlags)
 {
     if (GLeeInit())
     {
@@ -19873,7 +19873,7 @@ GLEEPFNWGLDESTROYIMAGEBUFFERI3DPROC GLeeFuncPtr_wglDestroyImageBufferI3D=GLee_La
 #endif
 #ifndef GLEE_C_DEFINED_wglAssociateImageBufferEventsI3D
 #define GLEE_C_DEFINED_wglAssociateImageBufferEventsI3D
-BOOL __stdcall GLee_Lazy_wglAssociateImageBufferEventsI3D(HDC hDC, const HANDLE *pEvent, const LPVOID *pAddress, const int32_t *pSize, UINT count)
+BOOL __stdcall GLee_Lazy_wglAssociateImageBufferEventsI3D(HDC hDC, const HANDLE *pEvent, const LPVOID *pAddress, const DWORD *pSize, UINT count)
 {
     if (GLeeInit())
     {
@@ -20412,7 +20412,7 @@ GLEEPFNWGLENDFRAMETRACKINGI3DPROC GLeeFuncPtr_wglEndFrameTrackingI3D=GLee_Lazy_w
 #endif
 #ifndef GLEE_C_DEFINED_wglQueryFrameTrackingI3D
 #define GLEE_C_DEFINED_wglQueryFrameTrackingI3D
-BOOL __stdcall GLee_Lazy_wglQueryFrameTrackingI3D(int32_t *pFrameCount, int32_t *pMissedFrames, float *pLastMissedUsage)
+BOOL __stdcall GLee_Lazy_wglQueryFrameTrackingI3D(DWORD *pFrameCount, DWORD *pMissedFrames, float *pLastMissedUsage)
 {
     if (GLeeInit())
     {

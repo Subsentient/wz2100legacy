@@ -210,7 +210,7 @@ BOOL BfdGetSymFromAddr(bfd *abfd, asymbol **syms, long symcount, int32_t dwAddre
 }
 
 static
-BOOL BfdGetLineFromAddr(bfd *abfd, asymbol **syms, long symcount, int32_t dwAddress,  LPTSTR lpFileName, int32_t nSize, LPint32_t lpLineNumber)
+BOOL BfdGetLineFromAddr(bfd *abfd, asymbol **syms, long symcount, int32_t dwAddress,  LPTSTR lpFileName, int32_t nSize, LPDWORD lpLineNumber)
 {
     HMODULE hModule;
     struct find_handle info;
@@ -403,11 +403,11 @@ BOOL WINAPI j_StackWalk(
     }
 }
 
-typedef BOOL (WINAPI *PFNSYMGETSYMFROMADDR)(HANDLE, int32_t, LPint32_t, PIMAGEHLP_SYMBOL);
+typedef BOOL (WINAPI *PFNSYMGETSYMFROMADDR)(HANDLE, int32_t, LPDWORD, PIMAGEHLP_SYMBOL);
 static PFNSYMGETSYMFROMADDR pfnSymGetSymFromAddr = NULL;
 
 static
-BOOL WINAPI j_SymGetSymFromAddr(HANDLE hProcess, int32_t Address, Pint32_t Displacement, PIMAGEHLP_SYMBOL Symbol)
+BOOL WINAPI j_SymGetSymFromAddr(HANDLE hProcess, int32_t Address, PDWORD Displacement, PIMAGEHLP_SYMBOL Symbol)
 {
     if(
         (hModule_Imagehlp || (hModule_Imagehlp = LoadLibrary(_T("IMAGEHLP.DLL")))) &&
@@ -422,11 +422,11 @@ BOOL WINAPI j_SymGetSymFromAddr(HANDLE hProcess, int32_t Address, Pint32_t Displ
     }
 }
 
-typedef BOOL (WINAPI *PFNSYMGETLINEFROMADDR)(HANDLE, int32_t, LPint32_t, PIMAGEHLP_LINE);
+typedef BOOL (WINAPI *PFNSYMGETLINEFROMADDR)(HANDLE, int32_t, LPDWORD, PIMAGEHLP_LINE);
 static PFNSYMGETLINEFROMADDR pfnSymGetLineFromAddr = NULL;
 
 static
-BOOL WINAPI j_SymGetLineFromAddr(HANDLE hProcess, int32_t dwAddr, Pint32_t pdwDisplacement, PIMAGEHLP_LINE Line)
+BOOL WINAPI j_SymGetLineFromAddr(HANDLE hProcess, int32_t dwAddr, PDWORD pdwDisplacement, PIMAGEHLP_LINE Line)
 {
     if(
         (hModule_Imagehlp || (hModule_Imagehlp = LoadLibrary(_T("IMAGEHLP.DLL")))) &&
@@ -493,7 +493,7 @@ BOOL ImagehlpGetSymFromAddr(HANDLE hProcess, int32_t dwAddress, LPTSTR lpSymName
 }
 
 static
-BOOL ImagehlpGetLineFromAddr(HANDLE hProcess, int32_t dwAddress,  LPTSTR lpFileName, int32_t nSize, LPint32_t lpLineNumber)
+BOOL ImagehlpGetLineFromAddr(HANDLE hProcess, int32_t dwAddress,  LPTSTR lpFileName, int32_t nSize, LPDWORD lpLineNumber)
 {
     IMAGEHLP_LINE Line;
     int32_t dwDisplacement = 0;  // Displacement of the input address, relative to the start of the symbol
@@ -612,10 +612,10 @@ BOOL PEGetSymFromAddr(HANDLE hProcess, int32_t dwAddress, LPTSTR lpSymName, int3
             }
 
             {
-                Pint32_t *AddressOfFunctions = alloca(ExportDir.NumberOfFunctions*sizeof(Pint32_t));
+                PDWORD *AddressOfFunctions = alloca(ExportDir.NumberOfFunctions*sizeof(PDWORD));
                 int j;
 
-                if(!ReadProcessMemory(hProcess, (PVOID)((int32_t)hModule + (int32_t)ExportDir.AddressOfFunctions), AddressOfFunctions, ExportDir.NumberOfFunctions*sizeof(Pint32_t), NULL))
+                if(!ReadProcessMemory(hProcess, (PVOID)((int32_t)hModule + (int32_t)ExportDir.AddressOfFunctions), AddressOfFunctions, ExportDir.NumberOfFunctions*sizeof(PDWORD), NULL))
                 {
                     return FALSE;
                 }

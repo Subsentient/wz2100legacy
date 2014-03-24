@@ -2264,7 +2264,7 @@ int NETinit(BOOL bFirstCall)
         }
 
         // Determine major Windows version
-        major_windows_version = LOint8_t(LOint16_t(GetVersion()));
+        major_windows_version = LOBYTE(LOWORD(GetVersion()));
 #endif
 
         for(i = 0; i < MAX_PLAYERS; i++)
