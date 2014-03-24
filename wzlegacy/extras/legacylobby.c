@@ -693,7 +693,10 @@ static int GameCountGames(void)
 	struct _GameTree *Worker = GameTree;
 	int Inc = 0;
 	
-	for (; Worker; Worker = Worker->Next) ++Inc;
+	for (; Worker; Worker = Worker->Next)
+	{
+		if (Worker->Completed) ++Inc;
+	}
 	
 	return Inc;
 }
