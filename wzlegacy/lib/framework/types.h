@@ -45,14 +45,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include <limits.h>
 #include <ctype.h>
 
-/* Basic numeric types */
-typedef uint8_t  uint8_t;
-typedef int8_t   int8_t;
-typedef uint16_t uint16_t;
-typedef int16_t  int16_t;
-typedef uint32_t uint32_t;
-typedef int32_t  int32_t;
-
 /* Numeric size defines */
 #define uint8_t_MAX	UINT8_MAX
 #define int8_t_MIN	INT8_MIN
