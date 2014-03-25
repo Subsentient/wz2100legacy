@@ -8,3 +8,5 @@ nodist_noinst_DATA = \
 		wz2100legacy.o
 CLEANFILES = $(nodist_noinst_DATA)
 endif
+
+EXTRA_DIST = fonts

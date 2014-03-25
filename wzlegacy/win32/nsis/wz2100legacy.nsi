@@ -59,8 +59,7 @@
   ;!define MUI_WELCOMEPAGE_TITLE_3LINES
   !define MUI_WELCOMEPAGE_TEXT \
 "Welcome to the installer for ${APPLICATION_NAME} ${APPLICATION_VERSION}. \
-IMPORTANT: A functional internet connection is required for installation, even if you choose not to install the videos. \
-The fonts required for the game are downloaded over the internet. Click Next to proceed."
+IMPORTANT: A functional internet connection is required for installation of videos."
 
   ;Install pages
   !define MUI_HEADERIMAGE_BITMAP "${TOP_BUILDDIR}\icons\wz2100l_header.bmp"
@@ -130,11 +129,10 @@ SetOutPath "$INSTDIR\music"
   File "${TOP_BUILDDIR}\data\music\track3.ogg"
   File "${TOP_BUILDDIR}\data\music\music.wpl"
 SetOutPath "$INSTDIR\fonts"
-  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/fonts.conf" "fonts.conf"
-  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/DejaVuSans.ttf" "DejaVuSans.ttf"
-  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/DejaVuSans-Bold.ttf" "DejaVuSans-Bold.ttf"
-  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/README" "README"
-  NSISdl::download "${APPLICATION_WEB_SITE}winfonts/LICENSE" "LICENSE"
+  File "${TOP_BUILDDIR}\win32\fonts\fonts.conf"
+  File "${TOP_BUILDDIR}\win32\fonts\DejaVuSans.ttf"
+  File "${TOP_BUILDDIR}\win32\fonts\DejaVuSans-Bold.ttf"
+  File "${TOP_BUILDDIR}\win32\fonts\LICENSE"
   
   ;Shortcuts
   CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
