@@ -1919,7 +1919,7 @@ BOOL recvDestroyFeature()
 // Network File packet processor.
 BOOL recvMapFileRequested()
 {
-    char mapStr[256],mapName[256],fixedname[256];
+    char mapStr[2][256],mapName[256];
     uint32_t player;
 
     PHYSFS_sint64 fileSize_64;
@@ -1941,10 +1941,10 @@ BOOL recvMapFileRequested()
         NetPlay.players[player].needFile = true;
         NetPlay.players[player].wzFile.isCancelled = false;
         NetPlay.players[player].wzFile.isSending = true;
-
+		BOOL Classic = false;
+		
         memset(mapStr,0,256);
         memset(mapName,0,256);
-        memset(fixedname,0,256);
 
         addConsoleMessage("Map was requested: SENDING MAP!",DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 
@@ -1959,21 +1959,23 @@ BOOL recvMapFileRequested()
         // chop off the sk- if required.
         if(strncmp(mapName,"Sk-",3) == 0)
         {
-            sstrcpy(mapStr, &(mapName[3]));
-            sstrcpy(mapName, mapStr);
+			char Tmp[sizeof mapName];
+			sstrcpy(Tmp, mapName + 3);
+            sstrcpy(mapName, Tmp);
         }
 
-        snprintf(mapStr, sizeof(mapStr), "%dc-%s.wz", game.maxPlayers, mapName);
-        snprintf(fixedname, sizeof(fixedname), "maps/%s", mapStr);		//We know maps are in /maps dir...now. fix for linux -Q
-        sstrcpy(mapStr, fixedname);
-        debug(LOG_NET, "Map was requested. Looking for %s", mapStr);
+		/*One for Legacy maps, one for classic WZ maps.*/
+        snprintf(mapStr[0], sizeof(mapStr[0]), "maps/%dc-%s.wzl", game.maxPlayers, mapName);
+        snprintf(mapStr[1], sizeof(mapStr[1]), "maps/%dc-%s.wz", game.maxPlayers, mapName);
+
+        debug(LOG_NET, "Map was requested. Looking for %dc-%s", game.maxPlayers, mapName);
 
         // Checking to see if file is available...
-        pFileHandle = PHYSFS_openRead(mapStr);
-        if (pFileHandle == NULL)
+        if (!(pFileHandle = PHYSFS_openRead(mapStr[0])) && !(Classic = true, pFileHandle = PHYSFS_openRead(mapStr[1])))
         {
-            debug(LOG_ERROR, "Failed to open %s for reading: %s", mapStr, PHYSFS_getLastError());
-            debug(LOG_FATAL, "You have a map (%s) that can't be located.\n\nMake sure it is in the correct directory and or format! (No map packs!)", mapStr);
+            debug(LOG_ERROR, "Failed to open %s for reading: %dc-%s, error %d", game.maxPlayers, mapName, PHYSFS_getLastError());
+            debug(LOG_FATAL, "You have a map (%dc-%s) that can't be located.\n\n"
+				"Make sure it is in the correct directory and or format! (No map packs!)", game.maxPlayers, mapName);
             // NOTE: if we get here, then the game is basically over, The host can't send the file for whatever reason...
             // Which also means, that we can't continue.
             debug(LOG_NET, "***Host has a file issue, and is being forced to quit!***");
@@ -1984,13 +1986,14 @@ BOOL recvMapFileRequested()
 
         // get the file's size.
         fileSize_64 = PHYSFS_fileLength(pFileHandle);
-        debug(LOG_NET, "File is valid, sending [directory: %s] %s to client %u", PHYSFS_getRealDir(mapStr), mapStr, player);
+        debug(LOG_NET, "File is valid, sending [directory: %s] %s to client %u", PHYSFS_getRealDir(mapStr[Classic]),
+				mapStr[Classic], player);
 
         NetPlay.players[player].wzFile.pFileHandle = pFileHandle;
         NetPlay.players[player].wzFile.fileSize_32 = (int32_t) fileSize_64;		//we don't support 64bit int nettypes.
         NetPlay.players[player].wzFile.currPos = 0;
 
-        NETsendFile(mapStr, player);
+        NETsendFile(mapStr[Classic], player);
     }
     return true;
 }
