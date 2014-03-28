@@ -35,7 +35,7 @@ typedef enum
     ERROR_CHEAT,
     ERROR_KICKED,
     ERROR_WRONGVERSION,
-    ERROR_WRONGPASint16_t,				// NOTE WRONG_PASint16_t results in conflict
+    ERROR_WRONGPASSWORD,				// NOTE WRONG_PASSWORD results in conflict
     ERROR_HOSTDROPPED,
     ERROR_WRONGDATA,
     ERROR_UNKNOWNFILEISSUE
@@ -359,9 +359,13 @@ extern void NETsendPlayerInfo(uint32_t index);
 extern void NETSendAllPlayerInfoTo(unsigned int to);
 extern bool NETisCorrectVersion(uint32_t game_version_major, uint32_t game_version_minor);
 extern bool NETgameIsCorrectVersion(GAMESTRUCT *check_game);
-void NET_InitPlayer(int i, bool initPosition);
+extern void NET_InitPlayer(int i, bool initPosition);
 extern void NET_InitPlayers(void);
 extern void NETregisterServer(int state);
+extern BOOL NETlobbyChatWrite(const char *TextStream);
+extern BOOL NETlobbyChatInit(void);
+extern BOOL NETlobbyChatRead(char *OutBuf, uint32_t MaxSize);
+extern BOOL NETlobbyChatShutdown(void);
 
 void NETGameLocked(bool flag);
 void NETresetGamePassword(void);

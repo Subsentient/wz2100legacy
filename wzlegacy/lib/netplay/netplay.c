@@ -201,6 +201,9 @@ PLAYER_IP	*IPlist = NULL;
 static BOOL		allow_joining = false;
 static	bool server_not_there = false;
 GAMESTRUCT	gamestruct;
+static uint32_t LobbyChatToken;
+static Socket *LobbyRecvSock;
+static SocketSet *LobbyRecvSockSet;
 
 // update flags
 bool netPlayersUpdated;
@@ -3714,7 +3717,7 @@ static void NETallowJoining(void)
                     else if (NetPlay.GamePassworded && strcmp(NetPlay.gamePassword, GamePassword) != 0)
                     {
                         // Wrong password. Reject.
-                        rejected = (uint8_t)ERROR_WRONGPASint16_t;
+                        rejected = (uint8_t)ERROR_WRONGPASSWORD;
                     }
                     else if (NetPlay.playercount > gamestruct.desc.dwMaxPlayers)
                     {
@@ -4061,6 +4064,335 @@ BOOL NETfindGame(void)
     }
 
     freeaddrinfo(hosts);
+    return true;
+}
+
+
+
+BOOL NETlobbyChatWrite(const char *TextStream)
+{ /*Unlike the listen side, it uses a dedicated connection, writes, and then closes it.*/
+    struct addrinfo *Cur = NULL, *Hosts = NULL;
+    uint32_t PermissionStatus, Success;
+    int Test = 0;
+    Socket *ChatSendSock = NULL;
+    SocketSet *SockSet = NULL;
+	char OutBuf[256]; /*No longer than this at once.*/
+	
+	strncpy(OutBuf, TextStream, sizeof OutBuf - 1);
+	OutBuf[sizeof OutBuf - 1] = '\0';
+	
+    if ((Hosts = resolveHost(hostname, masterserver_port)) == NULL)
+    {
+        debug(LOG_ERROR, "Cannot resolve hostname \"%s\": %s", hostname, strSockError(getSockErr()));
+        return false;
+    }
+
+    for (Cur = Hosts; Cur; Cur = Cur->ai_next)
+    {
+        ChatSendSock = SocketOpen(Cur, 15000);
+        
+        if (ChatSendSock) break;
+    }
+
+    if (!ChatSendSock)
+    {
+        debug(LOG_NET, "Cannot connect to \"%s:%d\": %s", hostname, masterserver_port, strSockError(getSockErr()));
+        freeaddrinfo(Hosts);
+        return false;
+    }
+
+	debug(LOG_NET, "Setting up socket set.");
+	
+	if (!(SockSet = allocSocketSet(1)))
+	{
+		debug(LOG_NET, "Unable to allocate socket set.");
+		socketClose(ChatSendSock);
+		freeaddrinfo(Hosts);
+		return false;
+	}
+	
+	SocketSet_AddSocket(SockSet, ChatSendSock);
+	
+    debug(LOG_NET, "Asking lobby server for permission to speak.");
+
+    if (writeAll(ChatSendSock, "speak", sizeof("speak")) == SOCKET_ERROR ||
+		checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !ChatSendSock->ready ||
+		(Test = readNoInt(ChatSendSock, &PermissionStatus, sizeof(uint32_t))) == SOCKET_ERROR)
+    { /*Request permission to speak.*/
+		debug(LOG_ERROR, "Cannot send 'speak' command to lobby server.");
+
+        if (Test == SOCKET_ERROR)
+        {
+            debug(LOG_ERROR, "Socket encountered error \"%s\".", strSockError(getSockErr()));
+        }
+        else if (!ChatSendSock->ready)
+        {
+			debug(LOG_ERROR, "Socket is not ready.");
+		}
+        else
+        {
+            debug(LOG_ERROR, "Connection timed out.");
+        }
+
+		SocketSet_DelSocket(SockSet, ChatSendSock);
+        socketClose(ChatSendSock);
+        freeaddrinfo(Hosts);
+        free(SockSet);
+        
+        return false;
+    }
+	
+	if (!ntohl(PermissionStatus))
+	{ /*Check if we are allowed to speak.*/
+		debug(LOG_ERROR, "Lobby server has denied permission to speak in lobby chat.");
+		
+		SocketSet_DelSocket(SockSet, ChatSendSock);
+        socketClose(ChatSendSock);
+        freeaddrinfo(Hosts);
+        free(SockSet);
+
+		return false;
+	}
+	
+	/*Write our message.*/
+	if (writeAll(ChatSendSock, OutBuf, strlen(OutBuf) + 1) == SOCKET_ERROR ||/*Write the null terminator.*/
+	checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !ChatSendSock->ready) 
+	{
+		debug(LOG_NET, "Cannot write to lobby chat, socket encountered error \"%s\".", strSockError(getSockErr()));
+		
+		SocketSet_DelSocket(SockSet, ChatSendSock);
+		socketClose(ChatSendSock);
+		freeaddrinfo(Hosts);
+        free(SockSet);
+
+		return false;
+	}
+
+	if (readNoInt(ChatSendSock, &Success, sizeof(uint32_t)) == SOCKET_ERROR) 
+	/*Check if it was sent alright.*/
+	{
+		debug(LOG_NET, "Cannot read server response for chat write, socket encountered error \"%s\".",
+			strSockError(getSockErr()));
+			
+		SocketSet_DelSocket(SockSet, ChatSendSock);
+		socketClose(ChatSendSock);
+		freeaddrinfo(Hosts);
+        free(SockSet);
+
+		return false;
+	}
+	else if (!Success)
+	{
+		debug(LOG_NET, "Server reports failure in sending lobby chat message.");
+		SocketSet_DelSocket(SockSet, ChatSendSock);
+		socketClose(ChatSendSock);
+        free(SockSet);
+		freeaddrinfo(Hosts);
+	}
+	
+	/*All good.*/
+	SocketSet_DelSocket(SockSet, ChatSendSock);
+	socketClose(ChatSendSock);
+    freeaddrinfo(Hosts);
+	free(SockSet);
+
+    return true;
+}
+
+BOOL NETlobbyChatShutdown(void)
+{
+	unsigned char OutBuf[sizeof "dc" + sizeof LobbyChatToken] = { "dc" };
+	int Result;
+	typedef signed char Bool;
+	Bool DcOk = true;
+	
+	BOOL RetVal = true;
+	
+	if (!LobbyRecvSock) return false;
+
+	/*Prepare the output buffer.*/
+	memcpy(OutBuf + sizeof "dc", &LobbyChatToken, sizeof LobbyChatToken);
+	
+	if ((Result = writeAll(LobbyRecvSock, OutBuf, sizeof OutBuf)) == SOCKET_ERROR)
+	{
+		debug(LOG_ERROR, "Failed to write disconnect from lobby chat server! Socket spit error \"%s\".",
+				strSockError(getSockErr()));
+		RetVal = false;
+	}
+	
+	/* Lobby has a twig up it's butt at the moment and won't recognize this most likely, so we try, but also,
+	 * we won't care if it works or not.
+	 *
+	if ((Result = readNoInt(LobbyRecvSock, &DcOk, sizeof(Bool))) == SOCKET_ERROR)
+	{
+		debug(LOG_ERROR, "Failed to read disconnect confirmation from lobby chat server! Socket spit error \"%s\".",
+				strSockError(getSockErr()));
+		RetVal = false;
+	}
+	*/
+	
+	if (!DcOk)
+	{
+		debug(LOG_ERROR, "Lobby server says it failed to disconnect us from the lobby chat server!");
+		RetVal = false;
+	}
+	
+	SocketSet_DelSocket(LobbyRecvSockSet, LobbyRecvSock);
+	socketClose(LobbyRecvSock);
+	LobbyRecvSock = NULL;
+	LobbyRecvSockSet = NULL;
+	LobbyChatToken = 0;
+	return RetVal;
+}
+
+BOOL NETlobbyChatRead(char *OutBuf, uint32_t MaxSize)
+{
+	int Result = 0, C;
+	unsigned long Byte = 0;
+	unsigned long Inc = 0;
+	
+	if (!LobbyChatToken || !LobbyRecvSock || !LobbyRecvSockSet) return false;
+	
+#ifdef WZ_OS_WIN
+	ioctlsocket(LobbyRecvSock->fd[SOCK_CONNECTION], FIONREAD, &C);
+#else
+	ioctl(LobbyRecvSock->fd[SOCK_CONNECTION], FIONREAD, &C);
+#endif	
+
+	if (!C) return true;
+	
+	do
+	{
+		Result = recv(LobbyRecvSock->fd[SOCK_CONNECTION], &Byte, 1, 0);
+		
+		*OutBuf++ = Byte;
+		
+	} while (++Inc, Byte && Result > 0 && Inc < MaxSize);
+	
+	if (Result == -1)
+	{
+		SocketSet_DelSocket(LobbyRecvSockSet, LobbyRecvSock);
+		socketClose(LobbyRecvSock);
+        free(LobbyRecvSockSet);
+        LobbyChatToken = 0;
+        LobbyRecvSock = NULL;
+        LobbyRecvSockSet = NULL;
+		return false;
+	}
+	
+	return true;
+}
+
+BOOL NETlobbyChatInit(void)
+{ /*Sets up the receiving end of lobby chat, the only half with a persistent connection.*/
+    struct addrinfo *Cur = NULL, *Hosts = NULL;
+    int Test = 0;
+    Socket *ChatInitSock = NULL;
+    SocketSet *SockSet = NULL;
+	typedef signed char Bool; /*To match the lobby server's idea of Bool.*/
+	Bool Success;
+	
+	if (LobbyChatToken || LobbyRecvSock || LobbyRecvSockSet) return false;
+	
+    if ((Hosts = resolveHost(hostname, masterserver_port)) == NULL)
+    {
+        debug(LOG_ERROR, "Cannot resolve hostname \"%s\": %s", hostname, strSockError(getSockErr()));
+        return false;
+    }
+
+    for (Cur = Hosts; Cur; Cur = Cur->ai_next)
+    {
+        ChatInitSock = SocketOpen(Cur, 15000);
+        
+        if (ChatInitSock) break;
+    }
+
+    if (!ChatInitSock)
+    {
+        debug(LOG_NET, "Cannot connect to \"%s:%d\": %s", hostname, masterserver_port, strSockError(getSockErr()));
+        freeaddrinfo(Hosts);
+        return false;
+    }
+
+	debug(LOG_NET, "Setting up socket set.");
+	
+	if (!(SockSet = allocSocketSet(1)))
+	{
+		debug(LOG_NET, "Unable to allocate socket set.");
+		socketClose(ChatInitSock);
+		freeaddrinfo(Hosts);
+		return false;
+	}
+	
+	SocketSet_AddSocket(SockSet, ChatInitSock);
+	
+    debug(LOG_NET, "Asking lobby server for permission to listen");
+
+    if (writeAll(ChatInitSock, "listen", sizeof("listen")) == SOCKET_ERROR ||
+		checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !ChatInitSock->ready ||
+		(Test = readNoInt(ChatInitSock, &Success, sizeof(Success))) == SOCKET_ERROR)
+    { /*Request to listen.*/
+		debug(LOG_ERROR, "Cannot send 'listen' command to lobby server.");
+
+        if (Test == SOCKET_ERROR)
+        {
+            debug(LOG_ERROR, "Socket encountered error \"%s\".", strSockError(getSockErr()));
+        }
+        else if (!ChatInitSock->ready)
+        {
+			debug(LOG_ERROR, "Socket is not ready.");
+		}
+        else
+        {
+            debug(LOG_ERROR, "Connection timed out.");
+        }
+
+		SocketSet_DelSocket(SockSet, ChatInitSock);
+        socketClose(ChatInitSock);
+        free(SockSet);
+        freeaddrinfo(Hosts);
+        
+        return false;
+    }
+	
+	if (!Success)
+	{ /*Check if we are allowed to listen.*/
+		debug(LOG_ERROR, "Lobby server has denied permission to listen in lobby chat.");
+		
+		SocketSet_DelSocket(SockSet, ChatInitSock);
+        socketClose(ChatInitSock);
+        freeaddrinfo(Hosts);
+		free(SockSet);
+
+		return false;
+	}
+
+	if (readNoInt(ChatInitSock, &LobbyChatToken, sizeof(uint32_t)) == SOCKET_ERROR) 
+	{ /*Get the lobby server's new descriptor it gave us.*/
+		debug(LOG_NET, "Cannot read server response for lobby chat initialization, socket encountered error \"%s\".",
+			strSockError(getSockErr()));
+			
+		SocketSet_DelSocket(SockSet, ChatInitSock);
+		socketClose(ChatInitSock);
+		freeaddrinfo(Hosts);
+        free(SockSet);
+
+		return false;
+	}
+	else if (!LobbyChatToken)
+	{
+		debug(LOG_NET, "Empty lobby chat token received from server!");
+		SocketSet_DelSocket(SockSet, ChatInitSock);
+		socketClose(ChatInitSock);
+		freeaddrinfo(Hosts);
+        free(SockSet);
+
+	}
+	
+    freeaddrinfo(Hosts);
+    
+    LobbyRecvSock = ChatInitSock; /*Store the socket.*/
+    LobbyRecvSockSet = SockSet;
     return true;
 }
 

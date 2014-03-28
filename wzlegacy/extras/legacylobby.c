@@ -32,7 +32,7 @@ along with Warzone 2100 Legacy.  If not, see <http://www.gnu.org/licenses/>.
 #include <signal.h>
 #include <time.h>
 
-#define LOBBYVER "0.3"
+#define LOBBYVER "0.4"
 
 #define GAMEPORT 2100
 #define LOBBYPORT 9990
@@ -615,12 +615,12 @@ static void LobbyLoop(void)
 		else if (!strcmp("listen", InBuf))
 		{ /*Adds this client to our chat send queue.*/
 			const Bool Ok = true;
-			int DOut = htonl(ClientDescriptor);
+			uint32_t DOut = htonl(ClientDescriptor);
 			
 			printf("--[Client %s requested to be added to chat queue, we'll oblige.\n"
 					"Sending them their descriptor (%d)]--\n", AddrBuf, ClientDescriptor);
 			NetWrite(ClientDescriptor, (void*)&Ok, 1);
-			NetWrite(ClientDescriptor, &DOut, sizeof(int));
+			NetWrite(ClientDescriptor, &DOut, sizeof(uint32_t));
 			
 			ChatAddToQueue(AddrBuf, ClientDescriptor);
 			
@@ -630,7 +630,7 @@ static void LobbyLoop(void)
 		{
 			struct _ChatQueueTree *Worker = ChatTree;
 			Bool Ok = true;
-			const char *Newline = "\n";
+			char OutBuf[256];
 			
 			NetWrite(ClientDescriptor, &Ok, 1);
 			
@@ -646,30 +646,33 @@ static void LobbyLoop(void)
 			
 			printf("--[SPEAK %s: %s]--\n", AddrBuf, InBuf);
 			
+			snprintf(OutBuf, sizeof OutBuf, "[%s]: %s\n", AddrBuf, InBuf);
+			
 			for (; Worker; Worker = Worker->Next)
 			{
-				NetWrite(Worker->Sock, InBuf, strlen(InBuf));
-				NetWrite(Worker->Sock, (void*)Newline, strlen(Newline) + 1);
+				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}
 			close(ClientDescriptor);
 			continue; 
 		}
 		else if (!strcmp("dc", InBuf))
 		{
-			Bool Ok = true;
-			int TDesc;
+			uint32_t Desc = 0;
+			Bool Ok = false;
 			
-			NetRead(ClientDescriptor, &TDesc, sizeof(int), false);
+			memcpy(&Desc, InBuf + sizeof "dc", sizeof(uint32_t));
 			
-			TDesc = ntohl(TDesc);
+			Desc = ntohl(Desc);
 			
-			Ok = ChatDelFromQueue(TDesc ? NULL : AddrBuf, TDesc); /*We delete by descriptor to allow lan parties.*/
+			Ok = ChatDelFromQueue(Desc ? AddrBuf : NULL, Desc);
 			
-			printf("--[Client %s chat disconnect %s]--\n", AddrBuf,
-					 Ok ? "succeeded" : "failed. Couldn't find descriptor.");
+			NetWrite(ClientDescriptor, &Ok, sizeof(Bool));
 			
-			NetWrite(ClientDescriptor, &Ok, 1);
 			close(ClientDescriptor);
+			
+			printf("--[Disconnected chat listener %s::%d at their request.]--\n", AddrBuf, (int)Desc); fflush(NULL);
+			
+			continue;
 		}
 		else
 		{

@@ -744,7 +744,7 @@ static void addGames(void)
                 txt = _("Host couldn't send file?");
                 debug(LOG_POPUP, "Warzone couldn't complete a file request.\n\nPossibly, Host's file is incorrect. Check your logs for more details.");
                 break;
-            case ERROR_WRONGPASint16_t:
+            case ERROR_WRONGPASSWORD:
                 txt = _("Incorrect Password!");
                 break;
             case ERROR_HOSTDROPPED:
@@ -788,7 +788,8 @@ void runGameFind(void )
     uint32_t id;
     static uint32_t lastupdate=0;
     static char game_password[64];		// check if StringSize is available
-
+	static char ChatData[256];
+	
     if (lastupdate > gameTime)
     {
         lastupdate = 0;
@@ -802,23 +803,78 @@ void runGameFind(void )
         }
         addGames();									//redraw list
     }
-
+	
+	if (NETlobbyChatRead(ChatData, sizeof ChatData) && *ChatData)
+	{
+		addConsoleMessage(ChatData, DEFAULT_JUSTIFY, 0);
+		*ChatData = '\0';
+	}
+	
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
 
     if(id == CON_CANCEL)								// ok
     {
+		NETlobbyChatShutdown();
         changeTitleMode(PROTOCOL);
     }
-
+    
+    
+    if (keyPressed(KEY_RETURN) && psWScreen->psFocus == NULL)
+    {
+		W_CONTEXT Context;
+		memset(&Context, 0, sizeof(W_CONTEXT));
+		
+		Context.psScreen = psWScreen;
+        Context.psForm = (void*)psWScreen->psForm;
+        Context.mx = mouseX();
+        Context.my = mouseY();
+        
+        editBoxClicked((void*)widgGetFromID(psWScreen, MULTIOP_CHATEDIT), &Context);
+	}
+	/*Chat box text-input line.*/
+	if (id == MULTIOP_CHATEDIT)
+	{
+		char Message[256];
+		
+		strncpy(Message, widgGetString(psWScreen, MULTIOP_CHATEDIT), sizeof Message - 1);
+		Message[sizeof Message - 1] = '\0';
+		
+		if (*Message != '\0')
+		{
+			if (!NETlobbyChatWrite(Message))
+			{
+				addConsoleMessage("Failed to send chat message!", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+			}
+		}
+		
+		widgSetString(psWScreen, MULTIOP_CHATEDIT, "");
+		inputLooseFocus();
+		
+	}
+	
+	/*Chat box.*/
+    if(widgGetFromID(psWScreen, MULTIOP_CHATBOX))
+    {
+        while (getNumberConsoleMessages() > getConsoleLineInfo())
+        { /*You know, sometimes I get depressed because I don't know this codebase very well, and I end up copy-pasting a lot.*/
+            removeTopConsoleMessage();
+        }
+        updateConsoleMessages();
+        iV_SetFont(font_regular);
+        iV_SetTextColour(WZCOL_TEXT_BRIGHT);
+        displayConsoleMessages();
+    }
+	
+    
     if(id == MULTIOP_REFRESH)
     {
         ingame.localOptionsReceived = true;
         NETfindGame();								// find games synchronously
         addGames();										//redraw list.
     }
-    if (id == CON_PASint16_t)
+    if (id == CON_PASSWORD)
     {
-        sstrcpy(game_password, widgGetString(psWScreen, CON_PASint16_t));
+        sstrcpy(game_password, widgGetString(psWScreen, CON_PASSWORD));
         NETsetGamePassword(game_password);
     }
 
@@ -853,6 +909,7 @@ void runGameFind(void )
 
                 if (joinCampaign(gameNumber,(char *)sPlayer))
                 {
+					NETlobbyChatShutdown();
                     changeTitleMode(MULTIOPTION);
                 }
                 else
@@ -867,13 +924,14 @@ void runGameFind(void )
         }
 
     }
-    else if (id == CON_PASint16_tYES)
+    else if (id == CON_PASSWORDYES)
     {
         ingame.localOptionsReceived = false;			// note we are awaiting options
         sstrcpy(game.name, NetPlay.games[gameNumber].name);		// store name
 
         if (joinCampaign(gameNumber,(char *)sPlayer))
         {
+			NETlobbyChatShutdown();
             changeTitleMode(MULTIOPTION);
         }
         else
@@ -885,7 +943,7 @@ void runGameFind(void )
             hidePasswordForm();
         }
     }
-    else if (id == CON_PASint16_tNO)
+    else if (id == CON_PASSWORDNO)
     {
         hidePasswordForm();
     }
@@ -901,6 +959,7 @@ FAIL:
 
     if (CancelPressed())
     {
+		NETlobbyChatShutdown();
         changeTitleMode(PROTOCOL);
     }
 }
@@ -951,7 +1010,7 @@ void startGameFind(void)
     sFormInit.x = MULTIOP_OPTIONSX;
     sFormInit.y = MULTIOP_OPTIONSY;
     sFormInit.width = MULTIOP_CHATBOXW;
-    sFormInit.height = 460;
+    sFormInit.height = 355;
     sFormInit.pDisplay = intOpenPlainForm;
     sFormInit.disableChildren = true;
 
@@ -973,13 +1032,20 @@ void startGameFind(void)
 
     NETfindGame();
     addGames();	// now add games.
+    addChatBox();
+    addConsoleMessage(_("Connecting to lobby chat."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+	displayConsoleMessages();
 
+	addConsoleMessage(NETlobbyChatInit() ? "Connected." : "Failed to connect to lobby chat!",
+					DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+	displayConsoleMessages();
+	
     // Password stuff. Hidden by default.
 
     // password label.
     memset(&sLabInit, 0, sizeof(W_LABINIT));
     sLabInit.formID = FRONTEND_BACKDROP;
-    sLabInit.id		= CON_PASint16_t_LABEL;
+    sLabInit.id		= CON_PASSWORD_LABEL;
     sLabInit.style	= WLAB_ALIGNCENTRE;
     sLabInit.x		= 180;
     sLabInit.y		= 195;
@@ -993,7 +1059,7 @@ void startGameFind(void)
     // and finally draw the password entry box
     memset(&sEdInit, 0, sizeof(W_EDBINIT));
     sEdInit.formID = FRONTEND_BACKDROP;
-    sEdInit.id = CON_PASint16_t;
+    sEdInit.id = CON_PASSWORD;
     sEdInit.style = WEDB_PLAIN;
     sEdInit.x = 180;
     sEdInit.y = 200;
@@ -1005,15 +1071,15 @@ void startGameFind(void)
 
     widgAddEditBox(psWScreen, &sEdInit);
 
-    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASint16_tYES,230,225,MULTIOP_OKW,MULTIOP_OKH,
+    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASSWORDYES,230,225,MULTIOP_OKW,MULTIOP_OKH,
                 _("OK"),IMAGE_OK,IMAGE_OK,true);
-    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASint16_tNO,280,225,MULTIOP_OKW,MULTIOP_OKH,
+    addMultiBut(psWScreen, FRONTEND_BACKDROP,CON_PASSWORDNO,280,225,MULTIOP_OKW,MULTIOP_OKH,
                 _("Cancel"),IMAGE_NO,IMAGE_NO,true);
 
     // draws the background of the password box
     memset(&sFormInit, 0, sizeof(W_FORMINIT));
     sFormInit.formID = FRONTEND_BACKDROP;
-    sFormInit.id = FRONTEND_PASint16_tFORM;
+    sFormInit.id = FRONTEND_PASSWORDFORM;
     sFormInit.style = WFORM_PLAIN;
     sFormInit.x = FRONTEND_BOTFORMX;
     sFormInit.y = 160;
@@ -1024,11 +1090,11 @@ void startGameFind(void)
 
     widgAddForm(psWScreen, &sFormInit);
 
-    widgHide(psWScreen, FRONTEND_PASint16_tFORM);
-    widgHide(psWScreen, CON_PASint16_t_LABEL);
-    widgHide(psWScreen, CON_PASint16_t);
-    widgHide(psWScreen, CON_PASint16_tYES);
-    widgHide(psWScreen, CON_PASint16_tNO);
+    widgHide(psWScreen, FRONTEND_PASSWORDFORM);
+    widgHide(psWScreen, CON_PASSWORD_LABEL);
+    widgHide(psWScreen, CON_PASSWORD);
+    widgHide(psWScreen, CON_PASSWORDYES);
+    widgHide(psWScreen, CON_PASSWORDNO);
 
     EnablePasswordPrompt = false;
 }
@@ -1037,11 +1103,11 @@ static void hidePasswordForm(void)
 {
     EnablePasswordPrompt = false;
 
-    widgHide(psWScreen, FRONTEND_PASint16_tFORM);
-    widgHide(psWScreen, CON_PASint16_t_LABEL);
-    widgHide(psWScreen, CON_PASint16_t);
-    widgHide(psWScreen, CON_PASint16_tYES);
-    widgHide(psWScreen, CON_PASint16_tNO);
+    widgHide(psWScreen, FRONTEND_PASSWORDFORM);
+    widgHide(psWScreen, CON_PASSWORD_LABEL);
+    widgHide(psWScreen, CON_PASSWORD);
+    widgHide(psWScreen, CON_PASSWORDYES);
+    widgHide(psWScreen, CON_PASSWORDNO);
 
     widgReveal(psWScreen, FRONTEND_SIDETEXT);
     widgReveal(psWScreen, FRONTEND_BOTFORM);
@@ -1061,13 +1127,14 @@ static void showPasswordForm(void)
     widgHide(psWScreen, FRONTEND_BOTFORM);
     widgHide(psWScreen, CON_CANCEL);
     widgHide(psWScreen, MULTIOP_REFRESH);
+    
     removeGames();
 
-    widgReveal(psWScreen, FRONTEND_PASint16_tFORM);
-    widgReveal(psWScreen, CON_PASint16_t_LABEL);
-    widgReveal(psWScreen, CON_PASint16_t);
-    widgReveal(psWScreen, CON_PASint16_tYES);
-    widgReveal(psWScreen, CON_PASint16_tNO);
+    widgReveal(psWScreen, FRONTEND_PASSWORDFORM);
+    widgReveal(psWScreen, CON_PASSWORD_LABEL);
+    widgReveal(psWScreen, CON_PASSWORD);
+    widgReveal(psWScreen, CON_PASSWORDYES);
+    widgReveal(psWScreen, CON_PASSWORDNO);
 
     // auto click in the password box
     sContext.psScreen	= psWScreen;
@@ -1076,7 +1143,7 @@ static void showPasswordForm(void)
     sContext.yOffset	= 0;
     sContext.mx			= 0;
     sContext.my			= 0;
-    editBoxClicked((W_EDITBOX *)widgGetFromID(psWScreen,CON_PASint16_t), &sContext);
+    editBoxClicked((W_EDITBOX *)widgGetFromID(psWScreen,CON_PASSWORD), &sContext);
 }
 
 
@@ -1198,12 +1265,12 @@ static void addGameOptions(BOOL bRedo)
         widgSetButtonState(psWScreen, MULTIOP_MAP_ICON, WBUT_DISABLE);
     }
     // password box
-    addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASint16_t_EDIT  , MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE , MULTIOP_PASint16_t_BUT);
+    addMultiEditBox(MULTIOP_OPTIONS, MULTIOP_PASSWORD_EDIT  , MCOL0, MROW4, _("Click to set Password"), NetPlay.gamePassword, IMAGE_UNLOCK_BLUE, IMAGE_LOCK_BLUE , MULTIOP_PASSWORD_BUT);
     // disable for one-player skirmish
     if (!NetPlay.bComms)
     {
-        widgDelete(psWScreen, MULTIOP_PASint16_t_EDIT);
-        widgDelete(psWScreen, MULTIOP_PASint16_t_BUT);
+        widgDelete(psWScreen, MULTIOP_PASSWORD_EDIT);
+        widgDelete(psWScreen, MULTIOP_PASSWORD_BUT);
     }
     // buttons.
 
@@ -2278,14 +2345,14 @@ static void disableMultiButs(void)
     {
         // force the state down if a locked game
         // FIXME: It don't seem to be locking it into the 2nd state?
-        widgSetButtonState(psWScreen, MULTIOP_PASint16_t_BUT, WBUT_LOCK);
+        widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_LOCK);
     }
     
     if (!NetPlay.isHost)
     {
 		/*Don't let clients think that they can change the password if not the host.*/
-		widgDelete(psWScreen, MULTIOP_PASint16_t_BUT);
-		widgDelete(psWScreen, MULTIOP_PASint16_t_EDIT);
+		widgDelete(psWScreen, MULTIOP_PASSWORD_BUT);
+		widgDelete(psWScreen, MULTIOP_PASSWORD_EDIT);
 		
         if( game.fog)
         {
@@ -2732,28 +2799,28 @@ static void processMultiopWidgets(uint32_t id)
                 }
                 break;
                 
-			case MULTIOP_PASint16_t_BUT:
+			case MULTIOP_PASSWORD_BUT:
 			{
 				char game_password[64];
 				char buf[256];
 				int32_t result = 0;
 
-				result = widgGetButtonState(psWScreen, MULTIOP_PASint16_t_BUT);
+				result = widgGetButtonState(psWScreen, MULTIOP_PASSWORD_BUT);
 				debug(LOG_NET, "Password button hit, %d", result);
 				if (result == 0)
 				{
-					sstrcpy(game_password, widgGetString(psWScreen, MULTIOP_PASint16_t_EDIT));
+					sstrcpy(game_password, widgGetString(psWScreen, MULTIOP_PASSWORD_EDIT));
 					NETsetGamePassword(game_password);
-					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_BUT, WBUT_CLICKLOCK);
-					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_EDIT, WEDBS_DISABLE);
+					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT, WBUT_CLICKLOCK);
+					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, WEDBS_DISABLE);
 					// say password is now required to join games?
 					ssprintf(buf, _("*** password [%s] is now required! ***"), NetPlay.gamePassword);
 					NETGameLocked(true);
 				}
 				else
 				{
-					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_BUT , 0);
-					widgSetButtonState(psWScreen, MULTIOP_PASint16_t_EDIT, 0);
+					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_BUT , 0);
+					widgSetButtonState(psWScreen, MULTIOP_PASSWORD_EDIT, 0);
 					ssprintf(buf, _("*** password is NOT required! ***"));
 					NETresetGamePassword();
 					NETGameLocked(false);
