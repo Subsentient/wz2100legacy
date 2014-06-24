@@ -628,9 +628,11 @@ static void LobbyLoop(void)
 		}
 		else if (!strcmp("speak", InBuf))
 		{
-			struct _ChatQueueTree *Worker = ChatTree;
+			struct _ChatQueueTree *CWorker = ChatTree;
 			Bool Ok = true;
-			char OutBuf[256];
+			char OutBuf[256], Nick[16], Message[192];
+			unsigned char *Worker = (void*)InBuf;
+			unsigned char NickLength = 0, MessageLength = 0;
 			
 			NetWrite(ClientDescriptor, &Ok, 1);
 			
@@ -638,21 +640,41 @@ static void LobbyLoop(void)
 			
 			NetRead(ClientDescriptor, InBuf, sizeof InBuf, true);
 			
-			if (!*InBuf) Ok = false;
+			NickLength = *Worker++;
+			MessageLength = *Worker++;
 			
-			NetWrite(ClientDescriptor, &Ok, 1);
+			/*Get the length of the nick and message.*/
 			
-			InBuf[127] = '\0'; /*Need to cap the size we send.*/
+			if (NickLength >= sizeof Nick || MessageLength >= sizeof Message || !InBuf[sizeof(uint16_t) * 2])
+			{ /*Malformed or deliberately botched message, or just general read failure.*/
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				printf("--[Bad chat send command request from %s]--\n", AddrBuf);
+				continue;
+			}
+
+			/*Copy in the nick and message to their arrays to prepare for formatting.*/
+			memcpy(Nick, Worker, NickLength);
+			Nick[NickLength] = '\0';
+			Worker += NickLength;
 			
-			printf("--[SPEAK %s: %s]--\n", AddrBuf, InBuf);
+			memcpy(Message, Worker, MessageLength);
+			Message[MessageLength] = '\0';
 			
-			snprintf(OutBuf, sizeof OutBuf, "[%s]: %s\n", AddrBuf, InBuf);
+			snprintf(OutBuf, sizeof OutBuf, "%s: %s", Nick, Message);
 			
-			for (; Worker; Worker = Worker->Next)
+			/*Looks like it all went OK. Tell the client that.*/
+			NetWrite(ClientDescriptor, &Ok, 1);			
+			
+			
+			for (; CWorker; CWorker = CWorker->Next)
 			{
-				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
+				NetWrite(CWorker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}
 			close(ClientDescriptor);
+			
+			printf("--[CHAT: %s at %s: %s]--\n", Nick, AddrBuf, Message);
 			continue; 
 		}
 		else if (!strcmp("dc", InBuf))

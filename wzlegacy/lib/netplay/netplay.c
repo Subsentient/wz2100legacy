@@ -4073,13 +4073,25 @@ BOOL NETlobbyChatWrite(const char *TextStream)
 { /*Unlike the listen side, it uses a dedicated connection, writes, and then closes it.*/
     struct addrinfo *Cur = NULL, *Hosts = NULL;
     uint32_t PermissionStatus, Success;
+	unsigned char NickLength = strlen(sPlayer), MessageLength = strlen(TextStream);
     int Test = 0;
     Socket *ChatSendSock = NULL;
     SocketSet *SockSet = NULL;
-	char OutBuf[256]; /*No longer than this at once.*/
+	unsigned char OutBuf[256], *Worker = OutBuf; /*No longer than this at once.*/
 	
-	strncpy(OutBuf, TextStream, sizeof OutBuf - 1);
-	OutBuf[sizeof OutBuf - 1] = '\0';
+	/*We need to send the length of both our nick and our message.*/
+	memcpy(Worker++, &NickLength, 1);
+	memcpy(Worker++, &MessageLength, 1);
+	
+	/*Copy in the nick.*/
+	memcpy(Worker, sPlayer, NickLength);
+	Worker += NickLength;
+	
+	/*And the message.*/
+	memcpy(Worker, TextStream, MessageLength);
+	/*Null terminate the final string.*/
+	Worker[MessageLength] = '\0';
+	
 	
     if ((Hosts = resolveHost(hostname, masterserver_port)) == NULL)
     {
@@ -4155,7 +4167,7 @@ BOOL NETlobbyChatWrite(const char *TextStream)
 	}
 	
 	/*Write our message.*/
-	if (writeAll(ChatSendSock, OutBuf, strlen(OutBuf) + 1) == SOCKET_ERROR ||/*Write the null terminator.*/
+	if (writeAll(ChatSendSock, OutBuf, strlen((char*)OutBuf) + 1) == SOCKET_ERROR ||/*Write the null terminator.*/
 	checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !ChatSendSock->ready) 
 	{
 		debug(LOG_NET, "Cannot write to lobby chat, socket encountered error \"%s\".", strSockError(getSockErr()));
