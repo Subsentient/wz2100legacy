@@ -851,20 +851,6 @@ void runGameFind(void )
 		inputLooseFocus();
 		
 	}
-	
-	/*Chat box.*/
-    if(widgGetFromID(psWScreen, MULTIOP_CHATBOX))
-    {
-        while (getNumberConsoleMessages() > getConsoleLineInfo())
-        { /*You know, sometimes I get depressed because I don't know this codebase very well, and I end up copy-pasting a lot.*/
-            removeTopConsoleMessage();
-        }
-        updateConsoleMessages();
-        iV_SetFont(font_regular);
-        iV_SetTextColour(WZCOL_TEXT_BRIGHT);
-        displayConsoleMessages();
-    }
-	
     
     if(id == MULTIOP_REFRESH)
     {
@@ -961,6 +947,20 @@ FAIL:
     {
 		NETlobbyChatShutdown();
         changeTitleMode(PROTOCOL);
+    }
+    
+    /*Chat box.*/
+    if(widgGetFromID(psWScreen, MULTIOP_CHATBOX))
+    {
+        iV_SetFont(font_regular);
+        iV_SetTextColour(WZCOL_TEXT_BRIGHT);
+        while (getNumberConsoleMessages() > getConsoleLineInfo())
+        { /*You know, sometimes I get depressed because I don't know this codebase very well, and I end up copy-pasting a lot.*/
+            removeTopConsoleMessage();
+        }
+		updateConsoleMessages();
+		
+	    displayConsoleMessages();
     }
 }
 
