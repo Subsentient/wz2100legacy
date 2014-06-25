@@ -633,6 +633,7 @@ static void LobbyLoop(void)
 			uint32_t Token = 0;
 			unsigned char NickLength = 0;
 			char OutBuf[256];
+			Bool NickExists = false;
 			
 			/*Tell them to go ahead and send it.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
@@ -677,6 +678,23 @@ static void LobbyLoop(void)
 			NetRead(ClientDescriptor, InBuf, NickLength, true);
 			InBuf[NickLength] = '\0';
 			
+			/*Check to see if they're trying to change to an existing nick.*/
+			for (; Worker; Worker = Worker->Next)
+			{
+				if (!strcmp(Worker->Nick, InBuf))
+				{
+					fprintf(stderr, "--[Client %s::%d wanted to change to an existing nick \"%s\".]--\n",
+							AddrBuf, ClientDescriptor, InBuf);
+					Ok = false;
+					NetWrite(ClientDescriptor, &Ok, 1);
+					close(ClientDescriptor);
+					NickExists = true;
+					break;
+				}
+			}
+			
+			if (NickExists) continue;
+			
 			/*Tell them we're done with them.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
 			close(ClientDescriptor);
@@ -688,7 +706,7 @@ static void LobbyLoop(void)
 			strncpy(ChatClient->Nick, InBuf, sizeof ChatClient->Nick - 1);
 			ChatClient->Nick[sizeof ChatClient->Nick - 1] = '\0';
 
-			for (; Worker; Worker = Worker->Next)
+			for (Worker = ChatTree; Worker; Worker = Worker->Next)
 			{ /*Notify everyone.*/
 				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}

@@ -806,8 +806,19 @@ void runGameFind(void )
 	
 	if (NETlobbyChatRead(ChatData, sizeof ChatData) && *ChatData)
 	{
+		char NickCheck[sizeof sPlayer + 2];
+		
+		snprintf(NickCheck, sizeof NickCheck, "%s: ", sPlayer);
+		
 		addConsoleMessage(ChatData, DEFAULT_JUSTIFY, 0);
-		*ChatData = '\0';
+		
+		/*Play a beep.*/
+		if (strncmp(NickCheck, ChatData, strlen(NickCheck)) != 0 && *ChatData != '*')
+		{ /*if it's not us or a system message, we beep.*/
+			audio_PlayTrack(FE_AUDIO_MESSAGEEND);
+		}
+		
+		*ChatData = '\0'; /*Reset it to nothing.*/
 	}
 	
     id = widgRunScreen(psWScreen);						// Run the current set of widgets
@@ -847,14 +858,19 @@ void runGameFind(void )
 				
 				if (!NETlobbyChatSetNick(Worker))
 				{
-					addConsoleMessage("Failed to set nick!", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+					addConsoleMessage(_("Failed to set nick! Someone might already be using that nick."), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+				}
+				else
+				{ /*Make it our current username.*/
+					strncpy(sPlayer, Worker, sizeof sPlayer - 1);
+					sPlayer[sizeof sPlayer - 1] = '\0';
 				}
 			}
 			else
 			{ /*Otherwise just a normal chat message.*/
 				if (!NETlobbyChatWrite(Message))
 				{
-					addConsoleMessage("Failed to send chat message!", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+					addConsoleMessage(_("Failed to send chat message!"), DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
 				}
 			}
 		}

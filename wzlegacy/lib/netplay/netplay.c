@@ -4359,6 +4359,7 @@ BOOL NETlobbyChatSetNick(const char *NewNick)
 		socketClose(CSocket);
         free(SockSet);
 		freeaddrinfo(Hosts);
+		return false;
 	}
 	
 	SocketSet_DelSocket(SockSet, CSocket);
