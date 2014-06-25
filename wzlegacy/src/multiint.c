@@ -834,16 +834,28 @@ void runGameFind(void )
 	/*Chat box text-input line.*/
 	if (id == MULTIOP_CHATEDIT)
 	{
-		char Message[256];
+		char Message[256], *Worker = Message + (sizeof "!nick" - 1);
 		
 		strncpy(Message, widgGetString(psWScreen, MULTIOP_CHATEDIT), sizeof Message - 1);
 		Message[sizeof Message - 1] = '\0';
 		
 		if (*Message != '\0')
 		{
-			if (!NETlobbyChatWrite(Message))
-			{
-				addConsoleMessage("Failed to send chat message!", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+			if (!strncmp(Message, "!nick", sizeof "!nick" - 1))
+			{ /*Trying to set the nick?*/
+				while (*Worker == ' ') ++Worker;
+				
+				if (!NETlobbyChatSetNick(Worker))
+				{
+					addConsoleMessage("Failed to set nick!", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+				}
+			}
+			else
+			{ /*Otherwise just a normal chat message.*/
+				if (!NETlobbyChatWrite(Message))
+				{
+					addConsoleMessage("Failed to send chat message!", DEFAULT_JUSTIFY, SYSTEM_MESSAGE);
+				}
 			}
 		}
 		
@@ -884,6 +896,8 @@ void runGameFind(void )
                 goto FAIL;
             }
 
+			NETlobbyChatShutdown();
+
             if (NetPlay.games[gameNumber].privateGame)
             {
                 showPasswordForm();
@@ -895,7 +909,6 @@ void runGameFind(void )
 
                 if (joinCampaign(gameNumber,(char *)sPlayer))
                 {
-					NETlobbyChatShutdown();
                     changeTitleMode(MULTIOPTION);
                 }
                 else
@@ -949,6 +962,18 @@ FAIL:
         changeTitleMode(PROTOCOL);
     }
     
+    /*Last hosted time.*/
+    if (*(int32_t*)&LastHostTime != -1)
+    {
+		char OutBuf[256];
+		
+		snprintf(OutBuf, sizeof OutBuf, _("Last game was hosted %u minutes ago."), (unsigned)LastHostTime / 60);
+		iV_SetFont(font_small);
+		iV_SetTextColour(WZCOL_YELLOW);
+		
+		iV_DrawText(OutBuf, D_W + 85, D_H + 20);
+	}
+	
     /*Chat box.*/
     if(widgGetFromID(psWScreen, MULTIOP_CHATBOX))
     {

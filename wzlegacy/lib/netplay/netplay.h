@@ -305,6 +305,7 @@ extern GAMESTRUCT gamestruct;
 extern bool netPlayersUpdated;
 extern int mapDownloadProgress;
 extern char iptoconnect[PATH_MAX]; // holds IP/hostname from command line
+extern uint32_t LastHostTime;
 
 // ////////////////////////////////////////////////////////////////////////
 // functions available to you.
@@ -366,6 +367,7 @@ extern BOOL NETlobbyChatWrite(const char *TextStream);
 extern BOOL NETlobbyChatInit(void);
 extern BOOL NETlobbyChatRead(char *OutBuf, uint32_t MaxSize);
 extern BOOL NETlobbyChatShutdown(void);
+extern BOOL NETlobbyChatSetNick(const char *NewNick);
 
 void NETGameLocked(bool flag);
 void NETresetGamePassword(void);

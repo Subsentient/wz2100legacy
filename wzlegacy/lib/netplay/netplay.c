@@ -202,6 +202,7 @@ static BOOL		allow_joining = false;
 static	bool server_not_there = false;
 GAMESTRUCT	gamestruct;
 static uint32_t LobbyChatToken;
+uint32_t LastHostTime;
 static Socket *LobbyRecvSock;
 static SocketSet *LobbyRecvSockSet;
 
@@ -3929,6 +3930,7 @@ BOOL NETfindGame(void)
 
     if (getLobbyError() == ERROR_CHEAT || getLobbyError() == ERROR_KICKED)
     {
+		*(int32_t*)&LastHostTime = -1;
         return false;
     }
     setLobbyError(ERROR_NOERROR);
@@ -3942,6 +3944,7 @@ BOOL NETfindGame(void)
         selectedPlayer	= NET_HOST_ONLY;		// Host is always 0
         NetPlay.isHost		= true;
         NetPlay.hostPlayer	= NET_HOST_ONLY;
+        LastHostTime = (int32_t)-1;
         return true;
     }
     // We first check to see if we were given a IP/hostname from the command line
@@ -3953,6 +3956,7 @@ BOOL NETfindGame(void)
             debug(LOG_ERROR, "Error connecting to client via hostname provided (%s)",iptoconnect);
             debug(LOG_ERROR, "Cannot resolve hostname :%s",strSockError(getSockErr()));
             setLobbyError(ERROR_CONNECTION);
+			*(int32_t*)&LastHostTime = -1;
             return false;
         }
         else
@@ -3966,6 +3970,8 @@ BOOL NETfindGame(void)
     {
         debug(LOG_ERROR, "Cannot resolve hostname \"%s\": %s", hostname, strSockError(getSockErr()));
         setLobbyError(ERROR_CONNECTION);
+		*(int32_t*)&LastHostTime = -1;
+
         return false;
     }
 
@@ -3994,6 +4000,8 @@ BOOL NETfindGame(void)
         debug(LOG_ERROR, "Cannot connect to \"%s:%d\": %s", hostname, port, strSockError(getSockErr()));
         setLobbyError(ERROR_CONNECTION);
         freeaddrinfo(hosts);
+		*(int32_t*)&LastHostTime = -1;
+
         return false;
     }
     debug(LOG_NET, "New tcp_socket = %p", tcp_socket);
@@ -4004,6 +4012,8 @@ BOOL NETfindGame(void)
         debug(LOG_ERROR, "Cannot create socket set: %s", strSockError(getSockErr()));
         setLobbyError(ERROR_CONNECTION);
         freeaddrinfo(hosts);
+		*(int32_t*)&LastHostTime = -1;
+
         return false;
     }
     debug(LOG_NET, "Created socket_set %p", socket_set);
@@ -4036,6 +4046,8 @@ BOOL NETfindGame(void)
         // when we fail to receive a game count, bail out
         setLobbyError(ERROR_CONNECTION);
         freeaddrinfo(hosts);
+        *(int32_t*)&LastHostTime = -1;
+
         return false;
     }
 
@@ -4052,6 +4064,8 @@ BOOL NETfindGame(void)
             debug(LOG_NET, "only %u game(s) received", (unsigned int)gamecount);
             // If we fail, success depends on the amount of games that we've read already
             freeaddrinfo(hosts);
+			*(int32_t*)&LastHostTime = -1;
+
             return gamecount;
         }
 
@@ -4062,7 +4076,15 @@ BOOL NETfindGame(void)
 
         ++gamecount;
     }
-
+    
+    /*Get the time of last hosted game.*/
+	if (readNoInt(tcp_socket, &LastHostTime, sizeof(uint32_t)) == SOCKET_ERROR)
+	{
+		*(int32_t*)&LastHostTime = -1;
+		debug(LOG_WARNING, "Warning, couldn't retrieve time of last game hosted. Lobby server may not support it.");
+	}
+	else LastHostTime = ntohl(LastHostTime);
+	
     freeaddrinfo(hosts);
     return true;
 }
@@ -4072,24 +4094,23 @@ BOOL NETfindGame(void)
 BOOL NETlobbyChatWrite(const char *TextStream)
 { /*Unlike the listen side, it uses a dedicated connection, writes, and then closes it.*/
     struct addrinfo *Cur = NULL, *Hosts = NULL;
-    uint32_t PermissionStatus, Success;
-	unsigned char NickLength = strlen(sPlayer), MessageLength = strlen(TextStream);
+	unsigned char MessageLength = strlen(TextStream);
     int Test = 0;
+    signed char PermissionStatus = 0, Success = 0; /*The boolean type of the lobby server is a signed char.*/
     Socket *ChatSendSock = NULL;
     SocketSet *SockSet = NULL;
 	unsigned char OutBuf[256], *Worker = OutBuf; /*No longer than this at once.*/
 	
-	/*We need to send the length of both our nick and our message.*/
-	memcpy(Worker++, &NickLength, 1);
-	memcpy(Worker++, &MessageLength, 1);
+	/*We need to send the token they gave us on init. Endianness is handled serverside.*/
+	memcpy(Worker, &LobbyChatToken, sizeof(uint32_t));
+	Worker += sizeof(uint32_t);
 	
-	/*Copy in the nick.*/
-	memcpy(Worker, sPlayer, NickLength);
-	Worker += NickLength;
+	/*The length of the message we are sending.*/
+	*Worker++ = MessageLength;
 	
 	/*And the message.*/
 	memcpy(Worker, TextStream, MessageLength);
-	/*Null terminate the final string.*/
+	/*Null terminate the final message string.*/
 	Worker[MessageLength] = '\0';
 	
 	
@@ -4129,7 +4150,7 @@ BOOL NETlobbyChatWrite(const char *TextStream)
 
     if (writeAll(ChatSendSock, "speak", sizeof("speak")) == SOCKET_ERROR ||
 		checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !ChatSendSock->ready ||
-		(Test = readNoInt(ChatSendSock, &PermissionStatus, sizeof(uint32_t))) == SOCKET_ERROR)
+		(Test = readNoInt(ChatSendSock, &PermissionStatus, 1)) == SOCKET_ERROR)
     { /*Request permission to speak.*/
 		debug(LOG_ERROR, "Cannot send 'speak' command to lobby server.");
 
@@ -4154,7 +4175,7 @@ BOOL NETlobbyChatWrite(const char *TextStream)
         return false;
     }
 	
-	if (!ntohl(PermissionStatus))
+	if (!PermissionStatus)
 	{ /*Check if we are allowed to speak.*/
 		debug(LOG_ERROR, "Lobby server has denied permission to speak in lobby chat.");
 		
@@ -4167,7 +4188,7 @@ BOOL NETlobbyChatWrite(const char *TextStream)
 	}
 	
 	/*Write our message.*/
-	if (writeAll(ChatSendSock, OutBuf, strlen((char*)OutBuf) + 1) == SOCKET_ERROR ||/*Write the null terminator.*/
+	if (writeAll(ChatSendSock, OutBuf, MessageLength + sizeof(uint32_t) + 1 + 1) == SOCKET_ERROR ||/*Write the null terminator.*/
 	checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !ChatSendSock->ready) 
 	{
 		debug(LOG_NET, "Cannot write to lobby chat, socket encountered error \"%s\".", strSockError(getSockErr()));
@@ -4180,7 +4201,7 @@ BOOL NETlobbyChatWrite(const char *TextStream)
 		return false;
 	}
 
-	if (readNoInt(ChatSendSock, &Success, sizeof(uint32_t)) == SOCKET_ERROR) 
+	if (readNoInt(ChatSendSock, &Success, 1) == SOCKET_ERROR) 
 	/*Check if it was sent alright.*/
 	{
 		debug(LOG_NET, "Cannot read server response for chat write, socket encountered error \"%s\".",
@@ -4211,6 +4232,143 @@ BOOL NETlobbyChatWrite(const char *TextStream)
     return true;
 }
 
+BOOL NETlobbyChatSetNick(const char *NewNick)
+{ /*Requests that our nickname be updated.*/
+    struct addrinfo *Cur = NULL, *Hosts = NULL;
+    int Test = 0;
+    signed char PermissionStatus = 0, Success = 0; /*Bool of the lobby is signed char.*/
+    SocketSet *SockSet = NULL;
+    Socket *CSocket = NULL;
+	unsigned char OutBuf[256], *Worker = OutBuf;
+	unsigned char NickLength = strlen(NewNick);
+	
+	memcpy(Worker, &LobbyChatToken, sizeof(uint32_t));
+	Worker += sizeof(uint32_t);
+	
+	/*Nick length.*/
+	*Worker++ = NickLength;
+	
+	/*The new nick.*/
+	memcpy(Worker, NewNick, NickLength);
+	Worker[NickLength] = '\0';
+	
+	
+    if ((Hosts = resolveHost(hostname, masterserver_port)) == NULL)
+    {
+        debug(LOG_ERROR, "Cannot resolve hostname \"%s\": %s", hostname, strSockError(getSockErr()));
+        return false;
+    }
+
+    for (Cur = Hosts; Cur; Cur = Cur->ai_next)
+    {
+        CSocket = SocketOpen(Cur, 15000);
+        
+        if (CSocket) break;
+    }
+
+    if (!CSocket)
+    {
+        debug(LOG_NET, "Cannot connect to \"%s:%d\": %s", hostname, masterserver_port, strSockError(getSockErr()));
+        freeaddrinfo(Hosts);
+        return false;
+    }
+
+	debug(LOG_NET, "Setting up socket set.");
+	
+	if (!(SockSet = allocSocketSet(1)))
+	{
+		debug(LOG_NET, "Unable to allocate socket set.");
+		socketClose(CSocket);
+		freeaddrinfo(Hosts);
+		return false;
+	}
+	
+	SocketSet_AddSocket(SockSet, CSocket);
+	
+    debug(LOG_NET, "Asking lobby server for permission to nick change, stage 1.");
+
+    if (writeAll(CSocket, "nick", sizeof("nick")) == SOCKET_ERROR ||
+		checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !CSocket->ready ||
+		(Test = readNoInt(CSocket, &PermissionStatus, 1)) == SOCKET_ERROR)
+    { /*Send the nick command.*/
+		debug(LOG_ERROR, "Cannot send 'nick' command to lobby server.");
+
+        if (Test == SOCKET_ERROR)
+        {
+            debug(LOG_ERROR, "Socket encountered error \"%s\".", strSockError(getSockErr()));
+        }
+        else if (!CSocket->ready)
+        {
+			debug(LOG_ERROR, "Socket is not ready.");
+		}
+        else
+        {
+            debug(LOG_ERROR, "Connection timed out.");
+        }
+
+		SocketSet_DelSocket(SockSet, CSocket);
+        socketClose(CSocket);
+        freeaddrinfo(Hosts);
+        free(SockSet);
+        
+        return false;
+    }
+	
+	if (!PermissionStatus)
+	{ /*Did stage 1 give us permission?*/
+		debug(LOG_ERROR, "Lobby server has denied permission to change nick for chat.");
+		
+		SocketSet_DelSocket(SockSet, CSocket);
+        socketClose(CSocket);
+        freeaddrinfo(Hosts);
+        free(SockSet);
+
+		return false;
+	}
+	
+	/*Send the message.*/
+	if (writeAll(CSocket, OutBuf, NickLength + sizeof(uint32_t) + 1 + 1) == SOCKET_ERROR
+		|| checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !CSocket->ready) 
+	{
+		debug(LOG_NET, "Cannot write to lobby server for nick change, socket encountered error \"%s\".", strSockError(getSockErr()));
+		
+		SocketSet_DelSocket(SockSet, CSocket);
+		socketClose(CSocket);
+		freeaddrinfo(Hosts);
+        free(SockSet);
+
+		return false;
+	}
+
+	if (readNoInt(CSocket, &Success, 1) == SOCKET_ERROR) 
+	{ /*Read the response.*/
+		debug(LOG_NET, "Cannot read server response for chat nick change, socket encountered error \"%s\".",
+			strSockError(getSockErr()));
+			
+		SocketSet_DelSocket(SockSet, CSocket);
+		socketClose(CSocket);
+		freeaddrinfo(Hosts);
+        free(SockSet);
+
+		return false;
+	}
+	else if (!Success)
+	{
+		debug(LOG_NET, "Server reports failure in changing our nick for lobby chat.");
+		SocketSet_DelSocket(SockSet, CSocket);
+		socketClose(CSocket);
+        free(SockSet);
+		freeaddrinfo(Hosts);
+	}
+	
+	SocketSet_DelSocket(SockSet, CSocket);
+	socketClose(CSocket);
+    freeaddrinfo(Hosts);
+	free(SockSet);
+
+    return true;
+}
+/*
 BOOL NETlobbyChatShutdown(void)
 {
 	unsigned char OutBuf[sizeof "dc" + sizeof LobbyChatToken] = { "dc" };
@@ -4222,39 +4380,98 @@ BOOL NETlobbyChatShutdown(void)
 	
 	if (!LobbyRecvSock) return false;
 
-	/*Prepare the output buffer.*/
-	memcpy(OutBuf + sizeof "dc", &LobbyChatToken, sizeof LobbyChatToken);
-	
-	if ((Result = writeAll(LobbyRecvSock, OutBuf, sizeof OutBuf)) == SOCKET_ERROR)
-	{
-		debug(LOG_ERROR, "Failed to write disconnect from lobby chat server! Socket spit error \"%s\".",
-				strSockError(getSockErr()));
-		RetVal = false;
-	}
-	
-	/* Lobby has a twig up it's butt at the moment and won't recognize this most likely, so we try, but also,
-	 * we won't care if it works or not.
-	 *
-	if ((Result = readNoInt(LobbyRecvSock, &DcOk, sizeof(Bool))) == SOCKET_ERROR)
-	{
-		debug(LOG_ERROR, "Failed to read disconnect confirmation from lobby chat server! Socket spit error \"%s\".",
-				strSockError(getSockErr()));
-		RetVal = false;
-	}
-	*/
-	
-	if (!DcOk)
-	{
-		debug(LOG_ERROR, "Lobby server says it failed to disconnect us from the lobby chat server!");
-		RetVal = false;
-	}
-	
 	SocketSet_DelSocket(LobbyRecvSockSet, LobbyRecvSock);
 	socketClose(LobbyRecvSock);
 	LobbyRecvSock = NULL;
 	LobbyRecvSockSet = NULL;
 	LobbyChatToken = 0;
 	return RetVal;
+}
+*/
+
+
+BOOL NETlobbyChatShutdown(void)
+{ /*Requests that our nickname be updated.*/
+    struct addrinfo *Cur = NULL, *Hosts = NULL;
+    int Test = 0;
+    signed char Success = 0;
+    SocketSet *SockSet = NULL;
+    Socket *CSocket = NULL;
+	unsigned char OutBuf[sizeof "dc" + sizeof(uint32_t)] = "dc";
+	
+	/*Prepare the tiny output buffer.*/
+	memcpy(OutBuf + sizeof "dc", &LobbyChatToken, sizeof LobbyChatToken);
+	
+    if ((Hosts = resolveHost(hostname, masterserver_port)) == NULL)
+    {
+        debug(LOG_ERROR, "Cannot resolve hostname \"%s\": %s", hostname, strSockError(getSockErr()));
+        return false;
+    }
+
+    for (Cur = Hosts; Cur; Cur = Cur->ai_next)
+    {
+        CSocket = SocketOpen(Cur, 15000);
+        
+        if (CSocket) break;
+    }
+
+    if (!CSocket)
+    {
+        debug(LOG_NET, "Cannot connect to \"%s:%d\": %s", hostname, masterserver_port, strSockError(getSockErr()));
+        freeaddrinfo(Hosts);
+        return false;
+    }
+
+	debug(LOG_NET, "Setting up socket set.");
+	
+	if (!(SockSet = allocSocketSet(1)))
+	{
+		debug(LOG_NET, "Unable to allocate socket set.");
+		socketClose(CSocket);
+		freeaddrinfo(Hosts);
+		return false;
+	}
+	
+	SocketSet_AddSocket(SockSet, CSocket);
+	
+    debug(LOG_NET, "Asking lobby server to disconnect us from lobby chat.");
+
+    if (writeAll(CSocket, OutBuf, sizeof OutBuf) == SOCKET_ERROR ||
+		checkSockets(SockSet, NET_TIMEOUT_DELAY) <= 0 || !CSocket->ready ||
+		(Test = readNoInt(CSocket, &Success, 1)) == SOCKET_ERROR)
+    { /*Send the nick command.*/
+		debug(LOG_ERROR, "Cannot send 'dc' command to lobby server.");
+
+        if (Test == SOCKET_ERROR)
+        {
+            debug(LOG_ERROR, "Socket encountered error \"%s\".", strSockError(getSockErr()));
+        }
+        else if (!CSocket->ready)
+        {
+			debug(LOG_ERROR, "Socket is not ready.");
+		}
+        else
+        {
+            debug(LOG_ERROR, "Connection timed out.");
+        }
+	}	
+	else if (!Success)
+	{ /*Did the lobby succeed?*/
+		debug(LOG_ERROR, "Lobby server reports failure in disconnecting us from lobby chat.");
+	}
+	
+	SocketSet_DelSocket(SockSet, CSocket);
+	SocketSet_DelSocket(LobbyRecvSockSet, LobbyRecvSock);
+	socketClose(CSocket);
+	socketClose(LobbyRecvSock);
+    freeaddrinfo(Hosts);
+	free(SockSet);
+	
+	LobbyRecvSock = NULL;
+	LobbyRecvSockSet = NULL;
+	LobbyChatToken = 0;
+	
+    return true;
 }
 
 BOOL NETlobbyChatRead(char *OutBuf, uint32_t MaxSize)
@@ -4303,6 +4520,8 @@ BOOL NETlobbyChatInit(void)
     SocketSet *SockSet = NULL;
 	typedef signed char Bool; /*To match the lobby server's idea of Bool.*/
 	Bool Success;
+	unsigned char NickLen = strlen(sPlayer);
+	char OutBuf[32];
 	
 	if (LobbyChatToken || LobbyRecvSock || LobbyRecvSockSet) return false;
 	
@@ -4378,7 +4597,7 @@ BOOL NETlobbyChatInit(void)
 
 		return false;
 	}
-
+	
 	if (readNoInt(ChatInitSock, &LobbyChatToken, sizeof(uint32_t)) == SOCKET_ERROR) 
 	{ /*Get the lobby server's new descriptor it gave us.*/
 		debug(LOG_NET, "Cannot read server response for lobby chat initialization, socket encountered error \"%s\".",
@@ -4399,6 +4618,41 @@ BOOL NETlobbyChatInit(void)
 		freeaddrinfo(Hosts);
         free(SockSet);
 
+	}
+	/*We ARE allowed, so send them our nick.*/
+	
+	*(unsigned char*)OutBuf = NickLen;
+	strncpy(OutBuf + 1, sPlayer, sizeof OutBuf - 2);
+	(OutBuf + 1)[sizeof OutBuf - 2] = '\0';
+	
+	if (writeAll(ChatInitSock, &OutBuf, strlen(OutBuf) + 1) == SOCKET_ERROR)
+	{ /*Send the nick along with it's length.*/
+		debug(LOG_ERROR, "Unable to send nick to lobby server for chat.");
+		SocketSet_DelSocket(SockSet, ChatInitSock);
+		socketClose(ChatInitSock);
+		freeaddrinfo(Hosts);
+		free(SockSet);
+		return false;
+	}
+	
+	if (readNoInt(ChatInitSock, &Success, sizeof Success) == SOCKET_ERROR)
+	{ /*Get the final response on if we are initialized.*/
+		debug(LOG_ERROR, "Unable to get final confirmation from lobby for chat init.");
+		SocketSet_DelSocket(SockSet, ChatInitSock);
+		socketClose(ChatInitSock);
+		freeaddrinfo(Hosts);
+		free(SockSet);
+		return false;
+	}
+	
+	if (!Success)
+	{ /*Did it accept us?*/
+		debug(LOG_ERROR, "Lobby rejected us for lobby chat init.");
+		SocketSet_DelSocket(SockSet, ChatInitSock);
+		socketClose(ChatInitSock);
+		freeaddrinfo(Hosts);
+		free(SockSet);
+		return false;
 	}
 	
     freeaddrinfo(Hosts);

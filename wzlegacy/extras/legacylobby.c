@@ -32,7 +32,7 @@ along with Warzone 2100 Legacy.  If not, see <http://www.gnu.org/licenses/>.
 #include <signal.h>
 #include <time.h>
 
-#define LOBBYVER "0.4"
+#define LOBBYVER "0.5"
 
 #define GAMEPORT 2100
 #define LOBBYPORT 9990
@@ -103,6 +103,7 @@ static struct _ChatQueueTree
 {
 	int Sock;
 	char IP[64];
+	char Nick[32];
 	
 	struct _ChatQueueTree *Next;
 	struct _ChatQueueTree *Prev;
@@ -129,9 +130,10 @@ static void LobbyLoop(void);
 static void ProtocolEncodeGS(GameStruct *InStruct, unsigned char *OutStream);
 static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream);
 static Bool ProtocolTestGamePort(unsigned short PortNum, const char *IP);
-static void ChatAddToQueue(const char *IP, int Sock);
-static Bool ChatDelFromQueue(const char *IP, int Sock);
+static void ChatAddToQueue(const char *IP, int Sock, const char *const Nick);
+static Bool ChatDelFromQueue(int Sock);
 static void ChatShutdownQueue(void);
+static struct _ChatQueueTree *ChatQueueLookup(const int Sock);
 
 /*Functions*/
 static Bool NetRead(int SockDescriptor, void *OutStream_, unsigned long MaxLength, Bool IsText)
@@ -440,13 +442,25 @@ static void LobbyLoop(void)
 			char RecvChar;
 			int Status = recv(CWorker->Sock, &RecvChar, 1, MSG_DONTWAIT);
 			
-			ChatDelFromQueue(NULL, 0); /*Delete anything with no socket.*/
-			
 			if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK))
 			{
+				char Nick[32];
+				struct _ChatQueueTree *Worker = NULL;
+				
+				strncpy(Nick, CWorker->Nick, sizeof Nick - 1);
+				Nick[sizeof Nick - 1] = '\0';
+				
 				printf("--[Deleting dead chat listener client %s::%d]--\n", CWorker->IP, CWorker->Sock);
 				
-				ChatDelFromQueue(NULL, CWorker->Sock);
+				ChatDelFromQueue(CWorker->Sock);
+				
+				snprintf(OutBuf, sizeof OutBuf, "* %s's connection to lobby chat was broken *", Nick);
+				
+				for (Worker = ChatTree; Worker; Worker = Worker->Next)
+				{
+					NetWrite(Worker->Sock, OutBuf, sizeof OutBuf);
+				}
+				
 				goto L3Start;
 			}
 		}
@@ -612,87 +626,249 @@ static void LobbyLoop(void)
 			}
 			continue;
 		}
+		else if (!strcmp("nick", InBuf))
+		{ /*They want to change the nick for their descriptor.*/
+			Bool Ok = true;
+			struct _ChatQueueTree *ChatClient = NULL, *Worker = ChatTree;
+			uint32_t Token = 0;
+			unsigned char NickLength = 0;
+			char OutBuf[256];
+			
+			/*Tell them to go ahead and send it.*/
+			NetWrite(ClientDescriptor, &Ok, 1);
+			
+			/*Get the descriptor we gave them.*/
+			NetRead(ClientDescriptor, &Token, sizeof(uint32_t), false);
+			
+			Token = ntohl(Token);
+			
+			/*Lookup that descriptor*/ 
+			if (!(ChatClient = ChatQueueLookup(Token)))
+			{
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				fprintf(stderr, "--[Chat client at %s sent us invalid descriptor for nick change.]--\n", AddrBuf);
+				continue;
+			}
+			
+			if (strcmp(AddrBuf, ChatClient->IP) != 0)
+			{ /*Don't let people guess descriptors to change nicks of other players.*/
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				fprintf(stderr, "--[Chat client at %s sent us a descriptor that doesn't match their IP.]--\n", AddrBuf);
+				continue;
+			}
+			
+			/*Time to get the new nick. Get the length first.*/
+			NetRead(ClientDescriptor, &NickLength, 1, false);
+			
+			if (NickLength >= sizeof ChatClient->Nick || !NickLength)
+			{ /*probably trying to pull a buffer overflow on us.*/
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				fprintf(stderr, "--[Chat client at %s attempted to send us a bad nick length,]--\n", AddrBuf);
+				continue;
+			}
+			
+			/*Now get the nick.*/
+			NetRead(ClientDescriptor, InBuf, NickLength, true);
+			InBuf[NickLength] = '\0';
+			
+			/*Tell them we're done with them.*/
+			NetWrite(ClientDescriptor, &Ok, 1);
+			close(ClientDescriptor);
+			
+			/*Prepare the out message.*/
+			snprintf(OutBuf, sizeof OutBuf, "* %s is now known as %s *", ChatClient->Nick, InBuf);
+			
+			/*Copy in the new nick once and for all.*/
+			strncpy(ChatClient->Nick, InBuf, sizeof ChatClient->Nick - 1);
+			ChatClient->Nick[sizeof ChatClient->Nick - 1] = '\0';
+
+			for (; Worker; Worker = Worker->Next)
+			{ /*Notify everyone.*/
+				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
+			}
+			
+			continue;
+		}
 		else if (!strcmp("listen", InBuf))
 		{ /*Adds this client to our chat send queue.*/
-			const Bool Ok = true;
+			Bool Ok = true;
 			uint32_t DOut = htonl(ClientDescriptor);
+			unsigned char NickLen = 0;
+			char OutBuf[256];
+			struct _ChatQueueTree *Worker = ChatTree;
 			
 			printf("--[Client %s requested to be added to chat queue, we'll oblige.\n"
-					"Sending them their descriptor (%d)]--\n", AddrBuf, ClientDescriptor);
+					"Sending them their descriptor (%d) and waiting for response.]--\n", AddrBuf, ClientDescriptor);
 			NetWrite(ClientDescriptor, (void*)&Ok, 1);
 			NetWrite(ClientDescriptor, &DOut, sizeof(uint32_t));
 			
-			ChatAddToQueue(AddrBuf, ClientDescriptor);
+			/*Get the string length*/
+			NetRead(ClientDescriptor, &NickLen, 1, false);
 			
+			if (!NickLen)
+			{ /*Maybe trying to mess us up.*/
+				fprintf(stderr, "--[Zero size nick response for chat queue request by %s]--\n", AddrBuf);
+				close(ClientDescriptor);
+				continue;
+			}
+			
+			NetRead(ClientDescriptor, InBuf, NickLen, true);
+			InBuf[NickLen] = '\0';
+			
+			/*Check that the nick is not longer than our maximum.*/
+			if (NickLen > sizeof (((struct _ChatQueueTree*)0)->Nick) ) Ok = false;
+			else ChatAddToQueue(AddrBuf, ClientDescriptor, InBuf);
+			
+			/*Send if it went ok.*/
+			NetWrite(ClientDescriptor, &Ok, 1);
+			
+			/*Tell everyone they arrived.*/
+			snprintf(OutBuf, sizeof OutBuf, "* %s has connected to lobby chat *", InBuf);
+			
+			for (; Worker; Worker = Worker->Next)
+			{
+				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
+			}
+			
+			/*leave the socket open for them to be listened to.*/
 			continue;
 		}
 		else if (!strcmp("speak", InBuf))
 		{
-			struct _ChatQueueTree *CWorker = ChatTree;
+			struct _ChatQueueTree *CWorker = ChatTree, *ChatClient = NULL;
 			Bool Ok = true;
-			char OutBuf[256], Nick[16], Message[192];
-			unsigned char *Worker = (void*)InBuf;
-			unsigned char NickLength = 0, MessageLength = 0;
+			char OutBuf[256], Message[192];
+			unsigned char MessageLength = 0;
+			uint32_t DIn = 0;
 			
+			/*Tell them they are allowed to ask us to speak.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
 			
 			*InBuf = 0; /*So we know we aren't sending the same old trash.*/
 			
-			NetRead(ClientDescriptor, InBuf, sizeof InBuf, true);
+			/*Find the descriptor for their listening connection.*/
+			NetRead(ClientDescriptor, &DIn, sizeof(uint32_t), false);
+
+			DIn = ntohl(DIn);
 			
-			NickLength = *Worker++;
-			MessageLength = *Worker++;
+			if (!DIn)
+			{ /*Zero descriptor.*/
+				Ok = false;
+				
+				fprintf(stderr, "--[Client at %s sent us a zero descriptor for chat 'speak'.]--\n", AddrBuf);
+				
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				continue;
+			}
 			
-			/*Get the length of the nick and message.*/
-			
-			if (NickLength >= sizeof Nick || MessageLength >= sizeof Message || !InBuf[sizeof(uint16_t) * 2])
-			{ /*Malformed or deliberately botched message, or just general read failure.*/
+			/*Attempt to find their chat descriptor.*/
+			if (!(ChatClient = ChatQueueLookup(DIn)))
+			{
+				fprintf(stderr, "--[Client at %s requested to speak but no listening\n"
+						"connection exists on the sent descriptor]--\n", AddrBuf);
 				Ok = false;
 				NetWrite(ClientDescriptor, &Ok, 1);
 				close(ClientDescriptor);
-				printf("--[Bad chat send command request from %s]--\n", AddrBuf);
 				continue;
 			}
-
-			/*Copy in the nick and message to their arrays to prepare for formatting.*/
-			memcpy(Nick, Worker, NickLength);
-			Nick[NickLength] = '\0';
-			Worker += NickLength;
 			
-			memcpy(Message, Worker, MessageLength);
+			if (strcmp(AddrBuf, ChatClient->IP) != 0)
+			{ /*Don't let them impersonate other players by guessing their descriptors.*/
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				continue;
+			}
+			
+			/*Read in the length of their message.*/
+			NetRead(ClientDescriptor, &MessageLength, 1, false);
+			
+			if (!MessageLength || MessageLength >= sizeof Message)
+			{
+				fprintf(stderr, "--[Client at %s sent us a bad size %d of message length.]--\n", AddrBuf, MessageLength);
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				continue;
+			}
+			
+			/*Read in the message itself.*/
+			NetRead(ClientDescriptor, Message, MessageLength, true);
 			Message[MessageLength] = '\0';
 			
-			snprintf(OutBuf, sizeof OutBuf, "%s: %s", Nick, Message);
+			/*Seems OK to us, tell the client and rush them off.*/
+			NetWrite(ClientDescriptor, &Ok, 1);
+			close(ClientDescriptor);
 			
-			/*Looks like it all went OK. Tell the client that.*/
-			NetWrite(ClientDescriptor, &Ok, 1);			
-			
+			snprintf(OutBuf, sizeof OutBuf, "%s: %s", ChatClient->Nick, Message);
 			
 			for (; CWorker; CWorker = CWorker->Next)
 			{
 				NetWrite(CWorker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}
-			close(ClientDescriptor);
 			
-			printf("--[CHAT: %s at %s: %s]--\n", Nick, AddrBuf, Message);
+			printf("--[CHAT: %s at %s: %s]--\n", ChatClient->Nick, AddrBuf, Message);
 			continue; 
 		}
 		else if (!strcmp("dc", InBuf))
 		{
 			uint32_t Desc = 0;
 			Bool Ok = false;
+			struct _ChatQueueTree *Worker = ChatTree, *ChatClient = NULL;
+			char OutBuf[256], Nick[32];
 			
-			memcpy(&Desc, InBuf + sizeof "dc", sizeof(uint32_t));
+			/*Read in the descriptor*/
+			NetRead(ClientDescriptor, &Desc, sizeof Desc, false);
 			
 			Desc = ntohl(Desc);
 			
-			Ok = ChatDelFromQueue(Desc ? AddrBuf : NULL, Desc);
+			if (!(ChatClient = ChatQueueLookup(Desc)))
+			{ /*Find the client via descriptor*/
+				fprintf(stderr, "--[Failed to lookup descriptor for client %s::%u requesting disconnect.]--\n",
+						AddrBuf, (unsigned)Desc);
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				continue;
+			}
+			
+			if (strcmp(AddrBuf, ChatClient->IP) != 0)
+			{ /*Don't allow closing descriptors that aren't ours*/
+				fprintf(stderr, "--[Client at %s attempted to close a connection\n"
+						"for a descriptor other than their own.]--\n", AddrBuf);
+				Ok = false;
+				NetWrite(ClientDescriptor, &Ok, 1);
+				close(ClientDescriptor);
+				continue;
+			}
+			
+			strncpy(Nick, ChatClient->Nick, sizeof Nick - 1);
+			Nick[sizeof Nick - 1] = '\0';
+			
+			Ok = ChatDelFromQueue(Desc);
 			
 			NetWrite(ClientDescriptor, &Ok, sizeof(Bool));
 			
 			close(ClientDescriptor);
 			
-			printf("--[Disconnected chat listener %s::%d at their request.]--\n", AddrBuf, (int)Desc); fflush(NULL);
+			if (Ok) printf("--[Disconnected chat listener %s::%u at their request.]--\n", AddrBuf, (unsigned)Desc);
+			else fprintf(stderr, "--[Failed to disconnect chat listener %s::%u!]--\n", AddrBuf, (unsigned)Desc);
+			
+			fflush(NULL);
+			
+			/*Tell the others.*/
+			snprintf(OutBuf, sizeof OutBuf, "* %s has disconnected from lobby chat *", Nick);
+			for (; Worker; Worker = Worker->Next)
+			{
+				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
+			}
 			
 			continue;
 		}
@@ -764,7 +940,7 @@ static Bool ProtocolTestGamePort(unsigned short PortNum, const char *IP)
 	}
 	
 	close(TestDescriptor);
-	fprintf(stderr, "--[Game Port test succeeded.]--\n");
+	printf("--[Game Port test succeeded.]--\n");
 	
 	return true;
 }
@@ -958,7 +1134,7 @@ static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream)
 	Worker += sizeof(uint32_t);
 }
 
-static void ChatAddToQueue(const char *IP, int Sock)
+static void ChatAddToQueue(const char *IP, int Sock, const char *const Nick)
 {
 	struct _ChatQueueTree *Worker = ChatTree;
 	
@@ -978,18 +1154,22 @@ static void ChatAddToQueue(const char *IP, int Sock)
 	}
 	
 	Worker->Sock = Sock;
+	
 	strncpy(Worker->IP, IP, sizeof Worker->IP - 1);
 	Worker->IP[sizeof Worker->IP - 1] = '\0';
+	
+	strncpy(Worker->Nick, Nick, sizeof Worker->Nick - 1);
+	Worker->Nick[sizeof Worker->Nick - 1] = '\0';
 }
 
-static Bool ChatDelFromQueue(const char *IP, int Sock)
+static Bool ChatDelFromQueue(int Sock)
 {
 	Bool Found = false;
 	struct _ChatQueueTree *Worker = ChatTree;
 	
 	for (; Worker; Worker = Worker->Next)
 	{
-		if ((Sock && Worker->Sock == Sock) || (IP && !strcmp(Worker->IP, IP)))
+		if (Sock && Worker->Sock == Sock)
 		{
 			close(Worker->Sock); /*Well, disconnect it of course!*/
 			
@@ -1019,6 +1199,21 @@ static Bool ChatDelFromQueue(const char *IP, int Sock)
 	
 	return Found;
 }
+
+static struct _ChatQueueTree *ChatQueueLookup(const int Sock)
+{
+	struct _ChatQueueTree *Worker = ChatTree;
+	
+	for (; Worker; Worker = Worker->Next)
+	{
+		if (Worker->Sock == Sock)
+		{
+			return Worker;
+		}
+	}
+	return NULL;
+}
+	
 
 static void ChatShutdownQueue(void)
 {
