@@ -4221,6 +4221,8 @@ BOOL NETlobbyChatWrite(const char *TextStream)
 		socketClose(ChatSendSock);
         free(SockSet);
 		freeaddrinfo(Hosts);
+		
+		return false;
 	}
 	
 	/*All good.*/
