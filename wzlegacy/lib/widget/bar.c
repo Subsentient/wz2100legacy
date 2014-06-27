@@ -463,11 +463,13 @@ static void barGraphDisplayStatText(W_BARGRAPH *psBGraph, uint32_t x, uint32_t y
 		iV_DrawText(psBGraph->aStatText, X - 2, Y);
 		iV_DrawText(psBGraph->aStatText, X, Y - 2);
 		iV_DrawText(psBGraph->aStatText, X, Y + 2);
+		
 		/*The text.*/
 		iV_SetTextColour(psBGraph->majorCol);
-		
-		iV_DrawText(psBGraph->aStatText, X + 0.25f, Y);
-		iV_DrawText(psBGraph->aStatText, X - 0.25f, Y);
+		iV_DrawText(psBGraph->aStatText, X + 0.35f, Y);
+		iV_DrawText(psBGraph->aStatText, X - 0.35f, Y);
+		iV_DrawText(psBGraph->aStatText, X, Y + 0.35f);
+		iV_DrawText(psBGraph->aStatText, X, Y - 0.35f);
 	}
 }
 	
