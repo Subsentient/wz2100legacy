@@ -33,11 +33,12 @@ typedef struct _w_bargraph
     uint16_t		iRange;				// Maximum range
     uint16_t		iValue;				// Current value
     uint16_t		iOriginal;			// hack to keep uncapped value around
-    int             denominator;                    // Denominator, 1 by default.
+	int             denominator;                    // Denominator, 1 by default.
     int             precision;                      // Number of places after the decimal point to display, 0 by default.
     PIELIGHT	majorCol;			// Colour for the major bar
     PIELIGHT	minorCol;			// Colour for the minor bar
     const char	*pTip;				// The tool tip for the graph
+	char	aStatText[16];			// Usually time or power remaining printed above etc.
 } W_BARGRAPH;
 
 /* Create a barGraph widget data structure */

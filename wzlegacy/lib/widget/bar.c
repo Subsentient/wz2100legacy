@@ -26,6 +26,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "lib/ivis_common/rendmode.h"
 #include "lib/ivis_common/piepalette.h"
 
+static void barGraphDisplayStatText(W_BARGRAPH *psBGraph, uint32_t x, uint32_t y);
+
 /* Create a barGraph widget data structure */
 W_BARGRAPH *barGraphCreate(const W_BARINIT *psInit)
 {
@@ -56,8 +58,8 @@ W_BARGRAPH *barGraphCreate(const W_BARINIT *psInit)
         return NULL;
     }
 
-    /* Allocate the required memory */
-    psWidget = (W_BARGRAPH *)malloc(sizeof(W_BARGRAPH));
+    /* Allocate the required memory. Use calloc because various things really need to be zeroed out, really. */
+    psWidget = (W_BARGRAPH *)calloc(1, sizeof(W_BARGRAPH));
     if (psWidget == NULL)
     {
         debug(LOG_FATAL, "barGraphCreate: Out of memory");
@@ -90,7 +92,8 @@ W_BARGRAPH *barGraphCreate(const W_BARINIT *psInit)
     psWidget->majorSize = psInit->size;
     psWidget->minorSize = psInit->minorSize;
     psWidget->iRange = psInit->iRange;
-
+	psWidget->aStatText[0] = '\0'; /*Completely unnecessary because we use calloc, but leave it here anyways.*/
+	
     /* Set the display function */
     if (psInit->pDisplay)
     {
@@ -139,7 +142,6 @@ void barGraphInitialise(W_BARGRAPH *psWidget)
 {
     (void)psWidget;
 }
-
 
 /* Set the current size of a bar graph */
 void widgSetBarSize(W_SCREEN *psScreen, uint32_t id, uint32_t iValue)
@@ -443,4 +445,32 @@ void barGraphDisplayTrough(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset,
         iV_Line(tx1,ty0, tx1,ty1, pColours[WCOL_LIGHT]);
         iV_Line(tx0,ty1, tx1,ty1, pColours[WCOL_LIGHT]);
     }
+    
+	barGraphDisplayStatText(psBGraph, x0, ty1);
 }
+
+
+static void barGraphDisplayStatText(W_BARGRAPH *psBGraph, uint32_t x, uint32_t y)
+{	
+	if (*psBGraph->aStatText)
+	{ /*If the text is set to anything.*/
+		float X = x + psBGraph->width / 2 - iV_GetTextWidth(psBGraph->aStatText) / 2, Y = y;
+		iV_SetFont(font_small);
+		
+		/*The shadow*/
+		iV_SetTextColour(WZCOL_BLACK);
+		iV_DrawText(psBGraph->aStatText, X + 2, Y);
+		iV_DrawText(psBGraph->aStatText, X - 2, Y);
+		iV_DrawText(psBGraph->aStatText, X, Y - 2);
+		iV_DrawText(psBGraph->aStatText, X, Y + 2);
+		/*The text.*/
+		iV_SetTextColour(psBGraph->majorCol);
+		
+		iV_DrawText(psBGraph->aStatText, X + 0.25f, Y);
+		iV_DrawText(psBGraph->aStatText, X - 0.25f, Y);
+	}
+}
+	
+	
+	
+	

@@ -155,6 +155,9 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
     uint32_t				BuildPoints,Range, BuildPower;
     W_BARGRAPH			*BarGraph = (W_BARGRAPH *)psWidget;
 
+    /*Clear bar graph text.*/
+	*BarGraph->aStatText = '\0';
+	
     psObj = (BASE_OBJECT *)BarGraph->pUserData;	// Get the object associated with this widget.
 
     if (psObj == NULL)
@@ -167,7 +170,7 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
     {
         return;
     }
-
+    
     switch (psObj->type)
     {
         case OBJ_DROID:						// If it's a droid and...
@@ -194,6 +197,11 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
                         BarGraph->majorCol = WZCOL_GREEN;
                         //and change the tool tip
                         widgSetTipText((WIDGET *)BarGraph, _("Power Accrued"));
+                        
+                        if (BuildPower > Structure->currentPowerAccrued)
+						{
+							snprintf(BarGraph->aStatText, sizeof BarGraph->aStatText, "%u", Range - BuildPoints);
+						}
                     }
                     else
                     {
@@ -204,6 +212,12 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
                         BarGraph->majorCol = WZCOL_YELLOW;
                         //and change the tool tip
                         widgSetTipText((WIDGET *)BarGraph, _("Progress Bar"));
+                        //Fixme
+	                    /*if (Range > BuildPoints)
+	                    {
+							snprintf(BarGraph->aStatText, sizeof BarGraph->aStatText, "%u:%s%u",
+									TimeRemaining / 60, TimeRemaining % 60 < 10 ? "0" : "", TimeRemaining % 60);
+						}*/              
                     }
                     if (BuildPoints > Range)
                     {
@@ -242,6 +256,8 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
                     BarGraph->majorCol = WZCOL_GREEN;
                     //and change the tool tip
                     widgSetTipText((WIDGET *)BarGraph, _("Power Accrued"));
+                    
+					snprintf(BarGraph->aStatText, sizeof BarGraph->aStatText, "%u", Range - BuildPoints);
                 }
                 else
                 {
@@ -262,6 +278,13 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
                         BuildPoints = (gameTime - Manufacture->timeStarted) /
                                       GAME_TICKS_PER_SEC;
                     }
+                    //Fix me
+                    /*if (Range > BuildPoints)
+                    {
+						snprintf(BarGraph->aStatText, sizeof BarGraph->aStatText, "%u:%s%u",
+								TimeRemaining / 60, TimeRemaining % 60 < 10 ? "0" : "", TimeRemaining % 60);
+					}*/
+                    
                 }
                 if (BuildPoints > Range)
                 {
@@ -294,6 +317,11 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
                     BarGraph->majorCol = WZCOL_GREEN;
                     //and change the tool tip
                     widgSetTipText((WIDGET *)BarGraph, _("Power Accrued"));
+                    
+                    if (Range > BuildPoints)
+                    {
+						snprintf(BarGraph->aStatText, sizeof BarGraph->aStatText, "%u", Range - BuildPoints);
+					}
                 }
                 else
                 {
@@ -319,6 +347,15 @@ void intUpdateProgressBar(WIDGET *psWidget, W_CONTEXT *psContext)
 
                         BuildPoints+= pPlayerRes->currentPoints;
                     }
+                    
+                    if (Range > BuildPoints)
+                    {
+						int ResearchRate = Research->researchPoints;
+						int TimeRemaining = (Range - BuildPoints) / ResearchRate;
+						
+						snprintf(BarGraph->aStatText, sizeof BarGraph->aStatText, "%u:%s%u",
+								TimeRemaining / 60, TimeRemaining % 60 < 10 ? "0" : "", TimeRemaining % 60);
+					}
                 }
                 if (BuildPoints > Range)
                 {
