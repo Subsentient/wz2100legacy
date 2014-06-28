@@ -32,20 +32,21 @@
 
 typedef struct __GLCarrayRec __GLCarray;
 
-struct __GLCarrayRec {
-  char* data;
-  int allocated;
-  int length;
-  int elementSize;
+struct __GLCarrayRec
+{
+	char* data;
+	int allocated;
+	int length;
+	int elementSize;
 };
 
 __GLCarray* __glcArrayCreate(int inElementSize);
 void __glcArrayDestroy(__GLCarray* This);
 __GLCarray* __glcArrayAppend(__GLCarray* This, const void* inValue);
 __GLCarray* __glcArrayInsert(__GLCarray* This, const int inRank,
-			     const void* inValue);
+							 const void* inValue);
 void __glcArrayRemove(__GLCarray* This, const int inRank);
 void* __glcArrayInsertCell(__GLCarray* This, const int inRank,
-			   const int inCells);
+						   const int inCells);
 __GLCarray* __glcArrayDuplicate(__GLCarray* This);
 #endif

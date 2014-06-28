@@ -58,8 +58,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  */
 /***************************************************************************/
 extern void pie_Line(int x0, int y0, int x1, int y1, PIELIGHT colour);
-extern void pie_Box(int x0,int y0, int x1, int y1, PIELIGHT colour);
-extern void pie_BoxFill(int x0,int y0, int x1, int y1, PIELIGHT colour);
+extern void pie_Box(int x0, int y0, int x1, int y1, PIELIGHT colour);
+extern void pie_BoxFill(int x0, int y0, int x1, int y1, PIELIGHT colour);
 extern void pie_ImageFileID(IMAGEFILE *ImageFile, uint16_t ID, int x, int y);
 extern void pie_ImageFileIDTile(IMAGEFILE *ImageFile, uint16_t ID, int x, int y, int Width, int Height);
 
@@ -75,9 +75,9 @@ extern void pie_UploadDisplayBuffer(void);
 
 typedef enum _screenType
 {
-    SCREEN_RANDOMBDROP,
-    SCREEN_CREDITS,
-    SCREEN_MISSIONEND,
+	SCREEN_RANDOMBDROP,
+	SCREEN_CREDITS,
+	SCREEN_MISSIONEND,
 } SCREENTYPE;
 
 extern void pie_LoadBackDrop(SCREENTYPE screenType);

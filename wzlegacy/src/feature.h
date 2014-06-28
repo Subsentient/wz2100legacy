@@ -36,7 +36,7 @@ extern BOOL loadFeatureStats(const char *pFeatureData, uint32_t bufferSize);
 extern void featureStatsShutDown(void);
 
 /* Create a feature on the map */
-extern FEATURE *buildFeature(FEATURE_STATS *psStats, uint32_t x, uint32_t y,BOOL FromSave);
+extern FEATURE *buildFeature(FEATURE_STATS *psStats, uint32_t x, uint32_t y, BOOL FromSave);
 
 /* Release the resources associated with a feature */
 extern void featureRelease(FEATURE *psFeature);

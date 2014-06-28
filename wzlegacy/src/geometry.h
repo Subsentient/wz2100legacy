@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _t_quad
 {
-    Vector2i coords[4];
+	Vector2i coords[4];
 } QUAD;
 
 extern uint32_t adjustDirection( int32_t present, int32_t difference );
@@ -36,36 +36,36 @@ extern unsigned int WZ_DECL_CONST dirtyHypot(int deltaX, int deltaY);
 
 static inline STRUCTURE *getTileStructure(uint32_t x, uint32_t y)
 {
-    BASE_OBJECT *psObj = mapTile(x,y)->psObject;
-    if (psObj && psObj->type == OBJ_STRUCTURE)
-    {
-        return (STRUCTURE *)psObj;
-    }
-    return NULL;
+	BASE_OBJECT *psObj = mapTile(x, y)->psObject;
+	if (psObj && psObj->type == OBJ_STRUCTURE)
+	{
+		return (STRUCTURE *)psObj;
+	}
+	return NULL;
 }
 
 static inline FEATURE *getTileFeature(uint32_t x, uint32_t y)
 {
-    BASE_OBJECT *psObj = mapTile(x,y)->psObject;
-    if (psObj && psObj->type == OBJ_FEATURE)
-    {
-        return (FEATURE *)psObj;
-    }
-    return NULL;
+	BASE_OBJECT *psObj = mapTile(x, y)->psObject;
+	if (psObj && psObj->type == OBJ_FEATURE)
+	{
+		return (FEATURE *)psObj;
+	}
+	return NULL;
 }
 
 static inline BASE_OBJECT *getTileOccupier(uint32_t x, uint32_t y)
 {
-    MAPTILE *psTile = mapTile(x,y);
+	MAPTILE *psTile = mapTile(x, y);
 
-    if (TEST_TILE_VISIBLE(selectedPlayer, psTile))
-    {
-        return mapTile(x,y)->psObject;
-    }
-    else
-    {
-        return NULL;
-    }
+	if (TEST_TILE_VISIBLE(selectedPlayer, psTile))
+	{
+		return mapTile(x, y)->psObject;
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 #endif // __INCLUDED_SRC_GEOMETRY_H__

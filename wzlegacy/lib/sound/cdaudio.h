@@ -22,19 +22,19 @@ extern "C"
 {
 #endif
 
-    typedef enum
-    {
-        SONG_FRONTEND,
-        SONG_INGAME,
-    }
-    SONG_CONTEXT;
+typedef enum
+{
+	SONG_FRONTEND,
+	SONG_INGAME,
+}
+SONG_CONTEXT;
 
-    BOOL cdAudio_Open(const char *user_musicdir);
-    void cdAudio_Close(void);
-    BOOL cdAudio_PlayTrack(SONG_CONTEXT context);
-    void cdAudio_Stop(void);
-    void cdAudio_Pause(void);
-    void cdAudio_Resume(void);
+BOOL cdAudio_Open(const char *user_musicdir);
+void cdAudio_Close(void);
+BOOL cdAudio_PlayTrack(SONG_CONTEXT context);
+void cdAudio_Stop(void);
+void cdAudio_Pause(void);
+void cdAudio_Resume(void);
 
 #if defined(__cplusplus)
 }

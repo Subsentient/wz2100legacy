@@ -33,34 +33,36 @@ typedef struct __GLCcharMapElementRec __GLCcharMapElement;
 typedef struct __GLCcharMapRec __GLCcharMap;
 typedef struct __GLCmasterRec __GLCmaster;
 
-struct __GLCcharMapElementRec {
-  GLCulong mappedCode;
-  __GLCglyph* glyph;
+struct __GLCcharMapElementRec
+{
+	GLCulong mappedCode;
+	__GLCglyph* glyph;
 };
 
-struct __GLCcharMapRec {
-  FcCharSet* charSet;
-  __GLCarray* map;
+struct __GLCcharMapRec
+{
+	FcCharSet* charSet;
+	__GLCarray* map;
 };
 
 __GLCcharMap* __glcCharMapCreate(const __GLCmaster* inMaster,
-				 const __GLCcontext* inContext);
+								 const __GLCcontext* inContext);
 void __glcCharMapDestroy(__GLCcharMap* This);
 void __glcCharMapAddChar(__GLCcharMap* This, const GLint inCode,
-			 __GLCglyph* inGlyph);
+						 __GLCglyph* inGlyph);
 void __glcCharMapRemoveChar(__GLCcharMap* This, const GLint inCode);
 const GLCchar8* __glcCharMapGetCharName(const __GLCcharMap* This,
-					const GLint inCode);
+										const GLint inCode);
 __GLCglyph* __glcCharMapGetGlyph(const __GLCcharMap* This, const GLint inCode);
 GLboolean __glcCharMapHasChar(const __GLCcharMap* This, const GLint inCode);
 const GLCchar8* __glcCharMapGetCharNameByIndex(const __GLCcharMap* This,
-					       const GLint inIndex);
+		const GLint inIndex);
 /* Return the number of characters in the character map */
 static inline GLint __glcCharMapGetCount(const __GLCcharMap* This)
 {
-  assert(This);
-  assert(This->charSet);
-  return FcCharSetCount(This->charSet);
+	assert(This);
+	assert(This->charSet);
+	return FcCharSetCount(This->charSet);
 }
 GLint __glcCharMapGetMaxMappedCode(const __GLCcharMap* This);
 GLint __glcCharMapGetMinMappedCode(const __GLCcharMap* This);

@@ -53,31 +53,31 @@ static PIELIGHT		colRadarAlly, colRadarMe, colRadarEnemy;
 static PIELIGHT		tileColours[MAX_TILES];
 static uint32_t		*radarBuffer = NULL;
 
-PIELIGHT clanColours[MAX_PLAYERS]=
+PIELIGHT clanColours[MAX_PLAYERS] =
 {
-    // see frontend2.png for team color order.
-    // [r,g,b,a]
-    {{0,255,0,255}},		// green  Player 0
-    {{255,210,40,255}},		// orange Player 1
-    {{255,255,255,255}},	// grey   Player 2
-    {{0,0,0,255}},			// black  Player 3
-    {{255,0,0,255}},		// red    Player 4
-    {{20,20,255,255}},		// blue   Player 5
-    {{255,0,255,255}},		// pink   Player 6
-    {{0,255,255,255}},		// cyan   Player 7
+	// see frontend2.png for team color order.
+	// [r,g,b,a]
+	{{0, 255, 0, 255}},		// green  Player 0
+	{{255, 210, 40, 255}},		// orange Player 1
+	{{255, 255, 255, 255}},	// grey   Player 2
+	{{0, 0, 0, 255}},			// black  Player 3
+	{{255, 0, 0, 255}},		// red    Player 4
+	{{20, 20, 255, 255}},		// blue   Player 5
+	{{255, 0, 255, 255}},		// pink   Player 6
+	{{0, 255, 255, 255}},		// cyan   Player 7
 };
 
-static PIELIGHT flashColours[MAX_PLAYERS]=
+static PIELIGHT flashColours[MAX_PLAYERS] =
 {
-    //right now the flash color is all bright red
-    {{254,37,37,200}},	// Player 0
-    {{254,37,37,200}},	// Player 1
-    {{254,37,37,200}},	// Player 2
-    {{254,37,37,200}},	// Player 3
-    {{254,37,37,200}},	// Player 4  (notice, brighter red)
-    {{254,37,37,200}},	// Player 5
-    {{254,37,37,200}},	// Player 6
-    {{254,37,37,200}}		// Player 7
+	//right now the flash color is all bright red
+	{{254, 37, 37, 200}},	// Player 0
+	{{254, 37, 37, 200}},	// Player 1
+	{{254, 37, 37, 200}},	// Player 2
+	{{254, 37, 37, 200}},	// Player 3
+	{{254, 37, 37, 200}},	// Player 4  (notice, brighter red)
+	{{254, 37, 37, 200}},	// Player 5
+	{{254, 37, 37, 200}},	// Player 6
+	{{254, 37, 37, 200}}		// Player 7
 };
 
 static int32_t radarWidth, radarHeight, radarCenterX, radarCenterY, radarTexWidth, radarTexHeight;
@@ -93,577 +93,577 @@ static void DrawNorth(void);
 
 static void radarSize(int ZoomLevel)
 {
-    float zoom = (float)ZoomLevel * RadarZoomMultiplier / 16.0;
-    radarWidth = radarTexWidth * zoom;
-    radarHeight = radarTexHeight * zoom;
-    if (rotateRadar)
-    {
-        radarCenterX = pie_GetVideoBufferWidth() - BASE_GAP * 4 - MAX(radarHeight, radarWidth) / 2;
-        radarCenterY = pie_GetVideoBufferHeight() - BASE_GAP * 4 - MAX(radarWidth, radarHeight) / 2;
-    }
-    else
-    {
-        radarCenterX = pie_GetVideoBufferWidth() - BASE_GAP * 4 - radarWidth / 2;
-        radarCenterY = pie_GetVideoBufferHeight() - BASE_GAP * 4 - radarHeight / 2;
-    }
-    debug(LOG_WZ, "radar=(%u,%u) tex=(%u,%u) size=(%u,%u)", radarCenterX, radarCenterY, radarTexWidth, radarTexHeight, radarWidth, radarHeight);
+	float zoom = (float)ZoomLevel * RadarZoomMultiplier / 16.0;
+	radarWidth = radarTexWidth * zoom;
+	radarHeight = radarTexHeight * zoom;
+	if (rotateRadar)
+	{
+		radarCenterX = pie_GetVideoBufferWidth() - BASE_GAP * 4 - MAX(radarHeight, radarWidth) / 2;
+		radarCenterY = pie_GetVideoBufferHeight() - BASE_GAP * 4 - MAX(radarWidth, radarHeight) / 2;
+	}
+	else
+	{
+		radarCenterX = pie_GetVideoBufferWidth() - BASE_GAP * 4 - radarWidth / 2;
+		radarCenterY = pie_GetVideoBufferHeight() - BASE_GAP * 4 - radarHeight / 2;
+	}
+	debug(LOG_WZ, "radar=(%u,%u) tex=(%u,%u) size=(%u,%u)", radarCenterX, radarCenterY, radarTexWidth, radarTexHeight, radarWidth, radarHeight);
 }
 
 void radarInitVars(void)
 {
-    radarTexWidth = 0;
-    radarTexHeight = 0;
-    RadarZoom = DEFAULT_RADARZOOM;
-    debug(LOG_WZ, "Resetting radar zoom to %u", RadarZoom);
-    radarSize(RadarZoom);
+	radarTexWidth = 0;
+	radarTexHeight = 0;
+	RadarZoom = DEFAULT_RADARZOOM;
+	debug(LOG_WZ, "Resetting radar zoom to %u", RadarZoom);
+	radarSize(RadarZoom);
 }
 
 BOOL InitRadar(void)
 {
-    // Ally/enemy/me colors
-    colRadarAlly = WZCOL_YELLOW;
-    colRadarEnemy = WZCOL_RED;
-    colRadarMe = WZCOL_WHITE;
-    if (mapWidth < 150 && pie_GetVideoBufferHeight() > 480)	// too small!
-    {
-        RadarZoom = DEFAULT_RADARZOOM * 2;
-    }
-    pie_InitRadar();
+	// Ally/enemy/me colors
+	colRadarAlly = WZCOL_YELLOW;
+	colRadarEnemy = WZCOL_RED;
+	colRadarMe = WZCOL_WHITE;
+	if (mapWidth < 150 && pie_GetVideoBufferHeight() > 480)	// too small!
+	{
+		RadarZoom = DEFAULT_RADARZOOM * 2;
+	}
+	pie_InitRadar();
 
-    return true;
+	return true;
 }
 
 BOOL resizeRadar(void)
 {
-    if (radarBuffer)
-    {
-        free(radarBuffer);
-    }
-    radarTexWidth = scrollMaxX - scrollMinX;
-    radarTexHeight = scrollMaxY - scrollMinY;
-    radarBufferSize = radarTexWidth * radarTexHeight * sizeof(uint32_t);
-    radarBuffer = malloc(radarBufferSize);
-    if (radarBuffer == NULL)
-    {
-        debug(LOG_FATAL, "Out of memory!");
-        abort();
-        return false;
-    }
-    memset(radarBuffer, 0, radarBufferSize);
-    if (rotateRadar)
-    {
-        RadarZoomMultiplier = (float)MAX(RADWIDTH, RADHEIGHT) / (float)MAX(radarTexWidth, radarTexHeight);
-    }
-    else
-    {
-        RadarZoomMultiplier = 1.0f;
-    }
-    debug(LOG_WZ, "Setting radar zoom to %u", RadarZoom);
-    radarSize(RadarZoom);
+	if (radarBuffer)
+	{
+		free(radarBuffer);
+	}
+	radarTexWidth = scrollMaxX - scrollMinX;
+	radarTexHeight = scrollMaxY - scrollMinY;
+	radarBufferSize = radarTexWidth * radarTexHeight * sizeof(uint32_t);
+	radarBuffer = malloc(radarBufferSize);
+	if (radarBuffer == NULL)
+	{
+		debug(LOG_FATAL, "Out of memory!");
+		abort();
+		return false;
+	}
+	memset(radarBuffer, 0, radarBufferSize);
+	if (rotateRadar)
+	{
+		RadarZoomMultiplier = (float)MAX(RADWIDTH, RADHEIGHT) / (float)MAX(radarTexWidth, radarTexHeight);
+	}
+	else
+	{
+		RadarZoomMultiplier = 1.0f;
+	}
+	debug(LOG_WZ, "Setting radar zoom to %u", RadarZoom);
+	radarSize(RadarZoom);
 
-    return true;
+	return true;
 }
 
 BOOL ShutdownRadar(void)
 {
-    pie_ShutdownRadar();
+	pie_ShutdownRadar();
 
-    free(radarBuffer);
-    radarBuffer = NULL;
+	free(radarBuffer);
+	radarBuffer = NULL;
 
-    return true;
+	return true;
 }
 
 void SetRadarZoom(uint8_t ZoomLevel)
 {
-    if (ZoomLevel < 4) // old savegame format didn't save zoom levels very well
-    {
-        ZoomLevel = DEFAULT_RADARZOOM;
-    }
-    if (ZoomLevel > MAX_RADARZOOM)
-    {
-        ZoomLevel = MAX_RADARZOOM;
-    }
-    if (ZoomLevel < MIN_RADARZOOM)
-    {
-        ZoomLevel = MIN_RADARZOOM;
-    }
-    debug(LOG_WZ, "Setting radar zoom to %u from %u", ZoomLevel, RadarZoom);
-    RadarZoom = ZoomLevel;
-    radarSize(RadarZoom);
-    frameSkip = 0;
+	if (ZoomLevel < 4) // old savegame format didn't save zoom levels very well
+	{
+		ZoomLevel = DEFAULT_RADARZOOM;
+	}
+	if (ZoomLevel > MAX_RADARZOOM)
+	{
+		ZoomLevel = MAX_RADARZOOM;
+	}
+	if (ZoomLevel < MIN_RADARZOOM)
+	{
+		ZoomLevel = MIN_RADARZOOM;
+	}
+	debug(LOG_WZ, "Setting radar zoom to %u from %u", ZoomLevel, RadarZoom);
+	RadarZoom = ZoomLevel;
+	radarSize(RadarZoom);
+	frameSkip = 0;
 }
 
 uint8_t GetRadarZoom(void)
 {
-    return RadarZoom;
+	return RadarZoom;
 }
 
 /** Calculate the radar pixel sizes. Returns pixels per tile. */
 static void CalcRadarPixelSize(float *SizeH, float *SizeV)
 {
-    *SizeH = (float)radarHeight / (float)radarTexHeight;
-    *SizeV = (float)radarWidth / (float)radarTexWidth;
+	*SizeH = (float)radarHeight / (float)radarTexHeight;
+	*SizeV = (float)radarWidth / (float)radarTexWidth;
 }
 
 /** Given a position within the radar, return a world coordinate. */
 void CalcRadarPosition(int mX, int mY, int *PosX, int *PosY)
 {
-    int		sPosX, sPosY;
-    float		pixSizeH, pixSizeV;
+	int		sPosX, sPosY;
+	float		pixSizeH, pixSizeV;
 
-    Vector2f pos;
-    pos.x = mX - radarCenterX;
-    pos.y = mY - radarCenterY;
-    if (rotateRadar)
-    {
-        pos = Vector2f_Rotate2f(pos, -player.r.y/DEG(1));
-    }
-    pos.x += radarWidth/2.0;
-    pos.y += radarHeight/2.0;
+	Vector2f pos;
+	pos.x = mX - radarCenterX;
+	pos.y = mY - radarCenterY;
+	if (rotateRadar)
+	{
+		pos = Vector2f_Rotate2f(pos, -player.r.y / DEG(1));
+	}
+	pos.x += radarWidth / 2.0;
+	pos.y += radarHeight / 2.0;
 
-    CalcRadarPixelSize(&pixSizeH, &pixSizeV);
-    sPosX = pos.x / pixSizeH;	// adjust for pixel size
-    sPosY = pos.y / pixSizeV;
-    sPosX += scrollMinX;		// adjust for scroll limits
-    sPosY += scrollMinY;
+	CalcRadarPixelSize(&pixSizeH, &pixSizeV);
+	sPosX = pos.x / pixSizeH;	// adjust for pixel size
+	sPosY = pos.y / pixSizeV;
+	sPosX += scrollMinX;		// adjust for scroll limits
+	sPosY += scrollMinY;
 
 #if REALLY_DEBUG_RADAR
-    debug(LOG_ERROR, "m=(%d,%d) radar=(%d,%d) pos(%d,%d), scroll=(%u-%u,%u-%u) sPos=(%d,%d), pixSize=(%f,%f)",
-          mX, mY, radarX, radarY, posX, posY, scrollMinX, scrollMaxX, scrollMinY, scrollMaxY, sPosX, sPosY, pixSizeH, pixSizeV);
+	debug(LOG_ERROR, "m=(%d,%d) radar=(%d,%d) pos(%d,%d), scroll=(%u-%u,%u-%u) sPos=(%d,%d), pixSize=(%f,%f)",
+		  mX, mY, radarX, radarY, posX, posY, scrollMinX, scrollMaxX, scrollMinY, scrollMaxY, sPosX, sPosY, pixSizeH, pixSizeV);
 #endif
 
-    // old safety code -- still necessary?
-    if (sPosX < scrollMinX)
-    {
-        sPosX = scrollMinX;
-    }
-    else if (sPosX > scrollMaxX)
-    {
-        sPosX = scrollMaxX;
-    }
-    if (sPosY < scrollMinY)
-    {
-        sPosY = scrollMinY;
-    }
-    else if (sPosY > scrollMaxY)
-    {
-        sPosY = scrollMaxY;
-    }
+	// old safety code -- still necessary?
+	if (sPosX < scrollMinX)
+	{
+		sPosX = scrollMinX;
+	}
+	else if (sPosX > scrollMaxX)
+	{
+		sPosX = scrollMaxX;
+	}
+	if (sPosY < scrollMinY)
+	{
+		sPosY = scrollMinY;
+	}
+	else if (sPosY > scrollMaxY)
+	{
+		sPosY = scrollMaxY;
+	}
 
-    *PosX = sPosX;
-    *PosY = sPosY;
+	*PosX = sPosX;
+	*PosY = sPosY;
 }
 
 void drawRadar(void)
 {
-    float	pixSizeH, pixSizeV;
+	float	pixSizeH, pixSizeV;
 
-    ASSERT(radarBuffer, "No radar buffer allocated");
-    if (!radarBuffer)
-    {
-        return;
-    }
+	ASSERT(radarBuffer, "No radar buffer allocated");
+	if (!radarBuffer)
+	{
+		return;
+	}
 
-    CalcRadarPixelSize(&pixSizeH, &pixSizeV);
+	CalcRadarPixelSize(&pixSizeH, &pixSizeV);
 
-    if (frameSkip <= 0)
-    {
-        bool filter = true;
-        if (!rotateRadar)
-        {
-            filter = RadarZoom % 16 != 0;
-        }
-        DrawRadarTiles();
-        DrawRadarObjects();
-        pie_DownLoadRadar(radarBuffer, radarTexWidth, radarTexHeight, filter);
-        frameSkip = RADAR_FRAME_SKIP;
-    }
-    frameSkip--;
-    pie_SetTranslucencyMode(TRANS_ALPHA);
-    pie_MatBegin();
-    pie_TRANSLATE(radarCenterX, radarCenterY, 0);
-    if (rotateRadar)
-    {
-        // rotate the map
-        iV_MatrixRotateZ(player.r.y);
-        DrawNorth();
-    }
-    // draw the box at the dimensions of the map
-    iV_TransBoxFill(-radarWidth/2.0 - 1,
-                    -radarHeight/2.0 - 1,
-                    radarWidth/2.0,
-                    radarHeight/2.0);
-    pie_RenderRadar(-radarWidth/2.0 - 1,
-                    -radarHeight/2.0 - 1,
-                    radarWidth,
-                    radarHeight);
-    pie_MatBegin();
-    pie_TRANSLATE(-radarWidth/2 - 1, -radarHeight/2 - 1, 0);
-    DrawRadarExtras(0, 0, pixSizeH, pixSizeV);
-    pie_MatEnd();
-    drawRadarBlips(-radarWidth/2.0 - 1, -radarHeight/2.0 - 1, pixSizeH, pixSizeV);
-    pie_MatEnd();
+	if (frameSkip <= 0)
+	{
+		bool filter = true;
+		if (!rotateRadar)
+		{
+			filter = RadarZoom % 16 != 0;
+		}
+		DrawRadarTiles();
+		DrawRadarObjects();
+		pie_DownLoadRadar(radarBuffer, radarTexWidth, radarTexHeight, filter);
+		frameSkip = RADAR_FRAME_SKIP;
+	}
+	frameSkip--;
+	pie_SetTranslucencyMode(TRANS_ALPHA);
+	pie_MatBegin();
+	pie_TRANSLATE(radarCenterX, radarCenterY, 0);
+	if (rotateRadar)
+	{
+		// rotate the map
+		iV_MatrixRotateZ(player.r.y);
+		DrawNorth();
+	}
+	// draw the box at the dimensions of the map
+	iV_TransBoxFill(-radarWidth / 2.0 - 1,
+					-radarHeight / 2.0 - 1,
+					radarWidth / 2.0,
+					radarHeight / 2.0);
+	pie_RenderRadar(-radarWidth / 2.0 - 1,
+					-radarHeight / 2.0 - 1,
+					radarWidth,
+					radarHeight);
+	pie_MatBegin();
+	pie_TRANSLATE(-radarWidth / 2 - 1, -radarHeight / 2 - 1, 0);
+	DrawRadarExtras(0, 0, pixSizeH, pixSizeV);
+	pie_MatEnd();
+	drawRadarBlips(-radarWidth / 2.0 - 1, -radarHeight / 2.0 - 1, pixSizeH, pixSizeV);
+	pie_MatEnd();
 }
 
 static void DrawNorth(void)
 {
-    iV_DrawImage(IntImages, RADAR_NORTH, -((radarWidth / 2.0) + (IntImages->ImageDefs[RADAR_NORTH].Width) + 1) , -(radarHeight / 2.0));
+	iV_DrawImage(IntImages, RADAR_NORTH, -((radarWidth / 2.0) + (IntImages->ImageDefs[RADAR_NORTH].Width) + 1) , -(radarHeight / 2.0));
 }
 
 static PIELIGHT appliedRadarColour(RADAR_DRAW_MODE radarDrawMode, MAPTILE *WTile)
 {
-    PIELIGHT WScr = WZCOL_BLACK;	// squelch warning
+	PIELIGHT WScr = WZCOL_BLACK;	// squelch warning
 
-    // draw radar terrain on/off feature
-    if ((getRevealStatus() || radarDrawMode == RADAR_MODE_TERRAIN_SEEN) && !TEST_TILE_VISIBLE(selectedPlayer, WTile))
-    {
-        return WZCOL_RADAR_BACKGROUND;
-    }
+	// draw radar terrain on/off feature
+	if ((getRevealStatus() || radarDrawMode == RADAR_MODE_TERRAIN_SEEN) && !TEST_TILE_VISIBLE(selectedPlayer, WTile))
+	{
+		return WZCOL_RADAR_BACKGROUND;
+	}
 
-    switch(radarDrawMode)
-    {
-        case RADAR_MODE_TERRAIN:
-        case RADAR_MODE_TERRAIN_SEEN:
-            {
-                // draw radar terrain on/off feature
-                PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
+	switch(radarDrawMode)
+	{
+		case RADAR_MODE_TERRAIN:
+		case RADAR_MODE_TERRAIN_SEEN:
+		{
+			// draw radar terrain on/off feature
+			PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
 
-                col.byte.r = sqrtf(col.byte.r * WTile->radarIllumination);
-                col.byte.b = sqrtf(col.byte.b * WTile->radarIllumination);
-                col.byte.g = sqrtf(col.byte.g * WTile->radarIllumination);
-                if (terrainType(WTile) == TER_CLIFFFACE)
-                {
-                    col.byte.r /= 2;
-                    col.byte.b /= 2;
-                    col.byte.g /= 2;
-                }
-                if (!hasSensorOnTile(WTile, selectedPlayer))
-                {
-                    col.byte.r /= 2;
-                    col.byte.b /= 2;
-                    col.byte.g /= 2;
-                }
-                WScr = col;
-            }
-            break;
-        case RADAR_MODE_COMBINED:
-            {
-                // draw radar terrain on/off feature
-                PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
+			col.byte.r = sqrtf(col.byte.r * WTile->radarIllumination);
+			col.byte.b = sqrtf(col.byte.b * WTile->radarIllumination);
+			col.byte.g = sqrtf(col.byte.g * WTile->radarIllumination);
+			if (terrainType(WTile) == TER_CLIFFFACE)
+			{
+				col.byte.r /= 2;
+				col.byte.b /= 2;
+				col.byte.g /= 2;
+			}
+			if (!hasSensorOnTile(WTile, selectedPlayer))
+			{
+				col.byte.r /= 2;
+				col.byte.b /= 2;
+				col.byte.g /= 2;
+			}
+			WScr = col;
+		}
+		break;
+		case RADAR_MODE_COMBINED:
+		{
+			// draw radar terrain on/off feature
+			PIELIGHT col = tileColours[TileNumber_tile(WTile->texture)];
 
-                col.byte.r = sqrtf(col.byte.r * (WTile->radarIllumination + WTile->height) / 2);
-                col.byte.b = sqrtf(col.byte.b * (WTile->radarIllumination + WTile->height) / 2);
-                col.byte.g = sqrtf(col.byte.g * (WTile->radarIllumination + WTile->height) / 2);
-                if (terrainType(WTile) == TER_CLIFFFACE)
-                {
-                    col.byte.r /= 2;
-                    col.byte.b /= 2;
-                    col.byte.g /= 2;
-                }
-                if (!hasSensorOnTile(WTile, selectedPlayer))
-                {
-                    col.byte.r /= 2;
-                    col.byte.b /= 2;
-                    col.byte.g /= 2;
-                }
-                WScr = col;
-            }
-            break;
-        case RADAR_MODE_HEIGHT_MAP:
-            {
-                WScr.byte.r = WScr.byte.g = WScr.byte.b = WTile->height;
-            }
-            break;
-        case RADAR_MODE_NO_TERRAIN:
-            {
-                WScr = WZCOL_RADAR_BACKGROUND;
-            }
-            break;
-        case NUM_RADAR_MODES:
-            {
-                assert(false);
-            }
-            break;
-    }
-    return WScr;
+			col.byte.r = sqrtf(col.byte.r * (WTile->radarIllumination + WTile->height) / 2);
+			col.byte.b = sqrtf(col.byte.b * (WTile->radarIllumination + WTile->height) / 2);
+			col.byte.g = sqrtf(col.byte.g * (WTile->radarIllumination + WTile->height) / 2);
+			if (terrainType(WTile) == TER_CLIFFFACE)
+			{
+				col.byte.r /= 2;
+				col.byte.b /= 2;
+				col.byte.g /= 2;
+			}
+			if (!hasSensorOnTile(WTile, selectedPlayer))
+			{
+				col.byte.r /= 2;
+				col.byte.b /= 2;
+				col.byte.g /= 2;
+			}
+			WScr = col;
+		}
+		break;
+		case RADAR_MODE_HEIGHT_MAP:
+		{
+			WScr.byte.r = WScr.byte.g = WScr.byte.b = WTile->height;
+		}
+		break;
+		case RADAR_MODE_NO_TERRAIN:
+		{
+			WScr = WZCOL_RADAR_BACKGROUND;
+		}
+		break;
+		case NUM_RADAR_MODES:
+		{
+			assert(false);
+		}
+		break;
+	}
+	return WScr;
 }
 
 /** Draw the map tiles on the radar. */
 static void DrawRadarTiles(void)
 {
-    int32_t	x, y;
+	int32_t	x, y;
 
-    for (x = scrollMinX; x < scrollMaxX; x++)
-    {
-        for (y = scrollMinY; y < scrollMaxY; y++)
-        {
-            MAPTILE	*psTile = mapTile(x, y);
-            size_t pos = radarTexWidth * (y - scrollMinY) + (x - scrollMinX);
+	for (x = scrollMinX; x < scrollMaxX; x++)
+	{
+		for (y = scrollMinY; y < scrollMaxY; y++)
+		{
+			MAPTILE	*psTile = mapTile(x, y);
+			size_t pos = radarTexWidth * (y - scrollMinY) + (x - scrollMinX);
 
-            ASSERT(pos * sizeof(*radarBuffer) < radarBufferSize, "Buffer overrun");
-            radarBuffer[pos] = appliedRadarColour(radarDrawMode, psTile).rgba;
-        }
-    }
+			ASSERT(pos * sizeof(*radarBuffer) < radarBufferSize, "Buffer overrun");
+			radarBuffer[pos] = appliedRadarColour(radarDrawMode, psTile).rgba;
+		}
+	}
 }
 
 /** Draw the droids and structure positions on the radar. */
 static void DrawRadarObjects(void)
 {
-    uint8_t				clan;
-    PIELIGHT			playerCol;
-    PIELIGHT			flashCol;
-    int				x, y;
+	uint8_t				clan;
+	PIELIGHT			playerCol;
+	PIELIGHT			flashCol;
+	int				x, y;
 
-    /* Show droids on map - go through all players */
-    for(clan = 0; clan < MAX_PLAYERS; clan++)
-    {
-        DROID		*psDroid;
+	/* Show droids on map - go through all players */
+	for(clan = 0; clan < MAX_PLAYERS; clan++)
+	{
+		DROID		*psDroid;
 
-        //see if have to draw enemy/ally color
-        if (bEnemyAllyRadarColor)
-        {
-            if (clan == selectedPlayer)
-            {
-                playerCol = colRadarMe;
-            }
-            else
-            {
-                playerCol = (aiCheckAlliances(selectedPlayer, clan) ? colRadarAlly : colRadarEnemy);
-            }
-        }
-        else
-        {
-            //original 8-color mode
-            playerCol = clanColours[getPlayerColour(clan)];
-        }
+		//see if have to draw enemy/ally color
+		if (bEnemyAllyRadarColor)
+		{
+			if (clan == selectedPlayer)
+			{
+				playerCol = colRadarMe;
+			}
+			else
+			{
+				playerCol = (aiCheckAlliances(selectedPlayer, clan) ? colRadarAlly : colRadarEnemy);
+			}
+		}
+		else
+		{
+			//original 8-color mode
+			playerCol = clanColours[getPlayerColour(clan)];
+		}
 
-        flashCol = flashColours[getPlayerColour(clan)];
+		flashCol = flashColours[getPlayerColour(clan)];
 
-        /* Go through all droids */
-        for(psDroid = apsDroidLists[clan]; psDroid != NULL; psDroid = psDroid->psNext)
-        {
-            if (psDroid->pos.x < world_coord(scrollMinX) || psDroid->pos.y < world_coord(scrollMinY)
-                    || psDroid->pos.x >= world_coord(scrollMaxX) || psDroid->pos.y >= world_coord(scrollMaxY))
-            {
-                continue;
-            }
-            if (psDroid->visible[selectedPlayer]
-                    || (bMultiPlayer && game.alliance == ALLIANCES_TEAMS
-                        && aiCheckAlliances(selectedPlayer,psDroid->player)))
-            {
-                int	x = psDroid->pos.x / TILE_UNITS;
-                int	y = psDroid->pos.y / TILE_UNITS;
-                size_t	pos = (x - scrollMinX) + (y - scrollMinY) * radarTexWidth;
+		/* Go through all droids */
+		for(psDroid = apsDroidLists[clan]; psDroid != NULL; psDroid = psDroid->psNext)
+		{
+			if (psDroid->pos.x < world_coord(scrollMinX) || psDroid->pos.y < world_coord(scrollMinY)
+					|| psDroid->pos.x >= world_coord(scrollMaxX) || psDroid->pos.y >= world_coord(scrollMaxY))
+			{
+				continue;
+			}
+			if (psDroid->visible[selectedPlayer]
+					|| (bMultiPlayer && game.alliance == ALLIANCES_TEAMS
+						&& aiCheckAlliances(selectedPlayer, psDroid->player)))
+			{
+				int	x = psDroid->pos.x / TILE_UNITS;
+				int	y = psDroid->pos.y / TILE_UNITS;
+				size_t	pos = (x - scrollMinX) + (y - scrollMinY) * radarTexWidth;
 
-                ASSERT(pos * sizeof(*radarBuffer) < radarBufferSize, "Buffer overrun");
-                if (clan == selectedPlayer && gameTime-psDroid->timeLastHit < HIT_NOTIFICATION)
-                {
-                    radarBuffer[pos] = flashCol.rgba;
-                }
-                else
-                {
-                    radarBuffer[pos] = playerCol.rgba;
-                }
-            }
-        }
-    }
+				ASSERT(pos * sizeof(*radarBuffer) < radarBufferSize, "Buffer overrun");
+				if (clan == selectedPlayer && gameTime - psDroid->timeLastHit < HIT_NOTIFICATION)
+				{
+					radarBuffer[pos] = flashCol.rgba;
+				}
+				else
+				{
+					radarBuffer[pos] = playerCol.rgba;
+				}
+			}
+		}
+	}
 
-    /* Do the same for structures */
-    for (x = scrollMinX; x < scrollMaxX; x++)
-    {
-        for (y = scrollMinY; y < scrollMaxY; y++)
-        {
-            MAPTILE		*psTile = mapTile(x, y);
-            STRUCTURE	*psStruct = (STRUCTURE *)psTile->psObject;
-            size_t		pos = (x - scrollMinX) + (y - scrollMinY) * radarTexWidth;
+	/* Do the same for structures */
+	for (x = scrollMinX; x < scrollMaxX; x++)
+	{
+		for (y = scrollMinY; y < scrollMaxY; y++)
+		{
+			MAPTILE		*psTile = mapTile(x, y);
+			STRUCTURE	*psStruct = (STRUCTURE *)psTile->psObject;
+			size_t		pos = (x - scrollMinX) + (y - scrollMinY) * radarTexWidth;
 
-            ASSERT(pos * sizeof(*radarBuffer) < radarBufferSize, "Buffer overrun");
-            if (!TileHasStructure(psTile))
-            {
-                continue;
-            }
-            clan = psStruct->player;
+			ASSERT(pos * sizeof(*radarBuffer) < radarBufferSize, "Buffer overrun");
+			if (!TileHasStructure(psTile))
+			{
+				continue;
+			}
+			clan = psStruct->player;
 
-            //see if have to draw enemy/ally color
-            if (bEnemyAllyRadarColor)
-            {
-                if (clan == selectedPlayer)
-                {
-                    playerCol = colRadarMe;
-                }
-                else
-                {
-                    playerCol = (aiCheckAlliances(selectedPlayer, clan) ? colRadarAlly: colRadarEnemy);
-                }
-            }
-            else
-            {
-                //original 8-color mode
-                playerCol = clanColours[getPlayerColour(clan)];
-            }
-            flashCol = flashColours[getPlayerColour(clan)];
+			//see if have to draw enemy/ally color
+			if (bEnemyAllyRadarColor)
+			{
+				if (clan == selectedPlayer)
+				{
+					playerCol = colRadarMe;
+				}
+				else
+				{
+					playerCol = (aiCheckAlliances(selectedPlayer, clan) ? colRadarAlly : colRadarEnemy);
+				}
+			}
+			else
+			{
+				//original 8-color mode
+				playerCol = clanColours[getPlayerColour(clan)];
+			}
+			flashCol = flashColours[getPlayerColour(clan)];
 
-            if (psStruct->visible[selectedPlayer]
-                    || (bMultiPlayer && game.alliance == ALLIANCES_TEAMS
-                        && aiCheckAlliances(selectedPlayer, psStruct->player)))
-            {
-                if (clan == selectedPlayer && gameTime - psStruct->timeLastHit < HIT_NOTIFICATION)
-                {
-                    radarBuffer[pos] = flashCol.rgba;
-                }
-                else
-                {
-                    radarBuffer[pos] = playerCol.rgba;
-                }
-            }
-        }
-    }
+			if (psStruct->visible[selectedPlayer]
+					|| (bMultiPlayer && game.alliance == ALLIANCES_TEAMS
+						&& aiCheckAlliances(selectedPlayer, psStruct->player)))
+			{
+				if (clan == selectedPlayer && gameTime - psStruct->timeLastHit < HIT_NOTIFICATION)
+				{
+					radarBuffer[pos] = flashCol.rgba;
+				}
+				else
+				{
+					radarBuffer[pos] = playerCol.rgba;
+				}
+			}
+		}
+	}
 }
 
 /** Rotate an array of 2d vectors about a given angle, also translates them after rotating. */
 static void RotateVector2D(Vector3i *Vector, Vector3i *TVector, Vector3i *Pos, int Angle, int Count)
 {
-    int Cos = COS(Angle);
-    int Sin = SIN(Angle);
-    int ox = 0;
-    int oy = 0;
-    int i;
-    Vector3i *Vec = Vector;
-    Vector3i *TVec = TVector;
+	int Cos = COS(Angle);
+	int Sin = SIN(Angle);
+	int ox = 0;
+	int oy = 0;
+	int i;
+	Vector3i *Vec = Vector;
+	Vector3i *TVec = TVector;
 
-    if (Pos)
-    {
-        ox = Pos->x;
-        oy = Pos->y;
-    }
+	if (Pos)
+	{
+		ox = Pos->x;
+		oy = Pos->y;
+	}
 
-    for (i = 0; i < Count; i++)
-    {
-        TVec->x = ( (Vec->x*Cos + Vec->y*Sin) >> FP12_SHIFT ) + ox;
-        TVec->y = ( (Vec->y*Cos - Vec->x*Sin) >> FP12_SHIFT ) + oy;
-        Vec++;
-        TVec++;
-    }
+	for (i = 0; i < Count; i++)
+	{
+		TVec->x = ( (Vec->x * Cos + Vec->y * Sin) >> FP12_SHIFT ) + ox;
+		TVec->y = ( (Vec->y * Cos - Vec->x * Sin) >> FP12_SHIFT ) + oy;
+		Vec++;
+		TVec++;
+	}
 }
 
 static int32_t getDistanceAdjust( void )
 {
-    uint32_t	origDistance = MAXDISTANCE;
-    int32_t	dif = MAX(origDistance - getViewDistance(), 0);
+	uint32_t	origDistance = MAXDISTANCE;
+	int32_t	dif = MAX(origDistance - getViewDistance(), 0);
 
-    return dif / 100;
+	return dif / 100;
 }
 
 static int32_t getLengthAdjust( void )
 {
-    const int pitch = 360 - (player.r.x/DEG_1);
+	const int pitch = 360 - (player.r.x / DEG_1);
 
-    // Max at
-    const int lookingDown = (0 - MIN_PLAYER_X_ANGLE);
-    const int lookingFar = (0 - MAX_PLAYER_X_ANGLE);
+	// Max at
+	const int lookingDown = (0 - MIN_PLAYER_X_ANGLE);
+	const int lookingFar = (0 - MAX_PLAYER_X_ANGLE);
 
-    int dif = MAX(pitch - lookingFar, 0);
-    if (dif > (lookingDown - lookingFar))
-    {
-        dif = (lookingDown - lookingFar);
-    }
+	int dif = MAX(pitch - lookingFar, 0);
+	if (dif > (lookingDown - lookingFar))
+	{
+		dif = (lookingDown - lookingFar);
+	}
 
-    return dif / 2;
+	return dif / 2;
 }
 
 /** Draws a Myth/FF7 style viewing window */
 static void drawViewingWindow(float radarX, float radarY, int x, int y, float pixSizeH, float pixSizeV)
 {
-    Vector3i v[4], tv[4], centre;
-    int	shortX, longX, yDrop, yDropVar;
-    int	dif = getDistanceAdjust();
-    int	dif2 = getLengthAdjust();
-    PIELIGHT colour;
+	Vector3i v[4], tv[4], centre;
+	int	shortX, longX, yDrop, yDropVar;
+	int	dif = getDistanceAdjust();
+	int	dif2 = getLengthAdjust();
+	PIELIGHT colour;
 
-    shortX = ((visibleTiles.x / 4) - (dif / 6)) * pixSizeH;
-    longX = ((visibleTiles.x / 2) - (dif / 4)) * pixSizeH;
-    yDropVar = ((visibleTiles.y / 2) - (dif2 / 3)) * pixSizeV;
-    yDrop = ((visibleTiles.y / 2) - dif2 / 3) * pixSizeV;
+	shortX = ((visibleTiles.x / 4) - (dif / 6)) * pixSizeH;
+	longX = ((visibleTiles.x / 2) - (dif / 4)) * pixSizeH;
+	yDropVar = ((visibleTiles.y / 2) - (dif2 / 3)) * pixSizeV;
+	yDrop = ((visibleTiles.y / 2) - dif2 / 3) * pixSizeV;
 
-    v[0].x = longX;
-    v[0].y = -yDropVar;
+	v[0].x = longX;
+	v[0].y = -yDropVar;
 
-    v[1].x = -longX;
-    v[1].y = -yDropVar;
+	v[1].x = -longX;
+	v[1].y = -yDropVar;
 
-    v[2].x = shortX;
-    v[2].y = yDrop;
+	v[2].x = shortX;
+	v[2].y = yDrop;
 
-    v[3].x = -shortX;
-    v[3].y = yDrop;
+	v[3].x = -shortX;
+	v[3].y = yDrop;
 
-    centre.x = radarX + (x - scrollMinX/2) + ((visibleTiles.x - scrollMinX) * pixSizeH) / 2;
-    centre.y = radarY + (y - scrollMinY/2) + ((visibleTiles.y - scrollMinY) * pixSizeV) / 2;
+	centre.x = radarX + (x - scrollMinX / 2) + ((visibleTiles.x - scrollMinX) * pixSizeH) / 2;
+	centre.y = radarY + (y - scrollMinY / 2) + ((visibleTiles.y - scrollMinY) * pixSizeV) / 2;
 
-    RotateVector2D(v,tv,&centre,player.r.y,4);
+	RotateVector2D(v, tv, &centre, player.r.y, 4);
 
-    switch (getCampaignNumber())
-    {
-        case 1:
-        case 2:
-            // white
-            colour.byte.r = uint8_t_MAX;
-            colour.byte.g = uint8_t_MAX;
-            colour.byte.b = uint8_t_MAX;
-            colour.byte.a = 0x3f;
-            break;
-        case 3:
-            // greenish
-            colour.byte.r = 0x3f;
-            colour.byte.a = 0x3f;
-            colour.byte.g = uint8_t_MAX;
-            colour.byte.b = 0x3f;
-        default:
-            // black
-            colour.rgba = 0;
-            colour.byte.a = 0x3f;
-            break;
+	switch (getCampaignNumber())
+	{
+		case 1:
+		case 2:
+			// white
+			colour.byte.r = uint8_t_MAX;
+			colour.byte.g = uint8_t_MAX;
+			colour.byte.b = uint8_t_MAX;
+			colour.byte.a = 0x3f;
+			break;
+		case 3:
+			// greenish
+			colour.byte.r = 0x3f;
+			colour.byte.a = 0x3f;
+			colour.byte.g = uint8_t_MAX;
+			colour.byte.b = 0x3f;
+		default:
+			// black
+			colour.rgba = 0;
+			colour.byte.a = 0x3f;
+			break;
 
-    }
+	}
 
-    /* Send the four points to the draw routine and the clip box params */
-    pie_DrawViewingWindow(tv, radarX, radarY, radarX + radarWidth, radarY + radarHeight, colour);
+	/* Send the four points to the draw routine and the clip box params */
+	pie_DrawViewingWindow(tv, radarX, radarY, radarX + radarWidth, radarY + radarHeight, colour);
 }
 
 static void DrawRadarExtras(float radarX, float radarY, float pixSizeH, float pixSizeV)
 {
-    int	viewX = (player.p.x / TILE_UNITS) * pixSizeH;
-    int	viewY = (player.p.z / TILE_UNITS) * pixSizeV;
+	int	viewX = (player.p.x / TILE_UNITS) * pixSizeH;
+	int	viewY = (player.p.z / TILE_UNITS) * pixSizeV;
 
-    drawViewingWindow(radarX, radarY, viewX, viewY, pixSizeH, pixSizeV);
-    RenderWindowFrame(FRAME_RADAR, radarX - 1, radarY - 1, radarWidth + 2, radarHeight + 2);
+	drawViewingWindow(radarX, radarY, viewX, viewY, pixSizeH, pixSizeV);
+	RenderWindowFrame(FRAME_RADAR, radarX - 1, radarY - 1, radarWidth + 2, radarHeight + 2);
 }
 
 /** Does a screen coordinate lie within the radar area? */
-BOOL CoordInRadar(int x,int y)
+BOOL CoordInRadar(int x, int y)
 {
-    Vector2f pos;
-    pos.x = x - radarCenterX;
-    pos.y = y - radarCenterY;
-    if (rotateRadar)
-    {
-        pos = Vector2f_Rotate2f(pos, -player.r.y/DEG(1));
-    }
-    pos.x += radarWidth/2.0;
-    pos.y += radarHeight/2.0;
+	Vector2f pos;
+	pos.x = x - radarCenterX;
+	pos.y = y - radarCenterY;
+	if (rotateRadar)
+	{
+		pos = Vector2f_Rotate2f(pos, -player.r.y / DEG(1));
+	}
+	pos.x += radarWidth / 2.0;
+	pos.y += radarHeight / 2.0;
 
-    if (pos.x<0 || pos.y<0 || pos.x>=radarWidth || pos.y>=radarHeight)
-    {
-        return false;
-    }
-    return true;
+	if (pos.x < 0 || pos.y < 0 || pos.x >= radarWidth || pos.y >= radarHeight)
+	{
+		return false;
+	}
+	return true;
 }
 
 void radarColour(uint32_t tileNumber, uint8_t r, uint8_t g, uint8_t b)
 {
-    tileColours[tileNumber].byte.r = r;
-    tileColours[tileNumber].byte.g = g;
-    tileColours[tileNumber].byte.b = b;
-    tileColours[tileNumber].byte.a = 255;
+	tileColours[tileNumber].byte.r = r;
+	tileColours[tileNumber].byte.g = g;
+	tileColours[tileNumber].byte.b = b;
+	tileColours[tileNumber].byte.a = 255;
 }

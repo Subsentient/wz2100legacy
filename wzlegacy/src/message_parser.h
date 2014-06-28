@@ -40,18 +40,18 @@
    know about them.  */
 enum yytokentype
 {
-    TEXT_T = 258,
-    QTEXT_T = 259,
-    NULL_T = 260,
-    VIEW_T_RES = 261,
-    VIEW_T_RPL = 262,
-    VIEW_T_PROX = 263,
-    VIEW_T_RPLX = 264,
-    VIEW_T_BEACON = 265,
-    IMD_NAME_T = 266,
-    IMD_NAME2_T = 267,
-    SEQUENCE_NAME_T = 268,
-    AUDIO_NAME_T = 269
+	TEXT_T = 258,
+	QTEXT_T = 259,
+	NULL_T = 260,
+	VIEW_T_RES = 261,
+	VIEW_T_RPL = 262,
+	VIEW_T_PROX = 263,
+	VIEW_T_RPLX = 264,
+	VIEW_T_BEACON = 265,
+	IMD_NAME_T = 266,
+	IMD_NAME2_T = 267,
+	SEQUENCE_NAME_T = 268,
+	AUDIO_NAME_T = 269
 };
 #endif
 /* Tokens.  */
@@ -75,23 +75,23 @@ enum yytokentype
 typedef union YYSTYPE
 {
 
-    /* Line 1676 of yacc.c  */
+	/* Line 1676 of yacc.c  */
 #line 94 "message_parser.y"
 
-    char                   *sval;
-    struct VIEWDATAMESSAGE *viewdatamsg;
-    struct TEXT_MESSAGE    *txtmsg;
-    VIEW_TYPE               viewtype;
-    VIEW_RESEARCH          *researchdata;
-    struct
-    {
-        const char    **stringArray;
-        unsigned int    count;
-    }                       msg_list;
+	char                   *sval;
+	struct VIEWDATAMESSAGE *viewdatamsg;
+	struct TEXT_MESSAGE    *txtmsg;
+	VIEW_TYPE               viewtype;
+	VIEW_RESEARCH          *researchdata;
+	struct
+	{
+		const char    **stringArray;
+		unsigned int    count;
+	}                       msg_list;
 
 
 
-    /* Line 1676 of yacc.c  */
+	/* Line 1676 of yacc.c  */
 #line 95 "message_parser.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1

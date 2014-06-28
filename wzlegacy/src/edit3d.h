@@ -24,12 +24,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define MAX_TILE_HEIGHT 255
 #define MIN_TILE_HEIGHT	0
 
-typedef void (*BUILDCALLBACK)(uint32_t xPos, uint32_t yPos,void *UserData);
+typedef void (*BUILDCALLBACK)(uint32_t xPos, uint32_t yPos, void *UserData);
 
 extern void Edit3DInitVars(void);
 extern	BOOL	found3DBuilding		( uint32_t *x, uint32_t *y );
 extern  BOOL    found3DBuildLocTwo  ( uint32_t *px1, uint32_t *py1, uint32_t *px2, uint32_t *py2);
-extern void init3DBuilding(BASE_STATS *psStats,BUILDCALLBACK CallBack,void *UserData);
+extern void init3DBuilding(BASE_STATS *psStats, BUILDCALLBACK CallBack, void *UserData);
 extern	void	kill3DBuilding		( void );
 extern BOOL process3DBuilding(void);
 
@@ -40,8 +40,8 @@ BOOL	inHighlight				( uint32_t realX, uint32_t realY );
 
 typedef struct _highlight
 {
-    uint16_t	xTL,yTL;		// Top left of box to highlight
-    uint16_t	xBR,yBR;		// Bottom right of box to highlight
+	uint16_t	xTL, yTL;		// Top left of box to highlight
+	uint16_t	xBR, yBR;		// Bottom right of box to highlight
 } HIGHLIGHT;
 
 extern HIGHLIGHT	buildSite;
@@ -55,11 +55,11 @@ extern HIGHLIGHT	buildSite;
 
 typedef struct _build_details
 {
-    BUILDCALLBACK	CallBack;
-    void 			*UserData;  //this holds the OBJECT_POSITION pointer for a Deliv Point
-    uint32_t			x,y;
-    uint32_t			width,height;
-    BASE_STATS		*psStats;
+	BUILDCALLBACK	CallBack;
+	void 			*UserData;  //this holds the OBJECT_POSITION pointer for a Deliv Point
+	uint32_t			x, y;
+	uint32_t			width, height;
+	BASE_STATS		*psStats;
 } BUILDDETAILS;
 
 extern BUILDDETAILS	sBuildDetails;

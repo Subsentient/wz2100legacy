@@ -38,23 +38,24 @@
  */
 __GLCglyph* __glcGlyphCreate(const GLCulong inIndex, const GLCulong inCode)
 {
-  __GLCglyph* This = NULL;
+	__GLCglyph* This = NULL;
 
-  This = (__GLCglyph*)__glcMalloc(sizeof(__GLCglyph));
-  if (!This) {
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return NULL;
-  }
-  memset(This, 0, sizeof(__GLCglyph));
+	This = (__GLCglyph*)__glcMalloc(sizeof(__GLCglyph));
+	if (!This)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return NULL;
+	}
+	memset(This, 0, sizeof(__GLCglyph));
 
-  This->node.data = This;
-  This->index = inIndex;
-  This->codepoint = inCode;
-  This->isSpacingChar = GL_FALSE;
-  This->advanceCached = GL_FALSE;
-  This->boundingBoxCached = GL_FALSE;
+	This->node.data = This;
+	This->index = inIndex;
+	This->codepoint = inCode;
+	This->isSpacingChar = GL_FALSE;
+	This->advanceCached = GL_FALSE;
+	This->boundingBoxCached = GL_FALSE;
 
-  return This;
+	return This;
 }
 
 
@@ -62,8 +63,8 @@ __GLCglyph* __glcGlyphCreate(const GLCulong inIndex, const GLCulong inCode)
 /* Destructor of the object */
 void __glcGlyphDestroy(__GLCglyph* This, __GLCcontext* inContext)
 {
-  __glcGlyphDestroyGLObjects(This, inContext);
-  __glcFree(This);
+	__glcGlyphDestroyGLObjects(This, inContext);
+	__glcFree(This);
 }
 
 
@@ -71,10 +72,12 @@ void __glcGlyphDestroy(__GLCglyph* This, __GLCcontext* inContext)
 /* Remove all GL objects related to the texture of the glyph */
 void __glcGlyphDestroyTexture(__GLCglyph* This, const __GLCcontext* inContext)
 {
-  if (!inContext->isInGlobalCommand && !GLEW_ARB_vertex_buffer_object)
-    glDeleteLists(This->glObject[1], 1);
-  This->glObject[1] = 0;
-  This->textureObject = NULL;
+	if (!inContext->isInGlobalCommand && !GLEW_ARB_vertex_buffer_object)
+	{
+		glDeleteLists(This->glObject[1], 1);
+	}
+	This->glObject[1] = 0;
+	This->textureObject = NULL;
 }
 
 
@@ -84,45 +87,64 @@ void __glcGlyphDestroyTexture(__GLCglyph* This, const __GLCcontext* inContext)
  */
 void __glcGlyphDestroyGLObjects(__GLCglyph* This, __GLCcontext* inContext)
 {
-  if (This->glObject[1]) {
-    __glcReleaseAtlasElement(This->textureObject, inContext);
-    __glcGlyphDestroyTexture(This, inContext);
-  }
+	if (This->glObject[1])
+	{
+		__glcReleaseAtlasElement(This->textureObject, inContext);
+		__glcGlyphDestroyTexture(This, inContext);
+	}
 
-  if (!inContext->isInGlobalCommand) {
-    if (This->glObject[0]) {
-      if (GLEW_ARB_vertex_buffer_object) {
-	glDeleteBuffersARB(1, &This->glObject[0]);
-	if (This->contours)
-	  __glcFree(This->contours);
-	This->nContour = 0;
-	This->contours = NULL;
-      }
-      else
-	glDeleteLists(This->glObject[0], 1);
-    }
+	if (!inContext->isInGlobalCommand)
+	{
+		if (This->glObject[0])
+		{
+			if (GLEW_ARB_vertex_buffer_object)
+			{
+				glDeleteBuffersARB(1, &This->glObject[0]);
+				if (This->contours)
+				{
+					__glcFree(This->contours);
+				}
+				This->nContour = 0;
+				This->contours = NULL;
+			}
+			else
+			{
+				glDeleteLists(This->glObject[0], 1);
+			}
+		}
 
-    if (This->glObject[2]) {
-      if (GLEW_ARB_vertex_buffer_object) {
-	glDeleteBuffersARB(1, &This->glObject[2]);
-	if (This->geomBatches)
-	  __glcFree(This->geomBatches);
-	This->nGeomBatch = 0;
-	This->geomBatches = NULL;
-      }
-      else
-	glDeleteLists(This->glObject[2], 1);
-    }
+		if (This->glObject[2])
+		{
+			if (GLEW_ARB_vertex_buffer_object)
+			{
+				glDeleteBuffersARB(1, &This->glObject[2]);
+				if (This->geomBatches)
+				{
+					__glcFree(This->geomBatches);
+				}
+				This->nGeomBatch = 0;
+				This->geomBatches = NULL;
+			}
+			else
+			{
+				glDeleteLists(This->glObject[2], 1);
+			}
+		}
 
-    if (This->glObject[3]) {
-      if (GLEW_ARB_vertex_buffer_object)
-	glDeleteBuffersARB(1, &This->glObject[3]);
-      else
-	glDeleteLists(This->glObject[3], 1);
-    }
+		if (This->glObject[3])
+		{
+			if (GLEW_ARB_vertex_buffer_object)
+			{
+				glDeleteBuffersARB(1, &This->glObject[3]);
+			}
+			else
+			{
+				glDeleteLists(This->glObject[3], 1);
+			}
+		}
 
-    memset(This->glObject, 0, 4 * sizeof(GLuint));
-  }
+		memset(This->glObject, 0, 4 * sizeof(GLuint));
+	}
 }
 
 
@@ -130,18 +152,23 @@ void __glcGlyphDestroyGLObjects(__GLCglyph* This, __GLCcontext* inContext)
 /* Returns the number of display that has been built for a glyph */
 int __glcGlyphGetDisplayListCount(const __GLCglyph* This)
 {
-  int i = 0;
-  int count = 0;
+	int i = 0;
+	int count = 0;
 
-  if (GLEW_ARB_vertex_buffer_object)
-    return 0;
+	if (GLEW_ARB_vertex_buffer_object)
+	{
+		return 0;
+	}
 
-  for (i = 0; i < 4; i++) {
-    if (This->glObject[i])
-      count++;
-  }
+	for (i = 0; i < 4; i++)
+	{
+		if (This->glObject[i])
+		{
+			count++;
+		}
+	}
 
-  return count;
+	return count;
 }
 
 
@@ -151,30 +178,36 @@ int __glcGlyphGetDisplayListCount(const __GLCglyph* This)
  */
 GLuint __glcGlyphGetDisplayList(const __GLCglyph* This, const int inCount)
 {
-  int i = 0;
-  int count = inCount;
+	int i = 0;
+	int count = inCount;
 
-  assert(inCount >= 0);
-  assert(inCount < __glcGlyphGetDisplayListCount(This));
+	assert(inCount >= 0);
+	assert(inCount < __glcGlyphGetDisplayListCount(This));
 
-  if (GLEW_ARB_vertex_buffer_object)
-    return 0;
+	if (GLEW_ARB_vertex_buffer_object)
+	{
+		return 0;
+	}
 
-  for (i = 0; i < 4; i++) {
-    GLuint displayList = This->glObject[i];
+	for (i = 0; i < 4; i++)
+	{
+		GLuint displayList = This->glObject[i];
 
-    if (displayList) {
-      if (!count)
-	return displayList;
-      count--;
-    }
-  }
+		if (displayList)
+		{
+			if (!count)
+			{
+				return displayList;
+			}
+			count--;
+		}
+	}
 
-  /* The program is not supposed to reach the end of the function.
-   * The following return is there to prevent the compiler to issue
-   * a warning about 'control reaching the end of a non-void function'.
-   */
-  return 0xdeadbeef;
+	/* The program is not supposed to reach the end of the function.
+	 * The following return is there to prevent the compiler to issue
+	 * a warning about 'control reaching the end of a non-void function'.
+	 */
+	return 0xdeadbeef;
 }
 
 
@@ -182,20 +215,25 @@ GLuint __glcGlyphGetDisplayList(const __GLCglyph* This, const int inCount)
 /* Returns the number of buffer objects that has been built for a glyph */
 int __glcGlyphGetBufferObjectCount(const __GLCglyph* This)
 {
-  int i = 0;
-  int count = 0;
+	int i = 0;
+	int count = 0;
 
-  assert(GLEW_ARB_vertex_buffer_object);
+	assert(GLEW_ARB_vertex_buffer_object);
 
-  for (i = 0; i < 4; i++) {
-    if (i == 1)
-      continue;
+	for (i = 0; i < 4; i++)
+	{
+		if (i == 1)
+		{
+			continue;
+		}
 
-    if (This->glObject[i])
-      count++;
-  }
+		if (This->glObject[i])
+		{
+			count++;
+		}
+	}
 
-  return count;
+	return count;
 }
 
 
@@ -205,29 +243,35 @@ int __glcGlyphGetBufferObjectCount(const __GLCglyph* This)
  */
 GLuint __glcGlyphGetBufferObject(const __GLCglyph* This, const int inCount)
 {
-  int i = 0;
-  int count = inCount;
+	int i = 0;
+	int count = inCount;
 
-  assert(GLEW_ARB_vertex_buffer_object);
-  assert(inCount >= 0);
-  assert(inCount < __glcGlyphGetBufferObjectCount(This));
+	assert(GLEW_ARB_vertex_buffer_object);
+	assert(inCount >= 0);
+	assert(inCount < __glcGlyphGetBufferObjectCount(This));
 
-  for (i = 0; i < 4; i++) {
-    GLuint bufferObject = This->glObject[i];
+	for (i = 0; i < 4; i++)
+	{
+		GLuint bufferObject = This->glObject[i];
 
-    if (i == 1)
-      continue;
+		if (i == 1)
+		{
+			continue;
+		}
 
-    if (bufferObject) {
-      if (!count)
-	return bufferObject;
-      count--;
-    }
-  }
+		if (bufferObject)
+		{
+			if (!count)
+			{
+				return bufferObject;
+			}
+			count--;
+		}
+	}
 
-  /* The program is not supposed to reach the end of the function.
-   * The following return is there to prevent the compiler to issue
-   * a warning about 'control reaching the end of a non-void function'.
-   */
-  return 0xdeadbeef;
+	/* The program is not supposed to reach the end of the function.
+	 * The following return is there to prevent the compiler to issue
+	 * a warning about 'control reaching the end of a non-void function'.
+	 */
+	return 0xdeadbeef;
 }

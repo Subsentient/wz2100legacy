@@ -35,13 +35,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 //*************************************************************************
 typedef struct
 {
-    Vector3i p, r;
+	Vector3i p, r;
 } iView;
 
 typedef struct
 {
-    unsigned int width, height, depth;
-    unsigned char *bmp;
+	unsigned int width, height, depth;
+	unsigned char *bmp;
 } iV_Image;
 
 #endif // _pieTypes_h

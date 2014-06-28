@@ -28,21 +28,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* Initialise the object system */
 BOOL objInitialise(void)
 {
-    if (!objmemInitialise())
-    {
-        return false;
-    }
+	if (!objmemInitialise())
+	{
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 
 /* Shutdown the object system */
 BOOL objShutdown(void)
 {
-    objmemShutdown();
+	objmemShutdown();
 
-    return true;
+	return true;
 }
 
 
@@ -50,60 +50,60 @@ BOOL objShutdown(void)
 the last and the last entry becomes the first!*/
 void reverseObjectList(BASE_OBJECT **ppsList)
 {
-    BASE_OBJECT     *psPrev, *psNext, *psCurrent, *psObjList;
+	BASE_OBJECT     *psPrev, *psNext, *psCurrent, *psObjList;
 
-    //initialise the pointers
-    psObjList = *ppsList;
-    psPrev = psNext = NULL;
-    psCurrent = psObjList;
+	//initialise the pointers
+	psObjList = *ppsList;
+	psPrev = psNext = NULL;
+	psCurrent = psObjList;
 
-    while(psCurrent != NULL)
-    {
-        psNext = psCurrent->psNext;
-        psCurrent->psNext = psPrev;
-        psPrev = psCurrent;
-        psCurrent = psNext;
-    }
-    //set the list passed in to point to the new top
-    *ppsList = psPrev;
+	while(psCurrent != NULL)
+	{
+		psNext = psCurrent->psNext;
+		psCurrent->psNext = psPrev;
+		psPrev = psCurrent;
+		psCurrent = psNext;
+	}
+	//set the list passed in to point to the new top
+	*ppsList = psPrev;
 }
 
 const char *objInfo(const BASE_OBJECT *psObj)
 {
-    static char	info[PATH_MAX];
+	static char	info[PATH_MAX];
 
-    switch (psObj->type)
-    {
-        case OBJ_DROID:
-            {
-                const DROID *psDroid = (const DROID *)psObj;
+	switch (psObj->type)
+	{
+		case OBJ_DROID:
+		{
+			const DROID *psDroid = (const DROID *)psObj;
 
-                ssprintf(info, "%s", droidGetName(psDroid));
-                break;
-            }
-        case OBJ_STRUCTURE:
-            {
-                const STRUCTURE *psStruct = (const STRUCTURE *)psObj;
+			ssprintf(info, "%s", droidGetName(psDroid));
+			break;
+		}
+		case OBJ_STRUCTURE:
+		{
+			const STRUCTURE *psStruct = (const STRUCTURE *)psObj;
 
-                ssprintf(info, "%s", getName(psStruct->pStructureType->pName));
-                break;
-            }
-        case OBJ_FEATURE:
-            {
-                const FEATURE *psFeat = (const FEATURE *)psObj;
+			ssprintf(info, "%s", getName(psStruct->pStructureType->pName));
+			break;
+		}
+		case OBJ_FEATURE:
+		{
+			const FEATURE *psFeat = (const FEATURE *)psObj;
 
-                ssprintf(info, "%s", getName(psFeat->psStats->pName));
-                break;
-            }
-        case OBJ_PROJECTILE:
-            sstrcpy(info, "Projectile");	// TODO
-            break;
-        case OBJ_TARGET:
-            sstrcpy(info, "Target");	// TODO
-            break;
-        default:
-            sstrcpy(info, "Unknown object type");
-            break;
-    }
-    return info;
+			ssprintf(info, "%s", getName(psFeat->psStats->pName));
+			break;
+		}
+		case OBJ_PROJECTILE:
+			sstrcpy(info, "Projectile");	// TODO
+			break;
+		case OBJ_TARGET:
+			sstrcpy(info, "Target");	// TODO
+			break;
+		default:
+			sstrcpy(info, "Unknown object type");
+			break;
+	}
+	return info;
 }

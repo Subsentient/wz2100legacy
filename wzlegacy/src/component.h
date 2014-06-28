@@ -97,7 +97,7 @@ extern void	compPersonToBits(DROID *psDroid);
 
 /* Don't know what these might be? */
 extern void	updateLightLevels(void);
-extern int32_t	rescaleButtonObject(int32_t radius, int32_t baseScale,int32_t baseRadius);
+extern int32_t	rescaleButtonObject(int32_t radius, int32_t baseScale, int32_t baseRadius);
 
 extern void	destroyFXDroid(DROID	*psDroid);
 

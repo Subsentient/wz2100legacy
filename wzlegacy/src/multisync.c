@@ -70,7 +70,7 @@ static uint32_t averagePing(void);
 // ////////////////////////////////////////////////////////////////////////////
 // Defined numeric values
 // NOTE / FIXME: Current MP games are locked at 45ms
-#define MP_FPS_LOCK			45			
+#define MP_FPS_LOCK			45
 #define AV_PING_FREQUENCY	MP_FPS_LOCK * 400		// how often to update average pingtimes (host only, when players join)
 #define PING_FREQUENCY		MP_FPS_LOCK * 400		// how often to update pingtimes. (About every ~1.8 secs)
 #define STRUCT_FREQUENCY	MP_FPS_LOCK * 10		// how often to send a structure check. (About every 450ms)
@@ -106,7 +106,7 @@ BOOL sendCheck(void)
 	NETgetPacketsRecvd();
 
 	// dont send checks till all players are present.
-	for(i=0;i<MAX_PLAYERS;i++)
+	for(i = 0; i < MAX_PLAYERS; i++)
 	{
 		if(isHumanPlayer(i) && ingame.JoiningInProgress[i])
 		{
@@ -173,7 +173,7 @@ BOOL sendCheck(void)
 		sync_counter.unsentisMPDirtyBit++;
 	}
 	// FIXME: reset flag--For now, we always do this since we have no way of knowing which routine(s) we had to set this flag
-	isMPDirtyBit = false;	
+	isMPDirtyBit = false;
 	return true;
 }
 
@@ -183,9 +183,9 @@ static DROID* pickADroid(void)
 {
 	DROID* pD = NULL;						// current droid we're checking
 	unsigned int i;
-	static uint32_t	droidnum=0;						// how far down the playerlist to go.
-	static uint32_t	player=0;						// current player we're checking
-	static uint32_t	maxtrys=0;
+	static uint32_t	droidnum = 0;						// how far down the playerlist to go.
+	static uint32_t	player = 0;						// current player we're checking
+	static uint32_t	maxtrys = 0;
 
 	// Don't send stuff that isn't our problem
 	while (!myResponsibility(player))
@@ -203,8 +203,8 @@ static DROID* pickADroid(void)
 
 	// Find the 'droidnum'th droid for the current player
 	for (i = 0, pD = apsDroidLists[player];
-		i < droidnum && pD != NULL;
-		++i, pD = pD->psNext)
+			i < droidnum && pD != NULL;
+			++i, pD = pD->psNext)
 	{}
 
 	// If we've already dealt with the last droid for this player
@@ -244,8 +244,8 @@ BOOL ForceDroidSync(const DROID* droidToSend)
 	debug(LOG_SYNC, "Force sync of droid %u from player %u", droidToSend->id, droidToSend->player);
 
 	NETbeginEncode(NET_CHECK_DROID, NET_ALL_PLAYERS);
-		NETuint8_t(&count);
-		packageCheck(droidToSend);
+	NETuint8_t(&count);
+	packageCheck(droidToSend);
 	return NETend();
 }
 
@@ -260,7 +260,7 @@ static BOOL sendDroidCheck(void)
 
 	if (lastSent > gameTime)
 	{
-		lastSent= 0;
+		lastSent = 0;
 	}
 
 	// Only send a struct send if not done recently or if isMPDirtyBit is set
@@ -273,34 +273,34 @@ static BOOL sendDroidCheck(void)
 
 	NETbeginEncode(NET_CHECK_DROID, NET_ALL_PLAYERS);
 
-		// Allocate space for the list of droids to send
-		ppD = alloca(sizeof(DROID *) * toSend);
+	// Allocate space for the list of droids to send
+	ppD = alloca(sizeof(DROID *) * toSend);
 
-		// Get the list of droids to sent
-		for (i = 0, count = 0; i < toSend; i++)
+	// Get the list of droids to sent
+	for (i = 0, count = 0; i < toSend; i++)
+	{
+		pD = pickADroid();
+
+		// If the droid is valid add it to the list
+		if (pD)
 		{
-			pD = pickADroid();
-
-			// If the droid is valid add it to the list
-			if (pD)
-			{
-				ppD[count++] = pD;
-			}
-			// All droids are synced! (We're done.)
-			else
-			{
-				break;
-			}
+			ppD[count++] = pD;
 		}
-
-		// Send the number of droids to expect
-		NETuint8_t(&count);
-
-		// Add the droids to the packet
-		for (i = 0; i < count; i++)
+		// All droids are synced! (We're done.)
+		else
 		{
-			packageCheck(ppD[i]);
+			break;
 		}
+	}
+
+	// Send the number of droids to expect
+	NETuint8_t(&count);
+
+	// Add the droids to the packet
+	for (i = 0; i < count; i++)
+	{
+		packageCheck(ppD[i]);
+	}
 
 	return NETend();
 }
@@ -331,7 +331,7 @@ static void packageCheck(const DROID* pD)
 
 	// The droid's order
 	NETint32_t(&order);
-	
+
 	// The droids secondary order
 	NETuint32_t(&secondaryOrder);
 
@@ -340,37 +340,37 @@ static void packageCheck(const DROID* pD)
 
 	// Direction it is facing
 	NETfloat(&direction);
-	
+
 	// Direction it is going in
 	NETfloat(&moveDir);
-	
+
 	// Speed of movement
 	NETfloat(&speed);
-	
+
 	// How it's moving, if at all. Fixes wiggly truck syndrome.
 	NETint8_t(&movestatus);
 
 	NETfloat(&sMoveX);
 	NETfloat(&sMoveY);
-	
-	if (order!=DORDER_NONE)
+
+	if (order != DORDER_NONE)
 	{
 		if (validOrderForObj(pD->order))
 		{
 			uint32_t targetID = 0;
-			
+
 			if(pD->psTarget)
 			{
 				targetID = pD->psTarget->id;
 			}
-			
+
 			NETuint32_t(&targetID);
 		}
 		else if (validOrderForLoc(pD->order))
 		{
 			uint16_t orderX = pD->orderX;
 			uint16_t orderY = pD->orderY;
-	
+
 			NETuint16_t(&orderX);
 			NETuint16_t(&orderY);
 		}
@@ -390,105 +390,105 @@ BOOL recvDroidCheck()
 
 	NETbeginDecode(NET_CHECK_DROID);
 
-		// Get the number of droids to expect
-		NETuint8_t(&count);
+	// Get the number of droids to expect
+	NETuint8_t(&count);
 
-		for (i = 0; i < count; i++)
+	for (i = 0; i < count; i++)
+	{
+		DROID		*pD, sDroid;
+		BOOL		onscreen;
+		uint32_t target;
+
+		// Fetch the player
+		NETuint8_t(&sDroid.player);
+
+		// Fetch the droid being checked
+		NETuint32_t(&sDroid.id);
+
+		// The droid's order
+		NETenum(&sDroid.order);
+
+		// Secondary order
+		NETuint32_t(&sDroid.secondaryOrder);
+
+		// HP
+		NETuint32_t(&sDroid.body);
+
+		// Direction it is facing
+		NETfloat(&sDroid.direction);
+
+		// Direction it is going in
+		NETfloat(&sDroid.sMove.moveDir);
+
+		// Current speed of movement
+		NETfloat(&sDroid.sMove.speed);
+
+		// What mode it's moving as.
+		NETint8_t((void*)&sDroid.sMove.Status); //I don't care if you're a different sign. Shut up.
+
+		// Fractional move
+		NETfloat(&sDroid.sMove.fx);
+		NETfloat(&sDroid.sMove.fy);
+
+		/*For now, this is how we handle the multiple variables.*/
+		sDroid.pos.x = sDroid.sMove.fx;
+		sDroid.pos.y = sDroid.sMove.fy;
+
+		// Find out what the droid is aiming at
+		if (sDroid.order != DORDER_NONE)
 		{
-			DROID		*pD, sDroid;
-			BOOL		onscreen;
-			uint32_t target;
-			
-			// Fetch the player
-			NETuint8_t(&sDroid.player);
-
-			// Fetch the droid being checked
-			NETuint32_t(&sDroid.id);
-
-			// The droid's order
-			NETenum(&sDroid.order);
-			
-			// Secondary order
-			NETuint32_t(&sDroid.secondaryOrder);
-
-			// HP
-			NETuint32_t(&sDroid.body);
-
-			// Direction it is facing
-			NETfloat(&sDroid.direction);
-
-			// Direction it is going in
-			NETfloat(&sDroid.sMove.moveDir);
-			
-			// Current speed of movement
-			NETfloat(&sDroid.sMove.speed);
-			
-			// What mode it's moving as.
-			NETint8_t((void*)&sDroid.sMove.Status); //I don't care if you're a different sign. Shut up.
-
-			// Fractional move
-			NETfloat(&sDroid.sMove.fx);
-			NETfloat(&sDroid.sMove.fy);
-			
-			/*For now, this is how we handle the multiple variables.*/
-			sDroid.pos.x = sDroid.sMove.fx;
-			sDroid.pos.y = sDroid.sMove.fy;
-
-			// Find out what the droid is aiming at
-			if (sDroid.order != DORDER_NONE)
+			if (validOrderForObj(sDroid.order))
 			{
-				if (validOrderForObj(sDroid.order))
-				{
-					NETuint32_t(&target);
-				}
-				// Else if the droid is moving where to
-				else if (validOrderForLoc(sDroid.order))
-				{
-					NETuint16_t(&sDroid.orderX);
-					NETuint16_t(&sDroid.orderY);
-				}
+				NETuint32_t(&target);
 			}
-
-			// Get the droid's experience
-			NETfloat(&sDroid.experience);
-
-			/*
-			 * Post processing
-			 */
-
-			// Find the droid in question
-			if (!IdToDroid(sDroid.id, sDroid.player, &pD))
+			// Else if the droid is moving where to
+			else if (validOrderForLoc(sDroid.order))
 			{
-				NETlogEntry("Recvd Unknown droid info. val=player", SYNC_FLAG, sDroid.player);
-				debug(LOG_SYNC, "Received checking info for an unknown (as yet) droid. player:%d ref:%d", sDroid.player, sDroid.id);
-				continue;
+				NETuint16_t(&sDroid.orderX);
+				NETuint16_t(&sDroid.orderY);
 			}
-
-			// If there is a target find it
-			if (target)
-			{
-				sDroid.psTarget = IdToPointer(target, ANYPLAYER);
-			}
-
-			/*
-			 * Decide how best to sync the droid. If it is onscreen and visible
-			 * and the player who owns the droid has a low ping then do an
-			 * onscreen update, otherwise do an offscreen one.
-			 */
-			if (droidOnScreen(pD, 0)
-			 && ingame.PingTimes[sDroid.player] < PING_LIMIT)
-			{
-				onscreen = true;
-			}
-			else
-			{
-				onscreen = false;
-			}
-
-			DroidScreenUpdate(pD, &sDroid, onscreen); 
-
-			// ...and repeat!
 		}
+
+		// Get the droid's experience
+		NETfloat(&sDroid.experience);
+
+		/*
+		 * Post processing
+		 */
+
+		// Find the droid in question
+		if (!IdToDroid(sDroid.id, sDroid.player, &pD))
+		{
+			NETlogEntry("Recvd Unknown droid info. val=player", SYNC_FLAG, sDroid.player);
+			debug(LOG_SYNC, "Received checking info for an unknown (as yet) droid. player:%d ref:%d", sDroid.player, sDroid.id);
+			continue;
+		}
+
+		// If there is a target find it
+		if (target)
+		{
+			sDroid.psTarget = IdToPointer(target, ANYPLAYER);
+		}
+
+		/*
+		 * Decide how best to sync the droid. If it is onscreen and visible
+		 * and the player who owns the droid has a low ping then do an
+		 * onscreen update, otherwise do an offscreen one.
+		 */
+		if (droidOnScreen(pD, 0)
+				&& ingame.PingTimes[sDroid.player] < PING_LIMIT)
+		{
+			onscreen = true;
+		}
+		else
+		{
+			onscreen = false;
+		}
+
+		DroidScreenUpdate(pD, &sDroid, onscreen);
+
+		// ...and repeat!
+	}
 
 	NETend();
 
@@ -502,31 +502,32 @@ static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
 	int			oldX, oldY;
 
 	if (fabs((float)psDroid->pos.x - psDData->pos.x) > TILE_UNITS ||
-		fabs((float)psDroid->pos.y - psDData->pos.y) > TILE_UNITS)
+			fabs((float)psDroid->pos.y - psDData->pos.y) > TILE_UNITS)
 	{
 		debug(LOG_SYNC, "Moving droid %d from (%u,%u) to (%u,%u) (has order %s)",
-		      (int)psDroid->id, psDroid->pos.x, psDroid->pos.y, (uint32_t)psDData->sMove.fx,
-		      (uint32_t)psDData->sMove.fy, getDroidOrderName(psDData->order));
+			  (int)psDroid->id, psDroid->pos.x, psDroid->pos.y, (uint32_t)psDData->sMove.fx,
+			  (uint32_t)psDData->sMove.fy, getDroidOrderName(psDData->order));
 	}
 
 	oldX = psDroid->pos.x;
 	oldY = psDroid->pos.y;
-	
+
 	if (!onScreen || fabs(psDData->sMove.fx - psDroid->sMove.fx) > TILE_UNITS ||
-		fabs(psDData->sMove.fy - psDroid->sMove.fy) > TILE_UNITS)
-	{ /*If we are not on the screen, or on the wrong tile, fix it.*/
+			fabs(psDData->sMove.fy - psDroid->sMove.fy) > TILE_UNITS)
+	{
+		/*If we are not on the screen, or on the wrong tile, fix it.*/
 		psDroid->pos.x = psDData->pos.x;
 		psDroid->pos.y = psDData->pos.y;
 		psDroid->sMove.fx = psDData->sMove.fx;
 		psDroid->sMove.fy = psDData->sMove.fy;
 		psDroid->sMove.speed = psDData->sMove.speed;
 	}
-	
+
 	/*Synchronize these always*/
 	psDroid->body = psDData->body;								// update damage
 	psDroid->direction = psDData->direction;			// update rotation
 	psDroid->sMove.moveDir = psDData->sMove.moveDir; // Direction of movement
-	
+
 	if (oldX != psDroid->pos.x || oldY != psDroid->pos.y)
 	{
 		turnOffMultiMsg(true);
@@ -536,29 +537,29 @@ static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
 
 	// stop droid if remote droid has stopped.
 	if ((psDData->order == DORDER_NONE || psDData->order == DORDER_GUARD)
-	    && (psDroid->order != DORDER_NONE && psDroid->order != DORDER_GUARD))
+			&& (psDroid->order != DORDER_NONE && psDroid->order != DORDER_GUARD))
 	{
 		turnOffMultiMsg(true);
 		moveStopDroid(psDroid);
 		turnOffMultiMsg(false);
 	}
-	
+
 	// snap droid(if on ground)  to terrain level at x,y.
 	psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
-	
+
 	ASSERT( psPropStats != NULL, "DroidScreenUpdate: invalid propulsion stats pointer" );
 	if(	psPropStats->propulsionType != PROPULSION_TYPE_LIFT )		// if not airborne.
 	{
 		psDroid->pos.z = map_Height(psDroid->pos.x, psDroid->pos.y);
 	}
-	
+
 	/*Synchronize the move mode.*/
 	psDroid->sMove.Status = psDData->sMove.Status;
 	psDroid->secondaryOrder = psDData->secondaryOrder;
-	
+
 	/*Synchronize experience.*/
 	psDroid->experience = psDData->experience;
-	
+
 }
 
 
@@ -568,19 +569,19 @@ static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
 // this func is recursive!
 static  STRUCTURE *pickAStructure(void)
 {
-	static uint32_t	player=0;					// player currently checking.
-	static uint32_t	snum=0;						// structure index for this player.
-	STRUCTURE		*pS=NULL;
+	static uint32_t	player = 0;					// player currently checking.
+	static uint32_t	snum = 0;						// structure index for this player.
+	STRUCTURE		*pS = NULL;
 	static uint32_t	maxtrys = 0;				// don't loop forever if failing/.
 	uint32_t			i;
 
 	if ( !myResponsibility(player) )			// dont send stuff that's not our problem.
 	{
 		player ++;								// next player next time.
-		player = player%MAX_PLAYERS;
-		snum =0;
+		player = player % MAX_PLAYERS;
+		snum = 0;
 
-		if(maxtrys<MAX_PLAYERS)
+		if(maxtrys < MAX_PLAYERS)
 		{
 			maxtrys ++;
 			return pickAStructure();
@@ -593,19 +594,19 @@ static  STRUCTURE *pickAStructure(void)
 	}
 
 	pS = apsStructLists[player];				// find the strucutre
-	for(i=0; ((i<snum) && (pS != NULL)) ;i++)
+	for(i = 0; ((i < snum) && (pS != NULL)) ; i++)
 	{
-		pS= pS->psNext;
+		pS = pS->psNext;
 	}
 
 
 	if (pS == NULL)								// last structure or no structures at all
 	{
 		player ++;								// go onto the next player
-		player = player%MAX_PLAYERS;
-		snum=0;
+		player = player % MAX_PLAYERS;
+		snum = 0;
 
-		if(maxtrys<MAX_PLAYERS)
+		if(maxtrys < MAX_PLAYERS)
 		{
 			maxtrys ++;
 			return pickAStructure();
@@ -628,14 +629,14 @@ static BOOL sendStructureCheck(void)
 {
 	static uint32_t	lastSent = 0;	// Last time a struct was sent
 	STRUCTURE		*pS;
-    uint8_t			capacity;
+	uint8_t			capacity;
 
 	if (lastSent > gameTime)
 	{
 		lastSent = 0;
 	}
 	// Only send a struct send if not done recently or if isMPDirtyBit is set
-	if ((gameTime - lastSent) < STRUCT_FREQUENCY && !isMPDirtyBit)	
+	if ((gameTime - lastSent) < STRUCT_FREQUENCY && !isMPDirtyBit)
 	{
 		return true;
 	}
@@ -647,33 +648,33 @@ static BOOL sendStructureCheck(void)
 	if (pS && (pS->status == SS_BUILT))
 	{
 		NETbeginEncode(NET_CHECK_STRUCT, NET_ALL_PLAYERS);
-			NETuint8_t(&pS->player);
-			NETuint32_t(&pS->id);
-			NETuint32_t(&pS->body);
-			NETuint32_t(&pS->pStructureType->ref);
-			NETuint16_t(&pS->pos.x);
-			NETuint16_t(&pS->pos.y);
-			NETuint16_t(&pS->pos.z);
-			NETfloat(&pS->direction);
+		NETuint8_t(&pS->player);
+		NETuint32_t(&pS->id);
+		NETuint32_t(&pS->body);
+		NETuint32_t(&pS->pStructureType->ref);
+		NETuint16_t(&pS->pos.x);
+		NETuint16_t(&pS->pos.y);
+		NETuint16_t(&pS->pos.z);
+		NETfloat(&pS->direction);
 
-			switch (pS->pStructureType->type)
-			{
+		switch (pS->pStructureType->type)
+		{
 
-				case REF_RESEARCH:
-					capacity = ((RESEARCH_FACILITY *) pS->pFunctionality)->capacity;
-					NETuint8_t(&capacity);
-					break;
-				case REF_FACTORY:
-				case REF_VTOL_FACTORY:
-					capacity = ((FACTORY *) pS->pFunctionality)->capacity;
-					NETuint8_t(&capacity);
-					break;
-				case REF_POWER_GEN:
-					capacity = ((POWER_GEN *) pS->pFunctionality)->capacity;
-					NETuint8_t(&capacity);
-				default:
-					break;
-			}
+			case REF_RESEARCH:
+				capacity = ((RESEARCH_FACILITY *) pS->pFunctionality)->capacity;
+				NETuint8_t(&capacity);
+				break;
+			case REF_FACTORY:
+			case REF_VTOL_FACTORY:
+				capacity = ((FACTORY *) pS->pFunctionality)->capacity;
+				NETuint8_t(&capacity);
+				break;
+			case REF_POWER_GEN:
+				capacity = ((POWER_GEN *) pS->pFunctionality)->capacity;
+				NETuint8_t(&capacity);
+			default:
+				break;
+		}
 
 		NETend();
 	}
@@ -737,8 +738,8 @@ BOOL recvStructureCheck()
 
 			// If correct type && player then complete & modify
 			if (pS
-			 && pS->pStructureType->type == type
-			 && pS->player == player)
+					&& pS->pStructureType->type == type
+					&& pS->player == player)
 			{
 				pS->direction = direction;
 				pS->id = ref;
@@ -877,8 +878,8 @@ static BOOL sendPowerCheck()
 	lastsent = gameTime;
 
 	NETbeginEncode(NET_CHECK_POWER, NET_ALL_PLAYERS);
-		NETuint8_t(&player);
-		NETuint32_t(&power);
+	NETuint8_t(&player);
+	NETuint32_t(&power);
 	return NETend();
 }
 
@@ -888,14 +889,14 @@ BOOL recvPowerCheck()
 	uint32_t	power, power2;
 
 	NETbeginDecode(NET_CHECK_POWER);
-		NETuint8_t(&player);
-		NETuint32_t(&power);
+	NETuint8_t(&player);
+	NETuint32_t(&power);
 	NETend();
 
 	if (player >= MAX_PLAYERS)
 	{
-		debug(LOG_ERROR, "Bad NET_CHECK_POWER packet: player is %d : %s", 
-		      (int)player, isHumanPlayer(player) ? "Human" : "AI");
+		debug(LOG_ERROR, "Bad NET_CHECK_POWER packet: player is %d : %s",
+			  (int)player, isHumanPlayer(player) ? "Human" : "AI");
 		return false;
 	}
 
@@ -930,7 +931,7 @@ BOOL sendScoreCheck(void)
 
 	if (lastsent > gameTime)
 	{
-		lastsent= 0;
+		lastsent = 0;
 	}
 
 	if (gameTime - lastsent < SCORE_FREQUENCY)
@@ -981,7 +982,7 @@ static uint32_t averagePing(void)
 {
 	uint32_t i, count = 0, total = 0;
 
-	for(i=0;i<MAX_PLAYERS;i++)
+	for(i = 0; i < MAX_PLAYERS; i++)
 	{
 		if(isHumanPlayer(i))
 		{
@@ -1036,24 +1037,24 @@ BOOL sendPing(void)
 	for (i = 0; i < MAX_PLAYERS; i++)
 	{
 		if (isHumanPlayer(i)
-		 && PingSend[i]
-		 && ingame.PingTimes[i]
-		 && i != selectedPlayer)
+				&& PingSend[i]
+				&& ingame.PingTimes[i]
+				&& i != selectedPlayer)
 		{
 			ingame.PingTimes[i] = PING_LIMIT;
 		}
 		else if (!isHumanPlayer(i)
-		      && PingSend[i]
-		      && ingame.PingTimes[i]
-		      && i != selectedPlayer)
+				 && PingSend[i]
+				 && ingame.PingTimes[i]
+				 && i != selectedPlayer)
 		{
 			ingame.PingTimes[i] = 0;
 		}
 	}
 
 	NETbeginEncode(NET_PING, NET_ALL_PLAYERS);
-		NETuint8_t(&player);
-		NETbool(&isNew);
+	NETuint8_t(&player);
+	NETbool(&isNew);
 	NETend();
 
 	// Note when we sent the ping
@@ -1072,8 +1073,8 @@ BOOL recvPing()
 	uint8_t	sender, us = selectedPlayer;
 
 	NETbeginDecode(NET_PING);
-		NETuint8_t(&sender);
-		NETbool(&isNew);
+	NETuint8_t(&sender);
+	NETbool(&isNew);
 	NETend();
 
 	if (sender >= MAX_PLAYERS)
@@ -1086,11 +1087,11 @@ BOOL recvPing()
 	if (isNew)
 	{
 		NETbeginEncode(NET_PING, sender);
-			// We are responding to a new ping
-			isNew = false;
+		// We are responding to a new ping
+		isNew = false;
 
-			NETuint8_t(&us);
-			NETbool(&isNew);
+		NETuint8_t(&us);
+		NETbool(&isNew);
 		NETend();
 	}
 	// They are responding to one of our pings

@@ -46,13 +46,13 @@ static int32_t		iterateEntry;
 // what to do when calculating the coverage of an object
 typedef enum _coverage_mode
 {
-    GRID_ADDOBJECT,
-    GRID_REMOVEOBJECT,
+	GRID_ADDOBJECT,
+	GRID_REMOVEOBJECT,
 } COVERAGE_MODE;
 
 // Function prototypes
 static BOOL gridIntersect(const int x1, const int y1, const int x2, const int y2,
-                          const int cx, const int cy, const int Rad);
+						  const int cx, const int cy, const int Rad);
 static void	gridAddArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj);
 static void	gridRemoveArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj);
 static void	gridCompactArray(int32_t x, int32_t y);
@@ -61,78 +61,78 @@ static int      gridObjRange(const BASE_OBJECT *psObj);
 // initialise the grid system
 BOOL gridInitialise(void)
 {
-    memset(apsMapGrid, 0, sizeof(GRID_ARRAY *) * GRID_MAXAREA);
+	memset(apsMapGrid, 0, sizeof(GRID_ARRAY *) * GRID_MAXAREA);
 
-    garbageX = 0;
-    garbageY = 0;
+	garbageX = 0;
+	garbageY = 0;
 
-    psIterateGrid = NULL;
-    iterateEntry = 0;
+	psIterateGrid = NULL;
+	iterateEntry = 0;
 
-    return true;
+	return true;
 }
 
 //clear the grid of everything on it
 void gridClear(void)
 {
-    GRID_ARRAY	*psCurr, *psNext;
-    unsigned int	x, y;
+	GRID_ARRAY	*psCurr, *psNext;
+	unsigned int	x, y;
 
-    debug( LOG_NEVER, "gridClear %d %d\n", gridWidth, gridHeight );
-    for(x = 0; x < gridWidth; ++x)
-    {
-        for(y = 0; y < gridHeight; ++y)
-        {
-            for(psCurr = apsMapGrid[GridIndex(x,y)]; psCurr != NULL; psCurr = psNext)
-            {
-                psNext = psCurr->psNext;
-                free(psCurr);
-            }
-            apsMapGrid[GridIndex(x,y)] = NULL;
-        }
-    }
+	debug( LOG_NEVER, "gridClear %d %d\n", gridWidth, gridHeight );
+	for(x = 0; x < gridWidth; ++x)
+	{
+		for(y = 0; y < gridHeight; ++y)
+		{
+			for(psCurr = apsMapGrid[GridIndex(x, y)]; psCurr != NULL; psCurr = psNext)
+			{
+				psNext = psCurr->psNext;
+				free(psCurr);
+			}
+			apsMapGrid[GridIndex(x, y)] = NULL;
+		}
+	}
 }
 
 // reset the grid system
 void gridReset(void)
 {
-    STRUCTURE	*psStruct;
-    DROID		*psDroid;
-    FEATURE		*psFeature;
-    uint8_t		inc;
+	STRUCTURE	*psStruct;
+	DROID		*psDroid;
+	FEATURE		*psFeature;
+	uint8_t		inc;
 
-    // Setup the grid dimensions.
-    gridWidth = (mapWidth+GRID_SIZE-1) / GRID_SIZE;
-    gridHeight = (mapHeight+GRID_SIZE-1) / GRID_SIZE;
+	// Setup the grid dimensions.
+	gridWidth = (mapWidth + GRID_SIZE - 1) / GRID_SIZE;
+	gridHeight = (mapHeight + GRID_SIZE - 1) / GRID_SIZE;
 
-    gridClear();
+	gridClear();
 
-    //put all the existing objects into the grid
-    for (inc = 0; inc < MAX_PLAYERS; inc++)
-    {
-        for (psDroid = apsDroidLists[inc]; psDroid != NULL; psDroid =
-                    psDroid->psNext)
-        {
-            gridAddObject((BASE_OBJECT *)psDroid);
-        }
-        for (psStruct = apsStructLists[inc]; psStruct != NULL; psStruct =
-                    psStruct->psNext)
-        {
-            gridAddObject((BASE_OBJECT *)psStruct);
-        }
-        for (psFeature = apsFeatureLists[inc]; psFeature != NULL; psFeature =
-                    psFeature->psNext)
-        {
-            gridAddObject((BASE_OBJECT *)psFeature);
-        }
-    }
+	//put all the existing objects into the grid
+	for (inc = 0; inc < MAX_PLAYERS; inc++)
+	{
+		for (psDroid = apsDroidLists[inc]; psDroid != NULL; psDroid =
+					psDroid->psNext)
+		{
+			gridAddObject((BASE_OBJECT *)psDroid);
+		}
+		for (psStruct = apsStructLists[inc]; psStruct != NULL; psStruct =
+					psStruct->psNext)
+		{
+			gridAddObject((BASE_OBJECT *)psStruct);
+		}
+		for (psFeature = apsFeatureLists[inc]; psFeature != NULL; psFeature =
+					psFeature->psNext)
+		{
+			gridAddObject((BASE_OBJECT *)psFeature);
+		}
+	}
 }
 
 
 // shutdown the grid system
 void gridShutDown(void)
 {
-    gridClear();
+	gridClear();
 }
 
 
@@ -140,103 +140,103 @@ void gridShutDown(void)
 // add or remove the object
 static void gridCalcCoverage(BASE_OBJECT *psObj, int32_t objx, int32_t objy, COVERAGE_MODE mode)
 {
-    int32_t	range, x,y, minx,maxx, miny,maxy;
+	int32_t	range, x, y, minx, maxx, miny, maxy;
 
-    range = gridObjRange(psObj);
+	range = gridObjRange(psObj);
 
-    // calculate the range of grids that could be covered by the object
-    objx = (objx & ~TILE_MASK) + TILE_UNITS/2;
-    objy = (objy & ~TILE_MASK) + TILE_UNITS/2;
-    minx = objx - range;
-    maxx = objx + range;
-    miny = objy - range;
-    maxy = objy + range;
+	// calculate the range of grids that could be covered by the object
+	objx = (objx & ~TILE_MASK) + TILE_UNITS / 2;
+	objy = (objy & ~TILE_MASK) + TILE_UNITS / 2;
+	minx = objx - range;
+	maxx = objx + range;
+	miny = objy - range;
+	maxy = objy + range;
 
-    minx = map_coord(minx) / GRID_SIZE;
-    maxx = map_coord(maxx) / GRID_SIZE;
-    miny = map_coord(miny) / GRID_SIZE;
-    maxy = map_coord(maxy) / GRID_SIZE;
+	minx = map_coord(minx) / GRID_SIZE;
+	maxx = map_coord(maxx) / GRID_SIZE;
+	miny = map_coord(miny) / GRID_SIZE;
+	maxy = map_coord(maxy) / GRID_SIZE;
 
-    // see which ones are covered by the object
-    for (x=minx; x<=maxx; x++)
-    {
-        if ( (x >= 0) && (x < gridWidth) )
-        {
-            for(y=miny; y<=maxy; y++)
-            {
-                if ( (y >= 0) && (y < gridHeight) &&
-                        gridIntersect( x * GRID_UNITS, y * GRID_UNITS,
-                                       (x+1) * GRID_UNITS, (y+1) * GRID_UNITS,
-                                       objx, objy, range ) )
-                {
-                    switch (mode)
-                    {
-                        case GRID_ADDOBJECT:
-                            gridAddArrayObject(x,y, psObj);
-                            break;
-                        case GRID_REMOVEOBJECT:
-                            gridRemoveArrayObject(x,y, psObj);
-                            break;
-                    }
-                }
-            }
-        }
-    }
+	// see which ones are covered by the object
+	for (x = minx; x <= maxx; x++)
+	{
+		if ( (x >= 0) && (x < gridWidth) )
+		{
+			for(y = miny; y <= maxy; y++)
+			{
+				if ( (y >= 0) && (y < gridHeight) &&
+						gridIntersect( x * GRID_UNITS, y * GRID_UNITS,
+									   (x + 1) * GRID_UNITS, (y + 1) * GRID_UNITS,
+									   objx, objy, range ) )
+				{
+					switch (mode)
+					{
+						case GRID_ADDOBJECT:
+							gridAddArrayObject(x, y, psObj);
+							break;
+						case GRID_REMOVEOBJECT:
+							gridRemoveArrayObject(x, y, psObj);
+							break;
+					}
+				}
+			}
+		}
+	}
 }
 
 
 // add an object to the grid system
 void gridAddObject(BASE_OBJECT *psObj)
 {
-    ASSERT_OR_RETURN(, psObj != NULL, "Attempted to add a NULL pointer");
-    ASSERT_OR_RETURN(, !isDead(psObj), "Attempted to add dead object %s(%d) to the map grid!", objInfo(psObj), (int)psObj->id);
-    gridCalcCoverage(psObj, (int32_t)psObj->pos.x, (int32_t)psObj->pos.y, GRID_ADDOBJECT);
+	ASSERT_OR_RETURN(, psObj != NULL, "Attempted to add a NULL pointer");
+	ASSERT_OR_RETURN(, !isDead(psObj), "Attempted to add dead object %s(%d) to the map grid!", objInfo(psObj), (int)psObj->id);
+	gridCalcCoverage(psObj, (int32_t)psObj->pos.x, (int32_t)psObj->pos.y, GRID_ADDOBJECT);
 }
 
 // move an object within the grid
 // oldX,oldY are the old position of the object in world coords
 void gridMoveDroid(DROID *psDroid, int32_t oldX, int32_t oldY)
 {
-    if (map_coord(psDroid->pos.x) == map_coord(oldX)
-            && map_coord(psDroid->pos.y) == map_coord(oldY))
-    {
-        // havn't changed the tile the object is on, don't bother updating
-        return;
-    }
+	if (map_coord(psDroid->pos.x) == map_coord(oldX)
+			&& map_coord(psDroid->pos.y) == map_coord(oldY))
+	{
+		// havn't changed the tile the object is on, don't bother updating
+		return;
+	}
 
-    gridCalcCoverage((BASE_OBJECT *)psDroid, oldX,oldY, GRID_REMOVEOBJECT);
-    gridCalcCoverage((BASE_OBJECT *)psDroid, psDroid->pos.x, psDroid->pos.y, GRID_ADDOBJECT);
+	gridCalcCoverage((BASE_OBJECT *)psDroid, oldX, oldY, GRID_REMOVEOBJECT);
+	gridCalcCoverage((BASE_OBJECT *)psDroid, psDroid->pos.x, psDroid->pos.y, GRID_ADDOBJECT);
 }
 
 
 // remove an object from the grid system
 void gridRemoveObject(BASE_OBJECT *psObj)
 {
-    gridCalcCoverage(psObj, (int32_t)psObj->pos.x, (int32_t)psObj->pos.y, GRID_REMOVEOBJECT);
+	gridCalcCoverage(psObj, (int32_t)psObj->pos.x, (int32_t)psObj->pos.y, GRID_REMOVEOBJECT);
 
 #if defined(DEBUG)
-    {
-        GRID_ARRAY		*psCurr;
-        unsigned int		i,x,y;
+	{
+		GRID_ARRAY		*psCurr;
+		unsigned int		i, x, y;
 
-        for (x = 0; x < gridWidth; x++)
-        {
-            for(y = 0; y < gridHeight; y++)
-            {
-                for (psCurr = apsMapGrid[GridIndex(x,y)]; psCurr; psCurr = psCurr->psNext)
-                {
-                    for (i = 0; i < MAX_GRID_ARRAY_CHUNK; i++)
-                    {
-                        if (psCurr->apsObjects[i] == psObj)
-                        {
-                            ASSERT(false, "Grid out of sync at (%u,%u):%u removing %s(%d)", x, y, i, objInfo(psObj), (int)psObj->id);
-                            psCurr->apsObjects[i] = NULL;
-                        }
-                    }
-                }
-            }
-        }
-    }
+		for (x = 0; x < gridWidth; x++)
+		{
+			for(y = 0; y < gridHeight; y++)
+			{
+				for (psCurr = apsMapGrid[GridIndex(x, y)]; psCurr; psCurr = psCurr->psNext)
+				{
+					for (i = 0; i < MAX_GRID_ARRAY_CHUNK; i++)
+					{
+						if (psCurr->apsObjects[i] == psObj)
+						{
+							ASSERT(false, "Grid out of sync at (%u,%u):%u removing %s(%d)", x, y, i, objInfo(psObj), (int)psObj->id);
+							psCurr->apsObjects[i] = NULL;
+						}
+					}
+				}
+			}
+		}
+	}
 #endif
 }
 
@@ -245,118 +245,118 @@ void gridRemoveObject(BASE_OBJECT *psObj)
 // could affect a location (x,y in world coords)
 void gridStartIterate(int32_t x, int32_t y)
 {
-    const int nx = x / GRID_UNITS;
-    const int ny = y / GRID_UNITS;
+	const int nx = x / GRID_UNITS;
+	const int ny = y / GRID_UNITS;
 
-    ASSERT_OR_RETURN(, nx >= 0 && nx < gridWidth && ny >= 0 && ny < gridHeight, "Coordinates(%d, %d) off grid(%u, %u)", nx, ny, gridWidth, gridHeight);
+	ASSERT_OR_RETURN(, nx >= 0 && nx < gridWidth && ny >= 0 && ny < gridHeight, "Coordinates(%d, %d) off grid(%u, %u)", nx, ny, gridWidth, gridHeight);
 
-    psIterateGrid = apsMapGrid[GridIndex(nx, ny)];
-    iterateEntry = 0;
+	psIterateGrid = apsMapGrid[GridIndex(nx, ny)];
+	iterateEntry = 0;
 }
 
 // get the next object that could affect a location,
 // should only be called after gridStartIterate
 BASE_OBJECT *gridIterate(void)
 {
-    BASE_OBJECT		*psRet;
+	BASE_OBJECT		*psRet;
 
-    while (psIterateGrid != NULL)
-    {
-        if (psIterateGrid->apsObjects[iterateEntry] != NULL)
-        {
-            break;
-        }
+	while (psIterateGrid != NULL)
+	{
+		if (psIterateGrid->apsObjects[iterateEntry] != NULL)
+		{
+			break;
+		}
 
-        iterateEntry += 1;
-        if (iterateEntry >= MAX_GRID_ARRAY_CHUNK)
-        {
-            psIterateGrid = psIterateGrid->psNext;
-            iterateEntry = 0;
-        }
-    }
+		iterateEntry += 1;
+		if (iterateEntry >= MAX_GRID_ARRAY_CHUNK)
+		{
+			psIterateGrid = psIterateGrid->psNext;
+			iterateEntry = 0;
+		}
+	}
 
-    if (psIterateGrid)
-    {
-        psRet = psIterateGrid->apsObjects[iterateEntry];
-        iterateEntry += 1;
-        if (iterateEntry >= MAX_GRID_ARRAY_CHUNK)
-        {
-            psIterateGrid = psIterateGrid->psNext;
-            iterateEntry = 0;
-        }
-    }
-    else
-    {
-        psRet = NULL;
-    }
+	if (psIterateGrid)
+	{
+		psRet = psIterateGrid->apsObjects[iterateEntry];
+		iterateEntry += 1;
+		if (iterateEntry >= MAX_GRID_ARRAY_CHUNK)
+		{
+			psIterateGrid = psIterateGrid->psNext;
+			iterateEntry = 0;
+		}
+	}
+	else
+	{
+		psRet = NULL;
+	}
 
-    return psRet;
+	return psRet;
 }
 
 
 // compact some of the grid arrays
 void gridGarbageCollect(void)
 {
-    gridCompactArray(garbageX,garbageY);
+	gridCompactArray(garbageX, garbageY);
 
-    ++garbageX;
-    if (garbageX >= gridWidth)
-    {
-        garbageX = 0;
-        ++garbageY;
+	++garbageX;
+	if (garbageX >= gridWidth)
+	{
+		garbageX = 0;
+		++garbageY;
 
-        if (garbageY >= gridHeight)
-        {
-            garbageX = 0;
-            garbageY = 0;
-        }
-    }
+		if (garbageY >= gridHeight)
+		{
+			garbageX = 0;
+			garbageY = 0;
+		}
+	}
 
 //#ifdef DEBUG
 #if 0
-    // integrity check the array
-    {
-        GRID_ARRAY	*psCurr, *psCheck;
-        int32_t		curr, check;
-        BASE_OBJECT	*psObj;
+	// integrity check the array
+	{
+		GRID_ARRAY	*psCurr, *psCheck;
+		int32_t		curr, check;
+		BASE_OBJECT	*psObj;
 
-        check = 0;
-        psCheck = apsMapGrid[GridIndex(garbageX,garbageY)];
-        while (psCheck != NULL)
-        {
-            psObj = psCheck->apsObjects[check];
-            if (psObj != NULL)
-            {
-                // see if there is a duplicate element in the array
-                curr = 0;
-                psCurr = apsMapGrid[GridIndex(garbageX,garbageY)];
-                while ( psCurr != NULL )
-                {
-                    if ( !((psCurr == psCheck) && (curr == check)) &&
-                            (psCurr->apsObjects[curr] == psObj) )
-                    {
-                        ASSERT( false, "mapGrid integrity check failed" );
+		check = 0;
+		psCheck = apsMapGrid[GridIndex(garbageX, garbageY)];
+		while (psCheck != NULL)
+		{
+			psObj = psCheck->apsObjects[check];
+			if (psObj != NULL)
+			{
+				// see if there is a duplicate element in the array
+				curr = 0;
+				psCurr = apsMapGrid[GridIndex(garbageX, garbageY)];
+				while ( psCurr != NULL )
+				{
+					if ( !((psCurr == psCheck) && (curr == check)) &&
+							(psCurr->apsObjects[curr] == psObj) )
+					{
+						ASSERT( false, "mapGrid integrity check failed" );
 
-                        psCurr->apsObjects[curr] = NULL;
-                    }
+						psCurr->apsObjects[curr] = NULL;
+					}
 
-                    curr += 1;
-                    if (curr >= MAX_GRID_ARRAY_CHUNK)
-                    {
-                        psCurr=psCurr->psNext;
-                        curr = 0;
-                    }
-                }
-            }
+					curr += 1;
+					if (curr >= MAX_GRID_ARRAY_CHUNK)
+					{
+						psCurr = psCurr->psNext;
+						curr = 0;
+					}
+				}
+			}
 
-            check += 1;
-            if (check >= MAX_GRID_ARRAY_CHUNK)
-            {
-                psCheck = psCheck->psNext;
-                check = 0;
-            }
-        }
-    }
+			check += 1;
+			if (check >= MAX_GRID_ARRAY_CHUNK)
+			{
+				psCheck = psCheck->psNext;
+				check = 0;
+			}
+		}
+	}
 #endif
 }
 
@@ -364,127 +364,127 @@ void gridGarbageCollect(void)
 // add an object to a grid array
 static void gridAddArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj)
 {
-    GRID_ARRAY		*psPrev, *psCurr, *psNew;
-    int32_t			i;
+	GRID_ARRAY		*psPrev, *psCurr, *psNew;
+	int32_t			i;
 
-    // see if there is an empty slot in the currently allocated array
-    psPrev = NULL;
-    for (psCurr = apsMapGrid[GridIndex(x,y)]; psCurr; psCurr=psCurr->psNext)
-    {
-        for(i=0; i<MAX_GRID_ARRAY_CHUNK; i++)
-        {
-            if (psCurr->apsObjects[i] == NULL)
-            {
-                // found an empty slot
-                psCurr->apsObjects[i] = psObj;
-                return;
-            }
-        }
-        psPrev = psCurr;
-    }
+	// see if there is an empty slot in the currently allocated array
+	psPrev = NULL;
+	for (psCurr = apsMapGrid[GridIndex(x, y)]; psCurr; psCurr = psCurr->psNext)
+	{
+		for(i = 0; i < MAX_GRID_ARRAY_CHUNK; i++)
+		{
+			if (psCurr->apsObjects[i] == NULL)
+			{
+				// found an empty slot
+				psCurr->apsObjects[i] = psObj;
+				return;
+			}
+		}
+		psPrev = psCurr;
+	}
 
-    // allocate a new array chunk
-    psNew = malloc(sizeof(GRID_ARRAY));
-    if (psNew == NULL)
-    {
-        debug(LOG_ERROR, "gridAddArrayObject: Out of memory");
-        return;
-    }
+	// allocate a new array chunk
+	psNew = malloc(sizeof(GRID_ARRAY));
+	if (psNew == NULL)
+	{
+		debug(LOG_ERROR, "gridAddArrayObject: Out of memory");
+		return;
+	}
 
-    // store the object
-    memset(psNew, 0, sizeof(GRID_ARRAY));
-    psNew->apsObjects[0] = psObj;
+	// store the object
+	memset(psNew, 0, sizeof(GRID_ARRAY));
+	psNew->apsObjects[0] = psObj;
 
-    // add the chunk to the end of the list
-    if (psPrev == NULL)
-    {
-        apsMapGrid[GridIndex(x,y)] = psNew;
-    }
-    else
-    {
-        psPrev->psNext = psNew;
-    }
+	// add the chunk to the end of the list
+	if (psPrev == NULL)
+	{
+		apsMapGrid[GridIndex(x, y)] = psNew;
+	}
+	else
+	{
+		psPrev->psNext = psNew;
+	}
 }
 
 
 // remove an object from a grid array
 static void gridRemoveArrayObject(int32_t x, int32_t y, BASE_OBJECT *psObj)
 {
-    GRID_ARRAY		*psCurr;
-    int32_t			i;
+	GRID_ARRAY		*psCurr;
+	int32_t			i;
 
-    for (psCurr = apsMapGrid[GridIndex(x,y)]; psCurr; psCurr = psCurr->psNext)
-    {
-        for (i=0; i<MAX_GRID_ARRAY_CHUNK; i++)
-        {
-            if (psCurr->apsObjects[i] == psObj)
-            {
-                psCurr->apsObjects[i] = NULL;
-                return;
-            }
-        }
-    }
+	for (psCurr = apsMapGrid[GridIndex(x, y)]; psCurr; psCurr = psCurr->psNext)
+	{
+		for (i = 0; i < MAX_GRID_ARRAY_CHUNK; i++)
+		{
+			if (psCurr->apsObjects[i] == psObj)
+			{
+				psCurr->apsObjects[i] = NULL;
+				return;
+			}
+		}
+	}
 }
 
 
 // Compact a grid array to remove any NULL objects
 static void gridCompactArray(int32_t x, int32_t y)
 {
-    GRID_ARRAY		*psDone, *psMove, *psPrev, *psNext;
-    int32_t			done, move;
+	GRID_ARRAY		*psDone, *psMove, *psPrev, *psNext;
+	int32_t			done, move;
 
-    psDone = psMove = apsMapGrid[GridIndex(x,y)];
-    done = move = 0;
+	psDone = psMove = apsMapGrid[GridIndex(x, y)];
+	done = move = 0;
 
-    // move every entry down in the array
-    psPrev = NULL;
-    while (psMove != NULL)
-    {
-        if (psMove->apsObjects[move] != NULL)
-        {
-            psDone->apsObjects[done] = psMove->apsObjects[move];
+	// move every entry down in the array
+	psPrev = NULL;
+	while (psMove != NULL)
+	{
+		if (psMove->apsObjects[move] != NULL)
+		{
+			psDone->apsObjects[done] = psMove->apsObjects[move];
 
-            done += 1;
-            if (done >= MAX_GRID_ARRAY_CHUNK)
-            {
-                psPrev = psDone;
-                psDone = psDone->psNext;
-                done = 0;
-            }
-        }
+			done += 1;
+			if (done >= MAX_GRID_ARRAY_CHUNK)
+			{
+				psPrev = psDone;
+				psDone = psDone->psNext;
+				done = 0;
+			}
+		}
 
-        move += 1;
-        if (move >= MAX_GRID_ARRAY_CHUNK)
-        {
-            psMove = psMove->psNext;
-            move = 0;
-        }
-    }
+		move += 1;
+		if (move >= MAX_GRID_ARRAY_CHUNK)
+		{
+			psMove = psMove->psNext;
+			move = 0;
+		}
+	}
 
-    // if the compacted array finishes half way through, NULL the rest of it
-    if ( (psDone != NULL) && (done != 0) )
-    {
-        memset(&psDone->apsObjects[done], 0, sizeof(BASE_OBJECT *) * (MAX_GRID_ARRAY_CHUNK - done) );
+	// if the compacted array finishes half way through, NULL the rest of it
+	if ( (psDone != NULL) && (done != 0) )
+	{
+		memset(&psDone->apsObjects[done], 0, sizeof(BASE_OBJECT *) * (MAX_GRID_ARRAY_CHUNK - done) );
 
-        psPrev = psDone;
-        psDone = psDone->psNext;
-    }
+		psPrev = psDone;
+		psDone = psDone->psNext;
+	}
 
-    // now release any unused chunks
-    if (psPrev == NULL)
-    {
-        apsMapGrid[GridIndex(x,y)] = NULL;
-    }
-    else
-    {
-        psPrev->psNext = NULL;
-    }
-    while (psDone)
-    {
-        psNext = psDone->psNext;
-        free(psDone);
-        psDone = psNext;
-    }
+	// now release any unused chunks
+	if (psPrev == NULL)
+	{
+		apsMapGrid[GridIndex(x, y)] = NULL;
+	}
+	else
+	{
+		psPrev->psNext = NULL;
+	}
+	while (psDone)
+	{
+		psNext = psDone->psNext;
+		free(psDone);
+		psDone = psNext;
+	}
 }
 
 
@@ -492,34 +492,34 @@ static void gridCompactArray(int32_t x, int32_t y)
 void gridDisplayCoverage(BASE_OBJECT *psObj)
 {
 #ifdef DEBUG
-    {
-        unsigned int	x, y, i;
-        GRID_ARRAY	*psCurr;
+	{
+		unsigned int	x, y, i;
+		GRID_ARRAY	*psCurr;
 
-        debug(LOG_ERROR, "Grid coverage for object %d (%d,%d) - range %d", psObj->id, psObj->pos.x, psObj->pos.y, gridObjRange(psObj) );
-        for (x = 0; x < gridWidth; x++)
-        {
-            for(y = 0; y < gridHeight; y++)
-            {
-                psCurr = apsMapGrid[GridIndex(x, y)];
-                i = 0;
-                while (psCurr != NULL)
-                {
-                    if (psCurr->apsObjects[i] == psObj)
-                    {
-                        debug(LOG_ERROR, "    %d,%d  [ %d,%d -> %d,%d ]", x, y, x*GRID_UNITS, y*GRID_UNITS, (x+1)*GRID_UNITS, (y+1)*GRID_UNITS );
-                    }
+		debug(LOG_ERROR, "Grid coverage for object %d (%d,%d) - range %d", psObj->id, psObj->pos.x, psObj->pos.y, gridObjRange(psObj) );
+		for (x = 0; x < gridWidth; x++)
+		{
+			for(y = 0; y < gridHeight; y++)
+			{
+				psCurr = apsMapGrid[GridIndex(x, y)];
+				i = 0;
+				while (psCurr != NULL)
+				{
+					if (psCurr->apsObjects[i] == psObj)
+					{
+						debug(LOG_ERROR, "    %d,%d  [ %d,%d -> %d,%d ]", x, y, x * GRID_UNITS, y * GRID_UNITS, (x + 1)*GRID_UNITS, (y + 1)*GRID_UNITS );
+					}
 
-                    ++i;
-                    if (i >= MAX_GRID_ARRAY_CHUNK)
-                    {
-                        psCurr = psCurr->psNext;
-                        i = 0;
-                    }
-                }
-            }
-        }
-    }
+					++i;
+					if (i >= MAX_GRID_ARRAY_CHUNK)
+					{
+						psCurr = psCurr->psNext;
+						i = 0;
+					}
+				}
+			}
+		}
+	}
 #endif
 }
 
@@ -529,100 +529,100 @@ void gridDisplayCoverage(BASE_OBJECT *psObj)
 /* Return true iff rectangle R intersects circle with centerpoint C and
    radius Rad. */
 static BOOL gridIntersect(const int x1, const int y1, const int x2, const int y2,
-                          const int cx, const int cy, const int Rad)
+						  const int cx, const int cy, const int Rad)
 {
-    // Translate coordinates, placing C at the origin
-    const struct
-    {
-        int x1, y1,
-            x2, y2;
-    } rect = { x1 - cx, y1 - cy,
-               x2 - cx, y2 - cy
-             };
+	// Translate coordinates, placing C at the origin
+	const struct
+	{
+		int x1, y1,
+			x2, y2;
+	} rect = { x1 - cx, y1 - cy,
+			   x2 - cx, y2 - cy
+			 };
 
-    const int Rad2 = Rad * Rad;
+	const int Rad2 = Rad * Rad;
 
-    if (rect.x2 < 0) 			/* R to left of circle center */
-    {
-        if (rect.y2 < 0) 		/* R in lower left corner */
-        {
-            return ((rect.x2 * rect.x2 + rect.y2 * rect.y2) < Rad2);
-        }
-        else if (rect.y1 > 0) 	/* R in upper left corner */
-        {
-            return ((rect.x2 * rect.x2 + rect.y1 * rect.y1) < Rad2);
-        }
-        else 					/* R due West of circle */
-        {
-            return(abs(rect.x2) < Rad);
-        }
-    }
-    else if (rect.x1 > 0)  	/* R to right of circle center */
-    {
-        if (rect.y2 < 0) 	/* R in lower right corner */
-        {
-            return ((rect.x1 * rect.x1 + rect.y2 * rect.y2) < Rad2);
-        }
-        else if (rect.y1 > 0)  	/* R in upper right corner */
-        {
-            return ((rect.x1 * rect.x1 + rect.y1 * rect.y1) < Rad2);
-        }
-        else 				/* R due East of circle */
-        {
-            return (rect.x1 < Rad);
-        }
-    }
-    else				/* R on circle vertical centerline */
-    {
-        if (rect.y2 < 0) 	/* R due South of circle */
-        {
-            return (abs(rect.y2) < Rad);
-        }
-        else if (rect.y1 > 0)  	/* R due North of circle */
-        {
-            return (rect.y1 < Rad);
-        }
-        else 				/* R contains circle centerpoint */
-        {
-            return(true);
-        }
-    }
+	if (rect.x2 < 0) 			/* R to left of circle center */
+	{
+		if (rect.y2 < 0) 		/* R in lower left corner */
+		{
+			return ((rect.x2 * rect.x2 + rect.y2 * rect.y2) < Rad2);
+		}
+		else if (rect.y1 > 0) 	/* R in upper left corner */
+		{
+			return ((rect.x2 * rect.x2 + rect.y1 * rect.y1) < Rad2);
+		}
+		else 					/* R due West of circle */
+		{
+			return(abs(rect.x2) < Rad);
+		}
+	}
+	else if (rect.x1 > 0)  	/* R to right of circle center */
+	{
+		if (rect.y2 < 0) 	/* R in lower right corner */
+		{
+			return ((rect.x1 * rect.x1 + rect.y2 * rect.y2) < Rad2);
+		}
+		else if (rect.y1 > 0)  	/* R in upper right corner */
+		{
+			return ((rect.x1 * rect.x1 + rect.y1 * rect.y1) < Rad2);
+		}
+		else 				/* R due East of circle */
+		{
+			return (rect.x1 < Rad);
+		}
+	}
+	else				/* R on circle vertical centerline */
+	{
+		if (rect.y2 < 0) 	/* R due South of circle */
+		{
+			return (abs(rect.y2) < Rad);
+		}
+		else if (rect.y1 > 0)  	/* R due North of circle */
+		{
+			return (rect.y1 < Rad);
+		}
+		else 				/* R contains circle centerpoint */
+		{
+			return(true);
+		}
+	}
 }
 
 // Get the range of effect of an object
 static int gridObjRange(WZ_DECL_UNUSED const BASE_OBJECT *psObj)
 {
 #if 0
-    int32_t	range;
+	int32_t	range;
 
-    switch (psObj->type)
-    {
-        case OBJ_DROID:
-            range = ((const DROID *)psObj)->sensorRange;
-            break;
-        case OBJ_STRUCTURE:
-            range = ((const STRUCTURE *)psObj)->sensorRange;
-            if (structCBSensor((STRUCTURE *)psObj)
-                    || structVTOLCBSensor((const STRUCTURE *)psObj))
-            {
-                range = MAX(world_coord(MAP_MAXWIDTH), world_coord(MAP_MAXHEIGHT));
-            }
-            break;
-        case OBJ_FEATURE:
-            range = 0;
-            break;
-        default:
-            range = 0;
-            break;
-    }
+	switch (psObj->type)
+	{
+		case OBJ_DROID:
+			range = ((const DROID *)psObj)->sensorRange;
+			break;
+		case OBJ_STRUCTURE:
+			range = ((const STRUCTURE *)psObj)->sensorRange;
+			if (structCBSensor((STRUCTURE *)psObj)
+					|| structVTOLCBSensor((const STRUCTURE *)psObj))
+			{
+				range = MAX(world_coord(MAP_MAXWIDTH), world_coord(MAP_MAXHEIGHT));
+			}
+			break;
+		case OBJ_FEATURE:
+			range = 0;
+			break;
+		default:
+			range = 0;
+			break;
+	}
 
-    if (range < NAYBOR_RANGE)
-    {
-        range = NAYBOR_RANGE;
-    }
+	if (range < NAYBOR_RANGE)
+	{
+		range = NAYBOR_RANGE;
+	}
 
-    return range;
+	return range;
 #endif
 
-    return world_coord(20);
+	return world_coord(20);
 }

@@ -30,35 +30,35 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 //used for loading in the research stats into the appropriate list
 enum
 {
-    REQ_LIST,
-    RED_LIST,
-    RES_LIST
+	REQ_LIST,
+	RED_LIST,
+	RES_LIST
 };
 
 
 enum
 {
-    RID_ROCKET,
-    RID_CANNON,
-    RID_HOVERCRAFT,
-    RID_ECM,
-    RID_PLASCRETE,
-    RID_TRACKS,
-    RID_DROIDTECH,
-    RID_WEAPONTECH,
-    RID_COMPUTERTECH,
-    RID_POWERTECH,
-    RID_SYSTEMTECH,
-    RID_STRUCTURETECH,
-    RID_CYBORGTECH,
-    RID_DEFENCE,
-    RID_QUESTIONMARK,
-    RID_GRPACC,
-    RID_GRPUPG,
-    RID_GRPREP,
-    RID_GRPROF,
-    RID_GRPDAM,
-    RID_MAXRID
+	RID_ROCKET,
+	RID_CANNON,
+	RID_HOVERCRAFT,
+	RID_ECM,
+	RID_PLASCRETE,
+	RID_TRACKS,
+	RID_DROIDTECH,
+	RID_WEAPONTECH,
+	RID_COMPUTERTECH,
+	RID_POWERTECH,
+	RID_SYSTEMTECH,
+	RID_STRUCTURETECH,
+	RID_CYBORGTECH,
+	RID_DEFENCE,
+	RID_QUESTIONMARK,
+	RID_GRPACC,
+	RID_GRPUPG,
+	RID_GRPREP,
+	RID_GRPROF,
+	RID_GRPDAM,
+	RID_MAXRID
 };
 
 
@@ -96,7 +96,7 @@ extern BOOL loadResearchStructures(const char *pStructData, uint32_t bufferSize,
 //							   uint16_t limit);
 //needs to be uint16_t sized for Patches
 extern uint16_t fillResearchList(uint16_t *plist, uint32_t playerID, uint16_t topic,
-                              uint16_t limit);
+								 uint16_t limit);
 
 /* process the results of a completed research topic */
 extern void researchResult(uint32_t researchIndex, uint8_t player, BOOL bDisplay, STRUCTURE *psResearchFacility);

@@ -70,34 +70,34 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct
 {
-    uint8_t r, g, b, a;
+	uint8_t r, g, b, a;
 } PIELIGHTint8_tS;
 
 /** Our basic colour type. Use whenever you want to define a colour.
  *  Set bytes separetely, and do not assume a byte order between the components. */
 typedef union
 {
-    PIELIGHTint8_tS byte;
-    uint32_t rgba;
-    uint8_t vector[4];
+	PIELIGHTint8_tS byte;
+	uint32_t rgba;
+	uint8_t vector[4];
 } PIELIGHT;
 
 typedef struct
 {
-    Vector3i pos;
-    float u, v;
-    PIELIGHT light;
-    Vector3i screen; //! Screenspace tile coordinates
+	Vector3i pos;
+	float u, v;
+	PIELIGHT light;
+	Vector3i screen; //! Screenspace tile coordinates
 } TERRAIN_VERTEX;
 
 typedef struct
 {
-    int16_t x, y, w, h;
+	int16_t x, y, w, h;
 } PIERECT;				/**< Screen rectangle. */
 typedef struct
 {
-    int32_t texPage;
-    int16_t tu, tv, tw, th;
+	int32_t texPage;
+	int16_t tu, tv, tw, th;
 } PIEIMAGE;	/**< An area of texture. */
 
 /***************************************************************************/

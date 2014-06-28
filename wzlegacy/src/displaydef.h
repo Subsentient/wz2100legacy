@@ -30,10 +30,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _screen_disp_data
 {
-    iIMDShape	*imd;
-    uint32_t		frameNumber;		// last frame it was drawn
-    uint32_t		screenX,screenY;
-    uint32_t		screenR;
+	iIMDShape	*imd;
+	uint32_t		frameNumber;		// last frame it was drawn
+	uint32_t		screenX, screenY;
+	uint32_t		screenR;
 } SCREEN_DISP_DATA;
 
 #endif // __INCLUDED_DISPLAYDEF_H__

@@ -20,33 +20,33 @@ static uint32_t videoBufferDepth = 32, videoBufferWidth = 0, videoBufferHeight =
 
 BOOL pie_SetVideoBufferDepth(uint32_t depth)
 {
-    videoBufferDepth = depth;
-    return(true);
+	videoBufferDepth = depth;
+	return(true);
 }
 
 BOOL pie_SetVideoBufferWidth(uint32_t width)
 {
-    videoBufferWidth = width;
-    return(true);
+	videoBufferWidth = width;
+	return(true);
 }
 
 BOOL pie_SetVideoBufferHeight(uint32_t height)
 {
-    videoBufferHeight = height;
-    return(true);
+	videoBufferHeight = height;
+	return(true);
 }
 
 uint32_t pie_GetVideoBufferDepth(void)
 {
-    return(videoBufferDepth);
+	return(videoBufferDepth);
 }
 
 uint32_t pie_GetVideoBufferWidth(void)
 {
-    return(videoBufferWidth);
+	return(videoBufferWidth);
 }
 
 uint32_t pie_GetVideoBufferHeight(void)
 {
-    return(videoBufferHeight);
+	return(videoBufferHeight);
 }

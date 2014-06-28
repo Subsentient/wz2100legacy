@@ -29,81 +29,81 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 static const char *packetname[NUM_GAME_PACKETS] =
 {
-    "NET_DROID",
-    "NET_DROIDINFO",
-    "NET_DROIDDEST",
-    "NET_DROIDMOVE",
-    "NET_GROUPORDER",
-    "NET_TEMPLATE",
-    "NET_TEMPLATEDEST",
-    "NET_FEATUREDEST",
-    "NET_PING",
-    "NET_CHECK_DROID",
-    "NET_CHECK_STRUCT",
-    "NET_CHECK_POWER",
-    "NET_PLAYER_STATS",
-    "NET_BUILD",
-    "NET_STRUCTDEST",
-    "NET_BUILDFINISHED",
-    "NET_RESEARCH",
-    "NET_TEXTMSG",
-    "NET_UNUSED_18",
-    "NET_UNUSED_19",
-    "NET_PLAYERCOMPLETE",
-    "NET_UNUSED_21",
-    "NET_STRUCT",
-    "NET_UNUSED_23",
-    "NET_FEATURES",
-    "NET_PLAYERRESPONDING",
-    "NET_OPTIONS",
-    "NET_KICK",
-    "NET_SECONDARY",
-    "NET_FIREUP",
-    "NET_ALLIANCE",
-    "NET_GIFT",
-    "NET_DEMOLISH",
-    "NET_COLOURREQUEST",
-    "NET_ARTIFACTS",
-    "NET_DMATCHWIN",
-    "NET_SCORESUBMIT",
-    "NET_DESTROYXTRA",
-    "NET_VTOL",
-    "NET_UNUSED_39",
-    "NET_WHITEBOARD",
-    "NET_SECONDARY_ALL",
-    "NET_DROIDEMBARK",
-    "NET_DROIDDISEMBARK",
-    "NET_RESEARCHSTATUS",
-    "NET_LASSAT",
-    "NET_UNUSED_46",
-    "NET_AITEXTMSG",
-    "NET_TEAMS_ON",
-    "NET_BEACONMSG",
-    "NET_SET_TEAMS",
-    "NET_TEAMREQUEST",
-    "NET_JOIN",
-    "NET_ACCEPTED",
-    "NET_PLAYER_INFO",
-    "NET_PLAYER_JOINED",
-    "NET_PLAYER_LEAVING",
-    "NET_PLAYER_DROPPED",
-    "NET_GAME_FLAGS",
-    "NET_READY_REQUEST",
-    "NET_NEVERUSE",
-    "NET_REJECTED",
-    "NET_UNUSED_62",
-    "NET_UNUSED_63",
-    "NET_UNUSED_64",
-    "NET_POSITIONREQUEST",
-    "NET_DATA_CHECK",
-    "NET_HOST_DROPPED",
-    "NET_FUTURE1",
-    "NET_FUTURE2",
-    "NET_SPECTATE",
-    "NET_FILE_REQUESTED",
-    "NET_FILE_CANCELLED",
-    "NET_FILE_PAYLOAD",
-    "NET_ARTIFACTS_REQUEST"
+	"NET_DROID",
+	"NET_DROIDINFO",
+	"NET_DROIDDEST",
+	"NET_DROIDMOVE",
+	"NET_GROUPORDER",
+	"NET_TEMPLATE",
+	"NET_TEMPLATEDEST",
+	"NET_FEATUREDEST",
+	"NET_PING",
+	"NET_CHECK_DROID",
+	"NET_CHECK_STRUCT",
+	"NET_CHECK_POWER",
+	"NET_PLAYER_STATS",
+	"NET_BUILD",
+	"NET_STRUCTDEST",
+	"NET_BUILDFINISHED",
+	"NET_RESEARCH",
+	"NET_TEXTMSG",
+	"NET_UNUSED_18",
+	"NET_UNUSED_19",
+	"NET_PLAYERCOMPLETE",
+	"NET_UNUSED_21",
+	"NET_STRUCT",
+	"NET_UNUSED_23",
+	"NET_FEATURES",
+	"NET_PLAYERRESPONDING",
+	"NET_OPTIONS",
+	"NET_KICK",
+	"NET_SECONDARY",
+	"NET_FIREUP",
+	"NET_ALLIANCE",
+	"NET_GIFT",
+	"NET_DEMOLISH",
+	"NET_COLOURREQUEST",
+	"NET_ARTIFACTS",
+	"NET_DMATCHWIN",
+	"NET_SCORESUBMIT",
+	"NET_DESTROYXTRA",
+	"NET_VTOL",
+	"NET_UNUSED_39",
+	"NET_WHITEBOARD",
+	"NET_SECONDARY_ALL",
+	"NET_DROIDEMBARK",
+	"NET_DROIDDISEMBARK",
+	"NET_RESEARCHSTATUS",
+	"NET_LASSAT",
+	"NET_UNUSED_46",
+	"NET_AITEXTMSG",
+	"NET_TEAMS_ON",
+	"NET_BEACONMSG",
+	"NET_SET_TEAMS",
+	"NET_TEAMREQUEST",
+	"NET_JOIN",
+	"NET_ACCEPTED",
+	"NET_PLAYER_INFO",
+	"NET_PLAYER_JOINED",
+	"NET_PLAYER_LEAVING",
+	"NET_PLAYER_DROPPED",
+	"NET_GAME_FLAGS",
+	"NET_READY_REQUEST",
+	"NET_NEVERUSE",
+	"NET_REJECTED",
+	"NET_UNUSED_62",
+	"NET_UNUSED_63",
+	"NET_UNUSED_64",
+	"NET_POSITIONREQUEST",
+	"NET_DATA_CHECK",
+	"NET_HOST_DROPPED",
+	"NET_FUTURE1",
+	"NET_FUTURE2",
+	"NET_SPECTATE",
+	"NET_FILE_REQUESTED",
+	"NET_FILE_CANCELLED",
+	"NET_FILE_PAYLOAD",
+	"NET_ARTIFACTS_REQUEST"
 };
 
 static PHYSFS_file	*pFileHandle = NULL;
@@ -112,109 +112,109 @@ static uint32_t		packetsize[2][NUM_GAME_PACKETS];
 
 BOOL NETstartLogging(void)
 {
-    time_t aclock;
-    struct tm *newtime;
-    char buf[256];
-    static char filename[256] = {'\0'};
-    int i;
+	time_t aclock;
+	struct tm *newtime;
+	char buf[256];
+	static char filename[256] = {'\0'};
+	int i;
 
-    for (i = 0; i < NUM_GAME_PACKETS; i++)
-    {
-        packetcount[0][i] = 0;
-        packetsize[0][i] = 0;
-        packetcount[1][i] = 0;
-        packetsize[1][i] = 0;
-    }
+	for (i = 0; i < NUM_GAME_PACKETS; i++)
+	{
+		packetcount[0][i] = 0;
+		packetsize[0][i] = 0;
+		packetcount[1][i] = 0;
+		packetsize[1][i] = 0;
+	}
 
-    time( &aclock );                 /* Get time in seconds */
-    newtime = localtime( &aclock );  /* Convert time to struct */
+	time( &aclock );                 /* Get time in seconds */
+	newtime = localtime( &aclock );  /* Convert time to struct */
 
-    snprintf(filename, sizeof(filename), "logs/netlog-%04d-%02d-%02d_%02d-%02d-%02d.txt",
-             newtime->tm_year + 1900, newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec);
+	snprintf(filename, sizeof(filename), "logs/netlog-%04d-%02d-%02d_%02d-%02d-%02d.txt",
+			 newtime->tm_year + 1900, newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec);
 
-    pFileHandle = PHYSFS_openWrite( filename ); // open the file
-    if (!pFileHandle)
-    {
-        debug(LOG_ERROR, "Could not create net log %s: %s", filename,
-              PHYSFS_getLastError());
-        return false;
-    }
-    snprintf(buf, sizeof(buf), "NETPLAY log: %s\n", asctime(newtime));
-    PHYSFS_write( pFileHandle, buf, strlen( buf ), 1 );
-    return true;
+	pFileHandle = PHYSFS_openWrite( filename ); // open the file
+	if (!pFileHandle)
+	{
+		debug(LOG_ERROR, "Could not create net log %s: %s", filename,
+			  PHYSFS_getLastError());
+		return false;
+	}
+	snprintf(buf, sizeof(buf), "NETPLAY log: %s\n", asctime(newtime));
+	PHYSFS_write( pFileHandle, buf, strlen( buf ), 1 );
+	return true;
 }
 
 BOOL NETstopLogging(void)
 {
-    static const char dash_line[] = "-----------------------------------------------------------\n";
-    char buf[256];
-    int i;
-    uint32_t totalBytessent = 0, totalBytesrecv = 0, totalPacketsent = 0, totalPacketrecv = 0;
+	static const char dash_line[] = "-----------------------------------------------------------\n";
+	char buf[256];
+	int i;
+	uint32_t totalBytessent = 0, totalBytesrecv = 0, totalPacketsent = 0, totalPacketrecv = 0;
 
-    if (!pFileHandle)
-    {
-        return false;
-    }
+	if (!pFileHandle)
+	{
+		return false;
+	}
 
-    /* Output stats */
-    for (i = 0; i < NUM_GAME_PACKETS; i++)
-    {
-        snprintf(buf, sizeof(buf), "%-24s:\t received %u times, %u bytes; sent %u times, %u bytes\n", packetname[i],
-                 packetcount[1][i], packetsize[1][i], packetcount[0][i], packetsize[0][i]);
-        PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-        totalBytessent += packetsize[0][i];
-        totalBytesrecv += packetsize[1][i];
-        totalPacketsent += packetcount[0][i];
-        totalPacketrecv += packetcount[1][i];
-    }
-    snprintf(buf, sizeof(buf), "== Total bytes sent %u, Total bytes received %u ==\n", totalBytessent, totalBytesrecv);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "== Total packets sent %u, recv %u ==\n", totalPacketsent, totalPacketrecv);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "\n-Sync statistics -\n");
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
-    snprintf(buf, sizeof(buf), "joins: %hhu, kicks: %hhu, drops: %hhu, left %hhu\n", sync_counter.joins, sync_counter.kicks, sync_counter.drops, sync_counter.left );
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "banned: %hhu, cantjoin: %hhu, rejected: %hhu\n", sync_counter.banned, sync_counter.cantjoin, sync_counter.rejected );
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    if (sync_counter.banned && IPlist)
-    {
-        snprintf(buf, sizeof(buf), "Banned list:\n");
-        PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-        for (i = 0; i < MAX_BANS; i++)
-        {
-            if (IPlist[i].IPAddress[0] != '\0')
-            {
-                snprintf(buf, sizeof(buf), "player %s, IP: %s\n", IPlist[i].pname, IPlist[i].IPAddress);
-                PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-            }
-        }
+	/* Output stats */
+	for (i = 0; i < NUM_GAME_PACKETS; i++)
+	{
+		snprintf(buf, sizeof(buf), "%-24s:\t received %u times, %u bytes; sent %u times, %u bytes\n", packetname[i],
+				 packetcount[1][i], packetsize[1][i], packetcount[0][i], packetsize[0][i]);
+		PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+		totalBytessent += packetsize[0][i];
+		totalBytesrecv += packetsize[1][i];
+		totalPacketsent += packetcount[0][i];
+		totalPacketrecv += packetcount[1][i];
+	}
+	snprintf(buf, sizeof(buf), "== Total bytes sent %u, Total bytes received %u ==\n", totalBytessent, totalBytesrecv);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "== Total packets sent %u, recv %u ==\n", totalPacketsent, totalPacketrecv);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "\n-Sync statistics -\n");
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
+	snprintf(buf, sizeof(buf), "joins: %hhu, kicks: %hhu, drops: %hhu, left %hhu\n", sync_counter.joins, sync_counter.kicks, sync_counter.drops, sync_counter.left );
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "banned: %hhu, cantjoin: %hhu, rejected: %hhu\n", sync_counter.banned, sync_counter.cantjoin, sync_counter.rejected );
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	if (sync_counter.banned && IPlist)
+	{
+		snprintf(buf, sizeof(buf), "Banned list:\n");
+		PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+		for (i = 0; i < MAX_BANS; i++)
+		{
+			if (IPlist[i].IPAddress[0] != '\0')
+			{
+				snprintf(buf, sizeof(buf), "player %s, IP: %s\n", IPlist[i].pname, IPlist[i].IPAddress);
+				PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+			}
+		}
 
-    }
-    PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
-    snprintf(buf, sizeof(buf), "sent/unsent DroidCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentDroidCheck, sync_counter.unsentDroidCheck);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "sent/unsent StructureCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentStructureCheck, sync_counter.unsentStructureCheck);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "sent/unsent PowerCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentPowerCheck, sync_counter.unsentPowerCheck);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "sent/unsent ScoreCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentScoreCheck, sync_counter.unsentScoreCheck);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "sent/unsent Ping %"PRIu64" / %"PRIu64"\n", sync_counter.sentPing, sync_counter.unsentPing);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    snprintf(buf, sizeof(buf), "sent/unsent isMPDirtyBit %"PRIu64" / %"PRIu64"\n", sync_counter.sentisMPDirtyBit, sync_counter.unsentisMPDirtyBit);
-    PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
-    PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
+	}
+	PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
+	snprintf(buf, sizeof(buf), "sent/unsent DroidCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentDroidCheck, sync_counter.unsentDroidCheck);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "sent/unsent StructureCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentStructureCheck, sync_counter.unsentStructureCheck);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "sent/unsent PowerCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentPowerCheck, sync_counter.unsentPowerCheck);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "sent/unsent ScoreCheck %"PRIu64" / %"PRIu64"\n", sync_counter.sentScoreCheck, sync_counter.unsentScoreCheck);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "sent/unsent Ping %"PRIu64" / %"PRIu64"\n", sync_counter.sentPing, sync_counter.unsentPing);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	snprintf(buf, sizeof(buf), "sent/unsent isMPDirtyBit %"PRIu64" / %"PRIu64"\n", sync_counter.sentisMPDirtyBit, sync_counter.unsentisMPDirtyBit);
+	PHYSFS_write(pFileHandle, buf, strlen(buf), 1);
+	PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
 
-    if (!PHYSFS_close(pFileHandle))
-    {
-        debug(LOG_ERROR, "Could not close net log: %s", PHYSFS_getLastError());
-        return false;
-    }
-    pFileHandle = NULL;
+	if (!PHYSFS_close(pFileHandle))
+	{
+		debug(LOG_ERROR, "Could not close net log: %s", PHYSFS_getLastError());
+		return false;
+	}
+	pFileHandle = NULL;
 
-    return true;
+	return true;
 }
 
 
@@ -225,72 +225,72 @@ BOOL NETstopLogging(void)
 */
 void NETlogPacket( uint8_t type, uint16_t size, BOOL received)
 {
-    if (type >= NUM_GAME_PACKETS)
-    {
-        return;
-    }
-    packetcount[received][type]++;
-    packetsize[received][type] += size;
+	if (type >= NUM_GAME_PACKETS)
+	{
+		return;
+	}
+	packetcount[received][type]++;
+	packetsize[received][type] += size;
 }
 
-BOOL NETlogEntry(const char *str,uint32_t a,uint32_t b)
+BOOL NETlogEntry(const char *str, uint32_t a, uint32_t b)
 {
-    static const char star_line[] = "************************************************************\n";
-    static uint32_t lastframe = 0;
-    uint32_t frame= frameGetFrameNumber();
-    time_t aclock;
-    struct tm *newtime;
-    char buf[256];
+	static const char star_line[] = "************************************************************\n";
+	static uint32_t lastframe = 0;
+	uint32_t frame = frameGetFrameNumber();
+	time_t aclock;
+	struct tm *newtime;
+	char buf[256];
 
-    if (!pFileHandle)
-    {
-        return false;
-    }
+	if (!pFileHandle)
+	{
+		return false;
+	}
 
-    time( &aclock );					/* Get time in seconds */
-    newtime = localtime( &aclock );		/* Convert time to struct */
+	time( &aclock );					/* Get time in seconds */
+	newtime = localtime( &aclock );		/* Convert time to struct */
 
-    if (!newtime || !str || !pFileHandle)
-    {
-        debug(LOG_ERROR, "Fatal error averted in NETlog");
-        return false;
-    }
+	if (!newtime || !str || !pFileHandle)
+	{
+		debug(LOG_ERROR, "Fatal error averted in NETlog");
+		return false;
+	}
 
-    // check to see if a new frame.
-    if(frame != lastframe)
-    {
-        static const char dash_line[] = "-----------------------------------------------------------\n";
+	// check to see if a new frame.
+	if(frame != lastframe)
+	{
+		static const char dash_line[] = "-----------------------------------------------------------\n";
 
-        lastframe = frame;
-        PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
-    }
+		lastframe = frame;
+		PHYSFS_write(pFileHandle, dash_line, strlen(dash_line), 1);
+	}
 
-    if (a < NUM_GAME_PACKETS)
-        // replace common msgs with txt descriptions
-    {
-        snprintf(buf, sizeof(buf), "%s \t: %s \t:%d\t\t%s", str, packetname[a], b, asctime(newtime));
-    }
-    else if (a == SYNC_FLAG)
-    {
-        snprintf(buf, sizeof(buf), "%s \t: %d \t(Sync) \t%s", str, b, asctime(newtime));
-    }
-    else
-    {
-        snprintf(buf, sizeof(buf), "%s \t:%d \t\t\t:%d\t\t%s", str, a, b, asctime(newtime));
-    }
+	if (a < NUM_GAME_PACKETS)
+		// replace common msgs with txt descriptions
+	{
+		snprintf(buf, sizeof(buf), "%s \t: %s \t:%d\t\t%s", str, packetname[a], b, asctime(newtime));
+	}
+	else if (a == SYNC_FLAG)
+	{
+		snprintf(buf, sizeof(buf), "%s \t: %d \t(Sync) \t%s", str, b, asctime(newtime));
+	}
+	else
+	{
+		snprintf(buf, sizeof(buf), "%s \t:%d \t\t\t:%d\t\t%s", str, a, b, asctime(newtime));
+	}
 
-    if (a == NET_PLAYER_LEAVING || a == NET_PLAYER_DROPPED )
-    {
-        // Write a starry line above NET_LEAVING messages
-        PHYSFS_write(pFileHandle, star_line, strlen(star_line), 1);
-        PHYSFS_write(pFileHandle, buf, strlen( buf ), 1);
-        PHYSFS_write(pFileHandle, star_line, strlen(star_line), 1);
-    }
-    else
-    {
-        PHYSFS_write(pFileHandle, buf, strlen( buf ), 1);
-    }
+	if (a == NET_PLAYER_LEAVING || a == NET_PLAYER_DROPPED )
+	{
+		// Write a starry line above NET_LEAVING messages
+		PHYSFS_write(pFileHandle, star_line, strlen(star_line), 1);
+		PHYSFS_write(pFileHandle, buf, strlen( buf ), 1);
+		PHYSFS_write(pFileHandle, star_line, strlen(star_line), 1);
+	}
+	else
+	{
+		PHYSFS_write(pFileHandle, buf, strlen( buf ), 1);
+	}
 
-    PHYSFS_flush(pFileHandle);
-    return true;
+	PHYSFS_flush(pFileHandle);
+	return true;
 }

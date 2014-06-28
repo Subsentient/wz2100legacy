@@ -15,13 +15,13 @@
 
 void SDL_initFramerate(FPSmanager *manager)
 {
-    /*
-     * Store some sane values
-     */
-    manager->framecount = 0;
-    manager->rate = FPS_DEFAULT;
-    manager->rateticks = (1000.0f / (float) FPS_DEFAULT);
-    manager->lastticks = 0;
+	/*
+	 * Store some sane values
+	 */
+	manager->framecount = 0;
+	manager->rate = FPS_DEFAULT;
+	manager->rateticks = (1000.0f / (float) FPS_DEFAULT);
+	manager->lastticks = 0;
 }
 
 /*
@@ -30,17 +30,17 @@ void SDL_initFramerate(FPSmanager *manager)
 
 int SDL_setFramerate(FPSmanager *manager, int rate)
 {
-    if ((rate >= FPS_LOWER_LIMIT) && (rate <= FPS_UPPER_LIMIT))
-    {
-        manager->framecount = 0;
-        manager->rate = rate;
-        manager->rateticks = (1000.0f / (float) rate);
-        return (0);
-    }
-    else
-    {
-        return (-1);
-    }
+	if ((rate >= FPS_LOWER_LIMIT) && (rate <= FPS_UPPER_LIMIT))
+	{
+		manager->framecount = 0;
+		manager->rate = rate;
+		manager->rateticks = (1000.0f / (float) rate);
+		return (0);
+	}
+	else
+	{
+		return (-1);
+	}
 }
 
 /*
@@ -49,14 +49,14 @@ int SDL_setFramerate(FPSmanager *manager, int rate)
 
 int SDL_getFramerate(FPSmanager *manager)
 {
-    if (manager == NULL)
-    {
-        return (-1);
-    }
-    else
-    {
-        return (manager->rate);
-    }
+	if (manager == NULL)
+	{
+		return (-1);
+	}
+	else
+	{
+		return (manager->rate);
+	}
 }
 
 /*
@@ -65,29 +65,29 @@ int SDL_getFramerate(FPSmanager *manager)
 
 void SDL_framerateDelay(FPSmanager *manager)
 {
-    Uint32 current_ticks;
-    Uint32 target_ticks;
-    Uint32 the_delay;
+	Uint32 current_ticks;
+	Uint32 target_ticks;
+	Uint32 the_delay;
 
-    /*
-     * Next frame
-     */
-    manager->framecount++;
+	/*
+	 * Next frame
+	 */
+	manager->framecount++;
 
-    /*
-     * Get/calc ticks
-     */
-    current_ticks = SDL_GetTicks();
-    target_ticks = manager->lastticks + (Uint32) ((float) manager->framecount * manager->rateticks);
+	/*
+	 * Get/calc ticks
+	 */
+	current_ticks = SDL_GetTicks();
+	target_ticks = manager->lastticks + (Uint32) ((float) manager->framecount * manager->rateticks);
 
-    if (current_ticks <= target_ticks)
-    {
-        the_delay = target_ticks - current_ticks;
-        SDL_Delay(the_delay);
-    }
-    else
-    {
-        manager->framecount = 0;
-        manager->lastticks = SDL_GetTicks();
-    }
+	if (current_ticks <= target_ticks)
+	{
+		the_delay = target_ticks - current_ticks;
+		SDL_Delay(the_delay);
+	}
+	else
+	{
+		manager->framecount = 0;
+		manager->lastticks = SDL_GetTicks();
+	}
 }

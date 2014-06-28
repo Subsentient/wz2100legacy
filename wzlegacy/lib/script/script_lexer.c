@@ -53,7 +53,7 @@
 #if defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 
 /* C99 says to define __STDC_LIMIT_MACROS before including stdint.h,
- * if you want the limit (max/min) macros for int types. 
+ * if you want the limit (max/min) macros for int types.
  */
 #ifndef __STDC_LIMIT_MACROS
 #define __STDC_LIMIT_MACROS 1
@@ -70,7 +70,7 @@ typedef uint32_t flex_uint32_t;
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
 typedef int flex_int32_t;
-typedef unsigned char flex_uint8_t; 
+typedef unsigned char flex_uint8_t;
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
 
@@ -186,21 +186,21 @@ extern FILE *scr_in, *scr_out;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
-     *       access to the local variable yy_act. Since yyless() is a macro, it would break
-     *       existing scanners that call yyless() from OUTSIDE scr_lex. 
-     *       One obvious solution it to make yy_act a global. I tried that, and saw
-     *       a 5% performance hit in a non-scr_lineno scanner, because yy_act is
-     *       normally declared as a register variable-- so it is not worth it.
-     */
-    #define  YY_LESS_LINENO(n) \
+/* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+ *       access to the local variable yy_act. Since yyless() is a macro, it would break
+ *       existing scanners that call yyless() from OUTSIDE scr_lex.
+ *       One obvious solution it to make yy_act a global. I tried that, and saw
+ *       a 5% performance hit in a non-scr_lineno scanner, because yy_act is
+ *       normally declared as a register variable-- so it is not worth it.
+ */
+#define  YY_LESS_LINENO(n) \
             do { \
                 int yyl;\
                 for ( yyl = n; yyl < scr_leng; ++yyl )\
                     if ( scr_text[yyl] == '\n' )\
                         --scr_lineno;\
             }while(0)
-    
+
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
 	do \
@@ -220,7 +220,7 @@ extern FILE *scr_in, *scr_out;
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
 struct yy_buffer_state
-	{
+{
 	FILE *yy_input_file;
 
 	char *yy_ch_buf;		/* input buffer */
@@ -255,9 +255,9 @@ struct yy_buffer_state
 	 */
 	int yy_at_bol;
 
-    int yy_bs_lineno; /**< The line count. */
-    int yy_bs_column; /**< The column count. */
-    
+	int yy_bs_lineno; /**< The line count. */
+	int yy_bs_column; /**< The column count. */
+
 	/* Whether to try to fill the input buffer when we reach the
 	 * end of it.
 	 */
@@ -279,7 +279,7 @@ struct yy_buffer_state
 	 */
 #define YY_BUFFER_EOF_PENDING 2
 
-	};
+};
 #endif /* !YY_STRUCT_YY_BUFFER_STATE */
 
 /* Stack of input buffers. */
@@ -319,7 +319,7 @@ static int yy_did_buffer_switch_on_eof;
 
 void scr_restart (FILE *input_file  );
 void scr__switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-YY_BUFFER_STATE scr__create_buffer (FILE *file,int size  );
+YY_BUFFER_STATE scr__create_buffer (FILE *file, int size  );
 void scr__delete_buffer (YY_BUFFER_STATE b  );
 void scr__flush_buffer (YY_BUFFER_STATE b  );
 void scr_push_buffer_state (YY_BUFFER_STATE new_buffer  );
@@ -327,16 +327,16 @@ void scr_pop_buffer_state (void );
 
 static void scr_ensure_buffer_stack (void );
 static void scr__load_buffer_state (void );
-static void scr__init_buffer (YY_BUFFER_STATE b,FILE *file  );
+static void scr__init_buffer (YY_BUFFER_STATE b, FILE *file  );
 
 #define YY_FLUSH_BUFFER scr__flush_buffer(YY_CURRENT_BUFFER )
 
-YY_BUFFER_STATE scr__scan_buffer (char *base,yy_size_t size  );
+YY_BUFFER_STATE scr__scan_buffer (char *base, yy_size_t size  );
 YY_BUFFER_STATE scr__scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE scr__scan_bytes (yyconst char *bytes,yy_size_t len  );
+YY_BUFFER_STATE scr__scan_bytes (yyconst char *bytes, yy_size_t len  );
 
 void *scr_alloc (yy_size_t  );
-void *scr_realloc (void *,yy_size_t  );
+void *scr_realloc (void *, yy_size_t  );
 void scr_free (void *  );
 
 #define yy_new_buffer scr__create_buffer
@@ -398,260 +398,269 @@ static void yy_fatal_error (yyconst char msg[]  );
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
-	{
+{
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
-	};
+};
 static yyconst flex_int16_t yy_accept[251] =
-    {   0,
-        0,    0,    0,    0,   63,   63,   54,   54,    0,    0,
-        0,    0,    0,    0,    0,    0,    0,    0,   42,   42,
-       66,   64,   55,   55,   38,   52,   49,   64,   64,   64,
-       64,   64,   64,   47,   35,   64,   34,   48,   48,   48,
-       48,   48,   48,   48,   48,   48,   48,   48,   48,   48,
-       48,   48,   48,   48,   48,   48,   48,   48,   48,   48,
-       48,   64,   59,   60,   59,   63,   62,   54,   65,   53,
-       51,   50,   44,   45,   40,   41,   42,   31,    0,    0,
-       36,    0,    0,    0,    0,   28,   29,    0,   47,   46,
-       56,   61,   33,   30,   32,   48,   48,   48,   48,   48,
+{
+	0,
+	0,    0,    0,    0,   63,   63,   54,   54,    0,    0,
+	0,    0,    0,    0,    0,    0,    0,    0,   42,   42,
+	66,   64,   55,   55,   38,   52,   49,   64,   64,   64,
+	64,   64,   64,   47,   35,   64,   34,   48,   48,   48,
+	48,   48,   48,   48,   48,   48,   48,   48,   48,   48,
+	48,   48,   48,   48,   48,   48,   48,   48,   48,   48,
+	48,   64,   59,   60,   59,   63,   62,   54,   65,   53,
+	51,   50,   44,   45,   40,   41,   42,   31,    0,    0,
+	36,    0,    0,    0,    0,   28,   29,    0,   47,   46,
+	56,   61,   33,   30,   32,   48,   48,   48,   48,   48,
 
-       48,   48,   37,   48,   48,   48,   48,   48,   48,   48,
-       48,   48,   48,   48,   17,   48,   48,   48,   48,   48,
-       48,   48,   48,   48,   48,   48,   48,   48,   37,   57,
-       63,   54,   44,   40,   41,   42,    0,    0,    0,    0,
-        0,    0,   36,   48,   48,   48,   24,   38,   48,   48,
-       48,   48,   48,   48,   48,   48,   48,   48,   48,   48,
-       48,   48,   48,   48,   48,    8,   48,   48,   48,   48,
-       48,   48,   48,   58,    0,    0,    0,    0,    0,    0,
-       23,   48,   48,   48,   26,   21,   18,   48,   48,   19,
-       48,   48,   48,   48,    6,    7,   48,   48,   48,   48,
+	48,   48,   37,   48,   48,   48,   48,   48,   48,   48,
+	48,   48,   48,   48,   17,   48,   48,   48,   48,   48,
+	48,   48,   48,   48,   48,   48,   48,   48,   37,   57,
+	63,   54,   44,   40,   41,   42,    0,    0,    0,    0,
+	0,    0,   36,   48,   48,   48,   24,   38,   48,   48,
+	48,   48,   48,   48,   48,   48,   48,   48,   48,   48,
+	48,   48,   48,   48,   48,    8,   48,   48,   48,   48,
+	48,   48,   48,   58,    0,    0,    0,    0,    0,    0,
+	23,   48,   48,   48,   26,   21,   18,   48,   48,   19,
+	48,   48,   48,   48,    6,    7,   48,   48,   48,   48,
 
-       48,   48,   48,    1,   48,    0,    0,    0,   11,    0,
-       27,   25,   48,    4,    2,   48,   48,   15,   20,   48,
-       48,   48,   48,   48,   16,    0,    0,    0,    0,   22,
-       48,   48,   48,   13,    9,   48,    0,    0,   12,   48,
-       48,   14,    3,   39,    0,   10,    5,    0,   43,    0
-    } ;
+	48,   48,   48,    1,   48,    0,    0,    0,   11,    0,
+	27,   25,   48,    4,    2,   48,   48,   15,   20,   48,
+	48,   48,   48,   48,   16,    0,    0,    0,    0,   22,
+	48,   48,   48,   13,    9,   48,    0,    0,   12,   48,
+	48,   14,    3,   39,    0,   10,    5,    0,   43,    0
+} ;
 
 static yyconst flex_int32_t yy_ec[256] =
-    {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
-        1,    1,    4,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    5,    6,    7,    1,    1,    8,    1,    9,
-       10,   11,   12,    1,   13,   14,   15,   16,   16,   16,
-       16,   16,   16,   16,   16,   16,   16,    1,    1,   17,
-       18,   19,    1,    1,   20,   21,   22,   23,   24,   25,
-       26,   22,   27,   22,   22,   28,   22,   29,   30,   22,
-       22,   31,   32,   33,   34,   35,   22,   22,   22,   22,
-        1,    1,    1,    1,   22,    1,   36,   37,   38,   39,
+{
+	0,
+	1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
+	1,    1,    4,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    2,    5,    6,    7,    1,    1,    8,    1,    9,
+	10,   11,   12,    1,   13,   14,   15,   16,   16,   16,
+	16,   16,   16,   16,   16,   16,   16,    1,    1,   17,
+	18,   19,    1,    1,   20,   21,   22,   23,   24,   25,
+	26,   22,   27,   22,   22,   28,   22,   29,   30,   22,
+	22,   31,   32,   33,   34,   35,   22,   22,   22,   22,
+	1,    1,    1,    1,   22,    1,   36,   37,   38,   39,
 
-       40,   41,   42,   43,   44,   22,   45,   46,   22,   47,
-       48,   49,   22,   50,   51,   52,   53,   54,   55,   56,
-       57,   22,    1,   58,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	40,   41,   42,   43,   44,   22,   45,   46,   22,   47,
+	48,   49,   22,   50,   51,   52,   53,   54,   55,   56,
+	57,   22,    1,   58,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
 
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1
-    } ;
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1
+} ;
 
 static yyconst flex_int32_t yy_meta[59] =
-    {   0,
-        1,    2,    3,    4,    1,    5,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    6,    1,    1,    1,    6,
-        6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
-        6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
-        6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
-        6,    6,    6,    6,    6,    6,    6,    1
-    } ;
+{
+	0,
+	1,    2,    3,    4,    1,    5,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    6,    1,    1,    1,    6,
+	6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+	6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+	6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+	6,    6,    6,    6,    6,    6,    6,    1
+} ;
 
 static yyconst flex_int16_t yy_base[265] =
-    {   0,
-        0,    0,   56,   57,  375,  374,   58,   59,  373,  372,
-       67,   69,  368,  367,   75,  133,  370,  369,   92,   94,
-      370,  379,  379,  379,  351,  379,   60,  360,   75,  355,
-       92,  350,   92,   95,  347,  346,  345,  333,  331,    0,
-       46,  331,  329,  327,  324,  325,  325,  307,  305,   64,
-       76,   74,   69,  304,  301,   78,  310,  297,  298,  299,
-       87,  288,  379,  379,  330,    0,  379,    0,  379,  379,
-      379,  379,    0,  379,    0,  342,    0,  379,  303,  295,
-      379,  313,  311,  293,  291,  379,  379,  321,  110,  320,
-      379,  379,  379,  379,  379,    0,  312,  304,  305,  302,
+{
+	0,
+	0,    0,   56,   57,  375,  374,   58,   59,  373,  372,
+	67,   69,  368,  367,   75,  133,  370,  369,   92,   94,
+	370,  379,  379,  379,  351,  379,   60,  360,   75,  355,
+	92,  350,   92,   95,  347,  346,  345,  333,  331,    0,
+	46,  331,  329,  327,  324,  325,  325,  307,  305,   64,
+	76,   74,   69,  304,  301,   78,  310,  297,  298,  299,
+	87,  288,  379,  379,  330,    0,  379,    0,  379,  379,
+	379,  379,    0,  379,    0,  342,    0,  379,  303,  295,
+	379,  313,  311,  293,  291,  379,  379,  321,  110,  320,
+	379,  379,  379,  379,  379,    0,  312,  304,  305,  302,
 
-      298,  297,    0,  298,  294,  300,  287,  277,  273,  283,
-      278,  275,  272,  272,    0,  117,  271,  279,  264,  262,
-      270,  276,  113,  262,  111,  267,  266,  265,  379,  305,
-        0,    0,    0,    0,  305,    0,  265,  267,  274,  270,
-      254,  249,    0,  272,  267,  278,    0,    0,  270,  272,
-      272,  248,  253,  109,  240,  240,  254,  251,  250,  235,
-      241,  249,  233,  229,  236,    0,  228,  236,  237,  238,
-      238,  224,  229,  379,  230,  227,  252,  261,  234,  259,
-        0,  244,  234,  237,    0,    0,    0,  213,  207,    0,
-      221,  208,  204,  202,    0,    0,  207,  210,  212,  198,
+	298,  297,    0,  298,  294,  300,  287,  277,  273,  283,
+	278,  275,  272,  272,    0,  117,  271,  279,  264,  262,
+	270,  276,  113,  262,  111,  267,  266,  265,  379,  305,
+	0,    0,    0,    0,  305,    0,  265,  267,  274,  270,
+	254,  249,    0,  272,  267,  278,    0,    0,  270,  272,
+	272,  248,  253,  109,  240,  240,  254,  251,  250,  235,
+	241,  249,  233,  229,  236,    0,  228,  236,  237,  238,
+	238,  224,  229,  379,  230,  227,  252,  261,  234,  259,
+	0,  244,  234,  237,    0,    0,    0,  213,  207,    0,
+	221,  208,  204,  202,    0,    0,  207,  210,  212,  198,
 
-      140,  142,  146,    0,  147,  139,  132,  151,  379,  131,
-        0,    0,  156,    0,    0,  137,  136,    0,    0,  127,
-      140,  130,  134,  135,    0,  134,  134,  162,  161,    0,
-      122,  114,  127,    0,    0,  116,  161,  120,  379,  110,
-       92,    0,    0,  125,  123,    0,    0,  156,  379,  379,
-      191,  197,  203,  209,  215,  221,  227,  233,   95,  239,
-      245,  251,   57,  257
-    } ;
+	140,  142,  146,    0,  147,  139,  132,  151,  379,  131,
+	0,    0,  156,    0,    0,  137,  136,    0,    0,  127,
+	140,  130,  134,  135,    0,  134,  134,  162,  161,    0,
+	122,  114,  127,    0,    0,  116,  161,  120,  379,  110,
+	92,    0,    0,  125,  123,    0,    0,  156,  379,  379,
+	191,  197,  203,  209,  215,  221,  227,  233,   95,  239,
+	245,  251,   57,  257
+} ;
 
 static yyconst flex_int16_t yy_def[265] =
-    {   0,
-      250,    1,  251,  251,  252,  252,  253,  253,  254,  254,
-      255,  255,  256,  256,  257,  257,  256,  256,  258,  258,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  259,  259,  259,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  250,  250,  250,  250,  260,  250,  261,  250,  250,
-      250,  250,  262,  250,  263,  250,  264,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  259,  259,  259,  259,  259,
+{
+	0,
+	250,    1,  251,  251,  252,  252,  253,  253,  254,  254,
+	255,  255,  256,  256,  257,  257,  256,  256,  258,  258,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  250,  250,  250,  250,  260,  250,  261,  250,  250,
+	250,  250,  262,  250,  263,  250,  264,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  259,  259,  259,  259,  259,
 
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  259,  259,  259,  259,  259,  250,  250,
-      260,  261,  262,  263,  250,  264,  250,  250,  250,  250,
-      250,  250,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  250,  250,  250,  250,  250,  250,  250,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  250,  250,
+	260,  261,  262,  263,  250,  264,  250,  250,  250,  250,
+	250,  250,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  250,  250,  250,  250,  250,  250,  250,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
 
-      259,  259,  259,  259,  259,  250,  250,  250,  250,  250,
-      259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
-      259,  259,  259,  259,  259,  250,  250,  250,  250,  259,
-      259,  259,  259,  259,  259,  259,  250,  250,  250,  259,
-      259,  259,  259,  250,  250,  259,  259,  250,  250,    0,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250
-    } ;
+	259,  259,  259,  259,  259,  250,  250,  250,  250,  250,
+	259,  259,  259,  259,  259,  259,  259,  259,  259,  259,
+	259,  259,  259,  259,  259,  250,  250,  250,  250,  259,
+	259,  259,  259,  259,  259,  259,  250,  250,  250,  259,
+	259,  259,  259,  250,  250,  259,  259,  250,  250,    0,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250
+} ;
 
 static yyconst flex_int16_t yy_nxt[438] =
-    {   0,
-       22,   23,   24,   23,   25,   26,   27,   28,   29,   22,
-       22,   30,   31,   32,   33,   34,   35,   36,   37,   38,
-       39,   40,   40,   40,   41,   40,   42,   40,   43,   44,
-       40,   45,   46,   40,   47,   48,   49,   40,   40,   50,
-       51,   40,   40,   52,   40,   53,   54,   55,   56,   57,
-       58,   59,   40,   60,   61,   40,   40,   62,   64,   64,
-       69,   69,  134,   70,   70,   99,   65,   65,   69,   69,
-       69,   69,   69,  100,   69,   69,   69,   69,   69,   69,
-       69,   69,   69,   69,   69,   69,   69,   69,   69,   69,
-       69,   69,   69,   69,   69,   69,   69,   69,   79,   82,
+{
+	0,
+	22,   23,   24,   23,   25,   26,   27,   28,   29,   22,
+	22,   30,   31,   32,   33,   34,   35,   36,   37,   38,
+	39,   40,   40,   40,   41,   40,   42,   40,   43,   44,
+	40,   45,   46,   40,   47,   48,   49,   40,   40,   50,
+	51,   40,   40,   52,   40,   53,   54,   55,   56,   57,
+	58,   59,   40,   60,   61,   40,   40,   62,   64,   64,
+	69,   69,  134,   70,   70,   99,   65,   65,   69,   69,
+	69,   69,   69,  100,   69,   69,   69,   69,   69,   69,
+	69,   69,   69,   69,   69,   69,   69,   69,   69,   69,
+	69,   69,   69,   69,   69,   69,   69,   69,   79,   82,
 
-       96,   83,   91,   80,   87,   88,   92,   89,   88,  109,
-       89,  112,  117,  120,  115,   84,  118,  110,   85,  111,
-      116,  113,  127,   88,  248,   89,  244,  121,  114,  128,
-      122,  247,   69,   69,   69,   69,   69,   69,   69,   69,
-       69,   69,   69,   69,   69,   69,   69,   69,   69,   69,
-       69,   69,  159,  166,  169,  188,  246,  248,  189,  245,
-      160,  249,  244,  170,  167,  243,  242,  241,  147,  240,
-      239,  239,  238,  237,  236,  230,  235,  234,  233,  232,
-      231,  230,  229,  228,  227,  226,  225,  224,  223,  222,
-       69,   63,   63,   63,   63,   63,   63,   66,   66,   66,
+	96,   83,   91,   80,   87,   88,   92,   89,   88,  109,
+	89,  112,  117,  120,  115,   84,  118,  110,   85,  111,
+	116,  113,  127,   88,  248,   89,  244,  121,  114,  128,
+	122,  247,   69,   69,   69,   69,   69,   69,   69,   69,
+	69,   69,   69,   69,   69,   69,   69,   69,   69,   69,
+	69,   69,  159,  166,  169,  188,  246,  248,  189,  245,
+	160,  249,  244,  170,  167,  243,  242,  241,  147,  240,
+	239,  239,  238,  237,  236,  230,  235,  234,  233,  232,
+	231,  230,  229,  228,  227,  226,  225,  224,  223,  222,
+	69,   63,   63,   63,   63,   63,   63,   66,   66,   66,
 
-       66,   66,   66,   68,   68,   68,   68,   68,   68,   71,
-       71,   71,   71,   71,   71,   73,   73,   73,   73,   73,
-       73,   69,   69,   69,   69,   69,   69,   75,   75,   75,
-       75,   75,   75,   77,   77,   77,   77,   77,   77,  131,
-      131,  221,  131,  131,  131,  132,  132,  220,  132,  219,
-      132,  133,  218,  217,  133,  216,  133,  136,  136,  212,
-      211,  136,  136,  215,  214,  213,  212,  211,  209,  210,
-      209,  208,  207,  206,  205,  204,  186,  185,  203,  202,
-      201,  200,  199,  198,  197,  196,  195,  194,  193,  192,
-      191,  190,  187,  181,  186,  185,  184,  183,  182,  181,
+	66,   66,   66,   68,   68,   68,   68,   68,   68,   71,
+	71,   71,   71,   71,   71,   73,   73,   73,   73,   73,
+	73,   69,   69,   69,   69,   69,   69,   75,   75,   75,
+	75,   75,   75,   77,   77,   77,   77,   77,   77,  131,
+	131,  221,  131,  131,  131,  132,  132,  220,  132,  219,
+	132,  133,  218,  217,  133,  216,  133,  136,  136,  212,
+	211,  136,  136,  215,  214,  213,  212,  211,  209,  210,
+	209,  208,  207,  206,  205,  204,  186,  185,  203,  202,
+	201,  200,  199,  198,  197,  196,  195,  194,  193,  192,
+	191,  190,  187,  181,  186,  185,  184,  183,  182,  181,
 
-      180,  179,  178,  177,  176,  175,  135,  174,  173,  172,
-      171,  168,  165,  164,  163,  148,  162,  161,  158,  157,
-      156,  155,  154,  153,  152,  143,  151,  150,  149,  148,
-      147,  146,  145,  144,  143,   90,   90,  142,  141,  140,
-      139,  138,  137,  135,  130,  129,  126,  125,  124,  123,
-      103,  119,  108,  107,  106,  105,  104,  103,  102,  101,
-       98,   97,   95,   94,   93,   90,   86,   81,   78,  250,
-       76,   76,   74,   74,   72,   72,   67,   67,   21,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	180,  179,  178,  177,  176,  175,  135,  174,  173,  172,
+	171,  168,  165,  164,  163,  148,  162,  161,  158,  157,
+	156,  155,  154,  153,  152,  143,  151,  150,  149,  148,
+	147,  146,  145,  144,  143,   90,   90,  142,  141,  140,
+	139,  138,  137,  135,  130,  129,  126,  125,  124,  123,
+	103,  119,  108,  107,  106,  105,  104,  103,  102,  101,
+	98,   97,   95,   94,   93,   90,   86,   81,   78,  250,
+	76,   76,   74,   74,   72,   72,   67,   67,   21,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
 
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250
-    } ;
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250
+} ;
 
 static yyconst flex_int16_t yy_chk[438] =
-    {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    3,    4,
-        7,    8,  263,    7,    8,   41,    3,    4,   11,   11,
-       12,   12,   11,   41,   12,   15,   15,   15,   15,   15,
-       15,   15,   15,   15,   15,   15,   15,   15,   15,   15,
-       15,   15,   15,   15,   19,   19,   20,   20,   27,   29,
+{
+	0,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    3,    4,
+	7,    8,  263,    7,    8,   41,    3,    4,   11,   11,
+	12,   12,   11,   41,   12,   15,   15,   15,   15,   15,
+	15,   15,   15,   15,   15,   15,   15,   15,   15,   15,
+	15,   15,   15,   15,   19,   19,   20,   20,   27,   29,
 
-      259,   29,   33,   27,   31,   31,   33,   31,   34,   50,
-       34,   51,   53,   56,   52,   29,   53,   50,   29,   50,
-       52,   51,   61,   89,  245,   89,  244,   56,   51,   61,
-       56,  241,   15,   16,   16,   16,   16,   16,   16,   16,
-       16,   16,   16,   16,   16,   16,   16,   16,   16,   16,
-       16,   16,  116,  123,  125,  154,  240,  248,  154,  238,
-      116,  248,  237,  125,  123,  236,  233,  232,  116,  231,
-      229,  228,  227,  226,  224,  223,  222,  221,  220,  217,
-      216,  213,  210,  208,  207,  206,  205,  203,  202,  201,
-       16,  251,  251,  251,  251,  251,  251,  252,  252,  252,
+	259,   29,   33,   27,   31,   31,   33,   31,   34,   50,
+	34,   51,   53,   56,   52,   29,   53,   50,   29,   50,
+	52,   51,   61,   89,  245,   89,  244,   56,   51,   61,
+	56,  241,   15,   16,   16,   16,   16,   16,   16,   16,
+	16,   16,   16,   16,   16,   16,   16,   16,   16,   16,
+	16,   16,  116,  123,  125,  154,  240,  248,  154,  238,
+	116,  248,  237,  125,  123,  236,  233,  232,  116,  231,
+	229,  228,  227,  226,  224,  223,  222,  221,  220,  217,
+	216,  213,  210,  208,  207,  206,  205,  203,  202,  201,
+	16,  251,  251,  251,  251,  251,  251,  252,  252,  252,
 
-      252,  252,  252,  253,  253,  253,  253,  253,  253,  254,
-      254,  254,  254,  254,  254,  255,  255,  255,  255,  255,
-      255,  256,  256,  256,  256,  256,  256,  257,  257,  257,
-      257,  257,  257,  258,  258,  258,  258,  258,  258,  260,
-      260,  200,  260,  260,  260,  261,  261,  199,  261,  198,
-      261,  262,  197,  194,  262,  193,  262,  264,  264,  192,
-      191,  264,  264,  189,  188,  184,  183,  182,  180,  179,
-      178,  177,  176,  175,  173,  172,  171,  170,  169,  168,
-      167,  165,  164,  163,  162,  161,  160,  159,  158,  157,
-      156,  155,  153,  152,  151,  150,  149,  146,  145,  144,
+	252,  252,  252,  253,  253,  253,  253,  253,  253,  254,
+	254,  254,  254,  254,  254,  255,  255,  255,  255,  255,
+	255,  256,  256,  256,  256,  256,  256,  257,  257,  257,
+	257,  257,  257,  258,  258,  258,  258,  258,  258,  260,
+	260,  200,  260,  260,  260,  261,  261,  199,  261,  198,
+	261,  262,  197,  194,  262,  193,  262,  264,  264,  192,
+	191,  264,  264,  189,  188,  184,  183,  182,  180,  179,
+	178,  177,  176,  175,  173,  172,  171,  170,  169,  168,
+	167,  165,  164,  163,  162,  161,  160,  159,  158,  157,
+	156,  155,  153,  152,  151,  150,  149,  146,  145,  144,
 
-      142,  141,  140,  139,  138,  137,  135,  130,  128,  127,
-      126,  124,  122,  121,  120,  119,  118,  117,  114,  113,
-      112,  111,  110,  109,  108,  107,  106,  105,  104,  102,
-      101,  100,   99,   98,   97,   90,   88,   85,   84,   83,
-       82,   80,   79,   76,   65,   62,   60,   59,   58,   57,
-       55,   54,   49,   48,   47,   46,   45,   44,   43,   42,
-       39,   38,   37,   36,   35,   32,   30,   28,   25,   21,
-       18,   17,   14,   13,   10,    9,    6,    5,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	142,  141,  140,  139,  138,  137,  135,  130,  128,  127,
+	126,  124,  122,  121,  120,  119,  118,  117,  114,  113,
+	112,  111,  110,  109,  108,  107,  106,  105,  104,  102,
+	101,  100,   99,   98,   97,   90,   88,   85,   84,   83,
+	82,   80,   79,   76,   65,   62,   60,   59,   58,   57,
+	55,   54,   49,   48,   47,   46,   45,   44,   43,   42,
+	39,   38,   37,   36,   35,   32,   30,   28,   25,   21,
+	18,   17,   14,   13,   10,    9,    6,    5,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
 
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
-      250,  250,  250,  250,  250,  250,  250
-    } ;
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250,  250,  250,  250,
+	250,  250,  250,  250,  250,  250,  250
+} ;
 
 /* Table of booleans, true if rule could match eol. */
 static yyconst flex_int32_t yy_rule_can_match_eol[66] =
-    {   0,
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 
-    1, 0, 1, 0, 0, 0,     };
+{
+	0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0,
+	1, 0, 1, 0, 0, 0,
+};
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -700,7 +709,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #include "script_parser.h"
 
 // fwrite declared with warn_unused_result, resulting in mysterious errors in "%%" on some distros.
-static inline bool no_warn_unused_result(int ignore) { if (ignore) {} return true; }
+static inline bool no_warn_unused_result(int ignore)
+{
+	if (ignore) {} return true;
+}
 #define fwrite(a, b, c, d) no_warn_unused_result(fwrite(a, b, c, d))
 
 /* Maximum length for any TEXT value */
@@ -724,7 +736,7 @@ extern int scr_lex_destroy(void);
 
 /* Store for any string values */
 static char aText[TEXT_BUFFERS][YYLMAX];
-static uint32_t currText=0;
+static uint32_t currText = 0;
 
 // Note if we are in a comment
 static BOOL inComment = false;
@@ -798,22 +810,22 @@ static int32_t scriptGetVarToken(VAR_SYMBOL *psVar)
 		{
 			switch (psVar->type)
 			{
-			case VAL_BOOL:
-				return BOOL_OBJVAR;
-				break;
-			case VAL_INT:
+				case VAL_BOOL:
+					return BOOL_OBJVAR;
+					break;
+				case VAL_INT:
 //			case VAL_FLOAT:
 
-				RULE( "current variable is NUM_OBJVAR");
+					RULE( "current variable is NUM_OBJVAR");
 
-				return NUM_OBJVAR;
-				break;
-			default:
+					return NUM_OBJVAR;
+					break;
+				default:
 
-				RULE( "current variable is USER_OBJVAR");
+					RULE( "current variable is USER_OBJVAR");
 
-				return USER_OBJVAR;
-				break;
+					return USER_OBJVAR;
+					break;
 			}
 		}
 	}
@@ -828,18 +840,18 @@ static int32_t scriptGetVarToken(VAR_SYMBOL *psVar)
 		{
 			switch (psVar->type)
 			{
-			case VAL_BOOL:
-				return BOOL_ARRAY;
-				break;
-			case VAL_FLOAT:
-				return FLOAT_ARRAY;
-				break;
-			case VAL_INT:
-				return NUM_ARRAY;
-				break;
-			default:
-				return VAR_ARRAY;
-				break;
+				case VAL_BOOL:
+					return BOOL_ARRAY;
+					break;
+				case VAL_FLOAT:
+					return FLOAT_ARRAY;
+					break;
+				case VAL_INT:
+					return NUM_ARRAY;
+					break;
+				default:
+					return VAR_ARRAY;
+					break;
 			}
 		}
 	}
@@ -860,24 +872,24 @@ static int32_t scriptGetVarToken(VAR_SYMBOL *psVar)
 
 			switch (psVar->type)
 			{
-			case VAL_BOOL:
-				return BOOL_VAR;
-				break;
-			case VAL_FLOAT:
+				case VAL_BOOL:
+					return BOOL_VAR;
+					break;
+				case VAL_FLOAT:
 
-				RULE( "VAL_FLOAT");
+					RULE( "VAL_FLOAT");
 
-				return FLOAT_VAR;
-				break;
-			case VAL_INT:
-				return NUM_VAR;
-				break;
-			case VAL_STRING:
-				return STRING_VAR;
-				break;
-			default:
-				return VAR;
-				break;
+					return FLOAT_VAR;
+					break;
+				case VAL_INT:
+					return NUM_VAR;
+					break;
+				case VAL_STRING:
+					return STRING_VAR;
+					break;
+				default:
+					return VAR;
+					break;
 			}
 		}
 	}
@@ -900,27 +912,27 @@ static int32_t scriptGetConstToken(CONST_SYMBOL *psConst)
 
 	switch (psConst->type)
 	{
-	case VAL_BOOL:
-		return BOOL_CONSTANT;
-		break;
+		case VAL_BOOL:
+			return BOOL_CONSTANT;
+			break;
 //	case VAL_FLOAT:
-	case VAL_INT:
-		return NUM_CONSTANT;
-		break;
-	case VAL_STRING:
-		return STRING_CONSTANT;
-		break;
-	default:
-		if (object)
-		{
-			//debug(LOG_SCRIPT, "scriptGetConstToken: OBJ_CONSTANT");
-			return OBJ_CONSTANT;
-		}
-		else
-		{
-			return USER_CONSTANT;
-		}
-		break;
+		case VAL_INT:
+			return NUM_CONSTANT;
+			break;
+		case VAL_STRING:
+			return STRING_CONSTANT;
+			break;
+		default:
+			if (object)
+			{
+				//debug(LOG_SCRIPT, "scriptGetConstToken: OBJ_CONSTANT");
+				return OBJ_CONSTANT;
+			}
+			else
+			{
+				return USER_CONSTANT;
+			}
+			break;
 	}
 }
 
@@ -941,24 +953,24 @@ static int32_t scriptGetFuncToken(FUNC_SYMBOL *psFunc)
 	}
 	switch (psFunc->type)
 	{
-	case VAL_BOOL:
-		return BOOL_FUNC;
-		break;
-	case VAL_FLOAT:
-		return FLOAT_FUNC;
-		break;
-	case VAL_INT:
-		return NUM_FUNC;
-		break;
-	case VAL_STRING:
-		return STRING_FUNC;
-		break;
-	case VAL_VOID:
-		return FUNC;
-		break;
-	default:
-		return USER_FUNC;
-		break;
+		case VAL_BOOL:
+			return BOOL_FUNC;
+			break;
+		case VAL_FLOAT:
+			return FLOAT_FUNC;
+			break;
+		case VAL_INT:
+			return NUM_FUNC;
+			break;
+		case VAL_STRING:
+			return STRING_FUNC;
+			break;
+		case VAL_VOID:
+			return FUNC;
+			break;
+		default:
+			return USER_FUNC;
+			break;
 	}
 }
 
@@ -985,30 +997,30 @@ static int32_t scriptGetCustomFuncToken(EVENT_SYMBOL *psFunc)
 	{
 		switch (psFunc->retType)
 		{
-		case VAL_BOOL:
-			return BOOL_FUNC_CUST;
-			break;
-		case VAL_FLOAT:
+			case VAL_BOOL:
+				return BOOL_FUNC_CUST;
+				break;
+			case VAL_FLOAT:
 
-			RULE( "current function is FLOAT_FUNC_CUST");
+				RULE( "current function is FLOAT_FUNC_CUST");
 
-			return FLOAT_FUNC_CUST;
-			break;
-		case VAL_INT:
+				return FLOAT_FUNC_CUST;
+				break;
+			case VAL_INT:
 
-			RULE( "current function is NUM_FUNC_CUST");
+				RULE( "current function is NUM_FUNC_CUST");
 
-			return NUM_FUNC_CUST;
-			break;
-		case VAL_STRING:
-			return STRING_FUNC_CUST;
-			break;
-		case VAL_VOID:
-			return VOID_FUNC_CUST;
-			break;
-		default:
-			return USER_FUNC_CUST;
-			break;
+				return NUM_FUNC_CUST;
+				break;
+			case VAL_STRING:
+				return STRING_FUNC_CUST;
+				break;
+			case VAL_VOID:
+				return VOID_FUNC_CUST;
+				break;
+			default:
+				return USER_FUNC_CUST;
+				break;
 		}
 	}
 }
@@ -1036,7 +1048,7 @@ static BOOL scriptLoopUpMacro(const char *pMacro, char **ppMacroBody)
 static void popMacroStack(void)
 {
 	ASSERT(scr_macro_stack_ptr <= MAX_SCR_MACRO_DEPTH,
-		"FLEX: macro stack pointer out of bounds: %d", scr_macro_stack_ptr);
+		   "FLEX: macro stack pointer out of bounds: %d", scr_macro_stack_ptr);
 
 	/* Free current macro buffer */
 	free(pScrMacroBuffer[scr_macro_stack_ptr]);
@@ -1055,17 +1067,17 @@ static void popMacroStack(void)
 static void storeMacroName(const char *pMacroName)
 {
 	ASSERT(scr_num_macros < MAX_SCR_MACROS,
-		"FLEX: macro count out of bounds: %u", scr_num_macros);
+		   "FLEX: macro count out of bounds: %u", scr_num_macros);
 
 	/* Make sure this name isn't already reserved */
 	if((scriptLookUpType(pMacroName, &dummy.tval)) ||
-	(scriptLookUpVariable(pMacroName, &dummy.vSymbol)) ||
-	(scriptLookUpConstant(pMacroName, &dummy.cSymbol)) ||
-	(scriptLookUpFunction(pMacroName, &dummy.fSymbol)) ||
-	(scriptLookUpCustomFunction(pMacroName, &dummy.eSymbol)) ||
-	(scriptLookUpTrigger(pMacroName, &dummy.tSymbol)) ||
-	(scriptLookUpEvent(pMacroName, &dummy.eSymbol)) ||
-	(scriptLookUpCallback(pMacroName, &dummy.cbSymbol)))
+			(scriptLookUpVariable(pMacroName, &dummy.vSymbol)) ||
+			(scriptLookUpConstant(pMacroName, &dummy.cSymbol)) ||
+			(scriptLookUpFunction(pMacroName, &dummy.fSymbol)) ||
+			(scriptLookUpCustomFunction(pMacroName, &dummy.eSymbol)) ||
+			(scriptLookUpTrigger(pMacroName, &dummy.tSymbol)) ||
+			(scriptLookUpEvent(pMacroName, &dummy.eSymbol)) ||
+			(scriptLookUpCallback(pMacroName, &dummy.cbSymbol)))
 	{
 		scr_error("FLEX: macro name '%s' is already reserved", pMacroName);
 	}
@@ -1078,7 +1090,7 @@ static void storeMacroName(const char *pMacroName)
 static void storeMacroBody(const char *pMacroBody)
 {
 	ASSERT(scr_num_macros < MAX_SCR_MACROS,
-		"FLEX: macro count out of bounds: %u", scr_num_macros);
+		   "FLEX: macro count out of bounds: %u", scr_num_macros);
 
 	/* Store macro body */
 	sstrcpy(scr_macro[scr_num_macros].scr_define_body, pMacroBody);
@@ -1091,20 +1103,23 @@ static void pushInclude(const char *pIncludePath)
 {
 	PHYSFS_file* newInput;
 
-	if ( scr_include_stack_ptr >= MAX_SCR_INCLUDE_DEPTH ){
+	if ( scr_include_stack_ptr >= MAX_SCR_INCLUDE_DEPTH )
+	{
 		scr_error("FLEX: Includes nested too deeply" );
 	}
 
-	if(!PHYSFS_exists(pIncludePath)){
+	if(!PHYSFS_exists(pIncludePath))
+	{
 		scr_error("FLEX: '%s' include doesn't exist", pIncludePath );
 	}
 
 	/* Open include */
 	newInput = PHYSFS_openRead(pIncludePath);
 
-	if(!newInput){
+	if(!newInput)
+	{
 		scr_error("FLEX: Couldn't open include: '%s'\n%s",
-			pIncludePath, PHYSFS_getLastError() );
+				  pIncludePath, PHYSFS_getLastError() );
 	}
 
 	/* Push current flex buffer */
@@ -1112,7 +1127,7 @@ static void pushInclude(const char *pIncludePath)
 	scr_include_stack_ptr++;
 
 	ASSERT(scr_include_stack_ptr < MAX_SCR_INCLUDE_DEPTH,
-		"FLEX: scr_include_stack_ptr out of bounds: %u", scr_include_stack_ptr);
+		   "FLEX: scr_include_stack_ptr out of bounds: %u", scr_include_stack_ptr);
 
 	pScrInputFiles[scr_include_stack_ptr] = newInput;
 }
@@ -1197,7 +1212,7 @@ extern int scr_wrap (void );
 #endif
 
 #ifndef yytext_ptr
-static void yy_flex_strncpy (char *,yyconst char *,int );
+static void yy_flex_strncpy (char *, yyconst char *, int );
 #endif
 
 #ifdef YY_NEED_STRLEN
@@ -1260,7 +1275,7 @@ static int input (void );
 			} \
 		}\
 \
-
+ 
 #endif
 
 /* No semi-colon after return; correct usage is to write "yyterminate();" -
@@ -1316,7 +1331,7 @@ YY_DECL
 	register yy_state_type yy_current_state;
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
-    
+
 #line 470 "script_lexer.l"
 
 
@@ -1324,7 +1339,7 @@ YY_DECL
 #line 1325 "script_lexer.lex.c"
 
 	if ( !(yy_init) )
-		{
+	{
 		(yy_init) = 1;
 
 #ifdef YY_USER_INIT
@@ -1332,25 +1347,32 @@ YY_DECL
 #endif
 
 		if ( ! (yy_start) )
-			(yy_start) = 1;	/* first start state */
+		{
+			(yy_start) = 1;    /* first start state */
+		}
 
 		if ( ! scr_in )
+		{
 			scr_in = stdin;
+		}
 
 		if ( ! scr_out )
+		{
 			scr_out = stdout;
+		}
 
-		if ( ! YY_CURRENT_BUFFER ) {
+		if ( ! YY_CURRENT_BUFFER )
+		{
 			scr_ensure_buffer_stack ();
 			YY_CURRENT_BUFFER_LVALUE =
-				scr__create_buffer(scr_in,YY_BUF_SIZE );
+				scr__create_buffer(scr_in, YY_BUF_SIZE );
 		}
 
 		scr__load_buffer_state( );
-		}
+	}
 
 	while ( 1 )		/* loops until end-of-file is reached */
-		{
+	{
 		yy_cp = (yy_c_buf_p);
 
 		/* Support of scr_text. */
@@ -1362,755 +1384,766 @@ YY_DECL
 		yy_bp = yy_cp;
 
 		yy_current_state = (yy_start);
-yy_match:
+	yy_match:
 		do
-			{
+		{
 			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
 			if ( yy_accept[yy_current_state] )
-				{
+			{
 				(yy_last_accepting_state) = yy_current_state;
 				(yy_last_accepting_cpos) = yy_cp;
-				}
+			}
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
-				{
+			{
 				yy_current_state = (int) yy_def[yy_current_state];
 				if ( yy_current_state >= 251 )
+				{
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
+			}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
-			}
+		}
 		while ( yy_base[yy_current_state] != 379 );
 
-yy_find_action:
+	yy_find_action:
 		yy_act = yy_accept[yy_current_state];
 		if ( yy_act == 0 )
-			{ /* have to back up */
+		{
+			/* have to back up */
 			yy_cp = (yy_last_accepting_cpos);
 			yy_current_state = (yy_last_accepting_state);
 			yy_act = yy_accept[yy_current_state];
-			}
+		}
 
 		YY_DO_BEFORE_ACTION;
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
-			{
+		{
 			yy_size_t yyl;
 			for ( yyl = 0; yyl < scr_leng; ++yyl )
 				if ( scr_text[yyl] == '\n' )
-					   
-    scr_lineno++;
-;
-			}
 
-do_action:	/* This label is used only to access EOF actions. */
-
-		switch ( yy_act )
-	{ /* beginning of action switch */
-			case 0: /* must back up */
-			/* undo the effects of YY_DO_BEFORE_ACTION */
-			*yy_cp = (yy_hold_char);
-			yy_cp = (yy_last_accepting_cpos);
-			yy_current_state = (yy_last_accepting_state);
-			goto yy_find_action;
-
-case 1:
-YY_RULE_SETUP
-#line 473 "script_lexer.l"
-return WAIT;
-	YY_BREAK
-case 2:
-YY_RULE_SETUP
-#line 474 "script_lexer.l"
-return EVERY;
-	YY_BREAK
-case 3:
-YY_RULE_SETUP
-#line 475 "script_lexer.l"
-return TRIGGER;
-	YY_BREAK
-case 4:
-YY_RULE_SETUP
-#line 476 "script_lexer.l"
-return EVENT;
-	YY_BREAK
-case 5:
-YY_RULE_SETUP
-#line 477 "script_lexer.l"
-return INACTIVE;
-	YY_BREAK
-case 6:
-YY_RULE_SETUP
-#line 478 "script_lexer.l"
-return INITIALISE;
-	YY_BREAK
-case 7:
-YY_RULE_SETUP
-#line 479 "script_lexer.l"
-return LINK;
-	YY_BREAK
-case 8:
-YY_RULE_SETUP
-#line 480 "script_lexer.l"
-return REF;
-	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 481 "script_lexer.l"
-return	RET;
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 482 "script_lexer.l"
-return	lexFUNCTION;
-	YY_BREAK
-case 11:
-YY_RULE_SETUP
-#line 483 "script_lexer.l"
-{ RULE(scr_text); return TO_INT_CAST; }
-	YY_BREAK
-case 12:
-YY_RULE_SETUP
-#line 484 "script_lexer.l"
-{ RULE(scr_text); return TO_FLOAT_CAST; }
-	YY_BREAK
-case 13:
-YY_RULE_SETUP
-#line 485 "script_lexer.l"
-{ scr_lval.stype = ST_PUBLIC; return STORAGE; }
-	YY_BREAK
-case 14:
-YY_RULE_SETUP
-#line 486 "script_lexer.l"
-{ scr_lval.stype = ST_PRIVATE; return STORAGE; }
-	YY_BREAK
-case 15:
-YY_RULE_SETUP
-#line 487 "script_lexer.l"
-{ scr_lval.stype = ST_LOCAL; return STORAGE; }
-	YY_BREAK
-case 16:
-YY_RULE_SETUP
-#line 488 "script_lexer.l"
-return WHILE;
-	YY_BREAK
-case 17:
-YY_RULE_SETUP
-#line 489 "script_lexer.l"
-return IF;
-	YY_BREAK
-case 18:
-YY_RULE_SETUP
-#line 490 "script_lexer.l"
-return ELSE;
-	YY_BREAK
-case 19:
-YY_RULE_SETUP
-#line 491 "script_lexer.l"
-return EXIT;
-	YY_BREAK
-case 20:
-YY_RULE_SETUP
-#line 492 "script_lexer.l"
-return PAUSE;
-	YY_BREAK
-/* Match type keywords */
-case 21:
-YY_RULE_SETUP
-#line 495 "script_lexer.l"
-{ scr_lval.tval = VAL_VOID; return _VOID; }
-	YY_BREAK
-case 22:
-YY_RULE_SETUP
-#line 496 "script_lexer.l"
-{ scr_lval.tval = VAL_STRING; return TYPE; }
-	YY_BREAK
-case 23:
-YY_RULE_SETUP
-#line 497 "script_lexer.l"
-{ scr_lval.tval = VAL_BOOL; return TYPE; }
-	YY_BREAK
-case 24:
-YY_RULE_SETUP
-#line 498 "script_lexer.l"
-{ scr_lval.tval = VAL_INT; return TYPE; }
-	YY_BREAK
-case 25:
-YY_RULE_SETUP
-#line 499 "script_lexer.l"
-{ scr_lval.tval = VAL_FLOAT; return TYPE; }
-	YY_BREAK
-/* Match boolean values */
-case 26:
-YY_RULE_SETUP
-#line 502 "script_lexer.l"
-{ scr_lval.bval = true; return BOOLEAN_T; }
-	YY_BREAK
-case 27:
-YY_RULE_SETUP
-#line 503 "script_lexer.l"
-{ scr_lval.bval = false; return BOOLEAN_T; }
-	YY_BREAK
-/* Match increment/decrement operators */
-case 28:
-YY_RULE_SETUP
-#line 506 "script_lexer.l"
-{RULE("++"); return _INC; }
-	YY_BREAK
-case 29:
-YY_RULE_SETUP
-#line 507 "script_lexer.l"
-{RULE("++"); return _DEC; }
-	YY_BREAK
-/* Match boolean operators */
-case 30:
-YY_RULE_SETUP
-#line 510 "script_lexer.l"
-return BOOLEQUAL;
-	YY_BREAK
-case 31:
-YY_RULE_SETUP
-#line 511 "script_lexer.l"
-return NOTEQUAL;
-	YY_BREAK
-case 32:
-YY_RULE_SETUP
-#line 512 "script_lexer.l"
-return GREATEQUAL;
-	YY_BREAK
-case 33:
-YY_RULE_SETUP
-#line 513 "script_lexer.l"
-return LESSEQUAL;
-	YY_BREAK
-case 34:
-YY_RULE_SETUP
-#line 514 "script_lexer.l"
-return GREATER;
-	YY_BREAK
-case 35:
-YY_RULE_SETUP
-#line 515 "script_lexer.l"
-return LESS;
-	YY_BREAK
-case 36:
-YY_RULE_SETUP
-#line 516 "script_lexer.l"
-return _AND;
-	YY_BREAK
-case 37:
-YY_RULE_SETUP
-#line 517 "script_lexer.l"
-return _OR;
-	YY_BREAK
-case 38:
-YY_RULE_SETUP
-#line 518 "script_lexer.l"
-return _NOT;
-	YY_BREAK
-/* Start of a #define */
-case 39:
-YY_RULE_SETUP
-#line 521 "script_lexer.l"
-{ BEGIN (_DEF_MACRO); }
-	YY_BREAK
-/* Start of the #define macro name */
-case 40:
-YY_RULE_SETUP
-#line 524 "script_lexer.l"
-{
-								RULE("FLEX: matched define macro: '#define %s'", scr_text);
-
-								/* Store macro name */
-								storeMacroName(scr_text);
-
-								BEGIN (_DEF_BODY_START);
-							}
-	YY_BREAK
-case 41:
-YY_RULE_SETUP
-#line 533 "script_lexer.l"
-{ BEGIN (_DEF_BODY); }	/* Eat space between macro and body */
-	YY_BREAK
-case 42:
-YY_RULE_SETUP
-#line 535 "script_lexer.l"
-{	/* Anything until the end of the line is macro body */
-
-								RULE("FLEX: matched define body: '#define %s %s' (%d)",
-									scr_macro[scr_num_macros].scr_define_macro, scr_text, scr_num_macros + 1);
-
-								/* Store macro body */
-								storeMacroBody(scr_text);
-
-								BEGIN (INITIAL);
-							}
-	YY_BREAK
-/* Handle Includes */
-case 43:
-YY_RULE_SETUP
-#line 547 "script_lexer.l"
-{ BEGIN (_INCL); }	/* Match '#include' and skip whitespace until quotation */
-	YY_BREAK
-case 44:
-YY_RULE_SETUP
-#line 549 "script_lexer.l"
-{ 	/* got the include file name */
-								RULE("FLEX: Opening include '%s' (scr_include_stack_ptr: %u)", scr_text, scr_include_stack_ptr);
-
-								/* Set up new input buffer, push current one to stack */
-								pushInclude(scr_text);
-
-								/* Match the ending quote */
-						        BEGIN(_INCL_END_QUOTE);
-							}
-	YY_BREAK
-case 45:
-YY_RULE_SETUP
-#line 559 "script_lexer.l"
-{
-								int	line;
-								char	*text;
-								YY_BUFFER_STATE includeBuffer;
-
-								ASSERT(scr_include_stack_ptr < MAX_SCR_INCLUDE_DEPTH,
-									"FLEX:  scr_include_stack_ptr out of bounds: %u", scr_include_stack_ptr);
-
-								ASSERT(pScrInputFiles[scr_include_stack_ptr] != NULL, "FLEX: failed to load include");
-
-								RULE("FLEX: storing line number for include %u: ",
-									scr_include_stack_ptr - 1, scr_lineno);
-
-								/* Store the current line number in the current input buffer */
-								scriptGetErrorData(&line, &text);
-								scrInclLine[scr_include_stack_ptr - 1] = line;
-								scr_lineno = 1;		//we are at the beginning of the first line in a new input now
-
-								/* Create a new YY_BUFFER_STATE for this file */
-								includeBuffer = scr__create_buffer(NULL,YY_BUF_SIZE);
-
-								/* Switch to the new buffer */
-								scr__switch_to_buffer(includeBuffer);
-
-								BEGIN (INITIAL);
-							}
-	YY_BREAK
-case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(COMMENT):
-case YY_STATE_EOF(SLCOMMENT):
-case YY_STATE_EOF(QUOTE):
-case YY_STATE_EOF(_MACRO):
-case YY_STATE_EOF(_INCL):
-case YY_STATE_EOF(_INCL_END_QUOTE):
-case YY_STATE_EOF(_DEF_MACRO):
-case YY_STATE_EOF(_DEF_BODY_START):
-case YY_STATE_EOF(_DEF_BODY):
-#line 586 "script_lexer.l"
-{
-								RULE("FLEX: EOF: scr_include_stack_ptr: %u; scr_macro_stack_ptr: %d",
-									scr_include_stack_ptr, scr_macro_stack_ptr);
-
-								ASSERT(pScrInputFiles[scr_include_stack_ptr] != NULL, "FLEX: can't unload, buffer is NULL");
-
-								if ( scr_include_stack_ptr == 0 )
-								{
-									/* We finished scanning top level script or macro */
-									if(scr_macro_stack_ptr > 0)
-									{
-										RULE("FLEX: Finished parsing macro %d", scr_macro_stack_ptr);
-
-										popMacroStack();
-									}
-									else	//both stacks are empty
-									{
-										RULE("FLEX: Finished parsing all input");
-										yyterminate();
-									}
-								}
-								else
-								{
-									/* First finish scanning all macros */
-									if(scr_macro_stack_ptr > 0)
-									{
-										RULE("FLEX: Finished parsing macro %d in include %d",
-											scr_macro_stack_ptr, scr_include_stack_ptr);
-
-										popMacroStack();
-									}
-									else	//no macros, return to previous include
-									{
-										RULE("FLEX: returning from parsing include %u", scr_include_stack_ptr);
-
-										/* Free include buffer */
-										PHYSFS_close(pScrInputFiles[scr_include_stack_ptr]);
-										pScrInputFiles[scr_include_stack_ptr] = NULL;
-
-										/* Delete flex buffer */
-										scr__delete_buffer(YY_CURRENT_BUFFER );
-
-										/* Pop previous script file */
-										scr__switch_to_buffer(include_stack[scr_include_stack_ptr - 1] );
-
-										ASSERT(scr_include_stack_ptr != 0,
-											"Can't restore line number of theprevious flex input");
-
-										/* Restore line count of the previous buffer from the line count stack */
-										scr_lineno = scrInclLine[scr_include_stack_ptr - 1];
-										RULE("FLEX: restoring line number for include %u: ",
-											scr_include_stack_ptr, scr_lineno);
-
-										/* Go to the previous flex input buffer */
-										scr_include_stack_ptr--;
-									}
-								}
-					        }
-	YY_BREAK
-/* Match floating point numbers */
-case 46:
-YY_RULE_SETUP
-#line 647 "script_lexer.l"
-{
-								RULE( "float matched '%s'", scr_text);
-
-								scr_lval.fval = (float)atof(scr_text);
-
-								return FLOAT_T;
-							}
-	YY_BREAK
-/* Match integer numbers */
-case 47:
-YY_RULE_SETUP
-#line 656 "script_lexer.l"
-{ scr_lval.ival = atol(scr_text); return INTEGER; }
-	YY_BREAK
-/* Match identifiers */
-case 48:
-YY_RULE_SETUP
-#line 659 "script_lexer.l"
-{
-								char* tmpMacroBuffer;
-								RULE( "looking up '%s'", scr_text);
-
-								/* See if this identifier has been defined as a type */
-								if (scriptLookUpType(scr_text, &scr_lval.tval))	//STRUCTURESTAT etc
-								{
-
-									RULE( "'%s' is a user type", scr_text);
-
-									return TYPE;
-								}
-								/* See if this identifier has been defined as a variable */
-								else if (scriptLookUpVariable(scr_text, &scr_lval.vSymbol))
-								{
-
-									RULE( "'%s' is a var", scr_text);
-
-									return scriptGetVarToken(scr_lval.vSymbol);
-								}
-								/* See if this identifier has been defined as a constant */
-								else if (scriptLookUpConstant(scr_text, &scr_lval.cSymbol))
-								{
-
-									RULE( "'%s' is a constant", scr_text);
-
-									return scriptGetConstToken(scr_lval.cSymbol);
-								}
-								/* See if this identifier has been defined as a function */
-								else if (scriptLookUpFunction(scr_text, &scr_lval.fSymbol))
-								{
-
-									RULE( "'%s' is a function", scr_text);
-
-									return scriptGetFuncToken(scr_lval.fSymbol);
-								}
-
-								/* See if this identifier has been defined as a custom function */
-								else if (scriptLookUpCustomFunction(scr_text, &scr_lval.eSymbol))
-								{
-
-									RULE( "'%s' is a cust func", scr_text);
-
-									return scriptGetCustomFuncToken(scr_lval.eSymbol);
-								}
-
-								else if (scriptLookUpTrigger(scr_text, &scr_lval.tSymbol))
-								{
-
-									RULE( "'%s' is a trigger", scr_text);
-
-									return TRIG_SYM;
-								}
-								else if (scriptLookUpEvent(scr_text, &scr_lval.eSymbol))
-								{
-
-									RULE( "'%s' is an event", scr_text);
-
-									return EVENT_SYM;
-								}
-								else if (scriptLookUpCallback(scr_text, &scr_lval.cbSymbol))
-								{
-
-									RULE( "'%s' is a callback", scr_text);
-
-									return CALLBACK_SYM;
-								}
-								else if(scriptLoopUpMacro(scr_text, &tmpMacroBuffer))
-								{
-									RULE( "'%s' is a macro", scr_text);
-
-									ASSERT(tmpMacroBuffer != NULL,
-										"FLEX: failed to allocate memory for macro buffer %d", scr_macro_stack_ptr);
-
-									ASSERT(scr_macro_stack_ptr >= 0 && scr_macro_stack_ptr < MAX_SCR_MACRO_DEPTH,
-										"FLEX: flex macro buffer pointer out of bounds: %d", scr_macro_stack_ptr );
-
-									/* Push current buffer we are processing;
-									 * can be either macro buffer, include buffer or top level script
-									 */
-									macro_stack[scr_macro_stack_ptr] = YY_CURRENT_BUFFER;
-									scr_macro_stack_ptr++;
-
-									pScrMacroBuffer[scr_macro_stack_ptr] = tmpMacroBuffer; // Assign to the new input buffer
-
-									/* Feed flex with the new macro buffer */
-									scr__switch_to_buffer(scr__scan_string(pScrMacroBuffer[scr_macro_stack_ptr] ) );
-								}
-								else
-								{
-									RULE( "'%s' is an ident", scr_text);
-
-									sstrcpy(aText[currText], scr_text);
-									scr_lval.sval = aText[currText];
-									currText = (currText + 1) % TEXT_BUFFERS;
-									return IDENT;
-								}
-							}
-	YY_BREAK
-/* Strip macros */
-case 49:
-YY_RULE_SETUP
-#line 758 "script_lexer.l"
-{ BEGIN (_MACRO); }
-	YY_BREAK
-case 50:
-/* rule 50 can match eol */
-YY_RULE_SETUP
-#line 759 "script_lexer.l"
-{ BEGIN (INITIAL); }
-	YY_BREAK
-case 51:
-YY_RULE_SETUP
-#line 760 "script_lexer.l"
-;
-	YY_BREAK
-/* Match quoted text */
-case 52:
-YY_RULE_SETUP
-#line 763 "script_lexer.l"
-{ BEGIN (QUOTE); }
-	YY_BREAK
-case 53:
-YY_RULE_SETUP
-#line 764 "script_lexer.l"
-{ BEGIN (INITIAL); }
-	YY_BREAK
-case 54:
-YY_RULE_SETUP
-#line 765 "script_lexer.l"
-{
-								sstrcpy(aText[currText], scr_text);
-								scr_lval.sval = aText[currText];
-								currText = (currText + 1) % TEXT_BUFFERS;
-								//debug(LOG_SCRIPT, "%s is QTEXT", scr_text);
-								return QTEXT;
-							}
-	YY_BREAK
-/* Skip white space */
-case 55:
-/* rule 55 can match eol */
-YY_RULE_SETUP
-#line 774 "script_lexer.l"
-;
-	YY_BREAK
-/* Strip comments */
-case 56:
-YY_RULE_SETUP
-#line 777 "script_lexer.l"
-{ inComment=true; BEGIN (COMMENT); }
-	YY_BREAK
-case 57:
-#line 779 "script_lexer.l"
-case 58:
-/* rule 58 can match eol */
-YY_RULE_SETUP
-#line 779 "script_lexer.l"
-{ inComment=false; BEGIN (INITIAL); }
-	YY_BREAK
-case 59:
-#line 781 "script_lexer.l"
-case 60:
-/* rule 60 can match eol */
-YY_RULE_SETUP
-#line 781 "script_lexer.l"
-;
-	YY_BREAK
-/* Strip single line comments */
-case 61:
-YY_RULE_SETUP
-#line 784 "script_lexer.l"
-{ BEGIN (SLCOMMENT); }
-	YY_BREAK
-case 62:
-/* rule 62 can match eol */
-YY_RULE_SETUP
-#line 785 "script_lexer.l"
-{ BEGIN (INITIAL); }
-	YY_BREAK
-case 63:
-YY_RULE_SETUP
-#line 786 "script_lexer.l"
-;
-	YY_BREAK
-/* Match anything that's been missed and pass it as a char */
-case 64:
-YY_RULE_SETUP
-#line 789 "script_lexer.l"
-return scr_text[0];
-	YY_BREAK
-case 65:
-YY_RULE_SETUP
-#line 791 "script_lexer.l"
-ECHO;
-	YY_BREAK
-#line 1986 "script_lexer.lex.c"
-
-	case YY_END_OF_BUFFER:
-		{
-		/* Amount of text matched not including the EOB char. */
-		int yy_amount_of_matched_text = (int) (yy_cp - (yytext_ptr)) - 1;
-
-		/* Undo the effects of YY_DO_BEFORE_ACTION. */
-		*yy_cp = (yy_hold_char);
-		YY_RESTORE_YY_MORE_OFFSET
-
-		if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_NEW )
-			{
-			/* We're scanning a new file or input source.  It's
-			 * possible that this happened because the user
-			 * just pointed scr_in at a new source and called
-			 * scr_lex().  If so, then we have to assure
-			 * consistency between YY_CURRENT_BUFFER and our
-			 * globals.  Here is the right place to do so, because
-			 * this is the first action (other than possibly a
-			 * back-up) that will match for the new input source.
-			 */
-			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
-			YY_CURRENT_BUFFER_LVALUE->yy_input_file = scr_in;
-			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
-			}
-
-		/* Note that here we test for yy_c_buf_p "<=" to the position
-		 * of the first EOB in the buffer, since yy_c_buf_p will
-		 * already have been incremented past the NUL character
-		 * (since all states make transitions on EOB to the
-		 * end-of-buffer state).  Contrast this with the test
-		 * in input().
-		 */
-		if ( (yy_c_buf_p) <= &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
-			{ /* This was really a NUL. */
-			yy_state_type yy_next_state;
-
-			(yy_c_buf_p) = (yytext_ptr) + yy_amount_of_matched_text;
-
-			yy_current_state = yy_get_previous_state(  );
-
-			/* Okay, we're now positioned to make the NUL
-			 * transition.  We couldn't have
-			 * yy_get_previous_state() go ahead and do it
-			 * for us because it doesn't know how to deal
-			 * with the possibility of jamming (and we don't
-			 * want to build jamming into it because then it
-			 * will run more slowly).
-			 */
-
-			yy_next_state = yy_try_NUL_trans( yy_current_state );
-
-			yy_bp = (yytext_ptr) + YY_MORE_ADJ;
-
-			if ( yy_next_state )
 				{
-				/* Consume the NUL. */
-				yy_cp = ++(yy_c_buf_p);
-				yy_current_state = yy_next_state;
-				goto yy_match;
+					scr_lineno++;
 				}
-
-			else
-				{
-				yy_cp = (yy_c_buf_p);
-				goto yy_find_action;
-				}
-			}
-
-		else switch ( yy_get_next_buffer(  ) )
-			{
-			case EOB_ACT_END_OF_FILE:
-				{
-				(yy_did_buffer_switch_on_eof) = 0;
-
-				if ( scr_wrap( ) )
-					{
-					/* Note: because we've taken care in
-					 * yy_get_next_buffer() to have set up
-					 * scr_text, we can now set up
-					 * yy_c_buf_p so that if some total
-					 * hoser (like flex itself) wants to
-					 * call the scanner after we return the
-					 * YY_NULL, it'll still work - another
-					 * YY_NULL will get returned.
-					 */
-					(yy_c_buf_p) = (yytext_ptr) + YY_MORE_ADJ;
-
-					yy_act = YY_STATE_EOF(YY_START);
-					goto do_action;
-					}
-
-				else
-					{
-					if ( ! (yy_did_buffer_switch_on_eof) )
-						YY_NEW_FILE;
-					}
-				break;
-				}
-
-			case EOB_ACT_CONTINUE_SCAN:
-				(yy_c_buf_p) =
-					(yytext_ptr) + yy_amount_of_matched_text;
-
-				yy_current_state = yy_get_previous_state(  );
-
-				yy_cp = (yy_c_buf_p);
-				yy_bp = (yytext_ptr) + YY_MORE_ADJ;
-				goto yy_match;
-
-			case EOB_ACT_LAST_MATCH:
-				(yy_c_buf_p) =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)];
-
-				yy_current_state = yy_get_previous_state(  );
-
-				yy_cp = (yy_c_buf_p);
-				yy_bp = (yytext_ptr) + YY_MORE_ADJ;
-				goto yy_find_action;
-			}
-		break;
+			;
 		}
 
-	default:
-		YY_FATAL_ERROR(
-			"fatal flex scanner internal error--no action found" );
-	} /* end of action switch */
-		} /* end of scanning one token */
+	do_action:	/* This label is used only to access EOF actions. */
+
+		switch ( yy_act )
+		{
+			/* beginning of action switch */
+			case 0: /* must back up */
+				/* undo the effects of YY_DO_BEFORE_ACTION */
+				*yy_cp = (yy_hold_char);
+				yy_cp = (yy_last_accepting_cpos);
+				yy_current_state = (yy_last_accepting_state);
+				goto yy_find_action;
+
+			case 1:
+				YY_RULE_SETUP
+#line 473 "script_lexer.l"
+				return WAIT;
+				YY_BREAK
+			case 2:
+				YY_RULE_SETUP
+#line 474 "script_lexer.l"
+				return EVERY;
+				YY_BREAK
+			case 3:
+				YY_RULE_SETUP
+#line 475 "script_lexer.l"
+				return TRIGGER;
+				YY_BREAK
+			case 4:
+				YY_RULE_SETUP
+#line 476 "script_lexer.l"
+				return EVENT;
+				YY_BREAK
+			case 5:
+				YY_RULE_SETUP
+#line 477 "script_lexer.l"
+				return INACTIVE;
+				YY_BREAK
+			case 6:
+				YY_RULE_SETUP
+#line 478 "script_lexer.l"
+				return INITIALISE;
+				YY_BREAK
+			case 7:
+				YY_RULE_SETUP
+#line 479 "script_lexer.l"
+				return LINK;
+				YY_BREAK
+			case 8:
+				YY_RULE_SETUP
+#line 480 "script_lexer.l"
+				return REF;
+				YY_BREAK
+			case 9:
+				YY_RULE_SETUP
+#line 481 "script_lexer.l"
+				return	RET;
+				YY_BREAK
+			case 10:
+				YY_RULE_SETUP
+#line 482 "script_lexer.l"
+				return	lexFUNCTION;
+				YY_BREAK
+			case 11:
+				YY_RULE_SETUP
+#line 483 "script_lexer.l"
+				{ RULE(scr_text); return TO_INT_CAST; }
+				YY_BREAK
+			case 12:
+				YY_RULE_SETUP
+#line 484 "script_lexer.l"
+				{ RULE(scr_text); return TO_FLOAT_CAST; }
+				YY_BREAK
+			case 13:
+				YY_RULE_SETUP
+#line 485 "script_lexer.l"
+				{ scr_lval.stype = ST_PUBLIC; return STORAGE; }
+				YY_BREAK
+			case 14:
+				YY_RULE_SETUP
+#line 486 "script_lexer.l"
+				{ scr_lval.stype = ST_PRIVATE; return STORAGE; }
+				YY_BREAK
+			case 15:
+				YY_RULE_SETUP
+#line 487 "script_lexer.l"
+				{ scr_lval.stype = ST_LOCAL; return STORAGE; }
+				YY_BREAK
+			case 16:
+				YY_RULE_SETUP
+#line 488 "script_lexer.l"
+				return WHILE;
+				YY_BREAK
+			case 17:
+				YY_RULE_SETUP
+#line 489 "script_lexer.l"
+				return IF;
+				YY_BREAK
+			case 18:
+				YY_RULE_SETUP
+#line 490 "script_lexer.l"
+				return ELSE;
+				YY_BREAK
+			case 19:
+				YY_RULE_SETUP
+#line 491 "script_lexer.l"
+				return EXIT;
+				YY_BREAK
+			case 20:
+				YY_RULE_SETUP
+#line 492 "script_lexer.l"
+				return PAUSE;
+				YY_BREAK
+			/* Match type keywords */
+			case 21:
+				YY_RULE_SETUP
+#line 495 "script_lexer.l"
+				{ scr_lval.tval = VAL_VOID; return _VOID; }
+				YY_BREAK
+			case 22:
+				YY_RULE_SETUP
+#line 496 "script_lexer.l"
+				{ scr_lval.tval = VAL_STRING; return TYPE; }
+				YY_BREAK
+			case 23:
+				YY_RULE_SETUP
+#line 497 "script_lexer.l"
+				{ scr_lval.tval = VAL_BOOL; return TYPE; }
+				YY_BREAK
+			case 24:
+				YY_RULE_SETUP
+#line 498 "script_lexer.l"
+				{ scr_lval.tval = VAL_INT; return TYPE; }
+				YY_BREAK
+			case 25:
+				YY_RULE_SETUP
+#line 499 "script_lexer.l"
+				{ scr_lval.tval = VAL_FLOAT; return TYPE; }
+				YY_BREAK
+			/* Match boolean values */
+			case 26:
+				YY_RULE_SETUP
+#line 502 "script_lexer.l"
+				{ scr_lval.bval = true; return BOOLEAN_T; }
+				YY_BREAK
+			case 27:
+				YY_RULE_SETUP
+#line 503 "script_lexer.l"
+				{ scr_lval.bval = false; return BOOLEAN_T; }
+				YY_BREAK
+			/* Match increment/decrement operators */
+			case 28:
+				YY_RULE_SETUP
+#line 506 "script_lexer.l"
+				{RULE("++"); return _INC; }
+				YY_BREAK
+			case 29:
+				YY_RULE_SETUP
+#line 507 "script_lexer.l"
+				{RULE("++"); return _DEC; }
+				YY_BREAK
+			/* Match boolean operators */
+			case 30:
+				YY_RULE_SETUP
+#line 510 "script_lexer.l"
+				return BOOLEQUAL;
+				YY_BREAK
+			case 31:
+				YY_RULE_SETUP
+#line 511 "script_lexer.l"
+				return NOTEQUAL;
+				YY_BREAK
+			case 32:
+				YY_RULE_SETUP
+#line 512 "script_lexer.l"
+				return GREATEQUAL;
+				YY_BREAK
+			case 33:
+				YY_RULE_SETUP
+#line 513 "script_lexer.l"
+				return LESSEQUAL;
+				YY_BREAK
+			case 34:
+				YY_RULE_SETUP
+#line 514 "script_lexer.l"
+				return GREATER;
+				YY_BREAK
+			case 35:
+				YY_RULE_SETUP
+#line 515 "script_lexer.l"
+				return LESS;
+				YY_BREAK
+			case 36:
+				YY_RULE_SETUP
+#line 516 "script_lexer.l"
+				return _AND;
+				YY_BREAK
+			case 37:
+				YY_RULE_SETUP
+#line 517 "script_lexer.l"
+				return _OR;
+				YY_BREAK
+			case 38:
+				YY_RULE_SETUP
+#line 518 "script_lexer.l"
+				return _NOT;
+				YY_BREAK
+			/* Start of a #define */
+			case 39:
+				YY_RULE_SETUP
+#line 521 "script_lexer.l"
+				{ BEGIN (_DEF_MACRO); }
+				YY_BREAK
+			/* Start of the #define macro name */
+			case 40:
+				YY_RULE_SETUP
+#line 524 "script_lexer.l"
+				{
+					RULE("FLEX: matched define macro: '#define %s'", scr_text);
+
+					/* Store macro name */
+					storeMacroName(scr_text);
+
+					BEGIN (_DEF_BODY_START);
+				}
+				YY_BREAK
+			case 41:
+				YY_RULE_SETUP
+#line 533 "script_lexer.l"
+				{ BEGIN (_DEF_BODY); }	/* Eat space between macro and body */
+				YY_BREAK
+			case 42:
+				YY_RULE_SETUP
+#line 535 "script_lexer.l"
+				{
+					/* Anything until the end of the line is macro body */
+
+					RULE("FLEX: matched define body: '#define %s %s' (%d)",
+					scr_macro[scr_num_macros].scr_define_macro, scr_text, scr_num_macros + 1);
+
+					/* Store macro body */
+					storeMacroBody(scr_text);
+
+					BEGIN (INITIAL);
+				}
+				YY_BREAK
+			/* Handle Includes */
+			case 43:
+				YY_RULE_SETUP
+#line 547 "script_lexer.l"
+				{ BEGIN (_INCL); }	/* Match '#include' and skip whitespace until quotation */
+				YY_BREAK
+			case 44:
+				YY_RULE_SETUP
+#line 549 "script_lexer.l"
+				{
+					/* got the include file name */
+					RULE("FLEX: Opening include '%s' (scr_include_stack_ptr: %u)", scr_text, scr_include_stack_ptr);
+
+					/* Set up new input buffer, push current one to stack */
+					pushInclude(scr_text);
+
+					/* Match the ending quote */
+					BEGIN(_INCL_END_QUOTE);
+				}
+				YY_BREAK
+			case 45:
+				YY_RULE_SETUP
+#line 559 "script_lexer.l"
+				{
+					int	line;
+					char	*text;
+					YY_BUFFER_STATE includeBuffer;
+
+					ASSERT(scr_include_stack_ptr < MAX_SCR_INCLUDE_DEPTH,
+					"FLEX:  scr_include_stack_ptr out of bounds: %u", scr_include_stack_ptr);
+
+					ASSERT(pScrInputFiles[scr_include_stack_ptr] != NULL, "FLEX: failed to load include");
+
+					RULE("FLEX: storing line number for include %u: ",
+					scr_include_stack_ptr - 1, scr_lineno);
+
+					/* Store the current line number in the current input buffer */
+					scriptGetErrorData(&line, &text);
+					scrInclLine[scr_include_stack_ptr - 1] = line;
+					scr_lineno = 1;		//we are at the beginning of the first line in a new input now
+
+					/* Create a new YY_BUFFER_STATE for this file */
+					includeBuffer = scr__create_buffer(NULL, YY_BUF_SIZE);
+
+					/* Switch to the new buffer */
+					scr__switch_to_buffer(includeBuffer);
+
+					BEGIN (INITIAL);
+				}
+				YY_BREAK
+			case YY_STATE_EOF(INITIAL):
+			case YY_STATE_EOF(COMMENT):
+			case YY_STATE_EOF(SLCOMMENT):
+			case YY_STATE_EOF(QUOTE):
+			case YY_STATE_EOF(_MACRO):
+			case YY_STATE_EOF(_INCL):
+			case YY_STATE_EOF(_INCL_END_QUOTE):
+			case YY_STATE_EOF(_DEF_MACRO):
+			case YY_STATE_EOF(_DEF_BODY_START):
+			case YY_STATE_EOF(_DEF_BODY):
+#line 586 "script_lexer.l"
+				{
+					RULE("FLEX: EOF: scr_include_stack_ptr: %u; scr_macro_stack_ptr: %d",
+						 scr_include_stack_ptr, scr_macro_stack_ptr);
+
+					ASSERT(pScrInputFiles[scr_include_stack_ptr] != NULL, "FLEX: can't unload, buffer is NULL");
+
+					if ( scr_include_stack_ptr == 0 )
+					{
+						/* We finished scanning top level script or macro */
+						if(scr_macro_stack_ptr > 0)
+						{
+							RULE("FLEX: Finished parsing macro %d", scr_macro_stack_ptr);
+
+							popMacroStack();
+						}
+						else	//both stacks are empty
+						{
+							RULE("FLEX: Finished parsing all input");
+							yyterminate();
+						}
+					}
+					else
+					{
+						/* First finish scanning all macros */
+						if(scr_macro_stack_ptr > 0)
+						{
+							RULE("FLEX: Finished parsing macro %d in include %d",
+								 scr_macro_stack_ptr, scr_include_stack_ptr);
+
+							popMacroStack();
+						}
+						else	//no macros, return to previous include
+						{
+							RULE("FLEX: returning from parsing include %u", scr_include_stack_ptr);
+
+							/* Free include buffer */
+							PHYSFS_close(pScrInputFiles[scr_include_stack_ptr]);
+							pScrInputFiles[scr_include_stack_ptr] = NULL;
+
+							/* Delete flex buffer */
+							scr__delete_buffer(YY_CURRENT_BUFFER );
+
+							/* Pop previous script file */
+							scr__switch_to_buffer(include_stack[scr_include_stack_ptr - 1] );
+
+							ASSERT(scr_include_stack_ptr != 0,
+								   "Can't restore line number of theprevious flex input");
+
+							/* Restore line count of the previous buffer from the line count stack */
+							scr_lineno = scrInclLine[scr_include_stack_ptr - 1];
+							RULE("FLEX: restoring line number for include %u: ",
+								 scr_include_stack_ptr, scr_lineno);
+
+							/* Go to the previous flex input buffer */
+							scr_include_stack_ptr--;
+						}
+					}
+				}
+				YY_BREAK
+			/* Match floating point numbers */
+			case 46:
+				YY_RULE_SETUP
+#line 647 "script_lexer.l"
+				{
+					RULE( "float matched '%s'", scr_text);
+
+					scr_lval.fval = (float)atof(scr_text);
+
+					return FLOAT_T;
+				}
+				YY_BREAK
+			/* Match integer numbers */
+			case 47:
+				YY_RULE_SETUP
+#line 656 "script_lexer.l"
+				{ scr_lval.ival = atol(scr_text); return INTEGER; }
+				YY_BREAK
+			/* Match identifiers */
+			case 48:
+				YY_RULE_SETUP
+#line 659 "script_lexer.l"
+				{
+					char* tmpMacroBuffer;
+					RULE( "looking up '%s'", scr_text);
+
+					/* See if this identifier has been defined as a type */
+					if (scriptLookUpType(scr_text, &scr_lval.tval))	//STRUCTURESTAT etc
+					{
+
+						RULE( "'%s' is a user type", scr_text);
+
+						return TYPE;
+					}
+					/* See if this identifier has been defined as a variable */
+					else if (scriptLookUpVariable(scr_text, &scr_lval.vSymbol))
+					{
+
+						RULE( "'%s' is a var", scr_text);
+
+						return scriptGetVarToken(scr_lval.vSymbol);
+					}
+					/* See if this identifier has been defined as a constant */
+					else if (scriptLookUpConstant(scr_text, &scr_lval.cSymbol))
+					{
+
+						RULE( "'%s' is a constant", scr_text);
+
+						return scriptGetConstToken(scr_lval.cSymbol);
+					}
+					/* See if this identifier has been defined as a function */
+					else if (scriptLookUpFunction(scr_text, &scr_lval.fSymbol))
+					{
+
+						RULE( "'%s' is a function", scr_text);
+
+						return scriptGetFuncToken(scr_lval.fSymbol);
+					}
+
+					/* See if this identifier has been defined as a custom function */
+					else if (scriptLookUpCustomFunction(scr_text, &scr_lval.eSymbol))
+					{
+
+						RULE( "'%s' is a cust func", scr_text);
+
+						return scriptGetCustomFuncToken(scr_lval.eSymbol);
+					}
+
+					else if (scriptLookUpTrigger(scr_text, &scr_lval.tSymbol))
+					{
+
+						RULE( "'%s' is a trigger", scr_text);
+
+						return TRIG_SYM;
+					}
+					else if (scriptLookUpEvent(scr_text, &scr_lval.eSymbol))
+					{
+
+						RULE( "'%s' is an event", scr_text);
+
+						return EVENT_SYM;
+					}
+					else if (scriptLookUpCallback(scr_text, &scr_lval.cbSymbol))
+					{
+
+						RULE( "'%s' is a callback", scr_text);
+
+						return CALLBACK_SYM;
+					}
+					else if(scriptLoopUpMacro(scr_text, &tmpMacroBuffer))
+					{
+						RULE( "'%s' is a macro", scr_text);
+
+						ASSERT(tmpMacroBuffer != NULL,
+						"FLEX: failed to allocate memory for macro buffer %d", scr_macro_stack_ptr);
+
+						ASSERT(scr_macro_stack_ptr >= 0 && scr_macro_stack_ptr < MAX_SCR_MACRO_DEPTH,
+						"FLEX: flex macro buffer pointer out of bounds: %d", scr_macro_stack_ptr );
+
+						/* Push current buffer we are processing;
+						 * can be either macro buffer, include buffer or top level script
+						 */
+						macro_stack[scr_macro_stack_ptr] = YY_CURRENT_BUFFER;
+						scr_macro_stack_ptr++;
+
+						pScrMacroBuffer[scr_macro_stack_ptr] = tmpMacroBuffer; // Assign to the new input buffer
+
+						/* Feed flex with the new macro buffer */
+						scr__switch_to_buffer(scr__scan_string(pScrMacroBuffer[scr_macro_stack_ptr] ) );
+					}
+					else
+					{
+						RULE( "'%s' is an ident", scr_text);
+
+						sstrcpy(aText[currText], scr_text);
+						scr_lval.sval = aText[currText];
+						currText = (currText + 1) % TEXT_BUFFERS;
+						return IDENT;
+					}
+				}
+				YY_BREAK
+			/* Strip macros */
+			case 49:
+				YY_RULE_SETUP
+#line 758 "script_lexer.l"
+				{ BEGIN (_MACRO); }
+				YY_BREAK
+			case 50:
+				/* rule 50 can match eol */
+				YY_RULE_SETUP
+#line 759 "script_lexer.l"
+				{ BEGIN (INITIAL); }
+				YY_BREAK
+			case 51:
+				YY_RULE_SETUP
+#line 760 "script_lexer.l"
+				;
+				YY_BREAK
+			/* Match quoted text */
+			case 52:
+				YY_RULE_SETUP
+#line 763 "script_lexer.l"
+				{ BEGIN (QUOTE); }
+				YY_BREAK
+			case 53:
+				YY_RULE_SETUP
+#line 764 "script_lexer.l"
+				{ BEGIN (INITIAL); }
+				YY_BREAK
+			case 54:
+				YY_RULE_SETUP
+#line 765 "script_lexer.l"
+				{
+					sstrcpy(aText[currText], scr_text);
+					scr_lval.sval = aText[currText];
+					currText = (currText + 1) % TEXT_BUFFERS;
+					//debug(LOG_SCRIPT, "%s is QTEXT", scr_text);
+					return QTEXT;
+				}
+				YY_BREAK
+			/* Skip white space */
+			case 55:
+				/* rule 55 can match eol */
+				YY_RULE_SETUP
+#line 774 "script_lexer.l"
+				;
+				YY_BREAK
+			/* Strip comments */
+			case 56:
+				YY_RULE_SETUP
+#line 777 "script_lexer.l"
+				{ inComment = true; BEGIN (COMMENT); }
+				YY_BREAK
+			case 57:
+#line 779 "script_lexer.l"
+			case 58:
+				/* rule 58 can match eol */
+				YY_RULE_SETUP
+#line 779 "script_lexer.l"
+				{ inComment = false; BEGIN (INITIAL); }
+				YY_BREAK
+			case 59:
+#line 781 "script_lexer.l"
+			case 60:
+				/* rule 60 can match eol */
+				YY_RULE_SETUP
+#line 781 "script_lexer.l"
+				;
+				YY_BREAK
+			/* Strip single line comments */
+			case 61:
+				YY_RULE_SETUP
+#line 784 "script_lexer.l"
+				{ BEGIN (SLCOMMENT); }
+				YY_BREAK
+			case 62:
+				/* rule 62 can match eol */
+				YY_RULE_SETUP
+#line 785 "script_lexer.l"
+				{ BEGIN (INITIAL); }
+				YY_BREAK
+			case 63:
+				YY_RULE_SETUP
+#line 786 "script_lexer.l"
+				;
+				YY_BREAK
+			/* Match anything that's been missed and pass it as a char */
+			case 64:
+				YY_RULE_SETUP
+#line 789 "script_lexer.l"
+				return scr_text[0];
+				YY_BREAK
+			case 65:
+				YY_RULE_SETUP
+#line 791 "script_lexer.l"
+				ECHO;
+				YY_BREAK
+#line 1986 "script_lexer.lex.c"
+
+			case YY_END_OF_BUFFER:
+			{
+				/* Amount of text matched not including the EOB char. */
+				int yy_amount_of_matched_text = (int) (yy_cp - (yytext_ptr)) - 1;
+
+				/* Undo the effects of YY_DO_BEFORE_ACTION. */
+				*yy_cp = (yy_hold_char);
+				YY_RESTORE_YY_MORE_OFFSET
+
+				if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_NEW )
+				{
+					/* We're scanning a new file or input source.  It's
+					 * possible that this happened because the user
+					 * just pointed scr_in at a new source and called
+					 * scr_lex().  If so, then we have to assure
+					 * consistency between YY_CURRENT_BUFFER and our
+					 * globals.  Here is the right place to do so, because
+					 * this is the first action (other than possibly a
+					 * back-up) that will match for the new input source.
+					 */
+					(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+					YY_CURRENT_BUFFER_LVALUE->yy_input_file = scr_in;
+					YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
+				}
+
+				/* Note that here we test for yy_c_buf_p "<=" to the position
+				 * of the first EOB in the buffer, since yy_c_buf_p will
+				 * already have been incremented past the NUL character
+				 * (since all states make transitions on EOB to the
+				 * end-of-buffer state).  Contrast this with the test
+				 * in input().
+				 */
+				if ( (yy_c_buf_p) <= &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
+				{
+					/* This was really a NUL. */
+					yy_state_type yy_next_state;
+
+					(yy_c_buf_p) = (yytext_ptr) + yy_amount_of_matched_text;
+
+					yy_current_state = yy_get_previous_state(  );
+
+					/* Okay, we're now positioned to make the NUL
+					 * transition.  We couldn't have
+					 * yy_get_previous_state() go ahead and do it
+					 * for us because it doesn't know how to deal
+					 * with the possibility of jamming (and we don't
+					 * want to build jamming into it because then it
+					 * will run more slowly).
+					 */
+
+					yy_next_state = yy_try_NUL_trans( yy_current_state );
+
+					yy_bp = (yytext_ptr) + YY_MORE_ADJ;
+
+					if ( yy_next_state )
+					{
+						/* Consume the NUL. */
+						yy_cp = ++(yy_c_buf_p);
+						yy_current_state = yy_next_state;
+						goto yy_match;
+					}
+
+					else
+					{
+						yy_cp = (yy_c_buf_p);
+						goto yy_find_action;
+					}
+				}
+
+				else switch ( yy_get_next_buffer(  ) )
+					{
+						case EOB_ACT_END_OF_FILE:
+						{
+							(yy_did_buffer_switch_on_eof) = 0;
+
+							if ( scr_wrap( ) )
+							{
+								/* Note: because we've taken care in
+								 * yy_get_next_buffer() to have set up
+								 * scr_text, we can now set up
+								 * yy_c_buf_p so that if some total
+								 * hoser (like flex itself) wants to
+								 * call the scanner after we return the
+								 * YY_NULL, it'll still work - another
+								 * YY_NULL will get returned.
+								 */
+								(yy_c_buf_p) = (yytext_ptr) + YY_MORE_ADJ;
+
+								yy_act = YY_STATE_EOF(YY_START);
+								goto do_action;
+							}
+
+							else
+							{
+								if ( ! (yy_did_buffer_switch_on_eof) )
+								{
+									YY_NEW_FILE;
+								}
+							}
+							break;
+						}
+
+						case EOB_ACT_CONTINUE_SCAN:
+							(yy_c_buf_p) =
+								(yytext_ptr) + yy_amount_of_matched_text;
+
+							yy_current_state = yy_get_previous_state(  );
+
+							yy_cp = (yy_c_buf_p);
+							yy_bp = (yytext_ptr) + YY_MORE_ADJ;
+							goto yy_match;
+
+						case EOB_ACT_LAST_MATCH:
+							(yy_c_buf_p) =
+								&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)];
+
+							yy_current_state = yy_get_previous_state(  );
+
+							yy_cp = (yy_c_buf_p);
+							yy_bp = (yytext_ptr) + YY_MORE_ADJ;
+							goto yy_find_action;
+					}
+				break;
+			}
+
+			default:
+				YY_FATAL_ERROR(
+					"fatal flex scanner internal error--no action found" );
+		} /* end of action switch */
+	} /* end of scanning one token */
 } /* end of scr_lex */
 
 /* yy_get_next_buffer - try to read in a new buffer
@@ -2122,33 +2155,34 @@ ECHO;
  */
 static int yy_get_next_buffer (void)
 {
-    	register char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
+	register char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
 	register char *source = (yytext_ptr);
 	register int number_to_move, i;
 	int ret_val;
 
 	if ( (yy_c_buf_p) > &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] )
 		YY_FATAL_ERROR(
-		"fatal flex scanner internal error--end of buffer missed" );
+			"fatal flex scanner internal error--end of buffer missed" );
 
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_fill_buffer == 0 )
-		{ /* Don't try to fill the buffer, so this is an EOF. */
+	{
+		/* Don't try to fill the buffer, so this is an EOF. */
 		if ( (yy_c_buf_p) - (yytext_ptr) - YY_MORE_ADJ == 1 )
-			{
+		{
 			/* We matched a single character, the EOB, so
 			 * treat this as a final EOF.
 			 */
 			return EOB_ACT_END_OF_FILE;
-			}
+		}
 
 		else
-			{
+		{
 			/* We matched some text prior to the EOB, first
 			 * process it.
 			 */
 			return EOB_ACT_LAST_MATCH;
-			}
 		}
+	}
 
 	/* Try to read more data. */
 
@@ -2156,21 +2190,26 @@ static int yy_get_next_buffer (void)
 	number_to_move = (int) ((yy_c_buf_p) - (yytext_ptr)) - 1;
 
 	for ( i = 0; i < number_to_move; ++i )
+	{
 		*(dest++) = *(source++);
+	}
 
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_EOF_PENDING )
 		/* don't do the read, it's not guaranteed to return an EOF,
 		 * just force an EOF
 		 */
+	{
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars) = 0;
+	}
 
 	else
-		{
-			yy_size_t num_to_read =
+	{
+		yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
-			{ /* Not enough room in the buffer - grow it. */
+		{
+			/* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
 			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
@@ -2179,68 +2218,81 @@ static int yy_get_next_buffer (void)
 				(int) ((yy_c_buf_p) - b->yy_ch_buf);
 
 			if ( b->yy_is_our_buffer )
-				{
+			{
 				yy_size_t new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
+				{
 					b->yy_buf_size += b->yy_buf_size / 8;
+				}
 				else
+				{
 					b->yy_buf_size *= 2;
+				}
 
 				b->yy_ch_buf = (char *)
-					/* Include room in for 2 EOB chars. */
-					scr_realloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
-				}
+							   /* Include room in for 2 EOB chars. */
+							   scr_realloc((void *) b->yy_ch_buf, b->yy_buf_size + 2  );
+			}
 			else
 				/* Can't grow it, we don't own it. */
+			{
 				b->yy_ch_buf = 0;
+			}
 
 			if ( ! b->yy_ch_buf )
 				YY_FATAL_ERROR(
-				"fatal error - scanner input buffer overflow" );
+					"fatal error - scanner input buffer overflow" );
 
 			(yy_c_buf_p) = &b->yy_ch_buf[yy_c_buf_p_offset];
 
 			num_to_read = YY_CURRENT_BUFFER_LVALUE->yy_buf_size -
-						number_to_move - 1;
+						  number_to_move - 1;
 
-			}
+		}
 
 		if ( num_to_read > YY_READ_BUF_SIZE )
+		{
 			num_to_read = YY_READ_BUF_SIZE;
+		}
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), num_to_read );
+				  (yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
-		}
+	}
 
 	if ( (yy_n_chars) == 0 )
-		{
+	{
 		if ( number_to_move == YY_MORE_ADJ )
-			{
+		{
 			ret_val = EOB_ACT_END_OF_FILE;
 			scr_restart(scr_in  );
-			}
+		}
 
 		else
-			{
+		{
 			ret_val = EOB_ACT_LAST_MATCH;
 			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status =
 				YY_BUFFER_EOF_PENDING;
-			}
 		}
+	}
 
 	else
+	{
 		ret_val = EOB_ACT_CONTINUE_SCAN;
+	}
 
-	if ((yy_size_t) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
+	if ((yy_size_t) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size)
+	{
 		/* Extend the array by 50%, plus the number we really need. */
 		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
-		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) scr_realloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
+		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) scr_realloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf, new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
+		{
 			YY_FATAL_ERROR( "out of dynamic memory in yy_get_next_buffer()" );
+		}
 	}
 
 	(yy_n_chars) += number_to_move;
@@ -2254,29 +2306,31 @@ static int yy_get_next_buffer (void)
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
 
-    static yy_state_type yy_get_previous_state (void)
+static yy_state_type yy_get_previous_state (void)
 {
 	register yy_state_type yy_current_state;
 	register char *yy_cp;
-    
+
 	yy_current_state = (yy_start);
 
 	for ( yy_cp = (yytext_ptr) + YY_MORE_ADJ; yy_cp < (yy_c_buf_p); ++yy_cp )
-		{
+	{
 		register YY_CHAR yy_c = (*yy_cp ? yy_ec[YY_SC_TO_UI(*yy_cp)] : 1);
 		if ( yy_accept[yy_current_state] )
-			{
+		{
 			(yy_last_accepting_state) = yy_current_state;
 			(yy_last_accepting_cpos) = yy_cp;
-			}
+		}
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
-			{
+		{
 			yy_current_state = (int) yy_def[yy_current_state];
 			if ( yy_current_state >= 251 )
+			{
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
-		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 		}
+		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+	}
 
 	return yy_current_state;
 }
@@ -2286,58 +2340,63 @@ static int yy_get_next_buffer (void)
  * synopsis
  *	next_state = yy_try_NUL_trans( current_state );
  */
-    static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state )
+static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state )
 {
 	register int yy_is_jam;
-    	register char *yy_cp = (yy_c_buf_p);
+	register char *yy_cp = (yy_c_buf_p);
 
 	register YY_CHAR yy_c = 1;
 	if ( yy_accept[yy_current_state] )
-		{
+	{
 		(yy_last_accepting_state) = yy_current_state;
 		(yy_last_accepting_cpos) = yy_cp;
-		}
+	}
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
-		{
+	{
 		yy_current_state = (int) yy_def[yy_current_state];
 		if ( yy_current_state >= 251 )
+		{
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
+	}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 250);
 
-		return yy_is_jam ? 0 : yy_current_state;
+	return yy_is_jam ? 0 : yy_current_state;
 }
 
 #ifndef YY_NO_INPUT
 #ifdef __cplusplus
-    static int yyinput (void)
+static int yyinput (void)
 #else
-    static int input  (void)
+static int input  (void)
 #endif
 
 {
 	int c;
-    
+
 	*(yy_c_buf_p) = (yy_hold_char);
 
 	if ( *(yy_c_buf_p) == YY_END_OF_BUFFER_CHAR )
-		{
+	{
 		/* yy_c_buf_p now points to the character we want to return.
 		 * If this occurs *before* the EOB characters, then it's a
 		 * valid NUL; if not, then we've hit the end of the buffer.
 		 */
 		if ( (yy_c_buf_p) < &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
 			/* This was really a NUL. */
+		{
 			*(yy_c_buf_p) = '\0';
+		}
 
 		else
-			{ /* need more input */
+		{
+			/* need more input */
 			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
-				{
+			{
 				case EOB_ACT_LAST_MATCH:
 					/* This happens because yy_g_n_b()
 					 * sees that we've accumulated a
@@ -2352,37 +2411,43 @@ static int yy_get_next_buffer (void)
 					/* Reset buffer status. */
 					scr_restart(scr_in );
 
-					/*FALLTHROUGH*/
+				/*FALLTHROUGH*/
 
 				case EOB_ACT_END_OF_FILE:
-					{
+				{
 					if ( scr_wrap( ) )
+					{
 						return EOF;
+					}
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
+					{
 						YY_NEW_FILE;
+					}
 #ifdef __cplusplus
 					return yyinput();
 #else
 					return input();
 #endif
-					}
+				}
 
 				case EOB_ACT_CONTINUE_SCAN:
 					(yy_c_buf_p) = (yytext_ptr) + offset;
 					break;
-				}
 			}
 		}
+	}
 
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve scr_text */
 	(yy_hold_char) = *++(yy_c_buf_p);
 
 	if ( c == '\n' )
-		   
-    scr_lineno++;
-;
+
+	{
+		scr_lineno++;
+	}
+	;
 
 	return c;
 }
@@ -2390,45 +2455,48 @@ static int yy_get_next_buffer (void)
 
 /** Immediately switch to a different input stream.
  * @param input_file A readable stream.
- * 
+ *
  * @note This function does not reset the start condition to @c INITIAL .
  */
-    void scr_restart  (FILE * input_file )
+void scr_restart  (FILE * input_file )
 {
-    
-	if ( ! YY_CURRENT_BUFFER ){
-        scr_ensure_buffer_stack ();
+
+	if ( ! YY_CURRENT_BUFFER )
+	{
+		scr_ensure_buffer_stack ();
 		YY_CURRENT_BUFFER_LVALUE =
-            scr__create_buffer(scr_in,YY_BUF_SIZE );
+			scr__create_buffer(scr_in, YY_BUF_SIZE );
 	}
 
-	scr__init_buffer(YY_CURRENT_BUFFER,input_file );
+	scr__init_buffer(YY_CURRENT_BUFFER, input_file );
 	scr__load_buffer_state( );
 }
 
 /** Switch to a different input buffer.
  * @param new_buffer The new input buffer.
- * 
+ *
  */
-    void scr__switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
+void scr__switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
 {
-    
+
 	/* TODO. We should be able to replace this entire function body
 	 * with
 	 *		scr_pop_buffer_state();
 	 *		scr_push_buffer_state(new_buffer);
-     */
+	 */
 	scr_ensure_buffer_stack ();
 	if ( YY_CURRENT_BUFFER == new_buffer )
+	{
 		return;
+	}
 
 	if ( YY_CURRENT_BUFFER )
-		{
+	{
 		/* Flush out information for old buffer. */
 		*(yy_c_buf_p) = (yy_hold_char);
 		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
-		}
+	}
 
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
 	scr__load_buffer_state( );
@@ -2443,7 +2511,7 @@ static int yy_get_next_buffer (void)
 
 static void scr__load_buffer_state  (void)
 {
-    	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
 	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
 	scr_in = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
 	(yy_hold_char) = *(yy_c_buf_p);
@@ -2452,16 +2520,18 @@ static void scr__load_buffer_state  (void)
 /** Allocate and initialize an input buffer state.
  * @param file A readable stream.
  * @param size The character buffer size in bytes. When in doubt, use @c YY_BUF_SIZE.
- * 
+ *
  * @return the allocated buffer state.
  */
-    YY_BUFFER_STATE scr__create_buffer  (FILE * file, int  size )
+YY_BUFFER_STATE scr__create_buffer  (FILE * file, int  size )
 {
 	YY_BUFFER_STATE b;
-    
+
 	b = (YY_BUFFER_STATE) scr_alloc(sizeof( struct yy_buffer_state )  );
 	if ( ! b )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scr__create_buffer()" );
+	}
 
 	b->yy_buf_size = size;
 
@@ -2470,30 +2540,38 @@ static void scr__load_buffer_state  (void)
 	 */
 	b->yy_ch_buf = (char *) scr_alloc(b->yy_buf_size + 2  );
 	if ( ! b->yy_ch_buf )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scr__create_buffer()" );
+	}
 
 	b->yy_is_our_buffer = 1;
 
-	scr__init_buffer(b,file );
+	scr__init_buffer(b, file );
 
 	return b;
 }
 
 /** Destroy the buffer.
  * @param b a buffer created with scr__create_buffer()
- * 
+ *
  */
-    void scr__delete_buffer (YY_BUFFER_STATE  b )
+void scr__delete_buffer (YY_BUFFER_STATE  b )
 {
-    
+
 	if ( ! b )
+	{
 		return;
+	}
 
 	if ( b == YY_CURRENT_BUFFER ) /* Not sure if we should pop here. */
+	{
 		YY_CURRENT_BUFFER_LVALUE = (YY_BUFFER_STATE) 0;
+	}
 
 	if ( b->yy_is_our_buffer )
+	{
 		scr_free((void *) b->yy_ch_buf  );
+	}
 
 	scr_free((void *) b  );
 }
@@ -2502,38 +2580,41 @@ static void scr__load_buffer_state  (void)
  * This function is sometimes called more than once on the same buffer,
  * such as during a scr_restart() or at EOF.
  */
-    static void scr__init_buffer  (YY_BUFFER_STATE  b, FILE * file )
+static void scr__init_buffer  (YY_BUFFER_STATE  b, FILE * file )
 
 {
 	int oerrno = errno;
-    
+
 	scr__flush_buffer(b );
 
 	b->yy_input_file = file;
 	b->yy_fill_buffer = 1;
 
-    /* If b is the current buffer, then scr__init_buffer was _probably_
-     * called from scr_restart() or through yy_get_next_buffer.
-     * In that case, we don't want to reset the lineno or column.
-     */
-    if (b != YY_CURRENT_BUFFER){
-        b->yy_bs_lineno = 1;
-        b->yy_bs_column = 0;
-    }
+	/* If b is the current buffer, then scr__init_buffer was _probably_
+	 * called from scr_restart() or through yy_get_next_buffer.
+	 * In that case, we don't want to reset the lineno or column.
+	 */
+	if (b != YY_CURRENT_BUFFER)
+	{
+		b->yy_bs_lineno = 1;
+		b->yy_bs_column = 0;
+	}
 
-        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
-    
+	b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+
 	errno = oerrno;
 }
 
 /** Discard all buffered characters. On the next scan, YY_INPUT will be called.
  * @param b the buffer state to be flushed, usually @c YY_CURRENT_BUFFER.
- * 
+ *
  */
-    void scr__flush_buffer (YY_BUFFER_STATE  b )
+void scr__flush_buffer (YY_BUFFER_STATE  b )
 {
-    	if ( ! b )
+	if ( ! b )
+	{
 		return;
+	}
 
 	b->yy_n_chars = 0;
 
@@ -2550,34 +2631,40 @@ static void scr__load_buffer_state  (void)
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
 	if ( b == YY_CURRENT_BUFFER )
+	{
 		scr__load_buffer_state( );
+	}
 }
 
 /** Pushes the new state onto the stack. The new state becomes
  *  the current state. This function will allocate the stack
  *  if necessary.
  *  @param new_buffer The new state.
- *  
+ *
  */
 void scr_push_buffer_state (YY_BUFFER_STATE new_buffer )
 {
-    	if (new_buffer == NULL)
+	if (new_buffer == NULL)
+	{
 		return;
+	}
 
 	scr_ensure_buffer_stack();
 
 	/* This block is copied from scr__switch_to_buffer. */
 	if ( YY_CURRENT_BUFFER )
-		{
+	{
 		/* Flush out information for old buffer. */
 		*(yy_c_buf_p) = (yy_hold_char);
 		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
-		}
+	}
 
 	/* Only push if top exists. Otherwise, replace top. */
 	if (YY_CURRENT_BUFFER)
+	{
 		(yy_buffer_stack_top)++;
+	}
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
 
 	/* copied from scr__switch_to_buffer. */
@@ -2587,19 +2674,24 @@ void scr_push_buffer_state (YY_BUFFER_STATE new_buffer )
 
 /** Removes and deletes the top of the stack, if present.
  *  The next element becomes the new top.
- *  
+ *
  */
 void scr_pop_buffer_state (void)
 {
-    	if (!YY_CURRENT_BUFFER)
+	if (!YY_CURRENT_BUFFER)
+	{
 		return;
+	}
 
 	scr__delete_buffer(YY_CURRENT_BUFFER );
 	YY_CURRENT_BUFFER_LVALUE = NULL;
 	if ((yy_buffer_stack_top) > 0)
+	{
 		--(yy_buffer_stack_top);
+	}
 
-	if (YY_CURRENT_BUFFER) {
+	if (YY_CURRENT_BUFFER)
+	{
 		scr__load_buffer_state( );
 		(yy_did_buffer_switch_on_eof) = 1;
 	}
@@ -2611,39 +2703,45 @@ void scr_pop_buffer_state (void)
 static void scr_ensure_buffer_stack (void)
 {
 	yy_size_t num_to_alloc;
-    
-	if (!(yy_buffer_stack)) {
+
+	if (!(yy_buffer_stack))
+	{
 
 		/* First allocation is just for 2 elements, since we don't know if this
 		 * scanner will even need a stack. We use 2 instead of 1 to avoid an
 		 * immediate realloc on the next call.
-         */
+		 */
 		num_to_alloc = 1;
 		(yy_buffer_stack) = (struct yy_buffer_state**)scr_alloc
-								(num_to_alloc * sizeof(struct yy_buffer_state*)
-								);
+							(num_to_alloc * sizeof(struct yy_buffer_state*)
+							);
 		if ( ! (yy_buffer_stack) )
+		{
 			YY_FATAL_ERROR( "out of dynamic memory in scr_ensure_buffer_stack()" );
-								  
+		}
+
 		memset((yy_buffer_stack), 0, num_to_alloc * sizeof(struct yy_buffer_state*));
-				
+
 		(yy_buffer_stack_max) = num_to_alloc;
 		(yy_buffer_stack_top) = 0;
 		return;
 	}
 
-	if ((yy_buffer_stack_top) >= ((yy_buffer_stack_max)) - 1){
+	if ((yy_buffer_stack_top) >= ((yy_buffer_stack_max)) - 1)
+	{
 
 		/* Increase the buffer to prepare for a possible push. */
 		int grow_size = 8 /* arbitrary grow size */;
 
 		num_to_alloc = (yy_buffer_stack_max) + grow_size;
 		(yy_buffer_stack) = (struct yy_buffer_state**)scr_realloc
-								((yy_buffer_stack),
-								num_to_alloc * sizeof(struct yy_buffer_state*)
-								);
+							((yy_buffer_stack),
+							 num_to_alloc * sizeof(struct yy_buffer_state*)
+							);
 		if ( ! (yy_buffer_stack) )
+		{
 			YY_FATAL_ERROR( "out of dynamic memory in scr_ensure_buffer_stack()" );
+		}
 
 		/* zero only the new slots.*/
 		memset((yy_buffer_stack) + (yy_buffer_stack_max), 0, grow_size * sizeof(struct yy_buffer_state*));
@@ -2654,22 +2752,26 @@ static void scr_ensure_buffer_stack (void)
 /** Setup the input buffer state to scan directly from a user-specified character buffer.
  * @param base the character buffer
  * @param size the size in bytes of the character buffer
- * 
- * @return the newly allocated buffer state object. 
+ *
+ * @return the newly allocated buffer state object.
  */
 YY_BUFFER_STATE scr__scan_buffer  (char * base, yy_size_t  size )
 {
 	YY_BUFFER_STATE b;
-    
+
 	if ( size < 2 ||
-	     base[size-2] != YY_END_OF_BUFFER_CHAR ||
-	     base[size-1] != YY_END_OF_BUFFER_CHAR )
+			base[size - 2] != YY_END_OF_BUFFER_CHAR ||
+			base[size - 1] != YY_END_OF_BUFFER_CHAR )
 		/* They forgot to leave room for the EOB's. */
+	{
 		return 0;
+	}
 
 	b = (YY_BUFFER_STATE) scr_alloc(sizeof( struct yy_buffer_state )  );
 	if ( ! b )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scr__scan_buffer()" );
+	}
 
 	b->yy_buf_size = size - 2;	/* "- 2" to take care of EOB's */
 	b->yy_buf_pos = b->yy_ch_buf = base;
@@ -2689,22 +2791,22 @@ YY_BUFFER_STATE scr__scan_buffer  (char * base, yy_size_t  size )
 /** Setup the input buffer state to scan a string. The next call to scr_lex() will
  * scan from a @e copy of @a str.
  * @param yystr a NUL-terminated string to scan
- * 
+ *
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use
  *       scr__scan_bytes() instead.
  */
 YY_BUFFER_STATE scr__scan_string (yyconst char * yystr )
 {
-    
-	return scr__scan_bytes(yystr,strlen(yystr) );
+
+	return scr__scan_bytes(yystr, strlen(yystr) );
 }
 
 /** Setup the input buffer state to scan the given bytes. The next call to scr_lex() will
  * scan from a @e copy of @a bytes.
  * @param yybytes the byte buffer to scan
  * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.
- * 
+ *
  * @return the newly allocated buffer state object.
  */
 YY_BUFFER_STATE scr__scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
@@ -2713,21 +2815,27 @@ YY_BUFFER_STATE scr__scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_le
 	char *buf;
 	yy_size_t n;
 	yy_size_t i;
-    
+
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
 	buf = (char *) scr_alloc(n  );
 	if ( ! buf )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scr__scan_bytes()" );
+	}
 
 	for ( i = 0; i < _yybytes_len; ++i )
+	{
 		buf[i] = yybytes[i];
+	}
 
-	buf[_yybytes_len] = buf[_yybytes_len+1] = YY_END_OF_BUFFER_CHAR;
+	buf[_yybytes_len] = buf[_yybytes_len + 1] = YY_END_OF_BUFFER_CHAR;
 
-	b = scr__scan_buffer(buf,n );
+	b = scr__scan_buffer(buf, n );
 	if ( ! b )
+	{
 		YY_FATAL_ERROR( "bad buffer in scr__scan_bytes()" );
+	}
 
 	/* It's okay to grow etc. this buffer, and we should throw it
 	 * away when we're done.
@@ -2743,7 +2851,7 @@ YY_BUFFER_STATE scr__scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_le
 
 static void yy_fatal_error (yyconst char* msg )
 {
-    	(void) fprintf( stderr, "%s\n", msg );
+	(void) fprintf( stderr, "%s\n", msg );
 	exit( YY_EXIT_FAILURE );
 }
 
@@ -2767,120 +2875,121 @@ static void yy_fatal_error (yyconst char* msg )
 /* Accessor  methods (get/set functions) to struct members. */
 
 /** Get the current line number.
- * 
+ *
  */
 int scr_get_lineno  (void)
 {
-        
-    return scr_lineno;
+
+	return scr_lineno;
 }
 
 /** Get the input stream.
- * 
+ *
  */
 FILE *scr_get_in  (void)
 {
-        return scr_in;
+	return scr_in;
 }
 
 /** Get the output stream.
- * 
+ *
  */
 FILE *scr_get_out  (void)
 {
-        return scr_out;
+	return scr_out;
 }
 
 /** Get the length of the current token.
- * 
+ *
  */
 yy_size_t scr_get_leng  (void)
 {
-        return scr_leng;
+	return scr_leng;
 }
 
 /** Get the current token.
- * 
+ *
  */
 
 char *scr_get_text  (void)
 {
-        return scr_text;
+	return scr_text;
 }
 
 /** Set the current line number.
  * @param line_number
- * 
+ *
  */
 void scr_set_lineno (int  line_number )
 {
-    
-    scr_lineno = line_number;
+
+	scr_lineno = line_number;
 }
 
 /** Set the input stream. This does not discard the current
  * input buffer.
  * @param in_str A readable stream.
- * 
+ *
  * @see scr__switch_to_buffer
  */
 void scr_set_in (FILE *  in_str )
 {
-        scr_in = in_str ;
+	scr_in = in_str ;
 }
 
 void scr_set_out (FILE *  out_str )
 {
-        scr_out = out_str ;
+	scr_out = out_str ;
 }
 
 int scr_get_debug  (void)
 {
-        return scr__flex_debug;
+	return scr__flex_debug;
 }
 
 void scr_set_debug (int  bdebug )
 {
-        scr__flex_debug = bdebug ;
+	scr__flex_debug = bdebug ;
 }
 
 static int yy_init_globals (void)
 {
-        /* Initialization is the same as for the non-reentrant scanner.
-     * This function is called from scr_lex_destroy(), so don't allocate here.
-     */
+	/* Initialization is the same as for the non-reentrant scanner.
+	* This function is called from scr_lex_destroy(), so don't allocate here.
+	*/
 
-    /* We do not touch scr_lineno unless the option is enabled. */
-    scr_lineno =  1;
-    
-    (yy_buffer_stack) = 0;
-    (yy_buffer_stack_top) = 0;
-    (yy_buffer_stack_max) = 0;
-    (yy_c_buf_p) = (char *) 0;
-    (yy_init) = 0;
-    (yy_start) = 0;
+	/* We do not touch scr_lineno unless the option is enabled. */
+	scr_lineno =  1;
 
-/* Defined in main.c */
+	(yy_buffer_stack) = 0;
+	(yy_buffer_stack_top) = 0;
+	(yy_buffer_stack_max) = 0;
+	(yy_c_buf_p) = (char *) 0;
+	(yy_init) = 0;
+	(yy_start) = 0;
+
+	/* Defined in main.c */
 #ifdef YY_STDINIT
-    scr_in = stdin;
-    scr_out = stdout;
+	scr_in = stdin;
+	scr_out = stdout;
 #else
-    scr_in = (FILE *) 0;
-    scr_out = (FILE *) 0;
+	scr_in = (FILE *) 0;
+	scr_out = (FILE *) 0;
 #endif
 
-    /* For future reference: Set errno on error, since we are called by
-     * scr_lex_init()
-     */
-    return 0;
+	/* For future reference: Set errno on error, since we are called by
+	 * scr_lex_init()
+	 */
+	return 0;
 }
 
 /* scr_lex_destroy is for both reentrant and non-reentrant scanners. */
 int scr_lex_destroy  (void)
 {
-    
-    /* Pop the buffer stack, destroying each element. */
-	while(YY_CURRENT_BUFFER){
+
+	/* Pop the buffer stack, destroying each element. */
+	while(YY_CURRENT_BUFFER)
+	{
 		scr__delete_buffer(YY_CURRENT_BUFFER  );
 		YY_CURRENT_BUFFER_LVALUE = NULL;
 		scr_pop_buffer_state();
@@ -2890,11 +2999,11 @@ int scr_lex_destroy  (void)
 	scr_free((yy_buffer_stack) );
 	(yy_buffer_stack) = NULL;
 
-    /* Reset the globals. This is important in a non-reentrant scanner so the next time
-     * scr_lex() is called, initialization will occur. */
-    yy_init_globals( );
+	/* Reset the globals. This is important in a non-reentrant scanner so the next time
+	 * scr_lex() is called, initialization will occur. */
+	yy_init_globals( );
 
-    return 0;
+	return 0;
 }
 
 /*
@@ -2906,7 +3015,9 @@ static void yy_flex_strncpy (char* s1, yyconst char * s2, int n )
 {
 	register int i;
 	for ( i = 0; i < n; ++i )
+	{
 		s1[i] = s2[i];
+	}
 }
 #endif
 
@@ -2971,7 +3082,7 @@ void scriptSetInputFile(PHYSFS_file* fileHandle)
 	/* Set the initial input buffer */
 	pScrInputFiles[0] = fileHandle;
 
-	inputScript = scr__create_buffer(NULL,YY_BUF_SIZE);
+	inputScript = scr__create_buffer(NULL, YY_BUF_SIZE);
 
 	scr__switch_to_buffer(inputScript);
 

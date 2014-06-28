@@ -33,21 +33,21 @@ extern "C"
 {
 #endif
 
-    extern ALenum __sound_GetError(const char *location_description);
-    extern ALenum __sound_GetContextError(ALCdevice *device, const char *location_description);
+extern ALenum __sound_GetError(const char *location_description);
+extern ALenum __sound_GetContextError(ALCdevice *device, const char *location_description);
 
-    /** Check whether an error occurred in OpenAL's current sound context. If one
-     *  did occur, print an error message and return the error code.
-     *  \return the OpenAL error code
-     */
+/** Check whether an error occurred in OpenAL's current sound context. If one
+ *  did occur, print an error message and return the error code.
+ *  \return the OpenAL error code
+ */
 #define sound_GetError() \
 	__sound_GetError(AT_MACRO)
 
-    /** Check whether an error occurred for the specified OpenAL device. If one
-     *  did occur, print an error message and return the error code.
-     *  \param device the OpenAL device (ALCdevice* pointer) to check for errors on
-     *  \return the OpenAL error code
-     */
+/** Check whether an error occurred for the specified OpenAL device. If one
+ *  did occur, print an error message and return the error code.
+ *  \param device the OpenAL device (ALCdevice* pointer) to check for errors on
+ *  \return the OpenAL error code
+ */
 #define sound_GetContextError(device) \
 	__sound_GetContextError(device, AT_MACRO)
 

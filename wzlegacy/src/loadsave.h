@@ -25,13 +25,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _loadsave_mode
 {
-    LOAD_FRONTEND,
-    LOAD_MISSIONEND,
-    SAVE_MISSIONEND,
-    LOAD_INGAME,
-    SAVE_INGAME,
-    LOAD_FORCE,
-    SAVE_FORCE
+	LOAD_FRONTEND,
+	LOAD_MISSIONEND,
+	SAVE_MISSIONEND,
+	LOAD_INGAME,
+	SAVE_INGAME,
+	LOAD_FORCE,
+	SAVE_FORCE
 } LOADSAVE_MODE;
 
 /***************************************************************************/
@@ -52,7 +52,7 @@ extern BOOL		bRequestLoad;
  */
 /***************************************************************************/
 
-extern void		drawBlueBox		(uint32_t x,uint32_t y, uint32_t w, uint32_t h);
+extern void		drawBlueBox		(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
 
 extern BOOL		addLoadSave(LOADSAVE_MODE mode, const char *defaultdir, const char *extension, const char *title);
 extern BOOL		closeLoadSave	(void);

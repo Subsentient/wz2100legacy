@@ -1,19 +1,19 @@
 /* A Bison parser, made by GNU Bison 2.7.  */
 
 /* Bison interface for Yacc-like parsers in C
-   
+
       Copyright (C) 1984, 1989-1990, 2000-2012 Free Software Foundation, Inc.
-   
+
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -26,7 +26,7 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-   
+
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
@@ -43,22 +43,23 @@ extern int audp_debug;
 /* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     FLOAT_T = 258,
-     INTEGER = 259,
-     QTEXT = 260,
-     ONESHOT = 261,
-     LOOP = 262,
-     AUDIO = 263,
-     ANIM3DFRAMES = 264,
-     ANIM3DTRANS = 265,
-     ANIM3DFILE = 266,
-     AUDIO_MODULE = 267,
-     ANIM_MODULE = 268,
-     ANIMOBJECT = 269
-   };
+/* Put the tokens into the symbol table, so that GDB and other debuggers
+   know about them.  */
+enum yytokentype
+{
+	FLOAT_T = 258,
+	INTEGER = 259,
+	QTEXT = 260,
+	ONESHOT = 261,
+	LOOP = 262,
+	AUDIO = 263,
+	ANIM3DFRAMES = 264,
+	ANIM3DTRANS = 265,
+	ANIM3DFILE = 266,
+	AUDIO_MODULE = 267,
+	ANIM_MODULE = 268,
+	ANIMOBJECT = 269
+};
 #endif
 /* Tokens.  */
 #define FLOAT_T 258
@@ -79,7 +80,7 @@ extern int audp_debug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 {
-/* Line 2058 of yacc.c  */
+	/* Line 2058 of yacc.c  */
 #line 39 "audp_parser.y"
 
 	float		fval;
@@ -88,7 +89,7 @@ typedef union YYSTYPE
 	char*		sval;
 
 
-/* Line 2058 of yacc.c  */
+	/* Line 2058 of yacc.c  */
 #line 93 "audp_parser.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1

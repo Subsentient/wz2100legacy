@@ -58,24 +58,24 @@ typedef void	(* HASHFREEFUNC)	( void *psElement );
 
 typedef struct HASHNODE
 {
-    intptr_t			iKey1;
-    intptr_t			iKey2;
-    void			*psElement;
-    struct HASHNODE		*psNext;
+	intptr_t			iKey1;
+	intptr_t			iKey2;
+	void			*psElement;
+	struct HASHNODE		*psNext;
 }
 HASHNODE;
 
 typedef struct HASHTABLE
 {
-    HASHNODE		**ppsNode;
-    HASHNODE		*psNextNode;
-    HASHFUNC		pHashFunc;
-    HASHFREEFUNC	pFreeFunc;
-    uint32_t			udwTableSize;
-    uint32_t			udwElements;
-    uint32_t			udwExtElements;
-    uint32_t			udwElementSize;
-    uint32_t			sdwCurIndex;
+	HASHNODE		**ppsNode;
+	HASHNODE		*psNextNode;
+	HASHFUNC		pHashFunc;
+	HASHFREEFUNC	pFreeFunc;
+	uint32_t			udwTableSize;
+	uint32_t			udwElements;
+	uint32_t			udwExtElements;
+	uint32_t			udwElementSize;
+	uint32_t			sdwCurIndex;
 }
 HASHTABLE;
 
@@ -93,8 +93,8 @@ HASHTABLE;
  * \param	udwElementSize	size of elements to be stored in the hashtable
  */
 BOOL	hashTable_Create( HASHTABLE **ppsTable, uint32_t udwTableSize,
-                          uint32_t udwInitElements, uint32_t udwExtElements,
-                          uint32_t udwElementSize );
+						  uint32_t udwInitElements, uint32_t udwExtElements,
+						  uint32_t udwElementSize );
 
 /**
  * Function to destroy a hashtable
@@ -184,7 +184,7 @@ void	hashTable_SetHashFunction( HASHTABLE *psTable, HASHFUNC pHashFunc );
  * \see HASHFREEFUNC
  */
 void	hashTable_SetFreeElementFunction( HASHTABLE *psTable,
-        HASHFREEFUNC pFreeFunc );
+		HASHFREEFUNC pFreeFunc );
 
 /***************************************************************************/
 

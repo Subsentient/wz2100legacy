@@ -112,7 +112,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /** The basic initialisation structure */
 typedef struct
 {
-    WINIT_BASE;
+	WINIT_BASE;
 } W_INIT;
 
 /*
@@ -143,71 +143,71 @@ typedef struct
 // NOTE: enable TAB_MINOR at your own risk.  Have NOT testest new rotuines with that.
 #define TAB_MINOR 0	// Tab types passed into tab display callbacks.
 #define TAB_MAJOR 1
-
+ 
 typedef void (*TAB_DISPLAY)(WIDGET *psWidget, uint32_t TabType, uint32_t Position, uint32_t Number, BOOL Selected, BOOL Hilight, uint32_t x, uint32_t y, uint32_t Width, uint32_t Height);
 typedef void (*FONT_DISPLAY)(uint32_t x, uint32_t y, char *String);
-
+ 
 /** Form initialisation structure */
 typedef struct
 {
-    /* The basic init entries */
-    WINIT_BASE;
+	/* The basic init entries */
+	WINIT_BASE;
 
-    /* Data for a tabbed form */
-    BOOL			disableChildren;
-    uint16_t			majorPos, minorPos;		// Position of the tabs on the form
-    uint16_t			majorSize, minorSize;		// Size of the tabs (in pixels)
-    int16_t			majorOffset, minorOffset;	// Tab start offset.
-    int16_t			tabVertOffset;			///< Tab form overlap offset.
-    int16_t			tabHorzOffset;			///< Tab form overlap offset.
-    uint16_t			tabMajorThickness;		///< The thickness of the tabs
-    uint16_t			tabMinorThickness;		///< The thickness of the tabs
-    uint16_t			tabMajorGap;			///< The space between tabs
-    uint16_t			tabMinorGap;			///< The space between tabs
-    uint16_t			numStats;			///< Number of "stats" (items) in list
-    uint16_t			numButtons;			///< Number of buttons per form
-    uint16_t			numMajor;			///< Number of major tabs
-    uint16_t			aNumMinors[WFORM_MAXMAJOR];	///< Number of minor tabs for each major
-    int16_t			TabMultiplier;			///< Used to tell system we got lots of (virtual) tabs to display
-    const char		*pTip;				///< Tool tip for the form itself
-    char			*apMajorTips[WFORM_MAXMAJOR];	///< Tool tips for the major tabs
-    char			*apMinorTips[WFORM_MAXMAJOR][WFORM_MAXMINOR];	///< Tool tips for the minor tabs
-    TAB_DISPLAY		pTabDisplay;			///< Optional callback for displaying a tab.
-    WIDGET_DISPLAY		pFormDisplay;			///< Optional callback to display the form.
+	/* Data for a tabbed form */
+	BOOL			disableChildren;
+	uint16_t			majorPos, minorPos;		// Position of the tabs on the form
+	uint16_t			majorSize, minorSize;		// Size of the tabs (in pixels)
+	int16_t			majorOffset, minorOffset;	// Tab start offset.
+	int16_t			tabVertOffset;			///< Tab form overlap offset.
+	int16_t			tabHorzOffset;			///< Tab form overlap offset.
+	uint16_t			tabMajorThickness;		///< The thickness of the tabs
+	uint16_t			tabMinorThickness;		///< The thickness of the tabs
+	uint16_t			tabMajorGap;			///< The space between tabs
+	uint16_t			tabMinorGap;			///< The space between tabs
+	uint16_t			numStats;			///< Number of "stats" (items) in list
+	uint16_t			numButtons;			///< Number of buttons per form
+	uint16_t			numMajor;			///< Number of major tabs
+	uint16_t			aNumMinors[WFORM_MAXMAJOR];	///< Number of minor tabs for each major
+	int16_t			TabMultiplier;			///< Used to tell system we got lots of (virtual) tabs to display
+	const char		*pTip;				///< Tool tip for the form itself
+	char			*apMajorTips[WFORM_MAXMAJOR];	///< Tool tips for the major tabs
+	char			*apMinorTips[WFORM_MAXMAJOR][WFORM_MAXMINOR];	///< Tool tips for the minor tabs
+	TAB_DISPLAY		pTabDisplay;			///< Optional callback for displaying a tab.
+	WIDGET_DISPLAY		pFormDisplay;			///< Optional callback to display the form.
 } W_FORMINIT;
 
 /** Label initialisation structure */
 typedef struct
 {
-    /* The basic init entries */
-    WINIT_BASE;
+	/* The basic init entries */
+	WINIT_BASE;
 
-    const char		*pText;			///< label text
-    const char		*pTip;			///< Tool tip for the label.
-    enum iV_fonts           FontID;			///< ID of the IVIS font to use for this widget.
+	const char		*pText;			///< label text
+	const char		*pTip;			///< Tool tip for the label.
+	enum iV_fonts           FontID;			///< ID of the IVIS font to use for this widget.
 } W_LABINIT;
 
 /** Button initialisation structure */
 typedef struct
 {
-    /* The basic init entries */
-    WINIT_BASE;
+	/* The basic init entries */
+	WINIT_BASE;
 
-    const char *pText;	///< Button text
-    const char *pTip;	///< Tool tip text
-    enum iV_fonts FontID;	//< ID of the IVIS font to use for this widget.
+	const char *pText;	///< Button text
+	const char *pTip;	///< Tool tip text
+	enum iV_fonts FontID;	//< ID of the IVIS font to use for this widget.
 } W_BUTINIT;
 
 /** Edit box initialisation structure */
 typedef struct
 {
-    /* The basic init entries */
-    WINIT_BASE;
+	/* The basic init entries */
+	WINIT_BASE;
 
-    const char *pText;		///< initial contents of the edit box
-    enum iV_fonts FontID;		///< ID of the IVIS font to use for this widget.
-    WIDGET_DISPLAY pBoxDisplay;	///< Optional callback to display the form.
-    FONT_DISPLAY pFontDisplay;	///< Optional callback to display a string.
+	const char *pText;		///< initial contents of the edit box
+	enum iV_fonts FontID;		///< ID of the IVIS font to use for this widget.
+	WIDGET_DISPLAY pBoxDisplay;	///< Optional callback to display the form.
+	FONT_DISPLAY pFontDisplay;	///< Optional callback to display a string.
 } W_EDBINIT;
 
 /* Orientation flags for the bar graph */
@@ -219,18 +219,18 @@ typedef struct
 /** Bar Graph initialisation structure */
 typedef struct
 {
-    /* The basic init entries */
-    WINIT_BASE;
+	/* The basic init entries */
+	WINIT_BASE;
 
-    uint16_t		orientation;		///< Orientation of the bar on the widget
-    uint16_t		size;			///< Initial percentage of the graph that is filled
-    uint16_t		minorSize;		///< Percentage of second bar graph if there is one
-    uint16_t		iRange;			///< Maximum range
-    int             denominator;            ///< Denominator, 1 by default.
-    int             precision;              ///< Number of places after the decimal point to display, 0 by default.
-    PIELIGHT	sCol;			///< Bar colour
-    PIELIGHT	sMinorCol;		///< Minor bar colour
-    const char	*pTip;			///< Tool tip text
+	uint16_t		orientation;		///< Orientation of the bar on the widget
+	uint16_t		size;			///< Initial percentage of the graph that is filled
+	uint16_t		minorSize;		///< Percentage of second bar graph if there is one
+	uint16_t		iRange;			///< Maximum range
+	int             denominator;            ///< Denominator, 1 by default.
+	int             precision;              ///< Number of places after the decimal point to display, 0 by default.
+	PIELIGHT	sCol;			///< Bar colour
+	PIELIGHT	sMinorCol;		///< Minor bar colour
+	const char	*pTip;			///< Tool tip text
 } W_BARINIT;
 
 
@@ -243,14 +243,14 @@ typedef struct
 /** Slider initialisation structure */
 typedef struct
 {
-    /* The basic init entries */
-    WINIT_BASE;
+	/* The basic init entries */
+	WINIT_BASE;
 
-    uint16_t		orientation;		///< Orientation of the slider
-    uint16_t		numStops;		///< Number of stops on the slider
-    uint16_t		barSize;		///< Size of the bar
-    uint16_t		pos;			///< Initial position of the slider bar
-    const char	*pTip;			///< Tip string
+	uint16_t		orientation;		///< Orientation of the slider
+	uint16_t		numStops;		///< Number of stops on the slider
+	uint16_t		barSize;		///< Size of the bar
+	uint16_t		pos;			///< Initial position of the slider bar
+	const char	*pTip;			///< Tip string
 } W_SLDINIT;
 
 /***********************************************************************************/
@@ -355,7 +355,7 @@ extern void widgSetUserData(W_SCREEN *psScreen, uint32_t id, void *UserData);
 extern uint32_t widgGetUserData2(W_SCREEN *psScreen, uint32_t id);
 
 /** Set the user data for a widget */
-extern void widgSetUserData2(W_SCREEN *psScreen, uint32_t id,uint32_t UserData);
+extern void widgSetUserData2(W_SCREEN *psScreen, uint32_t id, uint32_t UserData);
 
 /** Return the user data for the returned widget */
 extern void *widgGetLastUserData(W_SCREEN *psScreen);
@@ -370,21 +370,21 @@ extern void widgSetTipText(WIDGET *psWidget, const char *pTip);
 /** Colour numbers */
 enum _w_colour
 {
-    WCOL_BKGRND,	///< Background colours
-    WCOL_TEXT,	///< Text colour
-    WCOL_LIGHT,	///< Light colour for 3D effects
-    WCOL_DARK,	///< Dark colour for 3D effects
-    WCOL_HILITE,	///< Hilite colour
-    WCOL_CURSOR,	///< Edit Box cursor colour
-    WCOL_TIPBKGRND,	///< Background for the tool tip window
-    WCOL_DISABLE,	///< Text colour on a disabled button
+	WCOL_BKGRND,	///< Background colours
+	WCOL_TEXT,	///< Text colour
+	WCOL_LIGHT,	///< Light colour for 3D effects
+	WCOL_DARK,	///< Dark colour for 3D effects
+	WCOL_HILITE,	///< Hilite colour
+	WCOL_CURSOR,	///< Edit Box cursor colour
+	WCOL_TIPBKGRND,	///< Background for the tool tip window
+	WCOL_DISABLE,	///< Text colour on a disabled button
 
-    WCOL_MAX,	///< All colour numbers are less than this
+	WCOL_MAX,	///< All colour numbers are less than this
 };
 
 /** Set a colour on a form */
 extern void widgSetColour(W_SCREEN *psScreen, uint32_t id, uint32_t colour,
-                          uint8_t red, uint8_t green, uint8_t blue);
+						  uint8_t red, uint8_t green, uint8_t blue);
 
 /** Set the global toop tip text colour. */
 extern void widgSetTipColour(PIELIGHT colour);
@@ -438,7 +438,7 @@ extern void widgDisplayScreen(W_SCREEN *psScreen);
 
 
 /** Set the current audio callback function and audio id's. */
-extern void WidgSetAudio(WIDGET_AUDIOCALLBACK Callback,int16_t HilightID,int16_t ClickedID);
+extern void WidgSetAudio(WIDGET_AUDIOCALLBACK Callback, int16_t HilightID, int16_t ClickedID);
 
 /** Get pointer to current audio callback function. */
 extern WIDGET_AUDIOCALLBACK WidgGetAudioCallback(void);

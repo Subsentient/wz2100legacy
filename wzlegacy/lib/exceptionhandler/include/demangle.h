@@ -56,19 +56,19 @@ template arguments, etc. */
 
 extern enum demangling_styles
 {
-no_demangling = -1,
-              unknown_demangling = 0,
-              auto_demangling = DMGL_AUTO,
-              gnu_demangling = DMGL_GNU,
-              lucid_demangling = DMGL_LUCID,
-              arm_demangling = DMGL_ARM,
-              hp_demangling = DMGL_HP,
-              edg_demangling = DMGL_EDG,
-              gnu_v3_demangling = DMGL_GNU_V3,
-              java_demangling = DMGL_JAVA,
-              gnat_demangling = DMGL_GNAT
+	no_demangling = -1,
+	unknown_demangling = 0,
+	auto_demangling = DMGL_AUTO,
+	gnu_demangling = DMGL_GNU,
+	lucid_demangling = DMGL_LUCID,
+	arm_demangling = DMGL_ARM,
+	hp_demangling = DMGL_HP,
+	edg_demangling = DMGL_EDG,
+	gnu_v3_demangling = DMGL_GNU_V3,
+	java_demangling = DMGL_JAVA,
+	gnat_demangling = DMGL_GNAT
 }
-              current_demangling_style;
+current_demangling_style;
 
 /* Define string names for the various demangling styles. */
 
@@ -101,9 +101,9 @@ no_demangling = -1,
 
 extern const struct demangler_engine
 {
-const char *const demangling_style_name;
-const enum demangling_styles demangling_style;
-const char *const demangling_style_doc;
+	const char *const demangling_style_name;
+	const enum demangling_styles demangling_style;
+	const char *const demangling_style_doc;
 } libiberty_demanglers[];
 
 extern char *
@@ -136,9 +136,9 @@ java_demangle_v3 PARAMS ((const char *mangled));
 
 enum gnu_v3_ctor_kinds
 {
-    gnu_v3_complete_object_ctor = 1,
-    gnu_v3_base_object_ctor,
-    gnu_v3_complete_object_allocating_ctor
+	gnu_v3_complete_object_ctor = 1,
+	gnu_v3_base_object_ctor,
+	gnu_v3_complete_object_allocating_ctor
 };
 
 /* Return non-zero iff NAME is the mangled form of a constructor name
@@ -151,9 +151,9 @@ is_gnu_v3_mangled_ctor PARAMS ((const char *name));
 
 enum gnu_v3_dtor_kinds
 {
-    gnu_v3_deleting_dtor = 1,
-    gnu_v3_complete_object_dtor,
-    gnu_v3_base_object_dtor
+	gnu_v3_deleting_dtor = 1,
+	gnu_v3_complete_object_dtor,
+	gnu_v3_base_object_dtor
 };
 
 /* Return non-zero iff NAME is the mangled form of a destructor name

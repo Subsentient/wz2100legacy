@@ -29,15 +29,15 @@ struct STR_RES *psStringRes = NULL;
 /* Initialise the string system */
 BOOL stringsInitialise(void)
 {
-    psStringRes = strresCreate();
+	psStringRes = strresCreate();
 
-    return psStringRes != NULL;
+	return psStringRes != NULL;
 }
 
 
 /* Shut down the string system */
 void stringsShutDown(void)
 {
-    strresDestroy(psStringRes);
+	strresDestroy(psStringRes);
 }
 

@@ -38,34 +38,34 @@ static uint8_t sineHeightTable[SIZE_SINE_TABLE];
 
 void initBulletTable( void )
 {
-    uint32_t i;
-    uint8_t height;
+	uint32_t i;
+	uint8_t height;
 
-    for (i = 0; i < SIZE_SINE_TABLE; i++)
-    {
-        height = AMPLITUDE_HEIGHT * sin(i*deg);
-        sineHeightTable[i] = height;
-    }
+	for (i = 0; i < SIZE_SINE_TABLE; i++)
+	{
+		height = AMPLITUDE_HEIGHT * sin(i * deg);
+		sineHeightTable[i] = height;
+	}
 }
 
 /* Angle returned is reflected in line x=0 */
 int32_t calcDirection(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1)
 {
-    /* Watch out here - should really be y1-y0, but coordinate system is reversed in Y */
-    int32_t	xDif = (x1-x0), yDif = (y0-y1);
-    double	angle = atan2(yDif, xDif) * 180.0 / M_PI;
-    int32_t	angleInt = (int32_t) angle;
+	/* Watch out here - should really be y1-y0, but coordinate system is reversed in Y */
+	int32_t	xDif = (x1 - x0), yDif = (y0 - y1);
+	double	angle = atan2(yDif, xDif) * 180.0 / M_PI;
+	int32_t	angleInt = (int32_t) angle;
 
-    angleInt+=90;
-    if (angleInt<0)
-    {
-        angleInt+=360;
-    }
+	angleInt += 90;
+	if (angleInt < 0)
+	{
+		angleInt += 360;
+	}
 
-    ASSERT( angleInt >= 0 && angleInt < 360,
-            "calcDirection: droid direction out of range" );
+	ASSERT( angleInt >= 0 && angleInt < 360,
+			"calcDirection: droid direction out of range" );
 
-    return(angleInt);
+	return(angleInt);
 }
 
 
@@ -79,36 +79,36 @@ int32_t calcDirection(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1)
 
 DROID	*getNearestDroid(uint32_t x, uint32_t y, BOOL bSelected)
 {
-    DROID	*psDroid,*psBestUnit;
-    uint32_t	xDif,yDif,dist;
-    uint32_t	bestSoFar;
+	DROID	*psDroid, *psBestUnit;
+	uint32_t	xDif, yDif, dist;
+	uint32_t	bestSoFar;
 
-    /* Go thru' all the droids  - how often have we seen this - a MACRO maybe? */
-    for(psDroid = apsDroidLists[selectedPlayer],psBestUnit = NULL, bestSoFar = uint32_t_MAX;
-            psDroid; psDroid = psDroid->psNext)
-    {
-        if (!isVtolDroid(psDroid))
-        {
-            /* Clever (?) bit that reads whether we're interested in droids being selected or not */
-            if( (bSelected ? psDroid->selected : true ) )
-            {
-                /* Get the differences */
-                xDif = abs(psDroid->pos.x - x);
-                yDif = abs(psDroid->pos.y - y);
-                /* Approximates the distance away - using a sqrt approximation */
-                dist = MAX(xDif,yDif) + MIN(xDif,yDif)/2;	// approximates, but never more than 11% out...
-                /* Is this the nearest one we got so far? */
-                if(dist<bestSoFar)
-                {
-                    /* Yes, then keep a record of the distance for comparison... */
-                    bestSoFar = dist;
-                    /* ..and store away the droid responsible */
-                    psBestUnit = psDroid;
-                }
-            }
-        }
-    }
-    return(psBestUnit);
+	/* Go thru' all the droids  - how often have we seen this - a MACRO maybe? */
+	for(psDroid = apsDroidLists[selectedPlayer], psBestUnit = NULL, bestSoFar = uint32_t_MAX;
+			psDroid; psDroid = psDroid->psNext)
+	{
+		if (!isVtolDroid(psDroid))
+		{
+			/* Clever (?) bit that reads whether we're interested in droids being selected or not */
+			if( (bSelected ? psDroid->selected : true ) )
+			{
+				/* Get the differences */
+				xDif = abs(psDroid->pos.x - x);
+				yDif = abs(psDroid->pos.y - y);
+				/* Approximates the distance away - using a sqrt approximation */
+				dist = MAX(xDif, yDif) + MIN(xDif, yDif) / 2;	// approximates, but never more than 11% out...
+				/* Is this the nearest one we got so far? */
+				if(dist < bestSoFar)
+				{
+					/* Yes, then keep a record of the distance for comparison... */
+					bestSoFar = dist;
+					/* ..and store away the droid responsible */
+					psBestUnit = psDroid;
+				}
+			}
+		}
+	}
+	return(psBestUnit);
 }
 // -------------------------------------------------------------------------------------------
 
@@ -116,45 +116,45 @@ DROID	*getNearestDroid(uint32_t x, uint32_t y, BOOL bSelected)
 /* See header file for definition of QUAD */
 int inQuad(const Vector2i *pt, const QUAD *quad)
 {
-    int i, j, c = 0;
+	int i, j, c = 0;
 
-    for (i = 0, j = 3; i < 4; j = i++)
-    {
-        if (((quad->coords[i].y <= pt->y && pt->y < quad->coords[j].y) ||
-                (quad->coords[j].y <= pt->y && pt->y < quad->coords[i].y)) &&
-                (pt->x <
-                 (quad->coords[j].x - quad->coords[i].x)
-                 * (pt->y - quad->coords[i].y)
-                 / (quad->coords[j].y - quad->coords[i].y)
-                 + quad->coords[i].x))
-        {
-            c = !c;
-        }
-    }
+	for (i = 0, j = 3; i < 4; j = i++)
+	{
+		if (((quad->coords[i].y <= pt->y && pt->y < quad->coords[j].y) ||
+				(quad->coords[j].y <= pt->y && pt->y < quad->coords[i].y)) &&
+				(pt->x <
+				 (quad->coords[j].x - quad->coords[i].x)
+				 * (pt->y - quad->coords[i].y)
+				 / (quad->coords[j].y - quad->coords[i].y)
+				 + quad->coords[i].x))
+		{
+			c = !c;
+		}
+	}
 
-    return c;
+	return c;
 }
 
 uint32_t	adjustDirection(int32_t present, int32_t difference)
 {
-    int32_t	sum;
+	int32_t	sum;
 
-    sum = present+difference;
-    if(sum>=0 && sum<=360)
-    {
-        return(uint32_t)(sum);
-    }
+	sum = present + difference;
+	if(sum >= 0 && sum <= 360)
+	{
+		return(uint32_t)(sum);
+	}
 
-    if (sum<0)
-    {
-        return(uint32_t)(360+sum);
-    }
+	if (sum < 0)
+	{
+		return(uint32_t)(360 + sum);
+	}
 
-    if (sum>360)
-    {
-        return(uint32_t)(sum-360);
-    }
-    return 0;
+	if (sum > 360)
+	{
+		return(uint32_t)(sum - 360);
+	}
+	return 0;
 }
 
 /**
@@ -169,28 +169,28 @@ uint32_t	adjustDirection(int32_t present, int32_t difference)
  */
 unsigned int WZ_DECL_CONST dirtyHypot(int deltaX, int deltaY)
 {
-    deltaX = abs(deltaX);
-    deltaY = abs(deltaY);
+	deltaX = abs(deltaX);
+	deltaY = abs(deltaY);
 
-    return MAX(deltaX, deltaY) + MIN(deltaX, deltaY) / 2;
+	return MAX(deltaX, deltaY) + MIN(deltaX, deltaY) / 2;
 }
 
 //-----------------------------------------------------------------------------------
 BOOL	droidOnScreen( DROID *psDroid, int32_t tolerance )
 {
-    int32_t	dX,dY;
+	int32_t	dX, dY;
 
-    if (DrawnInLastFrame(psDroid->sDisplay.frameNumber)==true)
-    {
-        dX = psDroid->sDisplay.screenX;
-        dY = psDroid->sDisplay.screenY;
-        /* Is it on screen */
-        if(dX > (0-tolerance) && dY > (0-tolerance)
-                && dX < (int32_t)(pie_GetVideoBufferWidth()+tolerance)
-                && dY < (int32_t)(pie_GetVideoBufferHeight()+tolerance))
-        {
-            return(true);
-        }
-    }
-    return(false);
+	if (DrawnInLastFrame(psDroid->sDisplay.frameNumber) == true)
+	{
+		dX = psDroid->sDisplay.screenX;
+		dY = psDroid->sDisplay.screenY;
+		/* Is it on screen */
+		if(dX > (0 - tolerance) && dY > (0 - tolerance)
+				&& dX < (int32_t)(pie_GetVideoBufferWidth() + tolerance)
+				&& dY < (int32_t)(pie_GetVideoBufferHeight() + tolerance))
+		{
+			return(true);
+		}
+	}
+	return(false);
 }

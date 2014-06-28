@@ -105,7 +105,7 @@ extern void intProcessMissionResult			(uint32_t id);
 extern void intRunMissionResult				(void);
 
 extern void unloadTransporter(DROID *psTransporter, uint32_t x, uint32_t y,
-                              BOOL goingHome);
+							  BOOL goingHome);
 /*sets the appropriate pause states for when the interface is up but the
 game needs to be paused*/
 extern void setMissionPauseState(void);
@@ -149,14 +149,14 @@ extern void missionFlyTransportersIn( int32_t iPlayer, BOOL bTrackTransporter );
 extern void missionMoveTransporterOffWorld( DROID *psTransporter );
 /* pick nearest map edge to point */
 extern void missionGetNearestCorner( uint16_t iX, uint16_t iY,
-                                     uint16_t *piOffX, uint16_t *piOffY );
+									 uint16_t *piOffX, uint16_t *piOffY );
 extern void missionSetReinforcementTime( uint32_t iTime );
 extern uint32_t  missionGetReinforcementTime(void);
 
 /*builds a droid back at the home base whilst on a mission - stored in a list made
 available to the transporter interface*/
 extern DROID *buildMissionDroid(DROID_TEMPLATE *psTempl, uint32_t x, uint32_t y,
-                                uint32_t player);
+								uint32_t player);
 
 //This is just a very big number - bigger than a map width/height could ever be!
 #define		INVALID_XY				(512 * 127)

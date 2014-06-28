@@ -3,7 +3,7 @@ Warzone 2100 Legacy Project Lobby Server,
 Copyright (c) 2014 The Warzone 2100 Legacy Project
 
 This file is part of Warzone 2100 Legacy.
- 
+
 Warzone 2100 Legacy is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
@@ -62,7 +62,7 @@ typedef struct
 {
 	uint32_t StructVer;
 	char GameName[64];
-	
+
 	struct
 	{
 		int32_t Size;
@@ -71,7 +71,7 @@ typedef struct
 		int32_t MaxPlayers, CurPlayers;
 		int32_t UserFlags[4];
 	} NetSpecs;
-	
+
 	char SecondaryHosts[2][40];
 	char Extra[159];
 	char Map[40];
@@ -82,9 +82,9 @@ typedef struct
 	uint32_t PrivateGame;
 	uint32_t PureGame;
 	uint32_t Mods;
-	
+
 	uint32_t GameID;
-	
+
 	uint32_t Unused1, Unused2, Unused3;
 } GameStruct;
 
@@ -94,7 +94,7 @@ static struct _GameTree
 	time_t TimeHosted;
 	GameStruct Game;
 	Bool Completed;
-	
+
 	struct _GameTree *Next;
 	struct _GameTree *Prev;
 } *GameTree;
@@ -104,7 +104,7 @@ static struct _ChatQueueTree
 	int Sock;
 	char IP[64];
 	char Nick[32];
-	
+
 	struct _ChatQueueTree *Next;
 	struct _ChatQueueTree *Prev;
 } *ChatTree;
@@ -142,24 +142,31 @@ static Bool NetRead(int SockDescriptor, void *OutStream_, unsigned long MaxLengt
 	unsigned char Byte = 0;
 	unsigned char *OutStream = OutStream_;
 	unsigned long Inc = 0;
-	
+
 	do
 	{
 		Status = recv(SockDescriptor, &Byte, 1, 0);
-		
+
 		*OutStream++ = Byte;
-		
-		if ((Byte == '\n' || Byte == '\0') && IsText) break;
-		
-	} while (++Inc, Status > 0 && Inc < MaxLength);
-	
+
+		if ((Byte == '\n' || Byte == '\0') && IsText)
+		{
+			break;
+		}
+
+	}
+	while (++Inc, Status > 0 && Inc < MaxLength);
+
 	if (IsText)
 	{
 		--OutStream;
-		
-		while (*OutStream == '\n' || *OutStream == '\r') *OutStream-- = '\0';
+
+		while (*OutStream == '\n' || *OutStream == '\r')
+		{
+			*OutStream-- = '\0';
+		}
 	}
-	
+
 	return Status != -1;
 }
 
@@ -170,30 +177,32 @@ static Bool NetWrite(int SockDescriptor, void *InMsg, unsigned long WriteSize)
 	do
 	{
 		Transferred = send(SockDescriptor, InMsg, (WriteSize - TotalTransferred), MSG_NOSIGNAL);
-		
+
 		if (Transferred == -1) /*This is ugly I know, but it's converted implicitly, so shut up.*/
 		{
 			return false;
 		}
-		
+
 		TotalTransferred += Transferred;
-	} while (WriteSize > TotalTransferred);
-	
+	}
+	while (WriteSize > TotalTransferred);
+
 	return true;
 }
 
 static Bool NetInit(unsigned short PortNum)
-{ /*this is mostly just from Beej's network guide,
+{
+	/*this is mostly just from Beej's network guide,
 	because I care too little to actually try and learn this stuff.*/
 	struct addrinfo BStruct, *Res = NULL;
 	char AsciiPort[16] =  { '\0' };
 	int True = true;
 	int GAIExit;
-	
+
 	snprintf(AsciiPort, sizeof AsciiPort, "%hu", PortNum);
-	
+
 	memset(&BStruct, 0, sizeof(struct addrinfo));
-	
+
 	BStruct.ai_family = AF_UNSPEC;
 	BStruct.ai_socktype = SOCK_STREAM;
 	BStruct.ai_flags = AI_PASSIVE;
@@ -203,34 +212,34 @@ static Bool NetInit(unsigned short PortNum)
 		fprintf(stderr, "Failed to getaddrinfo(): %s\n", gai_strerror(GAIExit));
 		return false;
 	}
-	
+
 	SocketFamily = Res->ai_family;
-	
+
 	if (!(SocketDescriptor = socket(Res->ai_family, Res->ai_socktype, Res->ai_protocol)))
 	{
 		fprintf(stderr, "Failed to open a socket on port %hu.\n", PortNum);
 		return false;
 	}
-	
+
 	setsockopt(SocketDescriptor, SOL_SOCKET, SO_REUSEADDR, &True, sizeof(int));
-	
+
 	if (bind(SocketDescriptor, Res->ai_addr, Res->ai_addrlen) == -1)
 	{
 		perror("bind()");
 		return false;
 	}
-	
+
 	listen(SocketDescriptor, MAX_SIMULTANIOUS);
 
 	freeaddrinfo(Res);
-	
+
 	return true;
 }
-	
+
 static void NetShutdown(void)
 {
 	struct _GameTree *Worker = GameTree;
-	
+
 	for (; Worker; Worker = Worker->Next)
 	{
 		close(Worker->Sock);
@@ -244,14 +253,17 @@ static void NetShutdown(void)
 static uint32_t GameGetGameID(void)
 {
 	struct _GameTree *Worker = GameTree;
-	
+
 	uint32_t CurHighest = 0;
-	
+
 	for (; Worker; Worker = Worker->Next)
 	{
-		if (Worker->Game.GameID > CurHighest) CurHighest = Worker->Game.GameID;
+		if (Worker->Game.GameID > CurHighest)
+		{
+			CurHighest = Worker->Game.GameID;
+		}
 	}
-	
+
 	return CurHighest + 1;
 }
 
@@ -265,46 +277,52 @@ static struct _GameTree *GameCreate(uint32_t GameID, int SockDesc)
 	}
 	else
 	{
-		while (Worker->Next) Worker = Worker->Next;
-		
+		while (Worker->Next)
+		{
+			Worker = Worker->Next;
+		}
+
 		Worker->Next = malloc(sizeof(struct _GameTree));
 		memset(Worker->Next, 0, sizeof(struct _GameTree));
 		Worker->Next->Prev = Worker;
 		Worker = Worker->Next;
 	}
-	
+
 	Worker->Game.GameID = GameID;
 	Worker->Sock = SockDesc;
-	
+
 	return Worker;
 }
 
 static Bool GameCompleteCreate(GameStruct *Game)
 {
 	struct _GameTree *Worker = GameTree;
-	
-	if (!GameTree) return false;
-	
+
+	if (!GameTree)
+	{
+		return false;
+	}
+
 	for (; Worker; Worker = Worker->Next)
 	{
 		if (Game->GameID == Worker->Game.GameID)
 		{
 			char Addr[sizeof Game->NetSpecs.HostIP];
-			
+
 			memcpy(Addr, Worker->Game.NetSpecs.HostIP, sizeof Addr);
 
 			Worker->Game = *Game;
-			
+
 			memcpy(Worker->Game.NetSpecs.HostIP, Addr, sizeof Addr);
 
 			Worker->Completed = true;
-			
+
 			LastHostTime = Worker->TimeHosted = time(NULL);
-			
+
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -313,8 +331,11 @@ static Bool GameRemove(uint32_t GameID)
 	struct _GameTree *Worker = GameTree;
 	Bool Found = false;
 
-	if (!GameTree) return false;
-	
+	if (!GameTree)
+	{
+		return false;
+	}
+
 	for (; Worker; Worker = Worker->Next)
 	{
 		if (Worker->Game.GameID == GameID)
@@ -335,22 +356,25 @@ static Bool GameRemove(uint32_t GameID)
 			}
 			else
 			{
-				if (Worker->Next) Worker->Next->Prev = Worker->Prev;
+				if (Worker->Next)
+				{
+					Worker->Next->Prev = Worker->Prev;
+				}
 				Worker->Prev->Next = Worker->Next;
 				free(Worker);
 			}
-			
+
 			Found = true;
 		}
 	}
-	
+
 	return Found;
 }
 /*
 static struct _GameTree *GameLookup(uint32_t GameID)
 {
 	struct _GameTree *Worker = GameTree;
-	
+
 	for (; Worker; Worker = Worker->Next)
 	{
 		if (Worker->Game.GameID == GameID)
@@ -358,14 +382,14 @@ static struct _GameTree *GameLookup(uint32_t GameID)
 			return Worker;
 		}
 	}
-	
+
 	return NULL;
 }*/
-	
+
 static void GameRemoveAll(void)
 {
 	struct _GameTree *Worker = GameTree, *Temp;
-	
+
 	for (; Worker; Worker = Temp)
 	{
 		Temp = Worker->Next;
@@ -384,15 +408,15 @@ static void LobbyLoop(void)
 	struct sockaddr_in Addr;
 	socklen_t AddrSize = sizeof Addr;
 	char AddrBuf[128];
-	
+
 	memset(&ClientInfo, 0, sizeof ClientInfo);
-	
+
 	puts("--[Lobby loop started. Waiting for clients.]--");
-	
+
 	while (1)
 	{
 		fflush(NULL); /*For logging etc*/
-		
+
 		if ((ClientDescriptor = accept(SocketDescriptor, &ClientInfo, &SockaddrSize)) == -1)
 		{
 			/*Just try and restart the server if an error occurs.*/
@@ -403,15 +427,16 @@ static void LobbyLoop(void)
 			NetInit(LOBBYPORT);
 			continue;
 		}
-		
+
 		/*Get the IP of the client.*/
 		memset(&Addr, 0, AddrSize); /*Probably not necessary*/
 		getpeername(ClientDescriptor, (void*)&Addr, &AddrSize);
 		inet_ntop(SocketFamily, (void*)&Addr.sin_addr, AddrBuf, sizeof AddrBuf);
-		
+
 	L2Start:
 		for (Worker = GameTree; Worker; Worker = Worker->Next)
-		{ /*Handle existing sockets, remove dead games, etc*/
+		{
+			/*Handle existing sockets, remove dead games, etc*/
 			if (!Worker->Sock)
 			{
 				GameRemove(Worker->Game.GameID);
@@ -421,78 +446,85 @@ static void LobbyLoop(void)
 			{
 				char RecvChar;
 				int Status = recv(Worker->Sock, &RecvChar, 1, MSG_DONTWAIT);
-				
+
 				if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK) ||
-					!ProtocolTestGamePort(GAMEPORT, Worker->Game.NetSpecs.HostIP) ||
-					(Worker->TimeHosted && time(NULL) - Worker->TimeHosted > 60 * 120))
+						!ProtocolTestGamePort(GAMEPORT, Worker->Game.NetSpecs.HostIP) ||
+						(Worker->TimeHosted && time(NULL) - Worker->TimeHosted > 60 * 120))
 					/*You can only have a game open for two hours before you must re-register.*/
 				{
 					printf("--[Removing defunct game %s::%u::\"%s\" before handling client %s.]--\n",
-							Worker->Game.NetSpecs.HostIP, Worker->Game.GameID, Worker->Game.GameName, AddrBuf);
+						   Worker->Game.NetSpecs.HostIP, Worker->Game.GameID, Worker->Game.GameName, AddrBuf);
 					close(Worker->Sock);
 					GameRemove(Worker->Game.GameID);
 					goto L2Start;
 				}
-				else continue;
+				else
+				{
+					continue;
+				}
 			}
 		}
 	L3Start:
 		for (CWorker = ChatTree; CWorker; CWorker = CWorker->Next)
-		{ /*Delete dead chat descriptors.*/
+		{
+			/*Delete dead chat descriptors.*/
 			char RecvChar;
 			int Status = recv(CWorker->Sock, &RecvChar, 1, MSG_DONTWAIT);
-			
+
 			if (Status == 0 || (Status == -1 && errno != EAGAIN && errno != EWOULDBLOCK))
 			{
 				char Nick[32];
 				struct _ChatQueueTree *Worker = NULL;
-				
+
 				strncpy(Nick, CWorker->Nick, sizeof Nick - 1);
 				Nick[sizeof Nick - 1] = '\0';
-				
+
 				printf("--[Deleting dead chat listener client %s::%d]--\n", CWorker->IP, CWorker->Sock);
-				
+
 				ChatDelFromQueue(CWorker->Sock);
-				
+
 				snprintf(OutBuf, sizeof OutBuf, "* %s's connection to lobby chat was broken *", Nick);
-				
+
 				for (Worker = ChatTree; Worker; Worker = Worker->Next)
 				{
 					NetWrite(Worker->Sock, OutBuf, sizeof OutBuf);
 				}
-				
+
 				goto L3Start;
 			}
 		}
-				
-		
+
+
 		/*Get command.*/
 		if (!NetRead(ClientDescriptor, InBuf, sizeof InBuf, true))
 		{
 			close(ClientDescriptor);
 			continue;
 		}
-		
+
 		if (!strcmp("list", InBuf))
 		{
 			int Count = htonl(GameCountGames());
 			struct _GameTree *Worker = GameTree;
 			uint32_t TempTime = LastHostTime ? htonl((time(NULL) - LastHostTime)) : 0;
-			
+
 			printf("--[Game list requested by %s, sending total of %d games.]--\n", AddrBuf, (int)ntohl(Count));
-			
+
 			NetWrite(ClientDescriptor, &Count, sizeof(int));
-			
+
 			for (; Worker; Worker = Worker->Next)
 			{
-				if (!Worker->Completed) continue;
+				if (!Worker->Completed)
+				{
+					continue;
+				}
 				ProtocolEncodeGS(&Worker->Game, (void*)OutBuf);
 				NetWrite(ClientDescriptor, OutBuf, PACKED_GS_SIZE);
 			}
-			
+
 			/*Write the time in seconds since the last game was hosted.*/
 			NetWrite(ClientDescriptor, &TempTime, sizeof(uint32_t));
-			
+
 			close(ClientDescriptor);
 			continue;
 		}
@@ -500,28 +532,28 @@ static void LobbyLoop(void)
 		{
 			struct _GameTree *Worker = GameTree;
 			int Count = GameCountGames();
-			uint32_t TempTime = LastHostTime ? (time(NULL) - LastHostTime) / 60: 0;
-			
+			uint32_t TempTime = LastHostTime ? (time(NULL) - LastHostTime) / 60 : 0;
+
 			printf("--[Text based game list requested by %s, sending total of %d games.]--\n", AddrBuf, Count);
-			
-			snprintf(OutBuf, sizeof OutBuf, "%d Games\n",Count);
-			
+
+			snprintf(OutBuf, sizeof OutBuf, "%d Games\n", Count);
+
 			NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf));
-			
+
 			for (; Worker; Worker = Worker->Next)
 			{
 				snprintf(OutBuf, sizeof OutBuf, "Name: %s | Map: %s | Host: %s | Players: %d/%d | IP: %s | Version: %s | Mods: %s | Private: %s\n",
-						Worker->Game.GameName, Worker->Game.Map, Worker->Game.HostNick, Worker->Game.NetSpecs.CurPlayers,
-						Worker->Game.NetSpecs.MaxPlayers, Worker->Game.NetSpecs.HostIP, Worker->Game.VersionString,
-						*Worker->Game.ModList ? Worker->Game.ModList : "None", Worker->Game.PrivateGame ? "Yes" : "No");
-						
+						 Worker->Game.GameName, Worker->Game.Map, Worker->Game.HostNick, Worker->Game.NetSpecs.CurPlayers,
+						 Worker->Game.NetSpecs.MaxPlayers, Worker->Game.NetSpecs.HostIP, Worker->Game.VersionString,
+						 *Worker->Game.ModList ? Worker->Game.ModList : "None", Worker->Game.PrivateGame ? "Yes" : "No");
+
 				NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf));
 			}
-			
-			
+
+
 			snprintf(OutBuf, sizeof OutBuf, "Last game was hosted %lu minutes ago.\n", (unsigned long)TempTime);
 			NetWrite(ClientDescriptor, OutBuf, strlen(OutBuf) + 1); /*Write a null terminator, so +1.*/
-			
+
 			close(ClientDescriptor);
 			continue;
 		}
@@ -531,16 +563,19 @@ static void LobbyLoop(void)
 			struct _GameTree *Game;
 
 			printf("--[Game ID Request from %s. Assigning Game ID \"%u\".]--\n", AddrBuf, (unsigned int)GameID);
-			
+
 			Game = GameCreate(GameID, ClientDescriptor); /*We store the client's socket descriptor.*/
-			
+
 			/*Copy in IP.*/
 			strncpy(Game->Game.NetSpecs.HostIP, AddrBuf, sizeof Game->Game.NetSpecs.HostIP - 1);
 			Game->Game.NetSpecs.HostIP[sizeof Game->Game.NetSpecs.HostIP - 1] = '\0';
 			GameID = htonl(GameID);
 			NetWrite(ClientDescriptor, &GameID, sizeof(uint32_t));
-			
-			while (!NetRead(ClientDescriptor, InBuf, sizeof InBuf, true)) usleep(1000);
+
+			while (!NetRead(ClientDescriptor, InBuf, sizeof InBuf, true))
+			{
+				usleep(1000);
+			}
 
 			if (!strcmp("addg", InBuf))
 			{
@@ -549,12 +584,15 @@ static void LobbyLoop(void)
 				const char *Msg = NULL;
 				char MsgBuf[128] = { '\0' };
 				Bool ES = false;
-				
-				while (!NetRead(ClientDescriptor, (void*)InBuf, PACKED_GS_SIZE, false)) usleep(1000);
-	
+
+				while (!NetRead(ClientDescriptor, (void*)InBuf, PACKED_GS_SIZE, false))
+				{
+					usleep(1000);
+				}
+
 				ProtocolDecodeGS((void*)InBuf, &RecvGame);
 				RecvGame.GameID = ntohl(GameID);
-				
+
 				if (!(ES = GameCompleteCreate(&RecvGame)))
 				{
 					Msg = "Bad game ID provided.";
@@ -565,9 +603,9 @@ static void LobbyLoop(void)
 				else if (!ProtocolTestGamePort(GAMEPORT, AddrBuf))
 				{
 					snprintf(MsgBuf, sizeof MsgBuf,
-							"Unable to host your game.\n"
-							"The lobby server's test to see that you have port %d open has failed.\n"
-							"Check port forwarding?", GAMEPORT);
+							 "Unable to host your game.\n"
+							 "The lobby server's test to see that you have port %d open has failed.\n"
+							 "Check port forwarding?", GAMEPORT);
 					Msg = MsgBuf;
 					StatusCode = htonl(5);
 					MOTDLength = htonl(strlen(Msg));
@@ -576,7 +614,7 @@ static void LobbyLoop(void)
 				{
 					FILE *FileDescriptor = fopen("motd.txt", "r");
 					const char *FallbackMsg = "Welcome to the Warzone 2100 Legacy Lobby Server!\nYour game should now be listed.";
-					
+
 					if (!FileDescriptor)
 					{
 						Msg = FallbackMsg;
@@ -584,33 +622,33 @@ static void LobbyLoop(void)
 					else
 					{
 						int Inc = 0, TChar;
-						
+
 						for (; (TChar = getc(FileDescriptor)) != EOF && Inc < sizeof MsgBuf - 1; ++Inc)
 						{
 							((unsigned char*)MsgBuf)[Inc] = TChar; /*Cast is for in case someone is trying to send binary
 							* for whatever reason, because that can cause an overflow or trap etc if it's number is higher than
 							* a signed char.*/
-							
+
 						}
 						MsgBuf[Inc] = '\0';
-						
+
 						fclose(FileDescriptor);
-						
+
 						Msg = MsgBuf;
 					}
 
 					printf("--[Creating game for %s. Game ID %u, Name \"%s\", Map \"%s\", Hoster \"%s\".]--\n",
-							AddrBuf, RecvGame.GameID, RecvGame.GameName, RecvGame.Map, RecvGame.HostNick);
+						   AddrBuf, RecvGame.GameID, RecvGame.GameName, RecvGame.Map, RecvGame.HostNick);
 					StatusCode = htonl(200);
 					MOTDLength = htonl(strlen(Msg));
 				}
-				
+
 				memcpy(OutBuf, &StatusCode, sizeof(uint32_t));
 				memcpy(OutBuf + sizeof(uint32_t), &MOTDLength, sizeof(uint32_t));
 				memcpy(OutBuf + sizeof(uint32_t) * 2, Msg, ntohl(MOTDLength));
-				
+
 				NetWrite(ClientDescriptor, OutBuf, sizeof(uint32_t) * 2 + ntohl(MOTDLength));
-				
+
 				if (StatusCode != htonl(200))
 				{
 					printf("--[Removing incomplete game created by client %s]--\n", AddrBuf);
@@ -627,23 +665,24 @@ static void LobbyLoop(void)
 			continue;
 		}
 		else if (!strcmp("nick", InBuf))
-		{ /*They want to change the nick for their descriptor.*/
+		{
+			/*They want to change the nick for their descriptor.*/
 			Bool Ok = true;
 			struct _ChatQueueTree *ChatClient = NULL, *Worker = ChatTree;
 			uint32_t Token = 0;
 			unsigned char NickLength = 0;
 			char OutBuf[256];
 			Bool NickExists = false;
-			
+
 			/*Tell them to go ahead and send it.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
-			
+
 			/*Get the descriptor we gave them.*/
 			NetRead(ClientDescriptor, &Token, sizeof(uint32_t), false);
-			
+
 			Token = ntohl(Token);
-			
-			/*Lookup that descriptor*/ 
+
+			/*Lookup that descriptor*/
 			if (!(ChatClient = ChatQueueLookup(Token)))
 			{
 				Ok = false;
@@ -652,32 +691,34 @@ static void LobbyLoop(void)
 				fprintf(stderr, "--[Chat client at %s sent us invalid descriptor for nick change.]--\n", AddrBuf);
 				continue;
 			}
-			
+
 			if (strcmp(AddrBuf, ChatClient->IP) != 0)
-			{ /*Don't let people guess descriptors to change nicks of other players.*/
+			{
+				/*Don't let people guess descriptors to change nicks of other players.*/
 				Ok = false;
 				NetWrite(ClientDescriptor, &Ok, 1);
 				close(ClientDescriptor);
 				fprintf(stderr, "--[Chat client at %s sent us a descriptor that doesn't match their IP.]--\n", AddrBuf);
 				continue;
 			}
-			
+
 			/*Time to get the new nick. Get the length first.*/
 			NetRead(ClientDescriptor, &NickLength, 1, false);
-			
+
 			if (NickLength >= sizeof ChatClient->Nick || !NickLength)
-			{ /*probably trying to pull a buffer overflow on us.*/
+			{
+				/*probably trying to pull a buffer overflow on us.*/
 				Ok = false;
 				NetWrite(ClientDescriptor, &Ok, 1);
 				close(ClientDescriptor);
 				fprintf(stderr, "--[Chat client at %s attempted to send us a bad nick length,]--\n", AddrBuf);
 				continue;
 			}
-			
+
 			/*Now get the nick.*/
 			NetRead(ClientDescriptor, InBuf, NickLength, true);
 			InBuf[NickLength] = '\0';
-			
+
 			/*Check to see if they're trying to change to an existing nick.*/
 			for (; Worker; Worker = Worker->Next)
 			{
@@ -692,68 +733,80 @@ static void LobbyLoop(void)
 					break;
 				}
 			}
-			
-			if (NickExists) continue;
-			
+
+			if (NickExists)
+			{
+				continue;
+			}
+
 			/*Tell them we're done with them.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
 			close(ClientDescriptor);
-			
+
 			/*Prepare the out message.*/
 			snprintf(OutBuf, sizeof OutBuf, "* %s is now known as %s *", ChatClient->Nick, InBuf);
-			
+
 			/*Copy in the new nick once and for all.*/
 			strncpy(ChatClient->Nick, InBuf, sizeof ChatClient->Nick - 1);
 			ChatClient->Nick[sizeof ChatClient->Nick - 1] = '\0';
 
 			for (Worker = ChatTree; Worker; Worker = Worker->Next)
-			{ /*Notify everyone.*/
+			{
+				/*Notify everyone.*/
 				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}
-			
+
 			continue;
 		}
 		else if (!strcmp("listen", InBuf))
-		{ /*Adds this client to our chat send queue.*/
+		{
+			/*Adds this client to our chat send queue.*/
 			Bool Ok = true;
 			uint32_t DOut = htonl(ClientDescriptor);
 			unsigned char NickLen = 0;
 			char OutBuf[256];
 			struct _ChatQueueTree *Worker = ChatTree;
-			
+
 			printf("--[Client %s requested to be added to chat queue, we'll oblige.\n"
-					"Sending them their descriptor (%d) and waiting for response.]--\n", AddrBuf, ClientDescriptor);
+				   "Sending them their descriptor (%d) and waiting for response.]--\n", AddrBuf, ClientDescriptor);
 			NetWrite(ClientDescriptor, (void*)&Ok, 1);
 			NetWrite(ClientDescriptor, &DOut, sizeof(uint32_t));
-			
+
 			/*Get the string length*/
 			NetRead(ClientDescriptor, &NickLen, 1, false);
-			
+
 			if (!NickLen)
-			{ /*Maybe trying to mess us up.*/
+			{
+				/*Maybe trying to mess us up.*/
 				fprintf(stderr, "--[Zero size nick response for chat queue request by %s]--\n", AddrBuf);
 				close(ClientDescriptor);
 				continue;
 			}
-			
+
 			NetRead(ClientDescriptor, InBuf, NickLen, true);
 			InBuf[NickLen] = '\0';
-			
+
 			/*Check that the nick is not longer than our maximum.*/
-			if (NickLen > sizeof (((struct _ChatQueueTree*)0)->Nick) ) Ok = false;
-			else ChatAddToQueue(AddrBuf, ClientDescriptor, InBuf);
-			
+			if (NickLen > sizeof (((struct _ChatQueueTree*)0)->Nick) )
+			{
+				Ok = false;
+			}
+			else
+			{
+				ChatAddToQueue(AddrBuf, ClientDescriptor, InBuf);
+			}
+
 			/*Send if it went ok.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
-			
+
 			/*Tell everyone they arrived.*/
 			snprintf(OutBuf, sizeof OutBuf, "* %s has connected to lobby chat *", InBuf);
-			
+
 			for (; Worker; Worker = Worker->Next)
 			{
 				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}
-			
+
 			/*leave the socket open for them to be listened to.*/
 			continue;
 		}
@@ -764,28 +817,29 @@ static void LobbyLoop(void)
 			char OutBuf[256], Message[192];
 			unsigned char MessageLength = 0;
 			uint32_t DIn = 0;
-			
+
 			/*Tell them they are allowed to ask us to speak.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
-			
+
 			*InBuf = 0; /*So we know we aren't sending the same old trash.*/
-			
+
 			/*Find the descriptor for their listening connection.*/
 			NetRead(ClientDescriptor, &DIn, sizeof(uint32_t), false);
 
 			DIn = ntohl(DIn);
-			
+
 			if (!DIn)
-			{ /*Zero descriptor.*/
+			{
+				/*Zero descriptor.*/
 				Ok = false;
-				
+
 				fprintf(stderr, "--[Client at %s sent us a zero descriptor for chat 'speak'.]--\n", AddrBuf);
-				
+
 				NetWrite(ClientDescriptor, &Ok, 1);
 				close(ClientDescriptor);
 				continue;
 			}
-			
+
 			/*Attempt to find their chat descriptor.*/
 			if (!(ChatClient = ChatQueueLookup(DIn)))
 			{
@@ -796,18 +850,19 @@ static void LobbyLoop(void)
 				close(ClientDescriptor);
 				continue;
 			}
-			
+
 			if (strcmp(AddrBuf, ChatClient->IP) != 0)
-			{ /*Don't let them impersonate other players by guessing their descriptors.*/
+			{
+				/*Don't let them impersonate other players by guessing their descriptors.*/
 				Ok = false;
 				NetWrite(ClientDescriptor, &Ok, 1);
 				close(ClientDescriptor);
 				continue;
 			}
-			
+
 			/*Read in the length of their message.*/
 			NetRead(ClientDescriptor, &MessageLength, 1, false);
-			
+
 			if (!MessageLength || MessageLength >= sizeof Message)
 			{
 				fprintf(stderr, "--[Client at %s sent us a bad size %d of message length.]--\n", AddrBuf, MessageLength);
@@ -816,24 +871,24 @@ static void LobbyLoop(void)
 				close(ClientDescriptor);
 				continue;
 			}
-			
+
 			/*Read in the message itself.*/
 			NetRead(ClientDescriptor, Message, MessageLength, true);
 			Message[MessageLength] = '\0';
-			
+
 			/*Seems OK to us, tell the client and rush them off.*/
 			NetWrite(ClientDescriptor, &Ok, 1);
 			close(ClientDescriptor);
-			
+
 			snprintf(OutBuf, sizeof OutBuf, "%s: %s", ChatClient->Nick, Message);
-			
+
 			for (; CWorker; CWorker = CWorker->Next)
 			{
 				NetWrite(CWorker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}
-			
+
 			printf("--[CHAT: %s at %s: %s]--\n", ChatClient->Nick, AddrBuf, Message);
-			continue; 
+			continue;
 		}
 		else if (!strcmp("dc", InBuf))
 		{
@@ -841,14 +896,15 @@ static void LobbyLoop(void)
 			Bool Ok = false;
 			struct _ChatQueueTree *Worker = ChatTree, *ChatClient = NULL;
 			char OutBuf[256], Nick[32];
-			
+
 			/*Read in the descriptor*/
 			NetRead(ClientDescriptor, &Desc, sizeof Desc, false);
-			
+
 			Desc = ntohl(Desc);
-			
+
 			if (!(ChatClient = ChatQueueLookup(Desc)))
-			{ /*Find the client via descriptor*/
+			{
+				/*Find the client via descriptor*/
 				fprintf(stderr, "--[Failed to lookup descriptor for client %s::%u requesting disconnect.]--\n",
 						AddrBuf, (unsigned)Desc);
 				Ok = false;
@@ -856,9 +912,10 @@ static void LobbyLoop(void)
 				close(ClientDescriptor);
 				continue;
 			}
-			
+
 			if (strcmp(AddrBuf, ChatClient->IP) != 0)
-			{ /*Don't allow closing descriptors that aren't ours*/
+			{
+				/*Don't allow closing descriptors that aren't ours*/
 				fprintf(stderr, "--[Client at %s attempted to close a connection\n"
 						"for a descriptor other than their own.]--\n", AddrBuf);
 				Ok = false;
@@ -866,28 +923,34 @@ static void LobbyLoop(void)
 				close(ClientDescriptor);
 				continue;
 			}
-			
+
 			strncpy(Nick, ChatClient->Nick, sizeof Nick - 1);
 			Nick[sizeof Nick - 1] = '\0';
-			
+
 			Ok = ChatDelFromQueue(Desc);
-			
+
 			NetWrite(ClientDescriptor, &Ok, sizeof(Bool));
-			
+
 			close(ClientDescriptor);
-			
-			if (Ok) printf("--[Disconnected chat listener %s::%u at their request.]--\n", AddrBuf, (unsigned)Desc);
-			else fprintf(stderr, "--[Failed to disconnect chat listener %s::%u!]--\n", AddrBuf, (unsigned)Desc);
-			
+
+			if (Ok)
+			{
+				printf("--[Disconnected chat listener %s::%u at their request.]--\n", AddrBuf, (unsigned)Desc);
+			}
+			else
+			{
+				fprintf(stderr, "--[Failed to disconnect chat listener %s::%u!]--\n", AddrBuf, (unsigned)Desc);
+			}
+
 			fflush(NULL);
-			
+
 			/*Tell the others.*/
 			snprintf(OutBuf, sizeof OutBuf, "* %s has disconnected from lobby chat *", Nick);
 			for (; Worker; Worker = Worker->Next)
 			{
 				NetWrite(Worker->Sock, OutBuf, strlen(OutBuf) + 1);
 			}
-			
+
 			continue;
 		}
 		else
@@ -897,7 +960,7 @@ static void LobbyLoop(void)
 			continue;
 		}
 	}
-	
+
 	NetShutdown();
 }
 
@@ -905,12 +968,15 @@ static int GameCountGames(void)
 {
 	struct _GameTree *Worker = GameTree;
 	int Inc = 0;
-	
+
 	for (; Worker; Worker = Worker->Next)
 	{
-		if (Worker->Completed) ++Inc;
+		if (Worker->Completed)
+		{
+			++Inc;
+		}
 	}
-	
+
 	return Inc;
 }
 
@@ -921,45 +987,48 @@ static Bool ProtocolTestGamePort(unsigned short PortNum, const char *IP)
 	char AsciiPort[16];
 	int TestDescriptor = 0, GAIExit = 0;
 	int Inc = 0;
-	
+
 	memset(&BStruct, 0, sizeof(struct addrinfo));
 	snprintf(AsciiPort, sizeof AsciiPort, "%hd", PortNum);
-	
+
 	printf("--[Testing game port %s for client %s ...]--\n", AsciiPort, IP);
 
 	BStruct.ai_family = AF_UNSPEC;
 	BStruct.ai_socktype = SOCK_STREAM;
 	BStruct.ai_flags = AI_PASSIVE;
-	
+
 	if ((GAIExit = getaddrinfo(IP, AsciiPort, &BStruct, &Res)) != 0)
 	{
 		fprintf(stderr, "--[Game Port test failed: Failed to getaddrinfo() for ProtocolTestGamePort() for client %s: %s]--\n",
 				IP, gai_strerror(GAIExit));
 		return false;
 	}
-	
+
 	if (!(TestDescriptor = socket(Res->ai_family, Res->ai_socktype, Res->ai_protocol)))
 	{
 		fprintf(stderr, "--[Game Port test failed: Failed to open a socket for ProtocolTestGamePort().]--\n");
 		return false;
 	}
-	
+
 	/*Set non-blocking so we can do funny stuff like this.*/
 	fcntl(TestDescriptor, F_SETFL, O_NONBLOCK);
 
 	/*Check for a connection every eighth of a second.*/
-	for (; connect(TestDescriptor, (void*)Res->ai_addr, Res->ai_addrlen) != 0 && Inc < GPCONNECT_TIMEOUT * 8; ++Inc) usleep(125000);
-	
+	for (; connect(TestDescriptor, (void*)Res->ai_addr, Res->ai_addrlen) != 0 && Inc < GPCONNECT_TIMEOUT * 8; ++Inc)
+	{
+		usleep(125000);
+	}
+
 	/*We timed out! Failed the test.*/
 	if (Inc == GPCONNECT_TIMEOUT * 8)
 	{
 		fprintf(stderr, "--[Game Port test failed: Cannot connect to client via game port %s!]--\n", AsciiPort);
 		return false;
 	}
-	
+
 	close(TestDescriptor);
 	printf("--[Game Port test succeeded.]--\n");
-	
+
 	return true;
 }
 
@@ -968,92 +1037,92 @@ static void ProtocolEncodeGS(GameStruct *InStruct, unsigned char *OutStream)
 	int Inc = 0;
 	GameStruct CStruct = { 0 };
 	unsigned char *Worker = OutStream;
-	
+
 	CStruct = *InStruct;
-	
+
 	CStruct.StructVer = htonl(CStruct.StructVer);
 	memcpy(Worker, &CStruct.StructVer, sizeof CStruct.StructVer);
 	Worker += sizeof CStruct.StructVer;
-	
+
 	memcpy(Worker, CStruct.GameName, sizeof CStruct.GameName);
 	Worker += sizeof CStruct.GameName;
-	
+
 	CStruct.NetSpecs.Size = htonl(CStruct.NetSpecs.Size);
 	memcpy(Worker, &CStruct.NetSpecs.Size, sizeof CStruct.NetSpecs.Size);
 	Worker += sizeof CStruct.NetSpecs.Size;
-	
+
 	CStruct.NetSpecs.Flags = htonl(CStruct.NetSpecs.Flags);
 	memcpy(Worker, &CStruct.NetSpecs.Flags, sizeof CStruct.NetSpecs.Flags);
 	Worker += sizeof CStruct.NetSpecs.Flags;
-	
+
 	memcpy(Worker, CStruct.NetSpecs.HostIP, sizeof CStruct.NetSpecs.HostIP);
 	Worker += sizeof CStruct.NetSpecs.HostIP;
-	
+
 	CStruct.NetSpecs.MaxPlayers = htonl(CStruct.NetSpecs.MaxPlayers);
 	memcpy(Worker, &CStruct.NetSpecs.MaxPlayers, sizeof(int32_t));
 	Worker += sizeof(int32_t);
-	
+
 	CStruct.NetSpecs.CurPlayers = htonl(CStruct.NetSpecs.CurPlayers);
 	memcpy(Worker, &CStruct.NetSpecs.CurPlayers, sizeof(int32_t));
 	Worker += sizeof(int32_t);
-	
+
 	for (Inc = 0; Inc < 4; ++Inc)
 	{
 		CStruct.NetSpecs.UserFlags[Inc] = htonl(CStruct.NetSpecs.UserFlags[Inc]);
 		memcpy(Worker, &CStruct.NetSpecs.UserFlags[Inc], sizeof(int32_t));
 		Worker += sizeof(int32_t);
 	}
-	
+
 	memcpy(Worker, CStruct.SecondaryHosts, sizeof CStruct.SecondaryHosts);
 	Worker += sizeof CStruct.SecondaryHosts;
-	
+
 	memcpy(Worker, CStruct.Extra, sizeof CStruct.Extra);
 	Worker += sizeof CStruct.Extra;
-	
+
 	memcpy(Worker, CStruct.Map, sizeof CStruct.Map);
 	Worker += sizeof CStruct.Map;
-	
+
 	memcpy(Worker, CStruct.HostNick, sizeof CStruct.HostNick);
 	Worker += sizeof CStruct.HostNick;
-	
+
 	memcpy(Worker, CStruct.VersionString, sizeof CStruct.VersionString);
 	Worker += sizeof CStruct.VersionString;
-	
+
 	memcpy(Worker, CStruct.ModList, sizeof CStruct.ModList);
 	Worker += sizeof CStruct.ModList;
 
 	CStruct.MajorVer = htonl(CStruct.MajorVer);
 	memcpy(Worker, &CStruct.MajorVer, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.MinorVer = htonl(CStruct.MinorVer);
 	memcpy(Worker, &CStruct.MinorVer, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.PrivateGame = htonl(CStruct.PrivateGame);
 	memcpy(Worker, &CStruct.PrivateGame, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.PureGame = htonl(CStruct.PureGame);
 	memcpy(Worker, &CStruct.PureGame, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.Mods = htonl(CStruct.Mods);
 	memcpy(Worker, &CStruct.Mods, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.GameID = htonl(CStruct.GameID);
 	memcpy(Worker, &CStruct.GameID, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.Unused1 = htonl(CStruct.Unused1);
 	memcpy(Worker, &CStruct.Unused1, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.Unused2 = htonl(CStruct.Unused2);
 	memcpy(Worker, &CStruct.Unused2, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
-	
+
 	CStruct.Unused3 = htonl(CStruct.Unused3);
 	memcpy(Worker, &CStruct.Unused3, sizeof(uint32_t));
 	Worker += sizeof(uint32_t);
@@ -1063,90 +1132,90 @@ static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream)
 {
 	int Inc = 0;
 	unsigned char *Worker = InStream;
-	
+
 	memcpy(&OutStream->StructVer, Worker, sizeof OutStream->StructVer);
 	OutStream->StructVer = ntohl(OutStream->StructVer);
 	Worker += sizeof OutStream->StructVer;
-	
+
 	memcpy(OutStream->GameName, Worker, sizeof OutStream->GameName);
 	Worker += sizeof OutStream->GameName;
-	
+
 	memcpy(&OutStream->NetSpecs.Size, Worker, sizeof OutStream->NetSpecs.Size);
 	OutStream->NetSpecs.Size = ntohl(OutStream->NetSpecs.Size);
 	Worker += sizeof OutStream->NetSpecs.Size;
-	
+
 	memcpy(&OutStream->NetSpecs.Flags, Worker, sizeof OutStream->NetSpecs.Flags);
 	OutStream->NetSpecs.Flags = ntohl(OutStream->NetSpecs.Flags);
 	Worker += sizeof OutStream->NetSpecs.Flags;
-	
+
 	memcpy(OutStream->NetSpecs.HostIP, Worker, sizeof OutStream->NetSpecs.HostIP);
 	Worker += sizeof OutStream->NetSpecs.HostIP;
-	
+
 	memcpy(&OutStream->NetSpecs.MaxPlayers, Worker, sizeof(int32_t));
 	OutStream->NetSpecs.MaxPlayers = ntohl(OutStream->NetSpecs.MaxPlayers);
 	Worker += sizeof(int32_t);
-	
+
 	memcpy(&OutStream->NetSpecs.CurPlayers, Worker, sizeof(int32_t));
 	OutStream->NetSpecs.CurPlayers = ntohl(OutStream->NetSpecs.CurPlayers);
 	Worker += sizeof(int32_t);
-	
+
 	for (; Inc < 4; ++Inc)
 	{
 		memcpy(&OutStream->NetSpecs.UserFlags[Inc], Worker, sizeof(int32_t));
 		OutStream->NetSpecs.UserFlags[Inc] = ntohl(OutStream->NetSpecs.UserFlags[Inc]);
 	}
 	Worker += sizeof(int32_t) * 4;
-	
+
 	memcpy(OutStream->SecondaryHosts, Worker, sizeof OutStream->SecondaryHosts);
 	Worker += sizeof OutStream->SecondaryHosts;
-	
+
 	memcpy(OutStream->Extra, Worker, sizeof OutStream->Extra);
 	Worker += sizeof OutStream->Extra;
-	
+
 	memcpy(OutStream->Map, Worker, sizeof OutStream->Map);
 	Worker += sizeof OutStream->Map;
-	
+
 	memcpy(OutStream->HostNick, Worker, sizeof OutStream->HostNick);
 	Worker += sizeof OutStream->HostNick;
-	
+
 	memcpy(OutStream->VersionString, Worker, sizeof OutStream->VersionString);
 	Worker += sizeof OutStream->VersionString;
-	
+
 	memcpy(OutStream->ModList, Worker, sizeof OutStream->ModList);
 	Worker += sizeof OutStream->ModList;
-	
+
 	memcpy(&OutStream->MajorVer, Worker, sizeof(uint32_t));
 	OutStream->MajorVer = ntohl(OutStream->MajorVer);
 	Worker += sizeof(uint32_t);
-	
+
 	memcpy(&OutStream->MinorVer, Worker, sizeof(uint32_t));
 	OutStream->MinorVer = ntohl(OutStream->MinorVer);
 	Worker += sizeof(uint32_t);
-	
+
 	memcpy(&OutStream->PrivateGame, Worker, sizeof(uint32_t));
 	OutStream->PrivateGame = ntohl(OutStream->PrivateGame);
 	Worker += sizeof(uint32_t);
-		
+
 	memcpy(&OutStream->PureGame, Worker, sizeof(uint32_t));
 	OutStream->PureGame = ntohl(OutStream->PureGame);
 	Worker += sizeof(uint32_t);
-	
+
 	memcpy(&OutStream->Mods, Worker, sizeof(uint32_t));
 	OutStream->Mods = ntohl(OutStream->Mods);
 	Worker += sizeof(uint32_t);
-	
+
 	memcpy(&OutStream->GameID, Worker, sizeof(uint32_t));
 	OutStream->GameID = ntohl(OutStream->GameID);
 	Worker += sizeof(uint32_t);
-	
+
 	memcpy(&OutStream->Unused1, Worker, sizeof(uint32_t));
 	OutStream->Unused1 = ntohl(OutStream->Unused1);
 	Worker += sizeof(uint32_t);
-	
+
 	memcpy(&OutStream->Unused2, Worker, sizeof(uint32_t));
 	OutStream->Unused2 = ntohl(OutStream->Unused2);
 	Worker += sizeof(uint32_t);
-	
+
 	memcpy(&OutStream->Unused3, Worker, sizeof(uint32_t));
 	OutStream->Unused3 = ntohl(OutStream->Unused3);
 	Worker += sizeof(uint32_t);
@@ -1155,7 +1224,7 @@ static void ProtocolDecodeGS(unsigned char *InStream, GameStruct *OutStream)
 static void ChatAddToQueue(const char *IP, int Sock, const char *const Nick)
 {
 	struct _ChatQueueTree *Worker = ChatTree;
-	
+
 	if (!ChatTree)
 	{
 		ChatTree = Worker = malloc(sizeof(struct _ChatQueueTree));
@@ -1163,19 +1232,22 @@ static void ChatAddToQueue(const char *IP, int Sock, const char *const Nick)
 	}
 	else
 	{
-		while (Worker->Next) Worker = Worker->Next;
-		
+		while (Worker->Next)
+		{
+			Worker = Worker->Next;
+		}
+
 		Worker->Next = malloc(sizeof(struct _ChatQueueTree));
 		memset(Worker->Next, 0, sizeof(struct _ChatQueueTree));
 		Worker->Next->Prev = Worker;
 		Worker = Worker->Next;
 	}
-	
+
 	Worker->Sock = Sock;
-	
+
 	strncpy(Worker->IP, IP, sizeof Worker->IP - 1);
 	Worker->IP[sizeof Worker->IP - 1] = '\0';
-	
+
 	strncpy(Worker->Nick, Nick, sizeof Worker->Nick - 1);
 	Worker->Nick[sizeof Worker->Nick - 1] = '\0';
 }
@@ -1184,13 +1256,13 @@ static Bool ChatDelFromQueue(int Sock)
 {
 	Bool Found = false;
 	struct _ChatQueueTree *Worker = ChatTree;
-	
+
 	for (; Worker; Worker = Worker->Next)
 	{
 		if (Sock && Worker->Sock == Sock)
 		{
 			close(Worker->Sock); /*Well, disconnect it of course!*/
-			
+
 			if (Worker == ChatTree)
 			{
 				if (Worker->Next)
@@ -1207,21 +1279,24 @@ static Bool ChatDelFromQueue(int Sock)
 			}
 			else
 			{
-				if (Worker->Next) Worker->Next->Prev = Worker->Prev;
+				if (Worker->Next)
+				{
+					Worker->Next->Prev = Worker->Prev;
+				}
 				Worker->Prev->Next = Worker->Next;
 				free(Worker);
 			}
 			Found = true;
 		}
 	}
-	
+
 	return Found;
 }
 
 static struct _ChatQueueTree *ChatQueueLookup(const int Sock)
 {
 	struct _ChatQueueTree *Worker = ChatTree;
-	
+
 	for (; Worker; Worker = Worker->Next)
 	{
 		if (Worker->Sock == Sock)
@@ -1231,19 +1306,19 @@ static struct _ChatQueueTree *ChatQueueLookup(const int Sock)
 	}
 	return NULL;
 }
-	
+
 
 static void ChatShutdownQueue(void)
 {
 	struct _ChatQueueTree *Worker = ChatTree, *Temp;
-	
+
 	for (; Worker; Worker = Temp)
 	{
 		Temp = Worker->Next;
 		free(Worker);
 	}
 }
-	
+
 static void SigHandler(int Signal)
 {
 	switch (Signal)
@@ -1255,7 +1330,7 @@ static void SigHandler(int Signal)
 			ChatShutdownQueue();
 			exit(0);
 			break;
-			
+
 		case SIGSEGV:
 			fprintf(stderr, "SIGSEGV received, a segmentation fault has occurred. Exiting.");
 			exit(1);
@@ -1268,27 +1343,27 @@ static void SigHandler(int Signal)
 int main(int argc, char **argv)
 {
 	puts("Warzone 2100 Legacy Lobby Server v" LOBBYVER "\n\n"
-		"Copyright 2014 The Warzone 2100 Legacy Project\n"
-		"This software is released under the GPLv2.\n"
-		"See the included file COPYING to read the license.\n---\n");
+		 "Copyright 2014 The Warzone 2100 Legacy Project\n"
+		 "This software is released under the GPLv2.\n"
+		 "See the included file COPYING to read the license.\n---\n");
 
 	if (argc == 2 && !strcmp(argv[1], "--background"))
 	{
 		pid_t PID = fork();
-		
+
 		if (PID == -1)
 		{
 			fprintf(stderr, "Failed to fork()!");
 			exit(1);
 		}
-		
+
 		if (PID > 0)
 		{
 			puts("Backgrounding.");
 			signal(SIGCHLD, SIG_IGN);
 			exit(0);
 		}
-		
+
 		if (PID == 0)
 		{
 			setsid();
@@ -1296,18 +1371,21 @@ int main(int argc, char **argv)
 			freopen("lobby.log", "a", stderr);
 		}
 	}
-	
+
 	/*SIGINT is used to make us clean up nicely.*/
 	signal(SIGINT, SigHandler);
 	signal(SIGSEGV, SigHandler);
-	
+
 	printf("Opening socket on port %d... ", LOBBYPORT);
-	
-	if (!NetInit(LOBBYPORT)) exit(1);
+
+	if (!NetInit(LOBBYPORT))
+	{
+		exit(1);
+	}
 	puts("Ok");
-	
+
 	LobbyLoop();
-	
+
 	NetShutdown();
 	GameRemoveAll();
 	ChatShutdownQueue();

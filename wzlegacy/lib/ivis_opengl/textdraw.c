@@ -50,378 +50,378 @@ static GLint _glcFont_Bold = 0;
 
 void iV_font(const char *fontName, const char *fontFace, const char *fontFaceBold)
 {
-    if (_glcContext)
-    {
-        debug(LOG_ERROR, "Cannot change font in running game, yet.");
-        return;
-    }
-    if (fontName)
-    {
-        sstrcpy(font_family, fontName);
-    }
-    if (fontFace)
-    {
-        sstrcpy(font_face_regular, fontFace);
-    }
-    if (fontFaceBold)
-    {
-        sstrcpy(font_face_bold, fontFaceBold);
-    }
+	if (_glcContext)
+	{
+		debug(LOG_ERROR, "Cannot change font in running game, yet.");
+		return;
+	}
+	if (fontName)
+	{
+		sstrcpy(font_family, fontName);
+	}
+	if (fontFace)
+	{
+		sstrcpy(font_face_regular, fontFace);
+	}
+	if (fontFaceBold)
+	{
+		sstrcpy(font_face_bold, fontFaceBold);
+	}
 }
 
 static inline void iV_printFontList(void)
 {
-    unsigned int i;
-    unsigned int font_count = glcGeti(GLC_CURRENT_FONT_COUNT);
+	unsigned int i;
+	unsigned int font_count = glcGeti(GLC_CURRENT_FONT_COUNT);
 
-    debug(LOG_NEVER, "GLC_CURRENT_FONT_COUNT = %d", font_count);
-    if (font_count == 0)
-    {
-        debug(LOG_ERROR, "The requested font (%s) isn't loaded", font_family);
-        info("Forcing GLC_AUTO_FONT");
+	debug(LOG_NEVER, "GLC_CURRENT_FONT_COUNT = %d", font_count);
+	if (font_count == 0)
+	{
+		debug(LOG_ERROR, "The requested font (%s) isn't loaded", font_family);
+		info("Forcing GLC_AUTO_FONT");
 
-        // Fall back to unselected fonts since the requested font apparently
-        // isn't available.
-        glcEnable(GLC_AUTO_FONT);
-    }
+		// Fall back to unselected fonts since the requested font apparently
+		// isn't available.
+		glcEnable(GLC_AUTO_FONT);
+	}
 
-    for (i = 0; i < font_count; ++i)
-    {
-        GLint font = glcGetListi(GLC_CURRENT_FONT_LIST, i);
-        /* The output of the family name and the face is printed using 2 steps
-         * because glcGetFontc and glcGetFontFace return their result in the
-         * same buffer (according to GLC specs).
-         */
-        char prBuffer[1024];
-        snprintf(prBuffer, sizeof(prBuffer), "Font #%d : %s ", font, (const char *)glcGetFontc(font, GLC_FAMILY));
-        prBuffer[sizeof(prBuffer) - 1] = 0;
-        sstrcat(prBuffer, glcGetFontFace(font));
-        debug(LOG_NEVER, "%s", prBuffer);
-    }
+	for (i = 0; i < font_count; ++i)
+	{
+		GLint font = glcGetListi(GLC_CURRENT_FONT_LIST, i);
+		/* The output of the family name and the face is printed using 2 steps
+		 * because glcGetFontc and glcGetFontFace return their result in the
+		 * same buffer (according to GLC specs).
+		 */
+		char prBuffer[1024];
+		snprintf(prBuffer, sizeof(prBuffer), "Font #%d : %s ", font, (const char *)glcGetFontc(font, GLC_FAMILY));
+		prBuffer[sizeof(prBuffer) - 1] = 0;
+		sstrcat(prBuffer, glcGetFontFace(font));
+		debug(LOG_NEVER, "%s", prBuffer);
+	}
 }
 
 static void iV_initializeGLC(void)
 {
-    if (_glcContext)
-    {
-        return;
-    }
+	if (_glcContext)
+	{
+		return;
+	}
 
-    _glcContext = glcGenContext();
-    if (!_glcContext)
-    {
-        debug(LOG_ERROR, "Failed to initialize error code %0x", glcGetError());
-    }
-    else
-    {
-        debug(LOG_NEVER, "Successfully initialized. _glcContext = %d", _glcContext);
-    }
+	_glcContext = glcGenContext();
+	if (!_glcContext)
+	{
+		debug(LOG_ERROR, "Failed to initialize error code %0x", glcGetError());
+	}
+	else
+	{
+		debug(LOG_NEVER, "Successfully initialized. _glcContext = %d", _glcContext);
+	}
 
-    glcContext(_glcContext);
+	glcContext(_glcContext);
 
-    glcEnable(GLC_AUTO_FONT);		// We *do* want font fall-backs
-    glcRenderStyle(GLC_TEXTURE);
-    glcStringType(GLC_UTF8_QSO); // Set GLC's string type to UTF-8 FIXME should be UCS4 to avoid conversions
+	glcEnable(GLC_AUTO_FONT);		// We *do* want font fall-backs
+	glcRenderStyle(GLC_TEXTURE);
+	glcStringType(GLC_UTF8_QSO); // Set GLC's string type to UTF-8 FIXME should be UCS4 to avoid conversions
 
-    _glcFont_Regular = glcGenFontID();
-    _glcFont_Bold = glcGenFontID();
+	_glcFont_Regular = glcGenFontID();
+	_glcFont_Bold = glcGenFontID();
 
-    if (!glcNewFontFromFamily(_glcFont_Regular, font_family))
-    {
-        debug(LOG_ERROR, "Failed to select font family %s as regular font error code %0x", font_family, glcGetError());
-        // select a default font since requested font failed and print out what is available to QuesoGLC
-        iV_printFontList();
-    }
-    else
-    {
-        debug(LOG_NEVER, "Successfully selected font family %s as regular font", font_family);
-    }
+	if (!glcNewFontFromFamily(_glcFont_Regular, font_family))
+	{
+		debug(LOG_ERROR, "Failed to select font family %s as regular font error code %0x", font_family, glcGetError());
+		// select a default font since requested font failed and print out what is available to QuesoGLC
+		iV_printFontList();
+	}
+	else
+	{
+		debug(LOG_NEVER, "Successfully selected font family %s as regular font", font_family);
+	}
 
-    if (!glcFontFace(_glcFont_Regular, font_face_regular))
-    {
-        debug(LOG_WARNING, "Failed to select the \"%s\" font face of font family %s error code %0x", font_face_regular, font_family, glcGetError());
-    }
-    else
-    {
-        debug(LOG_NEVER, "Successfully selected the \"%s\" font face of font family %s", font_face_regular, font_family);
-    }
+	if (!glcFontFace(_glcFont_Regular, font_face_regular))
+	{
+		debug(LOG_WARNING, "Failed to select the \"%s\" font face of font family %s error code %0x", font_face_regular, font_family, glcGetError());
+	}
+	else
+	{
+		debug(LOG_NEVER, "Successfully selected the \"%s\" font face of font family %s", font_face_regular, font_family);
+	}
 
-    if (!glcNewFontFromFamily(_glcFont_Bold, font_family))
-    {
-        debug(LOG_ERROR, "iV_initializeGLC: Failed to select font family %s for the bold font error code %0x", font_family, glcGetError());
-    }
-    else
-    {
-        debug(LOG_NEVER, "Successfully selected font family %s for the bold font", font_family);
-    }
+	if (!glcNewFontFromFamily(_glcFont_Bold, font_family))
+	{
+		debug(LOG_ERROR, "iV_initializeGLC: Failed to select font family %s for the bold font error code %0x", font_family, glcGetError());
+	}
+	else
+	{
+		debug(LOG_NEVER, "Successfully selected font family %s for the bold font", font_family);
+	}
 
-    if (!glcFontFace(_glcFont_Bold, font_face_bold))
-    {
-        debug(LOG_WARNING, "Failed to select the \"%s\" font face of font family %s error code %0x", font_face_bold, font_family, glcGetError());
-    }
-    else
-    {
-        debug(LOG_NEVER, "Successfully selected the \"%s\" font face of font family %s", font_face_bold, font_family);
-    }
+	if (!glcFontFace(_glcFont_Bold, font_face_bold))
+	{
+		debug(LOG_WARNING, "Failed to select the \"%s\" font face of font family %s error code %0x", font_face_bold, font_family, glcGetError());
+	}
+	else
+	{
+		debug(LOG_NEVER, "Successfully selected the \"%s\" font face of font family %s", font_face_bold, font_family);
+	}
 
-    debug(LOG_NEVER, "Finished initializing GLC");
+	debug(LOG_NEVER, "Finished initializing GLC");
 }
 
 void iV_TextInit()
 {
-    iV_initializeGLC();
-    iV_SetFont(font_regular);
+	iV_initializeGLC();
+	iV_SetFont(font_regular);
 #ifdef DEBUG
-    iV_printFontList();
+	iV_printFontList();
 #endif
 }
 
 void iV_TextShutdown()
 {
-    if (_glcFont_Regular)
-    {
-        glcDeleteFont(_glcFont_Regular);
-    }
+	if (_glcFont_Regular)
+	{
+		glcDeleteFont(_glcFont_Regular);
+	}
 
-    if (_glcFont_Bold)
-    {
-        glcDeleteFont(_glcFont_Bold);
-    }
+	if (_glcFont_Bold)
+	{
+		glcDeleteFont(_glcFont_Bold);
+	}
 
-    glcContext(0);
+	glcContext(0);
 
-    if (_glcContext)
-    {
-        glcDeleteContext(_glcContext);
-    }
+	if (_glcContext)
+	{
+		glcDeleteContext(_glcContext);
+	}
 }
 
 void iV_SetFont(enum iV_fonts FontID)
 {
-    switch (FontID)
-    {
-        case font_regular:
-            iV_SetTextSize(12.f);
-            glcFont(_glcFont_Regular);
-            break;
+	switch (FontID)
+	{
+		case font_regular:
+			iV_SetTextSize(12.f);
+			glcFont(_glcFont_Regular);
+			break;
 
-        case font_scaled:
-            iV_SetTextSize(12.f * pie_GetVideoBufferHeight() / 480.f);
-            glcFont(_glcFont_Regular);
-            break;
+		case font_scaled:
+			iV_SetTextSize(12.f * pie_GetVideoBufferHeight() / 480.f);
+			glcFont(_glcFont_Regular);
+			break;
 
-        case font_large:
-            iV_SetTextSize(21.f);
-            glcFont(_glcFont_Bold);
-            break;
+		case font_large:
+			iV_SetTextSize(21.f);
+			glcFont(_glcFont_Bold);
+			break;
 
-        case font_small:
-            iV_SetTextSize(9.f);
-            glcFont(_glcFont_Regular);
-            break;
-    }
+		case font_small:
+			iV_SetTextSize(9.f);
+			glcFont(_glcFont_Regular);
+			break;
+	}
 }
 
 static inline float getGLCResolution(void)
 {
-    float resolution = glcGetf(GLC_RESOLUTION);
+	float resolution = glcGetf(GLC_RESOLUTION);
 
-    // The default resolution as used by OpenGLC is 72 dpi
-    if (resolution == 0.f)
-    {
-        return 72.f;
-    }
+	// The default resolution as used by OpenGLC is 72 dpi
+	if (resolution == 0.f)
+	{
+		return 72.f;
+	}
 
-    return resolution;
+	return resolution;
 }
 
 static inline float getGLCPixelSize(void)
 {
-    float pixel_size = font_size * getGLCResolution() / 72.f;
-    return pixel_size;
+	float pixel_size = font_size * getGLCResolution() / 72.f;
+	return pixel_size;
 }
 
 static inline float getGLCPointWidth(const float *boundingbox)
 {
-    // boundingbox contains: [ xlb ylb xrb yrb xrt yrt xlt ylt ]
-    // l = left; r = right; b = bottom; t = top;
-    float rightTopX = boundingbox[4];
-    float leftTopX = boundingbox[6];
+	// boundingbox contains: [ xlb ylb xrb yrb xrt yrt xlt ylt ]
+	// l = left; r = right; b = bottom; t = top;
+	float rightTopX = boundingbox[4];
+	float leftTopX = boundingbox[6];
 
-    float point_width = rightTopX - leftTopX;
+	float point_width = rightTopX - leftTopX;
 
-    return point_width;
+	return point_width;
 }
 
 static inline float getGLCPointHeight(const float *boundingbox)
 {
-    // boundingbox contains: [ xlb ylb xrb yrb xrt yrt xlt ylt ]
-    // l = left; r = right; b = bottom; t = top;
-    float leftBottomY = boundingbox[1];
-    float leftTopY = boundingbox[7];
+	// boundingbox contains: [ xlb ylb xrb yrb xrt yrt xlt ylt ]
+	// l = left; r = right; b = bottom; t = top;
+	float leftBottomY = boundingbox[1];
+	float leftTopY = boundingbox[7];
 
-    float point_height = fabsf(leftTopY - leftBottomY);
+	float point_height = fabsf(leftTopY - leftBottomY);
 
-    return point_height;
+	return point_height;
 }
 
 static inline float getGLCPointToPixel(float point_width)
 {
-    float pixel_width = point_width * getGLCPixelSize();
+	float pixel_width = point_width * getGLCPixelSize();
 
-    return pixel_width;
+	return pixel_width;
 }
 
 unsigned int iV_GetTextWidth(const char *string)
 {
-    float boundingbox[8];
-    float pixel_width, point_width;
+	float boundingbox[8];
+	float pixel_width, point_width;
 
-    glcMeasureString(GL_FALSE, string);
-    if (!glcGetStringMetric(GLC_BOUNDS, boundingbox))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve a bounding box for the string \"%s\"", string);
-        return 0;
-    }
+	glcMeasureString(GL_FALSE, string);
+	if (!glcGetStringMetric(GLC_BOUNDS, boundingbox))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve a bounding box for the string \"%s\"", string);
+		return 0;
+	}
 
-    point_width = getGLCPointWidth(boundingbox);
-    pixel_width = getGLCPointToPixel(point_width);
-    return (unsigned int)pixel_width;
+	point_width = getGLCPointWidth(boundingbox);
+	pixel_width = getGLCPointToPixel(point_width);
+	return (unsigned int)pixel_width;
 }
 
 unsigned int iV_GetCountedTextWidth(const char *string, size_t string_length)
 {
-    float boundingbox[8];
-    float pixel_width, point_width;
+	float boundingbox[8];
+	float pixel_width, point_width;
 
-    glcMeasureCountedString(GL_FALSE, string_length, string);
-    if (!glcGetStringMetric(GLC_BOUNDS, boundingbox))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve a bounding box for the string \"%s\" of length %u",
-              string, (unsigned int)string_length);
-        return 0;
-    }
+	glcMeasureCountedString(GL_FALSE, string_length, string);
+	if (!glcGetStringMetric(GLC_BOUNDS, boundingbox))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve a bounding box for the string \"%s\" of length %u",
+			  string, (unsigned int)string_length);
+		return 0;
+	}
 
-    point_width = getGLCPointWidth(boundingbox);
-    pixel_width = getGLCPointToPixel(point_width);
-    return (unsigned int)pixel_width;
+	point_width = getGLCPointWidth(boundingbox);
+	pixel_width = getGLCPointToPixel(point_width);
+	return (unsigned int)pixel_width;
 }
 
 unsigned int iV_GetTextHeight(const char *string)
 {
-    float boundingbox[8];
-    float pixel_height, point_height;
+	float boundingbox[8];
+	float pixel_height, point_height;
 
-    glcMeasureString(GL_FALSE, string);
-    if (!glcGetStringMetric(GLC_BOUNDS, boundingbox))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve a bounding box for the string \"%s\"", string);
-        return 0;
-    }
+	glcMeasureString(GL_FALSE, string);
+	if (!glcGetStringMetric(GLC_BOUNDS, boundingbox))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve a bounding box for the string \"%s\"", string);
+		return 0;
+	}
 
-    point_height = getGLCPointHeight(boundingbox);
-    pixel_height = getGLCPointToPixel(point_height);
-    return (unsigned int)pixel_height;
+	point_height = getGLCPointHeight(boundingbox);
+	pixel_height = getGLCPointToPixel(point_height);
+	return (unsigned int)pixel_height;
 }
 
 unsigned int iV_GetCharWidth(uint32_t charCode)
 {
-    float boundingbox[8];
-    float pixel_width, point_width;
+	float boundingbox[8];
+	float pixel_width, point_width;
 
-    if (!glcGetCharMetric(charCode, GLC_BOUNDS, boundingbox))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character code %u", charCode);
-        return 0;
-    }
+	if (!glcGetCharMetric(charCode, GLC_BOUNDS, boundingbox))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character code %u", charCode);
+		return 0;
+	}
 
-    point_width = getGLCPointWidth(boundingbox);
-    pixel_width = getGLCPointToPixel(point_width);
-    return (unsigned int)pixel_width;
+	point_width = getGLCPointWidth(boundingbox);
+	pixel_width = getGLCPointToPixel(point_width);
+	return (unsigned int)pixel_width;
 }
 
 int iV_GetTextLineSize()
 {
-    float boundingbox[8];
-    float pixel_height, point_height;
+	float boundingbox[8];
+	float pixel_height, point_height;
 
-    if (!glcGetMaxCharMetric(GLC_BOUNDS, boundingbox))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character");
-        return 0;
-    }
+	if (!glcGetMaxCharMetric(GLC_BOUNDS, boundingbox))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character");
+		return 0;
+	}
 
-    point_height = getGLCPointHeight(boundingbox);
-    pixel_height = getGLCPointToPixel(point_height);
-    return (unsigned int)pixel_height;
+	point_height = getGLCPointHeight(boundingbox);
+	pixel_height = getGLCPointToPixel(point_height);
+	return (unsigned int)pixel_height;
 }
 
 static float iV_GetMaxCharBaseY(void)
 {
-    float base_line[4]; // [ xl yl xr yr ]
+	float base_line[4]; // [ xl yl xr yr ]
 
-    if (!glcGetMaxCharMetric(GLC_BASELINE, base_line))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve the baseline for the character");
-        return 0;
-    }
+	if (!glcGetMaxCharMetric(GLC_BASELINE, base_line))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve the baseline for the character");
+		return 0;
+	}
 
-    return base_line[1];
+	return base_line[1];
 }
 
 int iV_GetTextAboveBase(void)
 {
-    float point_base_y = iV_GetMaxCharBaseY();
-    float point_top_y;
-    float boundingbox[8];
-    float pixel_height, point_height;
+	float point_base_y = iV_GetMaxCharBaseY();
+	float point_top_y;
+	float boundingbox[8];
+	float pixel_height, point_height;
 
-    if (!glcGetMaxCharMetric(GLC_BOUNDS, boundingbox))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character");
-        return 0;
-    }
+	if (!glcGetMaxCharMetric(GLC_BOUNDS, boundingbox))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character");
+		return 0;
+	}
 
-    point_top_y = boundingbox[7];
-    point_height = point_base_y - point_top_y;
-    pixel_height = getGLCPointToPixel(point_height);
-    return (int)pixel_height;
+	point_top_y = boundingbox[7];
+	point_height = point_base_y - point_top_y;
+	pixel_height = getGLCPointToPixel(point_height);
+	return (int)pixel_height;
 }
 
 int iV_GetTextBelowBase(void)
 {
-    float point_base_y = iV_GetMaxCharBaseY();
-    float point_bottom_y;
-    float boundingbox[8];
-    float pixel_height, point_height;
+	float point_base_y = iV_GetMaxCharBaseY();
+	float point_bottom_y;
+	float boundingbox[8];
+	float pixel_height, point_height;
 
-    if (!glcGetMaxCharMetric(GLC_BOUNDS, boundingbox))
-    {
-        debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character");
-        return 0;
-    }
+	if (!glcGetMaxCharMetric(GLC_BOUNDS, boundingbox))
+	{
+		debug(LOG_ERROR, "Couldn't retrieve a bounding box for the character");
+		return 0;
+	}
 
-    point_bottom_y = boundingbox[1];
-    point_height = point_bottom_y - point_base_y;
-    pixel_height = getGLCPointToPixel(point_height);
-    return (int)pixel_height;
+	point_bottom_y = boundingbox[1];
+	point_height = point_bottom_y - point_base_y;
+	pixel_height = getGLCPointToPixel(point_height);
+	return (int)pixel_height;
 }
 
 void iV_SetTextColour(PIELIGHT colour)
 {
-    font_colour[0] = colour.byte.r / 255.0f;
-    font_colour[1] = colour.byte.g / 255.0f;
-    font_colour[2] = colour.byte.b / 255.0f;
-    font_colour[3] = colour.byte.a / 255.0f;
+	font_colour[0] = colour.byte.r / 255.0f;
+	font_colour[1] = colour.byte.g / 255.0f;
+	font_colour[2] = colour.byte.b / 255.0f;
+	font_colour[3] = colour.byte.a / 255.0f;
 }
 
 // --------------------------------------------------------------------------
 
 enum
 {
-    EXTENTS_NONE,
-    EXTENTS_START,
-    EXTENTS_END
+	EXTENTS_NONE,
+	EXTENTS_START,
+	EXTENTS_END
 };
 
 static char FString[256];		// Must do something about these wastefull static arrays.
@@ -449,256 +449,256 @@ static int ExtentsEndY;
  */
 int iV_DrawFormattedText(const char *String, uint32_t x, uint32_t y, uint32_t Width, uint32_t Justify)
 {
-    int i;
-    int jx = x;		// Default to left justify.
-    int jy = y;
-    uint32_t WWidth;
-    int TWidth;
+	int i;
+	int jx = x;		// Default to left justify.
+	int jy = y;
+	uint32_t WWidth;
+	int TWidth;
 
-    const char *curChar = String;
+	const char *curChar = String;
 
-    curChar = String;
-    while (*curChar != 0)
-    {
-        bool GotSpace = false;
-        bool NewLine = false;
+	curChar = String;
+	while (*curChar != 0)
+	{
+		bool GotSpace = false;
+		bool NewLine = false;
 
-        // Reset text draw buffer
-        FString[0] = 0;
+		// Reset text draw buffer
+		FString[0] = 0;
 
-        WWidth = 0;
+		WWidth = 0;
 
-        // Parse through the string, adding words until width is achieved.
-        while (*curChar != 0 && WWidth < Width && !NewLine)
-        {
-            const char *startOfWord = curChar;
-            const unsigned int FStringWidth = iV_GetTextWidth(FString);
+		// Parse through the string, adding words until width is achieved.
+		while (*curChar != 0 && WWidth < Width && !NewLine)
+		{
+			const char *startOfWord = curChar;
+			const unsigned int FStringWidth = iV_GetTextWidth(FString);
 
-            // Get the next word.
-            i = 0;
-            for (; *curChar != 0
-                    && *curChar != ASCII_SPACE
-                    && *curChar != ASCII_NEWLINE
-                    && *curChar != '\n';
-                    ++i, ++curChar)
-            {
-                if (*curChar == ASCII_COLOURMODE) // If it's a colour mode toggle char then just add it to the word.
-                {
-                    FWord[i] = *curChar;
+			// Get the next word.
+			i = 0;
+			for (; *curChar != 0
+					&& *curChar != ASCII_SPACE
+					&& *curChar != ASCII_NEWLINE
+					&& *curChar != '\n';
+					++i, ++curChar)
+			{
+				if (*curChar == ASCII_COLOURMODE) // If it's a colour mode toggle char then just add it to the word.
+				{
+					FWord[i] = *curChar;
 
-                    // this character won't be drawn so don't deal with its width
-                    continue;
-                }
+					// this character won't be drawn so don't deal with its width
+					continue;
+				}
 
-                // Update this line's pixel width.
-                WWidth = FStringWidth + iV_GetCountedTextWidth(FWord, i + 1);
+				// Update this line's pixel width.
+				WWidth = FStringWidth + iV_GetCountedTextWidth(FWord, i + 1);
 
-                // If this word doesn't fit on the current line then break out
-                if (WWidth > Width)
-                {
-                    break;
-                }
+				// If this word doesn't fit on the current line then break out
+				if (WWidth > Width)
+				{
+					break;
+				}
 
-                // If width ok then add this character to the current word.
-                FWord[i] = *curChar;
-            }
+				// If width ok then add this character to the current word.
+				FWord[i] = *curChar;
+			}
 
-            // Don't forget the space.
-            if (*curChar == ASCII_SPACE)
-            {
-                // Should be a space below, not '-', but need to work around bug in QuesoGLC
-                // which was fixed in CVS snapshot as of 2007/10/26, same day as I reported it :) - Per
-                WWidth += iV_GetCharWidth('-');
-                if (WWidth <= Width)
-                {
-                    FWord[i] = ' ';
-                    ++i;
-                    ++curChar;
-                    GotSpace = true;
-                }
-            }
-            // Check for new line character.
-            else if (*curChar == ASCII_NEWLINE
-                     || *curChar == '\n')
-            {
-                NewLine = true;
-                ++curChar;
-            }
+			// Don't forget the space.
+			if (*curChar == ASCII_SPACE)
+			{
+				// Should be a space below, not '-', but need to work around bug in QuesoGLC
+				// which was fixed in CVS snapshot as of 2007/10/26, same day as I reported it :) - Per
+				WWidth += iV_GetCharWidth('-');
+				if (WWidth <= Width)
+				{
+					FWord[i] = ' ';
+					++i;
+					++curChar;
+					GotSpace = true;
+				}
+			}
+			// Check for new line character.
+			else if (*curChar == ASCII_NEWLINE
+					 || *curChar == '\n')
+			{
+				NewLine = true;
+				++curChar;
+			}
 
-            // If we've passed a space on this line and the word goes past the
-            // maximum width and this isn't caused by the appended space then
-            // rewind to the start of this word and finish this line.
-            if (GotSpace
-                    && WWidth > Width
-                    && FWord[i - 1] != ' ')
-            {
-                // Skip back to the beginning of this
-                // word and draw it on the next line
-                curChar = startOfWord;
-                break;
-            }
+			// If we've passed a space on this line and the word goes past the
+			// maximum width and this isn't caused by the appended space then
+			// rewind to the start of this word and finish this line.
+			if (GotSpace
+					&& WWidth > Width
+					&& FWord[i - 1] != ' ')
+			{
+				// Skip back to the beginning of this
+				// word and draw it on the next line
+				curChar = startOfWord;
+				break;
+			}
 
-            // Terminate the word.
-            FWord[i] = 0;
+			// Terminate the word.
+			FWord[i] = 0;
 
-            // And add it to the output string.
-            sstrcat(FString, FWord);
-        }
+			// And add it to the output string.
+			sstrcat(FString, FWord);
+		}
 
 
-        // Remove trailing spaces, useful when doing center alignment.
-        {
-            // Find the string length (the "minus one" part
-            // guarantees that we get the length of the string, not
-            // the buffer size required to contain it).
-            size_t len = strnlen1(FString, sizeof(FString)) - 1;
+		// Remove trailing spaces, useful when doing center alignment.
+		{
+			// Find the string length (the "minus one" part
+			// guarantees that we get the length of the string, not
+			// the buffer size required to contain it).
+			size_t len = strnlen1(FString, sizeof(FString)) - 1;
 
-            for (; len != 0; --len)
-            {
-                // As soon as we encounter a non-space character, break out
-                if (FString[len] != ASCII_SPACE)
-                {
-                    break;
-                }
+			for (; len != 0; --len)
+			{
+				// As soon as we encounter a non-space character, break out
+				if (FString[len] != ASCII_SPACE)
+				{
+					break;
+				}
 
-                // Cut off the current space character from the string
-                FString[len] = '\0';
-            }
-        }
+				// Cut off the current space character from the string
+				FString[len] = '\0';
+			}
+		}
 
-        TWidth = iV_GetTextWidth(FString);
+		TWidth = iV_GetTextWidth(FString);
 
-        // Do justify.
-        switch (Justify)
-        {
-            case FTEXT_CENTRE:
-                jx = x + (Width - TWidth) / 2;
-                break;
+		// Do justify.
+		switch (Justify)
+		{
+			case FTEXT_CENTRE:
+				jx = x + (Width - TWidth) / 2;
+				break;
 
-            case FTEXT_RIGHTJUSTIFY:
-                jx = x + Width - TWidth;
-                break;
+			case FTEXT_RIGHTJUSTIFY:
+				jx = x + Width - TWidth;
+				break;
 
-            case FTEXT_LEFTJUSTIFY:
-                jx = x;
-                break;
-        }
+			case FTEXT_LEFTJUSTIFY:
+				jx = x;
+				break;
+		}
 
-        // draw the text.
-        //iV_SetTextSize(12.f);
-        iV_DrawText(FString, jx, jy);
+		// draw the text.
+		//iV_SetTextSize(12.f);
+		iV_DrawText(FString, jx, jy);
 
-        /* callback type for resload display callback*/
-        // remember where we were..
-        LastX = jx + TWidth;
-        LastY = jy;
-        LastTWidth = TWidth;
+		/* callback type for resload display callback*/
+		// remember where we were..
+		LastX = jx + TWidth;
+		LastY = jy;
+		LastTWidth = TWidth;
 
-        // and move down a line.
-        jy += iV_GetTextLineSize();
-    }
+		// and move down a line.
+		jy += iV_GetTextLineSize();
+	}
 
-    if (RecordExtents == EXTENTS_START)
-    {
-        RecordExtents = EXTENTS_END;
+	if (RecordExtents == EXTENTS_START)
+	{
+		RecordExtents = EXTENTS_END;
 
-        ExtentsStartY = y + iV_GetTextAboveBase();
-        ExtentsEndY = jy - iV_GetTextLineSize() + iV_GetTextBelowBase();
+		ExtentsStartY = y + iV_GetTextAboveBase();
+		ExtentsEndY = jy - iV_GetTextLineSize() + iV_GetTextBelowBase();
 
-        ExtentsStartX = x;	// Was jx, but this broke the console centre justified text background.
-        ExtentsEndX = x + Width;
-    }
-    else if (RecordExtents == EXTENTS_END)
-    {
-        ExtentsEndY = jy - iV_GetTextLineSize() + iV_GetTextBelowBase();
+		ExtentsStartX = x;	// Was jx, but this broke the console centre justified text background.
+		ExtentsEndX = x + Width;
+	}
+	else if (RecordExtents == EXTENTS_END)
+	{
+		ExtentsEndY = jy - iV_GetTextLineSize() + iV_GetTextBelowBase();
 
-        ExtentsEndX = x + Width;
-    }
+		ExtentsEndX = x + Width;
+	}
 
-    return jy;
+	return jy;
 }
 
 void iV_DrawTextRotated(const char *string, float XPos, float YPos, float rotation)
 {
-    GLint matrix_mode = 0;
+	GLint matrix_mode = 0;
 
-    pie_SetTexturePage(TEXPAGE_FONT);
+	pie_SetTexturePage(TEXPAGE_FONT);
 
-    glGetIntegerv(GL_MATRIX_MODE, &matrix_mode);
-    glMatrixMode(GL_TEXTURE);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
+	glGetIntegerv(GL_MATRIX_MODE, &matrix_mode);
+	glMatrixMode(GL_TEXTURE);
+	glPushMatrix();
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
 
-    if (rotation != 0.f)
-    {
-        rotation = 360.f - rotation;
-    }
+	if (rotation != 0.f)
+	{
+		rotation = 360.f - rotation;
+	}
 
-    glTranslatef(XPos, YPos, 0.f);
-    glRotatef(180.f, 1.f, 0.f, 0.f);
-    glRotatef(rotation, 0.f, 0.f, 1.f);
-    glScalef(font_size, font_size, 0.f);
+	glTranslatef(XPos, YPos, 0.f);
+	glRotatef(180.f, 1.f, 0.f, 0.f);
+	glRotatef(rotation, 0.f, 0.f, 1.f);
+	glScalef(font_size, font_size, 0.f);
 
-    glColor4fv(font_colour);
+	glColor4fv(font_colour);
 
-    glFrontFace(GL_CW);
-    glcRenderString(string);
-    glFrontFace(GL_CCW);
+	glFrontFace(GL_CW);
+	glcRenderString(string);
+	glFrontFace(GL_CCW);
 
-    glPopMatrix();
-    glMatrixMode(GL_TEXTURE);
-    glPopMatrix();
-    glMatrixMode(matrix_mode);
+	glPopMatrix();
+	glMatrixMode(GL_TEXTURE);
+	glPopMatrix();
+	glMatrixMode(matrix_mode);
 
-    // Reset the current model view matrix
-    glLoadIdentity();
+	// Reset the current model view matrix
+	glLoadIdentity();
 }
 
 void iV_DrawTextRotatedFv(float x, float y, float rotation, const char *format, va_list ap)
 {
-    va_list aq;
-    size_t size;
-    char *str;
+	va_list aq;
+	size_t size;
+	char *str;
 
-    /* Required because we're using the va_list ap twice otherwise, which
-     * results in undefined behaviour. See stdarg(3) for details.
-     */
-    va_copy(aq, ap);
+	/* Required because we're using the va_list ap twice otherwise, which
+	 * results in undefined behaviour. See stdarg(3) for details.
+	 */
+	va_copy(aq, ap);
 
-    // Allocate a buffer large enough to hold our string on the stack
-    size = vsnprintf(NULL, 0, format, ap);
-    str = alloca(size + 1);
+	// Allocate a buffer large enough to hold our string on the stack
+	size = vsnprintf(NULL, 0, format, ap);
+	str = alloca(size + 1);
 
-    // Print into our newly created string buffer
-    vsprintf(str, format, aq);
+	// Print into our newly created string buffer
+	vsprintf(str, format, aq);
 
-    va_end(aq);
+	va_end(aq);
 
-    // Draw the produced string to the screen at the given position and rotation
-    iV_DrawTextRotated(str, x, y, rotation);
+	// Draw the produced string to the screen at the given position and rotation
+	iV_DrawTextRotated(str, x, y, rotation);
 }
 
 void iV_DrawTextRotatedF(float x, float y, float rotation, const char *format, ...)
 {
-    va_list ap;
+	va_list ap;
 
-    va_start(ap, format);
-    iV_DrawTextRotatedFv(x, y, rotation, format, ap);
-    va_end(ap);
+	va_start(ap, format);
+	iV_DrawTextRotatedFv(x, y, rotation, format, ap);
+	va_end(ap);
 }
 
 void iV_DrawTextF(float x, float y, const char *format, ...)
 {
-    va_list ap;
+	va_list ap;
 
-    va_start(ap, format);
-    iV_DrawTextFv(x, y, format, ap);
-    va_end(ap);
+	va_start(ap, format);
+	iV_DrawTextFv(x, y, format, ap);
+	va_end(ap);
 }
 
 void iV_SetTextSize(float size)
 {
-    font_size = size;
+	font_size = size;
 }

@@ -41,11 +41,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 /* Initialise the double buffered display */
 extern bool screenInitialise(uint32_t		width,			// Display width
-                             uint32_t		height,			// Display height
-                             uint32_t		bitDepth,		// Display bit depth
-                             bool		fullScreen,		// Whether to start windowed
-                             // or full screen
-                             bool		vsync);
+							 uint32_t		height,			// Display height
+							 uint32_t		bitDepth,		// Display bit depth
+							 bool		fullScreen,		// Whether to start windowed
+							 // or full screen
+							 bool		vsync);
 
 /* Release the DD objects */
 extern void screenShutDown(void);

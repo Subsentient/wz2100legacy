@@ -27,9 +27,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // Objects are stored in an extensible array for each grid
 typedef struct _grid_array
 {
-    BASE_OBJECT *apsObjects[MAX_GRID_ARRAY_CHUNK];
+	BASE_OBJECT *apsObjects[MAX_GRID_ARRAY_CHUNK];
 
-    struct _grid_array *psNext;
+	struct _grid_array *psNext;
 } GRID_ARRAY;
 
 

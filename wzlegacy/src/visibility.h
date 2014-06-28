@@ -63,64 +63,64 @@ extern void scrResetPlayerTileVisibility(int32_t player);
 // fast test for whether obj2 is in range of obj1
 static inline BOOL visObjInRange(BASE_OBJECT *psObj1, BASE_OBJECT *psObj2, int32_t range)
 {
-    int32_t	xdiff,ydiff, distSq, rangeSq;
+	int32_t	xdiff, ydiff, distSq, rangeSq;
 
-    xdiff = (int32_t)psObj1->pos.x - (int32_t)psObj2->pos.x;
-    if (xdiff < 0)
-    {
-        xdiff = -xdiff;
-    }
-    if (xdiff > range)
-    {
-        // too far away, reject
-        return false;
-    }
+	xdiff = (int32_t)psObj1->pos.x - (int32_t)psObj2->pos.x;
+	if (xdiff < 0)
+	{
+		xdiff = -xdiff;
+	}
+	if (xdiff > range)
+	{
+		// too far away, reject
+		return false;
+	}
 
-    ydiff = (int32_t)psObj1->pos.y - (int32_t)psObj2->pos.y;
-    if (ydiff < 0)
-    {
-        ydiff = -ydiff;
-    }
-    if (ydiff > range)
-    {
-        // too far away, reject
-        return false;
-    }
+	ydiff = (int32_t)psObj1->pos.y - (int32_t)psObj2->pos.y;
+	if (ydiff < 0)
+	{
+		ydiff = -ydiff;
+	}
+	if (ydiff > range)
+	{
+		// too far away, reject
+		return false;
+	}
 
-    distSq = xdiff*xdiff + ydiff*ydiff;
-    rangeSq = range*range;
-    if (distSq > rangeSq)
-    {
-        // too far away, reject
-        return false;
-    }
+	distSq = xdiff * xdiff + ydiff * ydiff;
+	rangeSq = range * range;
+	if (distSq > rangeSq)
+	{
+		// too far away, reject
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 static inline int objSensorRange(const BASE_OBJECT *psObj)
 {
-    return psObj->sensorRange;
+	return psObj->sensorRange;
 }
 
 static inline int objSensorPower(const BASE_OBJECT *psObj)
 {
-    return psObj->sensorPower;
+	return psObj->sensorPower;
 }
 
 static inline int objJammerPower(WZ_DECL_UNUSED const BASE_OBJECT *psObj)
 {
-    return 0;
+	return 0;
 }
 
 static inline int objJammerRange(WZ_DECL_UNUSED const BASE_OBJECT *psObj)
 {
-    return 0;
+	return 0;
 }
 
 static inline int objConcealment(const BASE_OBJECT *psObj)
 {
-    return psObj->ECMMod;
+	return psObj->ECMMod;
 }
 
 #endif // __INCLUDED_SRC_VISIBILITY__

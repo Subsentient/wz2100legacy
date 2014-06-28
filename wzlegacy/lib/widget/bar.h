@@ -24,20 +24,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _w_bargraph
 {
-    /* The common widget data */
-    WIDGET_BASE;
+	/* The common widget data */
+	WIDGET_BASE;
 
-    uint16_t		barPos;				// Orientation of the bar on the widget
-    uint16_t		majorSize;			// Percentage of the main bar that is filled
-    uint16_t		minorSize;			// Percentage of the minor bar if there is one
-    uint16_t		iRange;				// Maximum range
-    uint16_t		iValue;				// Current value
-    uint16_t		iOriginal;			// hack to keep uncapped value around
+	uint16_t		barPos;				// Orientation of the bar on the widget
+	uint16_t		majorSize;			// Percentage of the main bar that is filled
+	uint16_t		minorSize;			// Percentage of the minor bar if there is one
+	uint16_t		iRange;				// Maximum range
+	uint16_t		iValue;				// Current value
+	uint16_t		iOriginal;			// hack to keep uncapped value around
 	int             denominator;                    // Denominator, 1 by default.
-    int             precision;                      // Number of places after the decimal point to display, 0 by default.
-    PIELIGHT	majorCol;			// Colour for the major bar
-    PIELIGHT	minorCol;			// Colour for the minor bar
-    const char	*pTip;				// The tool tip for the graph
+	int             precision;                      // Number of places after the decimal point to display, 0 by default.
+	PIELIGHT	majorCol;			// Colour for the major bar
+	PIELIGHT	minorCol;			// Colour for the minor bar
+	const char	*pTip;				// The tool tip for the graph
 	char	aStatText[16];			// Usually time or power remaining printed above etc.
 } W_BARGRAPH;
 

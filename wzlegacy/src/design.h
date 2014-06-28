@@ -131,7 +131,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 extern BOOL intAddDesign( BOOL bShowCentreScreen );
 /* Add the droid template buttons to a form */
 BOOL intAddTemplateButtons(uint32_t formID, uint32_t formWidth, uint32_t formHeight, uint32_t butWidth,
-                           uint32_t butHeight, uint32_t gap, DROID_TEMPLATE *psSelected);
+						   uint32_t butHeight, uint32_t gap, DROID_TEMPLATE *psSelected);
 void intDisplayTemplateButton(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours);
 
 extern void intRemoveDesign(void);
@@ -139,7 +139,7 @@ extern void intProcessDesign(uint32_t id);
 extern void intRunDesign(void);
 
 extern void intDisplayDesignForm(struct _widget *psWidget, uint32_t xOffset,
-                                 uint32_t yOffset, PIELIGHT *pColours);
+								 uint32_t yOffset, PIELIGHT *pColours);
 
 extern void SetDesignWidgetName(char *Name);
 

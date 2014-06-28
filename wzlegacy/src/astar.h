@@ -33,9 +33,9 @@ extern void astarResetCounters(void);
  */
 typedef enum
 {
-    ASR_OK,         ///< found a route
-    ASR_FAILED,     ///< no route could be found
-    ASR_NEAREST,    ///< found a partial route to a nearby position
+	ASR_OK,         ///< found a route
+	ASR_FAILED,     ///< no route could be found
+	ASR_NEAREST,    ///< found a partial route to a nearby position
 } ASR_RETVAL;
 
 /** Use the A* algorithm to find a path
@@ -46,7 +46,7 @@ ASR_RETVAL fpathAStarRoute(MOVE_CONTROL *psMove, PATHJOB *psJob);
 
 /** Check LOS (Line Of Sight) between two tiles
  */
-extern BOOL fpathTileLOS(int32_t x1,int32_t y1, int32_t x2,int32_t y2);
+extern BOOL fpathTileLOS(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 
 /** Clean up the path finding node table.
  *

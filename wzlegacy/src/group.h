@@ -24,19 +24,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _group_type
 {
-    GT_NORMAL,			// standard group
-    GT_COMMAND,			// command droid group
-    GT_TRANSPORTER,		// transporter group
+	GT_NORMAL,			// standard group
+	GT_COMMAND,			// command droid group
+	GT_TRANSPORTER,		// transporter group
 } GROUP_TYPE;
 
 typedef struct _droid_group
 {
-    int16_t		type;
-    int16_t		refCount;
-    DROID		*psList;			// list of droids in the group
-    DROID		*psCommander;		// the command droid of a command group
-    RUN_DATA	sRunData;			// where the group should retreat to
-    struct _droid_group *psNext, *psPrev;	// keep linked to destroy all (a workaround hack)
+	int16_t		type;
+	int16_t		refCount;
+	DROID		*psList;			// list of droids in the group
+	DROID		*psCommander;		// the command droid of a command group
+	RUN_DATA	sRunData;			// where the group should retreat to
+	struct _droid_group *psNext, *psPrev;	// keep linked to destroy all (a workaround hack)
 } DROID_GROUP;
 
 // initialise the group system

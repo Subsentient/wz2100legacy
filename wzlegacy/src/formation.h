@@ -24,8 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _formation_type
 {
-    FT_LINE,
-    FT_COLUMN,
+	FT_LINE,
+	FT_COLUMN,
 } FORMATION_TYPE;
 
 // Initialise the formation system
@@ -36,7 +36,7 @@ extern void formationShutDown(void);
 
 // Create a new formation
 extern BOOL formationNew(FORMATION **ppsFormation, FORMATION_TYPE type,
-                         int32_t x, int32_t y, int32_t dir);
+						 int32_t x, int32_t y, int32_t dir);
 
 // Try and find a formation near to a location
 extern FORMATION *formationFind(int x, int y);
@@ -55,7 +55,7 @@ extern void formationReorder(FORMATION *psFormation);
 
 // get a target position to move into a formation
 extern BOOL formationGetPos(FORMATION *psFormation, DROID *psDroid,
-                            int32_t *pX, int32_t *pY, BOOL bCheckLOS);
+							int32_t *pX, int32_t *pY, BOOL bCheckLOS);
 
 // See if a unit is a member of a formation (i.e. it has a position assigned)
 extern BOOL formationMember(FORMATION *psFormation, const DROID *psDroid);

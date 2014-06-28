@@ -26,48 +26,48 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // id's for object variables
 enum _objids
 {
-    OBJID_POSX,			// Position of a base object
-    OBJID_POSY,
-    OBJID_POSZ,
-    OBJID_ID,			// id of a base object
-    OBJID_PLAYER,		// player of a base object
-    OBJID_TYPE,			// type of a base object
-    OBJID_ORDER,		// current droid order
-    OBJID_DROIDTYPE,	// what type of droid
-    OBJID_CLUSTERID,	// which cluster the object is a member of
-    OBJID_HEALTH,		// %age damage level
-    OBJID_BODY,			// the body component
-    OBJID_PROPULSION,	// the propulsion component
-    OBJID_WEAPON,		// the weapon component
-    OBJID_STRUCTSTAT,	// the stat of a structure
-    OBJID_STRUCTSTATTYPE,//new
-    OBJID_ORDERX,		// order coords.106
-    OBJID_ORDERY,
-    OBJID_ACTION,
-    OBJID_SELECTED,		// if droid is selected (humans only)
-    OBJID_TARGET,		// added object->psTarget
-    OBJID_GROUP,		// group a droid belongs to
-    WEAPID_SHORT_RANGE,		// short range of a weapon
-    WEAPID_LONG_RANGE,		// short range of a weapon
-    WEAPID_SHORT_HIT,		// weapon's chance to hit in the short range
-    WEAPID_LONG_HIT,		// weapon's chance to hit in the long range
-    WEAPID_FIRE_PAUSE,		// weapon's fire pause
-    WEAPID_RELOAD_TIME,		// weapon's reload time
-    WEAPID_NUM_ROUNDS,		// num of weapon's rounds (salvo fire)
-    WEAPID_DAMAGE,			// weapon's damage
-    OBJID_HITPOINTS,			// doid's health left
-    OBJID_ORIG_HITPOINTS,		// original health of a droid (when not damaged)
+	OBJID_POSX,			// Position of a base object
+	OBJID_POSY,
+	OBJID_POSZ,
+	OBJID_ID,			// id of a base object
+	OBJID_PLAYER,		// player of a base object
+	OBJID_TYPE,			// type of a base object
+	OBJID_ORDER,		// current droid order
+	OBJID_DROIDTYPE,	// what type of droid
+	OBJID_CLUSTERID,	// which cluster the object is a member of
+	OBJID_HEALTH,		// %age damage level
+	OBJID_BODY,			// the body component
+	OBJID_PROPULSION,	// the propulsion component
+	OBJID_WEAPON,		// the weapon component
+	OBJID_STRUCTSTAT,	// the stat of a structure
+	OBJID_STRUCTSTATTYPE,//new
+	OBJID_ORDERX,		// order coords.106
+	OBJID_ORDERY,
+	OBJID_ACTION,
+	OBJID_SELECTED,		// if droid is selected (humans only)
+	OBJID_TARGET,		// added object->psTarget
+	OBJID_GROUP,		// group a droid belongs to
+	WEAPID_SHORT_RANGE,		// short range of a weapon
+	WEAPID_LONG_RANGE,		// short range of a weapon
+	WEAPID_SHORT_HIT,		// weapon's chance to hit in the short range
+	WEAPID_LONG_HIT,		// weapon's chance to hit in the long range
+	WEAPID_FIRE_PAUSE,		// weapon's fire pause
+	WEAPID_RELOAD_TIME,		// weapon's reload time
+	WEAPID_NUM_ROUNDS,		// num of weapon's rounds (salvo fire)
+	WEAPID_DAMAGE,			// weapon's damage
+	OBJID_HITPOINTS,			// doid's health left
+	OBJID_ORIG_HITPOINTS,		// original health of a droid (when not damaged)
 };
 
 // id's for group variables
 enum _groupids
 {
-    GROUPID_POSX,		// average x of a group
-    GROUPID_POSY,		// average y of a group
-    GROUPID_MEMBERS,	// number of units in a group
-    GROUPID_HEALTH,		// average health of a group
-    GROUPID_TYPE,		// group type, one of: GT_NORMAL, GT_COMMAND or GT_TRANSPORTER
-    GROUPID_CMD,		// commander of the group if group type == GT_COMMAND
+	GROUPID_POSX,		// average x of a group
+	GROUPID_POSY,		// average y of a group
+	GROUPID_MEMBERS,	// number of units in a group
+	GROUPID_HEALTH,		// average health of a group
+	GROUPID_TYPE,		// group type, one of: GT_NORMAL, GT_COMMAND or GT_TRANSPORTER
+	GROUPID_CMD,		// commander of the group if group type == GT_COMMAND
 };
 
 // Get values from a base object

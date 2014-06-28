@@ -65,9 +65,9 @@ int32_t	proj_GetLongRange(const WEAPON_STATS *psStats);
 /** Info stored for each projectile neighbour */
 typedef struct _proj_naybor_info
 {
-    BASE_OBJECT		*psObj;			// The neighbouring object
-    uint32_t			distSqr;		// The square of the distance to the object
-    //uint32_t			dist;			// The distance to the object
+	BASE_OBJECT		*psObj;			// The neighbouring object
+	uint32_t			distSqr;		// The square of the distance to the object
+	//uint32_t			dist;			// The distance to the object
 } PROJ_NAYBOR_INFO;
 
 extern uint32_t calcDamage(uint32_t baseDamage, WEAPON_EFFECT weaponEffect, BASE_OBJECT *psTarget);
@@ -79,36 +79,36 @@ extern void	objectShimmy	( BASE_OBJECT *psObj );
 
 static inline void setProjectileDestination(PROJECTILE *psProj, BASE_OBJECT *psObj)
 {
-    psProj->psDest = psObj;
+	psProj->psDest = psObj;
 }
 
 static inline void setProjectileSource(PROJECTILE *psProj, BASE_OBJECT *psObj)
 {
-    // use the source of the source of psProj if psAttacker is a projectile
-    if (psObj && psObj->type == OBJ_PROJECTILE)
-    {
-        PROJECTILE *psPrevProj = (PROJECTILE *)psObj;
+	// use the source of the source of psProj if psAttacker is a projectile
+	if (psObj && psObj->type == OBJ_PROJECTILE)
+	{
+		PROJECTILE *psPrevProj = (PROJECTILE *)psObj;
 
-        if (psPrevProj->psSource && !psPrevProj->psSource->died)
-        {
-            psProj->psSource = psPrevProj->psSource;
-        }
-        else
-        {
-            psProj->psSource = NULL;
-        }
-    }
-    else
-    {
-        psProj->psSource = psObj;
-    }
+		if (psPrevProj->psSource && !psPrevProj->psSource->died)
+		{
+			psProj->psSource = psPrevProj->psSource;
+		}
+		else
+		{
+			psProj->psSource = NULL;
+		}
+	}
+	else
+	{
+		psProj->psSource = psObj;
+	}
 }
 
 static inline void setProjectileDamaged(PROJECTILE *psProj, BASE_OBJECT *psObj)
 {
-    ++psProj->psNumDamaged;
-    psProj->psDamaged = (BASE_OBJECT **)realloc(psProj->psDamaged, psProj->psNumDamaged*sizeof(BASE_OBJECT *));
-    psProj->psDamaged[psProj->psNumDamaged - 1] = psObj;
+	++psProj->psNumDamaged;
+	psProj->psDamaged = (BASE_OBJECT **)realloc(psProj->psDamaged, psProj->psNumDamaged * sizeof(BASE_OBJECT *));
+	psProj->psDamaged[psProj->psNumDamaged - 1] = psObj;
 }
 
 /* @} */

@@ -25,37 +25,37 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _move_control
 {
-    uint8_t	Status;						// Inactive, Navigating or moving point to point status
-    uint8_t	Position;	   				// Position in asPath
-    uint8_t	numPoints;					// number of points in asPath
-    Vector2i *asPath;					// Pointer to list of block X,Y map coordinates.
-    int32_t	DestinationX, DestinationY;			// World coordinates of movement destination
-    int32_t	srcX,srcY,targetX,targetY;
+	uint8_t	Status;						// Inactive, Navigating or moving point to point status
+	uint8_t	Position;	   				// Position in asPath
+	uint8_t	numPoints;					// number of points in asPath
+	Vector2i *asPath;					// Pointer to list of block X,Y map coordinates.
+	int32_t	DestinationX, DestinationY;			// World coordinates of movement destination
+	int32_t	srcX, srcY, targetX, targetY;
 
-    /* Stuff for John's movement update */
-    float	fx,fy;						// droid location as a fract
-    float	speed;						// Speed of motion
-    int16_t	boundX,boundY;				// Vector for the end of path boundary
+	/* Stuff for John's movement update */
+	float	fx, fy;						// droid location as a fract
+	float	speed;						// Speed of motion
+	int16_t	boundX, boundY;				// Vector for the end of path boundary
 
-    float	moveDir;						// direction of motion (not the direction the droid is facing)
-    int16_t	bumpDir;					// direction at last bump
-    uint32_t	bumpTime;					// time of first bump with something
-    uint16_t	lastBump;					// time of last bump with a droid - relative to bumpTime
-    uint16_t	pauseTime;					// when MOVEPAUSE started - relative to bumpTime
-    uint16_t	bumpX,bumpY;				// position of last bump
+	float	moveDir;						// direction of motion (not the direction the droid is facing)
+	int16_t	bumpDir;					// direction at last bump
+	uint32_t	bumpTime;					// time of first bump with something
+	uint16_t	lastBump;					// time of last bump with a droid - relative to bumpTime
+	uint16_t	pauseTime;					// when MOVEPAUSE started - relative to bumpTime
+	uint16_t	bumpX, bumpY;				// position of last bump
 
-    uint32_t	shuffleStart;				// when a shuffle started
+	uint32_t	shuffleStart;				// when a shuffle started
 
-    struct _formation	*psFormation;			// formation the droid is currently a member of
+	struct _formation	*psFormation;			// formation the droid is currently a member of
 
-    /* vtol movement - GJ */
-    int16_t	iVertSpeed;
+	/* vtol movement - GJ */
+	int16_t	iVertSpeed;
 
-    // iAttackRuns tracks the amount of ammunition a VTOL has remaining for each weapon
-    uint32_t	iAttackRuns[VTOL_MAXWEAPS];
+	// iAttackRuns tracks the amount of ammunition a VTOL has remaining for each weapon
+	uint32_t	iAttackRuns[VTOL_MAXWEAPS];
 
-    // added for vtol movement
-    float	fz;
+	// added for vtol movement
+	float	fz;
 } MOVE_CONTROL;
 
 #endif // __INCLUDED_MOVEDEF_H__

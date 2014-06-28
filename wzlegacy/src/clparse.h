@@ -32,7 +32,7 @@ extern BOOL bAllowDebugMode;
 
 typedef enum {LARG_NONE, LARG_STRING, LARG_NUMBER, LARG_FLOAT, LARG_BOOLEAN} ARGTYPE;
 
-typedef struct 
+typedef struct
 {
 	const char *ArgName;
 	short ArgArg;

@@ -28,26 +28,26 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // The possible types of initialisation values
 typedef enum _init_type
 {
-    IT_BOOL,
-    IT_INDEX,
-    IT_STRING,
+	IT_BOOL,
+	IT_INDEX,
+	IT_STRING,
 } INIT_TYPE;
 
 
 // All the possible values that may be used to initialise a variable
 typedef struct _var_init
 {
-    INIT_TYPE	type;
-    int32_t		index;
-    char		*pString;
+	INIT_TYPE	type;
+	int32_t		index;
+	char		*pString;
 } VAR_INIT;
 
 
 // store array access data
 typedef struct _array_indexes
 {
-    int32_t		dimensions;
-    int32_t		elements[VAR_MAX_DIMENSIONS];
+	int32_t		dimensions;
+	int32_t		elements[VAR_MAX_DIMENSIONS];
 } ARRAY_INDEXES;
 
 /* A simple error reporting routine */
@@ -66,8 +66,8 @@ extern BOOL scrvLookUpArray(const char *pIdent, uint32_t *pIndex);
 // Whether the script is run immediately or stored for later use
 typedef enum _scrv_type
 {
-    SCRV_EXEC,
-    SCRV_NOEXEC,
+	SCRV_EXEC,
+	SCRV_NOEXEC,
 } SCRV_TYPE;
 
 // Add a new context to the list

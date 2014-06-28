@@ -31,24 +31,25 @@ typedef struct __GLCglyphRec __GLCglyph;
 typedef struct __GLCatlasElementRec __GLCatlasElement;
 typedef struct __GLCgeomBatchRec __GLCgeomBatch;
 
-struct __GLCglyphRec {
-  FT_ListNodeRec node;
+struct __GLCglyphRec
+{
+	FT_ListNodeRec node;
 
-  GLCulong index;
-  GLCulong codepoint;
-  /* GL objects management */
-  __GLCatlasElement* textureObject;
-  GLuint glObject[4];
-  GLint nContour;
-  GLint* contours;
-  GLint nGeomBatch;
-  __GLCgeomBatch* geomBatches;
-  /* Measurement infos */
-  GLfloat boundingBox[4];
-  GLfloat advance[2];
-  GLboolean advanceCached;
-  GLboolean boundingBoxCached;
-  GLboolean isSpacingChar;
+	GLCulong index;
+	GLCulong codepoint;
+	/* GL objects management */
+	__GLCatlasElement* textureObject;
+	GLuint glObject[4];
+	GLint nContour;
+	GLint* contours;
+	GLint nGeomBatch;
+	__GLCgeomBatch* geomBatches;
+	/* Measurement infos */
+	GLfloat boundingBox[4];
+	GLfloat advance[2];
+	GLboolean advanceCached;
+	GLboolean boundingBoxCached;
+	GLboolean isSpacingChar;
 };
 
 __GLCglyph* __glcGlyphCreate(const GLCulong inIndex, const GLCulong inCode);

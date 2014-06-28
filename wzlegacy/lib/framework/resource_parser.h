@@ -40,10 +40,10 @@
    know about them.  */
 enum yytokentype
 {
-    TEXT_T = 258,
-    QTEXT_T = 259,
-    DIRECTORY = 260,
-    FILETOKEN = 261
+	TEXT_T = 258,
+	QTEXT_T = 259,
+	DIRECTORY = 260,
+	FILETOKEN = 261
 };
 #endif
 /* Tokens.  */
@@ -59,14 +59,14 @@ enum yytokentype
 typedef union YYSTYPE
 {
 
-    /* Line 1676 of yacc.c  */
+	/* Line 1676 of yacc.c  */
 #line 51 "resource_parser.y"
 
-    char  *sval;
+	char  *sval;
 
 
 
-    /* Line 1676 of yacc.c  */
+	/* Line 1676 of yacc.c  */
 #line 70 "resource_parser.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1

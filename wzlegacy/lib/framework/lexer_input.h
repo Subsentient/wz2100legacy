@@ -20,21 +20,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct
 {
-    union
-    {
-        PHYSFS_file *physfsfile;
-        struct
-        {
-            const char *begin;
-            const char *end;
-        } buffer;
-    } input;
+	union
+	{
+		PHYSFS_file *physfsfile;
+		struct
+		{
+			const char *begin;
+			const char *end;
+		} buffer;
+	} input;
 
-    enum
-    {
-        LEXINPUT_PHYSFS,
-        LEXINPUT_BUFFER,
-    } type;
+	enum
+	{
+		LEXINPUT_PHYSFS,
+		LEXINPUT_BUFFER,
+	} type;
 } lexerinput_t;
 
 #ifdef YY_EXTRA_TYPE

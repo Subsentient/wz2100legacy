@@ -42,9 +42,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-    ANIM_2D,
-    ANIM_3D_FRAMES,
-    ANIM_3D_TRANS
+	ANIM_2D,
+	ANIM_3D_FRAMES,
+	ANIM_3D_TRANS
 } ANIM_MODE;
 
 /***************************************************************************/
@@ -74,22 +74,22 @@ struct BASEANIM;
 
 typedef struct ANIM_STATE
 {
-    uint16_t				uwFrame;		/* frame to play           */
-    Vector3i			vecPos;
-    Vector3i			vecAngle;
-    Vector3i			vecScale;
+	uint16_t				uwFrame;		/* frame to play           */
+	Vector3i			vecPos;
+	Vector3i			vecAngle;
+	Vector3i			vecScale;
 }
 ANIM_STATE;
 
 typedef struct BASEANIM
 {
-    ANIM_BASE_ELEMENTS
+	ANIM_BASE_ELEMENTS
 }
 BASEANIM;
 
 typedef struct ANIM3D
 {
-    ANIM_3D_ELEMENTS
+	ANIM_3D_ELEMENTS
 }
 ANIM3D;
 
@@ -101,7 +101,7 @@ BASEANIM 	*anim_LoadFromBuffer(char *pBuffer, uint32_t size);
 BASEANIM 	*anim_LoadFromFile(PHYSFS_file *fileHandle);
 void		anim_ReleaseAnim(BASEANIM *psAnim);
 BOOL		anim_Create3D(char szPieFileName[], uint16_t uwFrames, uint16_t uwFrameRate, uint16_t uwObj,
-                          ANIM_MODE ubType, uint16_t uwID);
+						  ANIM_MODE ubType, uint16_t uwID);
 void		anim_BeginScript(void);
 BOOL		anim_EndScript(void);
 BOOL		anim_AddFrameToAnim(int iFrame, Vector3i vecPos, Vector3i vecRot, Vector3i vecScale);
@@ -109,8 +109,8 @@ BASEANIM 	*anim_GetAnim(uint16_t uwAnimID);
 uint16_t		anim_GetAnimID(char *szName);
 iIMDShape 	*anim_GetShapeFromID(uint16_t uwID);
 uint16_t		anim_GetFrame3D(ANIM3D *psAnim, uint16_t uwObj, uint32_t udwGameTime, uint32_t udwStartTime,
-                            uint32_t udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot,
-                            Vector3i *psVecScale);
+								uint32_t udwStartDelay, Vector3i *psVecPos, Vector3i *psVecRot,
+								Vector3i *psVecScale);
 void		anim_SetVals(char szFileName[], uint16_t uwAnimID);
 
 /***************************************************************************/

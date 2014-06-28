@@ -27,295 +27,295 @@ static BOOL DragEnabled = true;
 
 void sliderEnableDrag(BOOL Enable)
 {
-    DragEnabled = Enable;
+	DragEnabled = Enable;
 }
 
 /* Create a slider widget data structure */
 W_SLIDER *sliderCreate(const W_SLDINIT *psInit)
 {
-    W_SLIDER *psWidget;
+	W_SLIDER *psWidget;
 
-    if (psInit->style & ~(WBAR_PLAIN | WIDG_HIDDEN))
-    {
-        ASSERT(false, "sliderCreate: Unknown style");
-        return NULL;
-    }
+	if (psInit->style & ~(WBAR_PLAIN | WIDG_HIDDEN))
+	{
+		ASSERT(false, "sliderCreate: Unknown style");
+		return NULL;
+	}
 
-    if (psInit->orientation < WSLD_LEFT
-            || psInit->orientation > WSLD_BOTTOM)
-    {
-        ASSERT(false, "sliderCreate: Unknown orientation");
-        return NULL;
-    }
+	if (psInit->orientation < WSLD_LEFT
+			|| psInit->orientation > WSLD_BOTTOM)
+	{
+		ASSERT(false, "sliderCreate: Unknown orientation");
+		return NULL;
+	}
 
-    if (((psInit->orientation == WSLD_LEFT
-            || psInit->orientation == WSLD_RIGHT)
-            && psInit->numStops > (psInit->width - psInit->barSize))
-            || ((psInit->orientation == WSLD_TOP
-                 || psInit->orientation == WSLD_BOTTOM)
-                && psInit->numStops > (psInit->height - psInit->barSize)))
-    {
-        ASSERT(false, "sliderCreate: Too many stops for slider length");
-        return NULL;
-    }
+	if (((psInit->orientation == WSLD_LEFT
+			|| psInit->orientation == WSLD_RIGHT)
+			&& psInit->numStops > (psInit->width - psInit->barSize))
+			|| ((psInit->orientation == WSLD_TOP
+				 || psInit->orientation == WSLD_BOTTOM)
+				&& psInit->numStops > (psInit->height - psInit->barSize)))
+	{
+		ASSERT(false, "sliderCreate: Too many stops for slider length");
+		return NULL;
+	}
 
-    if (psInit->pos > psInit->numStops)
-    {
-        ASSERT(false, "sliderCreate: slider position greater than stops (%d/%d)", psInit->pos,  psInit->numStops);
-        return NULL;
-    }
+	if (psInit->pos > psInit->numStops)
+	{
+		ASSERT(false, "sliderCreate: slider position greater than stops (%d/%d)", psInit->pos,  psInit->numStops);
+		return NULL;
+	}
 
-    if (((psInit->orientation == WSLD_LEFT
-            || psInit->orientation == WSLD_RIGHT)
-            && psInit->barSize > psInit->width)
-            || ((psInit->orientation == WSLD_TOP
-                 || psInit->orientation == WSLD_BOTTOM)
-                && psInit->barSize > psInit->height))
-    {
-        ASSERT(false, "sliderCreate: slider bar is larger than slider width");
-        return NULL;
-    }
+	if (((psInit->orientation == WSLD_LEFT
+			|| psInit->orientation == WSLD_RIGHT)
+			&& psInit->barSize > psInit->width)
+			|| ((psInit->orientation == WSLD_TOP
+				 || psInit->orientation == WSLD_BOTTOM)
+				&& psInit->barSize > psInit->height))
+	{
+		ASSERT(false, "sliderCreate: slider bar is larger than slider width");
+		return NULL;
+	}
 
-    /* Allocate the required memory */
-    psWidget = (W_SLIDER *)malloc(sizeof(W_SLIDER));
-    if (psWidget == NULL)
-    {
-        debug(LOG_FATAL, "sliderCreate: Out of memory");
-        abort();
-        return NULL;
-    }
-    /* Allocate the memory for the tip and copy it if necessary */
-    psWidget->pTip = psInit->pTip;
+	/* Allocate the required memory */
+	psWidget = (W_SLIDER *)malloc(sizeof(W_SLIDER));
+	if (psWidget == NULL)
+	{
+		debug(LOG_FATAL, "sliderCreate: Out of memory");
+		abort();
+		return NULL;
+	}
+	/* Allocate the memory for the tip and copy it if necessary */
+	psWidget->pTip = psInit->pTip;
 
-    /* Initialise the structure */
-    psWidget->type = WIDG_SLIDER;
-    psWidget->id = psInit->id;
-    psWidget->formID = psInit->formID;
-    psWidget->style = psInit->style;
-    psWidget->x = psInit->x;
-    psWidget->y = psInit->y;
-    psWidget->width = psInit->width;
-    psWidget->height = psInit->height;
+	/* Initialise the structure */
+	psWidget->type = WIDG_SLIDER;
+	psWidget->id = psInit->id;
+	psWidget->formID = psInit->formID;
+	psWidget->style = psInit->style;
+	psWidget->x = psInit->x;
+	psWidget->y = psInit->y;
+	psWidget->width = psInit->width;
+	psWidget->height = psInit->height;
 
-    if (psInit->pDisplay)
-    {
-        psWidget->display = psInit->pDisplay;
-    }
-    else
-    {
-        psWidget->display = sliderDisplay;
-    }
-    psWidget->callback = psInit->pCallback;
-    psWidget->pUserData = psInit->pUserData;
-    psWidget->UserData = psInit->UserData;
-    psWidget->orientation = psInit->orientation;
-    psWidget->numStops = psInit->numStops;
-    psWidget->barSize = psInit->barSize;
+	if (psInit->pDisplay)
+	{
+		psWidget->display = psInit->pDisplay;
+	}
+	else
+	{
+		psWidget->display = sliderDisplay;
+	}
+	psWidget->callback = psInit->pCallback;
+	psWidget->pUserData = psInit->pUserData;
+	psWidget->UserData = psInit->UserData;
+	psWidget->orientation = psInit->orientation;
+	psWidget->numStops = psInit->numStops;
+	psWidget->barSize = psInit->barSize;
 
-    sliderInitialise(psWidget);
+	sliderInitialise(psWidget);
 
-    psWidget->pos = psInit->pos;
+	psWidget->pos = psInit->pos;
 
-    return psWidget;
+	return psWidget;
 }
 
 
 /* Free the memory used by a slider */
 void sliderFree(W_SLIDER *psWidget)
 {
-    ASSERT( psWidget != NULL,
-            "sliderFree: Invalid widget pointer" );
+	ASSERT( psWidget != NULL,
+			"sliderFree: Invalid widget pointer" );
 
-    free(psWidget);
+	free(psWidget);
 }
 
 
 /* Initialise a slider widget before running it */
 void sliderInitialise(W_SLIDER *psWidget)
 {
-    ASSERT( psWidget != NULL,
-            "sliderInitialise: Invalid slider pointer" );
+	ASSERT( psWidget != NULL,
+			"sliderInitialise: Invalid slider pointer" );
 
-    psWidget->state = 0;
-    psWidget->pos = 0;
+	psWidget->state = 0;
+	psWidget->pos = 0;
 }
 
 
 /* Get the current position of a slider bar */
 uint32_t widgGetSliderPos(W_SCREEN *psScreen, uint32_t id)
 {
-    WIDGET	*psWidget;
+	WIDGET	*psWidget;
 
-    psWidget = widgGetFromID(psScreen, id);
-    ASSERT( psWidget != NULL,
-            "widgGetSliderPos: couldn't find widget from id" );
-    if (psWidget)
-    {
-        return ((W_SLIDER *)psWidget)->pos;
-    }
+	psWidget = widgGetFromID(psScreen, id);
+	ASSERT( psWidget != NULL,
+			"widgGetSliderPos: couldn't find widget from id" );
+	if (psWidget)
+	{
+		return ((W_SLIDER *)psWidget)->pos;
+	}
 
-    return 0;
+	return 0;
 }
 
 /* Set the current position of a slider bar */
 void widgSetSliderPos(W_SCREEN *psScreen, uint32_t id, uint16_t pos)
 {
-    WIDGET	*psWidget;
+	WIDGET	*psWidget;
 
-    psWidget = widgGetFromID(psScreen, id);
-    ASSERT( psWidget != NULL,
-            "widgGetSliderPos: couldn't find widget from id" );
-    if (psWidget)
-    {
-        if (pos > ((W_SLIDER *)psWidget)->numStops)
-        {
-            ((W_SLIDER *)psWidget)->pos = ((W_SLIDER *)psWidget)->numStops;
-        }
-        else
-        {
-            ((W_SLIDER *)psWidget)->pos = pos;
-        }
-    }
+	psWidget = widgGetFromID(psScreen, id);
+	ASSERT( psWidget != NULL,
+			"widgGetSliderPos: couldn't find widget from id" );
+	if (psWidget)
+	{
+		if (pos > ((W_SLIDER *)psWidget)->numStops)
+		{
+			((W_SLIDER *)psWidget)->pos = ((W_SLIDER *)psWidget)->numStops;
+		}
+		else
+		{
+			((W_SLIDER *)psWidget)->pos = pos;
+		}
+	}
 }
 
 /* Return the current position of the slider bar on the widget */
 static void sliderGetBarBox(W_SLIDER *psSlider, int16_t *pX, int16_t *pY,
-                            uint16_t *pWidth, uint16_t *pHeight)
+							uint16_t *pWidth, uint16_t *pHeight)
 {
-    switch (psSlider->orientation)
-    {
-        case WSLD_LEFT:
-            *pX = (int16_t)((psSlider->width - psSlider->barSize)
-                          * psSlider->pos / psSlider->numStops);
-            *pY = 0;
-            *pWidth = psSlider->barSize;
-            *pHeight = psSlider->height;
-            break;
-        case WSLD_RIGHT:
-            *pX = (int16_t)(psSlider->width - psSlider->barSize
-                          - (psSlider->width - psSlider->barSize)
-                          * psSlider->pos / psSlider->numStops);
-            *pY = 0;
-            *pWidth = psSlider->barSize;
-            *pHeight = psSlider->height;
-            break;
-        case WSLD_TOP:
-            *pX = 0;
-            *pY = (int16_t)((psSlider->height - psSlider->barSize)
-                          * psSlider->pos / psSlider->numStops);
-            *pWidth = psSlider->width;
-            *pHeight = psSlider->barSize;
-            break;
-        case WSLD_BOTTOM:
-            *pX = 0;
-            *pY = (int16_t)(psSlider->height - psSlider->barSize
-                          - (psSlider->height - psSlider->barSize)
-                          * psSlider->pos / psSlider->numStops);
-            *pWidth = psSlider->width;
-            *pHeight = psSlider->barSize;
-            break;
-    }
+	switch (psSlider->orientation)
+	{
+		case WSLD_LEFT:
+			*pX = (int16_t)((psSlider->width - psSlider->barSize)
+							* psSlider->pos / psSlider->numStops);
+			*pY = 0;
+			*pWidth = psSlider->barSize;
+			*pHeight = psSlider->height;
+			break;
+		case WSLD_RIGHT:
+			*pX = (int16_t)(psSlider->width - psSlider->barSize
+							- (psSlider->width - psSlider->barSize)
+							* psSlider->pos / psSlider->numStops);
+			*pY = 0;
+			*pWidth = psSlider->barSize;
+			*pHeight = psSlider->height;
+			break;
+		case WSLD_TOP:
+			*pX = 0;
+			*pY = (int16_t)((psSlider->height - psSlider->barSize)
+							* psSlider->pos / psSlider->numStops);
+			*pWidth = psSlider->width;
+			*pHeight = psSlider->barSize;
+			break;
+		case WSLD_BOTTOM:
+			*pX = 0;
+			*pY = (int16_t)(psSlider->height - psSlider->barSize
+							- (psSlider->height - psSlider->barSize)
+							* psSlider->pos / psSlider->numStops);
+			*pWidth = psSlider->width;
+			*pHeight = psSlider->barSize;
+			break;
+	}
 }
 
 
 /* Run a slider widget */
 void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
 {
-    int32_t  mx,my;
-    uint32_t	stopSize;
+	int32_t  mx, my;
+	uint32_t	stopSize;
 
-    if ((psWidget->state & SLD_DRAG) && !mouseDown(MOUSE_LMB))
-    {
-        psWidget->state &= ~SLD_DRAG;
-        widgSetReturn(psContext->psScreen, (WIDGET *)psWidget);
-    }
-    else if (!(psWidget->state & SLD_DRAG) && mouseDown(MOUSE_LMB))
-    {
-        sliderClicked(psWidget, psContext);
-    }
-    if (psWidget->state & SLD_DRAG)
-    {
-        /* Figure out where the drag box should be */
-        mx = psContext->mx - psWidget->x;
-        my = psContext->my - psWidget->y;
-        switch (psWidget->orientation)
-        {
-            case WSLD_LEFT:
-                if (mx <= psWidget->barSize/2)
-                {
-                    psWidget->pos = 0;
-                }
-                else if (mx >= psWidget->width - psWidget->barSize/2)
-                {
-                    psWidget->pos = psWidget->numStops;
-                }
-                else
-                {
-                    /* Mouse is in the middle of the slider, calculate which stop */
-                    stopSize = (psWidget->width - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (uint16_t)((mx + stopSize/2 - psWidget->barSize/2)
-                                            * psWidget->numStops
-                                            / (psWidget->width - psWidget->barSize));
-                }
-                break;
-            case WSLD_RIGHT:
-                if (mx <= psWidget->barSize/2)
-                {
-                    psWidget->pos = psWidget->numStops;
-                }
-                else if (mx >= psWidget->width - psWidget->barSize/2)
-                {
-                    psWidget->pos = 0;
-                }
-                else
-                {
-                    /* Mouse is in the middle of the slider, calculate which stop */
-                    stopSize = (psWidget->width - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (uint16_t)(psWidget->numStops
-                                            - (mx + stopSize/2 - psWidget->barSize/2)
-                                            * psWidget->numStops
-                                            / (psWidget->width - psWidget->barSize));
-                }
-                break;
-            case WSLD_TOP:
-                if (my <= psWidget->barSize/2)
-                {
-                    psWidget->pos = 0;
-                }
-                else if (my >= psWidget->height - psWidget->barSize/2)
-                {
-                    psWidget->pos = psWidget->numStops;
-                }
-                else
-                {
-                    /* Mouse is in the middle of the slider, calculate which stop */
-                    stopSize = (psWidget->height - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (uint16_t)((my + stopSize/2 - psWidget->barSize/2)
-                                            * psWidget->numStops
-                                            / (psWidget->height - psWidget->barSize));
-                }
-                break;
-            case WSLD_BOTTOM:
-                if (my <= psWidget->barSize/2)
-                {
-                    psWidget->pos = psWidget->numStops;
-                }
-                else if (my >= psWidget->height - psWidget->barSize/2)
-                {
-                    psWidget->pos = 0;
-                }
-                else
-                {
-                    /* Mouse is in the middle of the slider, calculate which stop */
-                    stopSize = (psWidget->height - psWidget->barSize) / psWidget->numStops;
-                    psWidget->pos = (uint16_t)(psWidget->numStops
-                                            - (my + stopSize/2 - psWidget->barSize/2)
-                                            * psWidget->numStops
-                                            / (psWidget->height - psWidget->barSize));
-                }
-                break;
-        }
-    }
+	if ((psWidget->state & SLD_DRAG) && !mouseDown(MOUSE_LMB))
+	{
+		psWidget->state &= ~SLD_DRAG;
+		widgSetReturn(psContext->psScreen, (WIDGET *)psWidget);
+	}
+	else if (!(psWidget->state & SLD_DRAG) && mouseDown(MOUSE_LMB))
+	{
+		sliderClicked(psWidget, psContext);
+	}
+	if (psWidget->state & SLD_DRAG)
+	{
+		/* Figure out where the drag box should be */
+		mx = psContext->mx - psWidget->x;
+		my = psContext->my - psWidget->y;
+		switch (psWidget->orientation)
+		{
+			case WSLD_LEFT:
+				if (mx <= psWidget->barSize / 2)
+				{
+					psWidget->pos = 0;
+				}
+				else if (mx >= psWidget->width - psWidget->barSize / 2)
+				{
+					psWidget->pos = psWidget->numStops;
+				}
+				else
+				{
+					/* Mouse is in the middle of the slider, calculate which stop */
+					stopSize = (psWidget->width - psWidget->barSize) / psWidget->numStops;
+					psWidget->pos = (uint16_t)((mx + stopSize / 2 - psWidget->barSize / 2)
+											   * psWidget->numStops
+											   / (psWidget->width - psWidget->barSize));
+				}
+				break;
+			case WSLD_RIGHT:
+				if (mx <= psWidget->barSize / 2)
+				{
+					psWidget->pos = psWidget->numStops;
+				}
+				else if (mx >= psWidget->width - psWidget->barSize / 2)
+				{
+					psWidget->pos = 0;
+				}
+				else
+				{
+					/* Mouse is in the middle of the slider, calculate which stop */
+					stopSize = (psWidget->width - psWidget->barSize) / psWidget->numStops;
+					psWidget->pos = (uint16_t)(psWidget->numStops
+											   - (mx + stopSize / 2 - psWidget->barSize / 2)
+											   * psWidget->numStops
+											   / (psWidget->width - psWidget->barSize));
+				}
+				break;
+			case WSLD_TOP:
+				if (my <= psWidget->barSize / 2)
+				{
+					psWidget->pos = 0;
+				}
+				else if (my >= psWidget->height - psWidget->barSize / 2)
+				{
+					psWidget->pos = psWidget->numStops;
+				}
+				else
+				{
+					/* Mouse is in the middle of the slider, calculate which stop */
+					stopSize = (psWidget->height - psWidget->barSize) / psWidget->numStops;
+					psWidget->pos = (uint16_t)((my + stopSize / 2 - psWidget->barSize / 2)
+											   * psWidget->numStops
+											   / (psWidget->height - psWidget->barSize));
+				}
+				break;
+			case WSLD_BOTTOM:
+				if (my <= psWidget->barSize / 2)
+				{
+					psWidget->pos = psWidget->numStops;
+				}
+				else if (my >= psWidget->height - psWidget->barSize / 2)
+				{
+					psWidget->pos = 0;
+				}
+				else
+				{
+					/* Mouse is in the middle of the slider, calculate which stop */
+					stopSize = (psWidget->height - psWidget->barSize) / psWidget->numStops;
+					psWidget->pos = (uint16_t)(psWidget->numStops
+											   - (my + stopSize / 2 - psWidget->barSize / 2)
+											   * psWidget->numStops
+											   / (psWidget->height - psWidget->barSize));
+				}
+				break;
+		}
+	}
 }
 
 
@@ -323,114 +323,114 @@ void sliderRun(W_SLIDER *psWidget, W_CONTEXT *psContext)
 void sliderClicked(W_SLIDER *psWidget, W_CONTEXT *psContext)
 {
 #if 0
-    int16_t	x,y;
-    uint16_t	width,height;
-    int32_t	mx,my;
+	int16_t	x, y;
+	uint16_t	width, height;
+	int32_t	mx, my;
 
-    /* Get the slider position */
-    sliderGetBarBox(psWidget, &x,&y, &width,&height);
+	/* Get the slider position */
+	sliderGetBarBox(psWidget, &x, &y, &width, &height);
 
-    /* Did the mouse click on the slider ? */
-    mx = psContext->mx - psWidget->x;
-    my = psContext->my - psWidget->y;
+	/* Did the mouse click on the slider ? */
+	mx = psContext->mx - psWidget->x;
+	my = psContext->my - psWidget->y;
 #endif
-    if(DragEnabled)
-    {
-        if (psContext->mx >= psWidget->x &&
-                psContext->mx <= psWidget->x + psWidget->width &&
-                psContext->my >= psWidget->y &&
-                psContext->my <= psWidget->y + psWidget->height)
-        {
-            psWidget->state |= SLD_DRAG;
-        }
-    }
+	if(DragEnabled)
+	{
+		if (psContext->mx >= psWidget->x &&
+				psContext->mx <= psWidget->x + psWidget->width &&
+				psContext->my >= psWidget->y &&
+				psContext->my <= psWidget->y + psWidget->height)
+		{
+			psWidget->state |= SLD_DRAG;
+		}
+	}
 }
 
 
 /* Respond to a mouse up */
 void sliderReleased(W_SLIDER *psWidget)
 {
-    (void)psWidget;
+	(void)psWidget;
 }
 
 
 /* Respond to a mouse moving over a slider */
 void sliderHiLite(W_SLIDER *psWidget)
 {
-    psWidget->state |= SLD_HILITE;
+	psWidget->state |= SLD_HILITE;
 }
 
 
 /* Respond to the mouse moving off a slider */
 void sliderHiLiteLost(W_SLIDER *psWidget)
 {
-    psWidget->state &= ~SLD_HILITE;
+	psWidget->state &= ~SLD_HILITE;
 }
 
 /* The slider display function */
 void sliderDisplay(WIDGET *psWidget, uint32_t xOffset, uint32_t yOffset, PIELIGHT *pColours)
 {
-    W_SLIDER	*psSlider;
-    int16_t		x0,y0, x1,y1;
-    uint16_t		width = 0, height = 0;
+	W_SLIDER	*psSlider;
+	int16_t		x0, y0, x1, y1;
+	uint16_t		width = 0, height = 0;
 
-    psSlider = (W_SLIDER *)psWidget;
+	psSlider = (W_SLIDER *)psWidget;
 
-    switch (psSlider->orientation)
-    {
-        case WSLD_LEFT:
-        case WSLD_RIGHT:
-            /* Draw the line */
-            x0 = (int16_t)(psSlider->x + xOffset + psSlider->barSize/(int16_t)2);
-            y0 = (int16_t)(psSlider->y + yOffset + psSlider->height/(int16_t)2);
-            x1 = (int16_t)(x0 + psSlider->width - psSlider->barSize);
-            iV_Line(x0,y0, x1,y0, pColours[WCOL_DARK]);
-            iV_Line(x0,y0+1, x1,y0+1, pColours[WCOL_LIGHT]);
+	switch (psSlider->orientation)
+	{
+		case WSLD_LEFT:
+		case WSLD_RIGHT:
+			/* Draw the line */
+			x0 = (int16_t)(psSlider->x + xOffset + psSlider->barSize / (int16_t)2);
+			y0 = (int16_t)(psSlider->y + yOffset + psSlider->height / (int16_t)2);
+			x1 = (int16_t)(x0 + psSlider->width - psSlider->barSize);
+			iV_Line(x0, y0, x1, y0, pColours[WCOL_DARK]);
+			iV_Line(x0, y0 + 1, x1, y0 + 1, pColours[WCOL_LIGHT]);
 
-            /* Now Draw the bar */
-            sliderGetBarBox(psSlider, &x0,&y0, &width,&height);
-            x0 = (int16_t)(x0 + psSlider->x + xOffset);
-            y0 = (int16_t)(y0 + psSlider->y + yOffset);
-            x1 = (int16_t)(x0 + width);
-            y1 = (int16_t)(y0 + height);
-            pie_BoxFill(x0, y0, x1, y1, pColours[WCOL_BKGRND]);
-            iV_Line(x0,y0, x1,y0, pColours[WCOL_LIGHT]);
-            iV_Line(x0,y0, x0,y1, pColours[WCOL_LIGHT]);
-            iV_Line(x1,y0, x1,y1, pColours[WCOL_DARK]);
-            iV_Line(x0,y1, x1,y1, pColours[WCOL_DARK]);
-            break;
-        case WSLD_TOP:
-        case WSLD_BOTTOM:
-            /* Draw the line */
-            x0 = (int16_t)(psSlider->x + xOffset + psSlider->width/(int16_t)2);
-            y0 = (int16_t)(psSlider->y + yOffset + psSlider->barSize/(int16_t)2);
-            y1 = (int16_t)(y0 + psSlider->height - psSlider->barSize);
-            iV_Line(x0,y0, x0,y1, pColours[WCOL_DARK]);
-            iV_Line(x0+1,y0, x0+1,y1, pColours[WCOL_LIGHT]);
+			/* Now Draw the bar */
+			sliderGetBarBox(psSlider, &x0, &y0, &width, &height);
+			x0 = (int16_t)(x0 + psSlider->x + xOffset);
+			y0 = (int16_t)(y0 + psSlider->y + yOffset);
+			x1 = (int16_t)(x0 + width);
+			y1 = (int16_t)(y0 + height);
+			pie_BoxFill(x0, y0, x1, y1, pColours[WCOL_BKGRND]);
+			iV_Line(x0, y0, x1, y0, pColours[WCOL_LIGHT]);
+			iV_Line(x0, y0, x0, y1, pColours[WCOL_LIGHT]);
+			iV_Line(x1, y0, x1, y1, pColours[WCOL_DARK]);
+			iV_Line(x0, y1, x1, y1, pColours[WCOL_DARK]);
+			break;
+		case WSLD_TOP:
+		case WSLD_BOTTOM:
+			/* Draw the line */
+			x0 = (int16_t)(psSlider->x + xOffset + psSlider->width / (int16_t)2);
+			y0 = (int16_t)(psSlider->y + yOffset + psSlider->barSize / (int16_t)2);
+			y1 = (int16_t)(y0 + psSlider->height - psSlider->barSize);
+			iV_Line(x0, y0, x0, y1, pColours[WCOL_DARK]);
+			iV_Line(x0 + 1, y0, x0 + 1, y1, pColours[WCOL_LIGHT]);
 
-            /* Now Draw the bar */
-            sliderGetBarBox(psSlider, &x0,&y0, &width,&height);
-            x0 = (int16_t)(x0 + psSlider->x + xOffset);
-            y0 = (int16_t)(y0 + psSlider->y + yOffset);
-            x1 = (int16_t)(x0 + width);
-            y1 = (int16_t)(y0 + height);
-            pie_BoxFill(x0, y0, x1, y1, pColours[WCOL_BKGRND]);
-            iV_Line(x0,y0, x1,y0, pColours[WCOL_LIGHT]);
-            iV_Line(x0,y0, x0,y1, pColours[WCOL_LIGHT]);
-            iV_Line(x1,y0, x1,y1, pColours[WCOL_DARK]);
-            iV_Line(x0,y1, x1,y1, pColours[WCOL_DARK]);
-            break;
-    }
+			/* Now Draw the bar */
+			sliderGetBarBox(psSlider, &x0, &y0, &width, &height);
+			x0 = (int16_t)(x0 + psSlider->x + xOffset);
+			y0 = (int16_t)(y0 + psSlider->y + yOffset);
+			x1 = (int16_t)(x0 + width);
+			y1 = (int16_t)(y0 + height);
+			pie_BoxFill(x0, y0, x1, y1, pColours[WCOL_BKGRND]);
+			iV_Line(x0, y0, x1, y0, pColours[WCOL_LIGHT]);
+			iV_Line(x0, y0, x0, y1, pColours[WCOL_LIGHT]);
+			iV_Line(x1, y0, x1, y1, pColours[WCOL_DARK]);
+			iV_Line(x0, y1, x1, y1, pColours[WCOL_DARK]);
+			break;
+	}
 
-    if (psSlider->state & SLD_HILITE)
-    {
-        x0 = (int16_t)(psWidget->x + xOffset - 2);
-        y0 = (int16_t)(psWidget->y + yOffset - 2);
-        x1 = (int16_t)(x0 + psWidget->width + 4);
-        y1 = (int16_t)(y0 + psWidget->height + 4);
-        iV_Line(x0,y0, x1,y0, pColours[WCOL_HILITE]);
-        iV_Line(x1,y0, x1,y1, pColours[WCOL_HILITE]);
-        iV_Line(x0,y1, x1,y1, pColours[WCOL_HILITE]);
-        iV_Line(x0,y0, x0,y1, pColours[WCOL_HILITE]);
-    }
+	if (psSlider->state & SLD_HILITE)
+	{
+		x0 = (int16_t)(psWidget->x + xOffset - 2);
+		y0 = (int16_t)(psWidget->y + yOffset - 2);
+		x1 = (int16_t)(x0 + psWidget->width + 4);
+		y1 = (int16_t)(y0 + psWidget->height + 4);
+		iV_Line(x0, y0, x1, y0, pColours[WCOL_HILITE]);
+		iV_Line(x1, y0, x1, y1, pColours[WCOL_HILITE]);
+		iV_Line(x0, y1, x1, y1, pColours[WCOL_HILITE]);
+		iV_Line(x0, y0, x0, y1, pColours[WCOL_HILITE]);
+	}
 }

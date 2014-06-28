@@ -24,93 +24,93 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 static unsigned LoadTextureFile(const char *FileName)
 {
-    iV_Image *pSprite;
-    unsigned int i;
+	iV_Image *pSprite;
+	unsigned int i;
 
-    ASSERT(resPresent("IMGPAGE", FileName), "Texture file \"%s\" not preloaded.", FileName);
+	ASSERT(resPresent("IMGPAGE", FileName), "Texture file \"%s\" not preloaded.", FileName);
 
-    pSprite = (iV_Image *)resGetData("IMGPAGE", FileName);
-    debug(LOG_TEXTURE, "Load texture from resource cache: %s (%d, %d)",
-          FileName, pSprite->width, pSprite->height);
+	pSprite = (iV_Image *)resGetData("IMGPAGE", FileName);
+	debug(LOG_TEXTURE, "Load texture from resource cache: %s (%d, %d)",
+		  FileName, pSprite->width, pSprite->height);
 
-    /* Have we already uploaded this one? */
-    for (i = 0; i < _TEX_INDEX; ++i)
-    {
-        if (strcasecmp(FileName, _TEX_PAGE[i].name) == 0)
-        {
-            debug(LOG_TEXTURE, "LoadTextureFile: already uploaded");
-            return _TEX_PAGE[i].id;
-        }
-    }
+	/* Have we already uploaded this one? */
+	for (i = 0; i < _TEX_INDEX; ++i)
+	{
+		if (strcasecmp(FileName, _TEX_PAGE[i].name) == 0)
+		{
+			debug(LOG_TEXTURE, "LoadTextureFile: already uploaded");
+			return _TEX_PAGE[i].id;
+		}
+	}
 
-    debug(LOG_TEXTURE, "LoadTextureFile: had to upload texture!");
-    return pie_AddTexPage(pSprite, FileName, 0, 0);
+	debug(LOG_TEXTURE, "LoadTextureFile: had to upload texture!");
+	return pie_AddTexPage(pSprite, FileName, 0, 0);
 }
 
 IMAGEFILE *iV_LoadImageFile(const char *fileName)
 {
-    char *pFileData, *ptr, *dot;
-    unsigned int pFileSize, numImages = 0, i, tPages = 0;
-    IMAGEFILE *ImageFile;
-    char texFileName[PATH_MAX];
+	char *pFileData, *ptr, *dot;
+	unsigned int pFileSize, numImages = 0, i, tPages = 0;
+	IMAGEFILE *ImageFile;
+	char texFileName[PATH_MAX];
 
-    if (!loadFile(fileName, &pFileData, &pFileSize))
-    {
-        debug(LOG_ERROR, "iV_LoadImageFile: failed to open %s", fileName);
-        return NULL;
-    }
-    ptr = pFileData;
-    // count lines, which is identical to number of images
-    while (ptr < pFileData + pFileSize && *ptr != '\0')
-    {
-        numImages += (*ptr == '\n') ? 1 : 0;
-        ptr++;
-    }
-    ImageFile = malloc(sizeof(IMAGEFILE) + sizeof(IMAGEDEF) * numImages);
-    ImageFile->ImageDefs = (IMAGEDEF *)(ImageFile + 1); // we allocated extra space for it
-    ptr = pFileData;
-    numImages = 0;
-    while (ptr < pFileData + pFileSize)
-    {
-        int temp, retval;
-        IMAGEDEF *ImageDef = &ImageFile->ImageDefs[numImages];
+	if (!loadFile(fileName, &pFileData, &pFileSize))
+	{
+		debug(LOG_ERROR, "iV_LoadImageFile: failed to open %s", fileName);
+		return NULL;
+	}
+	ptr = pFileData;
+	// count lines, which is identical to number of images
+	while (ptr < pFileData + pFileSize && *ptr != '\0')
+	{
+		numImages += (*ptr == '\n') ? 1 : 0;
+		ptr++;
+	}
+	ImageFile = malloc(sizeof(IMAGEFILE) + sizeof(IMAGEDEF) * numImages);
+	ImageFile->ImageDefs = (IMAGEDEF *)(ImageFile + 1); // we allocated extra space for it
+	ptr = pFileData;
+	numImages = 0;
+	while (ptr < pFileData + pFileSize)
+	{
+		int temp, retval;
+		IMAGEDEF *ImageDef = &ImageFile->ImageDefs[numImages];
 
-        retval = sscanf(ptr, "%u,%u,%u,%u,%u,%d,%d%n", &ImageDef->TPageID, &ImageDef->Tu, &ImageDef->Tv, &ImageDef->Width,
-                        &ImageDef->Height, &ImageDef->XOffset, &ImageDef->YOffset, &temp);
-        if (retval != 7)
-        {
-            break;
-        }
-        ptr += temp;
-        numImages++;
-        // Find number of texture pages to load (no gaps allowed in number series, eg use intfac0, intfac1, etc.!)
-        if (ImageDef->TPageID > tPages)
-        {
-            tPages = ImageDef->TPageID;
-        }
-        while (ptr < pFileData + pFileSize && *ptr++ != '\n'); // skip rest of line
-    }
+		retval = sscanf(ptr, "%u,%u,%u,%u,%u,%d,%d%n", &ImageDef->TPageID, &ImageDef->Tu, &ImageDef->Tv, &ImageDef->Width,
+						&ImageDef->Height, &ImageDef->XOffset, &ImageDef->YOffset, &temp);
+		if (retval != 7)
+		{
+			break;
+		}
+		ptr += temp;
+		numImages++;
+		// Find number of texture pages to load (no gaps allowed in number series, eg use intfac0, intfac1, etc.!)
+		if (ImageDef->TPageID > tPages)
+		{
+			tPages = ImageDef->TPageID;
+		}
+		while (ptr < pFileData + pFileSize && *ptr++ != '\n'); // skip rest of line
+	}
 
-    dot = strrchr(fileName, '/');	// go to last path character
-    dot++;				// skip it
-    strcpy(texFileName, dot);	// make a copy
-    dot = strchr(texFileName, '.');	// find extension
-    *dot = '\0';			// then discard it
-    // Load the texture pages.
-    for (i = 0; i <= tPages; i++)
-    {
-        char path[PATH_MAX];
+	dot = strrchr(fileName, '/');	// go to last path character
+	dot++;				// skip it
+	strcpy(texFileName, dot);	// make a copy
+	dot = strchr(texFileName, '.');	// find extension
+	*dot = '\0';			// then discard it
+	// Load the texture pages.
+	for (i = 0; i <= tPages; i++)
+	{
+		char path[PATH_MAX];
 
-        snprintf(path, PATH_MAX, "%s%u.png", texFileName, i);
-        ImageFile->TPageIDs[i] = LoadTextureFile(path);
-    }
-    ImageFile->NumImages = numImages;
-    free(pFileData);
+		snprintf(path, PATH_MAX, "%s%u.png", texFileName, i);
+		ImageFile->TPageIDs[i] = LoadTextureFile(path);
+	}
+	ImageFile->NumImages = numImages;
+	free(pFileData);
 
-    return ImageFile;
+	return ImageFile;
 }
 
 void iV_FreeImageFile(IMAGEFILE *ImageFile)
 {
-    free(ImageFile);
+	free(ImageFile);
 }

@@ -24,110 +24,110 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 static void XmCloseMsgBox(Widget w, XtPointer clientData, XtPointer WZ_DECL_UNUSED callData)
 {
-    volatile bool *const keep_running = (volatile bool *)clientData;
+	volatile bool *const keep_running = (volatile bool *)clientData;
 
-    *keep_running = false;
-    XtUnrealizeWidget(w);
+	*keep_running = false;
+	XtUnrealizeWidget(w);
 }
 
 void XmMessageBox(code_part part, const char *part_name, const char *msg)
 {
-    XtAppContext XtApp;
-    Widget topWidget;
+	XtAppContext XtApp;
+	Widget topWidget;
 
-    char *trim_msg;
-    volatile bool keep_running;
+	char *trim_msg;
+	volatile bool keep_running;
 
-    // Create the X application shell object and toplevel widget
-    {
-        int argc = 0;
-        char *argv[] = { NULL };
+	// Create the X application shell object and toplevel widget
+	{
+		int argc = 0;
+		char *argv[] = { NULL };
 
-        topWidget = XtVaOpenApplication(&XtApp, "D2X-XL", NULL, 0, &argc, argv, NULL, applicationShellWidgetClass, NULL);
-    }
+		topWidget = XtVaOpenApplication(&XtApp, "D2X-XL", NULL, 0, &argc, argv, NULL, applicationShellWidgetClass, NULL);
+	}
 
-    // Trim leading and trailing whitespace from message
-    {
-        size_t len = strlen(msg);
+	// Trim leading and trailing whitespace from message
+	{
+		size_t len = strlen(msg);
 
-        // Trim leading whitespace
-        while (len
-                && (msg[0] == '\r'
-                    || msg[0] == '\n'
-                    || msg[0] == '\t'
-                    || msg[0] == ' '))
-        {
-            ++msg;
-            --len;
-        }
+		// Trim leading whitespace
+		while (len
+				&& (msg[0] == '\r'
+					|| msg[0] == '\n'
+					|| msg[0] == '\t'
+					|| msg[0] == ' '))
+		{
+			++msg;
+			--len;
+		}
 
-        // Trim trailing whitespace
-        while (len
-                && (msg[len - 1] == '\r'
-                    || msg[len - 1] == '\n'
-                    || msg[len - 1] == '\t'
-                    || msg[len - 1] == ' '))
-        {
-            --len;
-        }
+		// Trim trailing whitespace
+		while (len
+				&& (msg[len - 1] == '\r'
+					|| msg[len - 1] == '\n'
+					|| msg[len - 1] == '\t'
+					|| msg[len - 1] == ' '))
+		{
+			--len;
+		}
 
-        trim_msg = alloca(len + 1);
-        strlcpy(trim_msg, msg, len + 1);
-    }
+		trim_msg = alloca(len + 1);
+		strlcpy(trim_msg, msg, len + 1);
+	}
 
-    // Set up the dialog box
-    {
-        Widget xMsgBox;
+	// Set up the dialog box
+	{
+		Widget xMsgBox;
 
-        // setup message box text
-        XmString str = XmStringCreateLocalized(trim_msg);
-        XmString title = XmStringCreateLocalized((char *)part_name);
+		// setup message box text
+		XmString str = XmStringCreateLocalized(trim_msg);
+		XmString title = XmStringCreateLocalized((char *)part_name);
 
-        Arg args[2];
-        XtSetArg(args[0], XmNmessageString, str);
-        XtSetArg(args[1], XmNdialogTitle, title);
+		Arg args[2];
+		XtSetArg(args[0], XmNmessageString, str);
+		XtSetArg(args[1], XmNdialogTitle, title);
 
-        // use the built-in message box
-        switch (part)
-        {
-            case LOG_ERROR:
-            case LOG_FATAL:
-                xMsgBox = XmCreateErrorDialog(topWidget, (char *)part_name, args, ARRAY_SIZE(args));
-                break;
+		// use the built-in message box
+		switch (part)
+		{
+			case LOG_ERROR:
+			case LOG_FATAL:
+				xMsgBox = XmCreateErrorDialog(topWidget, (char *)part_name, args, ARRAY_SIZE(args));
+				break;
 
-            case LOG_POPUP:
-            case LOG_WARNING:
-                xMsgBox = XmCreateWarningDialog(topWidget, (char *)part_name, args, ARRAY_SIZE(args));
-                break;
+			case LOG_POPUP:
+			case LOG_WARNING:
+				xMsgBox = XmCreateWarningDialog(topWidget, (char *)part_name, args, ARRAY_SIZE(args));
+				break;
 
-            default:
-                xMsgBox = XmCreateInformationDialog(topWidget, (char *)part_name, args, ARRAY_SIZE(args));
-                break;
-        }
+			default:
+				xMsgBox = XmCreateInformationDialog(topWidget, (char *)part_name, args, ARRAY_SIZE(args));
+				break;
+		}
 
-        // remove text resource
-        XmStringFree(str);
-        XmStringFree(title);
+		// remove text resource
+		XmStringFree(str);
+		XmStringFree(title);
 
-        // remove help and cancel buttons
-        XtUnmanageChild(XmMessageBoxGetChild(xMsgBox, XmDIALOG_CANCEL_BUTTON));
-        XtUnmanageChild(XmMessageBoxGetChild(xMsgBox, XmDIALOG_HELP_BUTTON));
+		// remove help and cancel buttons
+		XtUnmanageChild(XmMessageBoxGetChild(xMsgBox, XmDIALOG_CANCEL_BUTTON));
+		XtUnmanageChild(XmMessageBoxGetChild(xMsgBox, XmDIALOG_HELP_BUTTON));
 
-        // add callback to the "close" button that signals closing of the message box
-        XtAddCallback(xMsgBox, XmNokCallback, XmCloseMsgBox, (bool *)&keep_running);
-        XtManageChild(xMsgBox);
-        XtRealizeWidget(xMsgBox);
-    }
+		// add callback to the "close" button that signals closing of the message box
+		XtAddCallback(xMsgBox, XmNokCallback, XmCloseMsgBox, (bool *)&keep_running);
+		XtManageChild(xMsgBox);
+		XtRealizeWidget(xMsgBox);
+	}
 
-    keep_running = true;
-    while (keep_running
-            || XtAppPending(XtApp))
-    {
-        XEvent event;
-        XtAppNextEvent(XtApp, &event);
-        XtDispatchEvent(&event);
-    }
+	keep_running = true;
+	while (keep_running
+			|| XtAppPending(XtApp))
+	{
+		XEvent event;
+		XtAppNextEvent(XtApp, &event);
+		XtDispatchEvent(&event);
+	}
 
-    XtDestroyWidget(topWidget);
-    XtDestroyApplicationContext(XtApp);
+	XtDestroyWidget(topWidget);
+	XtDestroyApplicationContext(XtApp);
 }

@@ -22,10 +22,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 enum iV_fonts
 {
-    font_regular,
-    font_large,
-    font_small,
-    font_scaled,
+	font_regular,
+	font_large,
+	font_small,
+	font_scaled,
 };
 
 #define PIE_TEXT_WHITE				(-1)
@@ -61,9 +61,9 @@ static const char text_newline_utf8[] = TEXT_UTF8_NEWLINE;
 
 enum
 {
-    FTEXT_LEFTJUSTIFY,			// Left justify.
-    FTEXT_CENTRE,				// Centre justify.
-    FTEXT_RIGHTJUSTIFY,			// Right justify.
+	FTEXT_LEFTJUSTIFY,			// Left justify.
+	FTEXT_CENTRE,				// Centre justify.
+	FTEXT_RIGHTJUSTIFY,			// Right justify.
 };
 
 
@@ -80,12 +80,12 @@ extern void iV_DrawTextRotatedF(float x, float y, float rotation, const char *fo
 
 static inline void iV_DrawText(const char *string, float x, float y)
 {
-    iV_DrawTextRotated(string, x, y, 0.f);
+	iV_DrawTextRotated(string, x, y, 0.f);
 }
 
 static inline void iV_DrawTextFv(float x, float y, const char *format, va_list ap)
 {
-    iV_DrawTextRotatedFv(x, y, 0.f, format, ap);
+	iV_DrawTextRotatedFv(x, y, 0.f, format, ap);
 }
 
 extern void iV_DrawTextF(float x, float y, const char *format, ...) WZ_DECL_FORMAT(printf, 3, 4);

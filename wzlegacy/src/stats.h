@@ -242,7 +242,7 @@ extern BOOL statsShutDown(void);
 
 /*Deallocate the stats passed in as parameter */
 extern void statsDealloc(COMPONENT_STATS *pStats, uint32_t listSize,
-                         uint32_t structureSize);
+						 uint32_t structureSize);
 
 extern void deallocPropulsionTypes(void);
 extern void deallocTerrainTypes(void);
@@ -329,7 +329,7 @@ extern uint32_t	constructorPoints(CONSTRUCT_STATS *psStats, uint8_t player);
 /*Access functions for the upgradeable stats of a body*/
 extern uint32_t	bodyPower(BODY_STATS *psStats, uint8_t player, uint8_t bodyType);
 extern uint32_t	bodyArmour(BODY_STATS *psStats, uint8_t player, uint8_t bodyType,
-                           WEAPON_CLASS weaponClass, int side);
+						   WEAPON_CLASS weaponClass, int side);
 
 /*dummy function for John*/
 extern void brainAvailable(BRAIN_STATS *psStat);

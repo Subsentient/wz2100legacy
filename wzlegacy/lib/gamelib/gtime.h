@@ -111,14 +111,14 @@ extern void	getTimeComponents(uint32_t time, uint32_t *hours, uint32_t *minutes,
  */
 static inline float timeAdjustedIncrement(float value, BOOL pauseTime)
 {
-    if (pauseTime)
-    {
-        return (value * frameTimeFraction);
-    }
-    else
-    {
-        return (value * frameTimeFraction2);
-    }
+	if (pauseTime)
+	{
+		return (value * frameTimeFraction);
+	}
+	else
+	{
+		return (value * frameTimeFraction2);
+	}
 }
 
 #endif

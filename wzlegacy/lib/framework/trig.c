@@ -30,8 +30,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 #define TRIG_ACCMASK	0x0fff
 
 
-static float aSin[2*TRIG_DEGREES];
-static float aCos[2*TRIG_DEGREES];
+static float aSin[2 * TRIG_DEGREES];
+static float aCos[2 * TRIG_DEGREES];
 static float aInvCos[TRIG_ACCURACY];
 static float aInvSin[TRIG_ACCURACY];
 
@@ -39,28 +39,28 @@ static float aInvSin[TRIG_ACCURACY];
 /* Initialise the Trig tables */
 bool trigInitialise(void)
 {
-    float val = 0.0f, inc = 2.0f * M_PI / TRIG_DEGREES;
-    int i;
+	float val = 0.0f, inc = 2.0f * M_PI / TRIG_DEGREES;
+	int i;
 
-    // Initialise the tables
-    for (i = 0; i < TRIG_DEGREES; i++)
-    {
-        aSin[i] = sinf(val);
-        aCos[i] = cosf(val);
-        aSin[TRIG_DEGREES+i] = aSin[i];
-        aCos[TRIG_DEGREES+i] = aCos[i];
-        val += inc;
-    }
+	// Initialise the tables
+	for (i = 0; i < TRIG_DEGREES; i++)
+	{
+		aSin[i] = sinf(val);
+		aCos[i] = cosf(val);
+		aSin[TRIG_DEGREES + i] = aSin[i];
+		aCos[TRIG_DEGREES + i] = aCos[i];
+		val += inc;
+	}
 
-    inc = 2.0f / (TRIG_ACCURACY-1);
-    val = -1;
-    for (i = 0; i < TRIG_ACCURACY; i++)
-    {
-        aInvSin[i] = asinf(val) * (float)TRIG_DEGREES / (2.0f * (float)M_PI);
-        aInvCos[i] = acosf(val) * (float)TRIG_DEGREES / (2.0f * (float)M_PI);
-        val += inc;
-    }
-    return true;
+	inc = 2.0f / (TRIG_ACCURACY - 1);
+	val = -1;
+	for (i = 0; i < TRIG_ACCURACY; i++)
+	{
+		aInvSin[i] = asinf(val) * (float)TRIG_DEGREES / (2.0f * (float)M_PI);
+		aInvCos[i] = acosf(val) * (float)TRIG_DEGREES / (2.0f * (float)M_PI);
+		val += inc;
+	}
+	return true;
 }
 
 
@@ -72,34 +72,34 @@ void trigShutDown(void)
 /* Access the trig tables */
 float trigSin(int angle)
 {
-    return aSin[angle % TRIG_DEGREES + TRIG_DEGREES];
+	return aSin[angle % TRIG_DEGREES + TRIG_DEGREES];
 }
 
 
 float trigCos(int angle)
 {
-    return aCos[angle % TRIG_DEGREES + TRIG_DEGREES];
+	return aCos[angle % TRIG_DEGREES + TRIG_DEGREES];
 }
 
 
 float trigInvSin(float val)
 {
-    int32_t index = (val+1) * (TRIG_ACCURACY-1) / 2;
+	int32_t index = (val + 1) * (TRIG_ACCURACY - 1) / 2;
 
-    return aInvSin[index & TRIG_ACCMASK];
+	return aInvSin[index & TRIG_ACCMASK];
 }
 
 
 float trigInvCos(float val)
 {
-    int32_t index = (val+1) * (TRIG_ACCURACY-1) / 2;
+	int32_t index = (val + 1) * (TRIG_ACCURACY - 1) / 2;
 
-    return aInvCos[index & TRIG_ACCMASK];
+	return aInvCos[index & TRIG_ACCMASK];
 }
 
 
 /* Fast lookup sqrt */
 float trigIntSqrt(unsigned int val)
 {
-    return sqrtf(val);
+	return sqrtf(val);
 }

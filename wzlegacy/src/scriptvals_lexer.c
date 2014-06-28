@@ -53,7 +53,7 @@
 #if defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 
 /* C99 says to define __STDC_LIMIT_MACROS before including stdint.h,
- * if you want the limit (max/min) macros for int types. 
+ * if you want the limit (max/min) macros for int types.
  */
 #ifndef __STDC_LIMIT_MACROS
 #define __STDC_LIMIT_MACROS 1
@@ -70,7 +70,7 @@ typedef uint32_t flex_uint32_t;
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
 typedef int flex_int32_t;
-typedef unsigned char flex_uint8_t; 
+typedef unsigned char flex_uint8_t;
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
 
@@ -186,21 +186,21 @@ extern FILE *scrv_in, *scrv_out;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
-     *       access to the local variable yy_act. Since yyless() is a macro, it would break
-     *       existing scanners that call yyless() from OUTSIDE scrv_lex. 
-     *       One obvious solution it to make yy_act a global. I tried that, and saw
-     *       a 5% performance hit in a non-scrv_lineno scanner, because yy_act is
-     *       normally declared as a register variable-- so it is not worth it.
-     */
-    #define  YY_LESS_LINENO(n) \
+/* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+ *       access to the local variable yy_act. Since yyless() is a macro, it would break
+ *       existing scanners that call yyless() from OUTSIDE scrv_lex.
+ *       One obvious solution it to make yy_act a global. I tried that, and saw
+ *       a 5% performance hit in a non-scrv_lineno scanner, because yy_act is
+ *       normally declared as a register variable-- so it is not worth it.
+ */
+#define  YY_LESS_LINENO(n) \
             do { \
                 int yyl;\
                 for ( yyl = n; yyl < scrv_leng; ++yyl )\
                     if ( scrv_text[yyl] == '\n' )\
                         --scrv_lineno;\
             }while(0)
-    
+
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
 	do \
@@ -220,7 +220,7 @@ extern FILE *scrv_in, *scrv_out;
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
 struct yy_buffer_state
-	{
+{
 	FILE *yy_input_file;
 
 	char *yy_ch_buf;		/* input buffer */
@@ -255,9 +255,9 @@ struct yy_buffer_state
 	 */
 	int yy_at_bol;
 
-    int yy_bs_lineno; /**< The line count. */
-    int yy_bs_column; /**< The column count. */
-    
+	int yy_bs_lineno; /**< The line count. */
+	int yy_bs_column; /**< The column count. */
+
 	/* Whether to try to fill the input buffer when we reach the
 	 * end of it.
 	 */
@@ -279,7 +279,7 @@ struct yy_buffer_state
 	 */
 #define YY_BUFFER_EOF_PENDING 2
 
-	};
+};
 #endif /* !YY_STRUCT_YY_BUFFER_STATE */
 
 /* Stack of input buffers. */
@@ -319,7 +319,7 @@ static int yy_did_buffer_switch_on_eof;
 
 void scrv_restart (FILE *input_file  );
 void scrv__switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-YY_BUFFER_STATE scrv__create_buffer (FILE *file,int size  );
+YY_BUFFER_STATE scrv__create_buffer (FILE *file, int size  );
 void scrv__delete_buffer (YY_BUFFER_STATE b  );
 void scrv__flush_buffer (YY_BUFFER_STATE b  );
 void scrv_push_buffer_state (YY_BUFFER_STATE new_buffer  );
@@ -327,16 +327,16 @@ void scrv_pop_buffer_state (void );
 
 static void scrv_ensure_buffer_stack (void );
 static void scrv__load_buffer_state (void );
-static void scrv__init_buffer (YY_BUFFER_STATE b,FILE *file  );
+static void scrv__init_buffer (YY_BUFFER_STATE b, FILE *file  );
 
 #define YY_FLUSH_BUFFER scrv__flush_buffer(YY_CURRENT_BUFFER )
 
-YY_BUFFER_STATE scrv__scan_buffer (char *base,yy_size_t size  );
+YY_BUFFER_STATE scrv__scan_buffer (char *base, yy_size_t size  );
 YY_BUFFER_STATE scrv__scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE scrv__scan_bytes (yyconst char *bytes,yy_size_t len  );
+YY_BUFFER_STATE scrv__scan_bytes (yyconst char *bytes, yy_size_t len  );
 
 void *scrv_alloc (yy_size_t  );
-void *scrv_realloc (void *,yy_size_t  );
+void *scrv_realloc (void *, yy_size_t  );
 void scrv_free (void *  );
 
 #define yy_new_buffer scrv__create_buffer
@@ -401,133 +401,142 @@ static void yy_fatal_error (yyconst char msg[]  );
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
-	{
+{
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
-	};
+};
 static yyconst flex_int16_t yy_accept[80] =
-    {   0,
-        0,    0,    0,    0,   26,   26,   17,   17,   29,   27,
-       18,   18,   14,   27,   27,   13,   12,   12,   12,   12,
-       12,   12,   12,   12,   12,   12,   12,   22,   23,   22,
-       26,   25,   17,   16,   15,   13,   19,   24,   12,   12,
-       12,   12,   12,   12,   12,   12,   12,   12,   12,   12,
-       20,   26,   17,   12,   12,    2,   12,   12,   12,    1,
-        7,   12,   12,   12,   21,    4,   12,    9,    3,   12,
-       12,   12,    8,   11,   10,   12,    6,    5,    0
-    } ;
+{
+	0,
+	0,    0,    0,    0,   26,   26,   17,   17,   29,   27,
+	18,   18,   14,   27,   27,   13,   12,   12,   12,   12,
+	12,   12,   12,   12,   12,   12,   12,   22,   23,   22,
+	26,   25,   17,   16,   15,   13,   19,   24,   12,   12,
+	12,   12,   12,   12,   12,   12,   12,   12,   12,   12,
+	20,   26,   17,   12,   12,    2,   12,   12,   12,    1,
+	7,   12,   12,   12,   21,    4,   12,    9,    3,   12,
+	12,   12,    8,   11,   10,   12,    6,    5,    0
+} ;
 
 static yyconst flex_int32_t yy_ec[256] =
-    {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
-        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    4,    1,    1,    1,    1,    1,    1,
-        1,    5,    1,    1,    6,    1,    7,    8,    8,    8,
-        8,    8,    8,    8,    8,    8,    8,    1,    1,    1,
-        1,    1,    1,    1,    9,   10,   11,   11,   12,   13,
-       11,   11,   14,   11,   11,   15,   11,   16,   17,   11,
-       11,   18,   19,   20,   21,   11,   11,   11,   11,   11,
-        1,    1,    1,    1,   22,    1,   23,   24,   25,   11,
+{
+	0,
+	1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
+	1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    2,    1,    4,    1,    1,    1,    1,    1,    1,
+	1,    5,    1,    1,    6,    1,    7,    8,    8,    8,
+	8,    8,    8,    8,    8,    8,    8,    1,    1,    1,
+	1,    1,    1,    1,    9,   10,   11,   11,   12,   13,
+	11,   11,   14,   11,   11,   15,   11,   16,   17,   11,
+	11,   18,   19,   20,   21,   11,   11,   11,   11,   11,
+	1,    1,    1,    1,   22,    1,   23,   24,   25,   11,
 
-       26,   27,   11,   11,   28,   11,   11,   29,   11,   30,
-       31,   32,   11,   33,   34,   35,   36,   11,   11,   11,
-       11,   11,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	26,   27,   11,   11,   28,   11,   11,   29,   11,   30,
+	31,   32,   11,   33,   34,   35,   36,   11,   11,   11,
+	11,   11,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
 
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1
-    } ;
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1
+} ;
 
 static yyconst flex_int32_t yy_meta[37] =
-    {   0,
-        1,    1,    2,    3,    1,    4,    1,    4,    4,    4,
-        4,    4,    4,    4,    4,    4,    4,    4,    4,    4,
-        4,    4,    4,    4,    4,    4,    4,    4,    4,    4,
-        4,    4,    4,    4,    4,    4
-    } ;
+{
+	0,
+	1,    1,    2,    3,    1,    4,    1,    4,    4,    4,
+	4,    4,    4,    4,    4,    4,    4,    4,    4,    4,
+	4,    4,    4,    4,    4,    4,    4,    4,    4,    4,
+	4,    4,    4,    4,    4,    4
+} ;
 
 static yyconst flex_int16_t yy_base[86] =
-    {   0,
-        0,    0,   34,   35,  104,  103,   38,   40,  105,  108,
-      108,  108,  108,   96,   40,   95,    0,   85,   92,   84,
-       81,   67,   74,   66,   59,   21,   61,  108,  108,   86,
-        0,  108,    0,  108,  108,   84,  108,  108,    0,   74,
-       75,   69,   67,   56,   57,   50,   54,   50,   51,   45,
-       77,    0,    0,   64,   59,    0,   65,   46,   40,    0,
-        0,   42,   22,   28,  108,    0,   41,    0,    0,   26,
-       19,   24,    0,    0,    0,   14,    0,    0,  108,   56,
-       60,   64,   44,   68,   72
-    } ;
+{
+	0,
+	0,    0,   34,   35,  104,  103,   38,   40,  105,  108,
+	108,  108,  108,   96,   40,   95,    0,   85,   92,   84,
+	81,   67,   74,   66,   59,   21,   61,  108,  108,   86,
+	0,  108,    0,  108,  108,   84,  108,  108,    0,   74,
+	75,   69,   67,   56,   57,   50,   54,   50,   51,   45,
+	77,    0,    0,   64,   59,    0,   65,   46,   40,    0,
+	0,   42,   22,   28,  108,    0,   41,    0,    0,   26,
+	19,   24,    0,    0,    0,   14,    0,    0,  108,   56,
+	60,   64,   44,   68,   72
+} ;
 
 static yyconst flex_int16_t yy_def[86] =
-    {   0,
-       79,    1,   80,   80,   81,   81,   82,   82,   79,   79,
-       79,   79,   79,   79,   79,   79,   83,   83,   83,   83,
-       83,   83,   83,   83,   83,   83,   83,   79,   79,   79,
-       84,   79,   85,   79,   79,   79,   79,   79,   83,   83,
-       83,   83,   83,   83,   83,   83,   83,   83,   83,   83,
-       79,   84,   85,   83,   83,   83,   83,   83,   83,   83,
-       83,   83,   83,   83,   79,   83,   83,   83,   83,   83,
-       83,   83,   83,   83,   83,   83,   83,   83,    0,   79,
-       79,   79,   79,   79,   79
-    } ;
+{
+	0,
+	79,    1,   80,   80,   81,   81,   82,   82,   79,   79,
+	79,   79,   79,   79,   79,   79,   83,   83,   83,   83,
+	83,   83,   83,   83,   83,   83,   83,   79,   79,   79,
+	84,   79,   85,   79,   79,   79,   79,   79,   83,   83,
+	83,   83,   83,   83,   83,   83,   83,   83,   83,   83,
+	79,   84,   85,   83,   83,   83,   83,   83,   83,   83,
+	83,   83,   83,   83,   79,   83,   83,   83,   83,   83,
+	83,   83,   83,   83,   83,   83,   83,   83,    0,   79,
+	79,   79,   79,   79,   79
+} ;
 
 static yyconst flex_int16_t yy_nxt[145] =
-    {   0,
-       10,   11,   12,   13,   10,   14,   15,   16,   17,   18,
-       17,   17,   19,   20,   17,   17,   17,   17,   17,   21,
-       17,   10,   17,   22,   17,   17,   23,   24,   17,   17,
-       17,   17,   25,   26,   27,   17,   29,   29,   30,   30,
-       34,   35,   34,   35,   37,   48,   38,   39,   78,   77,
-       76,   75,   74,   73,   72,   49,   28,   28,   28,   28,
-       31,   31,   31,   31,   33,   33,   33,   33,   52,   71,
-       52,   52,   53,   70,   69,   53,   68,   67,   66,   65,
-       64,   63,   62,   61,   60,   59,   58,   57,   56,   55,
-       54,   36,   51,   50,   47,   46,   45,   44,   43,   42,
+{
+	0,
+	10,   11,   12,   13,   10,   14,   15,   16,   17,   18,
+	17,   17,   19,   20,   17,   17,   17,   17,   17,   21,
+	17,   10,   17,   22,   17,   17,   23,   24,   17,   17,
+	17,   17,   25,   26,   27,   17,   29,   29,   30,   30,
+	34,   35,   34,   35,   37,   48,   38,   39,   78,   77,
+	76,   75,   74,   73,   72,   49,   28,   28,   28,   28,
+	31,   31,   31,   31,   33,   33,   33,   33,   52,   71,
+	52,   52,   53,   70,   69,   53,   68,   67,   66,   65,
+	64,   63,   62,   61,   60,   59,   58,   57,   56,   55,
+	54,   36,   51,   50,   47,   46,   45,   44,   43,   42,
 
-       41,   40,   36,   36,   79,   32,   32,    9,   79,   79,
-       79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
-       79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
-       79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
-       79,   79,   79,   79
-    } ;
+	41,   40,   36,   36,   79,   32,   32,    9,   79,   79,
+	79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
+	79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
+	79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
+	79,   79,   79,   79
+} ;
 
 static yyconst flex_int16_t yy_chk[145] =
-    {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    3,    4,    3,    4,
-        7,    7,    8,    8,   15,   26,   15,   83,   76,   72,
-       71,   70,   67,   64,   63,   26,   80,   80,   80,   80,
-       81,   81,   81,   81,   82,   82,   82,   82,   84,   62,
-       84,   84,   85,   59,   58,   85,   57,   55,   54,   51,
-       50,   49,   48,   47,   46,   45,   44,   43,   42,   41,
-       40,   36,   30,   27,   25,   24,   23,   22,   21,   20,
+{
+	0,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+	1,    1,    1,    1,    1,    1,    3,    4,    3,    4,
+	7,    7,    8,    8,   15,   26,   15,   83,   76,   72,
+	71,   70,   67,   64,   63,   26,   80,   80,   80,   80,
+	81,   81,   81,   81,   82,   82,   82,   82,   84,   62,
+	84,   84,   85,   59,   58,   85,   57,   55,   54,   51,
+	50,   49,   48,   47,   46,   45,   44,   43,   42,   41,
+	40,   36,   30,   27,   25,   24,   23,   22,   21,   20,
 
-       19,   18,   16,   14,    9,    6,    5,   79,   79,   79,
-       79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
-       79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
-       79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
-       79,   79,   79,   79
-    } ;
+	19,   18,   16,   14,    9,    6,    5,   79,   79,   79,
+	79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
+	79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
+	79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
+	79,   79,   79,   79
+} ;
 
 /* Table of booleans, true if rule could match eol. */
 static yyconst flex_int32_t yy_rule_can_match_eol[29] =
-    {   0,
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 
-    0, 1, 0, 1, 0, 1, 0, 0, 0,     };
+{
+	0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+	0, 1, 0, 1, 0, 1, 0, 0, 0,
+};
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -584,7 +593,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 /* Store for any string values */
 static char aText[TEXT_BUFFERS][YYLMAX];
-static uint32_t currText=0;
+static uint32_t currText = 0;
 
 #include "lib/framework/lexer_input.h"
 
@@ -698,7 +707,7 @@ extern int scrv_wrap (void );
 #endif
 
 #ifndef yytext_ptr
-static void yy_flex_strncpy (char *,yyconst char *,int );
+static void yy_flex_strncpy (char *, yyconst char *, int );
 #endif
 
 #ifdef YY_NEED_STRLEN
@@ -761,7 +770,7 @@ static int input (void );
 			} \
 		}\
 \
-
+ 
 #endif
 
 /* No semi-colon after return; correct usage is to write "yyterminate();" -
@@ -817,7 +826,7 @@ YY_DECL
 	register yy_state_type yy_current_state;
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
-    
+
 #line 99 "scriptvals_lexer.l"
 
 
@@ -825,7 +834,7 @@ YY_DECL
 #line 826 "scriptvals_lexer.lex.c"
 
 	if ( !(yy_init) )
-		{
+	{
 		(yy_init) = 1;
 
 #ifdef YY_USER_INIT
@@ -833,25 +842,32 @@ YY_DECL
 #endif
 
 		if ( ! (yy_start) )
-			(yy_start) = 1;	/* first start state */
+		{
+			(yy_start) = 1;    /* first start state */
+		}
 
 		if ( ! scrv_in )
+		{
 			scrv_in = stdin;
+		}
 
 		if ( ! scrv_out )
+		{
 			scrv_out = stdout;
+		}
 
-		if ( ! YY_CURRENT_BUFFER ) {
+		if ( ! YY_CURRENT_BUFFER )
+		{
 			scrv_ensure_buffer_stack ();
 			YY_CURRENT_BUFFER_LVALUE =
-				scrv__create_buffer(scrv_in,YY_BUF_SIZE );
+				scrv__create_buffer(scrv_in, YY_BUF_SIZE );
 		}
 
 		scrv__load_buffer_state( );
-		}
+	}
 
 	while ( 1 )		/* loops until end-of-file is reached */
-		{
+	{
 		yy_cp = (yy_c_buf_p);
 
 		/* Support of scrv_text. */
@@ -863,370 +879,379 @@ YY_DECL
 		yy_bp = yy_cp;
 
 		yy_current_state = (yy_start);
-yy_match:
+	yy_match:
 		do
-			{
+		{
 			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
 			if ( yy_accept[yy_current_state] )
-				{
+			{
 				(yy_last_accepting_state) = yy_current_state;
 				(yy_last_accepting_cpos) = yy_cp;
-				}
+			}
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
-				{
+			{
 				yy_current_state = (int) yy_def[yy_current_state];
 				if ( yy_current_state >= 80 )
+				{
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
+			}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
-			}
+		}
 		while ( yy_base[yy_current_state] != 108 );
 
-yy_find_action:
+	yy_find_action:
 		yy_act = yy_accept[yy_current_state];
 		if ( yy_act == 0 )
-			{ /* have to back up */
+		{
+			/* have to back up */
 			yy_cp = (yy_last_accepting_cpos);
 			yy_current_state = (yy_last_accepting_state);
 			yy_act = yy_accept[yy_current_state];
-			}
+		}
 
 		YY_DO_BEFORE_ACTION;
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
-			{
+		{
 			yy_size_t yyl;
 			for ( yyl = 0; yyl < scrv_leng; ++yyl )
 				if ( scrv_text[yyl] == '\n' )
-					   
-    scrv_lineno++;
-;
-			}
 
-do_action:	/* This label is used only to access EOF actions. */
-
-		switch ( yy_act )
-	{ /* beginning of action switch */
-			case 0: /* must back up */
-			/* undo the effects of YY_DO_BEFORE_ACTION */
-			*yy_cp = (yy_hold_char);
-			yy_cp = (yy_last_accepting_cpos);
-			yy_current_state = (yy_last_accepting_state);
-			goto yy_find_action;
-
-case 1:
-YY_RULE_SETUP
-#line 102 "scriptvals_lexer.l"
-{ yylval->tval = VAL_INT; return TYPE; }
-	YY_BREAK
-case 2:
-YY_RULE_SETUP
-#line 103 "scriptvals_lexer.l"
-{ yylval->tval = VAL_INT; return TYPE; }
-	YY_BREAK
-case 3:
-YY_RULE_SETUP
-#line 104 "scriptvals_lexer.l"
-{ yylval->tval = VAL_BOOL; return TYPE; }
-	YY_BREAK
-case 4:
-YY_RULE_SETUP
-#line 105 "scriptvals_lexer.l"
-{ yylval->tval = VAL_BOOL; return TYPE; }
-	YY_BREAK
-case 5:
-YY_RULE_SETUP
-#line 106 "scriptvals_lexer.l"
-return SCRIPT;
-	YY_BREAK
-case 6:
-YY_RULE_SETUP
-#line 107 "scriptvals_lexer.l"
-return STORE;
-	YY_BREAK
-case 7:
-YY_RULE_SETUP
-#line 108 "scriptvals_lexer.l"
-return RUN;
-	YY_BREAK
-case 8:
-YY_RULE_SETUP
-#line 110 "scriptvals_lexer.l"
-{ yylval->bval = true;	 return BOOLEAN_T; }
-	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 111 "scriptvals_lexer.l"
-{ yylval->bval = true;	 return BOOLEAN_T; }
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 112 "scriptvals_lexer.l"
-{ yylval->bval = false;	 return BOOLEAN_T; }
-	YY_BREAK
-case 11:
-YY_RULE_SETUP
-#line 113 "scriptvals_lexer.l"
-{ yylval->bval = false;	 return BOOLEAN_T; }
-	YY_BREAK
-/* Match text values */
-case 12:
-YY_RULE_SETUP
-#line 116 "scriptvals_lexer.l"
-{
-								INTERP_TYPE type;
-								uint32_t		index;
-
-								/* See if this is a variable id or a type */
-								if (scrvLookUpType(scrv_text, &type))
-								{
-									yylval->tval = type;
-									return TYPE;
-								}
-								else if (scrvLookUpVar(scrv_text, &index))
-								{
-									yylval->vindex = index;
-									return VAR;
-								}
-								else if (scrvLookUpArray(scrv_text, &index))
-								{
-									yylval->vindex = index;
-									return ARRAY;
-								}
-								else
-								{
-									strcpy(aText[currText], scrv_text);
-									yylval->sval = aText[currText];
-									currText = (currText + 1) % TEXT_BUFFERS;
-									return IDENT;
-								}
-							}
-	YY_BREAK
-/* Match integer numbers */
-case 13:
-YY_RULE_SETUP
-#line 146 "scriptvals_lexer.l"
-{ yylval->ival = atol(scrv_text); return INTEGER; }
-	YY_BREAK
-/* Match quoted text */
-case 14:
-YY_RULE_SETUP
-#line 149 "scriptvals_lexer.l"
-{ BEGIN QUOTE; }
-	YY_BREAK
-case 15:
-YY_RULE_SETUP
-#line 150 "scriptvals_lexer.l"
-{ BEGIN 0; }
-	YY_BREAK
-case 16:
-/* rule 16 can match eol */
-YY_RULE_SETUP
-#line 151 "scriptvals_lexer.l"
-{ scrv_error("Unexpected end of line in string"); }
-	YY_BREAK
-case 17:
-YY_RULE_SETUP
-#line 152 "scriptvals_lexer.l"
-{
-								strcpy(aText[currText], scrv_text);
-								yylval->sval = aText[currText];
-								currText = (currText + 1) % TEXT_BUFFERS;
-								return QTEXT;
-							}
-	YY_BREAK
-/* Skip white space */
-case 18:
-/* rule 18 can match eol */
-YY_RULE_SETUP
-#line 160 "scriptvals_lexer.l"
-;
-	YY_BREAK
-/* Strip comments */
-case 19:
-YY_RULE_SETUP
-#line 163 "scriptvals_lexer.l"
-{ BEGIN COMMENT; }
-	YY_BREAK
-case 20:
-#line 165 "scriptvals_lexer.l"
-case 21:
-/* rule 21 can match eol */
-YY_RULE_SETUP
-#line 165 "scriptvals_lexer.l"
-{ BEGIN 0; }
-	YY_BREAK
-case 22:
-#line 167 "scriptvals_lexer.l"
-case 23:
-/* rule 23 can match eol */
-YY_RULE_SETUP
-#line 167 "scriptvals_lexer.l"
-;
-	YY_BREAK
-/* Strip single line comments */
-case 24:
-YY_RULE_SETUP
-#line 170 "scriptvals_lexer.l"
-{ BEGIN SLCOMMENT; }
-	YY_BREAK
-case 25:
-/* rule 25 can match eol */
-YY_RULE_SETUP
-#line 171 "scriptvals_lexer.l"
-{ BEGIN 0; }
-	YY_BREAK
-case 26:
-YY_RULE_SETUP
-#line 172 "scriptvals_lexer.l"
-;
-	YY_BREAK
-/* Match anything that's been missed and pass it as a char */
-case 27:
-YY_RULE_SETUP
-#line 175 "scriptvals_lexer.l"
-return scrv_text[0];
-	YY_BREAK
-case 28:
-YY_RULE_SETUP
-#line 177 "scriptvals_lexer.l"
-YY_FATAL_ERROR( "flex scanner jammed" );
-	YY_BREAK
-#line 1097 "scriptvals_lexer.lex.c"
-case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(COMMENT):
-case YY_STATE_EOF(SLCOMMENT):
-case YY_STATE_EOF(QUOTE):
-	yyterminate();
-
-	case YY_END_OF_BUFFER:
-		{
-		/* Amount of text matched not including the EOB char. */
-		int yy_amount_of_matched_text = (int) (yy_cp - (yytext_ptr)) - 1;
-
-		/* Undo the effects of YY_DO_BEFORE_ACTION. */
-		*yy_cp = (yy_hold_char);
-		YY_RESTORE_YY_MORE_OFFSET
-
-		if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_NEW )
-			{
-			/* We're scanning a new file or input source.  It's
-			 * possible that this happened because the user
-			 * just pointed scrv_in at a new source and called
-			 * scrv_lex().  If so, then we have to assure
-			 * consistency between YY_CURRENT_BUFFER and our
-			 * globals.  Here is the right place to do so, because
-			 * this is the first action (other than possibly a
-			 * back-up) that will match for the new input source.
-			 */
-			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
-			YY_CURRENT_BUFFER_LVALUE->yy_input_file = scrv_in;
-			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
-			}
-
-		/* Note that here we test for yy_c_buf_p "<=" to the position
-		 * of the first EOB in the buffer, since yy_c_buf_p will
-		 * already have been incremented past the NUL character
-		 * (since all states make transitions on EOB to the
-		 * end-of-buffer state).  Contrast this with the test
-		 * in input().
-		 */
-		if ( (yy_c_buf_p) <= &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
-			{ /* This was really a NUL. */
-			yy_state_type yy_next_state;
-
-			(yy_c_buf_p) = (yytext_ptr) + yy_amount_of_matched_text;
-
-			yy_current_state = yy_get_previous_state(  );
-
-			/* Okay, we're now positioned to make the NUL
-			 * transition.  We couldn't have
-			 * yy_get_previous_state() go ahead and do it
-			 * for us because it doesn't know how to deal
-			 * with the possibility of jamming (and we don't
-			 * want to build jamming into it because then it
-			 * will run more slowly).
-			 */
-
-			yy_next_state = yy_try_NUL_trans( yy_current_state );
-
-			yy_bp = (yytext_ptr) + YY_MORE_ADJ;
-
-			if ( yy_next_state )
 				{
-				/* Consume the NUL. */
-				yy_cp = ++(yy_c_buf_p);
-				yy_current_state = yy_next_state;
-				goto yy_match;
+					scrv_lineno++;
 				}
-
-			else
-				{
-				yy_cp = (yy_c_buf_p);
-				goto yy_find_action;
-				}
-			}
-
-		else switch ( yy_get_next_buffer(  ) )
-			{
-			case EOB_ACT_END_OF_FILE:
-				{
-				(yy_did_buffer_switch_on_eof) = 0;
-
-				if ( scrv_wrap( ) )
-					{
-					/* Note: because we've taken care in
-					 * yy_get_next_buffer() to have set up
-					 * scrv_text, we can now set up
-					 * yy_c_buf_p so that if some total
-					 * hoser (like flex itself) wants to
-					 * call the scanner after we return the
-					 * YY_NULL, it'll still work - another
-					 * YY_NULL will get returned.
-					 */
-					(yy_c_buf_p) = (yytext_ptr) + YY_MORE_ADJ;
-
-					yy_act = YY_STATE_EOF(YY_START);
-					goto do_action;
-					}
-
-				else
-					{
-					if ( ! (yy_did_buffer_switch_on_eof) )
-						YY_NEW_FILE;
-					}
-				break;
-				}
-
-			case EOB_ACT_CONTINUE_SCAN:
-				(yy_c_buf_p) =
-					(yytext_ptr) + yy_amount_of_matched_text;
-
-				yy_current_state = yy_get_previous_state(  );
-
-				yy_cp = (yy_c_buf_p);
-				yy_bp = (yytext_ptr) + YY_MORE_ADJ;
-				goto yy_match;
-
-			case EOB_ACT_LAST_MATCH:
-				(yy_c_buf_p) =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)];
-
-				yy_current_state = yy_get_previous_state(  );
-
-				yy_cp = (yy_c_buf_p);
-				yy_bp = (yytext_ptr) + YY_MORE_ADJ;
-				goto yy_find_action;
-			}
-		break;
+			;
 		}
 
-	default:
-		YY_FATAL_ERROR(
-			"fatal flex scanner internal error--no action found" );
-	} /* end of action switch */
-		} /* end of scanning one token */
+	do_action:	/* This label is used only to access EOF actions. */
+
+		switch ( yy_act )
+		{
+			/* beginning of action switch */
+			case 0: /* must back up */
+				/* undo the effects of YY_DO_BEFORE_ACTION */
+				*yy_cp = (yy_hold_char);
+				yy_cp = (yy_last_accepting_cpos);
+				yy_current_state = (yy_last_accepting_state);
+				goto yy_find_action;
+
+			case 1:
+				YY_RULE_SETUP
+#line 102 "scriptvals_lexer.l"
+				{ yylval->tval = VAL_INT; return TYPE; }
+				YY_BREAK
+			case 2:
+				YY_RULE_SETUP
+#line 103 "scriptvals_lexer.l"
+				{ yylval->tval = VAL_INT; return TYPE; }
+				YY_BREAK
+			case 3:
+				YY_RULE_SETUP
+#line 104 "scriptvals_lexer.l"
+				{ yylval->tval = VAL_BOOL; return TYPE; }
+				YY_BREAK
+			case 4:
+				YY_RULE_SETUP
+#line 105 "scriptvals_lexer.l"
+				{ yylval->tval = VAL_BOOL; return TYPE; }
+				YY_BREAK
+			case 5:
+				YY_RULE_SETUP
+#line 106 "scriptvals_lexer.l"
+				return SCRIPT;
+				YY_BREAK
+			case 6:
+				YY_RULE_SETUP
+#line 107 "scriptvals_lexer.l"
+				return STORE;
+				YY_BREAK
+			case 7:
+				YY_RULE_SETUP
+#line 108 "scriptvals_lexer.l"
+				return RUN;
+				YY_BREAK
+			case 8:
+				YY_RULE_SETUP
+#line 110 "scriptvals_lexer.l"
+				{ yylval->bval = true;	 return BOOLEAN_T; }
+				YY_BREAK
+			case 9:
+				YY_RULE_SETUP
+#line 111 "scriptvals_lexer.l"
+				{ yylval->bval = true;	 return BOOLEAN_T; }
+				YY_BREAK
+			case 10:
+				YY_RULE_SETUP
+#line 112 "scriptvals_lexer.l"
+				{ yylval->bval = false;	 return BOOLEAN_T; }
+				YY_BREAK
+			case 11:
+				YY_RULE_SETUP
+#line 113 "scriptvals_lexer.l"
+				{ yylval->bval = false;	 return BOOLEAN_T; }
+				YY_BREAK
+			/* Match text values */
+			case 12:
+				YY_RULE_SETUP
+#line 116 "scriptvals_lexer.l"
+				{
+					INTERP_TYPE type;
+					uint32_t		index;
+
+					/* See if this is a variable id or a type */
+					if (scrvLookUpType(scrv_text, &type))
+					{
+						yylval->tval = type;
+						return TYPE;
+					}
+					else if (scrvLookUpVar(scrv_text, &index))
+					{
+						yylval->vindex = index;
+						return VAR;
+					}
+					else if (scrvLookUpArray(scrv_text, &index))
+					{
+						yylval->vindex = index;
+						return ARRAY;
+					}
+					else
+					{
+						strcpy(aText[currText], scrv_text);
+						yylval->sval = aText[currText];
+						currText = (currText + 1) % TEXT_BUFFERS;
+						return IDENT;
+					}
+				}
+				YY_BREAK
+			/* Match integer numbers */
+			case 13:
+				YY_RULE_SETUP
+#line 146 "scriptvals_lexer.l"
+				{ yylval->ival = atol(scrv_text); return INTEGER; }
+				YY_BREAK
+			/* Match quoted text */
+			case 14:
+				YY_RULE_SETUP
+#line 149 "scriptvals_lexer.l"
+				{ BEGIN QUOTE; }
+				YY_BREAK
+			case 15:
+				YY_RULE_SETUP
+#line 150 "scriptvals_lexer.l"
+				{ BEGIN 0; }
+				YY_BREAK
+			case 16:
+				/* rule 16 can match eol */
+				YY_RULE_SETUP
+#line 151 "scriptvals_lexer.l"
+				{ scrv_error("Unexpected end of line in string"); }
+				YY_BREAK
+			case 17:
+				YY_RULE_SETUP
+#line 152 "scriptvals_lexer.l"
+				{
+					strcpy(aText[currText], scrv_text);
+					yylval->sval = aText[currText];
+					currText = (currText + 1) % TEXT_BUFFERS;
+					return QTEXT;
+				}
+				YY_BREAK
+			/* Skip white space */
+			case 18:
+				/* rule 18 can match eol */
+				YY_RULE_SETUP
+#line 160 "scriptvals_lexer.l"
+				;
+				YY_BREAK
+			/* Strip comments */
+			case 19:
+				YY_RULE_SETUP
+#line 163 "scriptvals_lexer.l"
+				{ BEGIN COMMENT; }
+				YY_BREAK
+			case 20:
+#line 165 "scriptvals_lexer.l"
+			case 21:
+				/* rule 21 can match eol */
+				YY_RULE_SETUP
+#line 165 "scriptvals_lexer.l"
+				{ BEGIN 0; }
+				YY_BREAK
+			case 22:
+#line 167 "scriptvals_lexer.l"
+			case 23:
+				/* rule 23 can match eol */
+				YY_RULE_SETUP
+#line 167 "scriptvals_lexer.l"
+				;
+				YY_BREAK
+			/* Strip single line comments */
+			case 24:
+				YY_RULE_SETUP
+#line 170 "scriptvals_lexer.l"
+				{ BEGIN SLCOMMENT; }
+				YY_BREAK
+			case 25:
+				/* rule 25 can match eol */
+				YY_RULE_SETUP
+#line 171 "scriptvals_lexer.l"
+				{ BEGIN 0; }
+				YY_BREAK
+			case 26:
+				YY_RULE_SETUP
+#line 172 "scriptvals_lexer.l"
+				;
+				YY_BREAK
+			/* Match anything that's been missed and pass it as a char */
+			case 27:
+				YY_RULE_SETUP
+#line 175 "scriptvals_lexer.l"
+				return scrv_text[0];
+				YY_BREAK
+			case 28:
+				YY_RULE_SETUP
+#line 177 "scriptvals_lexer.l"
+				YY_FATAL_ERROR( "flex scanner jammed" );
+				YY_BREAK
+#line 1097 "scriptvals_lexer.lex.c"
+			case YY_STATE_EOF(INITIAL):
+			case YY_STATE_EOF(COMMENT):
+			case YY_STATE_EOF(SLCOMMENT):
+			case YY_STATE_EOF(QUOTE):
+				yyterminate();
+
+			case YY_END_OF_BUFFER:
+			{
+				/* Amount of text matched not including the EOB char. */
+				int yy_amount_of_matched_text = (int) (yy_cp - (yytext_ptr)) - 1;
+
+				/* Undo the effects of YY_DO_BEFORE_ACTION. */
+				*yy_cp = (yy_hold_char);
+				YY_RESTORE_YY_MORE_OFFSET
+
+				if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_NEW )
+				{
+					/* We're scanning a new file or input source.  It's
+					 * possible that this happened because the user
+					 * just pointed scrv_in at a new source and called
+					 * scrv_lex().  If so, then we have to assure
+					 * consistency between YY_CURRENT_BUFFER and our
+					 * globals.  Here is the right place to do so, because
+					 * this is the first action (other than possibly a
+					 * back-up) that will match for the new input source.
+					 */
+					(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+					YY_CURRENT_BUFFER_LVALUE->yy_input_file = scrv_in;
+					YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
+				}
+
+				/* Note that here we test for yy_c_buf_p "<=" to the position
+				 * of the first EOB in the buffer, since yy_c_buf_p will
+				 * already have been incremented past the NUL character
+				 * (since all states make transitions on EOB to the
+				 * end-of-buffer state).  Contrast this with the test
+				 * in input().
+				 */
+				if ( (yy_c_buf_p) <= &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
+				{
+					/* This was really a NUL. */
+					yy_state_type yy_next_state;
+
+					(yy_c_buf_p) = (yytext_ptr) + yy_amount_of_matched_text;
+
+					yy_current_state = yy_get_previous_state(  );
+
+					/* Okay, we're now positioned to make the NUL
+					 * transition.  We couldn't have
+					 * yy_get_previous_state() go ahead and do it
+					 * for us because it doesn't know how to deal
+					 * with the possibility of jamming (and we don't
+					 * want to build jamming into it because then it
+					 * will run more slowly).
+					 */
+
+					yy_next_state = yy_try_NUL_trans( yy_current_state );
+
+					yy_bp = (yytext_ptr) + YY_MORE_ADJ;
+
+					if ( yy_next_state )
+					{
+						/* Consume the NUL. */
+						yy_cp = ++(yy_c_buf_p);
+						yy_current_state = yy_next_state;
+						goto yy_match;
+					}
+
+					else
+					{
+						yy_cp = (yy_c_buf_p);
+						goto yy_find_action;
+					}
+				}
+
+				else switch ( yy_get_next_buffer(  ) )
+					{
+						case EOB_ACT_END_OF_FILE:
+						{
+							(yy_did_buffer_switch_on_eof) = 0;
+
+							if ( scrv_wrap( ) )
+							{
+								/* Note: because we've taken care in
+								 * yy_get_next_buffer() to have set up
+								 * scrv_text, we can now set up
+								 * yy_c_buf_p so that if some total
+								 * hoser (like flex itself) wants to
+								 * call the scanner after we return the
+								 * YY_NULL, it'll still work - another
+								 * YY_NULL will get returned.
+								 */
+								(yy_c_buf_p) = (yytext_ptr) + YY_MORE_ADJ;
+
+								yy_act = YY_STATE_EOF(YY_START);
+								goto do_action;
+							}
+
+							else
+							{
+								if ( ! (yy_did_buffer_switch_on_eof) )
+								{
+									YY_NEW_FILE;
+								}
+							}
+							break;
+						}
+
+						case EOB_ACT_CONTINUE_SCAN:
+							(yy_c_buf_p) =
+								(yytext_ptr) + yy_amount_of_matched_text;
+
+							yy_current_state = yy_get_previous_state(  );
+
+							yy_cp = (yy_c_buf_p);
+							yy_bp = (yytext_ptr) + YY_MORE_ADJ;
+							goto yy_match;
+
+						case EOB_ACT_LAST_MATCH:
+							(yy_c_buf_p) =
+								&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)];
+
+							yy_current_state = yy_get_previous_state(  );
+
+							yy_cp = (yy_c_buf_p);
+							yy_bp = (yytext_ptr) + YY_MORE_ADJ;
+							goto yy_find_action;
+					}
+				break;
+			}
+
+			default:
+				YY_FATAL_ERROR(
+					"fatal flex scanner internal error--no action found" );
+		} /* end of action switch */
+	} /* end of scanning one token */
 } /* end of scrv_lex */
 
 /* yy_get_next_buffer - try to read in a new buffer
@@ -1238,33 +1263,34 @@ case YY_STATE_EOF(QUOTE):
  */
 static int yy_get_next_buffer (void)
 {
-    	register char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
+	register char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
 	register char *source = (yytext_ptr);
 	register int number_to_move, i;
 	int ret_val;
 
 	if ( (yy_c_buf_p) > &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] )
 		YY_FATAL_ERROR(
-		"fatal flex scanner internal error--end of buffer missed" );
+			"fatal flex scanner internal error--end of buffer missed" );
 
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_fill_buffer == 0 )
-		{ /* Don't try to fill the buffer, so this is an EOF. */
+	{
+		/* Don't try to fill the buffer, so this is an EOF. */
 		if ( (yy_c_buf_p) - (yytext_ptr) - YY_MORE_ADJ == 1 )
-			{
+		{
 			/* We matched a single character, the EOB, so
 			 * treat this as a final EOF.
 			 */
 			return EOB_ACT_END_OF_FILE;
-			}
+		}
 
 		else
-			{
+		{
 			/* We matched some text prior to the EOB, first
 			 * process it.
 			 */
 			return EOB_ACT_LAST_MATCH;
-			}
 		}
+	}
 
 	/* Try to read more data. */
 
@@ -1272,21 +1298,26 @@ static int yy_get_next_buffer (void)
 	number_to_move = (int) ((yy_c_buf_p) - (yytext_ptr)) - 1;
 
 	for ( i = 0; i < number_to_move; ++i )
+	{
 		*(dest++) = *(source++);
+	}
 
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_EOF_PENDING )
 		/* don't do the read, it's not guaranteed to return an EOF,
 		 * just force an EOF
 		 */
+	{
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars) = 0;
+	}
 
 	else
-		{
-			yy_size_t num_to_read =
+	{
+		yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
-			{ /* Not enough room in the buffer - grow it. */
+		{
+			/* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
 			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
@@ -1295,68 +1326,81 @@ static int yy_get_next_buffer (void)
 				(int) ((yy_c_buf_p) - b->yy_ch_buf);
 
 			if ( b->yy_is_our_buffer )
-				{
+			{
 				yy_size_t new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
+				{
 					b->yy_buf_size += b->yy_buf_size / 8;
+				}
 				else
+				{
 					b->yy_buf_size *= 2;
+				}
 
 				b->yy_ch_buf = (char *)
-					/* Include room in for 2 EOB chars. */
-					scrv_realloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
-				}
+							   /* Include room in for 2 EOB chars. */
+							   scrv_realloc((void *) b->yy_ch_buf, b->yy_buf_size + 2  );
+			}
 			else
 				/* Can't grow it, we don't own it. */
+			{
 				b->yy_ch_buf = 0;
+			}
 
 			if ( ! b->yy_ch_buf )
 				YY_FATAL_ERROR(
-				"fatal error - scanner input buffer overflow" );
+					"fatal error - scanner input buffer overflow" );
 
 			(yy_c_buf_p) = &b->yy_ch_buf[yy_c_buf_p_offset];
 
 			num_to_read = YY_CURRENT_BUFFER_LVALUE->yy_buf_size -
-						number_to_move - 1;
+						  number_to_move - 1;
 
-			}
+		}
 
 		if ( num_to_read > YY_READ_BUF_SIZE )
+		{
 			num_to_read = YY_READ_BUF_SIZE;
+		}
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), num_to_read );
+				  (yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
-		}
+	}
 
 	if ( (yy_n_chars) == 0 )
-		{
+	{
 		if ( number_to_move == YY_MORE_ADJ )
-			{
+		{
 			ret_val = EOB_ACT_END_OF_FILE;
 			scrv_restart(scrv_in  );
-			}
+		}
 
 		else
-			{
+		{
 			ret_val = EOB_ACT_LAST_MATCH;
 			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status =
 				YY_BUFFER_EOF_PENDING;
-			}
 		}
+	}
 
 	else
+	{
 		ret_val = EOB_ACT_CONTINUE_SCAN;
+	}
 
-	if ((yy_size_t) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
+	if ((yy_size_t) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size)
+	{
 		/* Extend the array by 50%, plus the number we really need. */
 		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
-		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) scrv_realloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
+		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) scrv_realloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf, new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
+		{
 			YY_FATAL_ERROR( "out of dynamic memory in yy_get_next_buffer()" );
+		}
 	}
 
 	(yy_n_chars) += number_to_move;
@@ -1370,29 +1414,31 @@ static int yy_get_next_buffer (void)
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
 
-    static yy_state_type yy_get_previous_state (void)
+static yy_state_type yy_get_previous_state (void)
 {
 	register yy_state_type yy_current_state;
 	register char *yy_cp;
-    
+
 	yy_current_state = (yy_start);
 
 	for ( yy_cp = (yytext_ptr) + YY_MORE_ADJ; yy_cp < (yy_c_buf_p); ++yy_cp )
-		{
+	{
 		register YY_CHAR yy_c = (*yy_cp ? yy_ec[YY_SC_TO_UI(*yy_cp)] : 1);
 		if ( yy_accept[yy_current_state] )
-			{
+		{
 			(yy_last_accepting_state) = yy_current_state;
 			(yy_last_accepting_cpos) = yy_cp;
-			}
+		}
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
-			{
+		{
 			yy_current_state = (int) yy_def[yy_current_state];
 			if ( yy_current_state >= 80 )
+			{
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
-		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 		}
+		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+	}
 
 	return yy_current_state;
 }
@@ -1402,58 +1448,63 @@ static int yy_get_next_buffer (void)
  * synopsis
  *	next_state = yy_try_NUL_trans( current_state );
  */
-    static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state )
+static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state )
 {
 	register int yy_is_jam;
-    	register char *yy_cp = (yy_c_buf_p);
+	register char *yy_cp = (yy_c_buf_p);
 
 	register YY_CHAR yy_c = 1;
 	if ( yy_accept[yy_current_state] )
-		{
+	{
 		(yy_last_accepting_state) = yy_current_state;
 		(yy_last_accepting_cpos) = yy_cp;
-		}
+	}
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
-		{
+	{
 		yy_current_state = (int) yy_def[yy_current_state];
 		if ( yy_current_state >= 80 )
+		{
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
+	}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 79);
 
-		return yy_is_jam ? 0 : yy_current_state;
+	return yy_is_jam ? 0 : yy_current_state;
 }
 
 #ifndef YY_NO_INPUT
 #ifdef __cplusplus
-    static int yyinput (void)
+static int yyinput (void)
 #else
-    static int input  (void)
+static int input  (void)
 #endif
 
 {
 	int c;
-    
+
 	*(yy_c_buf_p) = (yy_hold_char);
 
 	if ( *(yy_c_buf_p) == YY_END_OF_BUFFER_CHAR )
-		{
+	{
 		/* yy_c_buf_p now points to the character we want to return.
 		 * If this occurs *before* the EOB characters, then it's a
 		 * valid NUL; if not, then we've hit the end of the buffer.
 		 */
 		if ( (yy_c_buf_p) < &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
 			/* This was really a NUL. */
+		{
 			*(yy_c_buf_p) = '\0';
+		}
 
 		else
-			{ /* need more input */
+		{
+			/* need more input */
 			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
-				{
+			{
 				case EOB_ACT_LAST_MATCH:
 					/* This happens because yy_g_n_b()
 					 * sees that we've accumulated a
@@ -1468,37 +1519,43 @@ static int yy_get_next_buffer (void)
 					/* Reset buffer status. */
 					scrv_restart(scrv_in );
 
-					/*FALLTHROUGH*/
+				/*FALLTHROUGH*/
 
 				case EOB_ACT_END_OF_FILE:
-					{
+				{
 					if ( scrv_wrap( ) )
+					{
 						return EOF;
+					}
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
+					{
 						YY_NEW_FILE;
+					}
 #ifdef __cplusplus
 					return yyinput();
 #else
 					return input();
 #endif
-					}
+				}
 
 				case EOB_ACT_CONTINUE_SCAN:
 					(yy_c_buf_p) = (yytext_ptr) + offset;
 					break;
-				}
 			}
 		}
+	}
 
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve scrv_text */
 	(yy_hold_char) = *++(yy_c_buf_p);
 
 	if ( c == '\n' )
-		   
-    scrv_lineno++;
-;
+
+	{
+		scrv_lineno++;
+	}
+	;
 
 	return c;
 }
@@ -1506,45 +1563,48 @@ static int yy_get_next_buffer (void)
 
 /** Immediately switch to a different input stream.
  * @param input_file A readable stream.
- * 
+ *
  * @note This function does not reset the start condition to @c INITIAL .
  */
-    void scrv_restart  (FILE * input_file )
+void scrv_restart  (FILE * input_file )
 {
-    
-	if ( ! YY_CURRENT_BUFFER ){
-        scrv_ensure_buffer_stack ();
+
+	if ( ! YY_CURRENT_BUFFER )
+	{
+		scrv_ensure_buffer_stack ();
 		YY_CURRENT_BUFFER_LVALUE =
-            scrv__create_buffer(scrv_in,YY_BUF_SIZE );
+			scrv__create_buffer(scrv_in, YY_BUF_SIZE );
 	}
 
-	scrv__init_buffer(YY_CURRENT_BUFFER,input_file );
+	scrv__init_buffer(YY_CURRENT_BUFFER, input_file );
 	scrv__load_buffer_state( );
 }
 
 /** Switch to a different input buffer.
  * @param new_buffer The new input buffer.
- * 
+ *
  */
-    void scrv__switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
+void scrv__switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
 {
-    
+
 	/* TODO. We should be able to replace this entire function body
 	 * with
 	 *		scrv_pop_buffer_state();
 	 *		scrv_push_buffer_state(new_buffer);
-     */
+	 */
 	scrv_ensure_buffer_stack ();
 	if ( YY_CURRENT_BUFFER == new_buffer )
+	{
 		return;
+	}
 
 	if ( YY_CURRENT_BUFFER )
-		{
+	{
 		/* Flush out information for old buffer. */
 		*(yy_c_buf_p) = (yy_hold_char);
 		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
-		}
+	}
 
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
 	scrv__load_buffer_state( );
@@ -1559,7 +1619,7 @@ static int yy_get_next_buffer (void)
 
 static void scrv__load_buffer_state  (void)
 {
-    	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
 	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
 	scrv_in = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
 	(yy_hold_char) = *(yy_c_buf_p);
@@ -1568,16 +1628,18 @@ static void scrv__load_buffer_state  (void)
 /** Allocate and initialize an input buffer state.
  * @param file A readable stream.
  * @param size The character buffer size in bytes. When in doubt, use @c YY_BUF_SIZE.
- * 
+ *
  * @return the allocated buffer state.
  */
-    YY_BUFFER_STATE scrv__create_buffer  (FILE * file, int  size )
+YY_BUFFER_STATE scrv__create_buffer  (FILE * file, int  size )
 {
 	YY_BUFFER_STATE b;
-    
+
 	b = (YY_BUFFER_STATE) scrv_alloc(sizeof( struct yy_buffer_state )  );
 	if ( ! b )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scrv__create_buffer()" );
+	}
 
 	b->yy_buf_size = size;
 
@@ -1586,30 +1648,38 @@ static void scrv__load_buffer_state  (void)
 	 */
 	b->yy_ch_buf = (char *) scrv_alloc(b->yy_buf_size + 2  );
 	if ( ! b->yy_ch_buf )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scrv__create_buffer()" );
+	}
 
 	b->yy_is_our_buffer = 1;
 
-	scrv__init_buffer(b,file );
+	scrv__init_buffer(b, file );
 
 	return b;
 }
 
 /** Destroy the buffer.
  * @param b a buffer created with scrv__create_buffer()
- * 
+ *
  */
-    void scrv__delete_buffer (YY_BUFFER_STATE  b )
+void scrv__delete_buffer (YY_BUFFER_STATE  b )
 {
-    
+
 	if ( ! b )
+	{
 		return;
+	}
 
 	if ( b == YY_CURRENT_BUFFER ) /* Not sure if we should pop here. */
+	{
 		YY_CURRENT_BUFFER_LVALUE = (YY_BUFFER_STATE) 0;
+	}
 
 	if ( b->yy_is_our_buffer )
+	{
 		scrv_free((void *) b->yy_ch_buf  );
+	}
 
 	scrv_free((void *) b  );
 }
@@ -1618,38 +1688,41 @@ static void scrv__load_buffer_state  (void)
  * This function is sometimes called more than once on the same buffer,
  * such as during a scrv_restart() or at EOF.
  */
-    static void scrv__init_buffer  (YY_BUFFER_STATE  b, FILE * file )
+static void scrv__init_buffer  (YY_BUFFER_STATE  b, FILE * file )
 
 {
 	int oerrno = errno;
-    
+
 	scrv__flush_buffer(b );
 
 	b->yy_input_file = file;
 	b->yy_fill_buffer = 1;
 
-    /* If b is the current buffer, then scrv__init_buffer was _probably_
-     * called from scrv_restart() or through yy_get_next_buffer.
-     * In that case, we don't want to reset the lineno or column.
-     */
-    if (b != YY_CURRENT_BUFFER){
-        b->yy_bs_lineno = 1;
-        b->yy_bs_column = 0;
-    }
+	/* If b is the current buffer, then scrv__init_buffer was _probably_
+	 * called from scrv_restart() or through yy_get_next_buffer.
+	 * In that case, we don't want to reset the lineno or column.
+	 */
+	if (b != YY_CURRENT_BUFFER)
+	{
+		b->yy_bs_lineno = 1;
+		b->yy_bs_column = 0;
+	}
 
-        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
-    
+	b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+
 	errno = oerrno;
 }
 
 /** Discard all buffered characters. On the next scan, YY_INPUT will be called.
  * @param b the buffer state to be flushed, usually @c YY_CURRENT_BUFFER.
- * 
+ *
  */
-    void scrv__flush_buffer (YY_BUFFER_STATE  b )
+void scrv__flush_buffer (YY_BUFFER_STATE  b )
 {
-    	if ( ! b )
+	if ( ! b )
+	{
 		return;
+	}
 
 	b->yy_n_chars = 0;
 
@@ -1666,34 +1739,40 @@ static void scrv__load_buffer_state  (void)
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
 	if ( b == YY_CURRENT_BUFFER )
+	{
 		scrv__load_buffer_state( );
+	}
 }
 
 /** Pushes the new state onto the stack. The new state becomes
  *  the current state. This function will allocate the stack
  *  if necessary.
  *  @param new_buffer The new state.
- *  
+ *
  */
 void scrv_push_buffer_state (YY_BUFFER_STATE new_buffer )
 {
-    	if (new_buffer == NULL)
+	if (new_buffer == NULL)
+	{
 		return;
+	}
 
 	scrv_ensure_buffer_stack();
 
 	/* This block is copied from scrv__switch_to_buffer. */
 	if ( YY_CURRENT_BUFFER )
-		{
+	{
 		/* Flush out information for old buffer. */
 		*(yy_c_buf_p) = (yy_hold_char);
 		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
-		}
+	}
 
 	/* Only push if top exists. Otherwise, replace top. */
 	if (YY_CURRENT_BUFFER)
+	{
 		(yy_buffer_stack_top)++;
+	}
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
 
 	/* copied from scrv__switch_to_buffer. */
@@ -1703,19 +1782,24 @@ void scrv_push_buffer_state (YY_BUFFER_STATE new_buffer )
 
 /** Removes and deletes the top of the stack, if present.
  *  The next element becomes the new top.
- *  
+ *
  */
 void scrv_pop_buffer_state (void)
 {
-    	if (!YY_CURRENT_BUFFER)
+	if (!YY_CURRENT_BUFFER)
+	{
 		return;
+	}
 
 	scrv__delete_buffer(YY_CURRENT_BUFFER );
 	YY_CURRENT_BUFFER_LVALUE = NULL;
 	if ((yy_buffer_stack_top) > 0)
+	{
 		--(yy_buffer_stack_top);
+	}
 
-	if (YY_CURRENT_BUFFER) {
+	if (YY_CURRENT_BUFFER)
+	{
 		scrv__load_buffer_state( );
 		(yy_did_buffer_switch_on_eof) = 1;
 	}
@@ -1727,39 +1811,45 @@ void scrv_pop_buffer_state (void)
 static void scrv_ensure_buffer_stack (void)
 {
 	yy_size_t num_to_alloc;
-    
-	if (!(yy_buffer_stack)) {
+
+	if (!(yy_buffer_stack))
+	{
 
 		/* First allocation is just for 2 elements, since we don't know if this
 		 * scanner will even need a stack. We use 2 instead of 1 to avoid an
 		 * immediate realloc on the next call.
-         */
+		 */
 		num_to_alloc = 1;
 		(yy_buffer_stack) = (struct yy_buffer_state**)scrv_alloc
-								(num_to_alloc * sizeof(struct yy_buffer_state*)
-								);
+							(num_to_alloc * sizeof(struct yy_buffer_state*)
+							);
 		if ( ! (yy_buffer_stack) )
+		{
 			YY_FATAL_ERROR( "out of dynamic memory in scrv_ensure_buffer_stack()" );
-								  
+		}
+
 		memset((yy_buffer_stack), 0, num_to_alloc * sizeof(struct yy_buffer_state*));
-				
+
 		(yy_buffer_stack_max) = num_to_alloc;
 		(yy_buffer_stack_top) = 0;
 		return;
 	}
 
-	if ((yy_buffer_stack_top) >= ((yy_buffer_stack_max)) - 1){
+	if ((yy_buffer_stack_top) >= ((yy_buffer_stack_max)) - 1)
+	{
 
 		/* Increase the buffer to prepare for a possible push. */
 		int grow_size = 8 /* arbitrary grow size */;
 
 		num_to_alloc = (yy_buffer_stack_max) + grow_size;
 		(yy_buffer_stack) = (struct yy_buffer_state**)scrv_realloc
-								((yy_buffer_stack),
-								num_to_alloc * sizeof(struct yy_buffer_state*)
-								);
+							((yy_buffer_stack),
+							 num_to_alloc * sizeof(struct yy_buffer_state*)
+							);
 		if ( ! (yy_buffer_stack) )
+		{
 			YY_FATAL_ERROR( "out of dynamic memory in scrv_ensure_buffer_stack()" );
+		}
 
 		/* zero only the new slots.*/
 		memset((yy_buffer_stack) + (yy_buffer_stack_max), 0, grow_size * sizeof(struct yy_buffer_state*));
@@ -1770,22 +1860,26 @@ static void scrv_ensure_buffer_stack (void)
 /** Setup the input buffer state to scan directly from a user-specified character buffer.
  * @param base the character buffer
  * @param size the size in bytes of the character buffer
- * 
- * @return the newly allocated buffer state object. 
+ *
+ * @return the newly allocated buffer state object.
  */
 YY_BUFFER_STATE scrv__scan_buffer  (char * base, yy_size_t  size )
 {
 	YY_BUFFER_STATE b;
-    
+
 	if ( size < 2 ||
-	     base[size-2] != YY_END_OF_BUFFER_CHAR ||
-	     base[size-1] != YY_END_OF_BUFFER_CHAR )
+			base[size - 2] != YY_END_OF_BUFFER_CHAR ||
+			base[size - 1] != YY_END_OF_BUFFER_CHAR )
 		/* They forgot to leave room for the EOB's. */
+	{
 		return 0;
+	}
 
 	b = (YY_BUFFER_STATE) scrv_alloc(sizeof( struct yy_buffer_state )  );
 	if ( ! b )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scrv__scan_buffer()" );
+	}
 
 	b->yy_buf_size = size - 2;	/* "- 2" to take care of EOB's */
 	b->yy_buf_pos = b->yy_ch_buf = base;
@@ -1805,22 +1899,22 @@ YY_BUFFER_STATE scrv__scan_buffer  (char * base, yy_size_t  size )
 /** Setup the input buffer state to scan a string. The next call to scrv_lex() will
  * scan from a @e copy of @a str.
  * @param yystr a NUL-terminated string to scan
- * 
+ *
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use
  *       scrv__scan_bytes() instead.
  */
 YY_BUFFER_STATE scrv__scan_string (yyconst char * yystr )
 {
-    
-	return scrv__scan_bytes(yystr,strlen(yystr) );
+
+	return scrv__scan_bytes(yystr, strlen(yystr) );
 }
 
 /** Setup the input buffer state to scan the given bytes. The next call to scrv_lex() will
  * scan from a @e copy of @a bytes.
  * @param yybytes the byte buffer to scan
  * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.
- * 
+ *
  * @return the newly allocated buffer state object.
  */
 YY_BUFFER_STATE scrv__scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
@@ -1829,21 +1923,27 @@ YY_BUFFER_STATE scrv__scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_l
 	char *buf;
 	yy_size_t n;
 	yy_size_t i;
-    
+
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
 	buf = (char *) scrv_alloc(n  );
 	if ( ! buf )
+	{
 		YY_FATAL_ERROR( "out of dynamic memory in scrv__scan_bytes()" );
+	}
 
 	for ( i = 0; i < _yybytes_len; ++i )
+	{
 		buf[i] = yybytes[i];
+	}
 
-	buf[_yybytes_len] = buf[_yybytes_len+1] = YY_END_OF_BUFFER_CHAR;
+	buf[_yybytes_len] = buf[_yybytes_len + 1] = YY_END_OF_BUFFER_CHAR;
 
-	b = scrv__scan_buffer(buf,n );
+	b = scrv__scan_buffer(buf, n );
 	if ( ! b )
+	{
 		YY_FATAL_ERROR( "bad buffer in scrv__scan_bytes()" );
+	}
 
 	/* It's okay to grow etc. this buffer, and we should throw it
 	 * away when we're done.
@@ -1859,7 +1959,7 @@ YY_BUFFER_STATE scrv__scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_l
 
 static void yy_fatal_error (yyconst char* msg )
 {
-    	(void) fprintf( stderr, "%s\n", msg );
+	(void) fprintf( stderr, "%s\n", msg );
 	exit( YY_EXIT_FAILURE );
 }
 
@@ -1883,120 +1983,121 @@ static void yy_fatal_error (yyconst char* msg )
 /* Accessor  methods (get/set functions) to struct members. */
 
 /** Get the current line number.
- * 
+ *
  */
 int scrv_get_lineno  (void)
 {
-        
-    return scrv_lineno;
+
+	return scrv_lineno;
 }
 
 /** Get the input stream.
- * 
+ *
  */
 FILE *scrv_get_in  (void)
 {
-        return scrv_in;
+	return scrv_in;
 }
 
 /** Get the output stream.
- * 
+ *
  */
 FILE *scrv_get_out  (void)
 {
-        return scrv_out;
+	return scrv_out;
 }
 
 /** Get the length of the current token.
- * 
+ *
  */
 yy_size_t scrv_get_leng  (void)
 {
-        return scrv_leng;
+	return scrv_leng;
 }
 
 /** Get the current token.
- * 
+ *
  */
 
 char *scrv_get_text  (void)
 {
-        return scrv_text;
+	return scrv_text;
 }
 
 /** Set the current line number.
  * @param line_number
- * 
+ *
  */
 void scrv_set_lineno (int  line_number )
 {
-    
-    scrv_lineno = line_number;
+
+	scrv_lineno = line_number;
 }
 
 /** Set the input stream. This does not discard the current
  * input buffer.
  * @param in_str A readable stream.
- * 
+ *
  * @see scrv__switch_to_buffer
  */
 void scrv_set_in (FILE *  in_str )
 {
-        scrv_in = in_str ;
+	scrv_in = in_str ;
 }
 
 void scrv_set_out (FILE *  out_str )
 {
-        scrv_out = out_str ;
+	scrv_out = out_str ;
 }
 
 int scrv_get_debug  (void)
 {
-        return scrv__flex_debug;
+	return scrv__flex_debug;
 }
 
 void scrv_set_debug (int  bdebug )
 {
-        scrv__flex_debug = bdebug ;
+	scrv__flex_debug = bdebug ;
 }
 
 static int yy_init_globals (void)
 {
-        /* Initialization is the same as for the non-reentrant scanner.
-     * This function is called from scrv_lex_destroy(), so don't allocate here.
-     */
+	/* Initialization is the same as for the non-reentrant scanner.
+	* This function is called from scrv_lex_destroy(), so don't allocate here.
+	*/
 
-    /* We do not touch scrv_lineno unless the option is enabled. */
-    scrv_lineno =  1;
-    
-    (yy_buffer_stack) = 0;
-    (yy_buffer_stack_top) = 0;
-    (yy_buffer_stack_max) = 0;
-    (yy_c_buf_p) = (char *) 0;
-    (yy_init) = 0;
-    (yy_start) = 0;
+	/* We do not touch scrv_lineno unless the option is enabled. */
+	scrv_lineno =  1;
 
-/* Defined in main.c */
+	(yy_buffer_stack) = 0;
+	(yy_buffer_stack_top) = 0;
+	(yy_buffer_stack_max) = 0;
+	(yy_c_buf_p) = (char *) 0;
+	(yy_init) = 0;
+	(yy_start) = 0;
+
+	/* Defined in main.c */
 #ifdef YY_STDINIT
-    scrv_in = stdin;
-    scrv_out = stdout;
+	scrv_in = stdin;
+	scrv_out = stdout;
 #else
-    scrv_in = (FILE *) 0;
-    scrv_out = (FILE *) 0;
+	scrv_in = (FILE *) 0;
+	scrv_out = (FILE *) 0;
 #endif
 
-    /* For future reference: Set errno on error, since we are called by
-     * scrv_lex_init()
-     */
-    return 0;
+	/* For future reference: Set errno on error, since we are called by
+	 * scrv_lex_init()
+	 */
+	return 0;
 }
 
 /* scrv_lex_destroy is for both reentrant and non-reentrant scanners. */
 int scrv_lex_destroy  (void)
 {
-    
-    /* Pop the buffer stack, destroying each element. */
-	while(YY_CURRENT_BUFFER){
+
+	/* Pop the buffer stack, destroying each element. */
+	while(YY_CURRENT_BUFFER)
+	{
 		scrv__delete_buffer(YY_CURRENT_BUFFER  );
 		YY_CURRENT_BUFFER_LVALUE = NULL;
 		scrv_pop_buffer_state();
@@ -2006,11 +2107,11 @@ int scrv_lex_destroy  (void)
 	scrv_free((yy_buffer_stack) );
 	(yy_buffer_stack) = NULL;
 
-    /* Reset the globals. This is important in a non-reentrant scanner so the next time
-     * scrv_lex() is called, initialization will occur. */
-    yy_init_globals( );
+	/* Reset the globals. This is important in a non-reentrant scanner so the next time
+	 * scrv_lex() is called, initialization will occur. */
+	yy_init_globals( );
 
-    return 0;
+	return 0;
 }
 
 /*
@@ -2022,7 +2123,9 @@ static void yy_flex_strncpy (char* s1, yyconst char * s2, int n )
 {
 	register int i;
 	for ( i = 0; i < n; ++i )
+	{
 		s1[i] = s2[i];
+	}
 }
 #endif
 

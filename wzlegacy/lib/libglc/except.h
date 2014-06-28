@@ -31,18 +31,18 @@
 extern "C" {
 #endif
 
-typedef unsigned int __glcException;
+	typedef unsigned int __glcException;
 
 #define GLC_NO_EXC (__glcException)0
 #define GLC_MEMORY_EXC (__glcException)1
 
-jmp_buf* __glcExceptionCreateContext(void);
-void __glcExceptionReleaseContext(void);
-void __glcExceptionPush(void (*destructor)(void*), void *data);
-void __glcExceptionPop(int destroy);
-void __glcExceptionUnwind(int destroy);
-jmp_buf* __glcExceptionThrow(__glcException exception);
-__glcException __glcExceptionCatch(void);
+	jmp_buf* __glcExceptionCreateContext(void);
+	void __glcExceptionReleaseContext(void);
+	void __glcExceptionPush(void (*destructor)(void*), void *data);
+	void __glcExceptionPop(int destroy);
+	void __glcExceptionUnwind(int destroy);
+	jmp_buf* __glcExceptionThrow(__glcException exception);
+	__glcException __glcExceptionCatch(void);
 
 #define TRY \
 do { \

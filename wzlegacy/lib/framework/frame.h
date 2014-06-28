@@ -63,8 +63,8 @@ extern void frameShutDown(void);
 
 typedef enum _focus_state
 {
-    FOCUS_OUT,		// Window does not have the focus
-    FOCUS_IN,		// Window has got the focus
+	FOCUS_OUT,		// Window does not have the focus
+	FOCUS_IN,		// Window has got the focus
 } FOCUS_STATE;
 
 /*!
@@ -106,7 +106,7 @@ extern int gettimeofday(struct timeval *tv, struct timezone *tz);
 
 static inline WZ_DECL_CONST const char *bool2string(bool var)
 {
-    return (var ? "true" : "false");
+	return (var ? "true" : "false");
 }
 
 #endif

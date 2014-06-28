@@ -32,47 +32,47 @@ iSurface	*psRendSurface;
 
 iSurface *iV_SurfaceCreate(Uint32 flags, int width, int height, int xp, int yp, uint8_t *buffer)
 {
-    iSurface *s = malloc(sizeof(iSurface));
+	iSurface *s = malloc(sizeof(iSurface));
 
-    assert(buffer!=NULL);	// on playstation this MUST be null
+	assert(buffer != NULL);	// on playstation this MUST be null
 
-    if (!s)
-    {
-        debug(LOG_ERROR, "iV_SurfaceCreate: out of memory");
-        return NULL;
-    }
+	if (!s)
+	{
+		debug(LOG_ERROR, "iV_SurfaceCreate: out of memory");
+		return NULL;
+	}
 
-    s->flags = flags;
-    s->xcentre = width>>1;
-    s->ycentre = height>>1;
-    s->xpshift = xp;
-    s->ypshift = yp;
-    s->width = width;
-    s->height = height;
-    s->size = width * height;
-    s->buffer = buffer;
-    s->clip.left = 0;
-    s->clip.right = width-1;
-    s->clip.top = 0;
-    s->clip.bottom = height-1;
+	s->flags = flags;
+	s->xcentre = width >> 1;
+	s->ycentre = height >> 1;
+	s->xpshift = xp;
+	s->ypshift = yp;
+	s->width = width;
+	s->height = height;
+	s->size = width * height;
+	s->buffer = buffer;
+	s->clip.left = 0;
+	s->clip.right = width - 1;
+	s->clip.top = 0;
+	s->clip.bottom = height - 1;
 
-    return s;
+	return s;
 }
 
 
 // user must free s->buffer before calling
 void iV_SurfaceDestroy(iSurface *s)
 {
-    // if renderer assigned to surface
-    if (psRendSurface == s)
-    {
-        psRendSurface = NULL;
-    }
+	// if renderer assigned to surface
+	if (psRendSurface == s)
+	{
+		psRendSurface = NULL;
+	}
 
-    if (s)
-    {
-        free(s);
-    }
+	if (s)
+	{
+		free(s);
+	}
 }
 
 
@@ -84,9 +84,9 @@ void iV_SurfaceDestroy(iSurface *s)
 
 void iV_RenderAssign(iSurface *s)
 {
-    /* Need to look into this - won't the unwanted called still set render surface? */
-    psRendSurface = s;
+	/* Need to look into this - won't the unwanted called still set render surface? */
+	psRendSurface = s;
 
-    debug(LOG_3D, "iV_RenderAssign: flags %x; xcentre %d; ycentre %d; buffer %p",
-          s->flags, s->xcentre, s->ycentre, s->buffer);
+	debug(LOG_3D, "iV_RenderAssign: flags %x; xcentre %d; ycentre %d; buffer %p",
+		  s->flags, s->xcentre, s->ycentre, s->buffer);
 }

@@ -41,7 +41,7 @@ static const float DEG_1 = (float)65536 / 360.f;
 
 static inline WZ_DECL_CONST int DEG(const float degree)
 {
-    return (int)(degree * DEG_1);
+	return (int)(degree * DEG_1);
 }
 
 #endif // FIXEDPOINT_H

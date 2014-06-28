@@ -30,18 +30,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  */
 typedef enum
 {
-    RIVERBED_TILE = 5, //! Underwater ground
-    WATER_TILE = 17, //! Water surface
-    RUBBLE_TILE = 54, //! You can drive over these
-    BLOCKING_RUBBLE_TILE = 67 //! You cannot drive over these
+	RIVERBED_TILE = 5, //! Underwater ground
+	WATER_TILE = 17, //! Water surface
+	RUBBLE_TILE = 54, //! You can drive over these
+	BLOCKING_RUBBLE_TILE = 67 //! You cannot drive over these
 } TILE_ID;
 
 typedef enum
 {
-    BAR_SELECTED,
-    BAR_DROIDS,
-    BAR_DROIDS_AND_STRUCTURES,
-    BAR_LAST
+	BAR_SELECTED,
+	BAR_DROIDS,
+	BAR_DROIDS_AND_STRUCTURES,
+	BAR_LAST
 } ENERGY_BAR;
 
 extern bool showFPS;
@@ -97,7 +97,7 @@ extern BOOL selectAttempt;
 extern BOOL draggingTile;
 extern iIMDShape *g_imd;
 extern BOOL	droidSelected;
-extern uint32_t terrainMidX,terrainMidY;
+extern uint32_t terrainMidX, terrainMidY;
 
 extern int32_t scrollSpeed;
 //extern void	assignSensorTarget( DROID *psDroid );

@@ -33,43 +33,43 @@
 
 struct internal_extra_pe_filehdr
 {
-    /* DOS header data follows for PE stuff */
-    unsigned short e_magic;	/* Magic number, 0x5a4d */
-    unsigned short e_cblp;	/* Bytes on last page of file, 0x90 */
-    unsigned short e_cp;		/* Pages in file, 0x3 */
-    unsigned short e_crlc;	/* Relocations, 0x0 */
-    unsigned short e_cparhdr;	/* Size of header in paragraphs, 0x4 */
-    unsigned short e_minalloc;	/* Minimum extra paragraphs needed, 0x0 */
-    unsigned short e_maxalloc;	/* Maximum extra paragraphs needed, 0xFFFF */
-    unsigned short e_ss;		/* Initial (relative) SS value, 0x0 */
-    unsigned short e_sp;		/* Initial SP value, 0xb8 */
-    unsigned short e_csum;	/* Checksum, 0x0 */
-    unsigned short e_ip;		/* Initial IP value, 0x0 */
-    unsigned short e_cs;		/* Initial (relative) CS value, 0x0 */
-    unsigned short e_lfarlc;	/* File address of relocation table, 0x40 */
-    unsigned short e_ovno;	/* Overlay number, 0x0 */
-    unsigned short e_res[4];	/* Reserved words, all 0x0 */
-    unsigned short e_oemid;	/* OEM identifier (for e_oeminfo), 0x0 */
-    unsigned short e_oeminfo;	/* OEM information; e_oemid specific, 0x0 */
-    unsigned short e_res2[10];	/* Reserved words, all 0x0 */
-    bfd_vma  e_lfanew;		/* File address of new exe header, 0x80 */
-    unsigned long dos_message[16]; /* text which always follows dos header */
-    bfd_vma  nt_signature;   	/* required NT signature, 0x4550 */
+	/* DOS header data follows for PE stuff */
+	unsigned short e_magic;	/* Magic number, 0x5a4d */
+	unsigned short e_cblp;	/* Bytes on last page of file, 0x90 */
+	unsigned short e_cp;		/* Pages in file, 0x3 */
+	unsigned short e_crlc;	/* Relocations, 0x0 */
+	unsigned short e_cparhdr;	/* Size of header in paragraphs, 0x4 */
+	unsigned short e_minalloc;	/* Minimum extra paragraphs needed, 0x0 */
+	unsigned short e_maxalloc;	/* Maximum extra paragraphs needed, 0xFFFF */
+	unsigned short e_ss;		/* Initial (relative) SS value, 0x0 */
+	unsigned short e_sp;		/* Initial SP value, 0xb8 */
+	unsigned short e_csum;	/* Checksum, 0x0 */
+	unsigned short e_ip;		/* Initial IP value, 0x0 */
+	unsigned short e_cs;		/* Initial (relative) CS value, 0x0 */
+	unsigned short e_lfarlc;	/* File address of relocation table, 0x40 */
+	unsigned short e_ovno;	/* Overlay number, 0x0 */
+	unsigned short e_res[4];	/* Reserved words, all 0x0 */
+	unsigned short e_oemid;	/* OEM identifier (for e_oeminfo), 0x0 */
+	unsigned short e_oeminfo;	/* OEM information; e_oemid specific, 0x0 */
+	unsigned short e_res2[10];	/* Reserved words, all 0x0 */
+	bfd_vma  e_lfanew;		/* File address of new exe header, 0x80 */
+	unsigned long dos_message[16]; /* text which always follows dos header */
+	bfd_vma  nt_signature;   	/* required NT signature, 0x4550 */
 };
 
 struct internal_filehdr
 {
-    struct internal_extra_pe_filehdr pe;
+	struct internal_extra_pe_filehdr pe;
 
-    /* Standard coff internal info.  */
-    unsigned short f_magic;	/* magic number			*/
-    unsigned short f_nscns;	/* number of sections		*/
-    long f_timdat;		/* time & date stamp		*/
-    bfd_vma f_symptr;		/* file pointer to symtab	*/
-    long f_nsyms;			/* number of symtab entries	*/
-    unsigned short f_opthdr;	/* sizeof(optional hdr)		*/
-    unsigned short f_flags;	/* flags			*/
-    unsigned short f_target_id;	/* (TI COFF specific)		*/
+	/* Standard coff internal info.  */
+	unsigned short f_magic;	/* magic number			*/
+	unsigned short f_nscns;	/* number of sections		*/
+	long f_timdat;		/* time & date stamp		*/
+	bfd_vma f_symptr;		/* file pointer to symtab	*/
+	long f_nsyms;			/* number of symtab entries	*/
+	unsigned short f_opthdr;	/* sizeof(optional hdr)		*/
+	unsigned short f_flags;	/* flags			*/
+	unsigned short f_target_id;	/* (TI COFF specific)		*/
 };
 
 
@@ -100,8 +100,8 @@ struct internal_filehdr
 #ifndef _WINNT_H
 typedef struct _IMAGE_DATA_DIRECTORY
 {
-    bfd_vma VirtualAddress;
-    long    Size;
+	bfd_vma VirtualAddress;
+	long    Size;
 }  IMAGE_DATA_DIRECTORY;
 #endif
 #define IMAGE_NUMBEROF_DIRECTORY_ENTRIES  16
@@ -123,85 +123,85 @@ typedef struct _IMAGE_DATA_DIRECTORY
 
 struct internal_extra_pe_aouthdr
 {
-    /* PE stuff  */
-    bfd_vma ImageBase;		/* address of specific location in memory that
+	/* PE stuff  */
+	bfd_vma ImageBase;		/* address of specific location in memory that
 				   file is located, NT default 0x10000 */
 
-    bfd_vma SectionAlignment;	/* section alignment default 0x1000 */
-    bfd_vma FileAlignment;	/* file alignment default 0x200 */
-    short   MajorOperatingSystemVersion; /* minimum version of the operating */
-    short   MinorOperatingSystemVersion; /* system req'd for exe, default to 1*/
-    short   MajorImageVersion;	/* user defineable field to store version of */
-    short   MinorImageVersion;	/* exe or dll being created, default to 0 */
-    short   MajorSubsystemVersion; /* minimum subsystem version required to */
-    short   MinorSubsystemVersion; /* run exe; default to 3.1 */
-    long    Reserved1;		/* seems to be 0 */
-    long    SizeOfImage;		/* size of memory to allocate for prog */
-    long    SizeOfHeaders;	/* size of PE header and section table */
-    long    CheckSum;		/* set to 0 */
-    short   Subsystem;
+	bfd_vma SectionAlignment;	/* section alignment default 0x1000 */
+	bfd_vma FileAlignment;	/* file alignment default 0x200 */
+	short   MajorOperatingSystemVersion; /* minimum version of the operating */
+	short   MinorOperatingSystemVersion; /* system req'd for exe, default to 1*/
+	short   MajorImageVersion;	/* user defineable field to store version of */
+	short   MinorImageVersion;	/* exe or dll being created, default to 0 */
+	short   MajorSubsystemVersion; /* minimum subsystem version required to */
+	short   MinorSubsystemVersion; /* run exe; default to 3.1 */
+	long    Reserved1;		/* seems to be 0 */
+	long    SizeOfImage;		/* size of memory to allocate for prog */
+	long    SizeOfHeaders;	/* size of PE header and section table */
+	long    CheckSum;		/* set to 0 */
+	short   Subsystem;
 
-    /* type of subsystem exe uses for user interface,
-       possible values:
-       1 - NATIVE   Doesn't require a subsystem
-       2 - WINDOWS_GUI runs in Windows GUI subsystem
-       3 - WINDOWS_CUI runs in Windows char sub. (console app)
-       5 - OS2_CUI runs in OS/2 character subsystem
-       7 - POSIX_CUI runs in Posix character subsystem */
-    short   DllCharacteristics;	/* flags for DLL init, use 0 */
-    bfd_vma SizeOfStackReserve;	/* amount of memory to reserve  */
-    bfd_vma SizeOfStackCommit;	/* amount of memory initially committed for
+	/* type of subsystem exe uses for user interface,
+	   possible values:
+	   1 - NATIVE   Doesn't require a subsystem
+	   2 - WINDOWS_GUI runs in Windows GUI subsystem
+	   3 - WINDOWS_CUI runs in Windows char sub. (console app)
+	   5 - OS2_CUI runs in OS/2 character subsystem
+	   7 - POSIX_CUI runs in Posix character subsystem */
+	short   DllCharacteristics;	/* flags for DLL init, use 0 */
+	bfd_vma SizeOfStackReserve;	/* amount of memory to reserve  */
+	bfd_vma SizeOfStackCommit;	/* amount of memory initially committed for
 				   initial thread's stack, default is 0x1000 */
-    bfd_vma SizeOfHeapReserve;	/* amount of virtual memory to reserve and */
-    bfd_vma SizeOfHeapCommit;	/* commit, don't know what to defaut it to */
-    long    LoaderFlags;		/* can probably set to 0 */
-    long    NumberOfRvaAndSizes;	/* number of entries in next entry, 16 */
-    IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
+	bfd_vma SizeOfHeapReserve;	/* amount of virtual memory to reserve and */
+	bfd_vma SizeOfHeapCommit;	/* commit, don't know what to defaut it to */
+	long    LoaderFlags;		/* can probably set to 0 */
+	long    NumberOfRvaAndSizes;	/* number of entries in next entry, 16 */
+	IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
 };
 
 /********************** AOUT "OPTIONAL HEADER" **********************/
 struct internal_aouthdr
 {
-    short magic;			/* type of file				*/
-    short vstamp;			/* version stamp			*/
-    bfd_vma tsize;		/* text size in bytes, padded to FW bdry*/
-    bfd_vma dsize;		/* initialized data "  "		*/
-    bfd_vma bsize;		/* uninitialized data "   "		*/
-    bfd_vma entry;		/* entry pt.				*/
-    bfd_vma text_start;		/* base of text used for this file */
-    bfd_vma data_start;		/* base of data used for this file */
+	short magic;			/* type of file				*/
+	short vstamp;			/* version stamp			*/
+	bfd_vma tsize;		/* text size in bytes, padded to FW bdry*/
+	bfd_vma dsize;		/* initialized data "  "		*/
+	bfd_vma bsize;		/* uninitialized data "   "		*/
+	bfd_vma entry;		/* entry pt.				*/
+	bfd_vma text_start;		/* base of text used for this file */
+	bfd_vma data_start;		/* base of data used for this file */
 
-    /* i960 stuff */
-    unsigned long tagentries;	/* number of tag entries to follow */
+	/* i960 stuff */
+	unsigned long tagentries;	/* number of tag entries to follow */
 
-    /* RS/6000 stuff */
-    bfd_vma o_toc;		/* address of TOC			*/
-    short o_snentry;		/* section number for entry point */
-    short o_sntext;		/* section number for text	*/
-    short o_sndata;		/* section number for data	*/
-    short o_sntoc;		/* section number for toc	*/
-    short o_snloader;		/* section number for loader section */
-    short o_snbss;		/* section number for bss	*/
-    short o_algntext;		/* max alignment for text	*/
-    short o_algndata;		/* max alignment for data	*/
-    short o_modtype;		/* Module type field, 1R,RE,RO	*/
-    short o_cputype;		/* Encoded CPU type		*/
-    bfd_vma o_maxstack;	/* max stack size allowed.	*/
-    bfd_vma o_maxdata;	/* max data size allowed.	*/
+	/* RS/6000 stuff */
+	bfd_vma o_toc;		/* address of TOC			*/
+	short o_snentry;		/* section number for entry point */
+	short o_sntext;		/* section number for text	*/
+	short o_sndata;		/* section number for data	*/
+	short o_sntoc;		/* section number for toc	*/
+	short o_snloader;		/* section number for loader section */
+	short o_snbss;		/* section number for bss	*/
+	short o_algntext;		/* max alignment for text	*/
+	short o_algndata;		/* max alignment for data	*/
+	short o_modtype;		/* Module type field, 1R,RE,RO	*/
+	short o_cputype;		/* Encoded CPU type		*/
+	bfd_vma o_maxstack;	/* max stack size allowed.	*/
+	bfd_vma o_maxdata;	/* max data size allowed.	*/
 
-    /* ECOFF stuff */
-    bfd_vma bss_start;		/* Base of bss section.		*/
-    bfd_vma gp_value;		/* GP register value.		*/
-    unsigned long gprmask;	/* General registers used.	*/
-    unsigned long cprmask[4];	/* Coprocessor registers used.	*/
-    unsigned long fprmask;	/* Floating pointer registers used.  */
+	/* ECOFF stuff */
+	bfd_vma bss_start;		/* Base of bss section.		*/
+	bfd_vma gp_value;		/* GP register value.		*/
+	unsigned long gprmask;	/* General registers used.	*/
+	unsigned long cprmask[4];	/* Coprocessor registers used.	*/
+	unsigned long fprmask;	/* Floating pointer registers used.  */
 
-    /* Apollo stuff */
-    long o_inlib;			/* inlib data */
-    long o_sri;			/* Static Resource Information */
-    long vid[2];			/* Version id */
+	/* Apollo stuff */
+	long o_inlib;			/* inlib data */
+	long o_sri;			/* Static Resource Information */
+	long vid[2];			/* Version id */
 
-    struct internal_extra_pe_aouthdr pe;
+	struct internal_extra_pe_aouthdr pe;
 };
 
 /********************** STORAGE CLASSES **********************/
@@ -301,24 +301,24 @@ struct internal_aouthdr
 
 struct internal_scnhdr
 {
-    char s_name[SCNNMLEN];	/* section name			*/
+	char s_name[SCNNMLEN];	/* section name			*/
 
-    /* Physical address, aliased s_nlib.
-       In the pei format, this field is the virtual section size
-       (the size of the section after being loaded int memory),
-       NOT the physical address.  */
-    bfd_vma s_paddr;
+	/* Physical address, aliased s_nlib.
+	   In the pei format, this field is the virtual section size
+	   (the size of the section after being loaded int memory),
+	   NOT the physical address.  */
+	bfd_vma s_paddr;
 
-    bfd_vma s_vaddr;		/* virtual address		*/
-    bfd_vma s_size;		/* section size			*/
-    bfd_vma s_scnptr;		/* file ptr to raw data for section */
-    bfd_vma s_relptr;		/* file ptr to relocation	*/
-    bfd_vma s_lnnoptr;		/* file ptr to line numbers	*/
-    unsigned long s_nreloc;	/* number of relocation entries	*/
-    unsigned long s_nlnno;	/* number of line number entries*/
-    long s_flags;			/* flags			*/
-    long s_align;			/* used on I960			*/
-    unsigned char s_page;         /* TI COFF load page            */
+	bfd_vma s_vaddr;		/* virtual address		*/
+	bfd_vma s_size;		/* section size			*/
+	bfd_vma s_scnptr;		/* file ptr to raw data for section */
+	bfd_vma s_relptr;		/* file ptr to relocation	*/
+	bfd_vma s_lnnoptr;		/* file ptr to line numbers	*/
+	unsigned long s_nreloc;	/* number of relocation entries	*/
+	unsigned long s_nlnno;	/* number of line number entries*/
+	long s_flags;			/* flags			*/
+	long s_align;			/* used on I960			*/
+	unsigned char s_page;         /* TI COFF load page            */
 };
 
 /* s_flags "type".  */
@@ -357,12 +357,12 @@ boundary. */
 
 struct internal_lineno
 {
-    union
-    {
-        bfd_signed_vma l_symndx;		/* function name symbol index, iff l_lnno == 0*/
-        bfd_signed_vma l_paddr;		/* (physical) address of line number	*/
-    }     l_addr;
-    unsigned long l_lnno;		/* line number		*/
+	union
+	{
+		bfd_signed_vma l_symndx;		/* function name symbol index, iff l_lnno == 0*/
+		bfd_signed_vma l_paddr;		/* (physical) address of line number	*/
+	}     l_addr;
+	unsigned long l_lnno;		/* line number		*/
 };
 
 /********************** SYMBOLS **********************/
@@ -373,22 +373,22 @@ struct internal_lineno
 
 struct internal_syment
 {
-    union
-    {
-        char _n_name[SYMNMLEN];	/* old COFF version	*/
-        struct
-        {
-            long _n_zeroes;		/* new == 0		*/
-            long _n_offset;		/* offset into string table */
-        }      _n_n;
-        char *_n_nptr[2];		/* allows for overlaying	*/
-    }     _n;
-    bfd_vma n_value;			/* value of symbol		*/
-    short n_scnum;		/* section number		*/
-    unsigned short n_flags;	/* copy of flags from filhdr	*/
-    unsigned short n_type;	/* type and derived type	*/
-    unsigned char n_sclass;	/* storage class		*/
-    unsigned char n_numaux;	/* number of aux. entries	*/
+	union
+	{
+		char _n_name[SYMNMLEN];	/* old COFF version	*/
+		struct
+		{
+			long _n_zeroes;		/* new == 0		*/
+			long _n_offset;		/* offset into string table */
+		}      _n_n;
+		char *_n_nptr[2];		/* allows for overlaying	*/
+	}     _n;
+	bfd_vma n_value;			/* value of symbol		*/
+	short n_scnum;		/* section number		*/
+	unsigned short n_flags;	/* copy of flags from filhdr	*/
+	unsigned short n_type;	/* type and derived type	*/
+	unsigned char n_sclass;	/* storage class		*/
+	unsigned char n_numaux;	/* number of aux. entries	*/
 };
 
 #define n_name		_n._n_name
@@ -449,102 +449,102 @@ struct internal_syment
 
 union internal_auxent
 {
-    struct
-    {
+	struct
+	{
 
-        union
-        {
-            long l;			/* str, un, or enum tag indx */
-            struct coff_ptr_struct *p;
-        }     x_tagndx;
+		union
+		{
+			long l;			/* str, un, or enum tag indx */
+			struct coff_ptr_struct *p;
+		}     x_tagndx;
 
-        union
-        {
-            struct
-            {
-                unsigned short x_lnno;	/* declaration line number */
-                unsigned short x_size;	/* str/union/array size */
-            }      x_lnsz;
-            long x_fsize;		/* size of function */
-        }     x_misc;
+		union
+		{
+			struct
+			{
+				unsigned short x_lnno;	/* declaration line number */
+				unsigned short x_size;	/* str/union/array size */
+			}      x_lnsz;
+			long x_fsize;		/* size of function */
+		}     x_misc;
 
-        union
-        {
-            struct
-            {
-                /* if ISFCN, tag, or .bb */
-                bfd_signed_vma x_lnnoptr;		/* ptr to fcn line # */
-                union
-                {
-                    /* entry ndx past block end */
-                    long l;
-                    struct coff_ptr_struct *p;
-                }     x_endndx;
-            }      x_fcn;
+		union
+		{
+			struct
+			{
+				/* if ISFCN, tag, or .bb */
+				bfd_signed_vma x_lnnoptr;		/* ptr to fcn line # */
+				union
+				{
+					/* entry ndx past block end */
+					long l;
+					struct coff_ptr_struct *p;
+				}     x_endndx;
+			}      x_fcn;
 
-            struct
-            {
-                /* if ISARY, up to 4 dimen. */
-                unsigned short x_dimen[DIMNUM];
-            }      x_ary;
-        }     x_fcnary;
+			struct
+			{
+				/* if ISARY, up to 4 dimen. */
+				unsigned short x_dimen[DIMNUM];
+			}      x_ary;
+		}     x_fcnary;
 
-        unsigned short x_tvndx;	/* tv index */
-    }      x_sym;
+		unsigned short x_tvndx;	/* tv index */
+	}      x_sym;
 
-    union
-    {
-        char x_fname[FILNMLEN];
-        struct
-        {
-            long x_zeroes;
-            long x_offset;
-        }      x_n;
-    }     x_file;
+	union
+	{
+		char x_fname[FILNMLEN];
+		struct
+		{
+			long x_zeroes;
+			long x_offset;
+		}      x_n;
+	}     x_file;
 
-    struct
-    {
-        long x_scnlen;		/* section length */
-        unsigned short x_nreloc;	/* # relocation entries */
-        unsigned short x_nlinno;	/* # line numbers */
-        unsigned long x_checksum;	/* section COMDAT checksum for PE */
-        unsigned short x_associated; /* COMDAT associated section index for PE */
-        unsigned char x_comdat;	/* COMDAT selection number for PE */
-    }      x_scn;
+	struct
+	{
+		long x_scnlen;		/* section length */
+		unsigned short x_nreloc;	/* # relocation entries */
+		unsigned short x_nlinno;	/* # line numbers */
+		unsigned long x_checksum;	/* section COMDAT checksum for PE */
+		unsigned short x_associated; /* COMDAT associated section index for PE */
+		unsigned char x_comdat;	/* COMDAT selection number for PE */
+	}      x_scn;
 
-    struct
-    {
-        long x_tvfill;		/* tv fill value */
-        unsigned short x_tvlen;	/* length of .tv */
-        unsigned short x_tvran[2];	/* tv range */
-    }      x_tv;			/* info about .tv section (in auxent of symbol .tv)) */
+	struct
+	{
+		long x_tvfill;		/* tv fill value */
+		unsigned short x_tvlen;	/* length of .tv */
+		unsigned short x_tvran[2];	/* tv range */
+	}      x_tv;			/* info about .tv section (in auxent of symbol .tv)) */
 
-    /******************************************
-     * RS/6000-specific auxent - last auxent for every external symbol
-     ******************************************/
-    struct
-    {
-        union
-        {
-            /* csect length or enclosing csect */
-            bfd_signed_vma l;
-            struct coff_ptr_struct *p;
-        } x_scnlen;
-        long x_parmhash;		/* parm type hash index */
-        unsigned short x_snhash;	/* sect num with parm hash */
-        unsigned char x_smtyp;	/* symbol align and type */
-        /* 0-4 - Log 2 of alignment */
-        /* 5-7 - symbol type */
-        unsigned char x_smclas;	/* storage mapping class */
-        long x_stab;		/* dbx stab info index */
-        unsigned short x_snstab;	/* sect num with dbx stab */
-    }      x_csect;		/* csect definition information */
+	/******************************************
+	 * RS/6000-specific auxent - last auxent for every external symbol
+	 ******************************************/
+	struct
+	{
+		union
+		{
+			/* csect length or enclosing csect */
+			bfd_signed_vma l;
+			struct coff_ptr_struct *p;
+		} x_scnlen;
+		long x_parmhash;		/* parm type hash index */
+		unsigned short x_snhash;	/* sect num with parm hash */
+		unsigned char x_smtyp;	/* symbol align and type */
+		/* 0-4 - Log 2 of alignment */
+		/* 5-7 - symbol type */
+		unsigned char x_smclas;	/* storage mapping class */
+		long x_stab;		/* dbx stab info index */
+		unsigned short x_snstab;	/* sect num with dbx stab */
+	}      x_csect;		/* csect definition information */
 
-    /* x_smtyp values:  */
+	/* x_smtyp values:  */
 
 #define	SMTYP_ALIGN(x)	((x) >> 3)	/* log2 of alignment */
 #define	SMTYP_SMTYP(x)	((x) & 0x7)	/* symbol type */
-    /* Symbol type values:  */
+	/* Symbol type values:  */
 #define	XTY_ER	0		/* External reference */
 #define	XTY_SD	1		/* Csect definition */
 #define	XTY_LD	2		/* Label definition */
@@ -552,7 +552,7 @@ union internal_auxent
 #define	XTY_EM	4		/* Error message */
 #define	XTY_US	5		/* "Reserved for internal use" */
 
-    /* x_smclas values:  */
+	/* x_smclas values:  */
 
 #define	XMC_PR	0		/* Read-only program code */
 #define	XMC_RO	1		/* Read-only constant */
@@ -568,30 +568,30 @@ union internal_auxent
 #define	XMC_UC	11		/* Read-write unnamed Fortran common */
 #define	XMC_TI	12		/* Read-only traceback index csect */
 #define	XMC_TB	13		/* Read-only traceback table csect */
-    /* 		14	??? */
+	/* 		14	??? */
 #define	XMC_TC0	15		/* Read-write TOC anchor */
 #define XMC_TD	16		/* Read-write data in TOC */
 
-    /******************************************
-     *  I960-specific *2nd* aux. entry formats
-     ******************************************/
-    struct
-    {
-        /* This is a very old typo that keeps getting propagated. */
+	/******************************************
+	 *  I960-specific *2nd* aux. entry formats
+	 ******************************************/
+	struct
+	{
+		/* This is a very old typo that keeps getting propagated. */
 #define x_stdindx x_stindx
-        long x_stindx;		/* sys. table entry */
-    }      x_sc;			/* system call entry */
+		long x_stindx;		/* sys. table entry */
+	}      x_sc;			/* system call entry */
 
-    struct
-    {
-        unsigned long x_balntry;	/* BAL entry point */
-    }      x_bal;			/* BAL-callable function */
+	struct
+	{
+		unsigned long x_balntry;	/* BAL entry point */
+	}      x_bal;			/* BAL-callable function */
 
-    struct
-    {
-        unsigned long x_timestamp;	/* time stamp */
-        char x_idstring[20];	/* producer identity string */
-    }      x_ident;		/* Producer ident info */
+	struct
+	{
+		unsigned long x_timestamp;	/* time stamp */
+		char x_idstring[20];	/* producer identity string */
+	}      x_ident;		/* Producer ident info */
 
 };
 
@@ -599,12 +599,12 @@ union internal_auxent
 
 struct internal_reloc
 {
-    bfd_vma r_vaddr;		/* Virtual address of reference */
-    long r_symndx;		/* Index into symbol table	*/
-    unsigned short r_type;	/* Relocation type		*/
-    unsigned char r_size;		/* Used by RS/6000 and ECOFF	*/
-    unsigned char r_extern;	/* Used by ECOFF		*/
-    unsigned long r_offset;	/* Used by Alpha ECOFF, SPARC, others */
+	bfd_vma r_vaddr;		/* Virtual address of reference */
+	long r_symndx;		/* Index into symbol table	*/
+	unsigned short r_type;	/* Relocation type		*/
+	unsigned char r_size;		/* Used by RS/6000 and ECOFF	*/
+	unsigned char r_extern;	/* Used by ECOFF		*/
+	unsigned long r_offset;	/* Used by Alpha ECOFF, SPARC, others */
 };
 
 #define R_DIR16 	 1

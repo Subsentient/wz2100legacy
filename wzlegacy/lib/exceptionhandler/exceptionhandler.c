@@ -48,71 +48,71 @@ static LPTOP_LEVEL_EXCEPTION_FILTER prevExceptionHandler = NULL;
  */
 static LONG WINAPI windowsExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 {
-    LPCSTR applicationName = "Warzone 2100 Legacy";
+	LPCSTR applicationName = "Warzone 2100 Legacy";
 
-    char miniDumpPath[PATH_MAX] = {'\0'}, resultMessage[PATH_MAX] = {'\0'};
+	char miniDumpPath[PATH_MAX] = {'\0'}, resultMessage[PATH_MAX] = {'\0'};
 
-    // Write to temp dir, to support unprivileged users
-    if (!GetTempPathA(sizeof(miniDumpPath), miniDumpPath))
-    {
-        sstrcpy(miniDumpPath, "c:\\temp\\");
-    }
+	// Write to temp dir, to support unprivileged users
+	if (!GetTempPathA(sizeof(miniDumpPath), miniDumpPath))
+	{
+		sstrcpy(miniDumpPath, "c:\\temp\\");
+	}
 
-    // Append the filename
-    sstrcat(miniDumpPath, "wz2100legacy.mdmp");
+	// Append the filename
+	sstrcat(miniDumpPath, "wz2100legacy.mdmp");
 
-    /*
-    Alternative:
-    GetModuleFileName( NULL, miniDumpPath, MAX_PATH );
+	/*
+	Alternative:
+	GetModuleFileName( NULL, miniDumpPath, MAX_PATH );
 
-    // Append extension
-    sstrcat(miniDumpPath, ".mdmp");
-    */
+	// Append extension
+	sstrcat(miniDumpPath, ".mdmp");
+	*/
 
-    if ( MessageBoxA( NULL, "Warzone 2100 Legacy crashed unexpectedly, would you like to save a diagnostic file?", applicationName, MB_YESNO ) == IDYES )
-    {
-        HANDLE miniDumpFile = CreateFileA( miniDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+	if ( MessageBoxA( NULL, "Warzone 2100 Legacy crashed unexpectedly, would you like to save a diagnostic file?", applicationName, MB_YESNO ) == IDYES )
+	{
+		HANDLE miniDumpFile = CreateFileA( miniDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
 
-        if (miniDumpFile != INVALID_HANDLE_VALUE)
-        {
-            MINIDUMP_USER_STREAM uStream = { LastReservedStream+1, strlen(PACKAGE_VERSION), PACKAGE_VERSION };
-            MINIDUMP_USER_STREAM_INFORMATION uInfo = { 1, &uStream };
-            MINIDUMP_EXCEPTION_INFORMATION eInfo = { GetCurrentThreadId(), pExceptionInfo, false };
+		if (miniDumpFile != INVALID_HANDLE_VALUE)
+		{
+			MINIDUMP_USER_STREAM uStream = { LastReservedStream + 1, strlen(PACKAGE_VERSION), PACKAGE_VERSION };
+			MINIDUMP_USER_STREAM_INFORMATION uInfo = { 1, &uStream };
+			MINIDUMP_EXCEPTION_INFORMATION eInfo = { GetCurrentThreadId(), pExceptionInfo, false };
 
-            if ( MiniDumpWriteDump(
-                        GetCurrentProcess(),
-                        GetCurrentProcessId(),
-                        miniDumpFile,
-                        MiniDumpNormal,
-                        pExceptionInfo ? &eInfo : NULL,
-                        &uInfo,
-                        NULL ) )
-            {
-                snprintf(resultMessage, sizeof(resultMessage), "Saved dump file to '%s'", miniDumpPath);
-            }
-            else
-            {
-                snprintf(resultMessage, sizeof(resultMessage), "Failed to save dump file to '%s' (error %d)", miniDumpPath, (int)GetLastError());
-            }
+			if ( MiniDumpWriteDump(
+						GetCurrentProcess(),
+						GetCurrentProcessId(),
+						miniDumpFile,
+						MiniDumpNormal,
+						pExceptionInfo ? &eInfo : NULL,
+						&uInfo,
+						NULL ) )
+			{
+				snprintf(resultMessage, sizeof(resultMessage), "Saved dump file to '%s'", miniDumpPath);
+			}
+			else
+			{
+				snprintf(resultMessage, sizeof(resultMessage), "Failed to save dump file to '%s' (error %d)", miniDumpPath, (int)GetLastError());
+			}
 
-            CloseHandle(miniDumpFile);
-        }
-        else
-        {
-            snprintf(resultMessage, sizeof(resultMessage), "Failed to create dump file '%s' (error %d)", miniDumpPath, (int)GetLastError());
-        }
+			CloseHandle(miniDumpFile);
+		}
+		else
+		{
+			snprintf(resultMessage, sizeof(resultMessage), "Failed to create dump file '%s' (error %d)", miniDumpPath, (int)GetLastError());
+		}
 
-        MessageBoxA( NULL, resultMessage, applicationName, MB_OK );
-    }
+		MessageBoxA( NULL, resultMessage, applicationName, MB_OK );
+	}
 
-    if (prevExceptionHandler)
-    {
-        return prevExceptionHandler(pExceptionInfo);
-    }
-    else
-    {
-        return EXCEPTION_CONTINUE_SEARCH;
-    }
+	if (prevExceptionHandler)
+	{
+		return prevExceptionHandler(pExceptionInfo);
+	}
+	else
+	{
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
 }
 #endif
 
@@ -170,9 +170,9 @@ static struct utsname sysInfo;
 static BOOL gdbIsAvailable = false, programIsAvailable = false, sysInfoValid = false;
 static char
 executionDate[MAX_DATE_STRING] = {'\0'},
-                                 programPID[MAX_PID_STRING] = {'\0'},
-                                         programPath[PATH_MAX] = {'\0'},
-                                                 gdbPath[PATH_MAX] = {'\0'};
+								 programPID[MAX_PID_STRING] = {'\0'},
+										 programPath[PATH_MAX] = {'\0'},
+												 gdbPath[PATH_MAX] = {'\0'};
 
 
 /**
@@ -186,182 +186,182 @@ executionDate[MAX_DATE_STRING] = {'\0'},
 #ifdef SA_SIGINFO
 static const char *wz_strsignal(int signum, int sigcode)
 {
-    switch (signum)
-    {
-        case SIGABRT:
-            return "SIGABRT: Process abort signal";
-        case SIGALRM:
-            return "SIGALRM: Alarm clock";
-        case SIGBUS:
-            switch (sigcode)
-            {
-                case BUS_ADRALN:
-                    return "SIGBUS: Access to an undefined portion of a memory object: Invalid address alignment";
-                case BUS_ADRERR:
-                    return "SIGBUS: Access to an undefined portion of a memory object: Nonexistent physical address";
-                case BUS_OBJERR:
-                    return "SIGBUS: Access to an undefined portion of a memory object: Object-specific hardware error";
-                default:
-                    return "SIGBUS: Access to an undefined portion of a memory object";
-            }
-        case SIGCHLD:
-            switch (sigcode)
-            {
-                case CLD_EXITED:
-                    return "SIGCHLD: Child process terminated, stopped, or continued: Child has exited";
-                case CLD_KILLED:
-                    return "SIGCHLD: Child process terminated, stopped, or continued: Child has terminated abnormally and did not create a core file";
-                case CLD_DUMPED:
-                    return "SIGCHLD: Child process terminated, stopped, or continued: Child has terminated abnormally and created a core file";
-                case CLD_TRAPPED:
-                    return "SIGCHLD: Child process terminated, stopped, or continued: Traced child has trapped";
-                case CLD_STOPPED:
-                    return "SIGCHLD: Child process terminated, stopped, or continued: Child has stopped";
-                case CLD_CONTINUED:
-                    return "SIGCHLD: Child process terminated, stopped, or continued: Stopped child has continued";
-            }
-        case SIGCONT:
-            return "SIGCONT: Continue executing, if stopped";
-        case SIGFPE:
-            switch (sigcode)
-            {
-                case FPE_INTDIV:
-                    return "SIGFPE: Erroneous arithmetic operation: Integer divide by zero";
-                case FPE_INTOVF:
-                    return "SIGFPE: Erroneous arithmetic operation: Integer overflow";
-                case FPE_FLTDIV:
-                    return "SIGFPE: Erroneous arithmetic operation: Floating-point divide by zero";
-                case FPE_FLTOVF:
-                    return "SIGFPE: Erroneous arithmetic operation: Floating-point overflow";
-                case FPE_FLTUND:
-                    return "SIGFPE: Erroneous arithmetic operation: Floating-point underflow";
-                case FPE_FLTRES:
-                    return "SIGFPE: Erroneous arithmetic operation: Floating-point inexact result";
-                case FPE_FLTINV:
-                    return "SIGFPE: Erroneous arithmetic operation: Invalid floating-point operation";
-                case FPE_FLTSUB:
-                    return "SIGFPE: Erroneous arithmetic operation: Subscript out of range";
-                default:
-                    return "SIGFPE: Erroneous arithmetic operation";
-            };
-        case SIGHUP:
-            return "SIGHUP: Hangup";
-        case SIGILL:
-            switch (sigcode)
-            {
-                case ILL_ILLOPC:
-                    return "SIGILL: Illegal instruction: Illegal opcode";
-                case ILL_ILLOPN:
-                    return "SIGILL: Illegal instruction: Illegal operand";
-                case ILL_ILLADR:
-                    return "SIGILL: Illegal instruction: Illegal addressing mode";
-                case ILL_ILLTRP:
-                    return "SIGILL: Illegal instruction: Illegal trap";
-                case ILL_PRVOPC:
-                    return "SIGILL: Illegal instruction: Privileged opcode";
-                case ILL_PRVREG:
-                    return "SIGILL: Illegal instruction: Privileged register";
-                case ILL_COPROC:
-                    return "SIGILL: Illegal instruction: Coprocessor error";
-                case ILL_BADSTK:
-                    return "SIGILL: Illegal instruction: Internal stack error";
-                default:
-                    return "SIGILL: Illegal instruction";
-            }
-        case SIGINT:
-            return "SIGINT: Terminal interrupt signal";
-        case SIGKILL:
-            return "SIGKILL: Kill";
-        case SIGPIPE:
-            return "SIGPIPE: Write on a pipe with no one to read it";
-        case SIGQUIT:
-            return "SIGQUIT: Terminal quit signal";
-        case SIGSEGV:
-            switch (sigcode)
-            {
-                case SEGV_MAPERR:
-                    return "SIGSEGV: Invalid memory reference: Address not mapped to object";
-                case SEGV_ACCERR:
-                    return "SIGSEGV: Invalid memory reference: Invalid permissions for mapped object";
-                default:
-                    return "SIGSEGV: Invalid memory reference";
-            }
-        case SIGSTOP:
-            return "SIGSTOP: Stop executing";
-        case SIGTERM:
-            return "SIGTERM: Termination signal";
-        case SIGTSTP:
-            return "SIGTSTP: Terminal stop signal";
-        case SIGTTIN:
-            return "SIGTTIN: Background process attempting read";
-        case SIGTTOU:
-            return "SIGTTOU: Background process attempting write";
-        case SIGUSR1:
-            return "SIGUSR1: User-defined signal 1";
-        case SIGUSR2:
-            return "SIGUSR2: User-defined signal 2";
+	switch (signum)
+	{
+		case SIGABRT:
+			return "SIGABRT: Process abort signal";
+		case SIGALRM:
+			return "SIGALRM: Alarm clock";
+		case SIGBUS:
+			switch (sigcode)
+			{
+				case BUS_ADRALN:
+					return "SIGBUS: Access to an undefined portion of a memory object: Invalid address alignment";
+				case BUS_ADRERR:
+					return "SIGBUS: Access to an undefined portion of a memory object: Nonexistent physical address";
+				case BUS_OBJERR:
+					return "SIGBUS: Access to an undefined portion of a memory object: Object-specific hardware error";
+				default:
+					return "SIGBUS: Access to an undefined portion of a memory object";
+			}
+		case SIGCHLD:
+			switch (sigcode)
+			{
+				case CLD_EXITED:
+					return "SIGCHLD: Child process terminated, stopped, or continued: Child has exited";
+				case CLD_KILLED:
+					return "SIGCHLD: Child process terminated, stopped, or continued: Child has terminated abnormally and did not create a core file";
+				case CLD_DUMPED:
+					return "SIGCHLD: Child process terminated, stopped, or continued: Child has terminated abnormally and created a core file";
+				case CLD_TRAPPED:
+					return "SIGCHLD: Child process terminated, stopped, or continued: Traced child has trapped";
+				case CLD_STOPPED:
+					return "SIGCHLD: Child process terminated, stopped, or continued: Child has stopped";
+				case CLD_CONTINUED:
+					return "SIGCHLD: Child process terminated, stopped, or continued: Stopped child has continued";
+			}
+		case SIGCONT:
+			return "SIGCONT: Continue executing, if stopped";
+		case SIGFPE:
+			switch (sigcode)
+			{
+				case FPE_INTDIV:
+					return "SIGFPE: Erroneous arithmetic operation: Integer divide by zero";
+				case FPE_INTOVF:
+					return "SIGFPE: Erroneous arithmetic operation: Integer overflow";
+				case FPE_FLTDIV:
+					return "SIGFPE: Erroneous arithmetic operation: Floating-point divide by zero";
+				case FPE_FLTOVF:
+					return "SIGFPE: Erroneous arithmetic operation: Floating-point overflow";
+				case FPE_FLTUND:
+					return "SIGFPE: Erroneous arithmetic operation: Floating-point underflow";
+				case FPE_FLTRES:
+					return "SIGFPE: Erroneous arithmetic operation: Floating-point inexact result";
+				case FPE_FLTINV:
+					return "SIGFPE: Erroneous arithmetic operation: Invalid floating-point operation";
+				case FPE_FLTSUB:
+					return "SIGFPE: Erroneous arithmetic operation: Subscript out of range";
+				default:
+					return "SIGFPE: Erroneous arithmetic operation";
+			};
+		case SIGHUP:
+			return "SIGHUP: Hangup";
+		case SIGILL:
+			switch (sigcode)
+			{
+				case ILL_ILLOPC:
+					return "SIGILL: Illegal instruction: Illegal opcode";
+				case ILL_ILLOPN:
+					return "SIGILL: Illegal instruction: Illegal operand";
+				case ILL_ILLADR:
+					return "SIGILL: Illegal instruction: Illegal addressing mode";
+				case ILL_ILLTRP:
+					return "SIGILL: Illegal instruction: Illegal trap";
+				case ILL_PRVOPC:
+					return "SIGILL: Illegal instruction: Privileged opcode";
+				case ILL_PRVREG:
+					return "SIGILL: Illegal instruction: Privileged register";
+				case ILL_COPROC:
+					return "SIGILL: Illegal instruction: Coprocessor error";
+				case ILL_BADSTK:
+					return "SIGILL: Illegal instruction: Internal stack error";
+				default:
+					return "SIGILL: Illegal instruction";
+			}
+		case SIGINT:
+			return "SIGINT: Terminal interrupt signal";
+		case SIGKILL:
+			return "SIGKILL: Kill";
+		case SIGPIPE:
+			return "SIGPIPE: Write on a pipe with no one to read it";
+		case SIGQUIT:
+			return "SIGQUIT: Terminal quit signal";
+		case SIGSEGV:
+			switch (sigcode)
+			{
+				case SEGV_MAPERR:
+					return "SIGSEGV: Invalid memory reference: Address not mapped to object";
+				case SEGV_ACCERR:
+					return "SIGSEGV: Invalid memory reference: Invalid permissions for mapped object";
+				default:
+					return "SIGSEGV: Invalid memory reference";
+			}
+		case SIGSTOP:
+			return "SIGSTOP: Stop executing";
+		case SIGTERM:
+			return "SIGTERM: Termination signal";
+		case SIGTSTP:
+			return "SIGTSTP: Terminal stop signal";
+		case SIGTTIN:
+			return "SIGTTIN: Background process attempting read";
+		case SIGTTOU:
+			return "SIGTTOU: Background process attempting write";
+		case SIGUSR1:
+			return "SIGUSR1: User-defined signal 1";
+		case SIGUSR2:
+			return "SIGUSR2: User-defined signal 2";
 #if _XOPEN_UNIX
 # if defined(SIGPOLL)
-        case SIGPOLL:
-            switch (sigcode)
-            {
-                case POLL_IN:
-                    return "SIGPOLL: Pollable event: Data input available";
-                case POLL_OUT:
-                    return "SIGPOLL: Pollable event: Output buffers available";
-                case POLL_MSG:
-                    return "SIGPOLL: Pollable event: Input message available";
+		case SIGPOLL:
+			switch (sigcode)
+			{
+				case POLL_IN:
+					return "SIGPOLL: Pollable event: Data input available";
+				case POLL_OUT:
+					return "SIGPOLL: Pollable event: Output buffers available";
+				case POLL_MSG:
+					return "SIGPOLL: Pollable event: Input message available";
 #if defined(POLL_ERR) && defined(POLL_HUP) && (POLL_ERR != POLL_HUP)
-                case POLL_ERR:
-                    return "SIGPOLL: Pollable event: I/O error";
+				case POLL_ERR:
+					return "SIGPOLL: Pollable event: I/O error";
 #endif
-                case POLL_PRI:
-                    return "SIGPOLL: Pollable event: High priority input available";
+				case POLL_PRI:
+					return "SIGPOLL: Pollable event: High priority input available";
 #if defined(POLL_ERR) && defined(POLL_HUP) && (POLL_ERR != POLL_HUP)
-                case POLL_HUP:
-                    return "SIGPOLL: Pollable event: Device disconnected.";
+				case POLL_HUP:
+					return "SIGPOLL: Pollable event: Device disconnected.";
 #endif
-                    /* Work around the fact that the FreeBSD kernel uses the same value for
-                     * POLL_ERR and POLL_HUP. See
-                     * http://www.freebsd.org/cgi/cvsweb.cgi/src/sys/sys/signal.h (version
-                     * 1.47 introduced these constants with the same values).
-                     */
+					/* Work around the fact that the FreeBSD kernel uses the same value for
+					 * POLL_ERR and POLL_HUP. See
+					 * http://www.freebsd.org/cgi/cvsweb.cgi/src/sys/sys/signal.h (version
+					 * 1.47 introduced these constants with the same values).
+					 */
 #if defined(POLL_ERR) && defined(POLL_HUP) && (POLL_ERR == POLL_HUP)
-                case POLL_ERR:
-                    return "SIGPOLL: Pollable event: \"I/O error\" or \"Device disconnected\".";
+				case POLL_ERR:
+					return "SIGPOLL: Pollable event: \"I/O error\" or \"Device disconnected\".";
 #endif
-                default:
-                    return "SIGPOLL: Pollable event";
-            }
+				default:
+					return "SIGPOLL: Pollable event";
+			}
 # endif
-        case SIGPROF:
-            return "SIGPROF: Profiling timer expired";
-        case SIGSYS:
-            return "SIGSYS: Bad system call";
-        case SIGTRAP:
-            switch (sigcode)
-            {
-                case TRAP_BRKPT:
-                    return "SIGTRAP: Trace/breakpoint trap: Process breakpoint";
-                case TRAP_TRACE:
-                    return "SIGTRAP: Trace/breakpoint trap: Process trace trap";
-                default:
-                    return "SIGTRAP: Trace/breakpoint trap";
-            }
+		case SIGPROF:
+			return "SIGPROF: Profiling timer expired";
+		case SIGSYS:
+			return "SIGSYS: Bad system call";
+		case SIGTRAP:
+			switch (sigcode)
+			{
+				case TRAP_BRKPT:
+					return "SIGTRAP: Trace/breakpoint trap: Process breakpoint";
+				case TRAP_TRACE:
+					return "SIGTRAP: Trace/breakpoint trap: Process trace trap";
+				default:
+					return "SIGTRAP: Trace/breakpoint trap";
+			}
 #endif // _XOPEN_UNIX
-        case SIGURG:
-            return "SIGURG: High bandwidth data is available at a socket";
+		case SIGURG:
+			return "SIGURG: High bandwidth data is available at a socket";
 #if _XOPEN_UNIX
-        case SIGVTALRM:
-            return "SIGVTALRM: Virtual timer expired";
-        case SIGXCPU:
-            return "SIGXCPU: CPU time limit exceeded";
-        case SIGXFSZ:
-            return "SIGXFSZ: File size limit exceeded";
+		case SIGVTALRM:
+			return "SIGVTALRM: Virtual timer expired";
+		case SIGXCPU:
+			return "SIGXCPU: CPU time limit exceeded";
+		case SIGXFSZ:
+			return "SIGXFSZ: File size limit exceeded";
 #endif // _XOPEN_UNIX
-        default:
-            return "Unknown signal";
-    }
+		default:
+			return "Unknown signal";
+	}
 }
 #endif // SA_SIGINFO
 
@@ -373,74 +373,74 @@ static const char *wz_strsignal(int signum, int sigcode)
  */
 static void setFatalSignalHandler(SigActionHandler signalHandler)
 {
-    struct sigaction new_handler;
+	struct sigaction new_handler;
 
-    sigemptyset(&new_handler.sa_mask);
+	sigemptyset(&new_handler.sa_mask);
 #ifdef SA_SIGINFO
-    new_handler.sa_flags = SA_SIGINFO;
-    new_handler.sa_sigaction = signalHandler;
+	new_handler.sa_flags = SA_SIGINFO;
+	new_handler.sa_sigaction = signalHandler;
 #else
-    new_handler.sa_handler = signalHandler;
+	new_handler.sa_handler = signalHandler;
 #endif
 
-    sigaction(SIGABRT, NULL, &oldAction[SIGABRT]);
-    if (oldAction[SIGABRT].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGABRT, &new_handler, NULL);
-    }
+	sigaction(SIGABRT, NULL, &oldAction[SIGABRT]);
+	if (oldAction[SIGABRT].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGABRT, &new_handler, NULL);
+	}
 
-    sigaction(SIGBUS, NULL, &oldAction[SIGBUS]);
-    if (oldAction[SIGBUS].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGBUS, &new_handler, NULL);
-    }
+	sigaction(SIGBUS, NULL, &oldAction[SIGBUS]);
+	if (oldAction[SIGBUS].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGBUS, &new_handler, NULL);
+	}
 
-    sigaction(SIGFPE, NULL, &oldAction[SIGFPE]);
-    if (oldAction[SIGFPE].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGFPE, &new_handler, NULL);
-    }
+	sigaction(SIGFPE, NULL, &oldAction[SIGFPE]);
+	if (oldAction[SIGFPE].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGFPE, &new_handler, NULL);
+	}
 
-    sigaction(SIGILL, NULL, &oldAction[SIGILL]);
-    if (oldAction[SIGILL].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGILL, &new_handler, NULL);
-    }
+	sigaction(SIGILL, NULL, &oldAction[SIGILL]);
+	if (oldAction[SIGILL].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGILL, &new_handler, NULL);
+	}
 
-    sigaction(SIGQUIT, NULL, &oldAction[SIGQUIT]);
-    if (oldAction[SIGQUIT].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGQUIT, &new_handler, NULL);
-    }
+	sigaction(SIGQUIT, NULL, &oldAction[SIGQUIT]);
+	if (oldAction[SIGQUIT].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGQUIT, &new_handler, NULL);
+	}
 
-    sigaction(SIGSEGV, NULL, &oldAction[SIGSEGV]);
-    if (oldAction[SIGSEGV].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGSEGV, &new_handler, NULL);
-    }
+	sigaction(SIGSEGV, NULL, &oldAction[SIGSEGV]);
+	if (oldAction[SIGSEGV].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGSEGV, &new_handler, NULL);
+	}
 
 #if _XOPEN_UNIX
-    sigaction(SIGSYS, NULL, &oldAction[SIGSYS]);
-    if (oldAction[SIGSYS].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGSYS, &new_handler, NULL);
-    }
+	sigaction(SIGSYS, NULL, &oldAction[SIGSYS]);
+	if (oldAction[SIGSYS].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGSYS, &new_handler, NULL);
+	}
 
-    sigaction(SIGXCPU, NULL, &oldAction[SIGXCPU]);
-    if (oldAction[SIGXCPU].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGXCPU, &new_handler, NULL);
-    }
+	sigaction(SIGXCPU, NULL, &oldAction[SIGXCPU]);
+	if (oldAction[SIGXCPU].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGXCPU, &new_handler, NULL);
+	}
 
-    sigaction(SIGXFSZ, NULL, &oldAction[SIGXFSZ]);
-    if (oldAction[SIGXFSZ].sa_handler != SIG_IGN)
-    {
-        sigaction(SIGXFSZ, &new_handler, NULL);
-    }
+	sigaction(SIGXFSZ, NULL, &oldAction[SIGXFSZ]);
+	if (oldAction[SIGXFSZ].sa_handler != SIG_IGN)
+	{
+		sigaction(SIGXFSZ, &new_handler, NULL);
+	}
 
-    // ignore SIGTRAP
-    new_handler.sa_handler = SIG_IGN;
-    sigaction(SIGTRAP, &new_handler, &oldAction[SIGTRAP]);
+	// ignore SIGTRAP
+	new_handler.sa_handler = SIG_IGN;
+	sigaction(SIGTRAP, &new_handler, &oldAction[SIGTRAP]);
 #endif // _XOPEN_UNIX
 }
 
@@ -467,104 +467,104 @@ static void setFatalSignalHandler(SigActionHandler signalHandler)
  */
 static pid_t execGdb(int const dumpFile, int *gdbWritePipe)
 {
-    /* Check if the "bare minimum" is available: GDB and an absolute path
-     * to our program's binary.
-     */
+	/* Check if the "bare minimum" is available: GDB and an absolute path
+	 * to our program's binary.
+	 */
 
-    /*I AM PUTTING THE VARIABLE DECLARATIONS AT THE BEGINNING OF THE BLOCK AS THEY SHOULD BE!!!
-     * -Subsentient*/
+	/*I AM PUTTING THE VARIABLE DECLARATIONS AT THE BEGINNING OF THE BLOCK AS THEY SHOULD BE!!!
+	 * -Subsentient*/
 
-    pid_t pid;
-    int gdbPipe[2];
-    char *gdbEnv[] = { NULL };
-    const char *gdbArgv[4];
+	pid_t pid;
+	int gdbPipe[2];
+	char *gdbEnv[] = { NULL };
+	const char *gdbArgv[4];
 
-    if (!programIsAvailable
-            || !gdbIsAvailable)
-    {
-        write(dumpFile, "No extended backtrace dumped:\n",
-              strlen("No extended backtrace dumped:\n"));
+	if (!programIsAvailable
+			|| !gdbIsAvailable)
+	{
+		write(dumpFile, "No extended backtrace dumped:\n",
+			  strlen("No extended backtrace dumped:\n"));
 
-        if (!programIsAvailable)
-        {
-            write(dumpFile, "- Program path not available\n",
-                  strlen("- Program path not available\n"));
-        }
-        if (!gdbIsAvailable)
-        {
-            write(dumpFile, "- GDB not available\n",
-                  strlen("- GDB not available\n"));
-        }
+		if (!programIsAvailable)
+		{
+			write(dumpFile, "- Program path not available\n",
+				  strlen("- Program path not available\n"));
+		}
+		if (!gdbIsAvailable)
+		{
+			write(dumpFile, "- GDB not available\n",
+				  strlen("- GDB not available\n"));
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-    // Create a pipe to use for communication with 'gdb'
-    if (pipe(gdbPipe) == -1)
-    {
-        write(dumpFile, "Pipe failed\n",
-              strlen("Pipe failed\n"));
+	// Create a pipe to use for communication with 'gdb'
+	if (pipe(gdbPipe) == -1)
+	{
+		write(dumpFile, "Pipe failed\n",
+			  strlen("Pipe failed\n"));
 
-        printf("Pipe failed\n");
+		printf("Pipe failed\n");
 
-        return 0;
-    }
+		return 0;
+	}
 
-    // Fork a new child process
-    pid = fork();
-    if (pid == -1)
-    {
-        write(dumpFile, "Fork failed\n",
-              strlen("Fork failed\n"));
+	// Fork a new child process
+	pid = fork();
+	if (pid == -1)
+	{
+		write(dumpFile, "Fork failed\n",
+			  strlen("Fork failed\n"));
 
-        printf("Fork failed\n");
+		printf("Fork failed\n");
 
-        // Clean up our pipe
-        close(gdbPipe[0]);
-        close(gdbPipe[1]);
+		// Clean up our pipe
+		close(gdbPipe[0]);
+		close(gdbPipe[1]);
 
-        return 0;
-    }
+		return 0;
+	}
 
-    // Check to see if we're the parent
-    if (pid != 0)
-    {
+	// Check to see if we're the parent
+	if (pid != 0)
+	{
 #ifdef WZ_OS_LINUX
-        // Allow tracing the process, some hardened kernel configurations disallow this.
-        prctl(PR_SET_PTRACER, pid, 0, 0, 0);
+		// Allow tracing the process, some hardened kernel configurations disallow this.
+		prctl(PR_SET_PTRACER, pid, 0, 0, 0);
 #endif
 
-        // Return the write end of the pipe
-        *gdbWritePipe = gdbPipe[1];
+		// Return the write end of the pipe
+		*gdbWritePipe = gdbPipe[1];
 
-        return pid;
-    }
+		return pid;
+	}
 
-    /*Yes I know this is ugly, but it's better than declared variables beyond the block's beginning.*/
-    gdbArgv[0] = gdbPath;
-    gdbArgv[1] = programPath;
-    gdbArgv[2] = programPID;
-    gdbArgv[3] = NULL;
+	/*Yes I know this is ugly, but it's better than declared variables beyond the block's beginning.*/
+	gdbArgv[0] = gdbPath;
+	gdbArgv[1] = programPath;
+	gdbArgv[2] = programPID;
+	gdbArgv[3] = NULL;
 
-    close(gdbPipe[1]); // No output to pipe
+	close(gdbPipe[1]); // No output to pipe
 
-    dup2(gdbPipe[0], STDIN_FILENO); // STDIN from pipe
-    dup2(dumpFile, STDOUT_FILENO); // STDOUT to dumpFile
+	dup2(gdbPipe[0], STDIN_FILENO); // STDIN from pipe
+	dup2(dumpFile, STDOUT_FILENO); // STDOUT to dumpFile
 
-    write(dumpFile, "GDB extended backtrace:\n",
-          strlen("GDB extended backtrace:\n"));
+	write(dumpFile, "GDB extended backtrace:\n",
+		  strlen("GDB extended backtrace:\n"));
 
-    /* If execve() is successful it effectively prevents further
-     * execution of this function.
-     */
-    execve(gdbPath, (char **)gdbArgv, (char **)gdbEnv);
+	/* If execve() is successful it effectively prevents further
+	 * execution of this function.
+	 */
+	execve(gdbPath, (char **)gdbArgv, (char **)gdbEnv);
 
-    // If we get here it means that execve failed!
-    write(dumpFile, "execcv(\"gdb\") failed\n",
-          strlen("execcv(\"gdb\") failed\n"));
+	// If we get here it means that execve failed!
+	write(dumpFile, "execcv(\"gdb\") failed\n",
+		  strlen("execcv(\"gdb\") failed\n"));
 
-    // Terminate the child, indicating failure
-    exit(1);
+	// Terminate the child, indicating failure
+	exit(1);
 }
 
 /**
@@ -577,75 +577,75 @@ static pid_t execGdb(int const dumpFile, int *gdbWritePipe)
  */
 static bool gdbExtendedBacktrace(int const dumpFile)
 {
-    // Spawn a GDB instance and retrieve a pipe to its stdin
-    int gdbPipe, status;
-    const pid_t pid = execGdb(dumpFile, &gdbPipe);
-    pid_t wpid;
+	// Spawn a GDB instance and retrieve a pipe to its stdin
+	int gdbPipe, status;
+	const pid_t pid = execGdb(dumpFile, &gdbPipe);
+	pid_t wpid;
 
-    // Retrieve a full stack backtrace
-    static const char gdbCommands[] =
-        "backtrace full\n"
-        // Move to the stack frame where we triggered the crash
-        "frame 4\n"
+	// Retrieve a full stack backtrace
+	static const char gdbCommands[] =
+		"backtrace full\n"
+		// Move to the stack frame where we triggered the crash
+		"frame 4\n"
 
-        // Show the assembly code associated with that stack frame
-        "disassemble\n"
+		// Show the assembly code associated with that stack frame
+		"disassemble\n"
 
-        // Show the content of all registers
-        "info registers\n"
-        "quit\n";
+		// Show the content of all registers
+		"info registers\n"
+		"quit\n";
 
-    if (pid == 0)
-    {
-        return false;
-    }
+	if (pid == 0)
+	{
+		return false;
+	}
 
-    write(gdbPipe, gdbCommands, sizeof(gdbCommands));
+	write(gdbPipe, gdbCommands, sizeof(gdbCommands));
 
-    /* Flush our end of the pipe to make sure that GDB has all commands
-     * directly available to it.
-     */
-    fsync(gdbPipe);
+	/* Flush our end of the pipe to make sure that GDB has all commands
+	 * directly available to it.
+	 */
+	fsync(gdbPipe);
 
-    // Wait for our child to terminate
-    wpid = waitpid(pid, &status, 0);
+	// Wait for our child to terminate
+	wpid = waitpid(pid, &status, 0);
 
-    // Clean up our end of the pipe
-    close(gdbPipe);
+	// Clean up our end of the pipe
+	close(gdbPipe);
 
-    // waitpid(): on error, -1 is returned
-    if (wpid == -1)
-    {
-        write(dumpFile, "GDB failed\n",
-              strlen("GDB failed\n"));
-        printf("GDB failed\n");
+	// waitpid(): on error, -1 is returned
+	if (wpid == -1)
+	{
+		write(dumpFile, "GDB failed\n",
+			  strlen("GDB failed\n"));
+		printf("GDB failed\n");
 
-        return false;
-    }
+		return false;
+	}
 
-    /* waitpid(): on success, returns the process ID of the child whose
-     * state has changed
-     *
-     * We only have one child, from our fork() call above, thus these PIDs
-     * should match.
-     */
-    assert(pid == wpid);
+	/* waitpid(): on success, returns the process ID of the child whose
+	 * state has changed
+	 *
+	 * We only have one child, from our fork() call above, thus these PIDs
+	 * should match.
+	 */
+	assert(pid == wpid);
 
-    /* Check wether our child (which presumably was GDB, but doesn't
-     * necessarily have to be) didn't terminate normally or had a non-zero
-     * return code.
-     */
-    if (!WIFEXITED(status)
-            || WEXITSTATUS(status) != 0)
-    {
-        write(dumpFile, "GDB failed\n",
-              strlen("GDB failed\n"));
-        printf("GDB failed\n");
+	/* Check wether our child (which presumably was GDB, but doesn't
+	 * necessarily have to be) didn't terminate normally or had a non-zero
+	 * return code.
+	 */
+	if (!WIFEXITED(status)
+			|| WEXITSTATUS(status) != 0)
+	{
+		write(dumpFile, "GDB failed\n",
+			  strlen("GDB failed\n"));
+		printf("GDB failed\n");
 
-        return false;
-    }
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 
@@ -663,76 +663,76 @@ static void posixExceptionHandler(int signum, siginfo_t *siginfo, WZ_DECL_UNUSED
 static void posixExceptionHandler(int signum)
 #endif
 {
-    static sig_atomic_t allreadyRunning = 0;
+	static sig_atomic_t allreadyRunning = 0;
 
 # if defined(__GLIBC__)
-    void *btBuffer[MAX_BACKTRACE] = {NULL};
-    unsigned long btSize = backtrace(btBuffer, MAX_BACKTRACE);
+	void *btBuffer[MAX_BACKTRACE] = {NULL};
+	unsigned long btSize = backtrace(btBuffer, MAX_BACKTRACE);
 # endif
 
-    // XXXXXX will be converted into random characters by mkstemp(3)
-    static const char gdmpPath[] = "wz2100legacy.gdmp-XXXXXX";
-    int dumpFile;
-    const char *signal = NULL;
-    char dumpFilename[256];
+	// XXXXXX will be converted into random characters by mkstemp(3)
+	static const char gdmpPath[] = "wz2100legacy.gdmp-XXXXXX";
+	int dumpFile;
+	const char *signal = NULL;
+	char dumpFilename[256];
 
-    if (allreadyRunning)
-    {
-        raise(signum);
-    }
-    allreadyRunning = 1;
+	if (allreadyRunning)
+	{
+		raise(signum);
+	}
+	allreadyRunning = 1;
 
-    snprintf(dumpFilename, 256, "%s%s%s%s", PHYSFS_getUserDir(), WZ_WRITEDIR, "/logs/dumps/", gdmpPath);
-
-
-    dumpFile = mkstemp(dumpFilename);
+	snprintf(dumpFilename, 256, "%s%s%s%s", PHYSFS_getUserDir(), WZ_WRITEDIR, "/logs/dumps/", gdmpPath);
 
 
-    if (dumpFile == -1)
-    {
-        printf("Failed to create dump file '%s'", dumpFilename);
-        return;
-    }
+	dumpFile = mkstemp(dumpFilename);
 
-    // Dump a generic info header
-    dbgDumpHeader(dumpFile);
+
+	if (dumpFile == -1)
+	{
+		printf("Failed to create dump file '%s'", dumpFilename);
+		return;
+	}
+
+	// Dump a generic info header
+	dbgDumpHeader(dumpFile);
 
 
 #ifdef SA_SIGINFO
-    write(dumpFile, "Dump caused by signal: ", strlen("Dump caused by signal: "));
+	write(dumpFile, "Dump caused by signal: ", strlen("Dump caused by signal: "));
 
-    signal = wz_strsignal(siginfo->si_signo, siginfo->si_code);
+	signal = wz_strsignal(siginfo->si_signo, siginfo->si_code);
 
-    write(dumpFile, signal, strlen(signal));
-    write(dumpFile, "\n\n", 2);
+	write(dumpFile, signal, strlen(signal));
+	write(dumpFile, "\n\n", 2);
 #endif
 
-    dbgDumpLog(dumpFile); // dump out the last several log calls
+	dbgDumpLog(dumpFile); // dump out the last several log calls
 
 # if defined(__GLIBC__)
-    // Dump raw backtrace in case GDB is not available or fails
-    write(dumpFile, "GLIBC raw backtrace:\n", strlen("GLIBC raw backtrace:\n"));
-    backtrace_symbols_fd(btBuffer, btSize, dumpFile);
-    write(dumpFile, "\n", 1);
+	// Dump raw backtrace in case GDB is not available or fails
+	write(dumpFile, "GLIBC raw backtrace:\n", strlen("GLIBC raw backtrace:\n"));
+	backtrace_symbols_fd(btBuffer, btSize, dumpFile);
+	write(dumpFile, "\n", 1);
 # else
-    write(dumpFile, "GLIBC not available, no raw backtrace dumped\n\n",
-          strlen("GLIBC not available, no raw backtrace dumped\n\n"));
+	write(dumpFile, "GLIBC not available, no raw backtrace dumped\n\n",
+		  strlen("GLIBC not available, no raw backtrace dumped\n\n"));
 # endif
 
 
-    // Make sure everything is written before letting GDB write to it
-    fsync(dumpFile);
+	// Make sure everything is written before letting GDB write to it
+	fsync(dumpFile);
 
-    // Use 'gdb' to provide an "extended" backtrace
-    gdbExtendedBacktrace(dumpFile);
+	// Use 'gdb' to provide an "extended" backtrace
+	gdbExtendedBacktrace(dumpFile);
 
-    printf("Saved dump file to '%s'\n"
-           "If you create a bugreport regarding this crash, please include this file.\n", dumpFilename);
-    close(dumpFile);
+	printf("Saved dump file to '%s'\n"
+		   "If you create a bugreport regarding this crash, please include this file.\n", dumpFilename);
+	close(dumpFile);
 
 
-    sigaction(signum, &oldAction[signum], NULL);
-    raise(signum);
+	sigaction(signum, &oldAction[signum], NULL);
+	raise(signum);
 }
 
 
@@ -741,48 +741,48 @@ static void posixExceptionHandler(int signum)
 #if defined(WZ_OS_UNIX) && !defined(WZ_OS_MAC)
 static bool fetchProgramPath(char *const programPath, size_t const bufSize, const char *const programCommand)
 {
-    // Construct the "which $(programCommand)" string
-    char whichProgramCommand[PATH_MAX], *linefeed;
-    FILE *whichProgramStream;
-    size_t bytesRead;
+	// Construct the "which $(programCommand)" string
+	char whichProgramCommand[PATH_MAX], *linefeed;
+	FILE *whichProgramStream;
+	size_t bytesRead;
 
-    snprintf(whichProgramCommand, sizeof(whichProgramCommand), "which %s", programCommand);
+	snprintf(whichProgramCommand, sizeof(whichProgramCommand), "which %s", programCommand);
 
-    /* Fill the output buffer with zeroes so that we can rely on the output
-     * string being NUL-terminated.
-     */
-    memset(programPath, 0, bufSize);
+	/* Fill the output buffer with zeroes so that we can rely on the output
+	 * string being NUL-terminated.
+	 */
+	memset(programPath, 0, bufSize);
 
-    /* Execute the "which" command (constructed above) and collect its
-     * output in programPath.
-     */
-    whichProgramStream = popen(whichProgramCommand, "r");
-    bytesRead = fread(programPath, 1, bufSize, whichProgramStream);
-    pclose(whichProgramStream);
+	/* Execute the "which" command (constructed above) and collect its
+	 * output in programPath.
+	 */
+	whichProgramStream = popen(whichProgramCommand, "r");
+	bytesRead = fread(programPath, 1, bufSize, whichProgramStream);
+	pclose(whichProgramStream);
 
-    // Check whether our buffer is too small, indicate failure if it is
-    if (bytesRead == bufSize)
-    {
-        debug(LOG_WARNING, "Could not retrieve full path to \"%s\", as our buffer is too small. This may prevent creation of an extended backtrace.", programCommand);
-        return false;
-    }
+	// Check whether our buffer is too small, indicate failure if it is
+	if (bytesRead == bufSize)
+	{
+		debug(LOG_WARNING, "Could not retrieve full path to \"%s\", as our buffer is too small. This may prevent creation of an extended backtrace.", programCommand);
+		return false;
+	}
 
-    // Cut of the linefeed (and everything following it) if it's present.
-    linefeed = strchr(programPath, '\n');
-    if (linefeed)
-    {
-        *linefeed = '\0';
-    }
+	// Cut of the linefeed (and everything following it) if it's present.
+	linefeed = strchr(programPath, '\n');
+	if (linefeed)
+	{
+		*linefeed = '\0';
+	}
 
-    // Check to see whether we retrieved any meaning ful result
-    if (strlen(programPath) == 0)
-    {
-        debug(LOG_WARNING, "Could not retrieve full path to \"%s\". This may prevent creation of an extended backtrace.", programCommand);
-        return false;
-    }
+	// Check to see whether we retrieved any meaning ful result
+	if (strlen(programPath) == 0)
+	{
+		debug(LOG_WARNING, "Could not retrieve full path to \"%s\". This may prevent creation of an extended backtrace.", programCommand);
+		return false;
+	}
 
-    debug(LOG_WZ, "Found program \"%s\" at path \"%s\"", programCommand, programPath);
-    return true;
+	debug(LOG_WZ, "Found program \"%s\" at path \"%s\"", programCommand, programPath);
+	return true;
 }
 #endif
 
@@ -793,75 +793,75 @@ static bool fetchProgramPath(char *const programPath, size_t const bufSize, cons
  */
 void setupExceptionHandler(int argc, char *argv[])
 {
-    const char *programCommand; /*This was supposed to begin at the last UNIX && !MAC elif there, */
-    time_t currentTime;			/* but it made the compiler cranky.*/
+	const char *programCommand; /*This was supposed to begin at the last UNIX && !MAC elif there, */
+	time_t currentTime;			/* but it made the compiler cranky.*/
 
 #if !defined(WZ_OS_MAC)
-    // Initialize info required for the debug dumper
-    dbgDumpInit(argc, argv);
+	// Initialize info required for the debug dumper
+	dbgDumpInit(argc, argv);
 #endif
 
 #if defined(WZ_OS_WIN)
 # if defined(WZ_CC_MINGW)
-    ExchndlSetup();
+	ExchndlSetup();
 # else
-    prevExceptionHandler = SetUnhandledExceptionFilter(windowsExceptionHandler);
+	prevExceptionHandler = SetUnhandledExceptionFilter(windowsExceptionHandler);
 # endif // !defined(WZ_CC_MINGW)
 #elif defined(WZ_OS_UNIX) && !defined(WZ_OS_MAC)
-    programCommand = argv[0];
-    // Get full path to this program. Needed for gdb to find the binary.
-    programIsAvailable = fetchProgramPath(programPath, sizeof(programPath), programCommand);
+	programCommand = argv[0];
+	// Get full path to this program. Needed for gdb to find the binary.
+	programIsAvailable = fetchProgramPath(programPath, sizeof(programPath), programCommand);
 
-    // Get full path to 'gdb'
-    gdbIsAvailable = fetchProgramPath(gdbPath, sizeof(gdbPath), "gdb");
+	// Get full path to 'gdb'
+	gdbIsAvailable = fetchProgramPath(gdbPath, sizeof(gdbPath), "gdb");
 
-    sysInfoValid = (uname(&sysInfo) == 0);
+	sysInfoValid = (uname(&sysInfo) == 0);
 
-    currentTime = time(NULL);
-    sstrcpy(executionDate, ctime(&currentTime));
+	currentTime = time(NULL);
+	sstrcpy(executionDate, ctime(&currentTime));
 
-    snprintf(programPID, sizeof(programPID), "%i", getpid());
+	snprintf(programPID, sizeof(programPID), "%i", getpid());
 
-    setFatalSignalHandler(posixExceptionHandler);
+	setFatalSignalHandler(posixExceptionHandler);
 #endif // WZ_OS_*
 }
 bool OverrideRPTDirectory(char *newPath)
 {
 # if defined(WZ_CC_MINGW)
-    TCHAR buf[MAX_PATH];
+	TCHAR buf[MAX_PATH];
 
-    if (!MultiByteToWideChar(CP_UTF8, 0, newPath, strlen(newPath), buf, 0))
-    {
-        //conversion failed-- we won't use the user's directory.
+	if (!MultiByteToWideChar(CP_UTF8, 0, newPath, strlen(newPath), buf, 0))
+	{
+		//conversion failed-- we won't use the user's directory.
 
-        LPVOID lpMsgBuf;
-        LPVOID lpDisplayBuf;
-        int32_t dw = GetLastError();
-        TCHAR szBuffer[4196];
+		LPVOID lpMsgBuf;
+		LPVOID lpDisplayBuf;
+		int32_t dw = GetLastError();
+		TCHAR szBuffer[4196];
 
-        FormatMessage(
-            FORMAT_MESSAGE_ALLOCATE_BUFFER |
-            FORMAT_MESSAGE_FROM_SYSTEM |
-            FORMAT_MESSAGE_IGNORE_INSERTS,
-            NULL,
-            dw,
-            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-            (LPTSTR) &lpMsgBuf,
-            0, NULL );
+		FormatMessage(
+			FORMAT_MESSAGE_ALLOCATE_BUFFER |
+			FORMAT_MESSAGE_FROM_SYSTEM |
+			FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			dw,
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			(LPTSTR) &lpMsgBuf,
+			0, NULL );
 
-        wsprintf(szBuffer, _T("Exception handler failed setting new directory with error %d: %s\n"), dw, lpMsgBuf);
-        MessageBox(MB_ICONEXCLAMATION, szBuffer, _T("Error"), MB_OK);
+		wsprintf(szBuffer, _T("Exception handler failed setting new directory with error %d: %s\n"), dw, lpMsgBuf);
+		MessageBox(MB_ICONEXCLAMATION, szBuffer, _T("Error"), MB_OK);
 
-        LocalFree(lpMsgBuf);
-        LocalFree(lpDisplayBuf);
+		LocalFree(lpMsgBuf);
+		LocalFree(lpDisplayBuf);
 
-        return false;
-    }
-    _tcscpy(buf, newPath);
-    PathRemoveFileSpec(buf);
-    _tcscat(buf, _T("\\logs\\dumps\\")); // stuff it in the dumps directory
-    _tcscat(buf, _T("wz2100legacy.RPT"));
-    ResetRPTDirectory(buf);
+		return false;
+	}
+	_tcscpy(buf, newPath);
+	PathRemoveFileSpec(buf);
+	_tcscat(buf, _T("\\logs\\dumps\\")); // stuff it in the dumps directory
+	_tcscat(buf, _T("wz2100legacy.RPT"));
+	ResetRPTDirectory(buf);
 #endif
-    return true;
+	return true;
 }

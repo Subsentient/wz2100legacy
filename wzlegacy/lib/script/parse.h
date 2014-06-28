@@ -49,54 +49,54 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* Structure to hold script define directive information */
 typedef struct _scr_define
 {
-    char scr_define_macro[MAX_SCR_MACRO_LEN];
-    char scr_define_body[MAXSTRLEN];
+	char scr_define_macro[MAX_SCR_MACRO_LEN];
+	char scr_define_body[MAXSTRLEN];
 } SCR_MACRO;
 
 /* Definition for the chunks of code that are used within the compiler */
 typedef struct _code_block
 {
-    uint32_t				size;				// size of the code block
-    INTERP_VAL			*pCode;		// pointer to the code data
-    uint32_t				debugEntries;
-    SCRIPT_DEBUG		*psDebug;	// Debugging info for the script.
-    INTERP_TYPE			type;			// The type of the code block
+	uint32_t				size;				// size of the code block
+	INTERP_VAL			*pCode;		// pointer to the code data
+	uint32_t				debugEntries;
+	SCRIPT_DEBUG		*psDebug;	// Debugging info for the script.
+	INTERP_TYPE			type;			// The type of the code block
 } CODE_BLOCK;
 
 /* The chunk of code returned from parsing a parameter list. */
 typedef struct _param_block
 {
-    uint32_t		numParams;
-    INTERP_TYPE	*aParams;	// List of parameter types
-    uint32_t		size;
-    INTERP_VAL	*pCode;		// The code that puts the parameters onto the stack
+	uint32_t		numParams;
+	INTERP_TYPE	*aParams;	// List of parameter types
+	uint32_t		size;
+	INTERP_VAL	*pCode;		// The code that puts the parameters onto the stack
 } PARAM_BLOCK;
 
 /* The types of a functions parameters, returned from parsing a parameter declaration */
 typedef struct _param_decl
 {
-    uint32_t		numParams;
-    INTERP_TYPE	*aParams;
+	uint32_t		numParams;
+	INTERP_TYPE	*aParams;
 } PARAM_DECL;
 
 /* The chunk of code used while parsing a conditional statement */
 typedef struct _cond_block
 {
-    uint32_t		numOffsets;
-    uint32_t		*aOffsets;	// Positions in the code that have to be
-    // replaced with the offset to the end of the
-    // conditional statement (for the jumps). - //TODO: change to INTERP_VAL - probbaly not necessary
-    uint32_t		size;
-    INTERP_VAL		*pCode;
-    uint32_t			debugEntries;	// Number of debugging entries in psDebug.
-    SCRIPT_DEBUG	*psDebug;		// Debugging info for the script.
+	uint32_t		numOffsets;
+	uint32_t		*aOffsets;	// Positions in the code that have to be
+	// replaced with the offset to the end of the
+	// conditional statement (for the jumps). - //TODO: change to INTERP_VAL - probbaly not necessary
+	uint32_t		size;
+	INTERP_VAL		*pCode;
+	uint32_t			debugEntries;	// Number of debugging entries in psDebug.
+	SCRIPT_DEBUG	*psDebug;		// Debugging info for the script.
 } COND_BLOCK;
 
 /* The possible access types for a type */
 typedef enum _access_type
 {
-    AT_SIMPLE,			// The type represents a simple data value
-    AT_OBJECT,			// The type represents an object
+	AT_SIMPLE,			// The type represents a simple data value
+	AT_OBJECT,			// The type represents an object
 } ACCESS_TYPE;
 
 
@@ -110,73 +110,73 @@ typedef BOOL (*SCR_VAL_LOAD)(int32_t version, INTERP_VAL *psVal, char *pBuffer, 
 /* Type for a user type symbol */
 typedef struct _type_symbol
 {
-    const char		*pIdent;	// Type identifier
-    INTERP_TYPE		typeID;		// The type id to use in the type field of values
-    int16_t			accessType;	// Whether the type is an object or a simple value
-    SCR_VAL_SAVE	saveFunc;	// load and save functions
-    SCR_VAL_LOAD	loadFunc;	//
+	const char		*pIdent;	// Type identifier
+	INTERP_TYPE		typeID;		// The type id to use in the type field of values
+	int16_t			accessType;	// Whether the type is an object or a simple value
+	SCR_VAL_SAVE	saveFunc;	// load and save functions
+	SCR_VAL_LOAD	loadFunc;	//
 } TYPE_SYMBOL;
 
 /* Type for a variable identifier declaration */
 typedef struct _var_ident_decl
 {
-    char			*pIdent;						// variable identifier
-    int32_t			dimensions;						// number of dimensions of an array - 0 for normal var
-    int32_t			elements[VAR_MAX_DIMENSIONS];	// number of elements in an array
+	char			*pIdent;						// variable identifier
+	int32_t			dimensions;						// number of dimensions of an array - 0 for normal var
+	int32_t			elements[VAR_MAX_DIMENSIONS];	// number of elements in an array
 } VAR_IDENT_DECL;
 
 /* Type for a variable symbol */
 typedef struct _var_symbol
 {
-    const char	*pIdent;	// variable's identifier
-    INTERP_TYPE		type;		// variable type
-    STORAGE_TYPE	storage;	// Where the variable is stored
-    INTERP_TYPE		objType;	// The object type if this is an object variable
-    uint32_t			index;		// Index of the variable in its data space
-    SCRIPT_VARFUNC	get, set;	// Access functions if the variable is stored in an object/in-game
-    uint32_t			dimensions;						// number of dimensions of an array - 0 for normal var
-    int32_t			elements[VAR_MAX_DIMENSIONS];	// number of elements in an array
+	const char	*pIdent;	// variable's identifier
+	INTERP_TYPE		type;		// variable type
+	STORAGE_TYPE	storage;	// Where the variable is stored
+	INTERP_TYPE		objType;	// The object type if this is an object variable
+	uint32_t			index;		// Index of the variable in its data space
+	SCRIPT_VARFUNC	get, set;	// Access functions if the variable is stored in an object/in-game
+	uint32_t			dimensions;						// number of dimensions of an array - 0 for normal var
+	int32_t			elements[VAR_MAX_DIMENSIONS];	// number of elements in an array
 
-    struct _var_symbol *psNext;
+	struct _var_symbol *psNext;
 } VAR_SYMBOL;
 
 
 /* Type for an array access block */
 typedef struct _array_block
 {
-    VAR_SYMBOL		*psArrayVar;
-    uint32_t			dimensions;
+	VAR_SYMBOL		*psArrayVar;
+	uint32_t			dimensions;
 
-    uint32_t			size;
-    INTERP_VAL			*pCode;
-    uint32_t			debugEntries;	// Number of debugging entries in psDebug.
-    SCRIPT_DEBUG	*psDebug;		// Debugging info for the script.
+	uint32_t			size;
+	INTERP_VAL			*pCode;
+	uint32_t			debugEntries;	// Number of debugging entries in psDebug.
+	SCRIPT_DEBUG	*psDebug;		// Debugging info for the script.
 } ARRAY_BLOCK;
 
 /* Type for a constant symbol */
 typedef struct _const_symbol
 {
-    const char		*pIdent;	// variable's identifier
-    INTERP_TYPE		type;		// variable type
+	const char		*pIdent;	// variable's identifier
+	INTERP_TYPE		type;		// variable type
 
-    /* The actual value of the constant.
-     * Only one of these will be valid depending on type.
-     * A union is not used as a union cannot be statically initialised
-     */
-    BOOL			bval;
-    int32_t			ival;
-    void			*oval;
-    char			*sval;	//String values
-    float			fval;
+	/* The actual value of the constant.
+	 * Only one of these will be valid depending on type.
+	 * A union is not used as a union cannot be statically initialised
+	 */
+	BOOL			bval;
+	int32_t			ival;
+	void			*oval;
+	char			*sval;	//String values
+	float			fval;
 } CONST_SYMBOL;
 
 /* The chunk of code used to reference an object variable */
 typedef struct _objvar_block
 {
-    VAR_SYMBOL		*psObjVar;	// The object variables symbol
+	VAR_SYMBOL		*psObjVar;	// The object variables symbol
 
-    uint32_t			size;
-    INTERP_VAL		*pCode;		// The code to get the object value on the stack
+	uint32_t			size;
+	INTERP_VAL		*pCode;		// The code to get the object value on the stack
 } OBJVAR_BLOCK;
 
 /* The maximum number of parameters for an instinct function */
@@ -185,89 +185,89 @@ typedef struct _objvar_block
 /* Type for a function symbol */
 typedef struct _func_symbol
 {
-    const char	*pIdent;	// function's identifier
-    SCRIPT_FUNC	pFunc;		// Pointer to the instinct function
-    INTERP_TYPE	type;		// function type
-    uint32_t		numParams;	// Number of parameters to the function
-    INTERP_TYPE	aParams[INST_MAXPARAMS];
-    // List of parameter types
-    BOOL		script;		// Whether the function is defined in the script
-    // or a C instinct function
-    uint32_t		size;		// The size of script code
-    INTERP_VAL	*pCode;		// The code for a function if it is defined in the script
-    uint32_t		location;	// The position of the function in the final code block
-    uint32_t			debugEntries;	// Number of debugging entries in psDebug.
-    SCRIPT_DEBUG	*psDebug;		// Debugging info for the script.
+	const char	*pIdent;	// function's identifier
+	SCRIPT_FUNC	pFunc;		// Pointer to the instinct function
+	INTERP_TYPE	type;		// function type
+	uint32_t		numParams;	// Number of parameters to the function
+	INTERP_TYPE	aParams[INST_MAXPARAMS];
+	// List of parameter types
+	BOOL		script;		// Whether the function is defined in the script
+	// or a C instinct function
+	uint32_t		size;		// The size of script code
+	INTERP_VAL	*pCode;		// The code for a function if it is defined in the script
+	uint32_t		location;	// The position of the function in the final code block
+	uint32_t			debugEntries;	// Number of debugging entries in psDebug.
+	SCRIPT_DEBUG	*psDebug;		// Debugging info for the script.
 
-    struct _func_symbol *psNext;
+	struct _func_symbol *psNext;
 } FUNC_SYMBOL;
 
 /* The type for a variable declaration */
 typedef struct _var_decl
 {
-    INTERP_TYPE		type;
-    STORAGE_TYPE	storage;
+	INTERP_TYPE		type;
+	STORAGE_TYPE	storage;
 } VAR_DECL;
 
 /* The type for a trigger sub declaration */
 typedef struct _trigger_decl
 {
-    TRIGGER_TYPE	type;
-    uint32_t			size;
-    INTERP_VAL		*pCode;
-    uint32_t			time;
+	TRIGGER_TYPE	type;
+	uint32_t			size;
+	INTERP_VAL		*pCode;
+	uint32_t			time;
 } TRIGGER_DECL;
 
 /* Type for a trigger symbol */
 typedef struct _trigger_symbol
 {
-    char			*pIdent;	// Trigger's identifier
-    uint32_t			index;		// The triggers index number
-    TRIGGER_TYPE	type;		// Trigger type
-    uint32_t			size;		// Code size for the trigger
-    INTERP_VAL		*pCode;		// The trigger code
-    uint32_t			time;		// How often to check the trigger
+	char			*pIdent;	// Trigger's identifier
+	uint32_t			index;		// The triggers index number
+	TRIGGER_TYPE	type;		// Trigger type
+	uint32_t			size;		// Code size for the trigger
+	INTERP_VAL		*pCode;		// The trigger code
+	uint32_t			time;		// How often to check the trigger
 
-    uint32_t			debugEntries;
-    SCRIPT_DEBUG	*psDebug;
+	uint32_t			debugEntries;
+	SCRIPT_DEBUG	*psDebug;
 
-    struct _trigger_symbol *psNext;
+	struct _trigger_symbol *psNext;
 } TRIGGER_SYMBOL;
 
 /* The type for a callback trigger symbol */
 typedef struct _callback_symbol
 {
-    const char		*pIdent;	// Callback identifier
-    TRIGGER_TYPE	type;		// user defined callback id >= TR_CALLBACKSTART
-    SCRIPT_FUNC		pFunc;		// Pointer to the instinct function
-    uint32_t			numParams;	// Number of parameters to the function
-    INTERP_TYPE		aParams[INST_MAXPARAMS];
-    // List of parameter types
+	const char		*pIdent;	// Callback identifier
+	TRIGGER_TYPE	type;		// user defined callback id >= TR_CALLBACKSTART
+	SCRIPT_FUNC		pFunc;		// Pointer to the instinct function
+	uint32_t			numParams;	// Number of parameters to the function
+	INTERP_TYPE		aParams[INST_MAXPARAMS];
+	// List of parameter types
 } CALLBACK_SYMBOL;
 
 
 /* Type for an event symbol */
 typedef struct _event_symbol
 {
-    char		*pIdent;	// Event's identifier
-    uint32_t		index;		// the events index number
-    uint32_t		size;		// Code size for the event
-    INTERP_VAL		*pCode;		// Event code
-    int32_t		trigger;	// Index of the event's trigger
+	char		*pIdent;	// Event's identifier
+	uint32_t		index;		// the events index number
+	uint32_t		size;		// Code size for the event
+	INTERP_VAL		*pCode;		// Event code
+	int32_t		trigger;	// Index of the event's trigger
 
-    uint32_t			debugEntries;
-    SCRIPT_DEBUG	*psDebug;
+	uint32_t			debugEntries;
+	SCRIPT_DEBUG	*psDebug;
 
-    //functions stuff
-    uint32_t		numParams;		//Number of parameters to the function
-    uint32_t		numLocalVars;	//local variables
-    BOOL		bFunction;		//if this event is defined as a function
-    BOOL		bDeclared;		//if function was declared before
-    INTERP_TYPE	retType;		//return type if a function
+	//functions stuff
+	uint32_t		numParams;		//Number of parameters to the function
+	uint32_t		numLocalVars;	//local variables
+	BOOL		bFunction;		//if this event is defined as a function
+	BOOL		bDeclared;		//if function was declared before
+	INTERP_TYPE	retType;		//return type if a function
 
-    INTERP_TYPE	aParams[INST_MAXPARAMS];
+	INTERP_TYPE	aParams[INST_MAXPARAMS];
 
-    struct _event_symbol *psNext;
+	struct _event_symbol *psNext;
 } EVENT_SYMBOL;
 
 /* The table of user types */
@@ -334,11 +334,11 @@ extern BOOL scriptLookUpEvent(const char *pIdent, EVENT_SYMBOL **ppsEvent);
 
 /* Add a new function symbol */
 extern BOOL scriptStartFunctionDef(const char *pIdent,	// Functions name
-                                   INTERP_TYPE		type);		// return type
+								   INTERP_TYPE		type);		// return type
 
 /* Store the parameter types for the current script function definition  */
 extern BOOL scriptSetParameters(uint32_t		numParams,	// number of parameters
-                                INTERP_TYPE		*pParams);	// parameter types
+								INTERP_TYPE		*pParams);	// parameter types
 
 /* Store the code for a script function definition.
  * Clean up the local variable list for this function definition.

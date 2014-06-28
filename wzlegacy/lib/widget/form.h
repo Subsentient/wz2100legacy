@@ -40,57 +40,57 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* The standard form */
 typedef struct _w_form
 {
-    /* The common form data */
-    FORM_BASE;
+	/* The common form data */
+	FORM_BASE;
 } W_FORM;
 
 /* Information for a minor tab */
 typedef struct _w_minortab
 {
-    /* Graphics data for the tab will go here */
-    WIDGET		*psWidgets;			// Widgets on the tab
-    char		*pTip;				// Tool tip
+	/* Graphics data for the tab will go here */
+	WIDGET		*psWidgets;			// Widgets on the tab
+	char		*pTip;				// Tool tip
 } W_MINORTAB;
 
 /* Information for a major tab */
 typedef struct _w_majortab
 {
-    /* Graphics data for the tab will go here */
-    uint16_t			lastMinor;					// Store which was the last selected minor tab
-    uint16_t			numMinor;
-    W_MINORTAB		asMinor[WFORM_MAXMINOR];	// Minor tab information
-    char			*pTip;
+	/* Graphics data for the tab will go here */
+	uint16_t			lastMinor;					// Store which was the last selected minor tab
+	uint16_t			numMinor;
+	W_MINORTAB		asMinor[WFORM_MAXMINOR];	// Minor tab information
+	char			*pTip;
 } W_MAJORTAB;
 
 /* The tabbed form data structure */
 typedef struct _w_tabform
 {
-    /* The common form data */
-    FORM_BASE;
+	/* The common form data */
+	FORM_BASE;
 
-    uint16_t		majorPos, minorPos;		// Position of the tabs on the form
-    uint16_t		majorSize,minorSize;	// the size of tabs horizontally and vertically
-    uint16_t		tabMajorThickness;			// The thickness of the tabs
-    uint16_t		tabMinorThickness;			// The thickness of the tabs
-    uint16_t		tabMajorGap;					// The gap between tabs
-    uint16_t		tabMinorGap;					// The gap between tabs
-    int16_t		tabVertOffset;				// Tab form overlap offset.
-    int16_t		tabHorzOffset;				// Tab form overlap offset.
-    int16_t		majorOffset;			// Tab start offset.
-    int16_t		minorOffset;			// Tab start offset.
-    uint16_t		majorT,minorT;			// which tab is selected
-    uint16_t		state;					// Current state of the widget
-    uint16_t		tabHiLite;				// which tab is hilited.
-    /* NOTE: If tabHiLite is (uint16_t)(-1) then there is no hilite.  A bit of a hack I know */
-    /*       but I don't really have the energy to change it.  (Don't design stuff after  */
-    /*       beers at lunch-time :-)                                                      */
+	uint16_t		majorPos, minorPos;		// Position of the tabs on the form
+	uint16_t		majorSize, minorSize;	// the size of tabs horizontally and vertically
+	uint16_t		tabMajorThickness;			// The thickness of the tabs
+	uint16_t		tabMinorThickness;			// The thickness of the tabs
+	uint16_t		tabMajorGap;					// The gap between tabs
+	uint16_t		tabMinorGap;					// The gap between tabs
+	int16_t		tabVertOffset;				// Tab form overlap offset.
+	int16_t		tabHorzOffset;				// Tab form overlap offset.
+	int16_t		majorOffset;			// Tab start offset.
+	int16_t		minorOffset;			// Tab start offset.
+	uint16_t		majorT, minorT;			// which tab is selected
+	uint16_t		state;					// Current state of the widget
+	uint16_t		tabHiLite;				// which tab is hilited.
+	/* NOTE: If tabHiLite is (uint16_t)(-1) then there is no hilite.  A bit of a hack I know */
+	/*       but I don't really have the energy to change it.  (Don't design stuff after  */
+	/*       beers at lunch-time :-)                                                      */
 
-    uint16_t		numMajor;				// The number of major tabs
-    int16_t		TabMultiplier;				//used to tell system we got lots of tabs to display
-    uint16_t		numStats;				//# of 'stats' (items) in list
-    uint16_t		numButtons;				//# of buttons per form
-    W_MAJORTAB	asMajor[WFORM_MAXMAJOR];	// The major tab information
-    TAB_DISPLAY pTabDisplay;			// Optional callback for display tabs.
+	uint16_t		numMajor;				// The number of major tabs
+	int16_t		TabMultiplier;				//used to tell system we got lots of tabs to display
+	uint16_t		numStats;				//# of 'stats' (items) in list
+	uint16_t		numButtons;				//# of buttons per form
+	W_MAJORTAB	asMajor[WFORM_MAXMAJOR];	// The major tab information
+	TAB_DISPLAY pTabDisplay;			// Optional callback for display tabs.
 } W_TABFORM;
 
 
@@ -107,14 +107,14 @@ typedef struct _w_tabform
 /* The clickable form data structure */
 typedef struct _w_clickform
 {
-    /* The common form data */
-    FORM_BASE;
+	/* The common form data */
+	FORM_BASE;
 
-    uint32_t		state;					// Button state of the form
-    const char	*pTip;					// Tip for the form
-    int16_t HilightAudioID;				// Audio ID for form clicked sound
-    int16_t ClickedAudioID;				// Audio ID for form hilighted sound
-    WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
+	uint32_t		state;					// Button state of the form
+	const char	*pTip;					// Tip for the form
+	int16_t HilightAudioID;				// Audio ID for form clicked sound
+	int16_t ClickedAudioID;				// Audio ID for form hilighted sound
+	WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
 } W_CLICKFORM;
 
 extern void formClearFlash(W_FORM *psWidget);
@@ -140,10 +140,10 @@ extern void formGetOrigin(W_FORM *psWidget, int32_t *pXOrigin, int32_t *pYOrigin
 /* Variables for the formGetAllWidgets functions */
 typedef struct _w_formgetall
 {
-    WIDGET		*psGAWList;
-    W_TABFORM	*psGAWForm;
-    W_MAJORTAB	*psGAWMajor;
-    uint32_t		GAWMajor, GAWMinor;
+	WIDGET		*psGAWList;
+	W_TABFORM	*psGAWForm;
+	W_MAJORTAB	*psGAWMajor;
+	uint32_t		GAWMajor, GAWMinor;
 } W_FORMGETALL;
 
 /* Initialise the formGetAllWidgets function */

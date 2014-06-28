@@ -38,9 +38,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 static const char endl[] =
 #if defined(WZ_OS_WIN)
-    "\r\n";
+	"\r\n";
 #else
-    "\n";
+	"\n";
 #endif
 
 using std::string;
@@ -102,14 +102,16 @@ static void debug_exceptionhandler_data(void **, const char * const str)
 
 	// For non-debug builds
 	if (str == NULL)
+	{
 		return;
+	}
 
 	// Push this message on the message list
 	const char * last = &str[strlen(str)];
 
 	// Strip finishing newlines
 	while (last != str
-	    && *(last - 1) == '\n')
+			&& *(last - 1) == '\n')
 	{
 		--last;
 	}
@@ -145,9 +147,9 @@ void dbgDumpLog(DumpFileHandle file)
 {
 	// Write all messages to the given file
 	for (std::deque<std::vector<char> >::const_iterator
-	     msg  = dbgMessages.begin();
-	     msg != dbgMessages.end();
-	     ++msg)
+			msg  = dbgMessages.begin();
+			msg != dbgMessages.end();
+			++msg)
 	{
 		dumpstr(file, "Log message: ");
 		dumpstr(file, &(*msg)[0], msg->size());
@@ -184,7 +186,9 @@ static std::string getProgramPath(const char* programCommand)
 		while (!feof(whichProgramStream))
 		{
 			if (read == buf.size())
+			{
 				buf.resize(buf.size() * 2);
+			}
 
 			read += fread(&buf[read], 1, buf.size() - read, whichProgramStream);
 		}
@@ -199,11 +203,15 @@ static std::string getProgramPath(const char* programCommand)
 		// `which' adds a \n which confuses exec()
 		std::string::size_type eol = programPath.find('\n');
 		if (eol != std::string::npos)
-			programPath.erase(eol); 
+		{
+			programPath.erase(eol);
+		}
 		// Strip any NUL chars
 		std::string::size_type nul = programPath.find('\0');
 		if (nul != std::string::npos)
-			programPath.erase(nul); 
+		{
+			programPath.erase(nul);
+		}
 		debug(LOG_WZ, "Found us at %s", programPath.c_str());
 	}
 	else
@@ -248,10 +256,10 @@ static std::string getCurTime()
 
 	// Mark finishing newlines as NUL characters
 	for (string::reverse_iterator
-	     newline  = time.rbegin();
-	     newline != time.rend()
-	  && *newline == '\n';
-	     ++newline)
+			newline  = time.rbegin();
+			newline != time.rend()
+			&& *newline == '\n';
+			++newline)
 	{
 		*newline = '\0';
 	}
@@ -259,17 +267,19 @@ static std::string getCurTime()
 	// Remove everything after, and including, the first NUL character
 	string::size_type newline = time.find_first_of('\0');
 	if (newline != string::npos)
+	{
 		time.erase(newline);
+	}
 
 	return time;
 }
 
 template <typename CharT, typename Traits>
-std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, PHYSFS_Version const& ver)
+std::basic_ostream<CharT, Traits> &operator<<(std::basic_ostream<CharT, Traits> &os, PHYSFS_Version const &ver)
 {
 	return os << static_cast<unsigned int>(ver.major)
-	   << "." << static_cast<unsigned int>(ver.minor)
-	   << "." << static_cast<unsigned int>(ver.patch);
+		   << "." << static_cast<unsigned int>(ver.minor)
+		   << "." << static_cast<unsigned int>(ver.patch);
 }
 
 static void createHeader(int const argc, char* argv[])
@@ -283,7 +293,9 @@ static void createHeader(int const argc, char* argv[])
 	 * separated by spaces.
 	 */
 	for (int i = 0; i < argc; ++i)
+	{
 		os << "\"" << argv[i] << "\" ";
+	}
 
 	os << endl;
 
@@ -292,18 +304,18 @@ static void createHeader(int const argc, char* argv[])
 	   << "Compiled on: " __DATE__ " " __TIME__ << endl
 	   << "Compiled by: "
 #if defined(WZ_CC_GNU) && !defined(WZ_CC_INTEL)
-	       << "GCC " __VERSION__ << endl
+	   << "GCC " __VERSION__ << endl
 #elif defined(WZ_CC_INTEL)
-	// Intel includes the compiler name within the version string
-	       << __VERSION__ << endl
+	   // Intel includes the compiler name within the version string
+	   << __VERSION__ << endl
 #else
-	       << "UNKNOWN" << endl
+	   << "UNKNOWN" << endl
 #endif
 	   << "Compiled mode: "
 #ifdef DEBUG
-			<< "Debug build" << endl
+	   << "Debug build" << endl
 #else
-			<< "Release build" << endl
+	   << "Release build" << endl
 #endif
 	   << "Executed on: " << getCurTime() << endl
 	   << getSysinfo() << endl

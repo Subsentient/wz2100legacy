@@ -64,39 +64,39 @@ typedef void (*WIDGET_AUDIOCALLBACK)(int AudioID);
 /* The different base types of widget */
 typedef enum _widget_type
 {
-    WIDG_FORM,
-    WIDG_LABEL,
-    WIDG_BUTTON,
-    WIDG_EDITBOX,
-    WIDG_BARGRAPH,
-    WIDG_SLIDER,
+	WIDG_FORM,
+	WIDG_LABEL,
+	WIDG_BUTTON,
+	WIDG_EDITBOX,
+	WIDG_BARGRAPH,
+	WIDG_SLIDER,
 } WIDGET_TYPE;
 
 
 /* The base widget data type */
 typedef struct _widget
 {
-    /* The common widget data */
-    WIDGET_BASE;
+	/* The common widget data */
+	WIDGET_BASE;
 } WIDGET;
 
 
 /* The screen structure which stores all info for a widget screen */
 typedef struct _w_screen
 {
-    WIDGET          *psForm;        ///< The root form of the screen
-    WIDGET          *psFocus;       ///< The widget that has keyboard focus
-    enum iV_fonts    TipFontID;     ///< ID of the IVIS font to use for tool tips.
-    WIDGET          *psRetWidget;   ///< The widget to be returned by widgRunScreen
+	WIDGET          *psForm;        ///< The root form of the screen
+	WIDGET          *psFocus;       ///< The widget that has keyboard focus
+	enum iV_fonts    TipFontID;     ///< ID of the IVIS font to use for tool tips.
+	WIDGET          *psRetWidget;   ///< The widget to be returned by widgRunScreen
 } W_SCREEN;
 
 /* Context information to pass into the widget functions */
 typedef struct _w_context
 {
-    W_SCREEN	*psScreen;			// Parent screen of the widget
-    struct _w_form	*psForm;			// Parent form of the widget
-    int32_t		xOffset,yOffset;	// Screen offset of the parent form
-    int32_t		mx,my;				// mouse position on the form
+	W_SCREEN	*psScreen;			// Parent screen of the widget
+	struct _w_form	*psForm;			// Parent form of the widget
+	int32_t		xOffset, yOffset;	// Screen offset of the parent form
+	int32_t		mx, my;				// mouse position on the form
 } W_CONTEXT;
 
 #endif // __INCLUDED_LIB_WIDGET_WIDGBASE_H__

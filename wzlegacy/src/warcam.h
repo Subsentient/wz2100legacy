@@ -39,32 +39,32 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* The different tracking states */
 enum
 {
-    CAM_INACTIVE,
-    CAM_REQUEST,
-    CAM_TRACKING,
-    CAM_RESET,
-    CAM_TRACK_OBJECT,
-    CAM_TRACK_LOCATION
+	CAM_INACTIVE,
+	CAM_REQUEST,
+	CAM_TRACKING,
+	CAM_RESET,
+	CAM_TRACK_OBJECT,
+	CAM_TRACK_LOCATION
 };
 
 /* Storage for old viewnagles etc */
 typedef struct _warcam
 {
-    uint32_t	status;
-    uint32_t	trackClass;
-    uint32_t	lastUpdate;
-    iView	oldView;
+	uint32_t	status;
+	uint32_t	trackClass;
+	uint32_t	lastUpdate;
+	iView	oldView;
 
-    Vector3f	acceleration;
-    Vector3f	velocity;
-    Vector3f	position;
+	Vector3f	acceleration;
+	Vector3f	velocity;
+	Vector3f	position;
 
-    Vector3f	rotation;
-    Vector3f	rotVel;
-    Vector3f	rotAccel;
+	Vector3f	rotation;
+	Vector3f	rotVel;
+	Vector3f	rotAccel;
 
-    uint32_t	oldDistance;
-    BASE_OBJECT *target;
+	uint32_t	oldDistance;
+	BASE_OBJECT *target;
 } WARCAM;
 
 /* Externally referenced functions */

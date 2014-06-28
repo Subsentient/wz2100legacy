@@ -39,17 +39,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 * command in a chat message */
 typedef struct _chat_command_data
 {
-    const char	*pCmdDescription;				/* String representing a certain command */
-    BOOL		bPlayerAddressed[MAX_PLAYERS];	/* Flag to indicate whether a command was addressed to a certain player */
-    int32_t		numCmdParams;					/* Number of extracted parameters associated with each command */
-    INTERP_VAL	parameter[MAX_CHAT_CMD_PARAMS];	/* Parameters extracted from text - to be used with scripts */
+	const char	*pCmdDescription;				/* String representing a certain command */
+	BOOL		bPlayerAddressed[MAX_PLAYERS];	/* Flag to indicate whether a command was addressed to a certain player */
+	int32_t		numCmdParams;					/* Number of extracted parameters associated with each command */
+	INTERP_VAL	parameter[MAX_CHAT_CMD_PARAMS];	/* Parameters extracted from text - to be used with scripts */
 } CHAT_CMD_DATA;
 
 typedef struct _chat_command
 {
-    char			lastMessage[MAXSTRLEN];			/* Parse the same mesage only once - in case more than one player is trying to parse */
-    int32_t			numCommands;					/* Total number of commands in chat message */
-    CHAT_CMD_DATA	cmdData[MAX_CHAT_COMMANDS];		/* Holds information for each recognized command */
+	char			lastMessage[MAXSTRLEN];			/* Parse the same mesage only once - in case more than one player is trying to parse */
+	int32_t			numCommands;					/* Total number of commands in chat message */
+	CHAT_CMD_DATA	cmdData[MAX_CHAT_COMMANDS];		/* Holds information for each recognized command */
 } CHAT_MSG;
 
 extern CHAT_MSG chat_msg;

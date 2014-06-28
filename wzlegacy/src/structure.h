@@ -93,7 +93,7 @@ extern REARM_UPGRADE		asReArmUpgrade[MAX_PLAYERS];
 
 //used to hold the modifiers cross refd by weapon effect and structureStrength
 extern STRUCTSTRENGTH_MODIFIER		asStructStrengthModifier[WE_NUMEFFECTS][
-    NUM_STRUCT_STRENGTH];
+	NUM_STRUCT_STRENGTH];
 
 extern void handleAbandonedStructures(void);
 
@@ -110,18 +110,18 @@ extern BOOL loadStructureStrengthModifiers(const char *pStrengthModData, uint32_
 extern BOOL	structureStatsShutDown(void);
 
 extern float structureDamage(STRUCTURE *psStructure, uint32_t damage,
-                             uint32_t weaponClass, uint32_t weaponSubClass, HIT_SIDE impactSide);
+							 uint32_t weaponClass, uint32_t weaponSubClass, HIT_SIDE impactSide);
 
 /* Set the type of droid for a factory to build */
 extern BOOL structSetManufacture(STRUCTURE *psStruct, DROID_TEMPLATE *psTempl,
-                                 uint8_t quantity);
+								 uint8_t quantity);
 
 //temp test function for creating structures at the start of the game
 extern void createTestStructures(void);
 
 //builds a specified structure at a given location
 extern STRUCTURE *buildStructure(STRUCTURE_STATS *pStructureType, uint32_t x, uint32_t y,
-                                 uint32_t player,BOOL FromSave);
+								 uint32_t player, BOOL FromSave);
 /// Create a blueprint structure, with just enough information to render it
 extern STRUCTURE *buildBlueprint(STRUCTURE_STATS *psStats, float x, float y, STRUCT_STATES state);
 /* The main update routine for all Structures */
@@ -140,11 +140,11 @@ BOOL removeStruct(STRUCTURE *psDel, BOOL bDestroy);
 
 //fills the list with Structures that can be built
 extern uint32_t fillStructureList(STRUCTURE_STATS **ppList, uint32_t selectedPlayer,
-                                uint32_t limit);
+								  uint32_t limit);
 /* checks that the location is a valid one to build on and sets the outline colour
 x and y in tile-coords*/
 extern BOOL validLocation(BASE_STATS *psStats, uint32_t x, uint32_t y, uint32_t player,
-                          BOOL bCheckBuildQueue);
+						  BOOL bCheckBuildQueue);
 
 /* for a new structure, find a location along an edge which the droid can get
 to and return this as the destination for the droid */
@@ -153,7 +153,7 @@ to and return this as the destination for the droid */
 /*for a structure or feature, find a location along an edge which the droid can get
 to and return this as the destination for the droid*/
 extern BOOL getDroidDestination(BASE_STATS *psPositionStats, uint32_t structX,
-                                uint32_t structY, uint32_t *pDroidX, uint32_t *pDroidY);
+								uint32_t structY, uint32_t *pDroidX, uint32_t *pDroidY);
 /* check along the width of a structure for an empty space */
 extern BOOL checkWidth(uint32_t maxRange, uint32_t x, uint32_t y, uint32_t *pDroidX, uint32_t *pDroidY);
 
@@ -175,7 +175,7 @@ extern BOOL  structureIdle(STRUCTURE *psBuilding);
 extern BOOL checkStructureStatus( STRUCTURE_STATS *psStats, uint32_t player, uint32_t status);
 /*sets the point new droids go to - x/y in world coords for a Factory*/
 extern void setAssemblyPoint(FLAG_POSITION *psAssemblyPoint, uint32_t x, uint32_t y,
-                             uint32_t player, BOOL bCheck);
+							 uint32_t player, BOOL bCheck);
 //extern void createAssemblyPoint(STRUCTURE* psStruct);
 
 /* consider delivery points when selected by player*/
@@ -204,10 +204,10 @@ extern BOOL placeDroid(STRUCTURE *psStructure, uint32_t *droidX, uint32_t *droid
 /* is this a lassat structure? */
 static inline BOOL isLasSat(STRUCTURE_STATS *pStructureType)
 {
-    ASSERT_OR_RETURN(false, pStructureType != NULL, "LasSat is invalid?");
+	ASSERT_OR_RETURN(false, pStructureType != NULL, "LasSat is invalid?");
 
-    return (pStructureType->psWeapStat[0]
-            && pStructureType->psWeapStat[0]->weaponSubClass == WSC_LAS_SAT);
+	return (pStructureType->psWeapStat[0]
+			&& pStructureType->psWeapStat[0]->weaponSubClass == WSC_LAS_SAT);
 }
 
 /*sets the flag to indicate a HQ Exists - so draw Radar*/
@@ -331,7 +331,7 @@ that are active are initialised for when to start*/
 extern void checkResExtractorsActive(void);
 
 // Count number of factories assignable to a command droid.
-extern uint16_t countAssignableFactories(uint8_t player,uint16_t FactoryType);
+extern uint16_t countAssignableFactories(uint8_t player, uint16_t FactoryType);
 
 /*Used for determining how much of the structure to draw as being built or demolished*/
 extern float structHeightScale(STRUCTURE *psStruct);
@@ -408,42 +408,42 @@ BOOL structureCheckReferences(STRUCTURE *psVictimStruct);
 
 static inline int structSensorRange(const STRUCTURE *psObj)
 {
-    return objSensorRange((const BASE_OBJECT *)psObj);
+	return objSensorRange((const BASE_OBJECT *)psObj);
 }
 
 static inline int structSensorPower(const STRUCTURE *psObj)
 {
-    return objSensorPower((const BASE_OBJECT *)psObj);
+	return objSensorPower((const BASE_OBJECT *)psObj);
 }
 
 static inline int structJammerRange(const STRUCTURE *psObj)
 {
-    return objJammerRange((const BASE_OBJECT *)psObj);
+	return objJammerRange((const BASE_OBJECT *)psObj);
 }
 
 static inline int structJammerPower(const STRUCTURE *psObj)
 {
-    return objJammerPower((const BASE_OBJECT *)psObj);
+	return objJammerPower((const BASE_OBJECT *)psObj);
 }
 
 static inline int structConcealment(const STRUCTURE *psObj)
 {
-    return objConcealment((const BASE_OBJECT *)psObj);
+	return objConcealment((const BASE_OBJECT *)psObj);
 }
 
 #define setStructureTarget(_psBuilding, _psNewTarget, _idx) _setStructureTarget(_psBuilding, _psNewTarget, _idx, __LINE__, __FUNCTION__)
 static inline void _setStructureTarget(STRUCTURE *psBuilding, BASE_OBJECT *psNewTarget, uint16_t idx, int line, const char *func)
 {
-    assert(idx < STRUCT_MAXWEAPS);
-    psBuilding->psTarget[idx] = psNewTarget;
-    ASSERT(psNewTarget == NULL || !psNewTarget->died, "setStructureTarget set dead target");
+	assert(idx < STRUCT_MAXWEAPS);
+	psBuilding->psTarget[idx] = psNewTarget;
+	ASSERT(psNewTarget == NULL || !psNewTarget->died, "setStructureTarget set dead target");
 #ifdef DEBUG
-    psBuilding->targetLine[idx] = line;
-    sstrcpy(psBuilding->targetFunc[idx], func);
+	psBuilding->targetLine[idx] = line;
+	sstrcpy(psBuilding->targetFunc[idx], func);
 #else
-    // Prevent warnings about unused parameters
-    (void)line;
-    (void)func;
+	// Prevent warnings about unused parameters
+	(void)line;
+	(void)func;
 #endif
 }
 

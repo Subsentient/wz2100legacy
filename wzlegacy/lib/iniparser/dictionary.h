@@ -44,11 +44,11 @@
 /*-------------------------------------------------------------------------*/
 typedef struct _dictionary_
 {
-    int		n;		/** Number of entries in dictionary */
-    int		size;		/** Storage size */
-    char 		**val;		/** List of string values */
-    char 		**key;		/** List of string keys */
-    unsigned int	*hash;		/** List of hash values for keys */
+	int		n;		/** Number of entries in dictionary */
+	int		size;		/** Storage size */
+	char 		**val;		/** List of string values */
+	char 		**key;		/** List of string keys */
+	unsigned int	*hash;		/** List of hash values for keys */
 } dictionary ;
 
 

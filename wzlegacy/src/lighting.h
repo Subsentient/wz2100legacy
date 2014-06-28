@@ -29,19 +29,19 @@ extern uint32_t fogStatus;
 
 typedef enum _lightcols
 {
-    LIGHT_RED,
-    LIGHT_GREEN,
-    LIGHT_BLUE,
-    LIGHT_YELLOW,
-    LIGHT_WHITE
+	LIGHT_RED,
+	LIGHT_GREEN,
+	LIGHT_BLUE,
+	LIGHT_YELLOW,
+	LIGHT_WHITE
 } LIGHT_COLOUR;
 
 typedef struct _light
 {
-    Vector3i	position;
-    uint8_t	type;
-    uint32_t	range;
-    LIGHT_COLOUR	colour;
+	Vector3i	position;
+	uint8_t	type;
+	uint32_t	range;
+	LIGHT_COLOUR	colour;
 } LIGHT;
 
 extern void setTheSun(Vector3f newSun);

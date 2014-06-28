@@ -29,13 +29,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _w_label
 {
-    /* The common widget data */
-    WIDGET_BASE;
+	/* The common widget data */
+	WIDGET_BASE;
 
-    uint32_t		state;					// The current button state
-    char		aText[WIDG_MAXSTR];		// Text on the label
-    enum iV_fonts FontID;
-    const char	*pTip;					// The tool tip for the button
+	uint32_t		state;					// The current button state
+	char		aText[WIDG_MAXSTR];		// Text on the label
+	enum iV_fonts FontID;
+	const char	*pTip;					// The tool tip for the button
 } W_LABEL;
 
 /* Create a button widget data structure */

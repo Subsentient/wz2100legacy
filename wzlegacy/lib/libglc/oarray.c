@@ -41,26 +41,28 @@
  */
 __GLCarray* __glcArrayCreate(const int inElementSize)
 {
-  __GLCarray* This = NULL;
+	__GLCarray* This = NULL;
 
-  This = (__GLCarray*)__glcMalloc(sizeof(__GLCarray));
-  if (!This) {
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return NULL;
-  }
-  memset(This, 0, sizeof(__GLCarray));
+	This = (__GLCarray*)__glcMalloc(sizeof(__GLCarray));
+	if (!This)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return NULL;
+	}
+	memset(This, 0, sizeof(__GLCarray));
 
-  This->data = (char*)__glcMalloc(GLC_ARRAY_BLOCK_SIZE * inElementSize);
-  if (!This->data) {
-    __glcFree(This);
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return NULL;
-  }
+	This->data = (char*)__glcMalloc(GLC_ARRAY_BLOCK_SIZE * inElementSize);
+	if (!This->data)
+	{
+		__glcFree(This);
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return NULL;
+	}
 
-  This->allocated = GLC_ARRAY_BLOCK_SIZE;
-  This->elementSize = inElementSize;
+	This->allocated = GLC_ARRAY_BLOCK_SIZE;
+	This->elementSize = inElementSize;
 
-  return This;
+	return This;
 }
 
 
@@ -68,12 +70,13 @@ __GLCarray* __glcArrayCreate(const int inElementSize)
 /* Destructor of the object */
 void __glcArrayDestroy(__GLCarray* This)
 {
-  if (This->data) {
-    assert(This->allocated);
-    __glcFree(This->data);
-  }
+	if (This->data)
+	{
+		assert(This->allocated);
+		__glcFree(This->data);
+	}
 
-  __glcFree(This);
+	__glcFree(This);
 }
 
 
@@ -84,18 +87,19 @@ void __glcArrayDestroy(__GLCarray* This)
  */
 static __GLCarray* __glcArrayUpdateSize(__GLCarray* This)
 {
-  char* data = NULL;
+	char* data = NULL;
 
-  data = (char*)__glcRealloc(This->data,
-	(This->allocated + GLC_ARRAY_BLOCK_SIZE) * This->elementSize);
-  if (!data) {
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return NULL;
-  }
-  This->data = data;
-  This->allocated += GLC_ARRAY_BLOCK_SIZE;
+	data = (char*)__glcRealloc(This->data,
+							   (This->allocated + GLC_ARRAY_BLOCK_SIZE) * This->elementSize);
+	if (!data)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return NULL;
+	}
+	This->data = data;
+	This->allocated += GLC_ARRAY_BLOCK_SIZE;
 
-  return This;
+	return This;
 }
 
 
@@ -105,18 +109,21 @@ static __GLCarray* __glcArrayUpdateSize(__GLCarray* This)
  */
 __GLCarray* __glcArrayAppend(__GLCarray* This, const void* inValue)
 {
-  /* Update the room if needed */
-  if (This->length == This->allocated) {
-    if (!__glcArrayUpdateSize(This))
-      return NULL;
-  }
+	/* Update the room if needed */
+	if (This->length == This->allocated)
+	{
+		if (!__glcArrayUpdateSize(This))
+		{
+			return NULL;
+		}
+	}
 
-  /* Append the new element */
-  memcpy(This->data + This->length*This->elementSize, inValue,
-	 This->elementSize);
-  This->length++;
+	/* Append the new element */
+	memcpy(This->data + This->length * This->elementSize, inValue,
+		   This->elementSize);
+	This->length++;
 
-  return This;
+	return This;
 }
 
 
@@ -125,24 +132,27 @@ __GLCarray* __glcArrayAppend(__GLCarray* This, const void* inValue)
  * some more room if necessary
  */
 __GLCarray* __glcArrayInsert(__GLCarray* This, const int inRank,
-			     const void* inValue)
+							 const void* inValue)
 {
-  /* Update the room if needed */
-  if (This->length == This->allocated) {
-    if (!__glcArrayUpdateSize(This))
-      return NULL;
-  }
+	/* Update the room if needed */
+	if (This->length == This->allocated)
+	{
+		if (!__glcArrayUpdateSize(This))
+		{
+			return NULL;
+		}
+	}
 
-  /* Insert the new element */
-  if (This->length > inRank)
-    memmove(This->data + (inRank+1) * This->elementSize,
-	   This->data + inRank * This->elementSize,
-	   (This->length - inRank) * This->elementSize);
+	/* Insert the new element */
+	if (This->length > inRank)
+		memmove(This->data + (inRank + 1) * This->elementSize,
+				This->data + inRank * This->elementSize,
+				(This->length - inRank) * This->elementSize);
 
-  memcpy(This->data + inRank*This->elementSize, inValue, This->elementSize);
-  This->length++;
+	memcpy(This->data + inRank * This->elementSize, inValue, This->elementSize);
+	This->length++;
 
-  return This;
+	return This;
 }
 
 
@@ -152,11 +162,11 @@ __GLCarray* __glcArrayInsert(__GLCarray* This, const int inRank,
  */
 void __glcArrayRemove(__GLCarray* This, const int inRank)
 {
-  if (inRank < This->length-1)
-    memmove(This->data + inRank * This->elementSize,
-	    This->data + (inRank+1) * This->elementSize,
-	    (This->length - inRank - 1) * This->elementSize);
-  This->length--;
+	if (inRank < This->length - 1)
+		memmove(This->data + inRank * This->elementSize,
+				This->data + (inRank + 1) * This->elementSize,
+				(This->length - inRank - 1) * This->elementSize);
+	This->length--;
 }
 
 
@@ -170,26 +180,29 @@ void __glcArrayRemove(__GLCarray* This, const int inRank)
  * This function is used to optimize performance in certain configurations.
  */
 void* __glcArrayInsertCell(__GLCarray* This, const int inRank,
-			   const int inCells)
+						   const int inCells)
 {
-  char* newCell = NULL;
+	char* newCell = NULL;
 
-  assert(inCells < GLC_ARRAY_BLOCK_SIZE);
+	assert(inCells < GLC_ARRAY_BLOCK_SIZE);
 
-  if ((This->length + inCells) > This->allocated) {
-    if (!__glcArrayUpdateSize(This))
-      return NULL;
-  }
+	if ((This->length + inCells) > This->allocated)
+	{
+		if (!__glcArrayUpdateSize(This))
+		{
+			return NULL;
+		}
+	}
 
-  newCell = This->data + inRank * This->elementSize;
+	newCell = This->data + inRank * This->elementSize;
 
-  if (This->length > inRank)
-    memmove(newCell + inCells * This->elementSize, newCell,
-	   (This->length - inRank) * This->elementSize);
+	if (This->length > inRank)
+		memmove(newCell + inCells * This->elementSize, newCell,
+				(This->length - inRank) * This->elementSize);
 
-  This->length += inCells;
+	This->length += inCells;
 
-  return (void*)newCell;
+	return (void*)newCell;
 }
 
 
@@ -197,24 +210,26 @@ void* __glcArrayInsertCell(__GLCarray* This, const int inRank,
 /* Duplicate an array */
 __GLCarray* __glcArrayDuplicate(__GLCarray* This)
 {
-  __GLCarray* duplicate = NULL;
+	__GLCarray* duplicate = NULL;
 
-  duplicate = (__GLCarray*)__glcMalloc(sizeof(__GLCarray));
-  if (!duplicate) {
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return NULL;
-  }
+	duplicate = (__GLCarray*)__glcMalloc(sizeof(__GLCarray));
+	if (!duplicate)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return NULL;
+	}
 
-  memcpy(duplicate, This, sizeof(__GLCarray));
+	memcpy(duplicate, This, sizeof(__GLCarray));
 
-  duplicate->data = (char*)__glcMalloc(This->allocated * This->elementSize);
-  if (!duplicate->data) {
-    __glcFree(duplicate);
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return NULL;
-  }
+	duplicate->data = (char*)__glcMalloc(This->allocated * This->elementSize);
+	if (!duplicate->data)
+	{
+		__glcFree(duplicate);
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return NULL;
+	}
 
-  memcpy(duplicate->data, This->data, This->allocated * This->elementSize);
+	memcpy(duplicate->data, This->data, This->allocated * This->elementSize);
 
-  return duplicate;
+	return duplicate;
 }

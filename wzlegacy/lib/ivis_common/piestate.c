@@ -20,25 +20,25 @@ RENDER_STATE rendStates;
 
 void pie_SetDefaultStates(void)//Sets all states
 {
-    PIELIGHT black;
+	PIELIGHT black;
 
-    //fog off
-    rendStates.fogEnabled = false;// enable fog before renderer
-    rendStates.fog = false;//to force reset to false
-    pie_SetFogStatus(false);
-    black.rgba = 0;
-    black.byte.a = 255;
-    pie_SetFogColour(black);//nicks colour
+	//fog off
+	rendStates.fogEnabled = false;// enable fog before renderer
+	rendStates.fog = false;//to force reset to false
+	pie_SetFogStatus(false);
+	black.rgba = 0;
+	black.byte.a = 255;
+	pie_SetFogColour(black);//nicks colour
 
-    //depth Buffer on
-    pie_SetDepthBufferStatus(DEPTH_CMP_LEQ_WRT_ON);
+	//depth Buffer on
+	pie_SetDepthBufferStatus(DEPTH_CMP_LEQ_WRT_ON);
 
-    rendStates.transMode = TRANS_ALPHA;//to force reset to DECAL
-    pie_SetTranslucencyMode(TRANS_DECAL);
+	rendStates.transMode = TRANS_ALPHA;//to force reset to DECAL
+	pie_SetTranslucencyMode(TRANS_DECAL);
 
-    //chroma keying on black
-    rendStates.keyingOn = false;//to force reset to true
-    pie_SetAlphaTest(true);
+	//chroma keying on black
+	rendStates.keyingOn = false;//to force reset to true
+	pie_SetAlphaTest(true);
 }
 
 
@@ -52,34 +52,34 @@ void pie_SetDefaultStates(void)//Sets all states
 
 void pie_EnableFog(BOOL val)
 {
-    if (rendStates.fogEnabled != val)
-    {
-        debug(LOG_FOG, "pie_EnableFog: Setting fog to %s", val ? "ON" : "OFF");
-        rendStates.fogEnabled = val;
-        if (val == true)
-        {
-            PIELIGHT nickscolour;
+	if (rendStates.fogEnabled != val)
+	{
+		debug(LOG_FOG, "pie_EnableFog: Setting fog to %s", val ? "ON" : "OFF");
+		rendStates.fogEnabled = val;
+		if (val == true)
+		{
+			PIELIGHT nickscolour;
 
-            nickscolour.byte.r = 0xB0;
-            nickscolour.byte.g = 0x08;
-            nickscolour.byte.b = 0x5f;
-            nickscolour.byte.a = 0xff;
-            pie_SetFogColour(nickscolour); // nicks colour
-        }
-        else
-        {
-            PIELIGHT black;
+			nickscolour.byte.r = 0xB0;
+			nickscolour.byte.g = 0x08;
+			nickscolour.byte.b = 0x5f;
+			nickscolour.byte.a = 0xff;
+			pie_SetFogColour(nickscolour); // nicks colour
+		}
+		else
+		{
+			PIELIGHT black;
 
-            black.rgba = 0;
-            black.byte.a = 255;
-            pie_SetFogColour(black); // clear background to black
-        }
-    }
+			black.rgba = 0;
+			black.byte.a = 255;
+			pie_SetFogColour(black); // clear background to black
+		}
+	}
 }
 
 BOOL pie_GetFogEnabled(void)
 {
-    return rendStates.fogEnabled;
+	return rendStates.fogEnabled;
 }
 
 //***************************************************************************
@@ -92,44 +92,44 @@ BOOL pie_GetFogEnabled(void)
 
 BOOL pie_GetFogStatus(void)
 {
-    return rendStates.fog;
+	return rendStates.fog;
 }
 
 void pie_SetFogColour(PIELIGHT colour)
 {
-    rendStates.fogColour = colour;
+	rendStates.fogColour = colour;
 }
 
 PIELIGHT pie_GetFogColour(void)
 {
-    return rendStates.fogColour;
+	return rendStates.fogColour;
 }
 
 void pie_SetRendMode(REND_MODE rendMode)
 {
-    if (rendMode != rendStates.rendMode)
-    {
-        rendStates.rendMode = rendMode;
-        switch (rendMode)
-        {
-            case REND_FLAT:
-            case REND_GOURAUD_TEX:
-                pie_SetTranslucencyMode(TRANS_DECAL);
-                break;
+	if (rendMode != rendStates.rendMode)
+	{
+		rendStates.rendMode = rendMode;
+		switch (rendMode)
+		{
+			case REND_FLAT:
+			case REND_GOURAUD_TEX:
+				pie_SetTranslucencyMode(TRANS_DECAL);
+				break;
 
-            case REND_ALPHA_TEX:
-            case REND_ALPHA_FLAT:
-                pie_SetTranslucencyMode(TRANS_ALPHA);
-                break;
+			case REND_ALPHA_TEX:
+			case REND_ALPHA_FLAT:
+				pie_SetTranslucencyMode(TRANS_ALPHA);
+				break;
 
-            case REND_ADDITIVE_TEX:
-            case REND_ALPHA_ITERATED:
-                pie_SetTranslucencyMode(TRANS_ADDITIVE);
-                break;
+			case REND_ADDITIVE_TEX:
+			case REND_ALPHA_ITERATED:
+				pie_SetTranslucencyMode(TRANS_ADDITIVE);
+				break;
 
-            default:
-                break;
-        }
-    }
-    return;
+			default:
+				break;
+		}
+	}
+	return;
 }

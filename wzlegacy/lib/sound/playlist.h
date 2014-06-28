@@ -24,12 +24,12 @@ extern "C"
 {
 #endif
 
-    void PlayList_Init(void);
-    void PlayList_Quit(void);
-    bool PlayList_Read(const char *path);
-    const char *PlayList_CurrentSong(void);
-    const char *PlayList_NextSong(void);
-    void playListTest(void);
+void PlayList_Init(void);
+void PlayList_Quit(void);
+bool PlayList_Read(const char *path);
+const char *PlayList_CurrentSong(void);
+const char *PlayList_NextSong(void);
+void playListTest(void);
 
 #if defined(__cplusplus)
 }

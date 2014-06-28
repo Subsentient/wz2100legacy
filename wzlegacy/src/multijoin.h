@@ -32,8 +32,8 @@ extern void clearPlayer					(uint32_t player, BOOL quietly);// wipe a player off
 
 typedef struct
 {
-    DROID *psDroid;
-    void  *psNext;
+	DROID *psDroid;
+	void  *psNext;
 } DROIDSTORE, *LPDROIDSTORE;
 
 extern DROIDSTORE *tempDroidList;

@@ -54,17 +54,17 @@ static BASE_OBJECT *TargetingObject;
 //
 void targetInitialise(void)
 {
-    TargetCurrent = 0;
-    TargetCurrentID = uint32_t_MAX;
+	TargetCurrent = 0;
+	TargetCurrentID = uint32_t_MAX;
 }
 
 // Reset the target list, call once per frame.
 //
 void targetOpenList(BASE_OBJECT *psTargeting)
 {
-    NumTargets = 0;
-    FoundCurrent = false;
-    TargetingObject = psTargeting;
+	NumTargets = 0;
+	FoundCurrent = false;
+	TargetingObject = psTargeting;
 }
 
 void targetCloseList(void)
@@ -77,119 +77,119 @@ void targetAdd(WZ_DECL_UNUSED BASE_OBJECT *psObj)
 
 // Aquire the target nearest the vector from x,y to the top of the screen.
 //
-static BASE_OBJECT *targetAquireNearestView(int16_t x,int16_t y)
+static BASE_OBJECT *targetAquireNearestView(int16_t x, int16_t y)
 {
-    uint16_t i;
-    uint16_t Nearesti = 0;
-    uint32_t NearestDx = uint32_t_MAX;
-    uint32_t dx,dy;
-    BASE_OBJECT *NearestObj = NULL;
-    BASE_OBJECT *psObj;
+	uint16_t i;
+	uint16_t Nearesti = 0;
+	uint32_t NearestDx = uint32_t_MAX;
+	uint32_t dx, dy;
+	BASE_OBJECT *NearestObj = NULL;
+	BASE_OBJECT *psObj;
 
-    for(i=0; i<NumTargets; i++)
-    {
-        psObj = TargetList[i];
-        dx = abs(psObj->sDisplay.screenX - x);
-        dy = abs(psObj->sDisplay.screenY - y);
-        dx += dy/2;
-        if(dx < NearestDx)
-        {
-            NearestDx = dx;
-            Nearesti = i;
-            NearestObj = psObj;
-        }
-    }
+	for(i = 0; i < NumTargets; i++)
+	{
+		psObj = TargetList[i];
+		dx = abs(psObj->sDisplay.screenX - x);
+		dy = abs(psObj->sDisplay.screenY - y);
+		dx += dy / 2;
+		if(dx < NearestDx)
+		{
+			NearestDx = dx;
+			Nearesti = i;
+			NearestObj = psObj;
+		}
+	}
 
-    if(NearestObj != NULL)
-    {
-        TargetCurrent = Nearesti;
-        if(TargetCurrentID != NearestObj->id)
-        {
-            TargetCurrentID = NearestObj->id;
-            targetStartAnim();
-        }
-    }
-    else
-    {
-        TargetCurrentID = uint32_t_MAX;
-    }
+	if(NearestObj != NULL)
+	{
+		TargetCurrent = Nearesti;
+		if(TargetCurrentID != NearestObj->id)
+		{
+			TargetCurrentID = NearestObj->id;
+			targetStartAnim();
+		}
+	}
+	else
+	{
+		TargetCurrentID = uint32_t_MAX;
+	}
 
-    return NearestObj;
+	return NearestObj;
 }
 
 // Aquire the target nearest to the specified object.
 //
 BASE_OBJECT *targetAquireNearestObjView(BASE_OBJECT *psObj)
 {
-    if(psObj != NULL)
-    {
-        return targetAquireNearestView((int16_t)(psObj->sDisplay.screenX), (int16_t)(psObj->sDisplay.screenY));
-    }
-    else
-    {
-        return NULL;
-    }
+	if(psObj != NULL)
+	{
+		return targetAquireNearestView((int16_t)(psObj->sDisplay.screenX), (int16_t)(psObj->sDisplay.screenY));
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 // Get the currently targeted object.
 //
 BASE_OBJECT *targetGetCurrent(void)
 {
-    if(TargetCurrentID != uint32_t_MAX)
-    {
-        return TargetList[TargetCurrent];
-    }
+	if(TargetCurrentID != uint32_t_MAX)
+	{
+		return TargetList[TargetCurrent];
+	}
 
-    return NULL;
+	return NULL;
 }
 
 // Start the box zoom animation.
 //
 void targetStartAnim(void)
 {
-    TargetEndTime = gameTime+GAME_TICKS_PER_SEC/2;
+	TargetEndTime = gameTime + GAME_TICKS_PER_SEC / 2;
 }
 
 // Display a marker over the current target.
 //
 void targetMarkCurrent(void)
 {
-    int16_t x,y;
-    int16_t Offset;
-    int16_t x0,y0,x1,y1;
+	int16_t x, y;
+	int16_t Offset;
+	int16_t x0, y0, x1, y1;
 
-    if(TargetCurrentID == uint32_t_MAX)
-    {
-        return;
-    }
+	if(TargetCurrentID == uint32_t_MAX)
+	{
+		return;
+	}
 
-    x = (int16_t)(TargetList[TargetCurrent]->sDisplay.screenX);
-    y = (int16_t)(TargetList[TargetCurrent]->sDisplay.screenY);
+	x = (int16_t)(TargetList[TargetCurrent]->sDisplay.screenX);
+	y = (int16_t)(TargetList[TargetCurrent]->sDisplay.screenY);
 
-    // Make it zoom in.
-    if(TargetEndTime > gameTime)
-    {
-        Offset =(int16_t)(16+(TargetEndTime-gameTime)/2);
-    }
-    else
-    {
-        Offset = 16;
-    }
+	// Make it zoom in.
+	if(TargetEndTime > gameTime)
+	{
+		Offset = (int16_t)(16 + (TargetEndTime - gameTime) / 2);
+	}
+	else
+	{
+		Offset = 16;
+	}
 
-    x0 = (int16_t)(x-Offset);
-    y0 = (int16_t)(y-Offset);
-    x1 = (int16_t)(x+Offset);
-    y1 = (int16_t)(y+Offset);
+	x0 = (int16_t)(x - Offset);
+	y0 = (int16_t)(y - Offset);
+	x1 = (int16_t)(x + Offset);
+	y1 = (int16_t)(y + Offset);
 
-    iV_Line(x0, y0, x0 + 8, y0, WZCOL_YELLOW);
-    iV_Line(x0, y0, x0, y0 + 8, WZCOL_YELLOW);
+	iV_Line(x0, y0, x0 + 8, y0, WZCOL_YELLOW);
+	iV_Line(x0, y0, x0, y0 + 8, WZCOL_YELLOW);
 
-    iV_Line(x1, y0, x1 - 8, y0, WZCOL_YELLOW);
-    iV_Line(x1, y0, x1, y0 + 8, WZCOL_YELLOW);
+	iV_Line(x1, y0, x1 - 8, y0, WZCOL_YELLOW);
+	iV_Line(x1, y0, x1, y0 + 8, WZCOL_YELLOW);
 
-    iV_Line(x1, y1, x1 - 8, y1, WZCOL_YELLOW);
-    iV_Line(x1, y1, x1, y1 - 8, WZCOL_YELLOW);
+	iV_Line(x1, y1, x1 - 8, y1, WZCOL_YELLOW);
+	iV_Line(x1, y1, x1, y1 - 8, WZCOL_YELLOW);
 
-    iV_Line(x0, y1, x0 + 8, y1, WZCOL_YELLOW);
-    iV_Line(x0, y1, x0, y1 - 8, WZCOL_YELLOW);
+	iV_Line(x0, y1, x0 + 8, y1, WZCOL_YELLOW);
+	iV_Line(x0, y1, x0, y1 - 8, WZCOL_YELLOW);
 }

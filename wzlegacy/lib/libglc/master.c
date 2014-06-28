@@ -69,21 +69,23 @@
  */
 __GLCmaster* __glcVerifyMasterParameters(const GLint inMaster)
 {
-  const __GLCcontext *ctx = GLC_GET_CURRENT_CONTEXT();
+	const __GLCcontext *ctx = GLC_GET_CURRENT_CONTEXT();
 
-  /* Check if the current thread owns a context state */
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return NULL;
-  }
+	/* Check if the current thread owns a context state */
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return NULL;
+	}
 
-  /* Verify if the master identifier is in legal bounds */
-  if (inMaster >= GLC_ARRAY_LENGTH(ctx->masterHashTable)) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return NULL;
-  }
+	/* Verify if the master identifier is in legal bounds */
+	if (inMaster >= GLC_ARRAY_LENGTH(ctx->masterHashTable))
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return NULL;
+	}
 
-  return __glcMasterCreate(inMaster, ctx);
+	return __glcMasterCreate(inMaster, ctx);
 }
 
 
@@ -126,81 +128,92 @@ __GLCmaster* __glcVerifyMasterParameters(const GLint inMaster)
  *  \sa glcGetMasteri()
  */
 const GLCchar* APIENTRY glcGetMasterListc(GLint inMaster, GLCenum inAttrib,
-				 	  GLint inIndex)
+		GLint inIndex)
 {
-  __GLCcontext *ctx = NULL;
-  __GLCmaster *master = NULL;
-  __GLCcharMap *charMap = NULL;
-  const GLCchar8* string = NULL;
-  GLCchar8* faceName = NULL;
-  GLCchar* element = NULL;
+	__GLCcontext *ctx = NULL;
+	__GLCmaster *master = NULL;
+	__GLCcharMap *charMap = NULL;
+	const GLCchar8* string = NULL;
+	GLCchar8* faceName = NULL;
+	GLCchar* element = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check some parameters.
-   * NOTE : the verification of some parameters needs to get the current
-   *        context state but since we are supposed to check parameters
-   *        _before_ the context state, we are done !
-   */
-  switch(inAttrib) {
-  case GLC_CHAR_LIST:
-  case GLC_FACE_LIST:
-    break;
-  default:
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return (GLCchar*)GLC_NONE;
-  }
+	/* Check some parameters.
+	 * NOTE : the verification of some parameters needs to get the current
+	 *        context state but since we are supposed to check parameters
+	 *        _before_ the context state, we are done !
+	 */
+	switch(inAttrib)
+	{
+		case GLC_CHAR_LIST:
+		case GLC_FACE_LIST:
+			break;
+		default:
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+			return (GLCchar*)GLC_NONE;
+	}
 
-  /* Verify if inIndex is in legal bounds */
-  if (inIndex < 0) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return (GLCchar*)GLC_NONE;
-  }
+	/* Verify if inIndex is in legal bounds */
+	if (inIndex < 0)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return (GLCchar*)GLC_NONE;
+	}
 
-  /* Verify that the thread has a current context and that the master
-   * identified by 'inMaster' exists.
-   */
-  master = __glcVerifyMasterParameters(inMaster);
-  if (!master)
-    return (GLCchar*)GLC_NONE;
+	/* Verify that the thread has a current context and that the master
+	 * identified by 'inMaster' exists.
+	 */
+	master = __glcVerifyMasterParameters(inMaster);
+	if (!master)
+	{
+		return (GLCchar*)GLC_NONE;
+	}
 
-  ctx = GLC_GET_CURRENT_CONTEXT();
+	ctx = GLC_GET_CURRENT_CONTEXT();
 
-  /* return the requested attribute */
-  switch(inAttrib) {
-  case GLC_CHAR_LIST:
-    charMap = __glcCharMapCreate(master, ctx);
-    if (!charMap) {
-      __glcMasterDestroy(master);
-      return (GLCchar*)GLC_NONE;
-    }
-    string = __glcCharMapGetCharNameByIndex(charMap, inIndex);
-    if (!string) {
-      __glcMasterDestroy(master);
-      __glcCharMapDestroy(charMap);
-      return (GLCchar*)GLC_NONE;
-    }
-    break;
-  case GLC_FACE_LIST:
-    /* Get the face name */
-    faceName = __glcMasterGetFaceName(master, ctx, inIndex);
-    string = (const GLCchar8*)faceName;
-    break;
-  default:
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return (GLCchar*)GLC_NONE;
-  }
+	/* return the requested attribute */
+	switch(inAttrib)
+	{
+		case GLC_CHAR_LIST:
+			charMap = __glcCharMapCreate(master, ctx);
+			if (!charMap)
+			{
+				__glcMasterDestroy(master);
+				return (GLCchar*)GLC_NONE;
+			}
+			string = __glcCharMapGetCharNameByIndex(charMap, inIndex);
+			if (!string)
+			{
+				__glcMasterDestroy(master);
+				__glcCharMapDestroy(charMap);
+				return (GLCchar*)GLC_NONE;
+			}
+			break;
+		case GLC_FACE_LIST:
+			/* Get the face name */
+			faceName = __glcMasterGetFaceName(master, ctx, inIndex);
+			string = (const GLCchar8*)faceName;
+			break;
+		default:
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+			return (GLCchar*)GLC_NONE;
+	}
 
 
-  /* Convert it from UTF-8 to the current string type and return */
-  element = __glcConvertFromUtf8ToBuffer(ctx, string);
-  __glcMasterDestroy(master);
-  if (charMap)
-    __glcCharMapDestroy(charMap);
-  else
-    free(faceName);
+	/* Convert it from UTF-8 to the current string type and return */
+	element = __glcConvertFromUtf8ToBuffer(ctx, string);
+	__glcMasterDestroy(master);
+	if (charMap)
+	{
+		__glcCharMapDestroy(charMap);
+	}
+	else
+	{
+		free(faceName);
+	}
 
-  return element;
+	return element;
 }
 
 
@@ -228,46 +241,54 @@ const GLCchar* APIENTRY glcGetMasterListc(GLint inMaster, GLCenum inAttrib,
  *                  character.
  *  \param inCode The integer ID of character in the master map.
  *  \return The string name of the character that \e inCode is mapped to.
- *  \sa glcGetMasterListc() 
+ *  \sa glcGetMasterListc()
  *  \sa glcGetMasterc()
  *  \sa glcGetMasteri()
  */
 const GLCchar* APIENTRY glcGetMasterMap(GLint inMaster, GLint inCode)
 {
-  __GLCmaster *master = NULL;
+	__GLCmaster *master = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  master = __glcVerifyMasterParameters(inMaster);
-  if (master) {
-    __GLCcontext *ctx = GLC_GET_CURRENT_CONTEXT();
-    __GLCcharMap* charMap = NULL;
-    GLCchar* result = NULL;
-    GLint code = 0;
-    const GLCchar8* name = NULL;
+	master = __glcVerifyMasterParameters(inMaster);
+	if (master)
+	{
+		__GLCcontext *ctx = GLC_GET_CURRENT_CONTEXT();
+		__GLCcharMap* charMap = NULL;
+		GLCchar* result = NULL;
+		GLint code = 0;
+		const GLCchar8* name = NULL;
 
-    charMap = __glcCharMapCreate(master, ctx);
-    __glcMasterDestroy(master);
-    if (!charMap)
-      return (GLCchar*)GLC_NONE;
+		charMap = __glcCharMapCreate(master, ctx);
+		__glcMasterDestroy(master);
+		if (!charMap)
+		{
+			return (GLCchar*)GLC_NONE;
+		}
 
-    /* Get the character code converted to the UCS-4 format */
-    code = __glcConvertGLintToUcs4(ctx, inCode);
-    if (code < 0) {
-      __glcCharMapDestroy(charMap);
-      return (GLCchar*)GL_NONE;
-    }
+		/* Get the character code converted to the UCS-4 format */
+		code = __glcConvertGLintToUcs4(ctx, inCode);
+		if (code < 0)
+		{
+			__glcCharMapDestroy(charMap);
+			return (GLCchar*)GL_NONE;
+		}
 
-    name = __glcCharMapGetCharName(charMap, code);
-    __glcCharMapDestroy(charMap);
-    if (!name)
-      return (GLCchar*)GLC_NONE;
+		name = __glcCharMapGetCharName(charMap, code);
+		__glcCharMapDestroy(charMap);
+		if (!name)
+		{
+			return (GLCchar*)GLC_NONE;
+		}
 
-    result = __glcConvertFromUtf8ToBuffer(ctx, name);
-    return result;
-  }
-  else
-    return (GLCchar*)GLC_NONE;
+		result = __glcConvertFromUtf8ToBuffer(ctx, name);
+		return result;
+	}
+	else
+	{
+		return (GLCchar*)GLC_NONE;
+	}
 }
 
 
@@ -308,38 +329,41 @@ const GLCchar* APIENTRY glcGetMasterMap(GLint inMaster, GLint inCode)
  */
 const GLCchar* APIENTRY glcGetMasterc(GLint inMaster, GLCenum inAttrib)
 {
-  __GLCcontext *ctx = NULL;
-  const GLCchar *buffer = NULL;
-  __GLCmaster* master = NULL;
+	__GLCcontext *ctx = NULL;
+	const GLCchar *buffer = NULL;
+	__GLCmaster* master = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check parameter inAttrib */
-  switch(inAttrib) {
-  case GLC_FAMILY:
-  case GLC_MASTER_FORMAT:
-  case GLC_VENDOR:
-  case GLC_VERSION:
-  case GLC_FULL_NAME_SGI:
-    break;
-  default:
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return (GLCchar*)GLC_NONE;
-  }
+	/* Check parameter inAttrib */
+	switch(inAttrib)
+	{
+		case GLC_FAMILY:
+		case GLC_MASTER_FORMAT:
+		case GLC_VENDOR:
+		case GLC_VERSION:
+		case GLC_FULL_NAME_SGI:
+			break;
+		default:
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+			return (GLCchar*)GLC_NONE;
+	}
 
-  /* Verify that the thread has a current context and that the master
-   * identified by 'inMaster' exists.
-   */
-  master = __glcVerifyMasterParameters(inMaster);
-  if (!master)
-    return (GLCchar*)GLC_NONE;
+	/* Verify that the thread has a current context and that the master
+	 * identified by 'inMaster' exists.
+	 */
+	master = __glcVerifyMasterParameters(inMaster);
+	if (!master)
+	{
+		return (GLCchar*)GLC_NONE;
+	}
 
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  buffer = __glcMasterGetInfo(master, ctx, inAttrib);
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	buffer = __glcMasterGetInfo(master, ctx, inAttrib);
 
-  __glcMasterDestroy(master);
+	__glcMasterDestroy(master);
 
-  return buffer;
+	return buffer;
 }
 
 
@@ -385,71 +409,80 @@ const GLCchar* APIENTRY glcGetMasterc(GLint inMaster, GLCenum inAttrib)
  */
 GLint APIENTRY glcGetMasteri(GLint inMaster, GLCenum inAttrib)
 {
-  GLint count = 0;
-  __GLCmaster *master = NULL;
-  __GLCcharMap* charMap = NULL;
-  __GLCcontext* ctx = NULL;
+	GLint count = 0;
+	__GLCmaster *master = NULL;
+	__GLCcharMap* charMap = NULL;
+	__GLCcontext* ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check parameter inAttrib */
-  switch(inAttrib) {
-  case GLC_CHAR_COUNT:
-  case GLC_FACE_COUNT:
-  case GLC_IS_FIXED_PITCH:
-  case GLC_MAX_MAPPED_CODE:
-  case GLC_MIN_MAPPED_CODE:
-    break;
-  default:
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return GLC_NONE;
-  }
+	/* Check parameter inAttrib */
+	switch(inAttrib)
+	{
+		case GLC_CHAR_COUNT:
+		case GLC_FACE_COUNT:
+		case GLC_IS_FIXED_PITCH:
+		case GLC_MAX_MAPPED_CODE:
+		case GLC_MIN_MAPPED_CODE:
+			break;
+		default:
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+			return GLC_NONE;
+	}
 
-  /* Verify that the thread has a current context and that the master
-   * identified by 'inMaster' exists.
-   */
-  master = __glcVerifyMasterParameters(inMaster);
-  if (!master)
-    return GLC_NONE;
+	/* Verify that the thread has a current context and that the master
+	 * identified by 'inMaster' exists.
+	 */
+	master = __glcVerifyMasterParameters(inMaster);
+	if (!master)
+	{
+		return GLC_NONE;
+	}
 
-  if (inAttrib == GLC_IS_FIXED_PITCH) {
-    /* Is this a fixed font ? */
-    GLboolean fixed = __glcMasterIsFixedPitch(master);
+	if (inAttrib == GLC_IS_FIXED_PITCH)
+	{
+		/* Is this a fixed font ? */
+		GLboolean fixed = __glcMasterIsFixedPitch(master);
 
-    __glcMasterDestroy(master);
-    return fixed;
-  }
+		__glcMasterDestroy(master);
+		return fixed;
+	}
 
-  ctx = GLC_GET_CURRENT_CONTEXT();
+	ctx = GLC_GET_CURRENT_CONTEXT();
 
-  if (inAttrib != GLC_FACE_COUNT) {
-    charMap = __glcCharMapCreate(master, ctx);
-    if (!charMap) {
-      __glcMasterDestroy(master);
-      return GLC_NONE;
-    }
-  }
+	if (inAttrib != GLC_FACE_COUNT)
+	{
+		charMap = __glcCharMapCreate(master, ctx);
+		if (!charMap)
+		{
+			__glcMasterDestroy(master);
+			return GLC_NONE;
+		}
+	}
 
-  /* return the requested attribute */
-  switch(inAttrib) {
-  case GLC_CHAR_COUNT:
-    count = __glcCharMapGetCount(charMap);
-    break;
-  case GLC_FACE_COUNT:
-    count = __glcMasterFaceCount(master, ctx);
-    break;
-  case GLC_MAX_MAPPED_CODE:
-    count = __glcCharMapGetMaxMappedCode(charMap);
-    break;
-  case GLC_MIN_MAPPED_CODE:
-    count = __glcCharMapGetMinMappedCode(charMap);
-    break;
-  }
+	/* return the requested attribute */
+	switch(inAttrib)
+	{
+		case GLC_CHAR_COUNT:
+			count = __glcCharMapGetCount(charMap);
+			break;
+		case GLC_FACE_COUNT:
+			count = __glcMasterFaceCount(master, ctx);
+			break;
+		case GLC_MAX_MAPPED_CODE:
+			count = __glcCharMapGetMaxMappedCode(charMap);
+			break;
+		case GLC_MIN_MAPPED_CODE:
+			count = __glcCharMapGetMinMappedCode(charMap);
+			break;
+	}
 
-  if (charMap)
-    __glcCharMapDestroy(charMap);
-  __glcMasterDestroy(master);
-  return count;
+	if (charMap)
+	{
+		__glcCharMapDestroy(charMap);
+	}
+	__glcMasterDestroy(master);
+	return count;
 }
 
 
@@ -459,50 +492,62 @@ GLint APIENTRY glcGetMasteri(GLint inMaster, GLCenum inAttrib)
  */
 static void __glcAddCatalog(const GLCchar* inCatalog, const GLboolean inAppend)
 {
-  __GLCcontext *ctx = NULL;
-  struct stat dirStat;
+	__GLCcontext *ctx = NULL;
+	struct stat dirStat;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* If inCatalog is NULL then there is no point in continuing */
-  if (!inCatalog)
-    return;
+	/* If inCatalog is NULL then there is no point in continuing */
+	if (!inCatalog)
+	{
+		return;
+	}
 
-  /* Check that 'inCatalog' points to a directory that can be read */
-  #ifdef __WIN32__
-  if (_access((const char*)inCatalog, 0)) {
-  #else
-  if (access((const char *)inCatalog, R_OK) < 0) {
-  #endif
-    /* May be something more explicit should be done ? */
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
-  /* Check that 'inCatalog' is a directory */
-  if (stat((const char *)inCatalog, &dirStat) < 0) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
-  #ifdef __WIN32__
-  if (!(dirStat.st_mode & _S_IFDIR)) {
-  #else
-  if (!S_ISDIR(dirStat.st_mode)) {
-  #endif
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	/* Check that 'inCatalog' points to a directory that can be read */
+#ifdef __WIN32__
+	if (_access((const char*)inCatalog, 0))
+	{
+#else
+	if (access((const char *)inCatalog, R_OK) < 0)
+	{
+#endif
+		/* May be something more explicit should be done ? */
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
+	/* Check that 'inCatalog' is a directory */
+	if (stat((const char *)inCatalog, &dirStat) < 0)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
+#ifdef __WIN32__
+	if (!(dirStat.st_mode & _S_IFDIR))
+	{
+#else
+	if (!S_ISDIR(dirStat.st_mode))
+	{
+#endif
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
 
-  /* Verify that the thread owns a context */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Verify that the thread owns a context */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  if (inAppend)
-    __glcContextAppendCatalog(ctx, inCatalog);
-  else
-    __glcContextPrependCatalog(ctx, inCatalog);
+	if (inAppend)
+	{
+		__glcContextAppendCatalog(ctx, inCatalog);
+	}
+	else
+	{
+		__glcContextPrependCatalog(ctx, inCatalog);
+	}
 }
 
 
@@ -535,7 +580,7 @@ static void __glcAddCatalog(const GLCchar* inCatalog, const GLboolean inAppend)
  */
 void APIENTRY glcAppendCatalog(const GLCchar* inCatalog)
 {
-  __glcAddCatalog(inCatalog, GL_TRUE);
+	__glcAddCatalog(inCatalog, GL_TRUE);
 }
 
 
@@ -549,7 +594,7 @@ void APIENTRY glcAppendCatalog(const GLCchar* inCatalog)
  */
 void APIENTRY glcPrependCatalog(const GLCchar* inCatalog)
 {
-  __glcAddCatalog(inCatalog, GL_FALSE);
+	__glcAddCatalog(inCatalog, GL_FALSE);
 }
 
 
@@ -569,22 +614,24 @@ void APIENTRY glcPrependCatalog(const GLCchar* inCatalog)
  */
 void APIENTRY glcRemoveCatalog(GLint inIndex)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Verify that the thread owns a context */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Verify that the thread owns a context */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* Verify that the parameter inIndex is in legal bounds */
-  if (inIndex < 0) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	/* Verify that the parameter inIndex is in legal bounds */
+	if (inIndex < 0)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
 
-  __glcContextRemoveCatalog(ctx, inIndex);
+	__glcContextRemoveCatalog(ctx, inIndex);
 }

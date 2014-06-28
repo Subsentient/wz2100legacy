@@ -131,7 +131,7 @@ extern BOOL scrCBPlayerLeft(void);
 
 // alliance offered.
 extern BOOL scrCBAllianceOffer(void);
-extern uint32_t	CBallFrom,CBallTo;
+extern uint32_t	CBallFrom, CBallTo;
 
 // player number that left the game
 extern uint32_t	CBPlayerLeft;

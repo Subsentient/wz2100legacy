@@ -29,15 +29,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _w_slider
 {
-    /* The common widget data */
-    WIDGET_BASE;
+	/* The common widget data */
+	WIDGET_BASE;
 
-    uint16_t		orientation;		// The orientation of the slider
-    uint16_t		numStops;			// Number of stop positions on the slider
-    uint16_t		barSize;			// Thickness of slider bar
-    uint16_t		pos;				// Current stop position of the slider
-    uint16_t		state;				// Slider state
-    const char	*pTip;				// Tool tip
+	uint16_t		orientation;		// The orientation of the slider
+	uint16_t		numStops;			// Number of stop positions on the slider
+	uint16_t		barSize;			// Thickness of slider bar
+	uint16_t		pos;				// Current stop position of the slider
+	uint16_t		state;				// Slider state
+	const char	*pTip;				// Tool tip
 } W_SLIDER;
 
 /* Create a slider widget data structure */

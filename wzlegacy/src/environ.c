@@ -37,8 +37,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct environ_data
 {
-    float	val;
-    uint8_t	data;
+	float	val;
+	uint8_t	data;
 } ENVIRON_DATA;
 
 static ENVIRON_DATA	*pEnvironData = NULL;
@@ -46,75 +46,75 @@ static ENVIRON_DATA	*pEnvironData = NULL;
 /** This function just allocates the memory now according to map size. */
 BOOL    environInit( void )
 {
-    pEnvironData = (ENVIRON_DATA *)malloc(sizeof(struct environ_data) * MAP_MAXWIDTH * MAP_MAXHEIGHT);
-    if(!pEnvironData)
-    {
-        debug( LOG_FATAL, "Can't get memory for the environment data" );
-        abort();
-        return false;
-    }
-    return true;
+	pEnvironData = (ENVIRON_DATA *)malloc(sizeof(struct environ_data) * MAP_MAXWIDTH * MAP_MAXHEIGHT);
+	if(!pEnvironData)
+	{
+		debug( LOG_FATAL, "Can't get memory for the environment data" );
+		abort();
+		return false;
+	}
+	return true;
 }
 
 /** This function is called whenever the map changes - load new level or return from an offWorld map. */
 void environReset(void)
 {
-    uint32_t	i, j;
+	uint32_t	i, j;
 
-    if(pEnvironData == NULL ) // loading map preview..
-    {
-        return;
-    }
+	if(pEnvironData == NULL ) // loading map preview..
+	{
+		return;
+	}
 
-    for(i=0; i<mapHeight; i++)
-    {
-        for(j=0; j<mapWidth; j++)
-        {
-            uint32_t	index = (i * mapWidth) + j;
-            MAPTILE	*psTile = mapTile(j, i);
+	for(i = 0; i < mapHeight; i++)
+	{
+		for(j = 0; j < mapWidth; j++)
+		{
+			uint32_t	index = (i * mapWidth) + j;
+			MAPTILE	*psTile = mapTile(j, i);
 
-            if(terrainType(psTile) == TER_WATER)
-            {
-                pEnvironData[index].val = (float)ENVIRON_WATER_INIT_VALUE;
-                pEnvironData[index].data = ENVIRON_WATER_DATA_VALUE;
-            }
-            else
-            {
-                pEnvironData[index].val = 0.f; //ENVIRON_LAND_INIT_VALUE;
-                pEnvironData[index].data = ENVIRON_LAND_DATA_VALUE;
-            }
-        }
-    }
+			if(terrainType(psTile) == TER_WATER)
+			{
+				pEnvironData[index].val = (float)ENVIRON_WATER_INIT_VALUE;
+				pEnvironData[index].data = ENVIRON_WATER_DATA_VALUE;
+			}
+			else
+			{
+				pEnvironData[index].val = 0.f; //ENVIRON_LAND_INIT_VALUE;
+				pEnvironData[index].data = ENVIRON_LAND_DATA_VALUE;
+			}
+		}
+	}
 }
 
 unsigned int environGetValue(unsigned int x, unsigned int y)
 {
-    int retVal = pEnvironData[(y * mapWidth) + x].val;
+	int retVal = pEnvironData[(y * mapWidth) + x].val;
 
-    if (retVal < 0)
-    {
-        retVal = 0;
-    }
+	if (retVal < 0)
+	{
+		retVal = 0;
+	}
 
-    return retVal;
+	return retVal;
 }
 
 uint32_t	environGetData( uint32_t x, uint32_t y )
 {
-    int32_t	retVal = (pEnvironData[(y * mapWidth) + x].data);
+	int32_t	retVal = (pEnvironData[(y * mapWidth) + x].data);
 
-    if (retVal < 0)
-    {
-        retVal = 0;
-    }
-    return(retVal);
+	if (retVal < 0)
+	{
+		retVal = 0;
+	}
+	return(retVal);
 }
 
 void	environShutDown( void )
 {
-    if(pEnvironData)
-    {
-        free(pEnvironData);
-        pEnvironData = NULL;
-    }
+	if(pEnvironData)
+	{
+		free(pEnvironData);
+		pEnvironData = NULL;
+	}
 }

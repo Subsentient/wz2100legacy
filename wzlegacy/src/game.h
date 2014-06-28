@@ -87,33 +87,33 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-    GTYPE_SCENARIO_START,	///< Initial scenario state.
-    GTYPE_SCENARIO_EXPAND,	///< Scenario scroll area expansion.
-    GTYPE_MISSION,		///< Stand alone mission.
-    GTYPE_SAVE_START,	///< User saved game - at the start of a level.
-    GTYPE_SAVE_MIDMISSION,	///< User saved game - in the middle of a level
+	GTYPE_SCENARIO_START,	///< Initial scenario state.
+	GTYPE_SCENARIO_EXPAND,	///< Scenario scroll area expansion.
+	GTYPE_MISSION,		///< Stand alone mission.
+	GTYPE_SAVE_START,	///< User saved game - at the start of a level.
+	GTYPE_SAVE_MIDMISSION,	///< User saved game - in the middle of a level
 } GAME_TYPE;
 
 
 typedef struct _vis_save_header
 {
-    char        aFileType[4];
-    uint32_t    version;
+	char        aFileType[4];
+	uint32_t    version;
 } VIS_SAVEHEADER;
 
 typedef struct _fx_save_header
 {
-    char		aFileType[4];
-    uint32_t		version;
-    uint32_t		entries;
+	char		aFileType[4];
+	uint32_t		version;
+	uint32_t		entries;
 
 } FX_SAVEHEADER;
 
 typedef struct _score_save_header
 {
-    char		aFileType[4];
-    uint32_t    version;
-    uint32_t    entries;	// should always be one for this?
+	char		aFileType[4];
+	uint32_t    version;
+	uint32_t    entries;	// should always be one for this?
 
 } SCORE_SAVEHEADER;
 

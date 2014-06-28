@@ -22,66 +22,66 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 static inline void endian_uword(uint16_t *uword)
 {
 #ifdef __BIG_ENDIAN__
-    uint8_t tmp, *ptr;
+	uint8_t tmp, *ptr;
 
-    ptr = (uint8_t *) uword;
-    tmp = ptr[0];
-    ptr[0] = ptr[1];
-    ptr[1] = tmp;
+	ptr = (uint8_t *) uword;
+	tmp = ptr[0];
+	ptr[0] = ptr[1];
+	ptr[1] = tmp;
 #else
-    // Prevent warnings
-    (void)uword;
+	// Prevent warnings
+	(void)uword;
 #endif
 }
 
 static inline void endian_sword(int16_t *sword)
 {
 #ifdef __BIG_ENDIAN__
-    uint8_t tmp, *ptr;
+	uint8_t tmp, *ptr;
 
-    ptr = (uint8_t *) sword;
-    tmp = ptr[0];
-    ptr[0] = ptr[1];
-    ptr[1] = tmp;
+	ptr = (uint8_t *) sword;
+	tmp = ptr[0];
+	ptr[0] = ptr[1];
+	ptr[1] = tmp;
 #else
-    // Prevent warnings
-    (void)sword;
+	// Prevent warnings
+	(void)sword;
 #endif
 }
 
 static inline void endian_udword(uint32_t *udword)
 {
 #ifdef __BIG_ENDIAN__
-    uint8_t tmp, *ptr;
+	uint8_t tmp, *ptr;
 
-    ptr = (uint8_t *) udword;
-    tmp = ptr[0];
-    ptr[0] = ptr[3];
-    ptr[3] = tmp;
-    tmp = ptr[1];
-    ptr[1] = ptr[2];
-    ptr[2] = tmp;
+	ptr = (uint8_t *) udword;
+	tmp = ptr[0];
+	ptr[0] = ptr[3];
+	ptr[3] = tmp;
+	tmp = ptr[1];
+	ptr[1] = ptr[2];
+	ptr[2] = tmp;
 #else
-    // Prevent warnings
-    (void)udword;
+	// Prevent warnings
+	(void)udword;
 #endif
 }
 
 static inline void endian_sdword(int32_t *sdword)
 {
 #ifdef __BIG_ENDIAN__
-    uint8_t tmp, *ptr;
+	uint8_t tmp, *ptr;
 
-    ptr = (uint8_t *) sdword;
-    tmp = ptr[0];
-    ptr[0] = ptr[3];
-    ptr[3] = tmp;
-    tmp = ptr[1];
-    ptr[1] = ptr[2];
-    ptr[2] = tmp;
+	ptr = (uint8_t *) sdword;
+	tmp = ptr[0];
+	ptr[0] = ptr[3];
+	ptr[3] = tmp;
+	tmp = ptr[1];
+	ptr[1] = ptr[2];
+	ptr[2] = tmp;
 #else
-    // Prevent warnings
-    (void)sdword;
+	// Prevent warnings
+	(void)sdword;
 #endif
 }
 

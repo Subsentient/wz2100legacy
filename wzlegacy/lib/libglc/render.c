@@ -96,113 +96,120 @@
 /* This internal function renders a glyph using the GLC_BITMAP format */
 /* TODO : Render Bitmap fonts */
 static void __glcRenderCharBitmap(const __GLCfont* inFont,
-				  const __GLCcontext* inContext,
-                                  const GLfloat inScaleX,
-				  const GLfloat inScaleY,
-				  const GLfloat* inAdvance,
-				  const GLboolean inIsRTL)
+								  const __GLCcontext* inContext,
+								  const GLfloat inScaleX,
+								  const GLfloat inScaleY,
+								  const GLfloat* inAdvance,
+								  const GLboolean inIsRTL)
 {
-  GLfloat *transform = inContext->bitmapMatrix;
-  GLint pixWidth = 0, pixHeight = 0;
-  GLubyte* pixBuffer = NULL;
-  GLint pixBoundingBox[4] = {0, 0, 0, 0};
+	GLfloat *transform = inContext->bitmapMatrix;
+	GLint pixWidth = 0, pixHeight = 0;
+	GLubyte* pixBuffer = NULL;
+	GLint pixBoundingBox[4] = {0, 0, 0, 0};
 
-  __glcFontGetBitmapSize(inFont, &pixWidth, &pixHeight, inScaleX, inScaleY, 0,
-			 pixBoundingBox, inContext);
+	__glcFontGetBitmapSize(inFont, &pixWidth, &pixHeight, inScaleX, inScaleY, 0,
+						   pixBoundingBox, inContext);
 
-  pixBuffer = (GLubyte *)__glcMalloc(pixWidth * pixHeight);
-  if (!pixBuffer) {
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return;
-  }
+	pixBuffer = (GLubyte *)__glcMalloc(pixWidth * pixHeight);
+	if (!pixBuffer)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return;
+	}
 
-  /* render the glyph */
-  if (!__glcFontGetBitmap(inFont, pixWidth, pixHeight, pixBuffer, inContext)) {
-    __glcFree(pixBuffer);
-    return;
-  }
+	/* render the glyph */
+	if (!__glcFontGetBitmap(inFont, pixWidth, pixHeight, pixBuffer, inContext))
+	{
+		__glcFree(pixBuffer);
+		return;
+	}
 
-  /* Do the actual GL rendering */
-  if (inIsRTL) {
-    glBitmap(0, 0, 0, 0,
-	     inAdvance[1] * transform[2] - inAdvance[0] * transform[0],
-	     inAdvance[1] * transform[3] - inAdvance[0] * transform[1],
-	     NULL);
-    glBitmap(pixWidth, pixHeight, - pixBoundingBox[0] >> 6,
-	     -pixBoundingBox[1] >> 6, 0., 0., pixBuffer);
-  }
-  else
-    glBitmap(pixWidth, pixHeight, -pixBoundingBox[0] >> 6,
-	     -pixBoundingBox[1] >> 6,
-	     inAdvance[0] * transform[0] + inAdvance[1] * transform[2],
-	     inAdvance[0] * transform[1] + inAdvance[1] * transform[3],
-	     pixBuffer);
+	/* Do the actual GL rendering */
+	if (inIsRTL)
+	{
+		glBitmap(0, 0, 0, 0,
+				 inAdvance[1] * transform[2] - inAdvance[0] * transform[0],
+				 inAdvance[1] * transform[3] - inAdvance[0] * transform[1],
+				 NULL);
+		glBitmap(pixWidth, pixHeight, - pixBoundingBox[0] >> 6,
+				 -pixBoundingBox[1] >> 6, 0., 0., pixBuffer);
+	}
+	else
+		glBitmap(pixWidth, pixHeight, -pixBoundingBox[0] >> 6,
+				 -pixBoundingBox[1] >> 6,
+				 inAdvance[0] * transform[0] + inAdvance[1] * transform[2],
+				 inAdvance[0] * transform[1] + inAdvance[1] * transform[3],
+				 pixBuffer);
 
-  __glcFree(pixBuffer);
+	__glcFree(pixBuffer);
 }
 
 
 
 /* This internal function renders a glyph using the GLC_PIXMAP_QSO format */
 static void __glcRenderCharPixmap(const __GLCfont* inFont,
-				  const __GLCcontext* inContext,
-                                  const GLfloat scaleX, const GLfloat scaleY,
-                                  const GLfloat* advance,
-				  const GLboolean inIsRTL)
+								  const __GLCcontext* inContext,
+								  const GLfloat scaleX, const GLfloat scaleY,
+								  const GLfloat* advance,
+								  const GLboolean inIsRTL)
 {
-  GLfloat *transform = inContext->bitmapMatrix;
-  GLint pixWidth = 0, pixHeight = 0;
-  GLubyte* pixBuffer = NULL;
-  GLint pixBoundingBox[4] = {0, 0, 0, 0};
+	GLfloat *transform = inContext->bitmapMatrix;
+	GLint pixWidth = 0, pixHeight = 0;
+	GLubyte* pixBuffer = NULL;
+	GLint pixBoundingBox[4] = {0, 0, 0, 0};
 
-  __glcFontGetBitmapSize(inFont, &pixWidth, &pixHeight, scaleX, scaleY, 0,
-			 pixBoundingBox, inContext);
+	__glcFontGetBitmapSize(inFont, &pixWidth, &pixHeight, scaleX, scaleY, 0,
+						   pixBoundingBox, inContext);
 
-  pixBuffer = (GLubyte *)__glcMalloc(pixWidth * pixHeight);
-  if (!pixBuffer) {
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    return;
-  }
+	pixBuffer = (GLubyte *)__glcMalloc(pixWidth * pixHeight);
+	if (!pixBuffer)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		return;
+	}
 
-  /* render the glyph */
-  if (!__glcFontGetBitmap(inFont, pixWidth, pixHeight, pixBuffer, inContext)) {
-    __glcFree(pixBuffer);
-    return;
-  }
+	/* render the glyph */
+	if (!__glcFontGetBitmap(inFont, pixWidth, pixHeight, pixBuffer, inContext))
+	{
+		__glcFree(pixBuffer);
+		return;
+	}
 
-  /* Do the actual GL rendering */
-  if (inIsRTL) {
-    glBitmap(0, 0, 0.f, 0.f,
-	     advance[1] * transform[2] - advance[0] * transform[0] +
-	     (pixBoundingBox[0] >> 6),
-	     advance[1] * transform[3] - advance[0] * transform[1] +
-	     (pixBoundingBox[1] >> 6),
-	     NULL);
+	/* Do the actual GL rendering */
+	if (inIsRTL)
+	{
+		glBitmap(0, 0, 0.f, 0.f,
+				 advance[1] * transform[2] - advance[0] * transform[0] +
+				 (pixBoundingBox[0] >> 6),
+				 advance[1] * transform[3] - advance[0] * transform[1] +
+				 (pixBoundingBox[1] >> 6),
+				 NULL);
 
-    glDrawPixels(pixWidth, pixHeight, GL_ALPHA, GL_UNSIGNED_BYTE, pixBuffer);
+		glDrawPixels(pixWidth, pixHeight, GL_ALPHA, GL_UNSIGNED_BYTE, pixBuffer);
 
-    glBitmap(0, 0, 0.f, 0.f,
-	     -(pixBoundingBox[0] >> 6),
-	     -(pixBoundingBox[1] >> 6),
-	     NULL);
-  }
-  else {
-    glBitmap(0, 0, 0.f, 0.f, 
-	     pixBoundingBox[0] >> 6, 
-	     pixBoundingBox[1] >> 6, 
-	     NULL);
+		glBitmap(0, 0, 0.f, 0.f,
+				 -(pixBoundingBox[0] >> 6),
+				 -(pixBoundingBox[1] >> 6),
+				 NULL);
+	}
+	else
+	{
+		glBitmap(0, 0, 0.f, 0.f,
+				 pixBoundingBox[0] >> 6,
+				 pixBoundingBox[1] >> 6,
+				 NULL);
 
-    glDrawPixels(pixWidth, pixHeight, GL_ALPHA, GL_UNSIGNED_BYTE, pixBuffer);
+		glDrawPixels(pixWidth, pixHeight, GL_ALPHA, GL_UNSIGNED_BYTE, pixBuffer);
 
-    glBitmap(0, 0, 0.f, 0.f,
-	     advance[0] * transform[0] + advance[1] * transform[2] - 
-	     (pixBoundingBox[0] >> 6),
-	     advance[0] * transform[1] + advance[1] * transform[3] - 
-	     (pixBoundingBox[1] >> 6),
-	     NULL);
-  }
+		glBitmap(0, 0, 0.f, 0.f,
+				 advance[0] * transform[0] + advance[1] * transform[2] -
+				 (pixBoundingBox[0] >> 6),
+				 advance[0] * transform[1] + advance[1] * transform[3] -
+				 (pixBoundingBox[1] >> 6),
+				 NULL);
+	}
 
-  __glcFree(pixBuffer);
+	__glcFree(pixBuffer);
 }
 
 
@@ -211,139 +218,167 @@ static void __glcRenderCharPixmap(const __GLCfont* inFont,
  * 'inCode' must be given in UCS-4 format
  */
 static void* __glcRenderChar(const GLint inCode, const GLint inPrevCode,
-			     const GLboolean inIsRTL, const __GLCfont* inFont,
-			     __GLCcontext* inContext,
-			     const void* GLC_UNUSED_ARG(inData),
-			     const GLboolean GLC_UNUSED_ARG(inMultipleChars))
+							 const GLboolean inIsRTL, const __GLCfont* inFont,
+							 __GLCcontext* inContext,
+							 const void* GLC_UNUSED_ARG(inData),
+							 const GLboolean GLC_UNUSED_ARG(inMultipleChars))
 {
-  GLfloat transformMatrix[16];
-  GLfloat scaleX = GLC_POINT_SIZE;
-  GLfloat scaleY = GLC_POINT_SIZE;
-  __GLCglyph* glyph = NULL;
-  GLfloat sx64 = 0., sy64 = 0.;
-  GLfloat advance[2] = {0., 0.};
+	GLfloat transformMatrix[16];
+	GLfloat scaleX = GLC_POINT_SIZE;
+	GLfloat scaleY = GLC_POINT_SIZE;
+	__GLCglyph* glyph = NULL;
+	GLfloat sx64 = 0., sy64 = 0.;
+	GLfloat advance[2] = {0., 0.};
 
-  assert(inFont);
+	assert(inFont);
 
-  __glcGetScale(inContext, transformMatrix, &scaleX, &scaleY);
+	__glcGetScale(inContext, transformMatrix, &scaleX, &scaleY);
 
-  if ((fabs(scaleX) < GLC_EPSILON) || (fabs(scaleY) < GLC_EPSILON))
-    return NULL;
+	if ((fabs(scaleX) < GLC_EPSILON) || (fabs(scaleY) < GLC_EPSILON))
+	{
+		return NULL;
+	}
 
 #ifndef GLC_FT_CACHE
-  if (!__glcFontOpen(inFont, inContext))
-    return NULL;
+	if (!__glcFontOpen(inFont, inContext))
+	{
+		return NULL;
+	}
 #endif
 
-  if (inPrevCode && inContext->enableState.kerning) {
-    GLfloat kerning[2];
-    GLint leftCode = inIsRTL ? inCode : inPrevCode;
-    GLint rightCode = inIsRTL ? inPrevCode : inCode;
+	if (inPrevCode && inContext->enableState.kerning)
+	{
+		GLfloat kerning[2];
+		GLint leftCode = inIsRTL ? inCode : inPrevCode;
+		GLint rightCode = inIsRTL ? inPrevCode : inCode;
 
-    if (__glcFontGetKerning(inFont, leftCode, rightCode, kerning, inContext,
-			    scaleX, scaleY)) {
-      if (inIsRTL)
-	kerning[0] = -kerning[0];
+		if (__glcFontGetKerning(inFont, leftCode, rightCode, kerning, inContext,
+								scaleX, scaleY))
+		{
+			if (inIsRTL)
+			{
+				kerning[0] = -kerning[0];
+			}
 
-      if ((inContext->renderState.renderStyle == GLC_BITMAP)
-          || (inContext->renderState.renderStyle == GLC_PIXMAP_QSO))
-	glBitmap(0, 0, 0, 0,
-		 kerning[0] * inContext->bitmapMatrix[0] 
-		 + kerning[1] * inContext->bitmapMatrix[2],
-		 kerning[0] * inContext->bitmapMatrix[1]
-		 + kerning[1] * inContext->bitmapMatrix[3],
-		 NULL);
-      else
-	glTranslatef(kerning[0], kerning[1], 0.f);
-    }
-  }
+			if ((inContext->renderState.renderStyle == GLC_BITMAP)
+					|| (inContext->renderState.renderStyle == GLC_PIXMAP_QSO))
+				glBitmap(0, 0, 0, 0,
+						 kerning[0] * inContext->bitmapMatrix[0]
+						 + kerning[1] * inContext->bitmapMatrix[2],
+						 kerning[0] * inContext->bitmapMatrix[1]
+						 + kerning[1] * inContext->bitmapMatrix[3],
+						 NULL);
+			else
+			{
+				glTranslatef(kerning[0], kerning[1], 0.f);
+			}
+		}
+	}
 
-  if (!__glcFontGetAdvance(inFont, inCode, advance, inContext, scaleX,
-			   scaleY)) {
+	if (!__glcFontGetAdvance(inFont, inCode, advance, inContext, scaleX,
+							 scaleY))
+	{
 #ifndef GLC_FT_CACHE
-    __glcFontClose(inFont);
+		__glcFontClose(inFont);
 #endif
-    return NULL;
-  }
+		return NULL;
+	}
 
-  /* Get and load the glyph which unicode code is identified by inCode */
-  glyph = __glcFontGetGlyph(inFont, inCode, inContext);
+	/* Get and load the glyph which unicode code is identified by inCode */
+	glyph = __glcFontGetGlyph(inFont, inCode, inContext);
 
-  if (inContext->enableState.glObjects
-      && !__glcFontPrepareGlyph(inFont, inContext, scaleX, scaleY,
-				glyph->index)) {
+	if (inContext->enableState.glObjects
+			&& !__glcFontPrepareGlyph(inFont, inContext, scaleX, scaleY,
+									  glyph->index))
+	{
 #ifndef GLC_FT_CACHE
-    __glcFontClose(inFont);
+		__glcFontClose(inFont);
 #endif
-    return NULL;
-  }
+		return NULL;
+	}
 
-  sx64 = 64. * scaleX;
-  sy64 = 64. * scaleY;
+	sx64 = 64. * scaleX;
+	sy64 = 64. * scaleY;
 
-  if ((inContext->renderState.renderStyle != GLC_BITMAP)
-      && (inContext->renderState.renderStyle != GLC_PIXMAP_QSO)) {
-    if (inIsRTL)
-      glTranslatef(-advance[0], advance[1], 0.f);
+	if ((inContext->renderState.renderStyle != GLC_BITMAP)
+			&& (inContext->renderState.renderStyle != GLC_PIXMAP_QSO))
+	{
+		if (inIsRTL)
+		{
+			glTranslatef(-advance[0], advance[1], 0.f);
+		}
 
-    /* If the outline contains no point then the glyph represents a space
-     * character and there is no need to continue the process of rendering.
-     */
-    if (!__glcFontOutlineEmpty(inFont)) {
-      /* Update the advance and return */
-      if (!inIsRTL)
-        glTranslatef(advance[0], advance[1], 0.f);
-      if (inContext->enableState.glObjects)
-	glyph->isSpacingChar = GL_TRUE;
+		/* If the outline contains no point then the glyph represents a space
+		 * character and there is no need to continue the process of rendering.
+		 */
+		if (!__glcFontOutlineEmpty(inFont))
+		{
+			/* Update the advance and return */
+			if (!inIsRTL)
+			{
+				glTranslatef(advance[0], advance[1], 0.f);
+			}
+			if (inContext->enableState.glObjects)
+			{
+				glyph->isSpacingChar = GL_TRUE;
+			}
 #ifndef GLC_FT_CACHE
-      __glcFontClose(inFont);
+			__glcFontClose(inFont);
 #endif
-      return NULL;
-    }
+			return NULL;
+		}
 
-    /* coordinates are given in 26.6 fixed point integer hence we
-     * divide the scale by 2^6
-     */
-    if (!inContext->enableState.glObjects)
-      glScalef(1. / sx64, 1. / sy64, 1.f);
-  }
+		/* coordinates are given in 26.6 fixed point integer hence we
+		 * divide the scale by 2^6
+		 */
+		if (!inContext->enableState.glObjects)
+		{
+			glScalef(1. / sx64, 1. / sy64, 1.f);
+		}
+	}
 
-  /* Call the appropriate function depending on the rendering mode */
-  switch(inContext->renderState.renderStyle) {
-  case GLC_BITMAP:
-    __glcRenderCharBitmap(inFont, inContext, scaleX, scaleY, advance,
-			  inIsRTL);
-    break;
-  case GLC_PIXMAP_QSO:
-    __glcRenderCharPixmap(inFont, inContext, scaleX, scaleY, advance,
-			  inIsRTL);
-    break;
-  case GLC_TEXTURE:
-    __glcRenderCharTexture(inFont, inContext, scaleX, scaleY, glyph);
-    break;
-  case GLC_LINE:
-    __glcRenderCharScalable(inFont, inContext, transformMatrix, scaleX,
-			    scaleY, glyph);
-    break;
-  case GLC_TRIANGLE:
-    __glcRenderCharScalable(inFont, inContext, transformMatrix, scaleX,
-			    scaleY, glyph);
-    break;
-  default:
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-  }
+	/* Call the appropriate function depending on the rendering mode */
+	switch(inContext->renderState.renderStyle)
+	{
+		case GLC_BITMAP:
+			__glcRenderCharBitmap(inFont, inContext, scaleX, scaleY, advance,
+								  inIsRTL);
+			break;
+		case GLC_PIXMAP_QSO:
+			__glcRenderCharPixmap(inFont, inContext, scaleX, scaleY, advance,
+								  inIsRTL);
+			break;
+		case GLC_TEXTURE:
+			__glcRenderCharTexture(inFont, inContext, scaleX, scaleY, glyph);
+			break;
+		case GLC_LINE:
+			__glcRenderCharScalable(inFont, inContext, transformMatrix, scaleX,
+									scaleY, glyph);
+			break;
+		case GLC_TRIANGLE:
+			__glcRenderCharScalable(inFont, inContext, transformMatrix, scaleX,
+									scaleY, glyph);
+			break;
+		default:
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+	}
 
-  if ((inContext->renderState.renderStyle != GLC_BITMAP)
-      && (inContext->renderState.renderStyle != GLC_PIXMAP_QSO)) {
-    if (!inContext->enableState.glObjects)
-      glScalef(sx64, sy64, 1.);
-    if (!inIsRTL)
-      glTranslatef(advance[0], advance[1], 0.f);
-  }
+	if ((inContext->renderState.renderStyle != GLC_BITMAP)
+			&& (inContext->renderState.renderStyle != GLC_PIXMAP_QSO))
+	{
+		if (!inContext->enableState.glObjects)
+		{
+			glScalef(sx64, sy64, 1.);
+		}
+		if (!inIsRTL)
+		{
+			glTranslatef(advance[0], advance[1], 0.f);
+		}
+	}
 #ifndef GLC_FT_CACHE
-  __glcFontClose(inFont);
+	__glcFontClose(inFont);
 #endif
-  return NULL;
+	return NULL;
 }
 
 
@@ -353,320 +388,387 @@ static void* __glcRenderChar(const GLint inCode, const GLint inPrevCode,
  * order and stored using UCS4 format.
  */
 static void __glcRenderCountedString(__GLCcontext* inContext,
-				     const GLCchar32* inString,
-				     const GLboolean inIsRightToLeft,
-				     const GLint inCount)
+									 const GLCchar32* inString,
+									 const GLboolean inIsRightToLeft,
+									 const GLint inCount)
 {
-  GLint listIndex = 0;
-  GLint i = 0;
-  const GLCchar32* ptr = NULL;
-  __GLCglState GLState;
-  __GLCcharacter prevCode = {0, NULL, NULL, {0.f, 0.f}};
-  GLboolean saveGLObjects = GL_FALSE;
-  GLint shift = 1;
-  __GLCcharacter* chars = NULL;
-  GLfloat pixmapColor[4];
+	GLint listIndex = 0;
+	GLint i = 0;
+	const GLCchar32* ptr = NULL;
+	__GLCglState GLState;
+	__GLCcharacter prevCode = {0, NULL, NULL, {0.f, 0.f}};
+	GLboolean saveGLObjects = GL_FALSE;
+	GLint shift = 1;
+	__GLCcharacter* chars = NULL;
+	GLfloat pixmapColor[4];
 
-  /* Disable the internal management of GL objects when the user is currently
-   * building a display list.
-   */
-  glGetIntegerv(GL_LIST_INDEX, &listIndex);
-  if (listIndex) {
-    saveGLObjects = inContext->enableState.glObjects;
-    inContext->enableState.glObjects = GL_FALSE;
-  }
-
-
-  /* Allocate a buffer to store the glyphes informations of the string to be
-   * rendered.
-   */
-  if (inContext->enableState.glObjects
-      && (inContext->renderState.renderStyle != GLC_BITMAP)
-      && (inContext->renderState.renderStyle != GLC_PIXMAP_QSO)) {
-    chars = (__GLCcharacter*)__glcMalloc(inCount * sizeof(__GLCcharacter));
-    if (!chars) {
-      __glcRaiseError(GLC_RESOURCE_ERROR);
-      return;
-    }
-  }
-
-  /* Save the value of the GL parameters */
-  __glcSaveGLState(&GLState, inContext, GL_FALSE);
-
-  /* Set the vertex arrays parameters for GLC_LINE and GLC_TRIANGLE rendering
-   * styles when GLC_GL_OBJECTS is enabled.
-   */
-  if (inContext->renderState.renderStyle == GLC_LINE ||
-      (inContext->renderState.renderStyle == GLC_TRIANGLE
-       && !(inContext->enableState.glObjects
-	    && inContext->enableState.extrude))) {
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_COLOR_ARRAY);
-    glDisableClientState(GL_INDEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_EDGE_FLAG_ARRAY);
-  }
-
-  if (inContext->renderState.renderStyle == GLC_TRIANGLE
-      && inContext->enableState.glObjects && inContext->enableState.extrude)
-    glEnable(GL_NORMALIZE);
-
-  /* Set the texture environment if the render style is GLC_TEXTURE */
-  if (inContext->renderState.renderStyle == GLC_TEXTURE) {
-    /* Set the new values of the parameters */
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    if (inContext->enableState.glObjects) {
-      if (inContext->atlas.id)
-	glBindTexture(GL_TEXTURE_2D, inContext->atlas.id);
-      if (GLEW_ARB_vertex_buffer_object) {
-	if (inContext->atlas.bufferObjectID) {
-	  glBindBufferARB(GL_ARRAY_BUFFER_ARB, inContext->atlas.bufferObjectID);
-	  glInterleavedArrays(GL_T2F_V3F, 0, NULL);
-	}
-      }
-    }
-    else if (inContext->texture.id) {
-      glBindTexture(GL_TEXTURE_2D, inContext->texture.id);
-      if (GLEW_ARB_pixel_buffer_object && inContext->texture.bufferObjectID)
-	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER,
-			inContext->texture.bufferObjectID);
-    }
-  }
-
-  if ((inContext->renderState.renderStyle == GLC_BITMAP)
-      || (inContext->renderState.renderStyle == GLC_PIXMAP_QSO)) {
-    glPixelStorei(GL_UNPACK_LSB_FIRST, GL_FALSE);
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    if (inContext->renderState.renderStyle == GLC_PIXMAP_QSO) {
-      glEnable(GL_BLEND);
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-      glGetFloatv(GL_CURRENT_RASTER_COLOR, pixmapColor);
-      glPixelTransferf(GL_RED_BIAS, pixmapColor[0]);
-      glPixelTransferf(GL_GREEN_BIAS, pixmapColor[1]);
-      glPixelTransferf(GL_BLUE_BIAS, pixmapColor[2]);
-      glPixelTransferf(GL_ALPHA_BIAS, 0.f);
-      glPixelTransferf(GL_RED_SCALE, 1.f);
-      glPixelTransferf(GL_GREEN_SCALE, 1.f);
-      glPixelTransferf(GL_BLUE_SCALE, 1.f);
-      glPixelTransferf(GL_ALPHA_SCALE, pixmapColor[3]);
-    }
-  }
-
-  /* Render the string */
-  ptr = inString;
-  if (inIsRightToLeft) {
-    ptr += inCount - 1;
-    shift = -1;
-  }
-
-  if (inContext->enableState.glObjects
-      && (inContext->renderState.renderStyle != GLC_BITMAP)
-      && (inContext->renderState.renderStyle != GLC_PIXMAP_QSO)) {
-    __GLCfont* font = NULL;
-    __GLCglyph* glyph = NULL;
-    int length = 0;
-    int j = 0;
-    GLuint GLObjectIndex = inContext->renderState.renderStyle - 0x101;
-    FT_ListNode node = NULL;
-    float resolution = inContext->renderState.resolution / 72.;
-    GLfloat orientation = 1.f;
-
-    if (inContext->renderState.renderStyle == GLC_TRIANGLE
-	&& inContext->enableState.extrude) {
-      GLfloat transformMatrix[16];
-      GLfloat scaleX = GLC_POINT_SIZE;
-      GLfloat scaleY = GLC_POINT_SIZE;
-
-      __glcGetScale(inContext, transformMatrix, &scaleX, &scaleY);
-
-      if ((fabs(scaleX) < GLC_EPSILON) || (fabs(scaleY) < GLC_EPSILON))
-	return;
-
-      orientation = -transformMatrix[11];
-      GLObjectIndex++;
-    }
-
-    glNormal3f(0.f, 0.f, 1.f / resolution);
-
-    for (i = 0; i < inCount; i++) {
-      if (*ptr >= 32) {
- 	for (node = inContext->currentFontList.head; node ; node = node->next) {
- 	  font = (__GLCfont*)node->data;
- 	  glyph = __glcCharMapGetGlyph(font->charMap, *ptr);
-
- 	  if (glyph) {
- 	    if (!glyph->glObject[GLObjectIndex] && !glyph->isSpacingChar)
- 	      continue;
-
-	    if (!glyph->isSpacingChar
-		&& (inContext->renderState.renderStyle == GLC_TEXTURE))
-	      FT_List_Up(&inContext->atlasList,
-			 (FT_ListNode)glyph->textureObject);
-
-	    chars[length].glyph = glyph;
-	    chars[length].advance[0] = glyph->advance[0];
-	    chars[length].advance[1] = glyph->advance[1];
-
- 	    if (inContext->enableState.kerning) {
- 	      if (prevCode.code && prevCode.font == font) {
- 		GLfloat kerning[2];
-		GLint leftCode = inIsRightToLeft ? *ptr : prevCode.code;
-		GLint rightCode = inIsRightToLeft ? prevCode.code : *ptr;
-
- 		if (__glcFontGetKerning(font, leftCode, rightCode, kerning,
- 					inContext, GLC_POINT_SIZE,
- 					GLC_POINT_SIZE)) {
-		  if (inIsRightToLeft)
-		    kerning[0] = -kerning[0];
-
-		  if (length) {
-		    chars[length - 1].advance[0] += kerning[0];
-		    chars[length - 1].advance[1] += kerning[1];
-		  }
-		  else
-		    glTranslatef(kerning[0], kerning[1], 0.f);
- 		}
- 	      }
- 	    }
-
-	    prevCode.font = font;
-	    prevCode.code = *ptr;
-
-	    if (glyph->isSpacingChar)
-	      chars[length].code = 32;
-	    else
-	      chars[length].code = *ptr;
-
- 	    length++;
- 	    break;
- 	  }
- 	}
-      }
-
-      if(!node || (i == inCount-1)) {
-	glScalef(resolution, resolution, 1.f);
-
-	for (j = 0; j < length; j++) {
-	  if (inIsRightToLeft)
-	    glTranslatef(-chars[j].advance[0], chars[j].advance[1], 0.);
-	  if (chars[j].code != 32) {
-	    glyph = chars[j].glyph;
-
-	    switch(inContext->renderState.renderStyle) {
-	    case GLC_TEXTURE:
-	      if (GLEW_ARB_vertex_buffer_object)
-		glDrawArrays(GL_QUADS, glyph->textureObject->position * 4, 4);
-	      else
-		glCallList(glyph->glObject[1]);
-	      break;
-	    case GLC_LINE:
-	      if (GLEW_ARB_vertex_buffer_object) {
-		int k = 0;
-
-		glBindBufferARB(GL_ARRAY_BUFFER_ARB, glyph->glObject[0]);
-		glVertexPointer(2, GL_FLOAT, 0, NULL);
-		for (k = 0; k < glyph->nContour; k++)
-		  glDrawArrays(GL_LINE_LOOP, glyph->contours[k],
-			       glyph->contours[k+1] - glyph->contours[k]);
-		break;
-	      }
-	      glCallList(glyph->glObject[0]);
-	      break;
-	    case GLC_TRIANGLE:
-	      if (GLEW_ARB_vertex_buffer_object) {
-		int k = 0;
-		GLboolean extrude = GL_FALSE;
-
-		glBindBufferARB(GL_ARRAY_BUFFER_ARB, glyph->glObject[0]);
-		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB,
-				glyph->glObject[2]);
-		glVertexPointer(2, GL_FLOAT, 0, NULL);
-
-		do {
-		  GLuint* vertexIndices = NULL;
-
-		  if (orientation > 0.f) {
-		    for (k = 0; k < glyph->nGeomBatch; k++) {
-		      glDrawRangeElements(glyph->geomBatches[k].mode,
-					  glyph->geomBatches[k].start,
-					  glyph->geomBatches[k].end,
-					  glyph->geomBatches[k].length,
-					  GL_UNSIGNED_INT, vertexIndices);
-		      vertexIndices += glyph->geomBatches[k].length;
-		    }
-		  }
-
-		  if (inContext->enableState.extrude) {
-		    if (extrude) {
-		      glTranslatef(0.f, 0.f, 1.f);
-		      glBindBufferARB(GL_ARRAY_BUFFER_ARB,
-				      glyph->glObject[3]);
-		      glInterleavedArrays(GL_N3F_V3F, 0, NULL);
-
-		      for (k = 0; k < glyph->nContour; k++)
-			glDrawArrays(GL_TRIANGLE_STRIP, glyph->contours[k] * 2,
-				     (glyph->contours[k+1] - glyph->contours[k]
-				      + 1) * 2);
-		      glNormal3f(0.f, 0.f, 1.f / resolution);
-		    }
-		    else {
-		      glNormal3f(0.f, 0.f, -1.f / resolution);
-		      glTranslatef(0.f, 0.f, -1.f);
-		      orientation = -orientation;
-		    }
-		    extrude = (!extrude);
-		  }
-		} while(extrude);
-	      }
-	      else
-		glCallList(glyph->glObject[GLObjectIndex]);
-
-	      break;
-	    }
-	  }
-	  if (!inIsRightToLeft)
-	    glTranslatef(chars[j].advance[0], chars[j].advance[1], 0.);
+	/* Disable the internal management of GL objects when the user is currently
+	 * building a display list.
+	 */
+	glGetIntegerv(GL_LIST_INDEX, &listIndex);
+	if (listIndex)
+	{
+		saveGLObjects = inContext->enableState.glObjects;
+		inContext->enableState.glObjects = GL_FALSE;
 	}
 
-	if (!node)
-	  __glcProcessChar(inContext, *ptr, &prevCode, inIsRightToLeft,
-			   __glcRenderChar, NULL);
 
-	glScalef(1./resolution, 1./resolution, 1.f);
-	length = 0;
-      }
+	/* Allocate a buffer to store the glyphes informations of the string to be
+	 * rendered.
+	 */
+	if (inContext->enableState.glObjects
+			&& (inContext->renderState.renderStyle != GLC_BITMAP)
+			&& (inContext->renderState.renderStyle != GLC_PIXMAP_QSO))
+	{
+		chars = (__GLCcharacter*)__glcMalloc(inCount * sizeof(__GLCcharacter));
+		if (!chars)
+		{
+			__glcRaiseError(GLC_RESOURCE_ERROR);
+			return;
+		}
+	}
 
-      ptr += shift;
-    }
-  }
-  else {
-    glNormal3f(0.f, 0.f, 1.f);
+	/* Save the value of the GL parameters */
+	__glcSaveGLState(&GLState, inContext, GL_FALSE);
 
-    for (i = 0; i < inCount; i++) {
-      if (*ptr >= 32)
-	__glcProcessChar(inContext, *ptr, &prevCode, inIsRightToLeft,
-			 __glcRenderChar, NULL);
-      ptr += shift;
-    }
-  }
+	/* Set the vertex arrays parameters for GLC_LINE and GLC_TRIANGLE rendering
+	 * styles when GLC_GL_OBJECTS is enabled.
+	 */
+	if (inContext->renderState.renderStyle == GLC_LINE ||
+			(inContext->renderState.renderStyle == GLC_TRIANGLE
+			 && !(inContext->enableState.glObjects
+				  && inContext->enableState.extrude)))
+	{
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_INDEX_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_EDGE_FLAG_ARRAY);
+	}
 
-  /* Restore the values of the GL state if needed */
-  __glcRestoreGLState(&GLState, inContext, GL_FALSE);
+	if (inContext->renderState.renderStyle == GLC_TRIANGLE
+			&& inContext->enableState.glObjects && inContext->enableState.extrude)
+	{
+		glEnable(GL_NORMALIZE);
+	}
 
-  if ((inContext->renderState.renderStyle != GLC_BITMAP)
-      && (inContext->renderState.renderStyle != GLC_PIXMAP_QSO)
-      && inContext->enableState.glObjects)
-      __glcFree(chars);
+	/* Set the texture environment if the render style is GLC_TEXTURE */
+	if (inContext->renderState.renderStyle == GLC_TEXTURE)
+	{
+		/* Set the new values of the parameters */
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		if (inContext->enableState.glObjects)
+		{
+			if (inContext->atlas.id)
+			{
+				glBindTexture(GL_TEXTURE_2D, inContext->atlas.id);
+			}
+			if (GLEW_ARB_vertex_buffer_object)
+			{
+				if (inContext->atlas.bufferObjectID)
+				{
+					glBindBufferARB(GL_ARRAY_BUFFER_ARB, inContext->atlas.bufferObjectID);
+					glInterleavedArrays(GL_T2F_V3F, 0, NULL);
+				}
+			}
+		}
+		else if (inContext->texture.id)
+		{
+			glBindTexture(GL_TEXTURE_2D, inContext->texture.id);
+			if (GLEW_ARB_pixel_buffer_object && inContext->texture.bufferObjectID)
+				glBindBufferARB(GL_PIXEL_UNPACK_BUFFER,
+								inContext->texture.bufferObjectID);
+		}
+	}
 
-  if (listIndex)
-    inContext->enableState.glObjects = saveGLObjects;
+	if ((inContext->renderState.renderStyle == GLC_BITMAP)
+			|| (inContext->renderState.renderStyle == GLC_PIXMAP_QSO))
+	{
+		glPixelStorei(GL_UNPACK_LSB_FIRST, GL_FALSE);
+		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+		if (inContext->renderState.renderStyle == GLC_PIXMAP_QSO)
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glGetFloatv(GL_CURRENT_RASTER_COLOR, pixmapColor);
+			glPixelTransferf(GL_RED_BIAS, pixmapColor[0]);
+			glPixelTransferf(GL_GREEN_BIAS, pixmapColor[1]);
+			glPixelTransferf(GL_BLUE_BIAS, pixmapColor[2]);
+			glPixelTransferf(GL_ALPHA_BIAS, 0.f);
+			glPixelTransferf(GL_RED_SCALE, 1.f);
+			glPixelTransferf(GL_GREEN_SCALE, 1.f);
+			glPixelTransferf(GL_BLUE_SCALE, 1.f);
+			glPixelTransferf(GL_ALPHA_SCALE, pixmapColor[3]);
+		}
+	}
+
+	/* Render the string */
+	ptr = inString;
+	if (inIsRightToLeft)
+	{
+		ptr += inCount - 1;
+		shift = -1;
+	}
+
+	if (inContext->enableState.glObjects
+			&& (inContext->renderState.renderStyle != GLC_BITMAP)
+			&& (inContext->renderState.renderStyle != GLC_PIXMAP_QSO))
+	{
+		__GLCfont* font = NULL;
+		__GLCglyph* glyph = NULL;
+		int length = 0;
+		int j = 0;
+		GLuint GLObjectIndex = inContext->renderState.renderStyle - 0x101;
+		FT_ListNode node = NULL;
+		float resolution = inContext->renderState.resolution / 72.;
+		GLfloat orientation = 1.f;
+
+		if (inContext->renderState.renderStyle == GLC_TRIANGLE
+				&& inContext->enableState.extrude)
+		{
+			GLfloat transformMatrix[16];
+			GLfloat scaleX = GLC_POINT_SIZE;
+			GLfloat scaleY = GLC_POINT_SIZE;
+
+			__glcGetScale(inContext, transformMatrix, &scaleX, &scaleY);
+
+			if ((fabs(scaleX) < GLC_EPSILON) || (fabs(scaleY) < GLC_EPSILON))
+			{
+				return;
+			}
+
+			orientation = -transformMatrix[11];
+			GLObjectIndex++;
+		}
+
+		glNormal3f(0.f, 0.f, 1.f / resolution);
+
+		for (i = 0; i < inCount; i++)
+		{
+			if (*ptr >= 32)
+			{
+				for (node = inContext->currentFontList.head; node ; node = node->next)
+				{
+					font = (__GLCfont*)node->data;
+					glyph = __glcCharMapGetGlyph(font->charMap, *ptr);
+
+					if (glyph)
+					{
+						if (!glyph->glObject[GLObjectIndex] && !glyph->isSpacingChar)
+						{
+							continue;
+						}
+
+						if (!glyph->isSpacingChar
+								&& (inContext->renderState.renderStyle == GLC_TEXTURE))
+							FT_List_Up(&inContext->atlasList,
+									   (FT_ListNode)glyph->textureObject);
+
+						chars[length].glyph = glyph;
+						chars[length].advance[0] = glyph->advance[0];
+						chars[length].advance[1] = glyph->advance[1];
+
+						if (inContext->enableState.kerning)
+						{
+							if (prevCode.code && prevCode.font == font)
+							{
+								GLfloat kerning[2];
+								GLint leftCode = inIsRightToLeft ? *ptr : prevCode.code;
+								GLint rightCode = inIsRightToLeft ? prevCode.code : *ptr;
+
+								if (__glcFontGetKerning(font, leftCode, rightCode, kerning,
+														inContext, GLC_POINT_SIZE,
+														GLC_POINT_SIZE))
+								{
+									if (inIsRightToLeft)
+									{
+										kerning[0] = -kerning[0];
+									}
+
+									if (length)
+									{
+										chars[length - 1].advance[0] += kerning[0];
+										chars[length - 1].advance[1] += kerning[1];
+									}
+									else
+									{
+										glTranslatef(kerning[0], kerning[1], 0.f);
+									}
+								}
+							}
+						}
+
+						prevCode.font = font;
+						prevCode.code = *ptr;
+
+						if (glyph->isSpacingChar)
+						{
+							chars[length].code = 32;
+						}
+						else
+						{
+							chars[length].code = *ptr;
+						}
+
+						length++;
+						break;
+					}
+				}
+			}
+
+			if(!node || (i == inCount - 1))
+			{
+				glScalef(resolution, resolution, 1.f);
+
+				for (j = 0; j < length; j++)
+				{
+					if (inIsRightToLeft)
+					{
+						glTranslatef(-chars[j].advance[0], chars[j].advance[1], 0.);
+					}
+					if (chars[j].code != 32)
+					{
+						glyph = chars[j].glyph;
+
+						switch(inContext->renderState.renderStyle)
+						{
+							case GLC_TEXTURE:
+								if (GLEW_ARB_vertex_buffer_object)
+								{
+									glDrawArrays(GL_QUADS, glyph->textureObject->position * 4, 4);
+								}
+								else
+								{
+									glCallList(glyph->glObject[1]);
+								}
+								break;
+							case GLC_LINE:
+								if (GLEW_ARB_vertex_buffer_object)
+								{
+									int k = 0;
+
+									glBindBufferARB(GL_ARRAY_BUFFER_ARB, glyph->glObject[0]);
+									glVertexPointer(2, GL_FLOAT, 0, NULL);
+									for (k = 0; k < glyph->nContour; k++)
+										glDrawArrays(GL_LINE_LOOP, glyph->contours[k],
+													 glyph->contours[k + 1] - glyph->contours[k]);
+									break;
+								}
+								glCallList(glyph->glObject[0]);
+								break;
+							case GLC_TRIANGLE:
+								if (GLEW_ARB_vertex_buffer_object)
+								{
+									int k = 0;
+									GLboolean extrude = GL_FALSE;
+
+									glBindBufferARB(GL_ARRAY_BUFFER_ARB, glyph->glObject[0]);
+									glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB,
+													glyph->glObject[2]);
+									glVertexPointer(2, GL_FLOAT, 0, NULL);
+
+									do
+									{
+										GLuint* vertexIndices = NULL;
+
+										if (orientation > 0.f)
+										{
+											for (k = 0; k < glyph->nGeomBatch; k++)
+											{
+												glDrawRangeElements(glyph->geomBatches[k].mode,
+																	glyph->geomBatches[k].start,
+																	glyph->geomBatches[k].end,
+																	glyph->geomBatches[k].length,
+																	GL_UNSIGNED_INT, vertexIndices);
+												vertexIndices += glyph->geomBatches[k].length;
+											}
+										}
+
+										if (inContext->enableState.extrude)
+										{
+											if (extrude)
+											{
+												glTranslatef(0.f, 0.f, 1.f);
+												glBindBufferARB(GL_ARRAY_BUFFER_ARB,
+																glyph->glObject[3]);
+												glInterleavedArrays(GL_N3F_V3F, 0, NULL);
+
+												for (k = 0; k < glyph->nContour; k++)
+													glDrawArrays(GL_TRIANGLE_STRIP, glyph->contours[k] * 2,
+																 (glyph->contours[k + 1] - glyph->contours[k]
+																  + 1) * 2);
+												glNormal3f(0.f, 0.f, 1.f / resolution);
+											}
+											else
+											{
+												glNormal3f(0.f, 0.f, -1.f / resolution);
+												glTranslatef(0.f, 0.f, -1.f);
+												orientation = -orientation;
+											}
+											extrude = (!extrude);
+										}
+									}
+									while(extrude);
+								}
+								else
+								{
+									glCallList(glyph->glObject[GLObjectIndex]);
+								}
+
+								break;
+						}
+					}
+					if (!inIsRightToLeft)
+					{
+						glTranslatef(chars[j].advance[0], chars[j].advance[1], 0.);
+					}
+				}
+
+				if (!node)
+					__glcProcessChar(inContext, *ptr, &prevCode, inIsRightToLeft,
+									 __glcRenderChar, NULL);
+
+				glScalef(1. / resolution, 1. / resolution, 1.f);
+				length = 0;
+			}
+
+			ptr += shift;
+		}
+	}
+	else
+	{
+		glNormal3f(0.f, 0.f, 1.f);
+
+		for (i = 0; i < inCount; i++)
+		{
+			if (*ptr >= 32)
+				__glcProcessChar(inContext, *ptr, &prevCode, inIsRightToLeft,
+								 __glcRenderChar, NULL);
+			ptr += shift;
+		}
+	}
+
+	/* Restore the values of the GL state if needed */
+	__glcRestoreGLState(&GLState, inContext, GL_FALSE);
+
+	if ((inContext->renderState.renderStyle != GLC_BITMAP)
+			&& (inContext->renderState.renderStyle != GLC_PIXMAP_QSO)
+			&& inContext->enableState.glObjects)
+	{
+		__glcFree(chars);
+	}
+
+	if (listIndex)
+	{
+		inContext->enableState.glObjects = saveGLObjects;
+	}
 }
 
 
@@ -682,24 +784,27 @@ static void __glcRenderCountedString(__GLCcontext* inContext,
  */
 void APIENTRY glcRenderChar(GLint inCode)
 {
-  __GLCcontext *ctx = NULL;
-  GLint code = 0;
+	__GLCcontext *ctx = NULL;
+	GLint code = 0;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* Get the character code converted to the UCS-4 format */
-  code = __glcConvertGLintToUcs4(ctx, inCode);
-  if (code < 32)
-    return; /* Skip control characters and unknown characters */
+	/* Get the character code converted to the UCS-4 format */
+	code = __glcConvertGLintToUcs4(ctx, inCode);
+	if (code < 32)
+	{
+		return;    /* Skip control characters and unknown characters */
+	}
 
-  __glcRenderCountedString(ctx, (GLCchar32*)&code, GL_FALSE, 1);
+	__glcRenderCountedString(ctx, (GLCchar32*)&code, GL_FALSE, 1);
 }
 
 
@@ -719,39 +824,45 @@ void APIENTRY glcRenderChar(GLint inCode)
  */
 void APIENTRY glcRenderCountedString(GLint inCount, const GLCchar *inString)
 {
-  __GLCcontext *ctx = NULL;
-  GLCchar32* UinString = NULL;
-  GLboolean isRightToLeft = GL_FALSE;
+	__GLCcontext *ctx = NULL;
+	GLCchar32* UinString = NULL;
+	GLboolean isRightToLeft = GL_FALSE;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if inCount is positive */
-  if (inCount < 0) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	/* Check if inCount is positive */
+	if (inCount < 0)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* If inString is NULL then there is no point in continuing */
-  if (!inString)
-    return;
+	/* If inString is NULL then there is no point in continuing */
+	if (!inString)
+	{
+		return;
+	}
 
-  /* Creates a Unicode string based on the current string type. Basically,
-   * that means that inString is read in the current string format.
-   */
-  UinString = __glcConvertCountedStringToVisualUcs4(ctx, &isRightToLeft,
-						    inString, inCount);
-  if (!UinString)
-    return;
+	/* Creates a Unicode string based on the current string type. Basically,
+	 * that means that inString is read in the current string format.
+	 */
+	UinString = __glcConvertCountedStringToVisualUcs4(ctx, &isRightToLeft,
+				inString, inCount);
+	if (!UinString)
+	{
+		return;
+	}
 
 
-  __glcRenderCountedString(ctx, UinString, isRightToLeft, inCount);
+	__glcRenderCountedString(ctx, UinString, isRightToLeft, inCount);
 }
 
 
@@ -765,32 +876,37 @@ void APIENTRY glcRenderCountedString(GLint inCount, const GLCchar *inString)
  */
 void APIENTRY glcRenderString(const GLCchar *inString)
 {
-  __GLCcontext *ctx = NULL;
-  GLCchar32* UinString = NULL;
-  GLboolean isRightToLeft = GL_FALSE;
-  GLint length = 0;
+	__GLCcontext *ctx = NULL;
+	GLCchar32* UinString = NULL;
+	GLboolean isRightToLeft = GL_FALSE;
+	GLint length = 0;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* If inString is NULL then there is no point in continuing */
-  if (!inString)
-    return;
+	/* If inString is NULL then there is no point in continuing */
+	if (!inString)
+	{
+		return;
+	}
 
-  /* Creates a Unicode string based on the current string type. Basically,
-   * that means that inString is read in the current string format.
-   */
-  UinString = __glcConvertToVisualUcs4(ctx, &isRightToLeft, &length, inString);
-  if (!UinString)
-    return;
+	/* Creates a Unicode string based on the current string type. Basically,
+	 * that means that inString is read in the current string format.
+	 */
+	UinString = __glcConvertToVisualUcs4(ctx, &isRightToLeft, &length, inString);
+	if (!UinString)
+	{
+		return;
+	}
 
-  __glcRenderCountedString(ctx, UinString, isRightToLeft, length);
+	__glcRenderCountedString(ctx, UinString, isRightToLeft, length);
 }
 
 
@@ -827,33 +943,35 @@ void APIENTRY glcRenderString(const GLCchar *inString)
  */
 void APIENTRY glcRenderStyle(GLCenum inStyle)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if inStyle has a legal value */
-  switch(inStyle) {
-  case GLC_BITMAP:
-  case GLC_LINE:
-  case GLC_TEXTURE:
-  case GLC_TRIANGLE:
-  case GLC_PIXMAP_QSO:
-    break;
-  default:
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	/* Check if inStyle has a legal value */
+	switch(inStyle)
+	{
+		case GLC_BITMAP:
+		case GLC_LINE:
+		case GLC_TEXTURE:
+		case GLC_TRIANGLE:
+		case GLC_PIXMAP_QSO:
+			break;
+		default:
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+			return;
+	}
 
-  /* Check if the current thread owns a current state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a current state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* Stores the rendering style */
-  ctx->renderState.renderStyle = inStyle;
-  return;
+	/* Stores the rendering style */
+	ctx->renderState.renderStyle = inStyle;
+	return;
 }
 
 
@@ -869,26 +987,29 @@ void APIENTRY glcRenderStyle(GLCenum inStyle)
  */
 void APIENTRY glcReplacementCode(GLint inCode)
 {
-  __GLCcontext *ctx = NULL;
-  GLint code = 0;
+	__GLCcontext *ctx = NULL;
+	GLint code = 0;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if the current thread owns a current state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a current state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* Get the replacement character converted to the UCS-4 format */
-  code = __glcConvertGLintToUcs4(ctx, inCode);
-  if (code < 0)
-    return;
+	/* Get the replacement character converted to the UCS-4 format */
+	code = __glcConvertGLintToUcs4(ctx, inCode);
+	if (code < 0)
+	{
+		return;
+	}
 
-  /* Stores the replacement code */
-  ctx->stringState.replacementCode = code;
-  return;
+	/* Stores the replacement code */
+	ctx->stringState.replacementCode = code;
+	return;
 }
 
 
@@ -907,45 +1028,49 @@ void APIENTRY glcReplacementCode(GLint inCode)
  */
 void APIENTRY glcResolution(GLfloat inVal)
 {
-  __GLCcontext *ctx = NULL;
-  FT_ListNode node = NULL;
+	__GLCcontext *ctx = NULL;
+	FT_ListNode node = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Negative resolutions are illegal */
-  if (inVal < 0) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	/* Negative resolutions are illegal */
+	if (inVal < 0)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
 
-  /* Check if the current thread owns a current state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a current state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* Stores the resolution */
-  ctx->renderState.resolution = (inVal < GLC_EPSILON) ? 72. : inVal;
+	/* Stores the resolution */
+	ctx->renderState.resolution = (inVal < GLC_EPSILON) ? 72. : inVal;
 
-  /* Force the measurement caches to be updated */
-  for (node = ctx->fontList.head; node; node = node->next) {
-    __GLCfont* font = (__GLCfont*)node->data;
-    __GLCfaceDescriptor* faceDesc = font->faceDesc;
-    FT_ListNode glyphNode = NULL;
+	/* Force the measurement caches to be updated */
+	for (node = ctx->fontList.head; node; node = node->next)
+	{
+		__GLCfont* font = (__GLCfont*)node->data;
+		__GLCfaceDescriptor* faceDesc = font->faceDesc;
+		FT_ListNode glyphNode = NULL;
 
-    font->maxMetricCached = GL_FALSE;
+		font->maxMetricCached = GL_FALSE;
 
-    for (glyphNode = faceDesc->glyphList.head; glyphNode;
-	 glyphNode = glyphNode->next) {
-      __GLCglyph* glyph = (__GLCglyph*)glyphNode->data;
+		for (glyphNode = faceDesc->glyphList.head; glyphNode;
+				glyphNode = glyphNode->next)
+		{
+			__GLCglyph* glyph = (__GLCglyph*)glyphNode->data;
 
-      glyph->advanceCached = GL_FALSE;
-      glyph->boundingBoxCached = GL_FALSE;
-    }
-  }
+			glyph->advanceCached = GL_FALSE;
+			glyph->boundingBoxCached = GL_FALSE;
+		}
+	}
 
-  return;
+	return;
 }
 
 
@@ -965,32 +1090,35 @@ void APIENTRY glcResolution(GLfloat inVal)
  */
 void APIENTRY glcRenderParameterfQSO(GLenum inAttrib, GLfloat inVal)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if inAttrib has a legal value */
-  switch(inAttrib) {
-  case GLC_PARAMETRIC_TOLERANCE_QSO:
-    break;
-  default:
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	/* Check if inAttrib has a legal value */
+	switch(inAttrib)
+	{
+		case GLC_PARAMETRIC_TOLERANCE_QSO:
+			break;
+		default:
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+			return;
+	}
 
-  if (inVal <= 0.f) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	if (inVal <= 0.f)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
 
-  /* Check if the current thread owns a current state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a current state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  /* Stores the tolerance */
-  ctx->renderState.tolerance = inVal;
-  return;
+	/* Stores the tolerance */
+	ctx->renderState.tolerance = inVal;
+	return;
 }

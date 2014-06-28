@@ -77,16 +77,16 @@ extern bool runningMultiplayer(void);
 /* Info stored for each droid neighbour */
 typedef struct _naybor_info
 {
-    BASE_OBJECT		*psObj;			// The neighbouring object
-    uint32_t			distSqr;		// The square of the distance to the object
-    //uint32_t			dist;			// The distance to the object
+	BASE_OBJECT		*psObj;			// The neighbouring object
+	uint32_t			distSqr;		// The square of the distance to the object
+	//uint32_t			dist;			// The distance to the object
 } NAYBOR_INFO;
 
 typedef enum
 {
-    NO_FREE_TILE,
-    FREE_TILE,
-    HALF_FREE_TILE
+	NO_FREE_TILE,
+	FREE_TILE,
+	HALF_FREE_TILE
 } PICKTILE;
 
 /*Can we build here, now or ever?*/
@@ -120,10 +120,10 @@ extern void initTemplatePoints(void);
 
 /*Builds an instance of a Structure - the x/y passed in are in world coords.*/
 extern DROID *buildDroid(DROID_TEMPLATE *pTemplate, uint32_t x, uint32_t y,
-                         uint32_t player, BOOL onMission);
+						 uint32_t player, BOOL onMission);
 
 /* Set the asBits in a DROID structure given it's template. */
-extern void droidSetBits(DROID_TEMPLATE *pTemplate,DROID *psDroid);
+extern void droidSetBits(DROID_TEMPLATE *pTemplate, DROID *psDroid);
 
 /* Calculate the weight of a droid from it's template */
 extern uint32_t calcDroidWeight(DROID_TEMPLATE *psTemplate);
@@ -159,7 +159,7 @@ BOOL templateIsIDF(DROID_TEMPLATE *psTemplate);
 BOOL idfDroid(DROID *psDroid);
 
 /* Do damage to a droid */
-extern float droidDamage(DROID *psDroid, uint32_t damage, uint32_t weaponClass,uint32_t weaponSubClass, HIT_SIDE impactSide);
+extern float droidDamage(DROID *psDroid, uint32_t damage, uint32_t weaponClass, uint32_t weaponSubClass, HIT_SIDE impactSide);
 
 /* The main update routine for all droids */
 extern void droidUpdate(DROID *psDroid);
@@ -266,19 +266,19 @@ extern const char *droidGetName(const DROID *psDroid);
 extern void droidSetName(DROID *psDroid, const char *pName);
 
 // Set a templates name.
-extern void templateSetName(DROID_TEMPLATE *psTemplate,char *pName);
+extern void templateSetName(DROID_TEMPLATE *psTemplate, char *pName);
 
 // returns true when no droid on x,y square.
 extern BOOL	noDroid					(uint32_t x, uint32_t y);				// true if no droid at x,y
 // returns an x/y coord to place a droid
-extern BOOL pickATile				(uint32_t *x0,uint32_t *y0, uint8_t numIterations);
+extern BOOL pickATile				(uint32_t *x0, uint32_t *y0, uint8_t numIterations);
 extern PICKTILE pickHalfATile		(uint32_t *x, uint32_t *y, uint8_t numIterations);
 extern BOOL	pickATile2				(uint32_t *x, uint32_t *y, uint32_t numIterations);
 extern	BOOL	zonedPAT(uint32_t x, uint32_t y);
 extern	BOOL	pickATileGen(uint32_t *x, uint32_t *y, uint8_t numIterations,
-                             BOOL (*function)(uint32_t x, uint32_t y));
+							 BOOL (*function)(uint32_t x, uint32_t y));
 extern	BOOL	pickATileGenThreat(uint32_t *x, uint32_t *y, uint8_t numIterations, int32_t threatRange,
-                                   int32_t player, BOOL (*function)(uint32_t x, uint32_t y));
+								   int32_t player, BOOL (*function)(uint32_t x, uint32_t y));
 
 
 //initialises the droid movement model
@@ -337,7 +337,7 @@ extern BOOL droidUpdateClearing( DROID *psDroid );
 
 /*For a given repair droid, check if there are any damaged droids within
 a defined range*/
-extern BASE_OBJECT *checkForRepairRange(DROID *psDroid,DROID *psTarget);
+extern BASE_OBJECT *checkForRepairRange(DROID *psDroid, DROID *psTarget);
 
 /// Returns true iff the droid has VTOL propulsion, and is not a transport.
 extern BOOL isVtolDroid(const DROID *psDroid);
@@ -421,27 +421,27 @@ void droidSetPosition(DROID *psDroid, int x, int y);
 
 static inline int droidSensorRange(const DROID *psDroid)
 {
-    return objSensorRange((const BASE_OBJECT *)psDroid);
+	return objSensorRange((const BASE_OBJECT *)psDroid);
 }
 
 static inline int droidSensorPower(const DROID *psDroid)
 {
-    return objSensorPower((const BASE_OBJECT *)psDroid);
+	return objSensorPower((const BASE_OBJECT *)psDroid);
 }
 
 static inline int droidJammerRange(const DROID *psDroid)
 {
-    return objJammerRange((const BASE_OBJECT *)psDroid);
+	return objJammerRange((const BASE_OBJECT *)psDroid);
 }
 
 static inline int droidJammerPower(const DROID *psDroid)
 {
-    return objJammerPower((const BASE_OBJECT *)psDroid);
+	return objJammerPower((const BASE_OBJECT *)psDroid);
 }
 
 static inline int droidConcealment(const DROID *psDroid)
 {
-    return objConcealment((const BASE_OBJECT *)psDroid);
+	return objConcealment((const BASE_OBJECT *)psDroid);
 }
 
 /*
@@ -449,42 +449,42 @@ static inline int droidConcealment(const DROID *psDroid)
  */
 static inline BODY_STATS *getBodyStats(DROID *psDroid)
 {
-    return asBodyStats + psDroid->asBits[COMP_BODY].nStat;
+	return asBodyStats + psDroid->asBits[COMP_BODY].nStat;
 }
 
 static inline BRAIN_STATS *getBrainStats(DROID *psDroid)
 {
-    return asBrainStats + psDroid->asBits[COMP_BRAIN].nStat;
+	return asBrainStats + psDroid->asBits[COMP_BRAIN].nStat;
 }
 
 static inline PROPULSION_STATS *getPropulsionStats(DROID *psDroid)
 {
-    return asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
+	return asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
 }
 
 static inline SENSOR_STATS *getSensorStats(DROID *psDroid)
 {
-    return asSensorStats + psDroid->asBits[COMP_SENSOR].nStat;
+	return asSensorStats + psDroid->asBits[COMP_SENSOR].nStat;
 }
 
 static inline ECM_STATS *getECMStats(DROID *psDroid)
 {
-    return asECMStats + psDroid->asBits[COMP_ECM].nStat;
+	return asECMStats + psDroid->asBits[COMP_ECM].nStat;
 }
 
 static inline REPAIR_STATS *getRepairStats(DROID *psDroid)
 {
-    return asRepairStats + psDroid->asBits[COMP_REPAIRUNIT].nStat;
+	return asRepairStats + psDroid->asBits[COMP_REPAIRUNIT].nStat;
 }
 
 static inline CONSTRUCT_STATS *getConstructStats(DROID *psDroid)
 {
-    return asConstructStats + psDroid->asBits[COMP_CONSTRUCT].nStat;
+	return asConstructStats + psDroid->asBits[COMP_CONSTRUCT].nStat;
 }
 
 static inline WEAPON_STATS *getWeaponStats(DROID *psDroid, int weapon_slot)
 {
-    return asWeaponStats + psDroid->asWeaps[weapon_slot].nStat;
+	return asWeaponStats + psDroid->asWeaps[weapon_slot].nStat;
 }
 
 /** helper functions for future refcount patch **/
@@ -492,75 +492,75 @@ static inline WEAPON_STATS *getWeaponStats(DROID *psDroid, int weapon_slot)
 #define setDroidTarget(_psDroid, _psNewTarget) _setDroidTarget(_psDroid, _psNewTarget, __LINE__, __FUNCTION__)
 static inline void _setDroidTarget(DROID *psDroid, BASE_OBJECT *psNewTarget, int line, const char *func)
 {
-    psDroid->psTarget = psNewTarget;
-    ASSERT(psNewTarget == NULL || !psNewTarget->died, "setDroidTarget: Set dead target");
-    ASSERT(psNewTarget == NULL || !psNewTarget->died || (psNewTarget->died == NOT_CURRENT_LIST && psDroid->died == NOT_CURRENT_LIST),
-           "setDroidTarget: Set dead target");
+	psDroid->psTarget = psNewTarget;
+	ASSERT(psNewTarget == NULL || !psNewTarget->died, "setDroidTarget: Set dead target");
+	ASSERT(psNewTarget == NULL || !psNewTarget->died || (psNewTarget->died == NOT_CURRENT_LIST && psDroid->died == NOT_CURRENT_LIST),
+		   "setDroidTarget: Set dead target");
 #ifdef DEBUG
-    psDroid->targetLine = line;
-    sstrcpy(psDroid->targetFunc, func);
+	psDroid->targetLine = line;
+	sstrcpy(psDroid->targetFunc, func);
 #else
-    // Prevent warnings about unused parameters
-    (void)line;
-    (void)func;
+	// Prevent warnings about unused parameters
+	(void)line;
+	(void)func;
 #endif
 }
 
 #define setDroidActionTarget(_psDroid, _psNewTarget, _idx) _setDroidActionTarget(_psDroid, _psNewTarget, _idx, __LINE__, __FUNCTION__)
 static inline void _setDroidActionTarget(DROID *psDroid, BASE_OBJECT *psNewTarget, uint16_t idx, int line, const char *func)
 {
-    psDroid->psActionTarget[idx] = psNewTarget;
-    ASSERT(psNewTarget == NULL || !psNewTarget->died || (psNewTarget->died == NOT_CURRENT_LIST && psDroid->died == NOT_CURRENT_LIST),
-           "setDroidActionTarget: Set dead target");
+	psDroid->psActionTarget[idx] = psNewTarget;
+	ASSERT(psNewTarget == NULL || !psNewTarget->died || (psNewTarget->died == NOT_CURRENT_LIST && psDroid->died == NOT_CURRENT_LIST),
+		   "setDroidActionTarget: Set dead target");
 #ifdef DEBUG
-    psDroid->actionTargetLine[idx] = line;
-    sstrcpy(psDroid->actionTargetFunc[idx], func);
+	psDroid->actionTargetLine[idx] = line;
+	sstrcpy(psDroid->actionTargetFunc[idx], func);
 #else
-    // Prevent warnings about unused parameters
-    (void)line;
-    (void)func;
+	// Prevent warnings about unused parameters
+	(void)line;
+	(void)func;
 #endif
 }
 
 #define setDroidBase(_psDroid, _psNewTarget) _setDroidBase(_psDroid, _psNewTarget, __LINE__, __FUNCTION__)
 static inline void _setDroidBase(DROID *psDroid, STRUCTURE *psNewBase, int line, const char *func)
 {
-    psDroid->psBaseStruct = psNewBase;
-    ASSERT(psNewBase == NULL || !psNewBase->died, "setDroidBase: Set dead target");
+	psDroid->psBaseStruct = psNewBase;
+	ASSERT(psNewBase == NULL || !psNewBase->died, "setDroidBase: Set dead target");
 #ifdef DEBUG
-    psDroid->baseLine = line;
-    sstrcpy(psDroid->baseFunc, func);
+	psDroid->baseLine = line;
+	sstrcpy(psDroid->baseFunc, func);
 #else
-    // Prevent warnings about unused parameters
-    (void)line;
-    (void)func;
+	// Prevent warnings about unused parameters
+	(void)line;
+	(void)func;
 #endif
 }
 
 static inline void setSaveDroidTarget(DROID *psSaveDroid, BASE_OBJECT *psNewTarget)
 {
-    psSaveDroid->psTarget = psNewTarget;
+	psSaveDroid->psTarget = psNewTarget;
 #ifdef DEBUG
-    psSaveDroid->targetLine = 0;
-    sstrcpy(psSaveDroid->targetFunc, "savegame");
+	psSaveDroid->targetLine = 0;
+	sstrcpy(psSaveDroid->targetFunc, "savegame");
 #endif
 }
 
 static inline void setSaveDroidActionTarget(DROID *psSaveDroid, BASE_OBJECT *psNewTarget, uint16_t idx)
 {
-    psSaveDroid->psActionTarget[idx] = psNewTarget;
+	psSaveDroid->psActionTarget[idx] = psNewTarget;
 #ifdef DEBUG
-    psSaveDroid->actionTargetLine[idx] = 0;
-    sstrcpy(psSaveDroid->actionTargetFunc[idx], "savegame");
+	psSaveDroid->actionTargetLine[idx] = 0;
+	sstrcpy(psSaveDroid->actionTargetFunc[idx], "savegame");
 #endif
 }
 
 static inline void setSaveDroidBase(DROID *psSaveDroid, STRUCTURE *psNewBase)
 {
-    psSaveDroid->psBaseStruct = psNewBase;
+	psSaveDroid->psBaseStruct = psNewBase;
 #ifdef DEBUG
-    psSaveDroid->baseLine = 0;
-    sstrcpy(psSaveDroid->baseFunc, "savegame");
+	psSaveDroid->baseLine = 0;
+	sstrcpy(psSaveDroid->baseFunc, "savegame");
 #endif
 }
 

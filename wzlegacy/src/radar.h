@@ -43,13 +43,13 @@ extern BOOL CoordInRadar(int x, int y);			///< Is screen coordinate inside minim
 /** Different mini-map draw modes. */
 typedef enum _radar_draw_mode
 {
-    RADAR_MODE_TERRAIN,				///< Draw terrain map
-    RADAR_MODE_DEFAULT = RADAR_MODE_TERRAIN,	///< Default is terrain map
-    RADAR_MODE_TERRAIN_SEEN,			///< Terrain map, showing only explored tiles
-    RADAR_MODE_HEIGHT_MAP,				///< Draw height map
-    RADAR_MODE_COMBINED,
-    RADAR_MODE_NO_TERRAIN,				///< Only display objects
-    NUM_RADAR_MODES
+	RADAR_MODE_TERRAIN,				///< Draw terrain map
+	RADAR_MODE_DEFAULT = RADAR_MODE_TERRAIN,	///< Default is terrain map
+	RADAR_MODE_TERRAIN_SEEN,			///< Terrain map, showing only explored tiles
+	RADAR_MODE_HEIGHT_MAP,				///< Draw height map
+	RADAR_MODE_COMBINED,
+	RADAR_MODE_NO_TERRAIN,				///< Only display objects
+	NUM_RADAR_MODES
 } RADAR_DRAW_MODE;
 
 extern BOOL		bEnemyAllyRadarColor;		///< Enemy/ally minimap color

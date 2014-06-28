@@ -34,8 +34,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _player_power
 {
-    int32_t		currentPower;		/**< The current amount of power avaialble to the player. */
-    int32_t		extractedPower;		/**< The power extracted but not converted. */
+	int32_t		currentPower;		/**< The current amount of power avaialble to the player. */
+	int32_t		extractedPower;		/**< The power extracted but not converted. */
 } PLAYER_POWER;
 
 /** Allocate the space for the playerPower. */

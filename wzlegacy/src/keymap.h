@@ -24,18 +24,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef	enum
 {
-    KEYMAP_DOWN,
-    KEYMAP_PRESSED,
-    KEYMAP_RELEASED
+	KEYMAP_DOWN,
+	KEYMAP_PRESSED,
+	KEYMAP_RELEASED
 } KEY_ACTION;
 
 typedef enum
 {
-    KEYMAP__DEBUG,
-    KEYMAP_ALWAYS,
-    KEYMAP_ASSIGNABLE,
-    KEYMAP_ALWAYS_PROCESS,
-    KEYMAP___HIDE
+	KEYMAP__DEBUG,
+	KEYMAP_ALWAYS,
+	KEYMAP_ASSIGNABLE,
+	KEYMAP_ALWAYS_PROCESS,
+	KEYMAP___HIDE
 } KEY_STATUS;
 
 // moved to lib/framework/input.h
@@ -43,20 +43,20 @@ typedef enum
 
 typedef struct _keyMapping
 {
-    void (*function)(void);
-    BOOL		active;
-    KEY_STATUS	status;
-    uint32_t		lastCalled;
-    KEY_CODE	metaKeyCode;
-    KEY_CODE	altMetaKeyCode;
-    KEY_CODE	subKeyCode;
-    KEY_ACTION	action;
-    char		*pName;
-    struct _keyMapping	*psNext;
+	void (*function)(void);
+	BOOL		active;
+	KEY_STATUS	status;
+	uint32_t		lastCalled;
+	KEY_CODE	metaKeyCode;
+	KEY_CODE	altMetaKeyCode;
+	KEY_CODE	subKeyCode;
+	KEY_ACTION	action;
+	char		*pName;
+	struct _keyMapping	*psNext;
 } KEY_MAPPING;
 
 extern KEY_MAPPING	*keyAddMapping			( KEY_STATUS status, KEY_CODE metaCode, KEY_CODE subcode,
-        KEY_ACTION action, void (*pKeyMapFunc)(void), const char *name );
+		KEY_ACTION action, void (*pKeyMapFunc)(void), const char *name );
 extern BOOL	keyRemoveMapping		( KEY_CODE metaCode, KEY_CODE subCode );
 extern	KEY_MAPPING	*keyGetMappingFromFunction(void	*function);
 extern BOOL	keyRemoveMappingPt		( KEY_MAPPING *psToRemove );
@@ -78,7 +78,7 @@ extern BOOL	getDebugMappingStatus	( void );
 extern	BOOL	keyReAssignMappingName(char *pName, KEY_CODE newMetaCode, KEY_CODE newSubCode);
 
 extern	BOOL	keyReAssignMapping( KEY_CODE origMetaCode, KEY_CODE origSubCode,
-                                    KEY_CODE newMetaCode, KEY_CODE newSubCode );
+									KEY_CODE newMetaCode, KEY_CODE newSubCode );
 extern	KEY_MAPPING	*getKeyMapFromName(char *pName);
 
 

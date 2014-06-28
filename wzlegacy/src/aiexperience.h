@@ -45,7 +45,7 @@ extern	BOOL SaveAIExperience(BOOL bNotify);
 
 extern	BOOL ExperienceRecallOil(int32_t nPlayer);
 extern	void InitializeAIExperience(void);
-extern	BOOL OilResourceAt(uint32_t OilX,uint32_t OilY, int32_t VisibleToPlayer);
+extern	BOOL OilResourceAt(uint32_t OilX, uint32_t OilY, int32_t VisibleToPlayer);
 
 extern	int32_t ReadAISaveData(int32_t nPlayer);
 extern	BOOL WriteAISaveData(int32_t nPlayer);

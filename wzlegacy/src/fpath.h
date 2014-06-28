@@ -30,27 +30,27 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum _fpath_movetype
 {
-    FMT_MOVE,		///< Move around all obstacles
-    FMT_ATTACK,		///< Assume that we will destroy enemy obstacles
+	FMT_MOVE,		///< Move around all obstacles
+	FMT_ATTACK,		///< Assume that we will destroy enemy obstacles
 } FPATH_MOVETYPE;
 
 typedef struct _jobNode
 {
-    PROPULSION_TYPE	propulsion;
-    DROID_TYPE	droidType;
-    int		destX, destY;
-    int		origX, origY;
-    uint32_t		droidID;
-    struct _jobNode	*next;
-    FPATH_MOVETYPE	moveType;
-    int		owner;		///< Player owner
+	PROPULSION_TYPE	propulsion;
+	DROID_TYPE	droidType;
+	int		destX, destY;
+	int		origX, origY;
+	uint32_t		droidID;
+	struct _jobNode	*next;
+	FPATH_MOVETYPE	moveType;
+	int		owner;		///< Player owner
 } PATHJOB;
 
 typedef enum _fpath_retval
 {
-    FPR_OK,         ///< found a route
-    FPR_FAILED,     ///< failed to find a route
-    FPR_WAIT,       ///< route is being calculated by the path-finding thread
+	FPR_OK,         ///< found a route
+	FPR_FAILED,     ///< failed to find a route
+	FPR_WAIT,       ///< route is being calculated by the path-finding thread
 } FPATH_RETVAL;
 
 /** Initialise the path-finding module.

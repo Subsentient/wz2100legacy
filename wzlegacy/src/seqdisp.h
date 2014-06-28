@@ -36,20 +36,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-    /**
-     * Position text.
-     */
-    SEQ_TEXT_POSITION,
+	/**
+	 * Position text.
+	 */
+	SEQ_TEXT_POSITION,
 
-    /**
-     * Justify if less than 3/4 length.
-     */
-    SEQ_TEXT_FOLLOW_ON,
+	/**
+	 * Justify if less than 3/4 length.
+	 */
+	SEQ_TEXT_FOLLOW_ON,
 
-    /**
-     * Justify if less than 520/600 length.
-     */
-    SEQ_TEXT_JUSTIFY,
+	/**
+	 * Justify if less than 520/600 length.
+	 */
+	SEQ_TEXT_JUSTIFY,
 } SEQ_TEXT_POSITIONING;
 
 /***************************************************************************/

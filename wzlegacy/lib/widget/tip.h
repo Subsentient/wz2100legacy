@@ -38,7 +38,7 @@ extern void tipInitialise(void);
  * tip by.
  */
 extern void tipStart(WIDGET *psSource, const char *pTip, enum iV_fonts NewFontID,
-                     PIELIGHT *pColours, int32_t x, int32_t y, uint32_t width, uint32_t height);
+					 PIELIGHT *pColours, int32_t x, int32_t y, uint32_t width, uint32_t height);
 
 /* Stop a tool tip (e.g. if the hilite is lost on a button).
  * psSource should be the same as the widget that started the tip.

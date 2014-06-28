@@ -27,42 +27,42 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // Game Options Structure. Enough info to completely describe the static stuff in amultiplay game.
 typedef struct
 {
-    uint8_t		type;						// DMATCH/CAMPAIGN/SKIRMISH/TEAMPLAY etc...
-    BOOL		scavengers;					// whether scavengers are on or off
-    char		map[128];					// name of multiplayer map being used.
-    uint8_t		maxPlayers;					// max players to allow
-    char		name[128];					// game name   (to be used)
-    BOOL		fog;
-    BOOL		spectatingAllowed;
-    uint32_t	power;						// power level for arena game
-    uint8_t		base;						// clean/base/base&defence
-    uint8_t		alliance;					// no/yes/AIs vs Humans
-    uint8_t		skDiff[MAX_PLAYERS];		// skirmish game difficulty settings. 0x0=OFF 0xff=HUMAN
+	uint8_t		type;						// DMATCH/CAMPAIGN/SKIRMISH/TEAMPLAY etc...
+	BOOL		scavengers;					// whether scavengers are on or off
+	char		map[128];					// name of multiplayer map being used.
+	uint8_t		maxPlayers;					// max players to allow
+	char		name[128];					// game name   (to be used)
+	BOOL		fog;
+	BOOL		spectatingAllowed;
+	uint32_t	power;						// power level for arena game
+	uint8_t		base;						// clean/base/base&defence
+	uint8_t		alliance;					// no/yes/AIs vs Humans
+	uint8_t		skDiff[MAX_PLAYERS];		// skirmish game difficulty settings. 0x0=OFF 0xff=HUMAN
 } MULTIPLAYERGAME;
 
 typedef struct
 {
-    uint8_t		id;
-    uint8_t		limit;
+	uint8_t		id;
+	uint8_t		limit;
 } MULTISTRUCTLIMITS;
 
 // info used inside games.
 typedef struct
 {
-    uint32_t				PingTimes[MAX_PLAYERS];				// store for pings.
-    BOOL				localOptionsReceived;				// used to show if we have game options yet..
-    BOOL				localJoiningInProgress;				// used before we know our player number.
-    BOOL				JoiningInProgress[MAX_PLAYERS];
-    BOOL				DataIntegrity[MAX_PLAYERS];
-    BOOL				bHostSetup;
-    int32_t				TimeEveryoneIsInGame;
-    bool				isAllPlayersDataOK;
-    uint32_t				startTime;
-    uint32_t				numStructureLimits;					// number of limits
-    MULTISTRUCTLIMITS	*pStructureLimits;					// limits chunk.
-    uint8_t                         flags;  ///< Bitmask, shows which structures are disabled.
-    uint32_t		skScores[MAX_PLAYERS][2];			// score+kills for local skirmish players.
-    char		phrases[5][255];					// 5 favourite text messages.
+	uint32_t				PingTimes[MAX_PLAYERS];				// store for pings.
+	BOOL				localOptionsReceived;				// used to show if we have game options yet..
+	BOOL				localJoiningInProgress;				// used before we know our player number.
+	BOOL				JoiningInProgress[MAX_PLAYERS];
+	BOOL				DataIntegrity[MAX_PLAYERS];
+	BOOL				bHostSetup;
+	int32_t				TimeEveryoneIsInGame;
+	bool				isAllPlayersDataOK;
+	uint32_t				startTime;
+	uint32_t				numStructureLimits;					// number of limits
+	MULTISTRUCTLIMITS	*pStructureLimits;					// limits chunk.
+	uint8_t                         flags;  ///< Bitmask, shows which structures are disabled.
+	uint32_t		skScores[MAX_PLAYERS][2];			// score+kills for local skirmish players.
+	char		phrases[5][255];					// 5 favourite text messages.
 } MULTIPLAYERINGAME;
 
 
@@ -117,11 +117,11 @@ extern uint8_t				bDisplayMultiJoiningStatus;	// draw load progress?
 #define MAX_KICK_REASON			80			// max array size for the reason your kicking someone
 // functions
 
-extern WZ_DECL_WARN_UNUSED_RESULT BASE_OBJECT		*IdToPointer(uint32_t id,uint32_t player);
-extern WZ_DECL_WARN_UNUSED_RESULT STRUCTURE		*IdToStruct(uint32_t id,uint32_t player);
+extern WZ_DECL_WARN_UNUSED_RESULT BASE_OBJECT		*IdToPointer(uint32_t id, uint32_t player);
+extern WZ_DECL_WARN_UNUSED_RESULT STRUCTURE		*IdToStruct(uint32_t id, uint32_t player);
 extern WZ_DECL_WARN_UNUSED_RESULT BOOL			IdToDroid(uint32_t id, uint32_t player, DROID **psDroid);
-extern WZ_DECL_WARN_UNUSED_RESULT FEATURE		*IdToFeature(uint32_t id,uint32_t player);
-extern WZ_DECL_WARN_UNUSED_RESULT DROID_TEMPLATE	*IdToTemplate(uint32_t tempId,uint32_t player);
+extern WZ_DECL_WARN_UNUSED_RESULT FEATURE		*IdToFeature(uint32_t id, uint32_t player);
+extern WZ_DECL_WARN_UNUSED_RESULT DROID_TEMPLATE	*IdToTemplate(uint32_t tempId, uint32_t player);
 
 extern const char *getPlayerName(unsigned int player);
 extern BOOL setPlayerName		(uint32_t player, const char *sName);
@@ -130,7 +130,7 @@ extern BOOL isHumanPlayer		(uint32_t player);				//to tell if the player is a co
 extern BOOL myResponsibility	(uint32_t player);
 extern BOOL responsibleFor		(uint32_t player, uint32_t playerinquestion);
 extern uint32_t whosResponsible	(uint32_t player);
-extern Vector3i cameraToHome		(uint32_t player,BOOL scroll);
+extern Vector3i cameraToHome		(uint32_t player, BOOL scroll);
 extern char		playerName[MAX_PLAYERS][MAX_STR_LENGTH];	//Array to store all player names (humans and AIs)
 
 extern BOOL	multiPlayerLoop		(void);							// for loop.c
@@ -138,9 +138,9 @@ extern BOOL	multiPlayerLoop		(void);							// for loop.c
 extern BOOL recvMessage			(void);
 extern BOOL sendTemplate		(DROID_TEMPLATE *t);
 extern BOOL SendDestroyTemplate (DROID_TEMPLATE *t);
-extern BOOL SendResearch		(uint8_t player,uint32_t index);
+extern BOOL SendResearch		(uint8_t player, uint32_t index);
 extern BOOL SendDestroyFeature  (FEATURE *pF);					// send a destruct feature message.
-extern BOOL sendTextMessage		(const char *pStr,BOOL cast);		// send a text message
+extern BOOL sendTextMessage		(const char *pStr, BOOL cast);		// send a text message
 extern BOOL sendAIMessage		(char *pStr, uint32_t player, uint32_t to);	//send AI message
 extern short parseConsoleCommands(const char *InBuffer, short IsGameConsole); //Handle commands processed.
 void printConsoleNameChange(const char *oldName, const char *newName);  ///< Print message to console saying a name changed.
@@ -163,7 +163,7 @@ extern BOOL sendLasSat			(uint8_t player, STRUCTURE *psStruct, BASE_OBJECT *psOb
 // droids . multibot
 extern BOOL SendDroid			(const DROID_TEMPLATE *pTemplate, uint32_t x, uint32_t y, uint8_t player, uint32_t id);
 extern BOOL SendDestroyDroid	(const DROID *psDroid);
-extern BOOL SendDemolishFinished(STRUCTURE *psS,DROID *psD);
+extern BOOL SendDemolishFinished(STRUCTURE *psS, DROID *psD);
 extern BOOL SendDroidInfo		(const DROID *psDroid, DROID_ORDER order, uint32_t x, uint32_t y, const BASE_OBJECT *psObj);
 extern BOOL SendDroidMove		(const DROID *psDroid, uint32_t x, uint32_t y, BOOL formation);
 extern BOOL SendGroupOrderSelected(uint8_t player, uint32_t x, uint32_t y, const BASE_OBJECT *psObj, BOOL altOrder);
@@ -188,7 +188,7 @@ extern BOOL joinCampaign		(uint32_t gameNumber, char *playername);
 extern void	playerResponding	(void);
 extern BOOL multiGameInit		(void);
 extern BOOL multiGameShutdown	(void);
-extern BOOL addTemplate			(uint32_t	player,DROID_TEMPLATE *psNew);
+extern BOOL addTemplate			(uint32_t	player, DROID_TEMPLATE *psNew);
 extern BOOL addTemplateToList(DROID_TEMPLATE *psNew, DROID_TEMPLATE **ppList);
 
 // syncing.
@@ -198,7 +198,7 @@ extern BOOL sendPing			(void);							// allow game to request pings.
 extern void HandleBadParam(const char *msg, const int from, const int actual);
 extern BOOL ForceDroidSync(const DROID *droidToSend);
 // multijoin
-extern BOOL sendReseachStatus	(STRUCTURE *psBuilding ,uint32_t index, uint8_t player, BOOL bStart);
+extern BOOL sendReseachStatus	(STRUCTURE *psBuilding , uint32_t index, uint8_t player, BOOL bStart);
 
 extern void displayAIMessage	(char *pStr, int32_t from, int32_t to); //make AI process a message
 

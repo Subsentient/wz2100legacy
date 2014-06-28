@@ -29,15 +29,16 @@
 
 #define GLC_TEXTURE_SIZE        64
 
-struct __GLCatlasElementRec {
-  FT_ListNodeRec node;
+struct __GLCatlasElementRec
+{
+	FT_ListNodeRec node;
 
-  int position;
-  __GLCglyph* glyph;
+	int position;
+	__GLCglyph* glyph;
 };
 
 void __glcReleaseAtlasElement(__GLCatlasElement* This, __GLCcontext* inContext);
 void __glcRenderCharTexture(const __GLCfont* inFont, __GLCcontext* inContext,
-			    const GLfloat inScaleX, const GLfloat inScaleY,
-			    __GLCglyph* inGlyph);
+							const GLfloat inScaleX, const GLfloat inScaleY,
+							__GLCglyph* inGlyph);
 #endif

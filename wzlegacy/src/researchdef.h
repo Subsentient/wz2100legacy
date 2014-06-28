@@ -25,71 +25,71 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* Research struct type definitions */
 typedef enum
 {
-    TC_MAJOR,
-    TC_MINOR,
+	TC_MAJOR,
+	TC_MINOR,
 } TECH_CODE;
 
 typedef struct research_stats
 {
-    STATS_BASE;
-    uint8_t			techCode;
-    //char			*pTechnologyName;	/* Text name of the group the research is a
-    //									   member of */
+	STATS_BASE;
+	uint8_t			techCode;
+	//char			*pTechnologyName;	/* Text name of the group the research is a
+	//									   member of */
 //	char			*pSubGroupName;		/* Text name of the Subgroup to which the research belongs */
-    uint16_t       	subGroup;			/* Subgroup of the item - an iconID from 'Framer' to depict in the button*/
+	uint16_t       	subGroup;			/* Subgroup of the item - an iconID from 'Framer' to depict in the button*/
 
-    uint16_t			researchPoints;		/* Number of research points required to
+	uint16_t			researchPoints;		/* Number of research points required to
 										   complete the research */
-    uint32_t			researchPower;		/* Power cost to research */
-    uint8_t			keyTopic;			/* Flag to indicate whether in single player
+	uint32_t			researchPower;		/* Power cost to research */
+	uint8_t			keyTopic;			/* Flag to indicate whether in single player
 										   this topic must be explicitly enabled*/
-    uint8_t			storeCount;			/* used to load in the following lists*/
-    uint8_t			numPRRequired;
-    //uint32_t			*pPRList;			/* List of research pre-requisites */
-    //needs to be uint16_t sized for Patches
-    uint16_t			*pPRList;			/* List of research pre-requisites */
-    //uint8_t			*pPRList;			/* List of research pre-requisites */
-    uint8_t			numStructures;
-    //uint32_t			*pStructList;		/* List of structures that when built would
-    uint16_t			*pStructList;		/* List of structures that when built would
+	uint8_t			storeCount;			/* used to load in the following lists*/
+	uint8_t			numPRRequired;
+	//uint32_t			*pPRList;			/* List of research pre-requisites */
+	//needs to be uint16_t sized for Patches
+	uint16_t			*pPRList;			/* List of research pre-requisites */
+	//uint8_t			*pPRList;			/* List of research pre-requisites */
+	uint8_t			numStructures;
+	//uint32_t			*pStructList;		/* List of structures that when built would
+	uint16_t			*pStructList;		/* List of structures that when built would
 										   enable this research */
-    uint8_t			numFunctions;
-    struct _function	**pFunctionList; /* List of functions that can be performed
+	uint8_t			numFunctions;
+	struct _function	**pFunctionList; /* List of functions that can be performed
 										   on completion of research */
-    uint8_t			numRedStructs;
-    //uint32_t			*pRedStructs;		/* List of Structures that become redundant */
-    uint16_t			*pRedStructs;		/* List of Structures that become redundant */
-    uint8_t			numRedArtefacts;
-    COMPONENT_STATS	**pRedArtefacts;	/*List of Artefacts that become redundant */
-    uint8_t			numStructResults;
-    //uint32_t			*pStructureResults;	/*List of Structures that are possible after
-    uint16_t			*pStructureResults;	/*List of Structures that are possible after
+	uint8_t			numRedStructs;
+	//uint32_t			*pRedStructs;		/* List of Structures that become redundant */
+	uint16_t			*pRedStructs;		/* List of Structures that become redundant */
+	uint8_t			numRedArtefacts;
+	COMPONENT_STATS	**pRedArtefacts;	/*List of Artefacts that become redundant */
+	uint8_t			numStructResults;
+	//uint32_t			*pStructureResults;	/*List of Structures that are possible after
+	uint16_t			*pStructureResults;	/*List of Structures that are possible after
 										  this research */
-    uint8_t			numArteResults;
-    COMPONENT_STATS	**pArtefactResults;	/*List of Artefacts that are possible after
+	uint8_t			numArteResults;
+	COMPONENT_STATS	**pArtefactResults;	/*List of Artefacts that are possible after
 										  this research*/
-    COMPONENT_STATS	**pReplacedArtefacts;/*List of artefacts that are replaced by the above
+	COMPONENT_STATS	**pReplacedArtefacts;/*List of artefacts that are replaced by the above
 										  result - not necessarily any! 1 to 1 relation with
 										  above list */
-    struct _viewdata	*pViewData;		/*data used to display a message in the
+	struct _viewdata	*pViewData;		/*data used to display a message in the
 										  Intelligence Screen*/
-    uint16_t			iconID;				/* the ID from 'Framer' for which graphic to draw in interface*/
-    BASE_STATS      *psStat;            /* A stat used to define which graphic is
+	uint16_t			iconID;				/* the ID from 'Framer' for which graphic to draw in interface*/
+	BASE_STATS      *psStat;            /* A stat used to define which graphic is
 	                                       drawn instead of the two fields below*/
-    iIMDShape		*pIMD;		/* the IMD to draw for this research topic */
-    iIMDShape		*pIMD2;		/* the 2nd IMD for base plates/turrets*/
+	iIMDShape		*pIMD;		/* the IMD to draw for this research topic */
+	iIMDShape		*pIMD2;		/* the 2nd IMD for base plates/turrets*/
 } WZ_DECL_MAY_ALIAS RESEARCH;
 
 typedef struct _player_research
 {
 
 
-    uint32_t		currentPoints;			// If the research has been suspended then this value contains the number of points generated at the suspension/cancel point
-    // normally it is null
+	uint32_t		currentPoints;			// If the research has been suspended then this value contains the number of points generated at the suspension/cancel point
+	// normally it is null
 
-    uint8_t		ResearchStatus;			// Bit flags   ...  see below
+	uint8_t		ResearchStatus;			// Bit flags   ...  see below
 
-    bool            possible;                       ///< is the research possible ... so can enable topics vis scripts
+	bool            possible;                       ///< is the research possible ... so can enable topics vis scripts
 
 
 //	uint8_t		possible;				/* Flag to specify whether the research is possible - so
@@ -105,12 +105,12 @@ typedef struct _player_research
 
 static inline bool IsResearchPossible(const PLAYER_RESEARCH *research)
 {
-    return research->possible;
+	return research->possible;
 }
 
 static inline void MakeResearchPossible(PLAYER_RESEARCH *research)
 {
-    research->possible = true;
+	research->possible = true;
 }
 
 #define IsResearchCompleted(x)   ((x)->ResearchStatus&RESEARCHED)

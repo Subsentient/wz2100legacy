@@ -33,97 +33,97 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* A String Resource */
 typedef struct STR_RES
 {
-    struct TREAP_NODE     **psIDTreap;              ///< The treap to store string identifiers
+	struct TREAP_NODE     **psIDTreap;              ///< The treap to store string identifiers
 } STR_RES;
 
 /* Initialise the string system */
 STR_RES *strresCreate()
 {
-    STR_RES *const psRes = (STR_RES *)malloc(sizeof(*psRes));
-    if (!psRes)
-    {
-        debug(LOG_FATAL, "Out of memory");
-        abort();
-        return NULL;
-    }
+	STR_RES *const psRes = (STR_RES *)malloc(sizeof(*psRes));
+	if (!psRes)
+	{
+		debug(LOG_FATAL, "Out of memory");
+		abort();
+		return NULL;
+	}
 
-    psRes->psIDTreap = treapCreate();
-    if (!psRes->psIDTreap)
-    {
-        debug(LOG_FATAL, "Out of memory");
-        abort();
-        free(psRes);
-        return NULL;
-    }
+	psRes->psIDTreap = treapCreate();
+	if (!psRes->psIDTreap)
+	{
+		debug(LOG_FATAL, "Out of memory");
+		abort();
+		free(psRes);
+		return NULL;
+	}
 
-    return psRes;
+	return psRes;
 }
 
 /* Shutdown the string system */
 void strresDestroy(STR_RES *psRes)
 {
-    // Release the treap and free the final memory
-    treapDestroy(psRes->psIDTreap);
-    free(psRes);
+	// Release the treap and free the final memory
+	treapDestroy(psRes->psIDTreap);
+	free(psRes);
 }
 
 
 /* Store a string */
 bool strresStoreString(STR_RES *psRes, const char *pID, const char *pString)
 {
-    ASSERT(psRes != NULL, "Invalid string res pointer");
+	ASSERT(psRes != NULL, "Invalid string res pointer");
 
-    // Make sure that this ID string hasn't been used before
-    if (treapFind(psRes->psIDTreap, pID) != NULL)
-    {
-        debug(LOG_FATAL, "Duplicate string for id: \"%s\"", pID);
-        abort();
-        return false;
-    }
+	// Make sure that this ID string hasn't been used before
+	if (treapFind(psRes->psIDTreap, pID) != NULL)
+	{
+		debug(LOG_FATAL, "Duplicate string for id: \"%s\"", pID);
+		abort();
+		return false;
+	}
 
-    return treapAdd(psRes->psIDTreap, pID, pString);
+	return treapAdd(psRes->psIDTreap, pID, pString);
 }
 
 const char *strresGetString(const STR_RES *psRes, const char *ID)
 {
-    const char *string;
+	const char *string;
 
-    ASSERT(psRes != NULL, "Invalid string resource pointer");
+	ASSERT(psRes != NULL, "Invalid string resource pointer");
 
-    string = treapFind(psRes->psIDTreap, ID);
-    ASSERT(string, "Could not find string for id \"%s\"", ID);
+	string = treapFind(psRes->psIDTreap, ID);
+	ASSERT(string, "Could not find string for id \"%s\"", ID);
 
-    return string;
+	return string;
 }
 
 /* Load a string resource file */
 bool strresLoad(STR_RES *psRes, const char *fileName)
 {
-    bool retval;
-    lexerinput_t input;
+	bool retval;
+	lexerinput_t input;
 
-    input.type = LEXINPUT_PHYSFS;
-    input.input.physfsfile = PHYSFS_openRead(fileName);
-    debug(LOG_WZ, "Reading...[directory %s] %s", PHYSFS_getRealDir(fileName), fileName);
-    if (!input.input.physfsfile)
-    {
-        debug(LOG_ERROR, "strresLoadFile: PHYSFS_openRead(\"%s\") failed with error: %s\n", fileName, PHYSFS_getLastError());
-        return false;
-    }
+	input.type = LEXINPUT_PHYSFS;
+	input.input.physfsfile = PHYSFS_openRead(fileName);
+	debug(LOG_WZ, "Reading...[directory %s] %s", PHYSFS_getRealDir(fileName), fileName);
+	if (!input.input.physfsfile)
+	{
+		debug(LOG_ERROR, "strresLoadFile: PHYSFS_openRead(\"%s\") failed with error: %s\n", fileName, PHYSFS_getLastError());
+		return false;
+	}
 
-    strres_set_extra(&input);
-    retval = (strres_parse(psRes) == 0);
+	strres_set_extra(&input);
+	retval = (strres_parse(psRes) == 0);
 
-    strres_lex_destroy();
-    PHYSFS_close(input.input.physfsfile);
+	strres_lex_destroy();
+	PHYSFS_close(input.input.physfsfile);
 
-    return retval;
+	return retval;
 }
 
 /* Get the ID number for a string*/
 const char *strresGetIDfromString(STR_RES *psRes, const char *pString)
 {
-    ASSERT(psRes != NULL, "Invalid string res pointer");
+	ASSERT(psRes != NULL, "Invalid string res pointer");
 
-    return treapFindKey(psRes->psIDTreap, pString);
+	return treapFindKey(psRes->psIDTreap, pString);
 }

@@ -83,82 +83,82 @@ extern uint32_t scroll_speed_accel;			// now user modifyable.
 
 struct	_dragBox
 {
-    uint32_t	x1;
-    uint32_t	y1;
-    uint32_t	x2;
-    uint32_t	y2;
-    uint32_t	status;
-    uint32_t	lastTime;
-    uint32_t	pulse;
+	uint32_t	x1;
+	uint32_t	y1;
+	uint32_t	x2;
+	uint32_t	y2;
+	uint32_t	status;
+	uint32_t	lastTime;
+	uint32_t	pulse;
 };
 
-extern struct	_dragBox dragBox3D,wallDrag;
+extern struct	_dragBox dragBox3D, wallDrag;
 
 typedef enum _pointer
 {
-    MP_ATTACH = 99,
-    MP_ATTACK,
-    MP_BRIDGE,
-    MP_BUILD,
-    MP_EMBARK,
-    MP_FIX,
-    MP_GUARD,
-    MP_JAM,
-    MP_MOVE,
-    MP_PICKUP,
-    MP_REPAIR,
-    MP_SELECT,
-    MP_LOCKON,
-    MP_MENSELECT,
-    MP_BOMB
+	MP_ATTACH = 99,
+	MP_ATTACK,
+	MP_BRIDGE,
+	MP_BUILD,
+	MP_EMBARK,
+	MP_FIX,
+	MP_GUARD,
+	MP_JAM,
+	MP_MOVE,
+	MP_PICKUP,
+	MP_REPAIR,
+	MP_SELECT,
+	MP_LOCKON,
+	MP_MENSELECT,
+	MP_BOMB
 } MOUSE_POINTER;
 
 typedef enum _selectionTypes
 {
-    SC_DROID_CONSTRUCT,
-    SC_DROID_DIRECT,
-    SC_DROID_INDIRECT,
-    SC_DROID_CLOSE,
-    SC_DROID_SENSOR,
-    SC_DROID_ECM,
-    SC_DROID_BRIDGE,
-    SC_DROID_RECOVERY,
-    SC_DROID_COMMAND,
-    SC_DROID_BOMBER,
-    SC_DROID_TRANSPORTER,
-    SC_DROID_DEMOLISH,
-    SC_DROID_REPAIR,
-    SC_INVALID,
+	SC_DROID_CONSTRUCT,
+	SC_DROID_DIRECT,
+	SC_DROID_INDIRECT,
+	SC_DROID_CLOSE,
+	SC_DROID_SENSOR,
+	SC_DROID_ECM,
+	SC_DROID_BRIDGE,
+	SC_DROID_RECOVERY,
+	SC_DROID_COMMAND,
+	SC_DROID_BOMBER,
+	SC_DROID_TRANSPORTER,
+	SC_DROID_DEMOLISH,
+	SC_DROID_REPAIR,
+	SC_INVALID,
 
 } SELECTION_TYPE;
 
 typedef enum _targets
 {
-    MT_TERRAIN,
-    MT_RESOURCE,
-    MT_BLOCKING,
-    MT_RIVER,
-    MT_TRENCH,
-    MT_OWNSTRDAM,
-    MT_OWNSTROK,
-    MT_OWNSTRINCOMP,
-    MT_REPAIR,
-    MT_REPAIRDAM,
-    MT_ENEMYSTR,
-    MT_TRANDROID,
-    MT_OWNDROID,
-    MT_OWNDROIDDAM,
-    MT_ENEMYDROID,
-    MT_COMMAND,
-    MT_ARTIFACT,
-    MT_DAMFEATURE,
-    MT_SENSOR,
-    MT_WRECKFEATURE,
-    MT_CONSTRUCT,
-    MT_SENSORSTRUCT,
-    MT_SENSORSTRUCTDAM,
+	MT_TERRAIN,
+	MT_RESOURCE,
+	MT_BLOCKING,
+	MT_RIVER,
+	MT_TRENCH,
+	MT_OWNSTRDAM,
+	MT_OWNSTROK,
+	MT_OWNSTRINCOMP,
+	MT_REPAIR,
+	MT_REPAIRDAM,
+	MT_ENEMYSTR,
+	MT_TRANDROID,
+	MT_OWNDROID,
+	MT_OWNDROIDDAM,
+	MT_ENEMYDROID,
+	MT_COMMAND,
+	MT_ARTIFACT,
+	MT_DAMFEATURE,
+	MT_SENSOR,
+	MT_WRECKFEATURE,
+	MT_CONSTRUCT,
+	MT_SENSORSTRUCT,
+	MT_SENSORSTRUCTDAM,
 
-    MT_NOTARGET		//leave as last one
+	MT_NOTARGET		//leave as last one
 } MOUSE_TARGET;
 
 extern BOOL		gameStats;
@@ -167,7 +167,7 @@ extern BOOL		godMode;
 // reset the input state
 void resetInput(void);
 
-BOOL CheckInScrollLimits(int32_t *xPos,int32_t *zPos);
+BOOL CheckInScrollLimits(int32_t *xPos, int32_t *zPos);
 extern BOOL CheckScrollLimits(void);
 extern BOOL	rotActive;
 
@@ -176,15 +176,15 @@ BASE_OBJECT	*mouseTarget( void );
 BOOL StartObjectOrbit(BASE_OBJECT *psObj);
 void CancelObjectOrbit(void);
 
-extern void FinishDeliveryPosition(uint32_t xPos,uint32_t yPos,void *UserData);
+extern void FinishDeliveryPosition(uint32_t xPos, uint32_t yPos, void *UserData);
 extern void CancelDeliveryRepos(void);
 extern void StartDeliveryPosition( OBJECT_POSITION *psLocation );
 extern BOOL DeliveryReposValid(void);
 extern FLAG_POSITION *deliveryPointToMove;
 
-extern void StartTacticalScrollObj(BOOL driveActive,BASE_OBJECT *psObj);
+extern void StartTacticalScrollObj(BOOL driveActive, BASE_OBJECT *psObj);
 extern void CancelTacticalScroll(void);
-extern void MoveTacticalScroll(int32_t xVel,int32_t yVel);
+extern void MoveTacticalScroll(int32_t xVel, int32_t yVel);
 extern BOOL	getRotActive( void );
 extern int32_t	getDesiredPitch( void );
 extern void	setDesiredPitch(int32_t pitch);

@@ -33,43 +33,43 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // (cuts down the memory use over proper pointers)
 typedef struct _f_line
 {
-    int16_t		xoffset,yoffset;	// position relative to center
-    int16_t		dir;				// orientation of line
-    int8_t		member;				// first member in the 'linked list' of members
+	int16_t		xoffset, yoffset;	// position relative to center
+	int16_t		dir;				// orientation of line
+	int8_t		member;				// first member in the 'linked list' of members
 } F_LINE;
 
 // information about a formation member
 typedef struct _f_member
 {
-    int8_t			line;			// which line this member is on
-    int8_t			next;			// the next member on this line
-    int16_t			dist;			// distance along the line
-    DROID                   *psDroid;               // the member unit
+	int8_t			line;			// which line this member is on
+	int8_t			next;			// the next member on this line
+	int16_t			dist;			// distance along the line
+	DROID                   *psDroid;               // the member unit
 } F_MEMBER;
 
 // information about a formation
 typedef struct _formation
 {
-    int16_t		refCount;	// number of units using the formation
+	int16_t		refCount;	// number of units using the formation
 
-    int16_t		size;	// maximum length of the lines
-    int16_t		rankDist;	// seperation between the ranks
-    int16_t		dir;	// direction of the formation
-    int32_t		x,y;	// position of the front of the formation
+	int16_t		size;	// maximum length of the lines
+	int16_t		rankDist;	// seperation between the ranks
+	int16_t		dir;	// direction of the formation
+	int32_t		x, y;	// position of the front of the formation
 
-    // the lines that make up a formation
-    F_LINE		asLines[F_MAXLINES];
-    int16_t		numLines;
-    uint8_t		maxRank;
+	// the lines that make up a formation
+	F_LINE		asLines[F_MAXLINES];
+	int16_t		numLines;
+	uint8_t		maxRank;
 
-    // the units that have a position allocated in the formation
-    int8_t		free;
-    F_MEMBER	asMembers[F_MAXMEMBERS];
+	// the units that have a position allocated in the formation
+	int8_t		free;
+	F_MEMBER	asMembers[F_MAXMEMBERS];
 
-    // formation speed (currently speed of slowest member) - GJ - sorry.
-    uint32_t		iSpeed;
+	// formation speed (currently speed of slowest member) - GJ - sorry.
+	uint32_t		iSpeed;
 
-    struct _formation	*psNext;
+	struct _formation	*psNext;
 } FORMATION;
 
 #endif // __INCLUDED_FORMATIONDEF_H__

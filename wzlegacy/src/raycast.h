@@ -51,13 +51,13 @@ extern void rayCast(Vector3i pos, Vector3i dir, int length, RAY_CALLBACK callbac
 
 static inline Vector3i rayAngleToVector3i(float angle)
 {
-    Vector3i dest =
-    {
-        cosf(deg2radf(angle)) *INT_MAX,
-        sinf(deg2radf(angle)) *INT_MAX,
-        0
-    };
-    return dest;
+	Vector3i dest =
+	{
+		cosf(deg2radf(angle)) *INT_MAX,
+		sinf(deg2radf(angle)) *INT_MAX,
+		0
+	};
+	return dest;
 }
 
 
@@ -66,6 +66,6 @@ static inline Vector3i rayAngleToVector3i(float angle)
 extern void	getBestPitchToEdgeOfGrid(uint32_t x, uint32_t y, uint32_t direction, int32_t *pitch);
 
 extern void	getPitchToHighestPoint( uint32_t x, uint32_t y, uint32_t direction,
-                                    uint32_t thresholdDistance, int32_t *pitch );
+									uint32_t thresholdDistance, int32_t *pitch );
 
 #endif // __INCLUDED_SRC_RAYCAST_H__

@@ -40,8 +40,8 @@
    know about them.  */
 enum yytokentype
 {
-    TEXT_T = 258,
-    QTEXT_T = 259
+	TEXT_T = 258,
+	QTEXT_T = 259
 };
 #endif
 /* Tokens.  */
@@ -55,14 +55,14 @@ enum yytokentype
 typedef union YYSTYPE
 {
 
-    /* Line 1676 of yacc.c  */
+	/* Line 1676 of yacc.c  */
 #line 48 "strres_parser.y"
 
-    char  *sval;
+	char  *sval;
 
 
 
-    /* Line 1676 of yacc.c  */
+	/* Line 1676 of yacc.c  */
 #line 66 "strres_parser.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1

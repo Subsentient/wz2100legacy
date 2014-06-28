@@ -114,22 +114,22 @@ extern void debug_callback_win32debug( void **, const char * );
 
 static BOOL inList( char *list[], const char *item )
 {
-    int i = 0;
+	int i = 0;
 #ifdef DEBUG
-    debug( LOG_NEVER, "inList: Current item: [%s]", item );
+	debug( LOG_NEVER, "inList: Current item: [%s]", item );
 #endif
-    while( list[i] != NULL )
-    {
+	while( list[i] != NULL )
+	{
 #ifdef DEBUG
-        debug( LOG_NEVER, "inList: Checking for match with: [%s]", list[i] );
+		debug( LOG_NEVER, "inList: Checking for match with: [%s]", list[i] );
 #endif
-        if ( strcmp( list[i], item ) == 0 )
-        {
-            return true;
-        }
-        i++;
-    }
-    return false;
+		if ( strcmp( list[i], item ) == 0 )
+		{
+			return true;
+		}
+		i++;
+	}
+	return false;
 }
 
 
@@ -142,193 +142,193 @@ static BOOL inList( char *list[], const char *item )
  */
 void addSubdirs( const char *basedir, const char *subdir, const bool appendToPath, char *checkList[], bool addToModList )
 {
-    char tmpstr[PATH_MAX];
-    char buf[256];
-    char **subdirlist = PHYSFS_enumerateFiles( subdir );
-    char **i = subdirlist;
+	char tmpstr[PATH_MAX];
+	char buf[256];
+	char **subdirlist = PHYSFS_enumerateFiles( subdir );
+	char **i = subdirlist;
 
-    while( *i != NULL )
-    {
+	while( *i != NULL )
+	{
 #ifdef DEBUG
-        debug( LOG_NEVER, "addSubdirs: Examining subdir: [%s]", *i );
+		debug( LOG_NEVER, "addSubdirs: Examining subdir: [%s]", *i );
 #endif // DEBUG
-        if (*i[0] != '.' && (!checkList || inList(checkList, *i)))
-        {
-            snprintf(tmpstr, sizeof(tmpstr), "%s%s%s%s", basedir, subdir, PHYSFS_getDirSeparator(), *i);
+		if (*i[0] != '.' && (!checkList || inList(checkList, *i)))
+		{
+			snprintf(tmpstr, sizeof(tmpstr), "%s%s%s%s", basedir, subdir, PHYSFS_getDirSeparator(), *i);
 #ifdef DEBUG
-            debug( LOG_NEVER, "addSubdirs: Adding [%s] to search path", tmpstr );
+			debug( LOG_NEVER, "addSubdirs: Adding [%s] to search path", tmpstr );
 #endif // DEBUG
-            if (addToModList)
-            {
-                addLoadedMod(*i);
-                snprintf(buf, sizeof(buf), "mod: %s", *i);
-                addDumpInfo(buf);
-            }
-            PHYSFS_addToSearchPath( tmpstr, appendToPath );
-        }
-        i++;
-    }
-    PHYSFS_freeList( subdirlist );
+			if (addToModList)
+			{
+				addLoadedMod(*i);
+				snprintf(buf, sizeof(buf), "mod: %s", *i);
+				addDumpInfo(buf);
+			}
+			PHYSFS_addToSearchPath( tmpstr, appendToPath );
+		}
+		i++;
+	}
+	PHYSFS_freeList( subdirlist );
 }
 
 void removeSubdirs( const char *basedir, const char *subdir, char *checkList[] )
 {
-    char tmpstr[PATH_MAX];
-    char **subdirlist = PHYSFS_enumerateFiles( subdir );
-    char **i = subdirlist;
+	char tmpstr[PATH_MAX];
+	char **subdirlist = PHYSFS_enumerateFiles( subdir );
+	char **i = subdirlist;
 
-    while( *i != NULL )
-    {
+	while( *i != NULL )
+	{
 #ifdef DEBUG
-        debug( LOG_NEVER, "removeSubdirs: Examining subdir: [%s]", *i );
+		debug( LOG_NEVER, "removeSubdirs: Examining subdir: [%s]", *i );
 #endif // DEBUG
-        if( !checkList || inList( checkList, *i ) )
-        {
-            snprintf(tmpstr, sizeof(tmpstr), "%s%s%s%s", basedir, subdir, PHYSFS_getDirSeparator(), *i);
+		if( !checkList || inList( checkList, *i ) )
+		{
+			snprintf(tmpstr, sizeof(tmpstr), "%s%s%s%s", basedir, subdir, PHYSFS_getDirSeparator(), *i);
 #ifdef DEBUG
-            debug( LOG_NEVER, "removeSubdirs: Removing [%s] from search path", tmpstr );
+			debug( LOG_NEVER, "removeSubdirs: Removing [%s] from search path", tmpstr );
 #endif // DEBUG
-            if (!PHYSFS_removeFromSearchPath( tmpstr ))
-            {
+			if (!PHYSFS_removeFromSearchPath( tmpstr ))
+			{
 #ifdef DEBUG	// spams a ton!
-                debug(LOG_NEVER, "Couldn't remove %s from search path because %s", tmpstr, PHYSFS_getLastError());
+				debug(LOG_NEVER, "Couldn't remove %s from search path because %s", tmpstr, PHYSFS_getLastError());
 #endif // DEBUG
-            }
-        }
-        i++;
-    }
-    PHYSFS_freeList( subdirlist );
+			}
+		}
+		i++;
+	}
+	PHYSFS_freeList( subdirlist );
 }
 
 void printSearchPath( void )
 {
-    char **i, ** searchPath;
+	char **i, ** searchPath;
 
-    debug(LOG_WZ, "Search paths:");
-    searchPath = PHYSFS_getSearchPath();
-    for (i = searchPath; *i != NULL; i++)
-    {
-        debug(LOG_WZ, "    [%s]", *i);
-    }
-    PHYSFS_freeList( searchPath );
+	debug(LOG_WZ, "Search paths:");
+	searchPath = PHYSFS_getSearchPath();
+	for (i = searchPath; *i != NULL; i++)
+	{
+		debug(LOG_WZ, "    [%s]", *i);
+	}
+	PHYSFS_freeList( searchPath );
 }
 
 void setOverrideMods(char *modlist)
 {
-    char *curmod = modlist;
-    char *nextmod;
-    int i=0;
-    while ((nextmod = strstr(curmod, ", ")) && i<MAX_MODS-2)
-    {
-        override_mods[i] = malloc(nextmod-curmod+1);
-        strlcpy(override_mods[i], curmod, nextmod-curmod);
-        override_mods[i][nextmod-curmod] = '\0';
-        curmod = nextmod + 2;
-        i++;
-    }
-    override_mods[i] = strdup(curmod);
-    override_mods[i+1] = NULL;
-    override_mod_list = modlist;
-    use_override_mods = true;
+	char *curmod = modlist;
+	char *nextmod;
+	int i = 0;
+	while ((nextmod = strstr(curmod, ", ")) && i < MAX_MODS - 2)
+	{
+		override_mods[i] = malloc(nextmod - curmod + 1);
+		strlcpy(override_mods[i], curmod, nextmod - curmod);
+		override_mods[i][nextmod - curmod] = '\0';
+		curmod = nextmod + 2;
+		i++;
+	}
+	override_mods[i] = strdup(curmod);
+	override_mods[i + 1] = NULL;
+	override_mod_list = modlist;
+	use_override_mods = true;
 }
 
 void setCurrentMap(char *map, int maxPlayers)
 {
-    free(current_map[0]);
-    free(current_map[1]);
-    // Transform "Sk-Rush-T2" into "4c-Rush.wz" so it can be matched by the map loader
-    current_map[0] = (char *)malloc(strlen(map) + 1 + 7);
-    snprintf(current_map[0], 3, "%d", maxPlayers);
-    strcat(current_map[0], "c-");
-    if (strncmp(map, "Sk-", 3) == 0)
-    {
-        strcat(current_map[0], map + 3);
-    }
-    else
-    {
-        strcat(current_map[0], map);
-    }
-    if (strncmp(current_map[0] + strlen(current_map[0]) - 3, "-T", 2) == 0)
-    {
-        current_map[0][strlen(current_map[0]) - 3] = '\0';
-    }
-    current_map[1] = (char *)malloc(strlen(map) + 1 + 7);
-    strcpy(current_map[1], current_map[0]);
-    strcat(current_map[1],".wzl");
-    current_map[2] = NULL;
+	free(current_map[0]);
+	free(current_map[1]);
+	// Transform "Sk-Rush-T2" into "4c-Rush.wz" so it can be matched by the map loader
+	current_map[0] = (char *)malloc(strlen(map) + 1 + 7);
+	snprintf(current_map[0], 3, "%d", maxPlayers);
+	strcat(current_map[0], "c-");
+	if (strncmp(map, "Sk-", 3) == 0)
+	{
+		strcat(current_map[0], map + 3);
+	}
+	else
+	{
+		strcat(current_map[0], map);
+	}
+	if (strncmp(current_map[0] + strlen(current_map[0]) - 3, "-T", 2) == 0)
+	{
+		current_map[0][strlen(current_map[0]) - 3] = '\0';
+	}
+	current_map[1] = (char *)malloc(strlen(map) + 1 + 7);
+	strcpy(current_map[1], current_map[0]);
+	strcat(current_map[1], ".wzl");
+	current_map[2] = NULL;
 }
 
 void clearOverrideMods(void)
 {
-    int i;
-    use_override_mods = false;
-    for (i=0; i<MAX_MODS && override_mods[i]; i++)
-    {
-        free(override_mods[i]);
-    }
-    override_mods[0] = NULL;
-    override_mod_list = NULL;
+	int i;
+	use_override_mods = false;
+	for (i = 0; i < MAX_MODS && override_mods[i]; i++)
+	{
+		free(override_mods[i]);
+	}
+	override_mods[0] = NULL;
+	override_mod_list = NULL;
 }
 
 void addLoadedMod(const char *modname)
 {
-    char *mod = strdup(modname);
-    int i;
-    if (num_loaded_mods >= MAX_MODS)
-    {
-        // mod list full
-        return;
-    }
-    // Yes, this is an online insertion sort.
-    // I swear, for the numbers of mods this is going to be dealing with
-    // (i.e. 0 to 2), it really is faster than, say, Quicksort.
-    for (i=0; i<num_loaded_mods && strcmp(loaded_mods[i], mod)>0; i++);
-    if (i < num_loaded_mods)
-    {
-        if (strcmp(loaded_mods[i], mod) == 0)
-        {
-            // mod already in list
-            free(mod);
-            return;
-        }
-        memmove(&loaded_mods[i+1], &loaded_mods[i], (num_loaded_mods-i)*sizeof(char *));
-    }
-    loaded_mods[i] = mod;
-    num_loaded_mods++;
+	char *mod = strdup(modname);
+	int i;
+	if (num_loaded_mods >= MAX_MODS)
+	{
+		// mod list full
+		return;
+	}
+	// Yes, this is an online insertion sort.
+	// I swear, for the numbers of mods this is going to be dealing with
+	// (i.e. 0 to 2), it really is faster than, say, Quicksort.
+	for (i = 0; i < num_loaded_mods && strcmp(loaded_mods[i], mod) > 0; i++);
+	if (i < num_loaded_mods)
+	{
+		if (strcmp(loaded_mods[i], mod) == 0)
+		{
+			// mod already in list
+			free(mod);
+			return;
+		}
+		memmove(&loaded_mods[i + 1], &loaded_mods[i], (num_loaded_mods - i)*sizeof(char *));
+	}
+	loaded_mods[i] = mod;
+	num_loaded_mods++;
 }
 void clearLoadedMods(void)
 {
-    int i;
-    for (i=0; i<num_loaded_mods; i++)
-    {
-        free(loaded_mods[i]);
-    }
-    num_loaded_mods = 0;
-    if (mod_list)
-    {
-        free(mod_list);
-        mod_list = NULL;
-    }
+	int i;
+	for (i = 0; i < num_loaded_mods; i++)
+	{
+		free(loaded_mods[i]);
+	}
+	num_loaded_mods = 0;
+	if (mod_list)
+	{
+		free(mod_list);
+		mod_list = NULL;
+	}
 }
 char *getModList(void)
 {
-    int i;
-    if (mod_list)
-    {
-        // mod list already constructed
-        return mod_list;
-    }
-    mod_list = malloc(modlist_string_size);
-    mod_list[0] = 0; //initialize
-    for (i=0; i<num_loaded_mods; i++)
-    {
-        if (i != 0)
-        {
-            strlcat(mod_list, ", ", modlist_string_size);
-        }
-        strlcat(mod_list, loaded_mods[i], modlist_string_size);
-    }
-    return mod_list;
+	int i;
+	if (mod_list)
+	{
+		// mod list already constructed
+		return mod_list;
+	}
+	mod_list = malloc(modlist_string_size);
+	mod_list[0] = 0; //initialize
+	for (i = 0; i < num_loaded_mods; i++)
+	{
+		if (i != 0)
+		{
+			strlcat(mod_list, ", ", modlist_string_size);
+		}
+		strlcat(mod_list, loaded_mods[i], modlist_string_size);
+	}
+	return mod_list;
 }
 
 
@@ -341,162 +341,162 @@ char *getModList(void)
 static bool getCurrentDir(char *const dest, size_t const size)
 {
 #if defined(WZ_OS_UNIX)
-    if (getcwd(dest, size) == NULL)
-    {
-        if (errno == ERANGE)
-        {
-            debug(LOG_ERROR, "getPlatformUserDir: The buffer to contain our current directory is too small (%u bytes and more needed)", (unsigned int)size);
-        }
-        else
-        {
-            debug(LOG_ERROR, "getPlatformUserDir: getcwd failed: %s", strerror(errno));
-        }
+	if (getcwd(dest, size) == NULL)
+	{
+		if (errno == ERANGE)
+		{
+			debug(LOG_ERROR, "getPlatformUserDir: The buffer to contain our current directory is too small (%u bytes and more needed)", (unsigned int)size);
+		}
+		else
+		{
+			debug(LOG_ERROR, "getPlatformUserDir: getcwd failed: %s", strerror(errno));
+		}
 
-        return false;
-    }
+		return false;
+	}
 #elif defined(WZ_OS_WIN)
-    const int len = GetCurrentDirectoryA(size, dest);
+	const int len = GetCurrentDirectoryA(size, dest);
 
-    if (len == 0)
-    {
-        // Retrieve Windows' error number
-        const int err = GetLastError();
-        char *err_string;
+	if (len == 0)
+	{
+		// Retrieve Windows' error number
+		const int err = GetLastError();
+		char *err_string;
 
-        // Retrieve a string describing the error number (uses LocalAlloc() to allocate memory for err_string)
-        FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, err, 0, (char *)&err_string, 0, NULL);
+		// Retrieve a string describing the error number (uses LocalAlloc() to allocate memory for err_string)
+		FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, err, 0, (char *)&err_string, 0, NULL);
 
-        // Print an error message with the above description
-        debug(LOG_ERROR, "getPlatformUserDir: GetCurrentDirectoryA failed (error code: %d): %s", err, err_string);
+		// Print an error message with the above description
+		debug(LOG_ERROR, "getPlatformUserDir: GetCurrentDirectoryA failed (error code: %d): %s", err, err_string);
 
-        // Free our chunk of memory FormatMessageA gave us
-        LocalFree(err_string);
+		// Free our chunk of memory FormatMessageA gave us
+		LocalFree(err_string);
 
-        return false;
-    }
-    else if (len > size)
-    {
-        debug(LOG_ERROR, "getPlatformUserDir: The buffer to contain our current directory is too small (%u bytes and %d needed)", (unsigned int)size, len);
+		return false;
+	}
+	else if (len > size)
+	{
+		debug(LOG_ERROR, "getPlatformUserDir: The buffer to contain our current directory is too small (%u bytes and %d needed)", (unsigned int)size, len);
 
-        return false;
-    }
+		return false;
+	}
 #else
 # error "Provide an implementation here to copy the current working directory in 'dest', which is 'size' bytes large."
 #endif
 
-    // If we got here everything went well
-    return true;
+	// If we got here everything went well
+	return true;
 }
 
 
 static void getPlatformUserDir(char *const tmpstr, size_t const size)
 {
 #if defined(WZ_OS_WIN)
-    ASSERT(size >= MAX_PATH, "size (%u) is smaller than the required minimum of MAX_PATH (%u)", size, (size_t)MAX_PATH);
-    if ( SUCCEEDED( SHGetFolderPathA( NULL, CSIDL_PERSONAL|CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, tmpstr ) ) )
-    {
-        strlcat(tmpstr, PHYSFS_getDirSeparator(), size);
-    }
-    else
+	ASSERT(size >= MAX_PATH, "size (%u) is smaller than the required minimum of MAX_PATH (%u)", size, (size_t)MAX_PATH);
+	if ( SUCCEEDED( SHGetFolderPathA( NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, tmpstr ) ) )
+	{
+		strlcat(tmpstr, PHYSFS_getDirSeparator(), size);
+	}
+	else
 #elif defined(WZ_OS_MAC)
-    FSRef fsref;
-    OSErr error = FSFindFolder(kUserDomain, kApplicationSupportFolderType, false, &fsref);
-    if (!error)
-    {
-        error = FSRefMakePath(&fsref, (UInt8 *) tmpstr, size);
-    }
-    if (!error)
-    {
-        strlcat(tmpstr, PHYSFS_getDirSeparator(), size);
-    }
-    else
+	FSRef fsref;
+	OSErr error = FSFindFolder(kUserDomain, kApplicationSupportFolderType, false, &fsref);
+	if (!error)
+	{
+		error = FSRefMakePath(&fsref, (UInt8 *) tmpstr, size);
+	}
+	if (!error)
+	{
+		strlcat(tmpstr, PHYSFS_getDirSeparator(), size);
+	}
+	else
 #endif
-        if (PHYSFS_getUserDir())
-        {
-            strlcpy(tmpstr, PHYSFS_getUserDir(), size); // Use PhysFS supplied UserDir (As fallback on Windows / Mac, default on Linux)
-        }
-    // If PhysicsFS fails (might happen if environment variable HOME is unset or wrong) then use the current working directory
-        else if (getCurrentDir(tmpstr, size))
-        {
-            strlcat(tmpstr, PHYSFS_getDirSeparator(), size);
-        }
-        else
-        {
-            debug(LOG_FATAL, "Can't get UserDir?");
-            abort();
-        }
+		if (PHYSFS_getUserDir())
+		{
+			strlcpy(tmpstr, PHYSFS_getUserDir(), size); // Use PhysFS supplied UserDir (As fallback on Windows / Mac, default on Linux)
+		}
+	// If PhysicsFS fails (might happen if environment variable HOME is unset or wrong) then use the current working directory
+		else if (getCurrentDir(tmpstr, size))
+		{
+			strlcat(tmpstr, PHYSFS_getDirSeparator(), size);
+		}
+		else
+		{
+			debug(LOG_FATAL, "Can't get UserDir?");
+			abort();
+		}
 }
 
 
 static void initialize_ConfigDir(void)
 {
-    char tmpstr[PATH_MAX] = { '\0' };
+	char tmpstr[PATH_MAX] = { '\0' };
 
-    if (strlen(configdir) == 0)
-    {
-        getPlatformUserDir(tmpstr, sizeof(tmpstr));
+	if (strlen(configdir) == 0)
+	{
+		getPlatformUserDir(tmpstr, sizeof(tmpstr));
 
-        if (!PHYSFS_setWriteDir(tmpstr)) // Workaround for PhysFS not creating the writedir as expected.
-        {
-            debug(LOG_FATAL, "Error setting write directory to \"%s\": %s",
-                  tmpstr, PHYSFS_getLastError());
-            exit(1);
-        }
+		if (!PHYSFS_setWriteDir(tmpstr)) // Workaround for PhysFS not creating the writedir as expected.
+		{
+			debug(LOG_FATAL, "Error setting write directory to \"%s\": %s",
+				  tmpstr, PHYSFS_getLastError());
+			exit(1);
+		}
 
-        if (!PHYSFS_mkdir(WZ_WRITEDIR)) // s.a.
-        {
-            debug(LOG_FATAL, "Error creating directory \"%s\": %s",
-                  WZ_WRITEDIR, PHYSFS_getLastError());
-            exit(1);
-        }
+		if (!PHYSFS_mkdir(WZ_WRITEDIR)) // s.a.
+		{
+			debug(LOG_FATAL, "Error creating directory \"%s\": %s",
+				  WZ_WRITEDIR, PHYSFS_getLastError());
+			exit(1);
+		}
 
-        // Append the Warzone subdir
-        sstrcat(tmpstr, WZ_WRITEDIR);
-        sstrcat(tmpstr, PHYSFS_getDirSeparator());
+		// Append the Warzone subdir
+		sstrcat(tmpstr, WZ_WRITEDIR);
+		sstrcat(tmpstr, PHYSFS_getDirSeparator());
 
-        if (!PHYSFS_setWriteDir(tmpstr))
-        {
-            debug( LOG_FATAL, "Error setting write directory to \"%s\": %s",
-                   tmpstr, PHYSFS_getLastError() );
-            exit(1);
-        }
-    }
-    else
-    {
-        sstrcpy(tmpstr, configdir);
+		if (!PHYSFS_setWriteDir(tmpstr))
+		{
+			debug( LOG_FATAL, "Error setting write directory to \"%s\": %s",
+				   tmpstr, PHYSFS_getLastError() );
+			exit(1);
+		}
+	}
+	else
+	{
+		sstrcpy(tmpstr, configdir);
 
-        // Make sure that we have a directory separator at the end of the string
-        if (tmpstr[strlen(tmpstr) - 1] != PHYSFS_getDirSeparator()[0])
-        {
-            sstrcat(tmpstr, PHYSFS_getDirSeparator());
-        }
+		// Make sure that we have a directory separator at the end of the string
+		if (tmpstr[strlen(tmpstr) - 1] != PHYSFS_getDirSeparator()[0])
+		{
+			sstrcat(tmpstr, PHYSFS_getDirSeparator());
+		}
 
-        debug(LOG_WZ, "Using custom configuration directory: %s", tmpstr);
+		debug(LOG_WZ, "Using custom configuration directory: %s", tmpstr);
 
-        if (!PHYSFS_setWriteDir(tmpstr)) // Workaround for PhysFS not creating the writedir as expected.
-        {
-            debug(LOG_FATAL, "Error setting write directory to \"%s\": %s",
-                  tmpstr, PHYSFS_getLastError());
-            exit(1);
-        }
+		if (!PHYSFS_setWriteDir(tmpstr)) // Workaround for PhysFS not creating the writedir as expected.
+		{
+			debug(LOG_FATAL, "Error setting write directory to \"%s\": %s",
+				  tmpstr, PHYSFS_getLastError());
+			exit(1);
+		}
 
-        // NOTE: This is currently only used for mingw builds for now.
+		// NOTE: This is currently only used for mingw builds for now.
 #if defined (WZ_CC_MINGW)
-        if (!OverrideRPTDirectory(tmpstr))
-        {
-            // since it failed, we just use our default path, and not the user supplied one.
-            debug(LOG_ERROR, "Error setting exception hanlder to use directory %s", tmpstr);
-        }
+		if (!OverrideRPTDirectory(tmpstr))
+		{
+			// since it failed, we just use our default path, and not the user supplied one.
+			debug(LOG_ERROR, "Error setting exception hanlder to use directory %s", tmpstr);
+		}
 #endif
-    }
+	}
 
-    // User's home dir first so we allways see what we write
-    PHYSFS_addToSearchPath( PHYSFS_getWriteDir(), PHYSFS_PREPEND );
+	// User's home dir first so we allways see what we write
+	PHYSFS_addToSearchPath( PHYSFS_getWriteDir(), PHYSFS_PREPEND );
 
-    PHYSFS_permitSymbolicLinks(1);
+	PHYSFS_permitSymbolicLinks(1);
 
-    debug(LOG_WZ, "Write dir: %s", PHYSFS_getWriteDir());
-    debug(LOG_WZ, "Base dir: %s", PHYSFS_getBaseDir());
+	debug(LOG_WZ, "Write dir: %s", PHYSFS_getWriteDir());
+	debug(LOG_WZ, "Base dir: %s", PHYSFS_getBaseDir());
 }
 
 
@@ -505,18 +505,18 @@ static void initialize_ConfigDir(void)
  */
 static void initialize_PhysicsFS(const char *argv_0)
 {
-    PHYSFS_Version compiled;
-    PHYSFS_Version linked;
+	PHYSFS_Version compiled;
+	PHYSFS_Version linked;
 
-    PHYSFS_init(argv_0);
+	PHYSFS_init(argv_0);
 
-    PHYSFS_VERSION(&compiled);
-    PHYSFS_getLinkedVersion(&linked);
+	PHYSFS_VERSION(&compiled);
+	PHYSFS_getLinkedVersion(&linked);
 
-    debug(LOG_WZ, "Compiled against PhysFS version: %d.%d.%d",
-          compiled.major, compiled.minor, compiled.patch);
-    debug(LOG_WZ, "Linked against PhysFS version: %d.%d.%d",
-          linked.major, linked.minor, linked.patch);
+	debug(LOG_WZ, "Compiled against PhysFS version: %d.%d.%d",
+		  compiled.major, compiled.minor, compiled.patch);
+	debug(LOG_WZ, "Linked against PhysFS version: %d.%d.%d",
+		  linked.major, linked.minor, linked.patch);
 }
 
 
@@ -535,104 +535,104 @@ static void initialize_PhysicsFS(const char *argv_0)
  */
 static void scanDataDirs( void )
 {
-    char tmpstr[PATH_MAX], prefix[PATH_MAX];
-    char *separator;
+	char tmpstr[PATH_MAX], prefix[PATH_MAX];
+	char *separator;
 
-    // Find out which PREFIX we are in...
-    sstrcpy(prefix, PHYSFS_getBaseDir());
+	// Find out which PREFIX we are in...
+	sstrcpy(prefix, PHYSFS_getBaseDir());
 
-    separator = strrchr(prefix, *PHYSFS_getDirSeparator());
-    if (separator)
-    {
-        *separator = '\0'; // Trim ending '/', which getBaseDir always provides
+	separator = strrchr(prefix, *PHYSFS_getDirSeparator());
+	if (separator)
+	{
+		*separator = '\0'; // Trim ending '/', which getBaseDir always provides
 
-        separator = strrchr(prefix, *PHYSFS_getDirSeparator());
-        if (separator)
-        {
-            *separator = '\0'; // Skip the last dir from base dir
-        }
-    }
+		separator = strrchr(prefix, *PHYSFS_getDirSeparator());
+		if (separator)
+		{
+			*separator = '\0'; // Skip the last dir from base dir
+		}
+	}
 
-    // Commandline supplied datadir
-    if( strlen( datadir ) != 0 )
-    {
-        registerSearchPath( datadir, 1 );
-    }
+	// Commandline supplied datadir
+	if( strlen( datadir ) != 0 )
+	{
+		registerSearchPath( datadir, 1 );
+	}
 
-    // User's home dir
-    registerSearchPath( PHYSFS_getWriteDir(), 2 );
-    rebuildSearchPath( mod_multiplay, true );
+	// User's home dir
+	registerSearchPath( PHYSFS_getWriteDir(), 2 );
+	rebuildSearchPath( mod_multiplay, true );
 
-    if( !PHYSFS_exists("gamedesc.lev") )
-    {
-        // Data in SVN dir
-        sstrcpy(tmpstr, prefix);
-        sstrcat(tmpstr, "/data/");
-        registerSearchPath( tmpstr, 3 );
-        rebuildSearchPath( mod_multiplay, true );
+	if( !PHYSFS_exists("gamedesc.lev") )
+	{
+		// Data in SVN dir
+		sstrcpy(tmpstr, prefix);
+		sstrcat(tmpstr, "/data/");
+		registerSearchPath( tmpstr, 3 );
+		rebuildSearchPath( mod_multiplay, true );
 
-        if( !PHYSFS_exists("gamedesc.lev") )
-        {
-            // Relocation for AutoPackage
-            sstrcpy(tmpstr, prefix);
-            sstrcat(tmpstr, "/share/warzone2100/");
-            registerSearchPath( tmpstr, 4 );
-            rebuildSearchPath( mod_multiplay, true );
+		if( !PHYSFS_exists("gamedesc.lev") )
+		{
+			// Relocation for AutoPackage
+			sstrcpy(tmpstr, prefix);
+			sstrcat(tmpstr, "/share/warzone2100/");
+			registerSearchPath( tmpstr, 4 );
+			rebuildSearchPath( mod_multiplay, true );
 
-            if( !PHYSFS_exists("gamedesc.lev") )
-            {
-                // Program dir
-                registerSearchPath( PHYSFS_getBaseDir(), 5 );
-                rebuildSearchPath( mod_multiplay, true );
+			if( !PHYSFS_exists("gamedesc.lev") )
+			{
+				// Program dir
+				registerSearchPath( PHYSFS_getBaseDir(), 5 );
+				rebuildSearchPath( mod_multiplay, true );
 
-                if( !PHYSFS_exists("gamedesc.lev") )
-                {
-                    // Guessed fallback default datadir on Unix
-                    registerSearchPath( WZ_DATADIR, 6 );
-                    rebuildSearchPath( mod_multiplay, true );
-                }
-            }
-        }
-    }
+				if( !PHYSFS_exists("gamedesc.lev") )
+				{
+					// Guessed fallback default datadir on Unix
+					registerSearchPath( WZ_DATADIR, 6 );
+					rebuildSearchPath( mod_multiplay, true );
+				}
+			}
+		}
+	}
 
 #ifdef WZ_OS_MAC
-    if( !PHYSFS_exists("gamedesc.lev") )
-    {
-        CFURLRef resourceURL = CFBundleCopyResourcesDirectoryURL(CFBundleGetMainBundle());
-        char resourcePath[PATH_MAX];
-        if( CFURLGetFileSystemRepresentation( resourceURL, true,
-                                              (UInt8 *) resourcePath,
-                                              PATH_MAX) )
-        {
-            chdir( resourcePath );
-            registerSearchPath( "data", 7 );
-            rebuildSearchPath( mod_multiplay, true );
-        }
-        else
-        {
-            debug( LOG_ERROR, "Could not change to resources directory." );
-        }
+	if( !PHYSFS_exists("gamedesc.lev") )
+	{
+		CFURLRef resourceURL = CFBundleCopyResourcesDirectoryURL(CFBundleGetMainBundle());
+		char resourcePath[PATH_MAX];
+		if( CFURLGetFileSystemRepresentation( resourceURL, true,
+											  (UInt8 *) resourcePath,
+											  PATH_MAX) )
+		{
+			chdir( resourcePath );
+			registerSearchPath( "data", 7 );
+			rebuildSearchPath( mod_multiplay, true );
+		}
+		else
+		{
+			debug( LOG_ERROR, "Could not change to resources directory." );
+		}
 
-        if( resourceURL != NULL )
-        {
-            CFRelease( resourceURL );
-        }
-    }
+		if( resourceURL != NULL )
+		{
+			CFRelease( resourceURL );
+		}
+	}
 #endif
 
-    /** Debugging and sanity checks **/
+	/** Debugging and sanity checks **/
 
-    printSearchPath();
+	printSearchPath();
 
-    if( PHYSFS_exists("gamedesc.lev") )
-    {
-        debug( LOG_WZ, "gamedesc.lev found at %s", PHYSFS_getRealDir( "gamedesc.lev" ) );
-    }
-    else
-    {
-        debug( LOG_FATAL, "Could not find game data. Aborting." );
-        exit(1);
-    }
+	if( PHYSFS_exists("gamedesc.lev") )
+	{
+		debug( LOG_WZ, "gamedesc.lev found at %s", PHYSFS_getRealDir( "gamedesc.lev" ) );
+	}
+	else
+	{
+		debug( LOG_FATAL, "Could not find game data. Aborting." );
+		exit(1);
+	}
 }
 
 
@@ -641,28 +641,28 @@ static void scanDataDirs( void )
 ***************************************************************************/
 static void make_dir(char *dest, const char *dirname, const char *subdir)
 {
-    strcpy(dest, dirname);
-    if (subdir != NULL)
-    {
-        strcat(dest, "/");
-        strcat(dest, subdir);
-    }
-    {
-        size_t l = strlen(dest);
+	strcpy(dest, dirname);
+	if (subdir != NULL)
+	{
+		strcat(dest, "/");
+		strcat(dest, subdir);
+	}
+	{
+		size_t l = strlen(dest);
 
-        if (dest[l-1] != '/')
-        {
-            dest[l] = '/';
-            dest[l+1] = '\0';
-        }
-    }
-    PHYSFS_mkdir(dest);
-    if ( !PHYSFS_mkdir(dest) )
-    {
-        debug(LOG_FATAL, "Unable to create directory \"%s\" in write dir \"%s\"!",
-              dest, PHYSFS_getWriteDir());
-        exit(EXIT_FAILURE);
-    }
+		if (dest[l - 1] != '/')
+		{
+			dest[l] = '/';
+			dest[l + 1] = '\0';
+		}
+	}
+	PHYSFS_mkdir(dest);
+	if ( !PHYSFS_mkdir(dest) )
+	{
+		debug(LOG_FATAL, "Unable to create directory \"%s\" in write dir \"%s\"!",
+			  dest, PHYSFS_getWriteDir());
+		exit(EXIT_FAILURE);
+	}
 }
 
 
@@ -672,15 +672,15 @@ static void make_dir(char *dest, const char *dirname, const char *subdir)
  */
 static void startTitleLoop(void)
 {
-    SetGameMode(GS_TITLE_SCREEN);
+	SetGameMode(GS_TITLE_SCREEN);
 
-    screen_RestartBackDrop();
-    if (!frontendInitialise("wrf/frontend.wrf"))
-    {
-        debug( LOG_FATAL, "Shutting down after failure" );
-        exit(EXIT_FAILURE);
-    }
-    frontendInitVars();
+	screen_RestartBackDrop();
+	if (!frontendInitialise("wrf/frontend.wrf"))
+	{
+		debug( LOG_FATAL, "Shutting down after failure" );
+		exit(EXIT_FAILURE);
+	}
+	frontendInitVars();
 }
 
 
@@ -690,11 +690,11 @@ static void startTitleLoop(void)
  */
 static void stopTitleLoop(void)
 {
-    if (!frontendShutdown())
-    {
-        debug( LOG_FATAL, "Shutting down after failure" );
-        exit(EXIT_FAILURE);
-    }
+	if (!frontendShutdown())
+	{
+		debug( LOG_FATAL, "Shutting down after failure" );
+		exit(EXIT_FAILURE);
+	}
 }
 
 
@@ -704,47 +704,47 @@ static void stopTitleLoop(void)
  */
 static void startGameLoop(void)
 {
-    SetGameMode(GS_NORMAL);
+	SetGameMode(GS_NORMAL);
 
-    if (!levLoadData(aLevelName, NULL, 0))
-    {
-        debug( LOG_FATAL, "Shutting down after failure" );
-        exit(EXIT_FAILURE);
-    }
-    //after data is loaded check the research stats are valid
-    if (!checkResearchStats())
-    {
-        debug( LOG_FATAL, "Invalid Research Stats" );
-        debug( LOG_FATAL, "Shutting down after failure" );
-        exit(EXIT_FAILURE);
-    }
-    //and check the structure stats are valid
-    if (!checkStructureStats())
-    {
-        debug( LOG_FATAL, "Invalid Structure Stats" );
-        debug( LOG_FATAL, "Shutting down after failure" );
-        exit(EXIT_FAILURE);
-    }
+	if (!levLoadData(aLevelName, NULL, 0))
+	{
+		debug( LOG_FATAL, "Shutting down after failure" );
+		exit(EXIT_FAILURE);
+	}
+	//after data is loaded check the research stats are valid
+	if (!checkResearchStats())
+	{
+		debug( LOG_FATAL, "Invalid Research Stats" );
+		debug( LOG_FATAL, "Shutting down after failure" );
+		exit(EXIT_FAILURE);
+	}
+	//and check the structure stats are valid
+	if (!checkStructureStats())
+	{
+		debug( LOG_FATAL, "Invalid Structure Stats" );
+		debug( LOG_FATAL, "Shutting down after failure" );
+		exit(EXIT_FAILURE);
+	}
 
-    screen_StopBackDrop();
+	screen_StopBackDrop();
 
-    // Trap the cursor if cursor snapping is enabled
-    if (war_GetTrapCursor())
-    {
-        SDL_WM_GrabInput(SDL_GRAB_ON);
-    }
+	// Trap the cursor if cursor snapping is enabled
+	if (war_GetTrapCursor())
+	{
+		SDL_WM_GrabInput(SDL_GRAB_ON);
+	}
 
-    // set a flag for the trigger/event system to indicate initialisation is complete
-    gameInitialised = true;
+	// set a flag for the trigger/event system to indicate initialisation is complete
+	gameInitialised = true;
 
-    if (challengeActive)
-    {
-        addMissionTimerInterface();
-    }
-    if (game.type == SKIRMISH)
-    {
-        eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
-    }
+	if (challengeActive)
+	{
+		addMissionTimerInterface();
+	}
+	if (game.type == SKIRMISH)
+	{
+		eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
+	}
 }
 
 
@@ -754,29 +754,29 @@ static void startGameLoop(void)
  */
 static void stopGameLoop(void)
 {
-    if (gameLoopStatus != GAMECODE_NEWLEVEL)
-    {
-        initLoadingScreen(true); // returning to f.e. do a loader.render not active
-        pie_EnableFog(false); // dont let the normal loop code set status on
-        fogStatus = 0;
-        if (gameLoopStatus != GAMECODE_LOADGAME)
-        {
-            if (!levReleaseAll())
-            {
-                debug(LOG_ERROR, "levReleaseAll failed!");
-            }
-        }
-        reloadMPConfig();
-    }
+	if (gameLoopStatus != GAMECODE_NEWLEVEL)
+	{
+		initLoadingScreen(true); // returning to f.e. do a loader.render not active
+		pie_EnableFog(false); // dont let the normal loop code set status on
+		fogStatus = 0;
+		if (gameLoopStatus != GAMECODE_LOADGAME)
+		{
+			if (!levReleaseAll())
+			{
+				debug(LOG_ERROR, "levReleaseAll failed!");
+			}
+		}
+		reloadMPConfig();
+	}
 
-    // Disable cursor trapping
-    if (war_GetTrapCursor())
-    {
-        SDL_WM_GrabInput(SDL_GRAB_OFF);
-    }
+	// Disable cursor trapping
+	if (war_GetTrapCursor())
+	{
+		SDL_WM_GrabInput(SDL_GRAB_OFF);
+	}
 
-    gameInitialised = false;
-    screen_disableMapPreview();
+	gameInitialised = false;
+	screen_disableMapPreview();
 }
 
 
@@ -786,37 +786,37 @@ static void stopGameLoop(void)
  */
 static bool initSaveGameLoad(void)
 {
-    // NOTE: always setGameMode correctly before *any* loading routines!
-    SetGameMode(GS_NORMAL);
-    screen_RestartBackDrop();
-    // load up a save game
-    if (!loadGameInit(saveGameName))
-    {
-        // FIXME: we really should throw up a error window, but we can't (easily) so I won't.
-        debug(LOG_ERROR, "Trying to load Game %s failed!", saveGameName);
-        debug(LOG_POPUP, "Failed to load a save game! It is either corrupted or a unsupported format.\n\nRestarting main menu.");
-        // FIXME: If we bomb out on a in game load, then we would crash if we don't do the next two calls
-        // Doesn't seem to be a way to tell where we are in game loop to determine if/when we should do the two calls.
-        gameLoopStatus = GAMECODE_FASTEXIT;	// clear out all old data
-        stopGameLoop();
-        startTitleLoop(); // Restart into titleloop
-        SetGameMode(GS_TITLE_SCREEN);
-        return false;
-    }
+	// NOTE: always setGameMode correctly before *any* loading routines!
+	SetGameMode(GS_NORMAL);
+	screen_RestartBackDrop();
+	// load up a save game
+	if (!loadGameInit(saveGameName))
+	{
+		// FIXME: we really should throw up a error window, but we can't (easily) so I won't.
+		debug(LOG_ERROR, "Trying to load Game %s failed!", saveGameName);
+		debug(LOG_POPUP, "Failed to load a save game! It is either corrupted or a unsupported format.\n\nRestarting main menu.");
+		// FIXME: If we bomb out on a in game load, then we would crash if we don't do the next two calls
+		// Doesn't seem to be a way to tell where we are in game loop to determine if/when we should do the two calls.
+		gameLoopStatus = GAMECODE_FASTEXIT;	// clear out all old data
+		stopGameLoop();
+		startTitleLoop(); // Restart into titleloop
+		SetGameMode(GS_TITLE_SCREEN);
+		return false;
+	}
 
-    screen_StopBackDrop();
+	screen_StopBackDrop();
 
-    // Trap the cursor if cursor snapping is enabled
-    if (war_GetTrapCursor())
-    {
-        SDL_WM_GrabInput(SDL_GRAB_ON);
-    }
-    if (challengeActive)
-    {
-        addMissionTimerInterface();
-    }
+	// Trap the cursor if cursor snapping is enabled
+	if (war_GetTrapCursor())
+	{
+		SDL_WM_GrabInput(SDL_GRAB_ON);
+	}
+	if (challengeActive)
+	{
+		addMissionTimerInterface();
+	}
 
-    return true;
+	return true;
 }
 
 
@@ -825,35 +825,35 @@ static bool initSaveGameLoad(void)
  */
 static void runGameLoop(void)
 {
-    gameLoopStatus = gameLoop();
-    switch (gameLoopStatus)
-    {
-        case GAMECODE_CONTINUE:
-        case GAMECODE_PLAYVIDEO:
-            break;
-        case GAMECODE_QUITGAME:
-            debug(LOG_MAIN, "GAMECODE_QUITGAME");
-            stopGameLoop();
-            startTitleLoop(); // Restart into titleloop
-            break;
-        case GAMECODE_LOADGAME:
-            debug(LOG_MAIN, "GAMECODE_LOADGAME");
-            stopGameLoop();
-            initSaveGameLoad(); // Restart and load a savegame
-            break;
-        case GAMECODE_NEWLEVEL:
-            debug(LOG_MAIN, "GAMECODE_NEWLEVEL");
-            stopGameLoop();
-            startGameLoop(); // Restart gameloop
-            break;
-            // Never trown:
-        case GAMECODE_FASTEXIT:
-        case GAMECODE_RESTARTGAME:
-            break;
-        default:
-            debug(LOG_ERROR, "Unknown code returned by gameLoop");
-            break;
-    }
+	gameLoopStatus = gameLoop();
+	switch (gameLoopStatus)
+	{
+		case GAMECODE_CONTINUE:
+		case GAMECODE_PLAYVIDEO:
+			break;
+		case GAMECODE_QUITGAME:
+			debug(LOG_MAIN, "GAMECODE_QUITGAME");
+			stopGameLoop();
+			startTitleLoop(); // Restart into titleloop
+			break;
+		case GAMECODE_LOADGAME:
+			debug(LOG_MAIN, "GAMECODE_LOADGAME");
+			stopGameLoop();
+			initSaveGameLoad(); // Restart and load a savegame
+			break;
+		case GAMECODE_NEWLEVEL:
+			debug(LOG_MAIN, "GAMECODE_NEWLEVEL");
+			stopGameLoop();
+			startGameLoop(); // Restart gameloop
+			break;
+		// Never trown:
+		case GAMECODE_FASTEXIT:
+		case GAMECODE_RESTARTGAME:
+			break;
+		default:
+			debug(LOG_ERROR, "Unknown code returned by gameLoop");
+			break;
+	}
 }
 
 
@@ -862,51 +862,51 @@ static void runGameLoop(void)
  */
 static void runTitleLoop(void)
 {
-    switch (titleLoop())
-    {
-        case TITLECODE_CONTINUE:
-            break;
-        case TITLECODE_QUITGAME:
-            debug(LOG_MAIN, "TITLECODE_QUITGAME");
-            stopTitleLoop();
-            {
-                // Create a quit event to halt game loop.
-                SDL_Event quitEvent;
-                quitEvent.type = SDL_QUIT;
-                SDL_PushEvent(&quitEvent);
-            }
-            break;
-        case TITLECODE_SAVEGAMELOAD:
-            {
-                debug(LOG_MAIN, "TITLECODE_SAVEGAMELOAD");
-                // Restart into gameloop and load a savegame, ONLY on a good savegame load!
-                stopTitleLoop();
-                if (!initSaveGameLoad())
-                {
-                    // we had a error loading savegame (corrupt?), so go back to title screen?
-                    stopGameLoop();
-                    startTitleLoop();
-                    changeTitleMode(TITLE);
-                }
+	switch (titleLoop())
+	{
+		case TITLECODE_CONTINUE:
+			break;
+		case TITLECODE_QUITGAME:
+			debug(LOG_MAIN, "TITLECODE_QUITGAME");
+			stopTitleLoop();
+			{
+				// Create a quit event to halt game loop.
+				SDL_Event quitEvent;
+				quitEvent.type = SDL_QUIT;
+				SDL_PushEvent(&quitEvent);
+			}
+			break;
+		case TITLECODE_SAVEGAMELOAD:
+		{
+			debug(LOG_MAIN, "TITLECODE_SAVEGAMELOAD");
+			// Restart into gameloop and load a savegame, ONLY on a good savegame load!
+			stopTitleLoop();
+			if (!initSaveGameLoad())
+			{
+				// we had a error loading savegame (corrupt?), so go back to title screen?
+				stopGameLoop();
+				startTitleLoop();
+				changeTitleMode(TITLE);
+			}
 
-                break;
-            }
-        case TITLECODE_STARTGAME:
-            debug(LOG_MAIN, "TITLECODE_STARTGAME");
-            stopTitleLoop();
-            startGameLoop(); // Restart into gameloop
-            break;
-        case TITLECODE_SHOWINTRO:
-            debug(LOG_MAIN, "TITLECODE_SHOWINTRO");
-            seq_ClearSeqList();
-            seq_AddSeqToList("titles.ogg", NULL, NULL, false);
-            seq_AddSeqToList("devastation.ogg", NULL, "devastation.txa", false);
-            seq_StartNextFullScreenVideo();
-            break;
-        default:
-            debug(LOG_ERROR, "Unknown code returned by titleLoop");
-            break;
-    }
+			break;
+		}
+		case TITLECODE_STARTGAME:
+			debug(LOG_MAIN, "TITLECODE_STARTGAME");
+			stopTitleLoop();
+			startGameLoop(); // Restart into gameloop
+			break;
+		case TITLECODE_SHOWINTRO:
+			debug(LOG_MAIN, "TITLECODE_SHOWINTRO");
+			seq_ClearSeqList();
+			seq_AddSeqToList("titles.ogg", NULL, NULL, false);
+			seq_AddSeqToList("devastation.ogg", NULL, "devastation.txa", false);
+			seq_StartNextFullScreenVideo();
+			break;
+		default:
+			debug(LOG_ERROR, "Unknown code returned by titleLoop");
+			break;
+	}
 }
 
 
@@ -915,53 +915,53 @@ static void runTitleLoop(void)
  */
 static void handleActiveEvent(SDL_ActiveEvent *activeEvent)
 {
-    // Ignore focus loss through SDL_APPMOUSEFOCUS, since it mostly happens accidentialy
-    // active.state is a bitflag! Mixed events (eg. APPACTIVE|APPMOUSEFOCUS) will thus not be ignored.
-    if ( activeEvent->state == SDL_APPMOUSEFOCUS )
-    {
-        setMouseScroll(activeEvent->gain);
-        return;
-    }
+	// Ignore focus loss through SDL_APPMOUSEFOCUS, since it mostly happens accidentialy
+	// active.state is a bitflag! Mixed events (eg. APPACTIVE|APPMOUSEFOCUS) will thus not be ignored.
+	if ( activeEvent->state == SDL_APPMOUSEFOCUS )
+	{
+		setMouseScroll(activeEvent->gain);
+		return;
+	}
 
-    if ( activeEvent->gain == 1 )
-    {
-        debug( LOG_NEVER, "WM_SETFOCUS");
-        if (focusState != FOCUS_IN)
-        {
-            focusState = FOCUS_IN;
+	if ( activeEvent->gain == 1 )
+	{
+		debug( LOG_NEVER, "WM_SETFOCUS");
+		if (focusState != FOCUS_IN)
+		{
+			focusState = FOCUS_IN;
 
-            // Don't pause in multiplayer!
-            if (war_GetPauseOnFocusLoss() && !NetPlay.bComms)
-            {
-                gameTimeStart();
-                audio_ResumeAll();
-                cdAudio_Resume();
-            }
-            // enable scrolling
-            setScrollPause(false);
-            resetScroll();
-        }
-    }
-    else
-    {
-        debug( LOG_NEVER, "WM_KILLFOCUS");
-        if (focusState != FOCUS_OUT)
-        {
-            focusState = FOCUS_OUT;
+			// Don't pause in multiplayer!
+			if (war_GetPauseOnFocusLoss() && !NetPlay.bComms)
+			{
+				gameTimeStart();
+				audio_ResumeAll();
+				cdAudio_Resume();
+			}
+			// enable scrolling
+			setScrollPause(false);
+			resetScroll();
+		}
+	}
+	else
+	{
+		debug( LOG_NEVER, "WM_KILLFOCUS");
+		if (focusState != FOCUS_OUT)
+		{
+			focusState = FOCUS_OUT;
 
-            // Don't pause in multiplayer!
-            if (war_GetPauseOnFocusLoss() && !NetPlay.bComms)
-            {
-                gameTimeStop();
-                audio_PauseAll();
-                cdAudio_Pause();
-            }
-            /* Have to tell the input system that we've lost focus */
-            inputLooseFocus();
-            // stop scrolling
-            setScrollPause(true);
-        }
-    }
+			// Don't pause in multiplayer!
+			if (war_GetPauseOnFocusLoss() && !NetPlay.bComms)
+			{
+				gameTimeStop();
+				audio_PauseAll();
+				cdAudio_Pause();
+			}
+			/* Have to tell the input system that we've lost focus */
+			inputLooseFocus();
+			// stop scrolling
+			setScrollPause(true);
+		}
+	}
 }
 
 
@@ -971,310 +971,310 @@ static void handleActiveEvent(SDL_ActiveEvent *activeEvent)
  */
 static void mainLoop(void)
 {
-    SDL_Event event;
+	SDL_Event event;
 
-    while (true)
-    {
-        frameUpdate(); // General housekeeping
+	while (true)
+	{
+		frameUpdate(); // General housekeeping
 
-        /* Deal with any windows messages */
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-                case SDL_KEYUP:
-                case SDL_KEYDOWN:
-                    inputHandleKeyEvent(&event.key);
-                    break;
-                case SDL_MOUSEBUTTONUP:
-                case SDL_MOUSEBUTTONDOWN:
-                    inputHandleMouseButtonEvent(&event.button);
-                    break;
-                case SDL_MOUSEMOTION:
-                    inputHandleMouseMotionEvent(&event.motion);
-                    break;
-                case SDL_ACTIVEEVENT:
-                    handleActiveEvent(&event.active);
-                    break;
-                case SDL_QUIT:
-                    saveConfig();
-                    return;
-                default:
-                    break;
-            }
-        }
-        // Screenshot key is now available globally
-        if(keyPressed(KEY_F10))
-        {
-            kf_ScreenDump();
-            inputLooseFocus();		// remove it from input stream
-        }
+		/* Deal with any windows messages */
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+				case SDL_KEYUP:
+				case SDL_KEYDOWN:
+					inputHandleKeyEvent(&event.key);
+					break;
+				case SDL_MOUSEBUTTONUP:
+				case SDL_MOUSEBUTTONDOWN:
+					inputHandleMouseButtonEvent(&event.button);
+					break;
+				case SDL_MOUSEMOTION:
+					inputHandleMouseMotionEvent(&event.motion);
+					break;
+				case SDL_ACTIVEEVENT:
+					handleActiveEvent(&event.active);
+					break;
+				case SDL_QUIT:
+					saveConfig();
+					return;
+				default:
+					break;
+			}
+		}
+		// Screenshot key is now available globally
+		if(keyPressed(KEY_F10))
+		{
+			kf_ScreenDump();
+			inputLooseFocus();		// remove it from input stream
+		}
 
-        // only pause when not in multiplayer, no focus, and we actually want to pause
-        if (NetPlay.bComms || focusState == FOCUS_IN || !war_GetPauseOnFocusLoss())
-        {
-            if (loop_GetVideoStatus())
-            {
-                videoLoop(); // Display the video if neccessary
-            }
-            else switch (GetGameMode())
-                {
-                    case GS_NORMAL: // Run the gameloop code
-                        runGameLoop();
-                        break;
-                    case GS_TITLE_SCREEN: // Run the titleloop code
-                        runTitleLoop();
-                        break;
-                    default:
-                        break;
-                }
+		// only pause when not in multiplayer, no focus, and we actually want to pause
+		if (NetPlay.bComms || focusState == FOCUS_IN || !war_GetPauseOnFocusLoss())
+		{
+			if (loop_GetVideoStatus())
+			{
+				videoLoop(); // Display the video if neccessary
+			}
+			else switch (GetGameMode())
+				{
+					case GS_NORMAL: // Run the gameloop code
+						runGameLoop();
+						break;
+					case GS_TITLE_SCREEN: // Run the titleloop code
+						runTitleLoop();
+						break;
+					default:
+						break;
+				}
 
-            gameTimeUpdate(); // Update gametime. FIXME There is probably code duplicated with MaintainFrameStuff
-        }
-    }
+			gameTimeUpdate(); // Update gametime. FIXME There is probably code duplicated with MaintainFrameStuff
+		}
+	}
 }
 
 
 int main(int argc, char *argv[])
 {
-    setupExceptionHandler(argc, argv);
+	setupExceptionHandler(argc, argv);
 
-    debug_init();
-    debug_register_callback( debug_callback_stderr, NULL, NULL, NULL );
+	debug_init();
+	debug_register_callback( debug_callback_stderr, NULL, NULL, NULL );
 #if defined(WZ_OS_WIN) && defined(DEBUG_INSANE)
-    debug_register_callback( debug_callback_win32debug, NULL, NULL, NULL );
+	debug_register_callback( debug_callback_win32debug, NULL, NULL, NULL );
 #endif // WZ_OS_WIN && DEBUG_INSANE
 
-    /*** Initialize PhysicsFS ***/
-    initialize_PhysicsFS(argv[0]);
+	/*** Initialize PhysicsFS ***/
+	initialize_PhysicsFS(argv[0]);
 
-    /*** Initialize translations ***/
-    initI18n();
+	/*** Initialize translations ***/
+	initI18n();
 
-    // find early boot info
-    if ( !ParseCommandLine(argc, (const char **)argv, true) )
-    {
-        return -1;
-    }
+	// find early boot info
+	if ( !ParseCommandLine(argc, (const char **)argv, true) )
+	{
+		return -1;
+	}
 
-    debug(LOG_WZ, "Using language: %s", getLanguage());
+	debug(LOG_WZ, "Using language: %s", getLanguage());
 
-    /* Initialize the write/config directory for PhysicsFS.
-     * This needs to be done __after__ the early commandline parsing,
-     * because the user might tell us to use an alternative configuration
-     * directory.
-     */
-    initialize_ConfigDir();
+	/* Initialize the write/config directory for PhysicsFS.
+	 * This needs to be done __after__ the early commandline parsing,
+	 * because the user might tell us to use an alternative configuration
+	 * directory.
+	 */
+	initialize_ConfigDir();
 
-    /*** Initialize directory structure ***/
-    make_dir(ScreenDumpPath, "screenshots", NULL);
-    make_dir(SaveGamePath, "savegame", NULL);
-    PHYSFS_mkdir("maps");		// MUST have this to prevent crashes when getting map
-    PHYSFS_mkdir("music");
-    PHYSFS_mkdir("logs");		// a place to hold our netplay, mingw crash reports & WZ logs
-    PHYSFS_mkdir("logs/dumps"); /*Dedicated place for crashdumps in Legacy.*/
-    make_dir(MultiPlayersPath, "multiplay", NULL);
-    make_dir(MultiPlayersPath, "multiplay", "players");
-    sstrcpy(MultiCustomMapsPath, "maps");
+	/*** Initialize directory structure ***/
+	make_dir(ScreenDumpPath, "screenshots", NULL);
+	make_dir(SaveGamePath, "savegame", NULL);
+	PHYSFS_mkdir("maps");		// MUST have this to prevent crashes when getting map
+	PHYSFS_mkdir("music");
+	PHYSFS_mkdir("logs");		// a place to hold our netplay, mingw crash reports & WZ logs
+	PHYSFS_mkdir("logs/dumps"); /*Dedicated place for crashdumps in Legacy.*/
+	make_dir(MultiPlayersPath, "multiplay", NULL);
+	make_dir(MultiPlayersPath, "multiplay", "players");
+	sstrcpy(MultiCustomMapsPath, "maps");
 
-    if (!customDebugfile)
-    {
-        // there was no custom debug file specified  (--debug-file=blah)
-        // so we use our write directory to store our logs.
-        time_t aclock;
-        struct tm *newtime;
-        char buf[PATH_MAX];
+	if (!customDebugfile)
+	{
+		// there was no custom debug file specified  (--debug-file=blah)
+		// so we use our write directory to store our logs.
+		time_t aclock;
+		struct tm *newtime;
+		char buf[PATH_MAX];
 
-        time( &aclock );					// Get time in seconds
-        newtime = localtime( &aclock );		// Convert time to struct
-        // Note: We are using fopen(), and not physfs routines to open the file
-        snprintf(buf, sizeof(buf), "%slogs%sgamelog-%02d-%02d-%02d_%02d-%02d-%02d.txt", PHYSFS_getWriteDir(), PHYSFS_getDirSeparator(),
-                 newtime->tm_year + 1900, newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec );
-        debug_register_callback( debug_callback_file, debug_callback_file_init, debug_callback_file_exit, buf );
-    }
-    debug(LOG_WZ, "%s", GetVersionInfo());
+		time( &aclock );					// Get time in seconds
+		newtime = localtime( &aclock );		// Convert time to struct
+		// Note: We are using fopen(), and not physfs routines to open the file
+		snprintf(buf, sizeof(buf), "%slogs%sgamelog-%02d-%02d-%02d_%02d-%02d-%02d.txt", PHYSFS_getWriteDir(), PHYSFS_getDirSeparator(),
+				 newtime->tm_year + 1900, newtime->tm_mon + 1, newtime->tm_mday, newtime->tm_hour, newtime->tm_min, newtime->tm_sec );
+		debug_register_callback( debug_callback_file, debug_callback_file_init, debug_callback_file_exit, buf );
+	}
+	debug(LOG_WZ, "%s", GetVersionInfo());
 
-    /* Put these files in the writedir root */
-    setRegistryFilePath(CONFIG_FILENAME);
-    sstrcpy(KeyMapPath, "keymap.map");
+	/* Put these files in the writedir root */
+	setRegistryFilePath(CONFIG_FILENAME);
+	sstrcpy(KeyMapPath, "keymap.map");
 
-    // initialise all the command line states
-    war_SetDefaultStates();
+	// initialise all the command line states
+	war_SetDefaultStates();
 
-    debug(LOG_MAIN, "initializing");
+	debug(LOG_MAIN, "initializing");
 
-    loadConfig();
+	loadConfig();
 
-    loadRenderMode(); //get the registry entry for clRendMode
+	loadRenderMode(); //get the registry entry for clRendMode
 
-    NETinit(true);
+	NETinit(true);
 
-    // parse the command line
-    if (!ParseCommandLine(argc, (const char **)argv, false))
-    {
-        return -1;
-    }
+	// parse the command line
+	if (!ParseCommandLine(argc, (const char **)argv, false))
+	{
+		return -1;
+	}
 
-    // Save new (commandline) settings
-    saveConfig();
+	// Save new (commandline) settings
+	saveConfig();
 
-    // Find out where to find the data
-    scanDataDirs();
+	// Find out where to find the data
+	scanDataDirs();
 
-    // Must be run before OpenGL driver is properly initialized due to
-    // strange conflicts - Per
-    if (selfTest)
-    {
-        memset(enabled_debug, 0, sizeof(*enabled_debug) * LOG_LAST);
-        fprintf(stdout, "Carrying out self-test:\n");
-        playListTest();
-        audioTest();
-        soundTest();
-    }
+	// Must be run before OpenGL driver is properly initialized due to
+	// strange conflicts - Per
+	if (selfTest)
+	{
+		memset(enabled_debug, 0, sizeof(*enabled_debug) * LOG_LAST);
+		fprintf(stdout, "Carrying out self-test:\n");
+		playListTest();
+		audioTest();
+		soundTest();
+	}
 
-    // Now we check the mods to see if they exsist or not (specified on the command line)
-    // They are all capped at 100 mods max(see clparse.c)
-    // FIX ME: I know this is a bit hackish, but better than nothing for now?
-    {
-        char *modname;
-        char modtocheck[256];
-        int i = 0;
-        int result = 0;
+	// Now we check the mods to see if they exsist or not (specified on the command line)
+	// They are all capped at 100 mods max(see clparse.c)
+	// FIX ME: I know this is a bit hackish, but better than nothing for now?
+	{
+		char *modname;
+		char modtocheck[256];
+		int i = 0;
+		int result = 0;
 
-        // check global mods
-        for(i=0; i < 100; i++)
-        {
-            modname = global_mods[i];
-            if (modname == NULL)
-            {
-                break;
-            }
-            ssprintf(modtocheck, "mods/global/%s", modname);
-            result = PHYSFS_exists(modtocheck);
-            result |= PHYSFS_isDirectory(modtocheck);
-            if (!result)
-            {
-                debug(LOG_ERROR, "The (global) mod (%s) you have specified doesn't exist!", modname);
-            }
-            else
-            {
-                info("(global) mod (%s) is enabled", modname);
-            }
-        }
-        // check campaign mods
-        for(i=0; i < 100; i++)
-        {
-            modname = campaign_mods[i];
-            if (modname == NULL)
-            {
-                break;
-            }
-            ssprintf(modtocheck, "mods/campaign/%s", modname);
-            result = PHYSFS_exists(modtocheck);
-            result |= PHYSFS_isDirectory(modtocheck);
-            if (!result)
-            {
-                debug(LOG_ERROR, "The mod_ca (%s) you have specified doesn't exist!", modname);
-            }
-            else
-            {
-                info("mod_ca (%s) is enabled", modname);
-            }
-        }
-        // check multiplay mods
-        for(i=0; i < 100; i++)
-        {
-            modname = multiplay_mods[i];
-            if (modname == NULL)
-            {
-                break;
-            }
-            ssprintf(modtocheck, "mods/multiplay/%s", modname);
-            result = PHYSFS_exists(modtocheck);
-            result |= PHYSFS_isDirectory(modtocheck);
-            if (!result)
-            {
-                debug(LOG_ERROR, "The mod_mp (%s) you have specified doesn't exist!", modname);
-            }
-            else
-            {
-                info("mod_mp (%s) is enabled", modname);
-            }
-        }
-    }
+		// check global mods
+		for(i = 0; i < 100; i++)
+		{
+			modname = global_mods[i];
+			if (modname == NULL)
+			{
+				break;
+			}
+			ssprintf(modtocheck, "mods/global/%s", modname);
+			result = PHYSFS_exists(modtocheck);
+			result |= PHYSFS_isDirectory(modtocheck);
+			if (!result)
+			{
+				debug(LOG_ERROR, "The (global) mod (%s) you have specified doesn't exist!", modname);
+			}
+			else
+			{
+				info("(global) mod (%s) is enabled", modname);
+			}
+		}
+		// check campaign mods
+		for(i = 0; i < 100; i++)
+		{
+			modname = campaign_mods[i];
+			if (modname == NULL)
+			{
+				break;
+			}
+			ssprintf(modtocheck, "mods/campaign/%s", modname);
+			result = PHYSFS_exists(modtocheck);
+			result |= PHYSFS_isDirectory(modtocheck);
+			if (!result)
+			{
+				debug(LOG_ERROR, "The mod_ca (%s) you have specified doesn't exist!", modname);
+			}
+			else
+			{
+				info("mod_ca (%s) is enabled", modname);
+			}
+		}
+		// check multiplay mods
+		for(i = 0; i < 100; i++)
+		{
+			modname = multiplay_mods[i];
+			if (modname == NULL)
+			{
+				break;
+			}
+			ssprintf(modtocheck, "mods/multiplay/%s", modname);
+			result = PHYSFS_exists(modtocheck);
+			result |= PHYSFS_isDirectory(modtocheck);
+			if (!result)
+			{
+				debug(LOG_ERROR, "The mod_mp (%s) you have specified doesn't exist!", modname);
+			}
+			else
+			{
+				info("mod_mp (%s) is enabled", modname);
+			}
+		}
+	}
 
-    if (!frameInitialise(PROJECTNAME, pie_GetVideoBufferWidth(), pie_GetVideoBufferHeight(), pie_GetVideoBufferDepth(), war_getFullscreen(), war_GetVsync()))
-    {
-        return -1;
-    }
-    war_SetWidth(pie_GetVideoBufferWidth());
-    war_SetHeight(pie_GetVideoBufferHeight());
+	if (!frameInitialise(PROJECTNAME, pie_GetVideoBufferWidth(), pie_GetVideoBufferHeight(), pie_GetVideoBufferDepth(), war_getFullscreen(), war_GetVsync()))
+	{
+		return -1;
+	}
+	war_SetWidth(pie_GetVideoBufferWidth());
+	war_SetHeight(pie_GetVideoBufferHeight());
 
-    pie_SetFogStatus(false);
-    pie_ScreenFlip(CLEAR_BLACK);
+	pie_SetFogStatus(false);
+	pie_ScreenFlip(CLEAR_BLACK);
 
-    pal_Init();
+	pal_Init();
 
-    pie_LoadBackDrop(SCREEN_RANDOMBDROP);
-    pie_SetFogStatus(false);
-    pie_ScreenFlip(CLEAR_BLACK);
+	pie_LoadBackDrop(SCREEN_RANDOMBDROP);
+	pie_SetFogStatus(false);
+	pie_ScreenFlip(CLEAR_BLACK);
 
-    if (!systemInitialise())
-    {
-        return -1;
-    }
+	if (!systemInitialise())
+	{
+		return -1;
+	}
 
-    //set all the pause states to false
-    setAllPauseStates(false);
+	//set all the pause states to false
+	setAllPauseStates(false);
 
-    /* Runtime unit testing */
-    if (selfTest)
-    {
-        NETtest();
-        tagTest();
-        parseTest();
-        levTest();
-        mapTest();
-        fprintf(stdout, "All tests PASSED!\n");
-        exit(0);
-    }
+	/* Runtime unit testing */
+	if (selfTest)
+	{
+		NETtest();
+		tagTest();
+		parseTest();
+		levTest();
+		mapTest();
+		fprintf(stdout, "All tests PASSED!\n");
+		exit(0);
+	}
 
-    {
-        // Copy this info to be used by the crash handler for the dump file
-        char buf[256];
+	{
+		// Copy this info to be used by the crash handler for the dump file
+		char buf[256];
 
-        ssprintf(buf,"Using language: %s", getLanguageName());
-        addDumpInfo(buf);
-    }
-    // Do the game mode specific initialisation.
-    switch(GetGameMode())
-    {
-        case GS_TITLE_SCREEN:
-            startTitleLoop();
-            break;
-        case GS_SAVEGAMELOAD:
-            initSaveGameLoad();
-            break;
-        case GS_NORMAL:
-            startGameLoop();
-            break;
-        default:
-            debug(LOG_ERROR, "Weirdy game status, I'm afraid!!");
-            break;
-    }
+		ssprintf(buf, "Using language: %s", getLanguageName());
+		addDumpInfo(buf);
+	}
+	// Do the game mode specific initialisation.
+	switch(GetGameMode())
+	{
+		case GS_TITLE_SCREEN:
+			startTitleLoop();
+			break;
+		case GS_SAVEGAMELOAD:
+			initSaveGameLoad();
+			break;
+		case GS_NORMAL:
+			startGameLoop();
+			break;
+		default:
+			debug(LOG_ERROR, "Weirdy game status, I'm afraid!!");
+			break;
+	}
 
-    debug(LOG_MAIN, "Entering main loop");
+	debug(LOG_MAIN, "Entering main loop");
 
-    // Enter the mainloop
-    mainLoop();
-    debug(LOG_MAIN, "Shutting down Warzone 2100");
+	// Enter the mainloop
+	mainLoop();
+	debug(LOG_MAIN, "Shutting down Warzone 2100");
 
 #if defined(WZ_CC_MSVC) && defined(DEBUG)
-    debug_MEMSTATS();
+	debug_MEMSTATS();
 #endif
 
-    atexit(systemShutdown);
-    return EXIT_SUCCESS;
+	atexit(systemShutdown);
+	return EXIT_SUCCESS;
 }
 
 
@@ -1283,7 +1283,7 @@ int main(int argc, char *argv[])
  */
 GS_GAMEMODE GetGameMode(void)
 {
-    return gameStatus;
+	return gameStatus;
 }
 
 
@@ -1292,5 +1292,5 @@ GS_GAMEMODE GetGameMode(void)
  */
 void SetGameMode(GS_GAMEMODE status)
 {
-    gameStatus = status;
+	gameStatus = status;
 }

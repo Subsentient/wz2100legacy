@@ -36,16 +36,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef struct _w_button
 {
-    /* The common widget data */
-    WIDGET_BASE;
+	/* The common widget data */
+	WIDGET_BASE;
 
-    uint32_t		state;				// The current button state
-    const char *pText;				// The text for the button
-    const char *pTip;				// The tool tip for the button
-    int16_t HilightAudioID;				// Audio ID for form clicked sound
-    int16_t ClickedAudioID;				// Audio ID for form hilighted sound
-    WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
-    enum iV_fonts FontID;
+	uint32_t		state;				// The current button state
+	const char *pText;				// The text for the button
+	const char *pTip;				// The tool tip for the button
+	int16_t HilightAudioID;				// Audio ID for form clicked sound
+	int16_t ClickedAudioID;				// Audio ID for form hilighted sound
+	WIDGET_AUDIOCALLBACK AudioCallback;	// Pointer to audio callback function
+	enum iV_fonts FontID;
 } W_BUTTON;
 
 /* Initialise the button module */

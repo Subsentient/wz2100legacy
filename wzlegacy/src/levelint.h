@@ -23,24 +23,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // return values from the lexer
 enum _token_type
 {
-    LTK_LEVEL = 0x100,		// level key word
-    LTK_PLAYERS,			// players key word
-    LTK_TYPE,				// type key word
-    LTK_DATA,				// data key word
-    LTK_GAME,				// game key word
-    LTK_CAMPAIGN,			// campaign key word
-    LTK_CAMSTART,			// camstart key word
-    LTK_CAMCHANGE,			// camchange key word
-    LTK_DATASET,			// dataset key word
-    LTK_EXPAND,				// expand key word
-    LTK_EXPAND_LIMBO,		// expand Limbo key word
-    LTK_BETWEEN,			// between key word
-    LTK_MKEEP,				// miss_keep key word
-    LTK_MKEEP_LIMBO,		// miss_keep Limbo key word
-    LTK_MCLEAR,				// miss_clear key word
-    LTK_IDENT,				// an identifier
-    LTK_STRING,				// a quoted string
-    LTK_INTEGER,			// a number
+	LTK_LEVEL = 0x100,		// level key word
+	LTK_PLAYERS,			// players key word
+	LTK_TYPE,				// type key word
+	LTK_DATA,				// data key word
+	LTK_GAME,				// game key word
+	LTK_CAMPAIGN,			// campaign key word
+	LTK_CAMSTART,			// camstart key word
+	LTK_CAMCHANGE,			// camchange key word
+	LTK_DATASET,			// dataset key word
+	LTK_EXPAND,				// expand key word
+	LTK_EXPAND_LIMBO,		// expand Limbo key word
+	LTK_BETWEEN,			// between key word
+	LTK_MKEEP,				// miss_keep key word
+	LTK_MKEEP_LIMBO,		// miss_keep Limbo key word
+	LTK_MCLEAR,				// miss_clear key word
+	LTK_IDENT,				// an identifier
+	LTK_STRING,				// a quoted string
+	LTK_INTEGER,			// a number
 };
 
 // return values from the lexer

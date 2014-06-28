@@ -117,37 +117,41 @@
 typedef struct __GLCdataCodeFromNameRec __GLCdataCodeFromName;
 typedef struct __GLCcharacterRec __GLCcharacter;
 
-struct __GLCrendererDataRec {
-  GLfloat vector[8];			/* Current coordinates */
-  GLfloat tolerance;			/* Chordal tolerance */
-  __GLCarray* vertexArray;		/* Array of vertices */
-  __GLCarray* controlPoints;		/* Array of control points */
-  __GLCarray* endContour;		/* Array of contour limits */
-  __GLCarray* vertexIndices;		/* Array of vertex indices */
-  __GLCarray* geomBatches;		/* Array of geometric batches */
-  GLfloat* transformMatrix;		/* Transformation matrix from the
+struct __GLCrendererDataRec
+{
+	GLfloat vector[8];			/* Current coordinates */
+	GLfloat tolerance;			/* Chordal tolerance */
+	__GLCarray* vertexArray;		/* Array of vertices */
+	__GLCarray* controlPoints;		/* Array of control points */
+	__GLCarray* endContour;		/* Array of contour limits */
+	__GLCarray* vertexIndices;		/* Array of vertex indices */
+	__GLCarray* geomBatches;		/* Array of geometric batches */
+	GLfloat* transformMatrix;		/* Transformation matrix from the
 					   object space to the viewport */
-  GLfloat halfWidth;
-  GLfloat halfHeight;
+	GLfloat halfWidth;
+	GLfloat halfHeight;
 };
 
-struct __GLCdataCodeFromNameRec {
-  GLint code;
-  const char* name;
+struct __GLCdataCodeFromNameRec
+{
+	GLint code;
+	const char* name;
 };
 
-struct __GLCgeomBatchRec {
-  GLenum mode;
-  GLint length;
-  GLuint start;
-  GLuint end;
+struct __GLCgeomBatchRec
+{
+	GLenum mode;
+	GLint length;
+	GLuint start;
+	GLuint end;
 };
 
-struct __GLCcharacterRec {
-  GLint code;
-  __GLCfont* font;
-  __GLCglyph* glyph;
-  GLfloat advance[2];
+struct __GLCcharacterRec
+{
+	GLint code;
+	__GLCfont* font;
+	__GLCglyph* glyph;
+	GLfloat advance[2];
 };
 
 /* Those functions are used to protect against race conditions whenever we try
@@ -164,12 +168,12 @@ void __glcUnlock(void);
  * __glcRenderChar() for rendering and __glcGetCharMetric() for measurement.
  */
 typedef void* (*__glcProcessCharFunc)(const GLint inCode,
-				      const GLint inPrevCode,
-				      const GLboolean inIsRTL,
-				      const __GLCfont* inFont,
-				      __GLCcontext* inContext,
-				      const void* inProcessCharData,
-				      const GLboolean inMultipleChars);
+									  const GLint inPrevCode,
+									  const GLboolean inIsRTL,
+									  const __GLCfont* inFont,
+									  __GLCcontext* inContext,
+									  const void* inProcessCharData,
+									  const GLboolean inMultipleChars);
 
 /* Process the character in order to find a font that maps the code and to
  * render the corresponding glyph. Replacement code or the '\<hexcode>'
@@ -177,20 +181,20 @@ typedef void* (*__glcProcessCharFunc)(const GLint inCode,
  * 'inCode' must be given in UCS-4 format
  */
 extern void* __glcProcessChar(__GLCcontext *inContext, const GLint inCode,
-			      __GLCcharacter* inPrevCode,
-			      const GLboolean inIsRTL,
-			      const __glcProcessCharFunc inProcessCharFunc,
-			      const void* inProcessCharData);
+							  __GLCcharacter* inPrevCode,
+							  const GLboolean inIsRTL,
+							  const __glcProcessCharFunc inProcessCharFunc,
+							  const void* inProcessCharData);
 
 /* Render scalable characters using either the GLC_LINE style or the
  * GLC_TRIANGLE style
  */
 extern void __glcRenderCharScalable(const __GLCfont* inFont,
-				    const __GLCcontext* inContext,
-				    GLfloat* inTransformMatrix,
-				    const GLfloat inScaleX,
-				    const GLfloat inScaleY,
-				    __GLCglyph* inGlyph);
+									const __GLCcontext* inContext,
+									GLfloat* inTransformMatrix,
+									const GLfloat inScaleX,
+									const GLfloat inScaleY,
+									__GLCglyph* inGlyph);
 
 /* QuesoGLC own allocation and memory management routines */
 #ifdef DEBUGMODE
@@ -200,15 +204,15 @@ extern void* __glcRealloc(void* ptr, size_t size);
 #else
 static inline void* __glcMalloc(size_t size)
 {
-  return malloc(size);
+	return malloc(size);
 }
 static inline void __glcFree(void *ptr)
 {
-  free(ptr);
+	free(ptr);
 }
 static inline void* __glcRealloc(void *ptr, size_t size)
 {
-  return realloc(ptr, size);
+	return realloc(ptr, size);
 }
 #endif
 
@@ -226,20 +230,20 @@ extern GLint __glcCodeFromName(const GLCchar8* name);
 
 /* Duplicate a string and convert if from any Unicode format to UTF-8 format */
 extern GLCchar8* __glcConvertToUtf8(const GLCchar* inString,
-				    const GLint inStringType);
+									const GLint inStringType);
 
 /* Duplicate a string to the context buffer and convert it from UTF-8 format to
  * any Unicode format.
  */
 extern GLCchar* __glcConvertFromUtf8ToBuffer(__GLCcontext* This,
-					     const GLCchar8* inString);
+		const GLCchar8* inString);
 
 /* Duplicate a counted string to the context buffer and convert it from any
  * Unicode format to UTF-8 format.
  */
 extern GLCchar8* __glcConvertCountedStringToUtf8(const GLint inCount,
-						 const GLCchar* inString,
-						 const GLint inStringType);
+		const GLCchar* inString,
+		const GLint inStringType);
 
 /* Convert a UCS-4 character code into the current string type. The result is
  * stored in a GLint. This function is needed since the GLC specs store
@@ -252,7 +256,7 @@ extern GLint __glcConvertUcs4ToGLint(__GLCcontext *inContext, GLint inCode);
  * codes in GLint whatever is their string type.
  */
 extern GLint __glcConvertGLintToUcs4(const __GLCcontext *inContext,
-				     GLint inCode);
+									 GLint inCode);
 
 /* Verify that the thread has a current context and that the master identified
  * by 'inMaster' exists. Returns the master object corresponding to the master
@@ -277,7 +281,7 @@ extern void __glcAppendFont(__GLCcontext* inContext, __GLCfont* inFont);
  * added to the list GLC_FONT_LIST.
  */
 extern __GLCfont* __glcNewFontFromMaster(GLint inFontID, __GLCmaster* inMaster,
-					 __GLCcontext *inContext, GLint inCode);
+		__GLCcontext *inContext, GLint inCode);
 
 /* This internal function tries to open the face file which name is identified
  * by 'inFace'. If it succeeds, it closes the previous face and stores the new
@@ -286,7 +290,7 @@ extern __GLCfont* __glcNewFontFromMaster(GLint inFontID, __GLCmaster* inMaster,
  * succeeded or not.
  */
 extern GLboolean __glcFontFace(__GLCfont* inFont, const GLCchar8* inFace,
-			       __GLCcontext *inContext);
+							   __GLCcontext *inContext);
 
 /* Allocate a new ID for a font and store it in a special list so that the same
  * ID is not allocated twice.
@@ -325,29 +329,29 @@ extern __GLCcontext* __glcGetCurrent(void);
  * display list is currently building).
  */
 extern void __glcGetScale(const __GLCcontext* inContext,
-			  GLfloat* outTransformMatrix,
-			  GLfloat* outScaleX, GLfloat* outScaleY);
+						  GLfloat* outTransformMatrix,
+						  GLfloat* outScaleX, GLfloat* outScaleY);
 
 /* Convert 'inString' (stored in logical order) to UCS4 format and return a
  * copy of the converted string in visual order.
  */
 extern GLCchar32* __glcConvertToVisualUcs4(__GLCcontext* inContext,
-					   GLboolean *outIsRTL,
-					   GLint *outLength,
-					   const GLCchar* inString);
+		GLboolean *outIsRTL,
+		GLint *outLength,
+		const GLCchar* inString);
 
 /* Convert 'inCount' characters of 'inString' (stored in logical order) to UCS4
  * format and return a copy of the converted string in visual order.
  */
 extern GLCchar32* __glcConvertCountedStringToVisualUcs4(__GLCcontext* inContext,
-							GLboolean *outIsRTL,
-							const GLCchar* inString,
-							const GLint inCount);
+		GLboolean *outIsRTL,
+		const GLCchar* inString,
+		const GLint inCount);
 
 #ifdef GLC_FT_CACHE
 /* Callback function used by the FreeType cache manager to open a given face */
 extern FT_Error __glcFileOpen(FTC_FaceID inFile, FT_Library inLibrary,
-			      FT_Pointer inData, FT_Face* outFace);
+							  FT_Pointer inData, FT_Face* outFace);
 
 /* Rename FTC_Manager_LookupFace for old freetype versions */
 # if FREETYPE_MAJOR == 2 \
@@ -359,13 +363,13 @@ extern FT_Error __glcFileOpen(FTC_FaceID inFile, FT_Library inLibrary,
 
 /* Save the GL State in a structure */
 extern void __glcSaveGLState(__GLCglState* inGLState,
-			     const __GLCcontext* inContext,
-			     const GLboolean inAll);
+							 const __GLCcontext* inContext,
+							 const GLboolean inAll);
 
 /* Restore the GL State from a structure */
 extern void __glcRestoreGLState(const __GLCglState* inGLState,
-				const __GLCcontext* inContext,
-				const GLboolean inAll);
+								const __GLCcontext* inContext,
+								const GLboolean inAll);
 
 #ifdef GLEW_MX
 /* Macro/function for GLEW so that it can get a context */

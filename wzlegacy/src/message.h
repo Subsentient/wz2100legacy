@@ -30,63 +30,63 @@ extern "C"
 
 #define NO_AUDIO_MSG		-1
 
-    /** The lists of messages allocated. */
-    extern MESSAGE		*apsMessages[MAX_PLAYERS];
+/** The lists of messages allocated. */
+extern MESSAGE		*apsMessages[MAX_PLAYERS];
 
-    /** The IMD to use for the proximity messages. */
-    extern iIMDShape	*pProximityMsgIMD;
+/** The IMD to use for the proximity messages. */
+extern iIMDShape	*pProximityMsgIMD;
 
-    /** The list of proximity displays allocated. */
-    extern PROXIMITY_DISPLAY *apsProxDisp[MAX_PLAYERS];
+/** The list of proximity displays allocated. */
+extern PROXIMITY_DISPLAY *apsProxDisp[MAX_PLAYERS];
 
-    /** Allocates the viewdata heap. */
-    BOOL initViewData(void);
+/** Allocates the viewdata heap. */
+BOOL initViewData(void);
 
-    /** Initialise the message heaps. */
-    BOOL initMessage(void);
+/** Initialise the message heaps. */
+BOOL initMessage(void);
 
-    /** Release the message heaps. */
-    BOOL messageShutdown(void);
+/** Release the message heaps. */
+BOOL messageShutdown(void);
 
-    /** Add a message to the list. */
-    MESSAGE *addMessage(MESSAGE_TYPE msgType, BOOL proxPos, uint32_t player);
+/** Add a message to the list. */
+MESSAGE *addMessage(MESSAGE_TYPE msgType, BOOL proxPos, uint32_t player);
 
-    /** Add a beacon message to the list. */
-    MESSAGE *addBeaconMessage(MESSAGE_TYPE msgType, BOOL proxPos, uint32_t player);
+/** Add a beacon message to the list. */
+MESSAGE *addBeaconMessage(MESSAGE_TYPE msgType, BOOL proxPos, uint32_t player);
 
-    /** Remove a message. */
-    void removeMessage(MESSAGE *psDel, uint32_t player);
+/** Remove a message. */
+void removeMessage(MESSAGE *psDel, uint32_t player);
 
-    /** Remove all Messages. */
-    void freeMessages(void);
+/** Remove all Messages. */
+void freeMessages(void);
 
-    /** Removes all the proximity displays. */
-    void releaseAllProxDisp(void);
+/** Removes all the proximity displays. */
+void releaseAllProxDisp(void);
 
-    bool addToViewDataList(VIEWDATA *psViewData, unsigned int numData);
+bool addToViewDataList(VIEWDATA *psViewData, unsigned int numData);
 
-    /** Load the view data for the messages from the file exported from the world editor. */
-    VIEWDATA *loadViewData(const char *pViewMsgData, uint32_t bufferSize);
+/** Load the view data for the messages from the file exported from the world editor. */
+VIEWDATA *loadViewData(const char *pViewMsgData, uint32_t bufferSize);
 
-    VIEWDATA *loadResearchViewData(const char *fileName);
+VIEWDATA *loadResearchViewData(const char *fileName);
 
-    /** Get the view data that contains the text message pointer passed in. */
-    VIEWDATA *getViewData(const char *pTextMsg);
+/** Get the view data that contains the text message pointer passed in. */
+VIEWDATA *getViewData(const char *pTextMsg);
 
-    /** Release the viewdata memory. */
-    void viewDataShutDown(VIEWDATA *psViewData);
+/** Release the viewdata memory. */
+void viewDataShutDown(VIEWDATA *psViewData);
 
 // Unused
-    PROXIMITY_DISPLAY *getProximityDisplay(MESSAGE *psMessage);
+PROXIMITY_DISPLAY *getProximityDisplay(MESSAGE *psMessage);
 
-    /** Looks through the players list of messages to find one with the same viewData
-      * pointer and which is the same type of message - used in scriptFuncs. */
-    MESSAGE *findMessage(MSG_VIEWDATA *pViewdata, MESSAGE_TYPE type, uint32_t player);
+/** Looks through the players list of messages to find one with the same viewData
+  * pointer and which is the same type of message - used in scriptFuncs. */
+MESSAGE *findMessage(MSG_VIEWDATA *pViewdata, MESSAGE_TYPE type, uint32_t player);
 
-    /** 'Displays' a proximity display. */
-    void displayProximityMessage(PROXIMITY_DISPLAY *psProxDisp);
+/** 'Displays' a proximity display. */
+void displayProximityMessage(PROXIMITY_DISPLAY *psProxDisp);
 
-    BOOL messageInitVars(void);
+BOOL messageInitVars(void);
 
 #ifdef __cplusplus
 }

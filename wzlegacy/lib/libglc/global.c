@@ -82,19 +82,19 @@ void _fini(void);
  */
 void __glcLock(void)
 {
-  __GLCthreadArea *area = NULL;
+	__GLCthreadArea *area = NULL;
 
-  area = GLC_GET_THREAD_AREA();
-  assert(area);
+	area = GLC_GET_THREAD_AREA();
+	assert(area);
 
-  if (!area->lockState)
+	if (!area->lockState)
 #ifdef __WIN32__
-    EnterCriticalSection(&__glcCommonArea.section);
+		EnterCriticalSection(&__glcCommonArea.section);
 #else
-    pthread_mutex_lock(&__glcCommonArea.mutex);
+		pthread_mutex_lock(&__glcCommonArea.mutex);
 #endif
 
-  area->lockState++;
+	area->lockState++;
 }
 
 
@@ -105,19 +105,19 @@ void __glcLock(void)
  */
 void __glcUnlock(void)
 {
-  __GLCthreadArea *area = NULL;
+	__GLCthreadArea *area = NULL;
 
-  area = GLC_GET_THREAD_AREA();
-  assert(area);
+	area = GLC_GET_THREAD_AREA();
+	assert(area);
 
-  assert(area->lockState);
-  area->lockState--;
+	assert(area->lockState);
+	area->lockState--;
 
-  if (!area->lockState)
+	if (!area->lockState)
 #ifdef __WIN32__
-    LeaveCriticalSection(&__glcCommonArea.section);
+		LeaveCriticalSection(&__glcCommonArea.section);
 #else
-    pthread_mutex_unlock(&__glcCommonArea.mutex);
+		pthread_mutex_unlock(&__glcCommonArea.mutex);
 #endif
 }
 
@@ -129,16 +129,19 @@ void __glcUnlock(void)
  */
 static void __glcFreeThreadArea(void *keyValue)
 {
-  __GLCthreadArea *area = (__GLCthreadArea*)keyValue;
-  __GLCcontext *ctx = NULL;
+	__GLCthreadArea *area = (__GLCthreadArea*)keyValue;
+	__GLCcontext *ctx = NULL;
 
-  if (area) {
-    /* Release the context which is current to the thread, if any */
-    ctx = area->currentContext;
-    if (ctx)
-      ctx->isCurrent = GL_FALSE;
-    free(area); /* DO NOT use __glcFree() !!! */
-  }
+	if (area)
+	{
+		/* Release the context which is current to the thread, if any */
+		ctx = area->currentContext;
+		if (ctx)
+		{
+			ctx->isCurrent = GL_FALSE;
+		}
+		free(area); /* DO NOT use __glcFree() !!! */
+	}
 }
 #endif /* !HAVE_TLS && !__WIN32__ */
 
@@ -152,39 +155,42 @@ __attribute__((destructor)) void fini(void)
 void _fini(void)
 #endif
 {
-  FT_ListNode node = NULL;
+	FT_ListNode node = NULL;
 #if 0
-  void *key = NULL;
+	void *key = NULL;
 #endif
 
-  __glcLock();
+	__glcLock();
 
-  /* destroy remaining contexts */
-  node = __glcCommonArea.contextList.head;
-  while (node) {
-    FT_ListNode next = node->next;
-    __glcContextDestroy((__GLCcontext*)node);
-    node = next;
-  }
+	/* destroy remaining contexts */
+	node = __glcCommonArea.contextList.head;
+	while (node)
+	{
+		FT_ListNode next = node->next;
+		__glcContextDestroy((__GLCcontext*)node);
+		node = next;
+	}
 
 #if FC_MINOR > 2 && defined(DEBUGMODE)
-  FcFini();
+	FcFini();
 #endif
 
-  __glcUnlock();
+	__glcUnlock();
 #ifdef __WIN32__
-  DeleteCriticalSection(&__glcCommonArea.section);
+	DeleteCriticalSection(&__glcCommonArea.section);
 #else
-  pthread_mutex_destroy(&__glcCommonArea.mutex);
+	pthread_mutex_destroy(&__glcCommonArea.mutex);
 #endif
 
 #if 0
-  /* Destroy the thread local storage */
-  key = pthread_getspecific(__glcCommonArea.threadKey);
-  if (key)
-    __glcFreeThreadArea(key);
+	/* Destroy the thread local storage */
+	key = pthread_getspecific(__glcCommonArea.threadKey);
+	if (key)
+	{
+		__glcFreeThreadArea(key);
+	}
 
-  pthread_key_delete(__glcCommonArea.threadKey);
+	pthread_key_delete(__glcCommonArea.threadKey);
 #endif
 }
 
@@ -196,19 +202,19 @@ void _fini(void)
  */
 static void* __glcAllocFunc(FT_Memory GLC_UNUSED_ARG(inMemory), long inSize)
 {
-  return malloc(inSize);
+	return malloc(inSize);
 }
 
 static void __glcFreeFunc(FT_Memory GLC_UNUSED_ARG(inMemory), void *inBlock)
 {
-  free(inBlock);
+	free(inBlock);
 }
 
 static void* __glcReallocFunc(FT_Memory GLC_UNUSED_ARG(inMemory),
-                              long GLC_UNUSED_ARG(inCurSize),
-                              long inNewSize, void* inBlock)
+							  long GLC_UNUSED_ARG(inCurSize),
+							  long inNewSize, void* inBlock)
 {
-  return realloc(inBlock, inNewSize);
+	return realloc(inBlock, inNewSize);
 }
 
 
@@ -223,61 +229,69 @@ void _init(void)
 #endif
 {
 #if !defined(__WIN32__) && !defined(HAVE_TLS)
-  /* A temporary variable is used to store the PTHREAD_ONCE_INIT value because
-   * some platforms (namely Mac OSX) define PTHREAD_ONCE_INIT as a structure
-   * initialization "{.., ..}" which is not allowed to be used by C99 anywhere
-   * but at variables declaration.
-   */
-  const pthread_once_t onceInit = PTHREAD_ONCE_INIT;
+	/* A temporary variable is used to store the PTHREAD_ONCE_INIT value because
+	 * some platforms (namely Mac OSX) define PTHREAD_ONCE_INIT as a structure
+	 * initialization "{.., ..}" which is not allowed to be used by C99 anywhere
+	 * but at variables declaration.
+	 */
+	const pthread_once_t onceInit = PTHREAD_ONCE_INIT;
 #endif
 
-  /* Initialize fontconfig */
-  if (!FcInit())
-    goto FatalError;
+	/* Initialize fontconfig */
+	if (!FcInit())
+	{
+		goto FatalError;
+	}
 
-  __glcCommonArea.versionMajor = 0;
-  __glcCommonArea.versionMinor = 2;
+	__glcCommonArea.versionMajor = 0;
+	__glcCommonArea.versionMinor = 2;
 
-  /* Create the thread-local storage for GLC errors */
+	/* Create the thread-local storage for GLC errors */
 #ifdef __WIN32__
-  __glcCommonArea.threadKey = TlsAlloc();
-  if (__glcCommonArea.threadKey == 0xffffffff)
-    goto FatalError;
-  __glcCommonArea.__glcInitThreadOnce = 0;
+	__glcCommonArea.threadKey = TlsAlloc();
+	if (__glcCommonArea.threadKey == 0xffffffff)
+	{
+		goto FatalError;
+	}
+	__glcCommonArea.__glcInitThreadOnce = 0;
 #elif !defined(HAVE_TLS)
-  if (pthread_key_create(&__glcCommonArea.threadKey, __glcFreeThreadArea))
-    goto FatalError;
-  /* Now we can initialize our actual once_control variable by copying the value
-   * of the temporary variable onceInit.
-   */
-  __glcCommonArea.__glcInitThreadOnce = onceInit;
+	if (pthread_key_create(&__glcCommonArea.threadKey, __glcFreeThreadArea))
+	{
+		goto FatalError;
+	}
+	/* Now we can initialize our actual once_control variable by copying the value
+	 * of the temporary variable onceInit.
+	 */
+	__glcCommonArea.__glcInitThreadOnce = onceInit;
 #endif
 
-  __glcCommonArea.memoryManager.user = NULL;
-  __glcCommonArea.memoryManager.alloc = __glcAllocFunc;
-  __glcCommonArea.memoryManager.free = __glcFreeFunc;
-  __glcCommonArea.memoryManager.realloc = __glcReallocFunc;
+	__glcCommonArea.memoryManager.user = NULL;
+	__glcCommonArea.memoryManager.alloc = __glcAllocFunc;
+	__glcCommonArea.memoryManager.free = __glcFreeFunc;
+	__glcCommonArea.memoryManager.realloc = __glcReallocFunc;
 
-  /* Initialize the list of context states */
-  __glcCommonArea.contextList.head = NULL;
-  __glcCommonArea.contextList.tail = NULL;
+	/* Initialize the list of context states */
+	__glcCommonArea.contextList.head = NULL;
+	__glcCommonArea.contextList.tail = NULL;
 
-  /* Initialize the mutex for access to the contextList array */
+	/* Initialize the mutex for access to the contextList array */
 #ifdef __WIN32__
-  InitializeCriticalSection(&__glcCommonArea.section);
+	InitializeCriticalSection(&__glcCommonArea.section);
 #else
-  if (pthread_mutex_init(&__glcCommonArea.mutex, NULL))
-    goto FatalError;
+	if (pthread_mutex_init(&__glcCommonArea.mutex, NULL))
+	{
+		goto FatalError;
+	}
 #endif
 
-  return;
+	return;
 
- FatalError:
-  __glcRaiseError(GLC_RESOURCE_ERROR);
+FatalError:
+	__glcRaiseError(GLC_RESOURCE_ERROR);
 
-  /* Is there a better thing to do than that ? */
-  perror("GLC Fatal Error");
-  exit(-1);
+	/* Is there a better thing to do than that ? */
+	perror("GLC Fatal Error");
+	exit(-1);
 }
 
 
@@ -285,15 +299,16 @@ void _init(void)
 #if defined __WIN32__ && !defined __GNUC__
 BOOL WINAPI DllMain(HANDLE hinstDLL, int32_t dwReason, LPVOID lpvReserved)
 {
-  switch(dwReason) {
-  case DLL_PROCESS_ATTACH:
-    _init();
-    return TRUE;
-  case DLL_PROCESS_DETACH:
-    _fini();
-    return TRUE;
-  }
-  return TRUE;
+	switch(dwReason)
+	{
+		case DLL_PROCESS_ATTACH:
+			_init();
+			return TRUE;
+		case DLL_PROCESS_DETACH:
+			_fini();
+			return TRUE;
+	}
+	return TRUE;
 }
 #endif
 
@@ -302,15 +317,18 @@ BOOL WINAPI DllMain(HANDLE hinstDLL, int32_t dwReason, LPVOID lpvReserved)
 /* Get the context state corresponding to a given context ID */
 static __GLCcontext* __glcGetContext(const GLint inContext)
 {
-  FT_ListNode node = NULL;
+	FT_ListNode node = NULL;
 
-  __glcLock();
-  for (node = __glcCommonArea.contextList.head; node; node = node->next)
-    if (((__GLCcontext*)node)->id == inContext) break;
+	__glcLock();
+	for (node = __glcCommonArea.contextList.head; node; node = node->next)
+		if (((__GLCcontext*)node)->id == inContext)
+		{
+			break;
+		}
 
-  __glcUnlock();
+	__glcUnlock();
 
-  return (__GLCcontext*)node;
+	return (__GLCcontext*)node;
 }
 
 
@@ -328,9 +346,9 @@ static __GLCcontext* __glcGetContext(const GLint inContext)
  */
 GLboolean APIENTRY glcIsContext(GLint inContext)
 {
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  return (__glcGetContext(inContext) ? GL_TRUE : GL_FALSE);
+	return (__glcGetContext(inContext) ? GL_TRUE : GL_FALSE);
 }
 
 
@@ -346,15 +364,19 @@ GLboolean APIENTRY glcIsContext(GLint inContext)
  */
 GLint APIENTRY glcGetCurrentContext(void)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx)
-    return 0;
-  else
-    return ctx->id;
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		return 0;
+	}
+	else
+	{
+		return ctx->id;
+	}
 }
 
 
@@ -386,36 +408,40 @@ GLint APIENTRY glcGetCurrentContext(void)
  */
 void APIENTRY glcDeleteContext(GLint inContext)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Lock the "Common Area" in order to prevent race conditions. Indeed, we
-   * must prevent other threads to make current the context that we are
-   * destroying.
-   */
-  __glcLock();
+	/* Lock the "Common Area" in order to prevent race conditions. Indeed, we
+	 * must prevent other threads to make current the context that we are
+	 * destroying.
+	 */
+	__glcLock();
 
-  /* verify if the context exists */
-  ctx = __glcGetContext(inContext);
+	/* verify if the context exists */
+	ctx = __glcGetContext(inContext);
 
-  if (!ctx) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    __glcUnlock();
-    return;
-  }
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		__glcUnlock();
+		return;
+	}
 
-  if (ctx->isCurrent)
-    /* The context is current to a thread : just mark for deletion */
-    ctx->pendingDelete = GL_TRUE;
-  else {
-    /* Remove the context from the context list then destroy it */
-    FT_List_Remove(&__glcCommonArea.contextList, (FT_ListNode)ctx);
-    ctx->isInGlobalCommand = GL_TRUE;
-    __glcContextDestroy(ctx);
-  }
+	if (ctx->isCurrent)
+		/* The context is current to a thread : just mark for deletion */
+	{
+		ctx->pendingDelete = GL_TRUE;
+	}
+	else
+	{
+		/* Remove the context from the context list then destroy it */
+		FT_List_Remove(&__glcCommonArea.contextList, (FT_ListNode)ctx);
+		ctx->isInGlobalCommand = GL_TRUE;
+		__glcContextDestroy(ctx);
+	}
 
-  __glcUnlock();
+	__glcUnlock();
 }
 
 
@@ -453,122 +479,140 @@ void APIENTRY glcDeleteContext(GLint inContext)
  */
 void APIENTRY glcContext(GLint inContext)
 {
-  __GLCcontext *currentContext = NULL;
-  __GLCcontext *ctx = NULL;
-  __GLCthreadArea *area = NULL;
+	__GLCcontext *currentContext = NULL;
+	__GLCcontext *ctx = NULL;
+	__GLCthreadArea *area = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  if (inContext < 0) {
-    __glcRaiseError(GLC_PARAMETER_ERROR);
-    return;
-  }
+	if (inContext < 0)
+	{
+		__glcRaiseError(GLC_PARAMETER_ERROR);
+		return;
+	}
 
-  area = GLC_GET_THREAD_AREA();
-  assert(area);
+	area = GLC_GET_THREAD_AREA();
+	assert(area);
 
-  /* Lock the "Common Area" in order to prevent race conditions */
-  __glcLock();
+	/* Lock the "Common Area" in order to prevent race conditions */
+	__glcLock();
 
-  if (inContext) {
-    /* verify that the context exists */
-    ctx = __glcGetContext(inContext);
+	if (inContext)
+	{
+		/* verify that the context exists */
+		ctx = __glcGetContext(inContext);
 
-    if (!ctx) {
-      __glcRaiseError(GLC_PARAMETER_ERROR);
-      __glcUnlock();
-      return;
-    }
+		if (!ctx)
+		{
+			__glcRaiseError(GLC_PARAMETER_ERROR);
+			__glcUnlock();
+			return;
+		}
 
-    /* Get the current context of the issuing thread */
-    currentContext = area->currentContext;
+		/* Get the current context of the issuing thread */
+		currentContext = area->currentContext;
 
-    /* Check if the issuing thread is executing a callback
-     * function that has been called from GLC
-     */
-    if (currentContext) {
-      if (currentContext->isInCallbackFunc) {
-	__glcRaiseError(GLC_STATE_ERROR);
+		/* Check if the issuing thread is executing a callback
+		 * function that has been called from GLC
+		 */
+		if (currentContext)
+		{
+			if (currentContext->isInCallbackFunc)
+			{
+				__glcRaiseError(GLC_STATE_ERROR);
+				__glcUnlock();
+				return;
+			}
+		}
+
+		/* Is the context already current to a thread ? */
+		if (ctx->isCurrent)
+		{
+			/* If the context is current to another thread => ERROR ! */
+			if (ctx != currentContext)
+			{
+				__glcRaiseError(GLC_STATE_ERROR);
+			}
+
+			/* If we get there, this means that the context 'inContext'
+			 * is already current to one thread (whether it is the issuing thread
+			 * or not) : there is nothing else to be done.
+			 */
+			__glcUnlock();
+			return;
+		}
+
+		/* Release old current context if any */
+		if (currentContext)
+		{
+			currentContext->isCurrent = GL_FALSE;
+		}
+
+		/* Make the context current to the thread */
+		area->currentContext = ctx;
+		ctx->isCurrent = GL_TRUE;
+	}
+	else
+	{
+		/* inContext is null, the current thread must release its context if any */
+
+		/* Gets the current context state */
+		currentContext = area->currentContext;
+
+		if (currentContext)
+		{
+			/* Deassociate the context from the issuing thread */
+			area->currentContext = NULL;
+			/* Release the context */
+			currentContext->isCurrent = GL_FALSE;
+		}
+	}
+
+	/* Execute pending deletion if any. Here, the variable name 'currentContext'
+	 * is not appropriate any more : 'currentContext' used to be the current
+	 * context but it has either been replaced by another one or it has been
+	 * released.
+	 */
+	if (currentContext)
+	{
+		if (currentContext->pendingDelete)
+		{
+			assert(!currentContext->isCurrent);
+			FT_List_Remove(&__glcCommonArea.contextList, (FT_ListNode)currentContext);
+			currentContext->isInGlobalCommand = GL_TRUE;
+			__glcContextDestroy(currentContext);
+		}
+	}
+
 	__glcUnlock();
-	return;
-      }
-    }
 
-    /* Is the context already current to a thread ? */
-    if (ctx->isCurrent) {
-      /* If the context is current to another thread => ERROR ! */
-      if (ctx != currentContext)
-	__glcRaiseError(GLC_STATE_ERROR);
+	/* If the issuing thread has released its context then there is no point to
+	 * check for OpenGL extensions.
+	 */
+	if (!inContext)
+	{
+		return;
+	}
 
-      /* If we get there, this means that the context 'inContext'
-       * is already current to one thread (whether it is the issuing thread
-       * or not) : there is nothing else to be done.
-       */
-      __glcUnlock();
-      return;
-    }
-
-    /* Release old current context if any */
-    if (currentContext)
-      currentContext->isCurrent = GL_FALSE;
-
-    /* Make the context current to the thread */
-    area->currentContext = ctx;
-    ctx->isCurrent = GL_TRUE;
-  }
-  else {
-    /* inContext is null, the current thread must release its context if any */
-
-    /* Gets the current context state */
-    currentContext = area->currentContext;
-
-    if (currentContext) {
-      /* Deassociate the context from the issuing thread */
-      area->currentContext = NULL;
-      /* Release the context */
-      currentContext->isCurrent = GL_FALSE;
-    }
-  }
-
-  /* Execute pending deletion if any. Here, the variable name 'currentContext'
-   * is not appropriate any more : 'currentContext' used to be the current
-   * context but it has either been replaced by another one or it has been
-   * released.
-   */
-  if (currentContext) {
-    if (currentContext->pendingDelete) {
-      assert(!currentContext->isCurrent);
-      FT_List_Remove(&__glcCommonArea.contextList, (FT_ListNode)currentContext);
-      currentContext->isInGlobalCommand = GL_TRUE;
-      __glcContextDestroy(currentContext);
-    }
-  }
-
-  __glcUnlock();
-
-  /* If the issuing thread has released its context then there is no point to
-   * check for OpenGL extensions.
-   */
-  if (!inContext)
-    return;
-
-  /* During its initialization, GLEW calls glGetString(GL_VERSION) and
-   * glGetString(GL_EXTENSIONS) so, not only glewInit() allows to determine the
-   * available extensions, but it also allows to be conformant with GLC specs
-   * which require to issue those GL commands. 
-   *
-   * Notice however that not all OpenGL implementations return a result if the
-   * function glGetString() is called while no GL context is bound to the
-   * current thread. Since this behaviour is not required by the GL specs, such
-   * calls may just fail or lead to weird results or even crash the app (on
-   * Mac OSX). It is the user's responsibility to make sure that it does not
-   * happen since the GLC specs state clearly that : 
-   *   1. glGetString() is called by glcContext()
-   *   2. the behaviour of GLC is undefined if no GL context is current while
-   *      issuing GL commands.
-   */
-  if (glewInit() != GLEW_OK)
-    __glcRaiseError(GLC_RESOURCE_ERROR);
+	/* During its initialization, GLEW calls glGetString(GL_VERSION) and
+	 * glGetString(GL_EXTENSIONS) so, not only glewInit() allows to determine the
+	 * available extensions, but it also allows to be conformant with GLC specs
+	 * which require to issue those GL commands.
+	 *
+	 * Notice however that not all OpenGL implementations return a result if the
+	 * function glGetString() is called while no GL context is bound to the
+	 * current thread. Since this behaviour is not required by the GL specs, such
+	 * calls may just fail or lead to weird results or even crash the app (on
+	 * Mac OSX). It is the user's responsibility to make sure that it does not
+	 * happen since the GLC specs state clearly that :
+	 *   1. glGetString() is called by glcContext()
+	 *   2. the behaviour of GLC is undefined if no GL context is current while
+	 *      issuing GL commands.
+	 */
+	if (glewInit() != GLEW_OK)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+	}
 }
 
 
@@ -583,33 +627,37 @@ void APIENTRY glcContext(GLint inContext)
  */
 GLint APIENTRY glcGenContext(void)
 {
-  int newContext = 0;
-  __GLCcontext *ctx = NULL;
-  FT_ListNode node = NULL;
+	int newContext = 0;
+	__GLCcontext *ctx = NULL;
+	FT_ListNode node = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Create a new context */
-  ctx = __glcContextCreate(0);
-  if (!ctx)
-    return 0;
+	/* Create a new context */
+	ctx = __glcContextCreate(0);
+	if (!ctx)
+	{
+		return 0;
+	}
 
-  /* Lock the "Common Area" in order to prevent race conditions */
-  __glcLock();
+	/* Lock the "Common Area" in order to prevent race conditions */
+	__glcLock();
 
-  /* Search for the first context ID that is unused */
-  if (__glcCommonArea.contextList.tail)
-    newContext = ((__GLCcontext*)__glcCommonArea.contextList.tail)->id;
+	/* Search for the first context ID that is unused */
+	if (__glcCommonArea.contextList.tail)
+	{
+		newContext = ((__GLCcontext*)__glcCommonArea.contextList.tail)->id;
+	}
 
-  ctx->id = newContext + 1;
+	ctx->id = newContext + 1;
 
-  node = (FT_ListNode)ctx;
-  node->data = ctx;
-  FT_List_Add(&__glcCommonArea.contextList, node);
+	node = (FT_ListNode)ctx;
+	node->data = ctx;
+	FT_List_Add(&__glcCommonArea.contextList, node);
 
-  __glcUnlock();
+	__glcUnlock();
 
-  return ctx->id;
+	return ctx->id;
 }
 
 
@@ -628,37 +676,40 @@ GLint APIENTRY glcGenContext(void)
  */
 GLint* APIENTRY glcGetAllContexts(void)
 {
-  int count = 0;
-  GLint* contextArray = NULL;
-  FT_ListNode node = NULL;
+	int count = 0;
+	GLint* contextArray = NULL;
+	FT_ListNode node = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Count the number of existing contexts (whether they are current to a
-   * thread or not).
-   */
-  __glcLock();
-  for (node = __glcCommonArea.contextList.head, count = 0; node;
-       node = node->next, count++);
+	/* Count the number of existing contexts (whether they are current to a
+	 * thread or not).
+	 */
+	__glcLock();
+	for (node = __glcCommonArea.contextList.head, count = 0; node;
+			node = node->next, count++);
 
-  /* Allocate memory to store the array (including the zero termination value)*/
-  contextArray = (GLint *)__glcMalloc(sizeof(GLint) * (count+1));
-  if (!contextArray) {
-    __glcRaiseError(GLC_RESOURCE_ERROR);
-    __glcUnlock();
-    return NULL;
-  }
+	/* Allocate memory to store the array (including the zero termination value)*/
+	contextArray = (GLint *)__glcMalloc(sizeof(GLint) * (count + 1));
+	if (!contextArray)
+	{
+		__glcRaiseError(GLC_RESOURCE_ERROR);
+		__glcUnlock();
+		return NULL;
+	}
 
-  /* Array must be null-terminated */
-  contextArray[count] = 0;
+	/* Array must be null-terminated */
+	contextArray[count] = 0;
 
-  /* Copy the context IDs to the array */
-  for (node = __glcCommonArea.contextList.tail; node; node = node->prev)
-    contextArray[--count] = ((__GLCcontext*)node)->id;
+	/* Copy the context IDs to the array */
+	for (node = __glcCommonArea.contextList.tail; node; node = node->prev)
+	{
+		contextArray[--count] = ((__GLCcontext*)node)->id;
+	}
 
-  __glcUnlock();
+	__glcUnlock();
 
-  return contextArray;
+	return contextArray;
 }
 
 
@@ -693,15 +744,15 @@ GLint* APIENTRY glcGetAllContexts(void)
  */
 GLCenum APIENTRY glcGetError(void)
 {
-  GLCenum error = GLC_NONE;
-  __GLCthreadArea * area = NULL;
+	GLCenum error = GLC_NONE;
+	__GLCthreadArea * area = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  area = GLC_GET_THREAD_AREA();
-  assert(area);
+	area = GLC_GET_THREAD_AREA();
+	assert(area);
 
-  error = area->errorState;
-  __glcRaiseError(GLC_NONE);
-  return error;
+	error = area->errorState;
+	__glcRaiseError(GLC_NONE);
+	return error;
 }

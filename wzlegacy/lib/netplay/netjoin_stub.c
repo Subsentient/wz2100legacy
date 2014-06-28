@@ -23,8 +23,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 int32_t NETgetGameFlagsUnjoined(unsigned int gameid, unsigned int flag)
 {
-    ASSERT(gameid < ARRAY_SIZE(NetPlay.games), "Out of range gameid: %u", gameid);
-    ASSERT(flag < ARRAY_SIZE(NetPlay.games[gameid].desc.dwUserFlags), "Out of range flag number: %u", flag);
+	ASSERT(gameid < ARRAY_SIZE(NetPlay.games), "Out of range gameid: %u", gameid);
+	ASSERT(flag < ARRAY_SIZE(NetPlay.games[gameid].desc.dwUserFlags), "Out of range flag number: %u", flag);
 
-    return NetPlay.games[gameid].desc.dwUserFlags[flag];
+	return NetPlay.games[gameid].desc.dwUserFlags[flag];
 }

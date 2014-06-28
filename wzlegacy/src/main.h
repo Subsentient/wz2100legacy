@@ -19,9 +19,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum
 {
-    GS_TITLE_SCREEN,
-    GS_NORMAL,
-    GS_SAVEGAMELOAD
+	GS_TITLE_SCREEN,
+	GS_NORMAL,
+	GS_SAVEGAMELOAD
 } GS_GAMEMODE;
 
 //flag to indicate when initialisation is complete

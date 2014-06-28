@@ -30,10 +30,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /***************************************************************************/
 typedef	enum	FMV_MODE
 {
-    FMV_FULLSCREEN,
-    FMV_1X,
-    FMV_2X,
-    FMV_MAX
+	FMV_FULLSCREEN,
+	FMV_1X,
+	FMV_2X,
+	FMV_MAX
 }
 FMV_MODE;
 

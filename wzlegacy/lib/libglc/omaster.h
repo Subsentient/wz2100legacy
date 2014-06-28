@@ -31,25 +31,26 @@
 
 #define GLC_MASTER_HASH_VALUE(master) FcPatternHash((master)->pattern)
 
-struct __GLCmasterRec {
-  FcPattern* pattern;
+struct __GLCmasterRec
+{
+	FcPattern* pattern;
 };
 
 __GLCmaster* __glcMasterCreate(const GLint inMaster,
-			       const __GLCcontext* inContext);
+							   const __GLCcontext* inContext);
 void __glcMasterDestroy(__GLCmaster* This);
 GLCchar8* __glcMasterGetFaceName(const __GLCmaster* This,
-				 const __GLCcontext* inContext,
-				 const GLint inIndex);
+								 const __GLCcontext* inContext,
+								 const GLint inIndex);
 GLboolean __glcMasterIsFixedPitch(const __GLCmaster* This);
 GLint __glcMasterFaceCount(const __GLCmaster* This,
-			   const __GLCcontext* inContext);
+						   const __GLCcontext* inContext);
 const GLCchar8* __glcMasterGetInfo(const __GLCmaster* This,
-				   __GLCcontext* inContext,
-				   const GLCenum inAttrib);
+								   __GLCcontext* inContext,
+								   const GLCenum inAttrib);
 __GLCmaster* __glcMasterFromFamily(const __GLCcontext* inContext,
-				   const GLCchar8* inFamily);
+								   const GLCchar8* inFamily);
 __GLCmaster* __glcMasterMatchCode(const __GLCcontext* inContext,
-				  const GLint inCode);
+								  const GLint inCode);
 GLint __glcMasterGetID(const __GLCmaster* This, const __GLCcontext* inContext);
 #endif

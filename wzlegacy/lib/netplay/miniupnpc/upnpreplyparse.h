@@ -18,42 +18,42 @@
 extern "C" {
 #endif
 
-    struct NameValue
-    {
-        LIST_ENTRY(NameValue) entries;
-        char name[64];
-        char value[64];
-    };
+struct NameValue
+{
+	LIST_ENTRY(NameValue) entries;
+	char name[64];
+	char value[64];
+};
 
-    struct NameValueParserData
-    {
-        LIST_HEAD(listhead, NameValue) head;
-        char curelt[64];
-    };
+struct NameValueParserData
+{
+	LIST_HEAD(listhead, NameValue) head;
+	char curelt[64];
+};
 
-    /* ParseNameValue() */
-    void
-    ParseNameValue(const char *buffer, int bufsize,
-                   struct NameValueParserData *data);
+/* ParseNameValue() */
+void
+ParseNameValue(const char *buffer, int bufsize,
+			   struct NameValueParserData *data);
 
-    /* ClearNameValueList() */
-    void
-    ClearNameValueList(struct NameValueParserData *pdata);
+/* ClearNameValueList() */
+void
+ClearNameValueList(struct NameValueParserData *pdata);
 
-    /* GetValueFromNameValueList() */
-    char *
-    GetValueFromNameValueList(struct NameValueParserData *pdata,
-                              const char *Name);
+/* GetValueFromNameValueList() */
+char *
+GetValueFromNameValueList(struct NameValueParserData *pdata,
+						  const char *Name);
 
-    /* GetValueFromNameValueListIgnoreNS() */
-    char *
-    GetValueFromNameValueListIgnoreNS(struct NameValueParserData *pdata,
-                                      const char *Name);
+/* GetValueFromNameValueListIgnoreNS() */
+char *
+GetValueFromNameValueListIgnoreNS(struct NameValueParserData *pdata,
+								  const char *Name);
 
-    /* DisplayNameValueList() */
+/* DisplayNameValueList() */
 #ifdef DEBUG
-    void
-    DisplayNameValueList(char *buffer, int bufsize);
+void
+DisplayNameValueList(char *buffer, int bufsize);
 #endif
 
 #ifdef __cplusplus

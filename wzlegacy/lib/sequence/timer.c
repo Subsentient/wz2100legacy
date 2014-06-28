@@ -31,40 +31,40 @@ static struct timeval endCount;
 // Uses the highest resolution timers avail on windows & linux
 void Timer_Init(void)
 {
-    startCount.tv_sec = startCount.tv_usec = 0;
-    endCount.tv_sec = endCount.tv_usec = 0;
+	startCount.tv_sec = startCount.tv_usec = 0;
+	endCount.tv_sec = endCount.tv_usec = 0;
 
-    stopped = false;
-    startTimeInMicroSec = 0;
-    endTimeInMicroSec = 0;
+	stopped = false;
+	startTimeInMicroSec = 0;
+	endTimeInMicroSec = 0;
 }
 
 void Timer_start(void)
 {
-    stopped = false; // reset stop flag
-    gettimeofday(&startCount, NULL);
+	stopped = false; // reset stop flag
+	gettimeofday(&startCount, NULL);
 }
 
 void Timer_stop(void)
 {
-    stopped = true; // set timer stopped flag
+	stopped = true; // set timer stopped flag
 
-    gettimeofday(&endCount, NULL);
+	gettimeofday(&endCount, NULL);
 }
 
 double Timer_getElapsedMicroSecs(void)
 {
-    if (!stopped)
-    {
-        gettimeofday(&endCount, NULL);
-    }
-    startTimeInMicroSec = (startCount.tv_sec * 1000000.0) + startCount.tv_usec;
-    endTimeInMicroSec = (endCount.tv_sec * 1000000.0) + endCount.tv_usec;
+	if (!stopped)
+	{
+		gettimeofday(&endCount, NULL);
+	}
+	startTimeInMicroSec = (startCount.tv_sec * 1000000.0) + startCount.tv_usec;
+	endTimeInMicroSec = (endCount.tv_sec * 1000000.0) + endCount.tv_usec;
 
-    return endTimeInMicroSec - startTimeInMicroSec;
+	return endTimeInMicroSec - startTimeInMicroSec;
 }
 
 double Timer_getElapsedMilliSecs(void)
 {
-    return Timer_getElapsedMicroSecs() * 0.001;
+	return Timer_getElapsedMicroSecs() * 0.001;
 }

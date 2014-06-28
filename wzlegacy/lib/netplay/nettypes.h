@@ -27,9 +27,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 
 typedef enum packetDirectionEnum
 {
-    PACKET_ENCODE,
-    PACKET_DECODE,
-    PACKET_INVALID
+	PACKET_ENCODE,
+	PACKET_DECODE,
+	PACKET_INVALID
 } PACKETDIR;
 
 void NETbeginEncode(uint8_t type, uint8_t player);
@@ -53,21 +53,21 @@ PACKETDIR NETgetPacketDir(void);
 template <typename EnumT>
 BOOL NETenum(EnumT *enumPtr)
 {
-    int32_t val;
+	int32_t val;
 
-    if (NETgetPacketDir() == PACKET_ENCODE)
-    {
-        val = *enumPtr;
-    }
+	if (NETgetPacketDir() == PACKET_ENCODE)
+	{
+		val = *enumPtr;
+	}
 
-    const BOOL retVal = NETint32_t(&val);
+	const BOOL retVal = NETint32_t(&val);
 
-    if (NETgetPacketDir() == PACKET_DECODE)
-    {
-        *enumPtr = static_cast<EnumT>(val);
-    }
+	if (NETgetPacketDir() == PACKET_DECODE)
+	{
+		*enumPtr = static_cast<EnumT>(val);
+	}
 
-    return retVal;
+	return retVal;
 }
 #else
 // FIXME: Causes tons of warnings: <enumPtr> is used unitialised in this function

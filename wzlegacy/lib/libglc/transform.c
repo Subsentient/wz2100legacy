@@ -63,21 +63,22 @@
  */
 void APIENTRY glcLoadIdentity(void)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  ctx->bitmapMatrix[0] = 1.;
-  ctx->bitmapMatrix[1] = 0.;
-  ctx->bitmapMatrix[2] = 0.;
-  ctx->bitmapMatrix[3] = 1.;
+	ctx->bitmapMatrix[0] = 1.;
+	ctx->bitmapMatrix[1] = 0.;
+	ctx->bitmapMatrix[2] = 0.;
+	ctx->bitmapMatrix[3] = 1.;
 }
 
 
@@ -95,20 +96,21 @@ void APIENTRY glcLoadIdentity(void)
  */
 void APIENTRY glcLoadMatrix(const GLfloat *inMatrix)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  assert(inMatrix);
+	assert(inMatrix);
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  memcpy(ctx->bitmapMatrix, inMatrix, 4 * sizeof(GLfloat));
+	memcpy(ctx->bitmapMatrix, inMatrix, 4 * sizeof(GLfloat));
 }
 
 
@@ -127,30 +129,31 @@ void APIENTRY glcLoadMatrix(const GLfloat *inMatrix)
  */
 void APIENTRY glcMultMatrix(const GLfloat *inMatrix)
 {
-  __GLCcontext *ctx = NULL;
-  GLfloat tempMatrix[4];
+	__GLCcontext *ctx = NULL;
+	GLfloat tempMatrix[4];
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  assert(inMatrix);
+	assert(inMatrix);
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  memcpy(tempMatrix, ctx->bitmapMatrix, 4 * sizeof(GLfloat));
+	memcpy(tempMatrix, ctx->bitmapMatrix, 4 * sizeof(GLfloat));
 
-  ctx->bitmapMatrix[0] = tempMatrix[0] * inMatrix[0]
-			 + tempMatrix[2] * inMatrix[1];
-  ctx->bitmapMatrix[1] = tempMatrix[1] * inMatrix[0]
-			 + tempMatrix[3] * inMatrix[1];
-  ctx->bitmapMatrix[2] = tempMatrix[0] * inMatrix[2]
-			 + tempMatrix[2] * inMatrix[3];
-  ctx->bitmapMatrix[3] = tempMatrix[1] * inMatrix[2]
-			 + tempMatrix[3] * inMatrix[3];
+	ctx->bitmapMatrix[0] = tempMatrix[0] * inMatrix[0]
+						   + tempMatrix[2] * inMatrix[1];
+	ctx->bitmapMatrix[1] = tempMatrix[1] * inMatrix[0]
+						   + tempMatrix[3] * inMatrix[1];
+	ctx->bitmapMatrix[2] = tempMatrix[0] * inMatrix[2]
+						   + tempMatrix[2] * inMatrix[3];
+	ctx->bitmapMatrix[3] = tempMatrix[1] * inMatrix[2]
+						   + tempMatrix[3] * inMatrix[3];
 }
 
 
@@ -175,17 +178,17 @@ void APIENTRY glcMultMatrix(const GLfloat *inMatrix)
  */
 void APIENTRY glcRotate(GLfloat inAngle)
 {
-  GLfloat tempMatrix[4];
-  GLfloat radian = inAngle * GLC_PI / 180.;
-  GLfloat sine = sin(radian);
-  GLfloat cosine = cos(radian);
+	GLfloat tempMatrix[4];
+	GLfloat radian = inAngle * GLC_PI / 180.;
+	GLfloat sine = sin(radian);
+	GLfloat cosine = cos(radian);
 
-  tempMatrix[0] = cosine;
-  tempMatrix[1] = sine;
-  tempMatrix[2] = -sine;
-  tempMatrix[3] = cosine;
+	tempMatrix[0] = cosine;
+	tempMatrix[1] = sine;
+	tempMatrix[2] = -sine;
+	tempMatrix[3] = cosine;
 
-  glcMultMatrix(tempMatrix);
+	glcMultMatrix(tempMatrix);
 }
 
 
@@ -211,14 +214,14 @@ void APIENTRY glcRotate(GLfloat inAngle)
  */
 void APIENTRY glcScale(GLfloat inX, GLfloat inY)
 {
-  GLfloat tempMatrix[4];
+	GLfloat tempMatrix[4];
 
-  tempMatrix[0] = inX;
-  tempMatrix[1] = 0.;
-  tempMatrix[2] = 0.;
-  tempMatrix[3] = inY;
+	tempMatrix[0] = inX;
+	tempMatrix[1] = 0.;
+	tempMatrix[2] = 0.;
+	tempMatrix[3] = inY;
 
-  glcMultMatrix(tempMatrix);
+	glcMultMatrix(tempMatrix);
 }
 
 
@@ -234,26 +237,28 @@ void APIENTRY glcScale(GLfloat inX, GLfloat inY)
  */
 void APIENTRY glcPushMatrixQSO(void)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  if (ctx->bitmapMatrixStackDepth >= GLC_MAX_MATRIX_STACK_DEPTH) {
-    __glcRaiseError(GLC_STACK_OVERFLOW_QSO);
-    return;
-  }
+	if (ctx->bitmapMatrixStackDepth >= GLC_MAX_MATRIX_STACK_DEPTH)
+	{
+		__glcRaiseError(GLC_STACK_OVERFLOW_QSO);
+		return;
+	}
 
-  memcpy(ctx->bitmapMatrix+4, ctx->bitmapMatrix, 4*sizeof(GLfloat));
-  ctx->bitmapMatrix += 4;
-  ctx->bitmapMatrixStackDepth++;
-  return;
+	memcpy(ctx->bitmapMatrix + 4, ctx->bitmapMatrix, 4 * sizeof(GLfloat));
+	ctx->bitmapMatrix += 4;
+	ctx->bitmapMatrixStackDepth++;
+	return;
 }
 
 
@@ -270,23 +275,25 @@ void APIENTRY glcPushMatrixQSO(void)
  */
 void APIENTRY glcPopMatrixQSO(void)
 {
-  __GLCcontext *ctx = NULL;
+	__GLCcontext *ctx = NULL;
 
-  GLC_INIT_THREAD();
+	GLC_INIT_THREAD();
 
-  /* Check if the current thread owns a context state */
-  ctx = GLC_GET_CURRENT_CONTEXT();
-  if (!ctx) {
-    __glcRaiseError(GLC_STATE_ERROR);
-    return;
-  }
+	/* Check if the current thread owns a context state */
+	ctx = GLC_GET_CURRENT_CONTEXT();
+	if (!ctx)
+	{
+		__glcRaiseError(GLC_STATE_ERROR);
+		return;
+	}
 
-  if (ctx->bitmapMatrixStackDepth <= 1) {
-    __glcRaiseError(GLC_STACK_UNDERFLOW_QSO);
-    return;
-  }
+	if (ctx->bitmapMatrixStackDepth <= 1)
+	{
+		__glcRaiseError(GLC_STACK_UNDERFLOW_QSO);
+		return;
+	}
 
-  ctx->bitmapMatrix -= 4;
-  ctx->bitmapMatrixStackDepth--;
-  return;
+	ctx->bitmapMatrix -= 4;
+	ctx->bitmapMatrixStackDepth--;
+	return;
 }

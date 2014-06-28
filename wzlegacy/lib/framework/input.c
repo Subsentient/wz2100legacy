@@ -34,21 +34,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 /* The possible states for keys */
 typedef enum _key_state
 {
-    KEY_UP,
-    KEY_PRESSED,
-    KEY_DOWN,
-    KEY_RELEASED,
-    KEY_PRESSRELEASE,	// When a key goes up and down in a frame
-    KEY_DOUBLECLICK,	// Only used by mouse keys
-    KEY_DRAG,			// Only used by mouse keys
+	KEY_UP,
+	KEY_PRESSED,
+	KEY_DOWN,
+	KEY_RELEASED,
+	KEY_PRESSRELEASE,	// When a key goes up and down in a frame
+	KEY_DOUBLECLICK,	// Only used by mouse keys
+	KEY_DRAG,			// Only used by mouse keys
 } KEY_STATE;
 
 typedef struct _input_state
 {
-    KEY_STATE state; /// Last key/mouse state
-    uint32_t lastdown; /// last key/mouse button down timestamp
-    Vector2i pressPos;    ///< Location of last mouse press event.
-    Vector2i releasePos;  ///< Location of last mouse release event.
+	KEY_STATE state; /// Last key/mouse state
+	uint32_t lastdown; /// last key/mouse button down timestamp
+	Vector2i pressPos;    ///< Location of last mouse press event.
+	Vector2i releasePos;  ///< Location of last mouse release event.
 } INPUT_STATE;
 
 /// constant for the interval between 2 singleclicks for doubleclick event in ms
@@ -79,8 +79,8 @@ static INPUT_STATE aMouseState[6];
 /* The input string buffer */
 typedef struct _InputKey
 {
-    uint32_t key;
-    utf_32_char unicode;
+	uint32_t key;
+	utf_32_char unicode;
 } InputKey;
 static InputKey	pInputBuffer[INPUT_MAXSTR];
 static InputKey	*pStartBuffer, *pEndBuffer;
@@ -88,115 +88,115 @@ static InputKey	*pStartBuffer, *pEndBuffer;
 
 static KEY_CODE sdlKeyToKeyCode(SDLKey key)
 {
-    return (KEY_CODE)key;
+	return (KEY_CODE)key;
 }
 
 static SDLKey keyCodeToSDLKey(KEY_CODE code)
 {
-    return (SDLKey)code;
+	return (SDLKey)code;
 }
 
 
 void keyScanToString(KEY_CODE code, char *ascii, uint32_t maxStringSize)
 {
-    if(keyCodeToSDLKey(code) == KEY_MAXSCAN)
-    {
-        strcpy(ascii,"???");
-        return;
-    }
-    else if (code == KEY_LCTRL)
-    {
-        // shortcuts with modifier keys work with either key.
-        strcpy(ascii, "Ctrl");
-        return;
-    }
-    else if (code == KEY_LSHIFT)
-    {
-        // shortcuts with modifier keys work with either key.
-        strcpy(ascii, "Shift");
-        return;
-    }
-    else if (code == KEY_LALT)
-    {
-        // shortcuts with modifier keys work with either key.
-        strcpy(ascii, "Alt");
-        return;
-    }
-    else if (code == KEY_LMETA)
-    {
-        // shortcuts with modifier keys work with either key.
+	if(keyCodeToSDLKey(code) == KEY_MAXSCAN)
+	{
+		strcpy(ascii, "???");
+		return;
+	}
+	else if (code == KEY_LCTRL)
+	{
+		// shortcuts with modifier keys work with either key.
+		strcpy(ascii, "Ctrl");
+		return;
+	}
+	else if (code == KEY_LSHIFT)
+	{
+		// shortcuts with modifier keys work with either key.
+		strcpy(ascii, "Shift");
+		return;
+	}
+	else if (code == KEY_LALT)
+	{
+		// shortcuts with modifier keys work with either key.
+		strcpy(ascii, "Alt");
+		return;
+	}
+	else if (code == KEY_LMETA)
+	{
+		// shortcuts with modifier keys work with either key.
 #ifdef WZ_OS_MAC
-        strcpy(ascii, "Cmd");
+		strcpy(ascii, "Cmd");
 #else
-        strcpy(ascii, "Meta");
+		strcpy(ascii, "Meta");
 #endif
-        return;
-    }
-    ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
-    snprintf(ascii, maxStringSize, "%s", SDL_GetKeyName(keyCodeToSDLKey(code)));
-    if (ascii[0] >= 'a' && ascii[0] <= 'z' && ascii[1] != 0)
-    {
-        // capitalize
-        ascii[0] += 'A'-'a';
-    }
+		return;
+	}
+	ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
+	snprintf(ascii, maxStringSize, "%s", SDL_GetKeyName(keyCodeToSDLKey(code)));
+	if (ascii[0] >= 'a' && ascii[0] <= 'z' && ascii[1] != 0)
+	{
+		// capitalize
+		ascii[0] += 'A' - 'a';
+	}
 }
 
 
 /* Initialise the input module */
 void inputInitialise(void)
 {
-    unsigned int i;
+	unsigned int i;
 
-    for (i = 0; i < KEY_MAXSCAN; i++)
-    {
-        aKeyState[i].state = KEY_UP;
-    }
+	for (i = 0; i < KEY_MAXSCAN; i++)
+	{
+		aKeyState[i].state = KEY_UP;
+	}
 
-    for (i = 0; i < 6; i++)
-    {
-        aMouseState[i].state = KEY_UP;
-    }
+	for (i = 0; i < 6; i++)
+	{
+		aMouseState[i].state = KEY_UP;
+	}
 
-    pStartBuffer = pInputBuffer;
-    pEndBuffer = pInputBuffer;
+	pStartBuffer = pInputBuffer;
+	pEndBuffer = pInputBuffer;
 
-    dragX = mouseXPos = screenWidth/2;
-    dragY = mouseYPos = screenHeight/2;
-    dragKey = MOUSE_LMB;
+	dragX = mouseXPos = screenWidth / 2;
+	dragY = mouseYPos = screenHeight / 2;
+	dragKey = MOUSE_LMB;
 
-    SDL_EnableUNICODE(1);
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+	SDL_EnableUNICODE(1);
+	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 }
 
 // Cyclic increment.
 static InputKey *inputPointerNext(InputKey *p)
 {
-    return p + 1 == pInputBuffer + INPUT_MAXSTR ? pInputBuffer : p + 1;
+	return p + 1 == pInputBuffer + INPUT_MAXSTR ? pInputBuffer : p + 1;
 }
 
 /* add count copies of the characater code to the input buffer */
 static void inputAddBuffer(uint32_t key, utf_32_char unicode)
 {
-    /* Calculate what pEndBuffer will be set to next */
-    InputKey	*pNext = inputPointerNext(pEndBuffer);
+	/* Calculate what pEndBuffer will be set to next */
+	InputKey	*pNext = inputPointerNext(pEndBuffer);
 
-    if (pNext == pStartBuffer)
-    {
-        return;  // Buffer full.
-    }
+	if (pNext == pStartBuffer)
+	{
+		return;  // Buffer full.
+	}
 
-    // Add key to buffer.
-    pEndBuffer->key = key;
-    pEndBuffer->unicode = unicode;
-    pEndBuffer = pNext;
+	// Add key to buffer.
+	pEndBuffer->key = key;
+	pEndBuffer->unicode = unicode;
+	pEndBuffer = pNext;
 }
 
 
 /* Clear the input buffer */
 void inputClearBuffer(void)
 {
-    pStartBuffer = pInputBuffer;
-    pEndBuffer = pInputBuffer;
+	pStartBuffer = pInputBuffer;
+	pEndBuffer = pInputBuffer;
 }
 
 
@@ -207,25 +207,25 @@ void inputClearBuffer(void)
  */
 uint32_t inputGetKey(utf_32_char *unicode)
 {
-    uint32_t	retVal;
+	uint32_t	retVal;
 
-    if (pStartBuffer == pEndBuffer)
-    {
-        return 0;  // Buffer empty.
-    }
+	if (pStartBuffer == pEndBuffer)
+	{
+		return 0;  // Buffer empty.
+	}
 
-    retVal = pStartBuffer->key;
-    if (unicode)
-    {
-        *unicode = pStartBuffer->unicode;
-    }
-    if (!retVal)
-    {
-        retVal = ' ';  // Don't return 0 if we got a virtual key, since that's interpreted as no input.
-    }
-    pStartBuffer = inputPointerNext(pStartBuffer);
+	retVal = pStartBuffer->key;
+	if (unicode)
+	{
+		*unicode = pStartBuffer->unicode;
+	}
+	if (!retVal)
+	{
+		retVal = ' ';  // Don't return 0 if we got a virtual key, since that's interpreted as no input.
+	}
+	pStartBuffer = inputPointerNext(pStartBuffer);
 
-    return retVal;
+	return retVal;
 }
 
 
@@ -234,80 +234,80 @@ uint32_t inputGetKey(utf_32_char *unicode)
  */
 void inputHandleKeyEvent(SDL_KeyboardEvent *keyEvent)
 {
-    uint32_t code, vk;
-    utf_32_char unicode = keyEvent->keysym.unicode;
+	uint32_t code, vk;
+	utf_32_char unicode = keyEvent->keysym.unicode;
 
-    switch (keyEvent->type)
-    {
-        case SDL_KEYDOWN:
-            switch (keyEvent->keysym.sym)
-            {
-                case SDLK_LEFT:
-                    vk = INPBUF_LEFT;
-                    break;
-                case SDLK_RIGHT:
-                    vk = INPBUF_RIGHT;
-                    break;
-                case SDLK_UP:
-                    vk = INPBUF_UP;
-                    break;
-                case SDLK_DOWN:
-                    vk = INPBUF_DOWN;
-                    break;
-                case SDLK_HOME:
-                    vk = INPBUF_HOME;
-                    break;
-                case SDLK_END:
-                    vk = INPBUF_END;
-                    break;
-                case SDLK_INSERT:
-                    vk = INPBUF_INS;
-                    break;
-                case SDLK_DELETE:
-                    vk = INPBUF_DEL;
-                    break;
-                case SDLK_PAGEUP:
-                    vk = INPBUF_PGUP;
-                    break;
-                case SDLK_PAGEDOWN:
-                    vk = INPBUF_PGDN;
-                    break;
-                default:
-                    vk = keyEvent->keysym.sym;
-                    break;
-            }
+	switch (keyEvent->type)
+	{
+		case SDL_KEYDOWN:
+			switch (keyEvent->keysym.sym)
+			{
+				case SDLK_LEFT:
+					vk = INPBUF_LEFT;
+					break;
+				case SDLK_RIGHT:
+					vk = INPBUF_RIGHT;
+					break;
+				case SDLK_UP:
+					vk = INPBUF_UP;
+					break;
+				case SDLK_DOWN:
+					vk = INPBUF_DOWN;
+					break;
+				case SDLK_HOME:
+					vk = INPBUF_HOME;
+					break;
+				case SDLK_END:
+					vk = INPBUF_END;
+					break;
+				case SDLK_INSERT:
+					vk = INPBUF_INS;
+					break;
+				case SDLK_DELETE:
+					vk = INPBUF_DEL;
+					break;
+				case SDLK_PAGEUP:
+					vk = INPBUF_PGUP;
+					break;
+				case SDLK_PAGEDOWN:
+					vk = INPBUF_PGDN;
+					break;
+				default:
+					vk = keyEvent->keysym.sym;
+					break;
+			}
 
-            debug( LOG_INPUT, "Key Code (pressed): 0x%x, %d, [%c] SDLkey=[%s]", vk, vk, (vk < 128) && (vk > 31) ? (char) vk : '?' , SDL_GetKeyName(keyCodeToSDLKey((KEY_CODE)keyEvent->keysym.sym)));
-            if (unicode < 32)
-            {
-                unicode = 0;
-            }
-            inputAddBuffer(vk, unicode);
+			debug( LOG_INPUT, "Key Code (pressed): 0x%x, %d, [%c] SDLkey=[%s]", vk, vk, (vk < 128) && (vk > 31) ? (char) vk : '?' , SDL_GetKeyName(keyCodeToSDLKey((KEY_CODE)keyEvent->keysym.sym)));
+			if (unicode < 32)
+			{
+				unicode = 0;
+			}
+			inputAddBuffer(vk, unicode);
 
-            code = sdlKeyToKeyCode(keyEvent->keysym.sym);
-            if ( aKeyState[code].state == KEY_UP ||
-                    aKeyState[code].state == KEY_RELEASED ||
-                    aKeyState[code].state == KEY_PRESSRELEASE )
-            {
-                //whether double key press or not
-                aKeyState[code].state = KEY_PRESSED;
-                aKeyState[code].lastdown = 0;
-            }
-            break;
-        case SDL_KEYUP:
-            code = sdlKeyToKeyCode(keyEvent->keysym.sym);
-            if (aKeyState[code].state == KEY_PRESSED)
-            {
-                aKeyState[code].state = KEY_PRESSRELEASE;
-            }
-            else if (aKeyState[code].state == KEY_DOWN )
-            {
-                aKeyState[code].state = KEY_RELEASED;
-            }
-            break;
-        default:
-            break;
-    }
+			code = sdlKeyToKeyCode(keyEvent->keysym.sym);
+			if ( aKeyState[code].state == KEY_UP ||
+					aKeyState[code].state == KEY_RELEASED ||
+					aKeyState[code].state == KEY_PRESSRELEASE )
+			{
+				//whether double key press or not
+				aKeyState[code].state = KEY_PRESSED;
+				aKeyState[code].lastdown = 0;
+			}
+			break;
+		case SDL_KEYUP:
+			code = sdlKeyToKeyCode(keyEvent->keysym.sym);
+			if (aKeyState[code].state == KEY_PRESSED)
+			{
+				aKeyState[code].state = KEY_PRESSRELEASE;
+			}
+			else if (aKeyState[code].state == KEY_DOWN )
+			{
+				aKeyState[code].state = KEY_RELEASED;
+			}
+			break;
+		default:
+			break;
+	}
 }
 
 
@@ -316,65 +316,65 @@ void inputHandleKeyEvent(SDL_KeyboardEvent *keyEvent)
  */
 void inputHandleMouseButtonEvent(SDL_MouseButtonEvent *buttonEvent)
 {
-    mouseXPos = buttonEvent->x;
-    mouseYPos = buttonEvent->y;
+	mouseXPos = buttonEvent->x;
+	mouseYPos = buttonEvent->y;
 
-    switch (buttonEvent->type)
-    {
-        case SDL_MOUSEBUTTONDOWN:
-            aMouseState[buttonEvent->button].pressPos.x = mouseXPos;
-            aMouseState[buttonEvent->button].pressPos.y = mouseYPos;
-            if ( aMouseState[buttonEvent->button].state == KEY_UP
-                    || aMouseState[buttonEvent->button].state == KEY_RELEASED
-                    || aMouseState[buttonEvent->button].state == KEY_PRESSRELEASE )
-            {
-                if ( (buttonEvent->button != SDL_BUTTON_WHEELUP		//skip doubleclick check for wheel
-                        && buttonEvent->button != SDL_BUTTON_WHEELDOWN))
-                {
-                    //whether double click or not
-                    if ( gameTime2 - aMouseState[buttonEvent->button].lastdown < DOUBLE_CLICK_INTERVAL )
-                    {
-                        aMouseState[buttonEvent->button].state = KEY_DOUBLECLICK;
-                        aMouseState[buttonEvent->button].lastdown = 0;
-                    }
-                    else
-                    {
-                        aMouseState[buttonEvent->button].state = KEY_PRESSED;
-                        aMouseState[buttonEvent->button].lastdown = gameTime2;
-                    }
+	switch (buttonEvent->type)
+	{
+		case SDL_MOUSEBUTTONDOWN:
+			aMouseState[buttonEvent->button].pressPos.x = mouseXPos;
+			aMouseState[buttonEvent->button].pressPos.y = mouseYPos;
+			if ( aMouseState[buttonEvent->button].state == KEY_UP
+					|| aMouseState[buttonEvent->button].state == KEY_RELEASED
+					|| aMouseState[buttonEvent->button].state == KEY_PRESSRELEASE )
+			{
+				if ( (buttonEvent->button != SDL_BUTTON_WHEELUP		//skip doubleclick check for wheel
+						&& buttonEvent->button != SDL_BUTTON_WHEELDOWN))
+				{
+					//whether double click or not
+					if ( gameTime2 - aMouseState[buttonEvent->button].lastdown < DOUBLE_CLICK_INTERVAL )
+					{
+						aMouseState[buttonEvent->button].state = KEY_DOUBLECLICK;
+						aMouseState[buttonEvent->button].lastdown = 0;
+					}
+					else
+					{
+						aMouseState[buttonEvent->button].state = KEY_PRESSED;
+						aMouseState[buttonEvent->button].lastdown = gameTime2;
+					}
 
-                }
-                else	//mouse wheel up/down was used, so notify.
-                {
-                    aMouseState[buttonEvent->button].state = KEY_PRESSED;
-                    aMouseState[buttonEvent->button].lastdown = 0;
-                }
+				}
+				else	//mouse wheel up/down was used, so notify.
+				{
+					aMouseState[buttonEvent->button].state = KEY_PRESSED;
+					aMouseState[buttonEvent->button].lastdown = 0;
+				}
 
-                if (buttonEvent->button < 4) // Not the mousewheel
-                {
-                    dragKey = (MOUSE_KEY_CODE)buttonEvent->button;
-                    dragX = mouseXPos;
-                    dragY = mouseYPos;
-                }
-            }
-            break;
-        case SDL_MOUSEBUTTONUP:
-            aMouseState[buttonEvent->button].releasePos.x = mouseXPos;
-            aMouseState[buttonEvent->button].releasePos.y = mouseYPos;
-            if (aMouseState[buttonEvent->button].state == KEY_PRESSED)
-            {
-                aMouseState[buttonEvent->button].state = KEY_PRESSRELEASE;
-            }
-            else if ( aMouseState[buttonEvent->button].state == KEY_DOWN
-                      || aMouseState[buttonEvent->button].state == KEY_DRAG
-                      || aMouseState[buttonEvent->button].state == KEY_DOUBLECLICK)
-            {
-                aMouseState[buttonEvent->button].state = KEY_RELEASED;
-            }
-            break;
-        default:
-            break;
-    }
+				if (buttonEvent->button < 4) // Not the mousewheel
+				{
+					dragKey = (MOUSE_KEY_CODE)buttonEvent->button;
+					dragX = mouseXPos;
+					dragY = mouseYPos;
+				}
+			}
+			break;
+		case SDL_MOUSEBUTTONUP:
+			aMouseState[buttonEvent->button].releasePos.x = mouseXPos;
+			aMouseState[buttonEvent->button].releasePos.y = mouseYPos;
+			if (aMouseState[buttonEvent->button].state == KEY_PRESSED)
+			{
+				aMouseState[buttonEvent->button].state = KEY_PRESSRELEASE;
+			}
+			else if ( aMouseState[buttonEvent->button].state == KEY_DOWN
+					  || aMouseState[buttonEvent->button].state == KEY_DRAG
+					  || aMouseState[buttonEvent->button].state == KEY_DOUBLECLICK)
+			{
+				aMouseState[buttonEvent->button].state = KEY_RELEASED;
+			}
+			break;
+		default:
+			break;
+	}
 }
 
 
@@ -383,25 +383,25 @@ void inputHandleMouseButtonEvent(SDL_MouseButtonEvent *buttonEvent)
  */
 void inputHandleMouseMotionEvent(SDL_MouseMotionEvent *motionEvent)
 {
-    switch (motionEvent->type)
-    {
-        case SDL_MOUSEMOTION:
-            /* store the current mouse position */
-            mouseXPos = motionEvent->x;
-            mouseYPos = motionEvent->y;
+	switch (motionEvent->type)
+	{
+		case SDL_MOUSEMOTION:
+			/* store the current mouse position */
+			mouseXPos = motionEvent->x;
+			mouseYPos = motionEvent->y;
 
-            /* now see if a drag has started */
-            if ((aMouseState[dragKey].state == KEY_PRESSED ||
-                    aMouseState[dragKey].state == KEY_DOWN) &&
-                    (ABSDIF(dragX, mouseXPos) > DRAG_THRESHOLD ||
-                     ABSDIF(dragY, mouseYPos) > DRAG_THRESHOLD))
-            {
-                aMouseState[dragKey].state = KEY_DRAG;
-            }
-            break;
-        default:
-            break;
-    }
+			/* now see if a drag has started */
+			if ((aMouseState[dragKey].state == KEY_PRESSED ||
+					aMouseState[dragKey].state == KEY_DOWN) &&
+					(ABSDIF(dragX, mouseXPos) > DRAG_THRESHOLD ||
+					 ABSDIF(dragY, mouseYPos) > DRAG_THRESHOLD))
+			{
+				aMouseState[dragKey].state = KEY_DRAG;
+			}
+			break;
+		default:
+			break;
+	}
 }
 
 
@@ -411,36 +411,36 @@ void inputHandleMouseMotionEvent(SDL_MouseMotionEvent *motionEvent)
  */
 void inputNewFrame(void)
 {
-    unsigned int i;
+	unsigned int i;
 
-    /* Do the keyboard */
-    for (i = 0; i < KEY_MAXSCAN; i++)
-    {
-        if (aKeyState[i].state == KEY_PRESSED)
-        {
-            aKeyState[i].state = KEY_DOWN;
-        }
-        else if ( aKeyState[i].state == KEY_RELEASED  ||
-                  aKeyState[i].state == KEY_PRESSRELEASE )
-        {
-            aKeyState[i].state = KEY_UP;
-        }
-    }
+	/* Do the keyboard */
+	for (i = 0; i < KEY_MAXSCAN; i++)
+	{
+		if (aKeyState[i].state == KEY_PRESSED)
+		{
+			aKeyState[i].state = KEY_DOWN;
+		}
+		else if ( aKeyState[i].state == KEY_RELEASED  ||
+				  aKeyState[i].state == KEY_PRESSRELEASE )
+		{
+			aKeyState[i].state = KEY_UP;
+		}
+	}
 
-    /* Do the mouse */
-    for (i = 0; i < 6; i++)
-    {
-        if (aMouseState[i].state == KEY_PRESSED)
-        {
-            aMouseState[i].state = KEY_DOWN;
-        }
-        else if ( aMouseState[i].state == KEY_RELEASED
-                  || aMouseState[i].state == KEY_DOUBLECLICK
-                  || aMouseState[i].state == KEY_PRESSRELEASE )
-        {
-            aMouseState[i].state = KEY_UP;
-        }
-    }
+	/* Do the mouse */
+	for (i = 0; i < 6; i++)
+	{
+		if (aMouseState[i].state == KEY_PRESSED)
+		{
+			aMouseState[i].state = KEY_DOWN;
+		}
+		else if ( aMouseState[i].state == KEY_RELEASED
+				  || aMouseState[i].state == KEY_DOUBLECLICK
+				  || aMouseState[i].state == KEY_PRESSRELEASE )
+		{
+			aMouseState[i].state = KEY_UP;
+		}
+	}
 }
 
 /*!
@@ -449,126 +449,126 @@ void inputNewFrame(void)
 // FIXME This seems to be totally ignored! (Try switching focus while the dragbox is open)
 void inputLooseFocus(void)
 {
-    unsigned int i;
+	unsigned int i;
 
-    /* Lost the window focus, have to take this as a global key up */
-    for(i = 0; i < KEY_MAXSCAN; i++)
-    {
-        aKeyState[i].state = KEY_UP;
-    }
-    for (i = 0; i < 6; i++)
-    {
-        aMouseState[i].state = KEY_UP;
-    }
+	/* Lost the window focus, have to take this as a global key up */
+	for(i = 0; i < KEY_MAXSCAN; i++)
+	{
+		aKeyState[i].state = KEY_UP;
+	}
+	for (i = 0; i < 6; i++)
+	{
+		aMouseState[i].state = KEY_UP;
+	}
 }
 
 /* This returns true if the key is currently depressed */
 bool keyDown(KEY_CODE code)
 {
-    ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
-    return (aKeyState[code].state != KEY_UP);
+	ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
+	return (aKeyState[code].state != KEY_UP);
 }
 
 /* This returns true if the key went from being up to being down this frame */
 bool keyPressed(KEY_CODE code)
 {
-    ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
-    return ((aKeyState[code].state == KEY_PRESSED) || (aKeyState[code].state == KEY_PRESSRELEASE));
+	ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
+	return ((aKeyState[code].state == KEY_PRESSED) || (aKeyState[code].state == KEY_PRESSRELEASE));
 }
 
 /* This returns true if the key went from being down to being up this frame */
 bool keyReleased(KEY_CODE code)
 {
-    ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
-    return ((aKeyState[code].state == KEY_RELEASED) || (aKeyState[code].state == KEY_PRESSRELEASE));
+	ASSERT( keyCodeToSDLKey(code) < KEY_MAXSCAN, "Invalid key code: %d", code );
+	return ((aKeyState[code].state == KEY_RELEASED) || (aKeyState[code].state == KEY_PRESSRELEASE));
 }
 
 /* Return the X coordinate of the mouse */
 Uint16 mouseX(void)
 {
-    return mouseXPos;
+	return mouseXPos;
 }
 
 /* Return the Y coordinate of the mouse */
 Uint16 mouseY(void)
 {
-    return mouseYPos;
+	return mouseYPos;
 }
 
 Vector2i mousePressPos(MOUSE_KEY_CODE code)
 {
-    return aMouseState[code].pressPos;
+	return aMouseState[code].pressPos;
 }
 
 Vector2i mouseReleasePos(MOUSE_KEY_CODE code)
 {
-    return aMouseState[code].releasePos;
+	return aMouseState[code].releasePos;
 }
 
 /* This returns true if the mouse key is currently depressed */
 bool mouseDown(MOUSE_KEY_CODE code)
 {
-    return (aMouseState[code].state != KEY_UP) ||
+	return (aMouseState[code].state != KEY_UP) ||
 
-           // holding down LMB and RMB counts as holding down MMB
-           (code == MOUSE_MMB && aMouseState[MOUSE_LMB].state != KEY_UP && aMouseState[MOUSE_RMB].state != KEY_UP);
+		   // holding down LMB and RMB counts as holding down MMB
+		   (code == MOUSE_MMB && aMouseState[MOUSE_LMB].state != KEY_UP && aMouseState[MOUSE_RMB].state != KEY_UP);
 }
 
 /* This returns true if the mouse key was double clicked */
 bool mouseDClicked(MOUSE_KEY_CODE code)
 {
-    return (aMouseState[code].state == KEY_DOUBLECLICK);
+	return (aMouseState[code].state == KEY_DOUBLECLICK);
 }
 
 /* This returns true if the mouse key went from being up to being down this frame */
 bool mousePressed(MOUSE_KEY_CODE code)
 {
-    return ((aMouseState[code].state == KEY_PRESSED) ||
-            (aMouseState[code].state == KEY_DOUBLECLICK) ||
-            (aMouseState[code].state == KEY_PRESSRELEASE));
+	return ((aMouseState[code].state == KEY_PRESSED) ||
+			(aMouseState[code].state == KEY_DOUBLECLICK) ||
+			(aMouseState[code].state == KEY_PRESSRELEASE));
 }
 
 /* This returns true if the mouse key went from being down to being up this frame */
 bool mouseReleased(MOUSE_KEY_CODE code)
 {
-    return ((aMouseState[code].state == KEY_RELEASED) ||
-            (aMouseState[code].state == KEY_DOUBLECLICK) ||
-            (aMouseState[code].state == KEY_PRESSRELEASE));
+	return ((aMouseState[code].state == KEY_RELEASED) ||
+			(aMouseState[code].state == KEY_DOUBLECLICK) ||
+			(aMouseState[code].state == KEY_PRESSRELEASE));
 }
 
 /* Check for a mouse drag, return the drag start coords if dragging */
 bool mouseDrag(MOUSE_KEY_CODE code, uint32_t *px, uint32_t *py)
 {
-    if ((aMouseState[code].state == KEY_DRAG) ||
+	if ((aMouseState[code].state == KEY_DRAG) ||
 
-            // dragging LMB and RMB counts as dragging MMB
-            (code == MOUSE_MMB && ((aMouseState[MOUSE_LMB].state == KEY_DRAG && aMouseState[MOUSE_RMB].state != KEY_UP) ||
-                                   (aMouseState[MOUSE_LMB].state != KEY_UP && aMouseState[MOUSE_RMB].state == KEY_DRAG))))
-    {
-        *px = dragX;
-        *py = dragY;
-        return true;
-    }
+			// dragging LMB and RMB counts as dragging MMB
+			(code == MOUSE_MMB && ((aMouseState[MOUSE_LMB].state == KEY_DRAG && aMouseState[MOUSE_RMB].state != KEY_UP) ||
+								   (aMouseState[MOUSE_LMB].state != KEY_UP && aMouseState[MOUSE_RMB].state == KEY_DRAG))))
+	{
+		*px = dragX;
+		*py = dragY;
+		return true;
+	}
 
-    return false;
+	return false;
 }
 
 void SetMousePos(Uint16 x, Uint16 y)
 {
-    static int mousewarp = -1;
+	static int mousewarp = -1;
 
-    if (mousewarp == -1)
-    {
-        int32_t val;
+	if (mousewarp == -1)
+	{
+		int32_t val;
 
-        mousewarp = 1;
-        if (getWarzoneKeyNumeric("nomousewarp", &val))
-        {
-            mousewarp = !val;
-        }
-    }
-    if (mousewarp)
-    {
-        SDL_WarpMouse(x, y);
-    }
+		mousewarp = 1;
+		if (getWarzoneKeyNumeric("nomousewarp", &val))
+		{
+			mousewarp = !val;
+		}
+	}
+	if (mousewarp)
+	{
+		SDL_WarpMouse(x, y);
+	}
 }

@@ -455,9 +455,9 @@ extern BOOL scrGetGameStatus(void);
 
 typedef enum gamestatus
 {
-    STATUS_ReticuleIsOpen,
-    STATUS_BattleMapViewEnabled,
-    STATUS_DeliveryReposInProgress
+	STATUS_ReticuleIsOpen,
+	STATUS_BattleMapViewEnabled,
+	STATUS_DeliveryReposInProgress
 } GAMESTATUS;
 
 //get the colour number used by a player

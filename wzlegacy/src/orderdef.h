@@ -31,26 +31,26 @@ extern "C"
 #endif //__cplusplus
 
 // data for barbarians retreating
-    typedef struct _run_data
-    {
-        Vector2i    sPos; // position to retreat to
-        uint8_t     forceLevel; // number of units below which might run
-        uint8_t     healthLevel; // %health value below which to turn and run - FOR GROUPS ONLY
-        uint8_t     leadership; // basic chance to run
-    } RUN_DATA;
+typedef struct _run_data
+{
+	Vector2i    sPos; // position to retreat to
+	uint8_t     forceLevel; // number of units below which might run
+	uint8_t     healthLevel; // %health value below which to turn and run - FOR GROUPS ONLY
+	uint8_t     leadership; // basic chance to run
+} RUN_DATA;
 
-    typedef struct _droid_order_data
-    {
-        int32_t			order;
-        uint16_t			x,y;
-        uint16_t			x2,y2;
-        BASE_OBJECT		*psObj;
-        BASE_STATS		*psStats;
-    } DROID_ORDER_DATA;
+typedef struct _droid_order_data
+{
+	int32_t			order;
+	uint16_t			x, y;
+	uint16_t			x2, y2;
+	BASE_OBJECT		*psObj;
+	BASE_STATS		*psStats;
+} DROID_ORDER_DATA;
 
 
-    extern RUN_DATA asRunData[MAX_PLAYERS]; // retreat positions for the players
-    extern void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder);
+extern RUN_DATA asRunData[MAX_PLAYERS]; // retreat positions for the players
+extern void orderDroidBase(DROID *psDroid, DROID_ORDER_DATA *psOrder);
 
 #ifdef __cplusplus
 }

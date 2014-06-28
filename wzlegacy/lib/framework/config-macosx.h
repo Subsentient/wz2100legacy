@@ -11,7 +11,7 @@
 
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
-   
+
 #include "src/version.h" //Used for version info.
 
 #define ENABLE_NLS 1
