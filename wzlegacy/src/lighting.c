@@ -45,8 +45,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // These values are multiplied by the camera distance
 // to obtain the optimal settings when fully zoomed out
 // Determine these when fully zoomed out
-#define FOG_BEGIN_SCALE 0.3
-#define FOG_END_SCALE 0.6
+#define FOG_BEGIN_SCALE 0.7
+#define FOG_END_SCALE 1.2
 
 /*	The vector that holds the sun's lighting direction - planar */
 static Vector3f theSun;
