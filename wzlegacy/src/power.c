@@ -324,36 +324,23 @@ void newGameInitPower(void)
 }
 
 static int useAvailablePower(int player, int powerWanted)
-{
-	static int powerPerConsumer[MAX_PLAYERS] = {0};         // These values should be reset if starting a new game, but who cares about theoretically possible desynchs like that in 2.3...
-	static int powerConsumersThisTick[MAX_PLAYERS] = {0};
-	static int powerGameTimeOfThisTick[MAX_PLAYERS] = {0};
-
+{ /*2.3 made this painfully slow, with multiple objects taking time to pull their power.
+	In Legacy we now have a power system that's very much like that of 3.1. Instant accrue, with other objects waiting on one to get its power.*/
 	if (powerWanted <= 0)
 	{
 		return 0;  // Nothing to do.
 	}
 
-	if (powerGameTimeOfThisTick[player] != gameTime)
+	if (checkPower(player, powerWanted))  // Must still check if the power is actually available, since available power per consumer is based on data from the previous tick.
 	{
-		// We ticked.
-		// Each object may consume POWER_PER_SECOND power per second, but not more power than is available.
-		powerPerConsumer[player] = gameTime / (GAME_TICKS_PER_SEC / POWER_PER_SECOND) - (gameTime - frameTime) / (GAME_TICKS_PER_SEC / POWER_PER_SECOND);
-		if (powerCalculated)
-		{
-			powerPerConsumer[player] = MIN(powerPerConsumer[player], asPower[player].currentPower / MAX(powerConsumersThisTick[player], 1));
-		}
-		powerConsumersThisTick[player] = 0;
-		powerGameTimeOfThisTick[player] = gameTime;
+		usePower(player, powerWanted);
+		return powerWanted;
 	}
-
-	++powerConsumersThisTick[player];
-
-	if (checkPower(player, powerPerConsumer[player]))  // Must still check if the power is actually available, since available power per consumer is based on data from the previous tick.
+	else
 	{
-		int availablePower = MIN(powerPerConsumer[player], powerWanted);
-		usePower(player, availablePower);
-		return availablePower;
+		const unsigned PowerAvail = asPower[player].currentPower;
+		usePower(player, PowerAvail);
+		return PowerAvail;
 	}
 	return 0;
 }
