@@ -142,7 +142,7 @@ extern BOOL SendResearch		(uint8_t player, uint32_t index);
 extern BOOL SendDestroyFeature  (FEATURE *pF);					// send a destruct feature message.
 extern BOOL sendTextMessage		(const char *pStr, BOOL cast);		// send a text message
 extern BOOL sendAIMessage		(char *pStr, uint32_t player, uint32_t to);	//send AI message
-extern short parseConsoleCommands(const char *InBuffer, short IsGameConsole); //Handle commands processed.
+extern BOOL parseConsoleCommands(const char *InBuffer, short IsGameConsole); //Handle commands processed.
 void printConsoleNameChange(const char *oldName, const char *newName);  ///< Print message to console saying a name changed.
 
 extern BOOL turnOffMultiMsg		(BOOL bDoit);

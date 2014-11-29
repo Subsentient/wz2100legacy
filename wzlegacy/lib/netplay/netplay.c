@@ -3918,12 +3918,12 @@ BOOL NEThaltJoining(void)
 
 // ////////////////////////////////////////////////////////////////////////
 // find games on open connection
-BOOL NETfindGame(void)
+unsigned NETfindGame(void)
 {
 	struct addrinfo *cur;
 	struct addrinfo *hosts;
 	unsigned int gamecount = 0;
-	uint32_t gamesavailable;
+	uint32_t gamesavailable = 0;
 	unsigned int port = (hostname == masterserver_name) ? masterserver_port : gameserver_port;
 	int result = 0;
 	debug(LOG_NET, "Looking for games...");
@@ -3931,7 +3931,7 @@ BOOL NETfindGame(void)
 	if (getLobbyError() == ERROR_CHEAT || getLobbyError() == ERROR_KICKED)
 	{
 		*(int32_t*)&LastHostTime = -1;
-		return false;
+		return 0;
 	}
 	setLobbyError(ERROR_NOERROR);
 
@@ -3939,14 +3939,6 @@ BOOL NETfindGame(void)
 	NetPlay.games[0].desc.dwCurrentPlayers = 0;
 	NetPlay.games[0].desc.dwMaxPlayers = 0;
 
-	if(!NetPlay.bComms)
-	{
-		selectedPlayer	= NET_HOST_ONLY;		// Host is always 0
-		NetPlay.isHost		= true;
-		NetPlay.hostPlayer	= NET_HOST_ONLY;
-		LastHostTime = (int32_t) - 1;
-		return true;
-	}
 	// We first check to see if we were given a IP/hostname from the command line
 	if (strlen(iptoconnect) )
 	{
@@ -3957,7 +3949,7 @@ BOOL NETfindGame(void)
 			debug(LOG_ERROR, "Cannot resolve hostname :%s", strSockError(getSockErr()));
 			setLobbyError(ERROR_CONNECTION);
 			*(int32_t*)&LastHostTime = -1;
-			return false;
+			return 0;
 		}
 		else
 		{
@@ -3972,7 +3964,7 @@ BOOL NETfindGame(void)
 		setLobbyError(ERROR_CONNECTION);
 		*(int32_t*)&LastHostTime = -1;
 
-		return false;
+		return 0;
 	}
 
 	if (tcp_socket != NULL)
@@ -4002,7 +3994,7 @@ BOOL NETfindGame(void)
 		freeaddrinfo(hosts);
 		*(int32_t*)&LastHostTime = -1;
 
-		return false;
+		return 0;
 	}
 	debug(LOG_NET, "New tcp_socket = %p", tcp_socket);
 	// client machines only need 1 socket set
@@ -4014,7 +4006,7 @@ BOOL NETfindGame(void)
 		freeaddrinfo(hosts);
 		*(int32_t*)&LastHostTime = -1;
 
-		return false;
+		return 0;
 	}
 	debug(LOG_NET, "Created socket_set %p", socket_set);
 
@@ -4048,7 +4040,7 @@ BOOL NETfindGame(void)
 		freeaddrinfo(hosts);
 		*(int32_t*)&LastHostTime = -1;
 
-		return false;
+		return 0;
 	}
 
 	debug(LOG_NET, "receiving info on %u game(s)", (unsigned int)gamesavailable);
@@ -4056,7 +4048,7 @@ BOOL NETfindGame(void)
 	// Clear old games from list.
 	memset(NetPlay.games, 0x00, sizeof(NetPlay.games));
 
-	while (gamecount < gamesavailable)
+	for (; gamecount < gamesavailable; ++gamecount)
 	{
 		// Attempt to receive a game description structure
 		if (!NETrecvGAMESTRUCT(&NetPlay.games[gamecount]))
@@ -4073,8 +4065,6 @@ BOOL NETfindGame(void)
 		{
 			addressToText(cur->ai_addr, NetPlay.games[gamecount].desc.host, sizeof(NetPlay.games[gamecount].desc.host));
 		}
-
-		++gamecount;
 	}
 
 	/*Get the time of last hosted game.*/
@@ -4089,7 +4079,8 @@ BOOL NETfindGame(void)
 	}
 
 	freeaddrinfo(hosts);
-	return true;
+	
+	return gamesavailable;
 }
 
 

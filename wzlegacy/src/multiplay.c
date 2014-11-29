@@ -1108,8 +1108,45 @@ BOOL recvResearchStatus()
 
 	return true;
 }
+
+
+//Prints a list of current games in the lobby to the Legacy command console.
+static void ListLobbyIngame(void)
+{
+	unsigned Inc = 0, GameCount = 0;
+	
+	GameCount = NETfindGame(); //Get list of games.
+	
+	if (!GameCount)
+	{//No games.
+		addConsoleMessage("No games in lobby.", DEFAULT_JUSTIFY, CMD_MESSAGE);
+		return;
+	}
+	else
+	{
+		char OutBuf[256];
+		
+		snprintf(OutBuf, sizeof OutBuf, "%u games in lobby:", GameCount);
+		addConsoleMessage(OutBuf, DEFAULT_JUSTIFY, CMD_MESSAGE);
+	}
+		
+	for (Inc = 0; Inc < GameCount; ++Inc)
+	{
+		const GAMESTRUCT *const Game = NetPlay.games + Inc;
+		char OutBuf[2048], ModList[sizeof Game->modlist + 64];
+		
+		if (*Game->modlist) snprintf(ModList, sizeof ModList, " (mods: %s)", Game->modlist);
+		
+		snprintf(OutBuf, sizeof OutBuf, "Name: %s || Map: %s || Host: %s || Players: %d/%d || Version: %s%s",
+				Game->name, Game->mapname, Game->hostname, (int)Game->desc.dwCurrentPlayers, (int)Game->desc.dwMaxPlayers,
+				Game->versionstring, *Game->modlist ? ModList : "");
+				
+		addConsoleMessage(OutBuf, DEFAULT_JUSTIFY, CMD_MESSAGE);
+	}
+	
+}	
 /*This function is used to try and understand all the odd commands you can give the Legacy console.*/
-short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
+BOOL parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 {
 	/*I don't like bools.*/
 #define Matches(y) !strcmp(InBuffer, y)
@@ -1118,12 +1155,13 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 	struct
 	{
 		const char *CmdName;
-		short AvailableAlways;
-		short TakesArg;
+		BOOL AvailableAlways;
+		BOOL TakesArg;
 	} AvailableCommands[] =
 	{
-		{ "!help", 1, 0 }, { "!name", 0, 1 }, { "!kick", 1, 1 }, { "!playerlist", 1, 0},
-		{ "!beep", 1, 1 }, {"!toggleticker", 0, 0}, { "!spectate", 0, 0 }, { NULL, 0, 0 }
+		{ "!help", true, false }, { "!name", false, true }, { "!kick", true, true }, { "!playerlist", true, false},
+		{ "!beep", true, true }, {"!toggleticker", false, false}, { "!spectate", false, false }, { "!lobbygames", false, false },
+		{ NULL, false, false }
 	};
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -1138,17 +1176,21 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 
 			NETchangePlayerName(selectedPlayer, (char*)InBuffer);
 
-			return 1;
+			return true;
 		}
 		else if (Matches("!toggleticker"))
 		{
 			kf_ToggleTicker();
-			return 1;
+			return true;
 		}
 		else if (Matches("!spectate"))
 		{
 			SendSpectateRequest();
-			return 1;
+			return true;
+		}
+		else if (Matches("!lobbygames"))
+		{
+			ListLobbyIngame();
 		}
 	}
 	/*End in-game only commands*/
@@ -1182,7 +1224,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 				++Counter;
 			}
 
-			if (Counter == 7 || AvailableCommands[Inc + 1].CmdName == NULL)
+			if (AvailableCommands[Inc + 1].CmdName == NULL)
 			{
 				addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, CMD_MESSAGE);
 				ConsoleOut[0] = '\0';
@@ -1193,7 +1235,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 
 		addConsoleMessage(_("Items followed by periods expect a parameter."), DEFAULT_JUSTIFY, CMD_MESSAGE);
 
-		return 1;
+		return true;
 	}
 	else if (InBuffer[0] == '/') /*Allow for true /me messages.*/
 	{
@@ -1201,7 +1243,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 
 		if (StartsWith("/me "))
 		{
-			InBuffer += 4;
+			InBuffer += (sizeof "/me " - 1);
 		}
 		else /*Give choice of / or /me.*/
 		{
@@ -1218,7 +1260,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		NETstring(OutSend, MAX_CONSOLE_STRING_LENGTH);
 		NETend();
 
-		return 1;
+		return true;
 	}
 	else if (StartsWith("!kick "))
 	{
@@ -1233,7 +1275,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			if (!isdigit(InBuffer[0]))
 			{
 				addConsoleMessage(_("Please enter a player number to kick."), LEFT_JUSTIFY, CMD_MESSAGE);
-				return 1;
+				return true;
 			}
 
 			PlayerToKick = (short)atoi(InBuffer);
@@ -1241,20 +1283,20 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			if (PlayerToKick >= MAX_PLAYERS || PlayerToKick < 0)
 			{
 				addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, CMD_MESSAGE);
-				return 1;
+				return true;
 			}
 
 			if (PlayerToKick == selectedPlayer)
 			{
 				/*Uhh, can't kick ourselves.*/
 				addConsoleMessage(_("You cannot kick yourself."), LEFT_JUSTIFY, CMD_MESSAGE);
-				return 1;
+				return true;
 			}
 
 			if (!NetPlay.bComms && bMultiPlayer && !isHumanPlayer(PlayerToKick))
 			{
 				addConsoleMessage(_("You cannot kick AIs in a skirmish."), LEFT_JUSTIFY, CMD_MESSAGE);
-				return 1;
+				return true;
 			}
 
 			sprintf(OutText, _("The host has kicked %s from the game!"), getPlayerName(PlayerToKick));
@@ -1268,7 +1310,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 			addConsoleMessage(_("You are not the host."), LEFT_JUSTIFY, CMD_MESSAGE);
 		}
 
-		return 1;
+		return true;
 	}
 	else if (StartsWith("!beep "))
 	{
@@ -1280,7 +1322,7 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		if (!isdigit(InBuffer[0]))
 		{
 			addConsoleMessage(_("Please enter a player number to beep."), LEFT_JUSTIFY, CMD_MESSAGE);
-			return 1;
+			return true;
 		}
 
 		PlayerToBeep = atoi(InBuffer);
@@ -1288,19 +1330,19 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		if (PlayerToBeep >= MAX_PLAYERS)
 		{
 			addConsoleMessage(_("Invalid player number."), LEFT_JUSTIFY, CMD_MESSAGE);
-			return 1;
+			return true;
 		}
 
 		if (PlayerToBeep == selectedPlayer)
 		{
 			addConsoleMessage(_("You cannot beep yourself."), LEFT_JUSTIFY, CMD_MESSAGE);
-			return 1;
+			return true;
 		}
 
 		if (!isHumanPlayer(PlayerToBeep))
 		{
 			addConsoleMessage(_("You can only beep human players."), LEFT_JUSTIFY, CMD_MESSAGE);
-			return 1;
+			return true;
 		}
 
 		snprintf(ConsoleOut, MAX_CONSOLE_STRING_LENGTH, PageFormat, NetPlay.players[PlayerToBeep].name);
@@ -1312,16 +1354,16 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		NETuint32_t(&selectedPlayer);
 		NETend();
 
-		return 1;
+		return true;
 	}
 	else if (Matches("!playerlist"))
 	{
-		short Inc;
+		unsigned Inc = 0;
 		char Temp[MAX_CONSOLE_STRING_LENGTH];
 
 		strncpy(ConsoleOut, _("Players: "), MAX_CONSOLE_STRING_LENGTH);
 
-		for (Inc = 0; Inc < game.maxPlayers; ++Inc)
+		for (; Inc < game.maxPlayers; ++Inc)
 		{
 			snprintf(Temp, MAX_CONSOLE_STRING_LENGTH, _("%s (%s) at slot %d; "), getPlayerName(Inc), getPlayerColourName(Inc), Inc);
 			strncat(ConsoleOut, Temp, MAX_CONSOLE_STRING_LENGTH);
@@ -1330,10 +1372,10 @@ short parseConsoleCommands(const char *InBuffer, short IsGameConsole)
 		ConsoleOut[strlen(ConsoleOut) - 2] = '.'; //Remove trailing semicolon, replace with period.
 		addConsoleMessage(ConsoleOut, DEFAULT_JUSTIFY, CMD_MESSAGE);
 
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -1948,10 +1990,12 @@ BOOL recvMapFileRequested()
 
 	if (!NetPlay.players[player].wzFile.isSending)
 	{
+		BOOL Classic = false;
+		
 		NetPlay.players[player].needFile = true;
 		NetPlay.players[player].wzFile.isCancelled = false;
 		NetPlay.players[player].wzFile.isSending = true;
-		BOOL Classic = false;
+
 
 		memset(mapStr, 0, 256);
 		memset(mapName, 0, 256);
@@ -1983,7 +2027,7 @@ BOOL recvMapFileRequested()
 		// Checking to see if file is available...
 		if (!(pFileHandle = PHYSFS_openRead(mapStr[0])) && !(Classic = true, pFileHandle = PHYSFS_openRead(mapStr[1])))
 		{
-			debug(LOG_ERROR, "Failed to open %s for reading: %dc-%s, error %d", game.maxPlayers, mapName, PHYSFS_getLastError());
+			debug(LOG_ERROR, "Failed to open %s for reading: %dc-%s, error %s", mapStr[Classic], game.maxPlayers, mapName, PHYSFS_getLastError());
 			debug(LOG_FATAL, "You have a map (%dc-%s) that can't be located.\n\n"
 				  "Make sure it is in the correct directory and or format! (No map packs!)", game.maxPlayers, mapName);
 			// NOTE: if we get here, then the game is basically over, The host can't send the file for whatever reason...

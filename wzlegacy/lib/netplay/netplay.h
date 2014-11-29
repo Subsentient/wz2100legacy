@@ -339,7 +339,7 @@ extern int32_t	NETgetGameFlags(uint32_t flag);			// return one of the four flags
 extern int32_t	NETgetGameFlagsUnjoined(unsigned int gameid, unsigned int flag);	// return one of the four flags(dword) about the game.
 extern BOOL	NETsetGameFlags(uint32_t flag, int32_t value);	// set game flag(1-4) to value.
 extern BOOL	NEThaltJoining(void);				// stop new players joining this game
-extern BOOL	NETfindGame(void);		// find games being played(uses GAME_GUID);
+extern unsigned	NETfindGame(void);		// find games being played(uses GAME_GUID);
 extern BOOL	NETjoinGame(uint32_t gameNumber, const char *playername);			// join game given with playername
 extern BOOL	NEThostGame(const char *SessionName, const char *PlayerName,// host a game
 						int32_t one, int32_t two, int32_t three, int32_t four, uint32_t plyrs);
