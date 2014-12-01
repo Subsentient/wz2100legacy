@@ -38,6 +38,15 @@ typedef struct _player_power
 	int32_t		extractedPower;		/**< The power extracted but not converted. */
 } PLAYER_POWER;
 
+typedef struct _power_queue
+{
+	BASE_OBJECT *psObject;
+	struct _power_queue *psNext, *psPrev;
+} POWER_QUEUE;
+	
+/* Add object to Legacy's power queue. */
+POWER_QUEUE *PowerQueue_Add(BASE_OBJECT *const Object);
+
 /** Allocate the space for the playerPower. */
 BOOL allocPlayerPower(void);
 
