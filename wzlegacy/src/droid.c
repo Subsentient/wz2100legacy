@@ -1237,9 +1237,11 @@ BOOL droidUpdateBuild(DROID *psDroid)
 
 		intBuildFinished(psDroid);
 
-		//We used to do a SendBuildFinished(psStruct) about here, but then it occurred to me, that's probably going to help cheaters.
-
-
+		if (bMultiMessages && myResponsibility(psStruct->player) && psStruct->pStructureType->type == REF_RESOURCE_EXTRACTOR)
+		{ //Since oil derricks deconstruct on their own, we need to still send build completed for them.
+			SendBuildFinished(psStruct);
+		}
+		
 		//only play the sound if selected player
 		if (psStruct->player == selectedPlayer
 				&& (psDroid->order != DORDER_LINEBUILD
