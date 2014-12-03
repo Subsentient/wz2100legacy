@@ -86,7 +86,7 @@ extern uint8_t				bDisplayMultiJoiningStatus;	// draw load progress?
 // FIXME: Use possible compression on the packets.
 // NOTE: Remember, we (now) allow 150 units max * 7 (1 human, 6 AI possible for Host) to send to the other player.
 
-#define MAX_int8_tSPERSEC			14336
+#define MAX_BYTESPERSEC	14336
 
 #define ANYPLAYER				99
 #define ONEPLAYER				98

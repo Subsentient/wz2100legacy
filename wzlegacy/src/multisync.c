@@ -53,16 +53,26 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
 // function definitions
 
 static BOOL sendStructureCheck	(void);							//Structure
-static void packageCheck		(const DROID* pD);
+static void packageCheck		(const DROID *pD);
 static BOOL sendDroidCheck		(void);							//droids
 
+static void highLevelDroidUpdate(DROID *psDroid,
+								 float fx,
+								 float fy,
+								 uint32_t state,
+								 uint32_t order,
+								 BASE_OBJECT *psTarget,
+								 float experience);
 
-/*
-static void onscreenUpdate		(DROID *pDroid,uint32_t dam,		// the droid and its damage
+
+static void onscreenUpdate		(DROID *pDroid, uint32_t dam,		// the droid and its damage
 								 uint16_t dir,					// direction it should facing
 								 DROID_ORDER order);			// what it should be doing
-*/
-static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen);
+
+static void offscreenUpdate		(DROID *pDroid, uint32_t dam,
+								 float fx, float fy,
+								 uint16_t dir,
+								 DROID_ORDER order);
 
 static BOOL sendPowerCheck(void);
 static uint32_t averagePing(void);
@@ -86,7 +96,7 @@ static BOOL okToSend(void)
 {
 	// Update checks and go no further if any exceeded.
 	// removing the received check again ... add NETgetRecentBytesRecvd() to left hand side of equation if this works badly
-	if (NETgetRecentBytesSent() >= MAX_int8_tSPERSEC)
+	if (NETgetRecentBytesSent() >= MAX_BYTESPERSEC)
 	{
 		return false;
 	}
@@ -179,9 +189,9 @@ BOOL sendCheck(void)
 
 // ////////////////////////////////////////////////////////////////////////////
 // pick a droid to send, NULL otherwise.
-static DROID* pickADroid(void)
+static DROID *pickADroid(void)
 {
-	DROID* pD = NULL;						// current droid we're checking
+	DROID *pD = NULL;						// current droid we're checking
 	unsigned int i;
 	static uint32_t	droidnum = 0;						// how far down the playerlist to go.
 	static uint32_t	player = 0;						// current player we're checking
@@ -235,7 +245,7 @@ static DROID* pickADroid(void)
  *
  *  Call this when you need to update the given droid right now.
  */
-BOOL ForceDroidSync(const DROID* droidToSend)
+BOOL ForceDroidSync(const DROID *droidToSend)
 {
 	uint8_t count = 1;		// *always* one
 
@@ -307,21 +317,18 @@ static BOOL sendDroidCheck(void)
 
 // ////////////////////////////////////////////////////////////////////////////
 // Send a Single Droid Check message
-static void packageCheck(const DROID* pD)
+static void packageCheck(const DROID *pD)
 {
 	// Copy these variables so that we don't have to violate pD's constness
 	uint8_t player = pD->player;
 	uint32_t droidID = pD->id;
 	int32_t order = pD->order;
-	int8_t movestatus = pD->sMove.Status;
 	uint32_t secondaryOrder = pD->secondaryOrder;
 	uint32_t body = pD->body;
-	float moveDir = pD->sMove.moveDir;
 	float direction = pD->direction;
 	float experience = pD->experience;
 	float sMoveX = pD->sMove.fx;
 	float sMoveY = pD->sMove.fy;
-	float speed = pD->sMove.speed;
 
 	// Send the player to which the droid belongs
 	NETuint8_t(&player);
@@ -338,42 +345,25 @@ static void packageCheck(const DROID* pD)
 	// Droid's current HP
 	NETuint32_t(&body);
 
-	// Direction it is facing
-	NETfloat(&direction);
-
 	// Direction it is going in
-	NETfloat(&moveDir);
-
-	// Speed of movement
-	NETfloat(&speed);
-
-	// How it's moving, if at all. Fixes wiggly truck syndrome.
-	NETint8_t(&movestatus);
+	NETfloat(&direction);
 
 	NETfloat(&sMoveX);
 	NETfloat(&sMoveY);
 
-	if (order != DORDER_NONE)
+	if (pD->order == DORDER_ATTACK)
 	{
-		if (validOrderForObj(pD->order))
-		{
-			uint32_t targetID = 0;
+		uint32_t targetID = pD->psTarget->id;
 
-			if(pD->psTarget)
-			{
-				targetID = pD->psTarget->id;
-			}
+		NETuint32_t(&targetID);
+	}
+	else if (pD->order == DORDER_MOVE)
+	{
+		uint16_t orderX = pD->orderX;
+		uint16_t orderY = pD->orderY;
 
-			NETuint32_t(&targetID);
-		}
-		else if (validOrderForLoc(pD->order))
-		{
-			uint16_t orderX = pD->orderX;
-			uint16_t orderY = pD->orderY;
-
-			NETuint16_t(&orderX);
-			NETuint16_t(&orderY);
-		}
+		NETuint16_t(&orderX);
+		NETuint16_t(&orderY);
 	}
 
 	// Last send the droid's experience
@@ -381,7 +371,7 @@ static void packageCheck(const DROID* pD)
 }
 
 
-// ///////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
 // receive a check and update the local world state accordingly
 BOOL recvDroidCheck()
 {
@@ -395,79 +385,69 @@ BOOL recvDroidCheck()
 
 	for (i = 0; i < count; i++)
 	{
-		DROID		*pD, sDroid;
+		DROID		*pD;
+		BASE_OBJECT	*psTarget = NULL;
+		float		fx = 0, fy = 0;
+		DROID_ORDER	order = 0;
 		BOOL		onscreen;
-		uint32_t target;
+		uint8_t		player;
+		float		direction, experience;
+		uint16_t	tx, ty;
+		uint32_t	ref, body, target = 0, secondaryOrder;
 
 		// Fetch the player
-		NETuint8_t(&sDroid.player);
+		NETuint8_t(&player);
 
 		// Fetch the droid being checked
-		NETuint32_t(&sDroid.id);
+		NETuint32_t(&ref);
 
 		// The droid's order
-		NETenum(&sDroid.order);
+		NETenum(&order);
 
 		// Secondary order
-		NETuint32_t(&sDroid.secondaryOrder);
+		NETuint32_t(&secondaryOrder);
 
 		// HP
-		NETuint32_t(&sDroid.body);
+		NETuint32_t(&body);
 
-		// Direction it is facing
-		NETfloat(&sDroid.direction);
-
-		// Direction it is going in
-		NETfloat(&sDroid.sMove.moveDir);
-
-		// Current speed of movement
-		NETfloat(&sDroid.sMove.speed);
-
-		// What mode it's moving as.
-		NETint8_t((void*)&sDroid.sMove.Status); //I don't care if you're a different sign. Shut up.
+		// Direction
+		NETfloat(&direction);
 
 		// Fractional move
-		NETfloat(&sDroid.sMove.fx);
-		NETfloat(&sDroid.sMove.fy);
-
-		/*For now, this is how we handle the multiple variables.*/
-		sDroid.pos.x = sDroid.sMove.fx;
-		sDroid.pos.y = sDroid.sMove.fy;
+		NETfloat(&fx);
+		NETfloat(&fy);
 
 		// Find out what the droid is aiming at
-		if (sDroid.order != DORDER_NONE)
+		if (order == DORDER_ATTACK)
 		{
-			if (validOrderForObj(sDroid.order))
-			{
-				NETuint32_t(&target);
-			}
-			// Else if the droid is moving where to
-			else if (validOrderForLoc(sDroid.order))
-			{
-				NETuint16_t(&sDroid.orderX);
-				NETuint16_t(&sDroid.orderY);
-			}
+			NETuint32_t(&target);
+		}
+		// Else if the droid is moving where to
+		else if (order == DORDER_MOVE)
+		{
+			NETuint16_t(&tx);
+			NETuint16_t(&ty);
 		}
 
 		// Get the droid's experience
-		NETfloat(&sDroid.experience);
+		NETfloat(&experience);
 
 		/*
 		 * Post processing
 		 */
 
 		// Find the droid in question
-		if (!IdToDroid(sDroid.id, sDroid.player, &pD))
+		if (!IdToDroid(ref, player, &pD))
 		{
-			NETlogEntry("Recvd Unknown droid info. val=player", SYNC_FLAG, sDroid.player);
-			debug(LOG_SYNC, "Received checking info for an unknown (as yet) droid. player:%d ref:%d", sDroid.player, sDroid.id);
+			NETlogEntry("Recvd Unknown droid info. val=player", SYNC_FLAG, player);
+			debug(LOG_SYNC, "Received checking info for an unknown (as yet) droid. player:%d ref:%d", player, ref);
 			continue;
 		}
 
 		// If there is a target find it
 		if (target)
 		{
-			sDroid.psTarget = IdToPointer(target, ANYPLAYER);
+			psTarget = IdToPointer(target, ANYPLAYER);
 		}
 
 		/*
@@ -476,7 +456,7 @@ BOOL recvDroidCheck()
 		 * onscreen update, otherwise do an offscreen one.
 		 */
 		if (droidOnScreen(pD, 0)
-				&& ingame.PingTimes[sDroid.player] < PING_LIMIT)
+				&& ingame.PingTimes[player] < PING_LIMIT)
 		{
 			onscreen = true;
 		}
@@ -485,7 +465,24 @@ BOOL recvDroidCheck()
 			onscreen = false;
 		}
 
-		DroidScreenUpdate(pD, &sDroid, onscreen);
+		// Update the droid
+		if (onscreen || isVtolDroid(pD))
+		{
+			onscreenUpdate(pD, body, direction, order);
+		}
+		else
+		{
+			offscreenUpdate(pD, body, fx, fy, direction, order);
+		}
+
+//			debug(LOG_SYNC, "difference in position for droid %d; was (%g, %g); did %s update", (int)pD->id,
+//			      fx - pD->sMove.fx, fy - pD->sMove.fy, onscreen ? "onscreen" : "offscreen");
+
+		// Update the higher level stuff
+		if (!isVtolDroid(pD))
+		{
+			highLevelDroidUpdate(pD, fx, fy, secondaryOrder, order, psTarget, experience);
+		}
 
 		// ...and repeat!
 	}
@@ -495,49 +492,124 @@ BOOL recvDroidCheck()
 	return true;
 }
 
-// droid needs modyfying. (now do onscreen as well)
-static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+// higher order droid updating. Works mainly at the order level. comes after the main sync.
+static void highLevelDroidUpdate(DROID *psDroid, float fx, float fy,
+								 uint32_t state, uint32_t order,
+								 BASE_OBJECT *psTarget, float experience)
 {
-	PROPULSION_STATS *psPropStats;
-	int			oldX, oldY;
+	// update kill rating.
+	psDroid->experience = experience;
 
-	if (fabs((float)psDroid->pos.x - psDData->pos.x) > TILE_UNITS ||
-			fabs((float)psDroid->pos.y - psDData->pos.y) > TILE_UNITS)
-	{
-		debug(LOG_SYNC, "Moving droid %d from (%u,%u) to (%u,%u) (has order %s)",
-			  (int)psDroid->id, psDroid->pos.x, psDroid->pos.y, (uint32_t)psDData->sMove.fx,
-			  (uint32_t)psDData->sMove.fy, getDroidOrderName(psDData->order));
-	}
-
-	oldX = psDroid->pos.x;
-	oldY = psDroid->pos.y;
-
-	if (!onScreen || fabs(psDData->sMove.fx - psDroid->sMove.fx) > TILE_UNITS ||
-			fabs(psDData->sMove.fy - psDroid->sMove.fy) > TILE_UNITS)
-	{
-		/*If we are not on the screen, or on the wrong tile, fix it.*/
-		psDroid->pos.x = psDData->pos.x;
-		psDroid->pos.y = psDData->pos.y;
-		psDroid->sMove.fx = psDData->sMove.fx;
-		psDroid->sMove.fy = psDData->sMove.fy;
-		psDroid->sMove.speed = psDData->sMove.speed;
-	}
-
-	/*Synchronize these always*/
-	psDroid->body = psDData->body;								// update damage
-	psDroid->direction = psDData->direction;			// update rotation
-	psDroid->sMove.moveDir = psDData->sMove.moveDir; // Direction of movement
-
-	if (oldX != psDroid->pos.x || oldY != psDroid->pos.y)
+	// remote droid is attacking, not here tho!
+	if(order == DORDER_ATTACK && psDroid->order != DORDER_ATTACK && psTarget)
 	{
 		turnOffMultiMsg(true);
+		orderDroidObj(psDroid, DORDER_ATTACK, psTarget);
+		turnOffMultiMsg(false);
+	}
+
+	// secondary orders.
+	if(psDroid->secondaryOrder != state)
+	{
+		psDroid->secondaryOrder = state;
+	}
+
+	// see how well the sync worked, optionally update.
+	// offscreen updates will make this ok each time.
+	if (psDroid->order == DORDER_NONE && order == DORDER_NONE)
+	{
+		if(  (fabs(fx - psDroid->sMove.fx) > (TILE_UNITS * 2))		// if more than 2 tiles wrong.
+				|| (fabs(fy - psDroid->sMove.fy) > (TILE_UNITS * 2)) )
+		{
+			turnOffMultiMsg(true);
+			debug(LOG_SYNC, "Move order from %d,%d to %d,%d", (int)psDroid->pos.x, (int)psDroid->pos.y, (int)fx, (int)fy);
+			orderDroidLoc(psDroid, DORDER_MOVE, fx, fy);
+			turnOffMultiMsg(false);
+		}
+	}
+}
+
+// ////////////////////////////////////////////////////////////////////////////
+// droid on screen needs modifying
+static void onscreenUpdate(DROID *psDroid,
+						   uint32_t dam,
+						   uint16_t dir,
+						   DROID_ORDER order)
+{
+	BASE_OBJECT *psClickedOn;
+	BOOL		bMouseOver = false;
+
+	psClickedOn = mouseTarget();
+	if( psClickedOn != NULL && psClickedOn->type == OBJ_DROID)
+	{
+		if(psClickedOn->id == psDroid->id && mouseDown(MOUSE_RMB))
+		{
+			bMouseOver = true;						// override, so you dont see the updates.
+		}
+	}
+
+	if(!bMouseOver)
+	{
+		psDroid->body = dam;						// update damage
+	}
+
+//	if(psDroid->order == DORDER_NONE || (psDroid->order == DORDER_GUARD && psDroid->action == DACTION_NONE) )
+//	{
+//		psDroid->direction	 = dir  %360;				//update rotation
+//	}
+
+	return;
+}
+
+// ////////////////////////////////////////////////////////////////////////////
+// droid offscreen needs modyfying.
+static void offscreenUpdate(DROID *psDroid,
+							uint32_t dam,
+							float fx,
+							float fy,
+							uint16_t dir,
+							DROID_ORDER order)
+{
+	PROPULSION_STATS	*psPropStats;
+	int			oldX, oldY;
+
+	if (fabs((float)psDroid->pos.x - fx) > TILE_UNITS || fabs((float)psDroid->pos.y - fy) > TILE_UNITS)
+	{
+		debug(LOG_SYNC, "Moving droid %d from (%u,%u) to (%u,%u) (has order %s)",
+			  (int)psDroid->id, psDroid->pos.x, psDroid->pos.y, (uint32_t)fx, (uint32_t)fy, getDroidOrderName(order));
+	}
+
+	oldX			= psDroid->pos.x;
+	oldY			= psDroid->pos.y;
+	psDroid->pos.x		= fx;				// update x
+	psDroid->pos.y		= fy;				// update y
+	psDroid->sMove.fx	= fx;
+	psDroid->sMove.fy	= fy;
+	psDroid->direction	= dir % 360;			// update rotation
+	psDroid->body		= dam;								// update damage
+	if (oldX != psDroid->pos.x || oldY != psDroid->pos.y)
+	{
 		gridMoveDroid(psDroid, oldX, oldY);
+	}
+
+	// stage one, update the droid's position & info, LOW LEVEL STUFF.
+	if(	   order == DORDER_ATTACK
+			|| order == DORDER_MOVE
+			|| order ==	DORDER_RTB
+			|| order == DORDER_RTR)	// move order
+	{
+		// reroute the droid.
+		turnOffMultiMsg(true);
+		moveDroidTo(psDroid, psDroid->sMove.DestinationX, psDroid->sMove.DestinationY);
 		turnOffMultiMsg(false);
 	}
 
 	// stop droid if remote droid has stopped.
-	if ((psDData->order == DORDER_NONE || psDData->order == DORDER_GUARD)
-			&& (psDroid->order != DORDER_NONE && psDroid->order != DORDER_GUARD))
+	if ((order == DORDER_NONE || order == DORDER_GUARD)
+			&& !(psDroid->order == DORDER_NONE || psDroid->order == DORDER_GUARD))
 	{
 		turnOffMultiMsg(true);
 		moveStopDroid(psDroid);
@@ -546,20 +618,12 @@ static void DroidScreenUpdate(DROID *psDroid, DROID *psDData, bool onScreen)
 
 	// snap droid(if on ground)  to terrain level at x,y.
 	psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
-
-	ASSERT( psPropStats != NULL, "DroidScreenUpdate: invalid propulsion stats pointer" );
+	ASSERT( psPropStats != NULL, "offscreenUpdate: invalid propulsion stats pointer" );
 	if(	psPropStats->propulsionType != PROPULSION_TYPE_LIFT )		// if not airborne.
 	{
 		psDroid->pos.z = map_Height(psDroid->pos.x, psDroid->pos.y);
 	}
-
-	/*Synchronize the move mode.*/
-	psDroid->sMove.Status = psDData->sMove.Status;
-	psDroid->secondaryOrder = psDData->secondaryOrder;
-
-	/*Synchronize experience.*/
-	psDroid->experience = psDData->experience;
-
+	return;
 }
 
 
@@ -686,9 +750,9 @@ static BOOL sendStructureCheck(void)
 BOOL recvStructureCheck()
 {
 	STRUCTURE		*pS;
-	STRUCTURE_STATS	*psStats;
+	//STRUCTURE_STATS	*psStats;
 	BOOL			hasCapacity = true;
-	int				i, j;
+	int				j;
 	float			direction;
 	uint8_t			player, ourCapacity;
 	uint32_t		body;
@@ -719,86 +783,11 @@ BOOL recvStructureCheck()
 		pS->body = body;
 		pS->direction = direction;
 	}
-	// Structure was not found - build it
-	else
-	{
-#if defined (DEBUG)
-		NETlogEntry("structure check failed, adding struct. val=type", SYNC_FLAG, type - REF_STRUCTURE_START);
-#endif
-		for (i = 0; i < numStructureStats && asStructureStats[i].ref != type; i++);
-		psStats = &asStructureStats[i];
-
-		// Check for similar buildings, to avoid overlaps
-		if (TileHasStructure(mapTile(map_coord(x), map_coord(y))))
-		{
-#if defined (DEBUG)
-			NETlogEntry("Tile has structure val=player", SYNC_FLAG, player);
-#endif
-			pS = getTileStructure(map_coord(x), map_coord(y));
-
-			// If correct type && player then complete & modify
-			if (pS
-					&& pS->pStructureType->type == type
-					&& pS->player == player)
-			{
-				pS->direction = direction;
-				pS->id = ref;
-
-				if (pS->status != SS_BUILT)
-				{
-					pS->status = SS_BUILT;
-					buildingComplete(pS);
-				}
-#if defined (DEBUG)
-				NETlogEntry("scheck: fixed?", SYNC_FLAG, player);
-#endif
-			}
-			// Wall becoming a cornerwall
-			else if (pS->pStructureType->type == REF_WALL)
-			{
-				if (psStats->type == REF_WALLCORNER)
-				{
-#if defined (DEBUG)
-					NETlogEntry("scheck: fixed wall->cornerwall", SYNC_FLAG, 0);
-#endif
-					removeStruct(pS, true);
-
-					powerCalc(false);
-					pS = buildStructure((STRUCTURE_STATS * )psStats, x, y, player, true);
-					powerCalc(true);
-
-					if (pS)
-					{
-						pS->id = ref;
-					}
-					else
-					{
-						NETlogEntry("scheck: failed to upgrade wall!", SYNC_FLAG, player);
-						return false;
-					}
-				}
-			}
-			else
-			{
-				NETlogEntry("Tile did not have correct type or player val=player", SYNC_FLAG, player);
-				return false;
-			}
-		}
-		// Nothing exists there so lets get building!
-		else
-		{
-			NETlogEntry("didn't find structure at all, building it", SYNC_FLAG, 0);
-
-			powerCalc(false);
-			pS = buildStructure((STRUCTURE_STATS *) psStats, x, y, player, true);
-			powerCalc(true);
-		}
-	}
 
 	if (pS)
 	{
 		// Check its finished
-		if (pS->status != SS_BUILT)
+		if (pS->currentBuildPts > (int32_t)pS->pStructureType->buildPoints)
 		{
 			pS->direction = direction;
 			pS->id = ref;
@@ -903,6 +892,8 @@ BOOL recvPowerCheck()
 	power2 = getPower(player);
 	if (power != power2)
 	{
+//		debug(LOG_SYNC, "NET_CHECK_POWER: Adjusting power for player %d (%s) from %u to %u",
+//		      (int)player, isHumanPlayer(player) ? "Human" : "AI", power2, power);
 		setPower( (uint32_t)player, power);
 	}
 	return true;

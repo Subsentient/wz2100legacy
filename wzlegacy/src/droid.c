@@ -389,14 +389,6 @@ void	removeDroidBase(DROID *psDel)
 		return;
 	}
 
-	//ajl, inform others of destruction.
-	if (bMultiMessages
-			&& !(psDel->player != selectedPlayer && psDel->order == DORDER_RECYCLE))
-	{
-		ASSERT_OR_RETURN( , droidOnMap(psDel), "Asking other players to destroy droid driving off the map");
-		SendDestroyDroid(psDel);
-	}
-
 
 	/* remove animation if present */
 	if (psDel->psCurAnim != NULL)
@@ -1245,10 +1237,7 @@ BOOL droidUpdateBuild(DROID *psDroid)
 
 		intBuildFinished(psDroid);
 
-		if (bMultiMessages && myResponsibility(psStruct->player))
-		{
-			SendBuildFinished(psStruct);
-		}
+		//We used to do a SendBuildFinished(psStruct) about here, but then it occurred to me, that's probably going to help cheaters.
 
 
 		//only play the sound if selected player

@@ -5011,11 +5011,6 @@ BOOL destroyStruct(STRUCTURE *psDel)
 
 	CHECK_STRUCTURE(psDel);
 
-	if (bMultiMessages)
-	{
-		SendDestroyStructure(psDel);
-	}
-
 //---------------------------------------
 	/* Only add if visible */
 	if(psDel->visible[selectedPlayer])
