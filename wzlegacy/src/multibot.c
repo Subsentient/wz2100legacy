@@ -476,12 +476,6 @@ BOOL SendDroidMove(const DROID *psDroid, uint32_t x, uint32_t y, BOOL formation)
 		NETuint32_t(&x);
 		NETuint32_t(&y);
 		NETbool(&formation);
-
-		/*Send the droid's current location so we can snap it to where it ought to be.*/
-		NETuint16_t((void*)&psDroid->pos.x);
-		NETuint16_t((void*)&psDroid->pos.y);
-		NETuint16_t((void*)&psDroid->pos.z);
-		NETfloat((void*)&psDroid->direction);
 	}
 	return NETend();
 }
@@ -497,20 +491,12 @@ BOOL recvDroidMove()
 	{
 		uint8_t		player;
 		uint32_t	droid;
-		uint16_t cx, cy, cz;
-		float direction;
 
 		NETuint8_t(&player);
 		NETuint32_t(&droid);
 		NETuint32_t(&x);
 		NETuint32_t(&y);
 		NETbool(&formation);
-
-		/*Receive the droid's location info.*/
-		NETuint16_t(&cx);
-		NETuint16_t(&cy);
-		NETuint16_t(&cz);
-		NETfloat(&direction);
 
 		NETend();
 
@@ -974,13 +960,6 @@ BOOL SendDroidInfo(const DROID *psDroid, DROID_ORDER order, uint32_t x, uint32_t
 		// Send the droid's ID
 		NETuint32_t(&droidId);
 
-		/*Send the droid's current coords and direction as according to us.
-		 * This forces an instant grid update on the other end.*/
-		NETuint16_t((void*)&psDroid->pos.x);
-		NETuint16_t((void*)&psDroid->pos.y);
-		NETuint16_t((void*)&psDroid->pos.z);
-		NETfloat((void*)&psDroid->direction);
-
 		// Send the droid's order
 		NETenum(&order);
 		NETbool(&subType);
@@ -1023,12 +1002,6 @@ BOOL recvDroidInfo()
 				  NETgetSource(), droidId, isHumanPlayer(player) ? "Human" : "AI", player);
 			return false;
 		}
-
-		/*Force update the droid's location and direction.*/
-		NETuint16_t(&psDroid->pos.x);
-		NETuint16_t(&psDroid->pos.y);
-		NETuint16_t(&psDroid->pos.z);
-		NETfloat(&psDroid->direction);
 
 		// Get the droid's order
 		NETenum(&order);
