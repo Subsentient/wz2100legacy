@@ -750,7 +750,6 @@ static BOOL sendStructureCheck(void)
 BOOL recvStructureCheck()
 {
 	STRUCTURE		*pS;
-	//STRUCTURE_STATS	*psStats;
 	BOOL			hasCapacity = true;
 	int				j;
 	float			direction;
@@ -777,17 +776,13 @@ BOOL recvStructureCheck()
 	}
 
 	// If the structure exists our job is easy
-	pS = IdToStruct(ref, player);
-	if (pS)
+	if ((pS = IdToStruct(ref, player)))
 	{
 		pS->body = body;
 		pS->direction = direction;
-	}
 
-	if (pS)
-	{
 		// Check its finished
-		if (pS->currentBuildPts > (int32_t)pS->pStructureType->buildPoints)
+		if (pS->status != SS_BUILT)
 		{
 			pS->direction = direction;
 			pS->id = ref;
