@@ -48,6 +48,7 @@ uint32_t	selSelectAllCombat		( uint32_t player, BOOL bOnScreen);
 uint32_t	selSelectAllDamaged		( uint32_t player, BOOL bOnScreen);
 uint32_t	selSelectAllSame		( uint32_t player, BOOL bOnScreen);
 uint32_t 	selSelectAllTrucks		(uint32_t player, BOOL bOnScreen);
+uint32_t	selSelectAllGroundCombat(uint32_t player, BOOL bOnScreen);
 uint32_t	selNameSelect			( char *droidName, uint32_t player, BOOL bOnScreen );
 // ---------------------------------------------------------------------
 /*
@@ -103,6 +104,9 @@ uint32_t	selDroidSelection( uint32_t	player, SELECTION_CLASS droidClass,
 					break;
 				case DST_CONSTRUCTORS:
 					retVal = selSelectAllTrucks(player, bOnScreen);
+					break;
+				case DST_ALL_GROUND_COMBAT:
+					retVal = selSelectAllGroundCombat(player, bOnScreen);
 					break;
 				default:
 					ASSERT( false, "Invalid selection type in uniDroidSelection" );
@@ -210,6 +214,31 @@ uint32_t	selSelectAllCombat( uint32_t player, BOOL bOnScreen)
 	return(count);
 }
 
+uint32_t selSelectAllGroundCombat(uint32_t player, BOOL bOnScreen)
+{
+	DROID *psDroid = apsDroidLists[player];
+	unsigned Counter = 0;
+	
+	if (!psDroid) return 0;
+	
+	for (; psDroid; psDroid = psDroid->psNext)
+	{
+		PROPULSION_STATS *const psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
+		
+		if (bOnScreen ? !droidOnScreen(psDroid, 0) : false) continue;
+		
+		//We were doing an assert here elsewhere but bleh
+		if (!psPropStats) continue;
+		
+		if (psDroid->asWeaps[0].nStat > 0 && psPropStats->propulsionType != PROPULSION_TYPE_LIFT)
+		{
+			SelectDroid(psDroid);
+			++Counter;
+		}
+	}
+	return Counter;
+}
+
 uint32_t selSelectAllTrucks(uint32_t player, BOOL bOnScreen)
 {
 	DROID *psDroid = apsDroidLists[player];
@@ -218,6 +247,8 @@ uint32_t selSelectAllTrucks(uint32_t player, BOOL bOnScreen)
 	
 	for (; psDroid; psDroid = psDroid->psNext)
 	{
+		if (bOnScreen ? !droidOnScreen(psDroid, 0) : false) continue;
+		
 		if (psDroid->droidType == DROID_CONSTRUCT || psDroid->droidType == DROID_CYBORG_CONSTRUCT)
 		{
 			SelectDroid(psDroid);

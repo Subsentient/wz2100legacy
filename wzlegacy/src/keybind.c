@@ -2251,6 +2251,12 @@ void	kf_SelectAllTrucks(void)
 }
 
 // --------------------------------------------------------------------------
+void	kf_SelectAllGroundCombat(void)
+{
+	selDroidSelection(selectedPlayer, DS_BY_TYPE, DST_ALL_GROUND_COMBAT, false);
+}
+
+// --------------------------------------------------------------------------
 void	kf_SelectAllHalfTracked( void )
 {
 	selDroidSelection(selectedPlayer, DS_BY_TYPE, DST_HALF_TRACKED, false);

@@ -253,6 +253,7 @@ _keymapsave keyMapSaveTable[] =
 	kf_ToggleFPS,
 	kf_SpecMe,
 	kf_SelectAllTrucks,
+	kf_SelectAllGroundCombat,
 	NULL		// last function!
 };
 
@@ -414,6 +415,7 @@ void	keyInitMappings( BOOL bForceDefaults )
 	//                                **********************************
 	//								In game mappings - COMBO (CTRL + LETTER) presses.
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_A, KEYMAP_PRESSED, kf_SelectAllCombatUnits,   N_("Select all Combat Units"));
+	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LSHIFT, KEY_G, KEYMAP_PRESSED, kf_SelectAllGroundCombat,   N_("Select all Ground Combat Units"));
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LSHIFT, KEY_T, KEYMAP_PRESSED, kf_SelectAllTrucks,  	 N_("Select all Trucks and Combat Engineers"));
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_D, KEYMAP_PRESSED, kf_SelectAllDamaged,       N_("Select all Heavily Damaged Units"));
 	keyAddMapping(KEYMAP_ASSIGNABLE, KEY_LCTRL, KEY_F, KEYMAP_PRESSED, kf_SelectAllHalfTracked,   N_("Select all Half-tracks"));

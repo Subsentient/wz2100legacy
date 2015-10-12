@@ -133,6 +133,7 @@ extern void	kf_SelectAllHalfTracked( void );
 extern void	kf_SelectAllCombatUnits( void );
 extern void	kf_SelectAllSameType( void );
 void	kf_SelectAllTrucks(void);
+void	kf_SelectAllGroundCombat(void);
 
 extern void	kf_SetDroidRangeShort( void );
 extern void	kf_SetDroidRangeDefault( void );
