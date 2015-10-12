@@ -221,6 +221,7 @@ uint32_t selSelectAllGroundCombat(uint32_t player, BOOL bOnScreen)
 	
 	if (!psDroid) return 0;
 	
+	selDroidDeselect(player);
 	for (; psDroid; psDroid = psDroid->psNext)
 	{
 		PROPULSION_STATS *const psPropStats = asPropulsionStats + psDroid->asBits[COMP_PROPULSION].nStat;
@@ -245,6 +246,7 @@ uint32_t selSelectAllTrucks(uint32_t player, BOOL bOnScreen)
 	unsigned Counter = 0;
 	if (!psDroid) return 0;
 	
+	selDroidDeselect(player);
 	for (; psDroid; psDroid = psDroid->psNext)
 	{
 		if (bOnScreen ? !droidOnScreen(psDroid, 0) : false) continue;
