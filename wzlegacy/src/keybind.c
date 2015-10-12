@@ -2245,6 +2245,12 @@ void	kf_SelectAllTracked( void )
 }
 
 // --------------------------------------------------------------------------
+void	kf_SelectAllTrucks(void)
+{
+	selDroidSelection(selectedPlayer, DS_BY_TYPE, DST_CONSTRUCTORS, false);
+}
+
+// --------------------------------------------------------------------------
 void	kf_SelectAllHalfTracked( void )
 {
 	selDroidSelection(selectedPlayer, DS_BY_TYPE, DST_HALF_TRACKED, false);
