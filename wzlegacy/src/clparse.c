@@ -135,7 +135,7 @@ static CLISPEC *lookupArgument(const char *InStream)
 	char ArgStream[2048] = { '\0' }; // Should be more than enough.
 
 	/*Don't include the data past the equals.*/
-	for (; InStream[Inc] != '\0' && InStream[Inc] != '='; ++Inc)
+	for (; Inc < sizeof ArgStream - 1 && InStream[Inc] != '\0' && InStream[Inc] != '='; ++Inc)
 	{
 		ArgStream[Inc] = InStream[Inc];
 	}
@@ -159,7 +159,7 @@ static BOOL getArgumentParam(CLISPEC *ArgStruct, const char *CurArgv, void *OutP
 	char *LookupTable = (char*)CurArgv;
 	char Delim[8192];
 
-	snprintf(Delim, 8192, "%s=", ArgStruct->ArgName);
+	snprintf(Delim, sizeof Delim, "%s=", ArgStruct->ArgName);
 
 	if (!(LookupTable = strstr(LookupTable, Delim)))
 	{
