@@ -73,8 +73,11 @@ int32_t GetModuleBase(int32_t dwAddress)
 
 #include <bfd.h>
 #include "include/demangle.h"
+#ifndef WZ_CC_MINGW
 #include "include/coff/internal.h"
+
 #include "include/libcoff.h"
+#endif
 
 // Read in the symbol table.
 static bfd_boolean
@@ -832,7 +835,7 @@ BOOL StackBackTrace(HANDLE hProcess, HANDLE hThread, PCONTEXT pContext)
 			rprintf( _T("  %s:%08lX"), szModule, StackFrame.AddrPC.Offset);
 
 			if(hModule != hPrevModule)
-			{
+						{
 				if(syms)
 				{
 					GlobalFree(syms);
@@ -841,35 +844,13 @@ BOOL StackBackTrace(HANDLE hProcess, HANDLE hThread, PCONTEXT pContext)
 				}
 
 				if(abfd)
-				{
 					bfd_close(abfd);
-				}
 
 				if((abfd = bfd_openr (szModule, NULL)))
 					if(bfd_check_format(abfd, bfd_object))
-					{
-						bfd_vma adjust_section_vma = 0;
-
-						/* If we are adjusting section VMA's, change them all now.  Changing
-						the BFD information is a hack.  However, we must do it, or
-						bfd_find_nearest_line will not do the right thing.  */
-						if ((adjust_section_vma = (bfd_vma) hModule - pe_data(abfd)->pe_opthdr.ImageBase))
-						{
-							asection *s;
-
-							for (s = abfd->sections; s != NULL; s = s->next)
-							{
-								s->vma += adjust_section_vma;
-								s->lma += adjust_section_vma;
-							}
-						}
-
 						if(bfd_get_file_flags(abfd) & HAS_SYMS)
 							/* Read in the symbol table.  */
-						{
 							slurp_symtab(abfd, &syms, &symcount);
-						}
-					}
 			}
 
 			if(!bSuccess && abfd && syms && symcount)
