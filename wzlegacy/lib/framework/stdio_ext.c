@@ -47,7 +47,7 @@ int slcatprintf(char *str, size_t size, const char *format, ...)
 }
 
 
-#if defined(WZ_OS_WIN)
+#if defined(WZ_OS_WIN) && !defined(WZ_CC_MINGW)
 int vasprintf(char **strp, const char *format, va_list ap)
 {
 	int count;
