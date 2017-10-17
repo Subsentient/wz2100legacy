@@ -19,6 +19,9 @@
    */
 #undef HAVE_DCGETTEXT
 
+/* Define if FreeType supports the caching routines */
+#undef HAVE_FT_CACHE
+
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
 
@@ -121,10 +124,6 @@
 
 /* Causes sound to be disabled */
 #undef WZ_NOSOUND
-
-/* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
-   `char[]'. */
-#undef YYTEXT_POINTER
 
 /* Define to 1 if on MINIX. */
 #undef _MINIX
