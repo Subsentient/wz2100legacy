@@ -94,7 +94,7 @@ win32/__BUILD_CONFIG.USER
 
 # Generated executables:
 /build_tools/autorevision/autorevision
-/src/warzone2100
+/src/wz2100legacy
 /tests/astartest
 /tests/maptest
 /tests/pointtree.ppm
@@ -253,3 +253,4 @@ devpkg/*
 # profiler stuff
 win32/CodeAnalyst
 /compile
+**/*.wzl
