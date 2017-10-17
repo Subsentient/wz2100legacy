@@ -1,4 +1,4 @@
-AM_CPPFLAGS = $(SDL_CFLAGS) $(PNG_CFLAGS) $(OPENGLC_CFLAGS) $(OPENGL_CFLAGS) $(WZ_CPPFLAGS) $(GLee_CFLAGS)
+AM_CPPFLAGS = $(SDL_CFLAGS) $(PNG_CFLAGS) $(OPENGLC_CFLAGS) $(OPENGL_CFLAGS) $(WZ_CPPFLAGS) $(GLEW_CFLAGS)
 AM_CFLAGS = $(WZ_CFLAGS) -Wno-missing-declarations
 AM_CXXFLAGS = $(WZ_CXXFLAGS)
 
@@ -21,10 +21,6 @@ libivis_opengl_a_SOURCES = \
 	tex.c \
 	textdraw.c
 
-if !SYSTEM_GLEE
-libivis_opengl_a_SOURCES += GLee.c
-noinst_HEADERS += GLee.h
-endif
 
 # HACK Don't give make errors when switching between trunk and branches.
 # Works by finding the .deps/*.Po files which refer to source files that don't exist, and replacing them with a single dependency on the correct source file.

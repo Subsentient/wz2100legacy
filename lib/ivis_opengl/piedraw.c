@@ -16,7 +16,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//** \f
  *  Render routines for 3D coloured and shaded transparency rendering.
  */
 
-#include <GLee.h>
+#include <GL/glew.h>
 #include <string.h>
 #include <SDL_video.h>
 
@@ -652,14 +652,14 @@ static void pie_DrawShadows(void)
 	glEnable(GL_STENCIL_TEST);
 
 	// Check if we have the required extensions
-	if (GLEE_EXT_stencil_wrap)
+	if (GL_EXT_stencil_wrap)
 	{
 		op_depth_pass_front = GL_INCR_WRAP_EXT;
 		op_depth_pass_back = GL_DECR_WRAP_EXT;
 	}
 
 	// generic 1-pass version
-	if (GLEE_EXT_stencil_two_side)
+	if (GL_EXT_stencil_two_side)
 	{
 		glEnable(GL_STENCIL_TEST_TWO_SIDE_EXT);
 		glDisable(GL_CULL_FACE);
@@ -676,7 +676,7 @@ static void pie_DrawShadows(void)
 		glDisable(GL_STENCIL_TEST_TWO_SIDE_EXT);
 	}
 	// check for ATI-specific 1-pass version
-	else if (GLEE_ATI_separate_stencil)
+	else if (GL_ATI_separate_stencil)
 	{
 		glDisable(GL_CULL_FACE);
 		glStencilMask(~0);

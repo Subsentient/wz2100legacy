@@ -16,7 +16,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//** \f
  *  Renderer setup and state control routines for 3D rendering.
  */
 
-#include <GLee.h>
 #include "lib/framework/frame.h"
 
 #include <SDL.h>

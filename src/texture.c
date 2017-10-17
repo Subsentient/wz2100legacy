@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*/
  * This is where we do texture atlas generation.
  */
 
-#include <GLee.h>
+#include <GL/glew.h>
 #include "lib/framework/frame.h"
 
 
@@ -112,7 +112,7 @@ static int newPage(const char *name, int level, int width, int height, int count
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	// Use anisotropic filtering, if available, but only max 4.0 to reduce processor burden
-	if (GLEE_EXT_texture_filter_anisotropic)
+	if (GL_EXT_texture_filter_anisotropic)
 	{
 		GLfloat maxAnisotropy;
 

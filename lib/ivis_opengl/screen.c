@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//*
  *
  */
 
-#include <GLee.h>
+#include <GL/glew.h>
 #include "lib/framework/frame.h"
 #include "lib/exceptionhandler/dumpinfo.h"
 
@@ -178,11 +178,20 @@ bool screenInitialise(
 		debug(LOG_FATAL, "Double buffering is required for this game!");
 		exit(1);
 	}
-	// Note that no initialisation of GLee is required, since this is handled automatically.
 
 	{
 		char buf[256];
 
+		GLenum GlewStatus = glewInit();
+
+		if (GlewStatus != GLEW_OK)
+		{
+			debug(LOG_FATAL, "Glew initialization failed with error %s", glewGetErrorString(GlewStatus));
+			exit(1);
+		}
+
+		debug(LOG_INFO, "Glew startup successful.");		
+		
 		// Copy this info to be used by the crash handler for the dump file
 		ssprintf(buf, "OpenGL Vendor : %s", glGetString(GL_VENDOR));
 		addDumpInfo(buf);
@@ -190,7 +199,7 @@ bool screenInitialise(
 		addDumpInfo(buf);
 		ssprintf(buf, "OpenGL Version : %s", glGetString(GL_VERSION));
 		addDumpInfo(buf);
-		if (GLEE_VERSION_2_0)
+		if (GL_VERSION_2_0)
 		{
 			ssprintf(buf, "OpenGL GLSL Version : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 			addDumpInfo(buf);
@@ -203,22 +212,22 @@ bool screenInitialise(
 		debug(LOG_3D, "OpenGL Version : %s", glGetString(GL_VERSION));
 		debug(LOG_3D, "OpenGL Extensions : %s", glGetString(GL_EXTENSIONS)); // FIXME This is too much for MAX_LEN_LOG_LINE
 		debug(LOG_3D, "Supported OpenGL extensions:");
-		debug(LOG_3D, "  * OpenGL 1.2 %s supported!", GLEE_VERSION_1_2 ? "is" : "is NOT");
-		debug(LOG_3D, "  * OpenGL 1.3 %s supported!", GLEE_VERSION_1_3 ? "is" : "is NOT");
-		debug(LOG_3D, "  * OpenGL 1.4 %s supported!", GLEE_VERSION_1_4 ? "is" : "is NOT");
-		debug(LOG_3D, "  * OpenGL 1.5 %s supported!", GLEE_VERSION_1_5 ? "is" : "is NOT");
-		debug(LOG_3D, "  * OpenGL 2.0 %s supported!", GLEE_VERSION_2_0 ? "is" : "is NOT");
-		debug(LOG_3D, "  * OpenGL 2.1 %s supported!", GLEE_VERSION_2_1 ? "is" : "is NOT");
-		debug(LOG_3D, "  * OpenGL 3.0 %s supported!", GLEE_VERSION_3_0 ? "is" : "is NOT");
-		debug(LOG_3D, "  * Texture compression %s supported.", GLEE_ARB_texture_compression ? "is" : "is NOT");
-		debug(LOG_3D, "  * Two side stencil %s supported.", GLEE_EXT_stencil_two_side ? "is" : "is NOT");
-		debug(LOG_3D, "  * ATI separate stencil is%s supported.", GLEE_ATI_separate_stencil ? "" : " NOT");
-		debug(LOG_3D, "  * Stencil wrap %s supported.", GLEE_EXT_stencil_wrap ? "is" : "is NOT");
-		debug(LOG_3D, "  * Anisotropic filtering %s supported.", GLEE_EXT_texture_filter_anisotropic ? "is" : "is NOT");
-		debug(LOG_3D, "  * Rectangular texture %s supported.", GLEE_ARB_texture_rectangle ? "is" : "is NOT");
-		debug(LOG_3D, "  * FrameBuffer Object (FBO) %s supported.", GLEE_EXT_framebuffer_object ? "is" : "is NOT");
-		debug(LOG_3D, "  * Vertex Buffer Object (VBO) %s supported.", GLEE_ARB_vertex_buffer_object ? "is" : "is NOT");
-		if (GLEE_VERSION_2_0)
+		debug(LOG_3D, "  * OpenGL 1.2 %s supported!", GL_VERSION_1_2 ? "is" : "is NOT");
+		debug(LOG_3D, "  * OpenGL 1.3 %s supported!", GL_VERSION_1_3 ? "is" : "is NOT");
+		debug(LOG_3D, "  * OpenGL 1.4 %s supported!", GL_VERSION_1_4 ? "is" : "is NOT");
+		debug(LOG_3D, "  * OpenGL 1.5 %s supported!", GL_VERSION_1_5 ? "is" : "is NOT");
+		debug(LOG_3D, "  * OpenGL 2.0 %s supported!", GL_VERSION_2_0 ? "is" : "is NOT");
+		debug(LOG_3D, "  * OpenGL 2.1 %s supported!", GL_VERSION_2_1 ? "is" : "is NOT");
+		debug(LOG_3D, "  * OpenGL 3.0 %s supported!", GL_VERSION_3_0 ? "is" : "is NOT");
+		debug(LOG_3D, "  * Texture compression %s supported.", GL_ARB_texture_compression ? "is" : "is NOT");
+		debug(LOG_3D, "  * Two side stencil %s supported.", GL_EXT_stencil_two_side ? "is" : "is NOT");
+		debug(LOG_3D, "  * ATI separate stencil is%s supported.", GL_ATI_separate_stencil ? "" : " NOT");
+		debug(LOG_3D, "  * Stencil wrap %s supported.", GL_EXT_stencil_wrap ? "is" : "is NOT");
+		debug(LOG_3D, "  * Anisotropic filtering %s supported.", GL_EXT_texture_filter_anisotropic ? "is" : "is NOT");
+		debug(LOG_3D, "  * Rectangular texture %s supported.", GL_ARB_texture_rectangle ? "is" : "is NOT");
+		debug(LOG_3D, "  * FrameBuffer Object (FBO) %s supported.", GL_EXT_framebuffer_object ? "is" : "is NOT");
+		debug(LOG_3D, "  * Vertex Buffer Object (VBO) %s supported.", GL_ARB_vertex_buffer_object ? "is" : "is NOT");
+		if (GL_VERSION_2_0)
 		{
 			debug(LOG_3D, "  * OpenGL GLSL Version : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 		}

@@ -16,7 +16,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//** \f
  *  Matrix manipulation functions.
  */
 
-#include <GLee.h>
+#include <GL/glew.h>
 #include "lib/framework/frame.h"
 
 #include "lib/framework/fixedpoint.h"

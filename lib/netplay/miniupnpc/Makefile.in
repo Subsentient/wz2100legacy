@@ -93,7 +93,6 @@ subdir = lib/netplay/miniupnpc
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_c_check_flag.m4 \
 	$(top_srcdir)/m4/ax_compare_version.m4 \
-	$(top_srcdir)/m4/ax_ext_check_header.m4 \
 	$(top_srcdir)/m4/ax_prog_perl_version.m4 \
 	$(top_srcdir)/m4/ax_with_prog.m4 $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
@@ -224,8 +223,6 @@ FRIBIDI_LIBS = @FRIBIDI_LIBS@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GLEW_CFLAGS = @GLEW_CFLAGS@
 GLEW_LIBS = @GLEW_LIBS@
-GLee_CFLAGS = @GLee_CFLAGS@
-GLee_LIBS = @GLee_LIBS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
@@ -239,7 +236,6 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INTLLIBS = @INTLLIBS@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@

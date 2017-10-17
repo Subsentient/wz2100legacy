@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA*//*****
  */
 /***************************************************************************/
 
-#include <GLee.h>
+#include <GL/glew.h>
 #include "lib/framework/frame.h"
 
 #include <SDL.h>
@@ -52,7 +52,7 @@ BOOL pie_Initialise(void)
 	rendSurface.size = 0;
 
 	/* Find texture compression extension */
-	if (GLEE_ARB_texture_compression && wz_texture_compression != GL_RGBA)
+	if (GL_ARB_texture_compression && wz_texture_compression != GL_RGBA)
 	{
 		debug(LOG_TEXTURE, "Texture compression: Yes");
 		wz_texture_compression = GL_COMPRESSED_RGBA_ARB;
