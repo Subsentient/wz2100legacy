@@ -275,7 +275,7 @@ BOOL loadConfig(void)
 	}
 	else
 	{
-		NETsetMasterserverName("warzonelegacy.org");
+		NETsetMasterserverName("wzlegacy.universe2.us");
 		setWarzoneKeyString("masterserver_name", NETgetMasterserverName());
 	}
 
